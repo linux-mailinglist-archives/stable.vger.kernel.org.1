@@ -1,262 +1,167 @@
-Return-Path: <stable+bounces-249603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0H6OJ6dxDGpKhgUAu9opvQ
-	(envelope-from <stable+bounces-249603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:20:23 +0200
+	id KL2wD9pyDGqihwUAu9opvQ
+	(envelope-from <stable+bounces-249604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:25:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022185806AF
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:20:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409D35807DD
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5586730B2677
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:11:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C79833035974
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C457348C65;
-	Tue, 19 May 2026 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB46B4028D4;
+	Tue, 19 May 2026 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="CTWSAIA6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V+7INmm2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FF41D5170
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779199890; cv=none; b=RPg8Cu2pv9WLNfZTC4y1/2fn/5sB0kAnVc+BhEd7yZvec7PPIUQnBCDQ1qPO95+Ro7gitjCZfCrCdhc8EoH4UsRhTDDi9oaA5cZMalxHF2zBNH1xeqcVzv3+Ib+8Cyo8mjg1YMDxEm81CIVIq182MZUL7hr1csULVrzSs0daYsI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779199890; c=relaxed/simple;
-	bh=bdsUFO9kZ1k4aaN5bTjRDtTJSDsls6AitnmCnu9c8+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I8rQEqw7Czu6cJ7SQxiroDuUN3UhXDY3A7b69KI5PlviS1JNrVil+bvmvvfQbrHwXalYsVxvn59tL1qgiKtYZPffkNc/l30/ATs5uhvEMbgmmkioEz8GBioJS2xaCavrJezmy6B7moME/siUMfN57ZnfeFhhEUaz2Wdv4sEFylk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=CTWSAIA6; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-50d6b9bca48so58666741cf.2
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 07:11:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA061D5170
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779199945; cv=pass; b=CCZqywuKHCOvRniMCMCTNXdj6G90uOy0zkAFgfTPTKD8bhuCN/vMWTyUO5e4X4H8/UUaocquL3YjvZDy49ZdwR2eUGWKuoN8TFsI4mVV0rWx3tz61ZhhOyDUHOyLgAAPolOjD1yWCWgU4fS3Nl7KfFaAhXcTEIWQuchlgh4hees=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779199945; c=relaxed/simple;
+	bh=whO7YAb0sWqd5LNBElkzPg3UvW0e8KJGAEQaNkj809A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BQLWs2aKO/fEiB4G3QdgP1sgXWZzPz6Mk9jPbmxnJmSZQ3Hprv7kUpabAFE6fbzobWuT4dvII6fz8flzvjZkXp+YwbKYLnzkbb0VHjZiqFqANPqW/kHruwjxqCURqidRF3fkZRtRX9dLOlvzhaKByJD1jHeFP2MNzVRx5sLoUZw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V+7INmm2; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-67c1eea6b4dso273a12.1
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 07:12:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779199943; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GZoHcgQR0CvepANgZjRxlHL1YMxScl80amoYXuWsRJ8VSRTJ6wLKskprWklPR1i4Zu
+         eSY9kCGAfg5mtkm7U8Mh7SdPdgLKfyuFTd0sWiMDI0VisKCxHGs5SNWVTXaYwb9iFzTV
+         9Sl3U7u3F0DiDKId9Y+ToWa+6khjjDd6o2Mey7zOQnFrg6MjgdoMO1VXQYnxU4gTrGxa
+         BguPRsVgc60p63VijVa1yQYYtWHT7wwP9cJdmXzREgZU5OPXJyn6iEOQtEfsDgcb3uyw
+         lRVia68JfA5pug8R5I+D3ANI5BwgtfqrKD2KxF8rQzxf7gRtboTANUGnmTpSSoQgBog/
+         2tRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TFvbTxe5R6vdG6Zb7KmpleI10nj39uD6U/cRpjncsMA=;
+        fh=g/VUTZqQ8ELPROTiz8s7p3sgUpXJwUDcokp8vxfO3/U=;
+        b=OMGptSeADDrA8R+sKVFTWzCY3hUfAeuXiVe0YCMRQyIphORu3ZAx+f0GNMOfZ/A+Ck
+         6x1G/bY/t+Kqni8D+gB72OiuT1FS2sqyQyn/CHLkdgNLc6yYEAfSarrAJYvSRVXZkVDq
+         lHPuzRntNzTr3hUSySxjQsYaWiET3BCZhwIq1LM41Yji+0bQ+9BKGcdmGNlTosUNewD6
+         62fz9Rl6svCb6diqeOyWsBfS7nOhLH5ChYufczyoMTgm87kPKU0D17OweIgRxZtLL8Rk
+         Ho1xtvA+vlJyYKv44lH31Qz65ftVMo5kyKw55BS2b7N1R4rL1X4xgi0ozqMkausvdqvf
+         GcPA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1779199887; x=1779804687; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LyJqfMx5Ks1exoptQvYh/tS2q82SfLe8ov3UKKxLEwc=;
-        b=CTWSAIA6Yr3uFWc812rWvDxwFobHPediN3fPwC24tgo2NGohva/SuW+L+0IAZm2A96
-         2up4U3EKDATP8753N8e1YFNOh4PTonHxkjG5wBYBZwVW406F1c1MUeOoLRpbO70XDDm0
-         pplyy3doZJgDyRJX3eu5z+xZ32SDJ7gFDQjhlNZIRabc/BPr74bhFm9eYaw5U4LkxSky
-         Q1oaTb0OCkAl6d+sL/YpRPaz6xBfjUJLp2p+zPqtDDZbWJwepEPVgXo3lQ9Bz2yQb7CW
-         tyVK05+nyRUCcQOPM40emgLnp6dgG4Vf2mmFi2M48E5w14r+bVV//93pKi9TzH+Tv7si
-         R6BQ==
+        d=google.com; s=20251104; t=1779199943; x=1779804743; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TFvbTxe5R6vdG6Zb7KmpleI10nj39uD6U/cRpjncsMA=;
+        b=V+7INmm2JEClJfN2MwEtNRWWNbaJ4FlHRyBoUwL322w11KUeAcOwePUHT/98Qh6olF
+         uFMYrdDvOe6EEkgTi01nA5O+vdlbjBhiuQFw9y1u7OHMr+atlr7bIdWukIhM0ZePv+D8
+         +JmrlzDZhwcZcxlySO7724hdGvBr73vFNa2WEqO/RbyB+cGfiHGE498yn/3F2lxfHJjx
+         VxFV93cMgG9vW+dHaF7LTFcDv/pzdEVOxk52nmgAtqyYJKlsIMOZLBuR90mNCJVSdojt
+         yM9svAcTj1Q21SNy1q+v0QR1iHM+yOE4He+UY0RnejLcRuF9P+1dVn7ntMpIFWW/sfpx
+         DVcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779199887; x=1779804687;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LyJqfMx5Ks1exoptQvYh/tS2q82SfLe8ov3UKKxLEwc=;
-        b=fDEUgYhInv+EGsx5izdVuZq2SLQ2QwcdClYyLVpmIWfWwVwp7cKNcAkqFcrQsOgTHp
-         H73AxErFQ7sqNPYlvxfJDd+Khvf3sj3NisXwJnq5T4ETXGcWGntYFULUsTsdSqQPQF7N
-         7NI02Nu+iPtsQ92LU6tCvRLrKSrvmYAhUCLHIOQ7xW2FUkS5o4CMGSRDEnipsP1GKitN
-         4+SHkljRsfujslr/GN67yoTCgUw8v7JYtYZK6UNIk8GEni0WMQp6QAVSaR0fzIjkhjZn
-         y0lb1zog+cn37RdLrGPEp8bS7Fypgbn5fiGIHSmZoibaWx3ezYZ3XIlxS8XTaBzmBc10
-         dgWw==
-X-Forwarded-Encrypted: i=1; AFNElJ8VQhVIWdKiPh58iMYtPIOPldGnRQgAjvXN1oAidie4H2mlw9K3H4riLp8+Ayk3AP2D/2x0wTc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLDa563so/w42UVh0GS9H8KxSn8ijWNpwR7mpXg/kLdDsowUkU
-	tRuUjhRGMlc1U8Dp0gTO/GJqx8b0iouMXuNFUfx1L69W1Eegu8EPO02K8/S6MTkzeLE=
-X-Gm-Gg: Acq92OGuzXXNvy4qxjWm+/m4EqsJUmnF8zbArFVnFgNBkyKQ0urIyZbLz8Q9mc0jaIP
-	QfcwbTWBLZnBDfQyBbAYHhp10m3wdWEIXNuO4bXOOkvZrtZHTKqnPupiFg/M8SplpWeU3tDKAdT
-	HCFz3lQ7mJB8BYkMgCmVEe2hEyQ+lcrjjYSTnoRbOjKw9Atmn/qnd2si4KI+1o9xMiLfQC1totJ
-	zxj6PoWa+owDN3nMy4xuPGP2Ok6Ofi3BphGRfs/rl+hK1rEPA/rV4eKMAvJvoi4yiKh0M2fT0G/
-	Zg8xvmiD2C+scEM8uXXNHTHz0dCMTFToAR8mNf4u33MSxqvD/0zKsbnWtsg8C8CRQg265Lb8b/j
-	HDZr+iW667L9LZqScT54uKEa7yDO+a3zAWR2BiGySHmVzoljXNVE5lR3LeAvfiVg/BGt0I4TjQR
-	kYjbgeMLI9ArHs9hcB1dk5/Ze/7bB+WfUWeaDnua7hjKH9AcGAF2g=
-X-Received: by 2002:a05:622a:90e:b0:50e:635b:5579 with SMTP id d75a77b69052e-5165a00702cmr265768101cf.19.1779199887300;
-        Tue, 19 May 2026 07:11:27 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5164585fa0asm177729321cf.31.2026.05.19.07.11.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 07:11:26 -0700 (PDT)
-Date: Tue, 19 May 2026 14:11:26 +0000
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] liveupdate: validate session type before performing
- operation
-Message-ID: <agxuNavjtB8T_xRO@plex>
-References: <20260519122428.2378446-1-pratyush@kernel.org>
+        d=1e100.net; s=20251104; t=1779199943; x=1779804743;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TFvbTxe5R6vdG6Zb7KmpleI10nj39uD6U/cRpjncsMA=;
+        b=i6XWwmcTFLcnirmP9AQXI4jtPJM6uV3iCMtzZXjCOYJe10qZ0EIHQxsGsEEAdZdCRx
+         0KnC1Ghvl0OzUXUcj890kBOE2f4KhKiB5PObm3DNs9KY5agzAeOm7TImNIVfLYRzwY01
+         B/4qQv9dol0WXh2mF0NwhDs0tA39QvOu5OAmXIoCwFVIQyAUoLL6TLgSbrMqn+x3NdYV
+         WZZnJRc8TFFJIjJaLjjNIVZy2I7zNPLEbho3HGiXuOxUAiPBAluFXw81qnChy14xKoaE
+         K/ElicMyj4Y+kP3wrVg2KX1ASmbSHRxSTZCAWBNAEnbLKjDaNOjOI9e3/2cSnk0HiobV
+         Gglg==
+X-Forwarded-Encrypted: i=1; AFNElJ+7bFI+DT8EZzkmFpAns+0rKWP3CuGHXS2A/HHJlv+k2UhaMLaLNV1L+4W4ctjJrvpnOva7280=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTqeIWC+0xUxIPe89NvEyyVjhbu6Xwmbnej7ViMPt7Z33x/AuC
+	4EHimu5dYeWpogdg9cM/gUnXwprbgUMi+1EzLn8MMFRsJrQKG8iBjogpaSncBW7/asOuj7GhfMD
+	uiTwBYvpEnlX/VuvZm2T2ilNbGYFhIsqFvufRH2Bv
+X-Gm-Gg: Acq92OHOY5hAD6dwf/9P0mz9rVzanrBIoWsIKDWv9Xt5szZbB97GwY4QwOHeazOprD1
+	Hq6Q1Vv6zbnEKeB5UZLcYGXd6sH1vVaeenSNIqkS5U9A+nt5OWD9xs75IoqiquR9bgu7/zcQLtr
+	wT9giVi/3yrnTnz3yW4cJ7Y9fvCtysg+07h8z3NslkCKCECH33czYvprtHEbNyDawvFB9hgcpoB
+	wTOpSX7V/h/qSmHt101BhOZK2cxMPLLMn3SKg/qYcIH/X7GLFKm5u1xFf11l5ZU26iYgq8k7hJC
+	bD7ovmpBFjEsNK9vslo953AvvYagimWGZW/PJvE0DmdCJOjN
+X-Received: by 2002:aa7:db55:0:b0:67b:6dc6:3a5 with SMTP id
+ 4fb4d7f45d1cf-684986effeemr78445a12.9.1779199942226; Tue, 19 May 2026
+ 07:12:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519122428.2378446-1-pratyush@kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[soleen.com,reject];
-	R_DKIM_ALLOW(-0.20)[soleen.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260519-fuse-dir-pagecache-v1-1-1f060c65930d@google.com> <CAJfpegv63pO9k1mvYct_U+aSuiHHVBxCdNgsaj3FhK8ZX_m0Mg@mail.gmail.com>
+In-Reply-To: <CAJfpegv63pO9k1mvYct_U+aSuiHHVBxCdNgsaj3FhK8ZX_m0Mg@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 19 May 2026 16:11:46 +0200
+X-Gm-Features: AVHnY4IC0Nb8ZGebLrWGuDuCoZnifzO_29zTNKSpR2gX_4smRdDNEvnUWhpnr1M
+Message-ID: <CAG48ez2gP5nfASBgZe_QiFcAQfnHd2D68gDiofOjxuGix2jajQ@mail.gmail.com>
+Subject: Re: [PATCH] fuse: reject fuse_notify() pagecache ops on directories
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249603-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[soleen.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pasha.tatashin@soleen.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 022185806AF
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249604-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[szeredi.hu:email,mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+]
+X-Rspamd-Queue-Id: 409D35807DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 05-19 14:24, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> The sessions ioctls are not applicable to all session types. PRESERVE_FD
-> is only applicable to outgoing sessions. RETRIEVE_FD and FINISH are only
-> valid for incoming session. Calling a incoming ioctl on an outgoing
-> session is invalid and can cause file handlers to run into unexpected
-> errors.
-> 
-> For example, a user can create a (outgoing) session, preserve a memfd,
-> and then immediately do a retrieve without doing a kexec in between.
+On Tue, May 19, 2026 at 4:07=E2=80=AFPM Miklos Szeredi <miklos@szeredi.hu> =
+wrote:
+> On Tue, 19 May 2026 at 16:00, Jann Horn <jannh@google.com> wrote:
+> > The operations FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE allow the
+> > FUSE daemon to actively write/read pagecache contents.
+> >
+> > For directories with FOPEN_CACHE_DIR, the pagecache is used as
+> > kernel-internal cache storage, and userspace is not supposed to have
+> > direct access to this cache - in particular, fuse_parse_cache() will hi=
+t
+> > WARN_ON() if the cache contains bogus data.
+> >
+> > Reject FUSE_NOTIFY_STORE and FUSE_NOTIFY_RETRIEVE on directories with
+> > -EINVAL.
+>
+> Good catch.
+>
+> Shouldn't this reject !S_ISREG()?  Symlinks also use the page cache
+> and could break if overwritten by arbitrary data.
 
-Please add a self-test tools/testing/selftests/liveupdate/liveupdate.c
-to verify that outgoing sessions do not accept retrieve_fd ioctl.
-Option, you could also add to luo_multi_session.c a test to verifying 
-that incoming does not accept preserve_fd
-
-> This would result in memfd's retrieve handler to run. The handlers
-> expects to be called from a post-kexec context, and will try to do a
-> kho_restore_vmalloc() or kho_restore_folio() to try and restore memory.
-> 
-> KHO catches this (thanks to KHO_PAGE_MAGIC) and returns an error, but
-> since this is considered an internal error and KHO throws out a bunch of
-> WARN()s.
-> 
-> Associate a type with each ioctl op and validate the type in
-> luo_session_ioctl() before dispatching the ioctl handler to make sure
-> the op is being called for the right session type.
-> 
-> Fixes: 16cec0d26521 ("liveupdate: luo_session: add ioctls for file preservation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
-> 
-> Notes:
->     I added LUO_IOCTL_ALL but there is no user in this patch. The type is
->     for LIVEUPDATE_SESSION_GET_NAME which is supported for both session
->     types. The support for GET_NAME is in next and this patch should go
->     through fixes.
->     
->     Alternatively, we can remove LUO_IOCTL_ALL from this patch and add it to
->     the LIVEUPDATE_SESSION_GET_NAME patch in next. But that would need us to
->     rebase to an rc that contains this fix.
-
-Let's keep LUO_IOCTL_ALL change in this patch.
-
-Please add tests, otherwise LGTM.
-
-Pasha
-
-> 
->  kernel/liveupdate/luo_session.c | 36 +++++++++++++++++++++++++++++----
->  1 file changed, 32 insertions(+), 4 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-> index a3327a28fc1f..e84218e3cacb 100644
-> --- a/kernel/liveupdate/luo_session.c
-> +++ b/kernel/liveupdate/luo_session.c
-> @@ -295,32 +295,58 @@ union ucmd_buffer {
->  	struct liveupdate_session_retrieve_fd retrieve;
->  };
->  
-> +/* Type of sessions the ioctl applies to. */
-> +enum luo_ioctl_type {
-> +	LUO_IOCTL_INCOMING,
-> +	LUO_IOCTL_OUTGOING,
-> +	LUO_IOCTL_ALL,
-> +};
-> +
->  struct luo_ioctl_op {
->  	unsigned int size;
->  	unsigned int min_size;
->  	unsigned int ioctl_num;
-> +	enum luo_ioctl_type type;
->  	int (*execute)(struct luo_session *session, struct luo_ucmd *ucmd);
->  };
->  
-> -#define IOCTL_OP(_ioctl, _fn, _struct, _last)                                  \
-> +#define IOCTL_OP(_ioctl, _fn, _struct, _last, _type)                           \
->  	[_IOC_NR(_ioctl) - LIVEUPDATE_CMD_SESSION_BASE] = {                    \
->  		.size = sizeof(_struct) +                                      \
->  			BUILD_BUG_ON_ZERO(sizeof(union ucmd_buffer) <          \
->  					  sizeof(_struct)),                    \
->  		.min_size = offsetofend(_struct, _last),                       \
->  		.ioctl_num = _ioctl,                                           \
-> +		.type = _type,                                                 \
->  		.execute = _fn,                                                \
->  	}
->  
->  static const struct luo_ioctl_op luo_session_ioctl_ops[] = {
->  	IOCTL_OP(LIVEUPDATE_SESSION_FINISH, luo_session_finish,
-> -		 struct liveupdate_session_finish, reserved),
-> +		 struct liveupdate_session_finish, reserved, LUO_IOCTL_INCOMING),
->  	IOCTL_OP(LIVEUPDATE_SESSION_PRESERVE_FD, luo_session_preserve_fd,
-> -		 struct liveupdate_session_preserve_fd, token),
-> +		 struct liveupdate_session_preserve_fd, token, LUO_IOCTL_OUTGOING),
->  	IOCTL_OP(LIVEUPDATE_SESSION_RETRIEVE_FD, luo_session_retrieve_fd,
-> -		 struct liveupdate_session_retrieve_fd, token),
-> +		 struct liveupdate_session_retrieve_fd, token, LUO_IOCTL_INCOMING),
->  };
->  
-> +static bool luo_ioctl_type_valid(struct luo_session *session,
-> +				 const struct luo_ioctl_op *op)
-> +{
-> +	switch (op->type) {
-> +	case LUO_IOCTL_INCOMING:
-> +		/* Retrieved is only set on incoming sessions */
-> +		return session->retrieved;
-> +	case LUO_IOCTL_OUTGOING:
-> +		return !session->retrieved;
-> +	case LUO_IOCTL_ALL:
-> +		return true;
-> +	}
-> +
-> +	/* Catch-all. */
-> +	return false;
-> +}
-> +
->  static long luo_session_ioctl(struct file *filep, unsigned int cmd,
->  			      unsigned long arg)
->  {
-> @@ -345,6 +371,8 @@ static long luo_session_ioctl(struct file *filep, unsigned int cmd,
->  	op = &luo_session_ioctl_ops[nr - LIVEUPDATE_CMD_SESSION_BASE];
->  	if (op->ioctl_num != cmd)
->  		return -ENOIOCTLCMD;
-> +	if (!luo_ioctl_type_valid(session, op))
-> +		return -EINVAL;
->  	if (ucmd.user_size < op->min_size)
->  		return -EINVAL;
->  
-> 
-> base-commit: b1378127003b61930ce30064328640503ad3ef6d
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
+Should it be `!(S_ISREG() || S_ISBLK())` ?
+I think block devices are supposed to act roughly like regular files
+in terms of pagecache, but IDK how that works in the context of FUSE.
+Let me know which way you prefer and I'll send a v2.
 
