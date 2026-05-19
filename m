@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GfBLm7LC2rLNwUAu9opvQ
-	(envelope-from <stable+bounces-249446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:31:10 +0200
+	id GFzpFXzMC2rLNwUAu9opvQ
+	(envelope-from <stable+bounces-249447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:35:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288F55766FB
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:31:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE7E576740
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 04:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80AA130191A5
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:31:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96C2C3043C09
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9DB25BF13;
-	Tue, 19 May 2026 02:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D09C317166;
+	Tue, 19 May 2026 02:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHjgOXal"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoOX9otl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECF31EEA49
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 02:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1061430FC1C
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 02:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779157864; cv=none; b=XrtV1Bb3EHFdItMC+2P+UleA4J/LqzZm1cuXgcTZdK0Z7Niu4d2MKGqzTYBZCmH+FViIUDgPuliqIrBznHqKaquCgW0nNabRl5513YoNIUSf5vCgZfTa6YnjOvxaq3bWd/qyJP8Hhe+GrcrAgT66X+w5WmAa7OiuOC1cP6wt8oU=
+	t=1779158134; cv=none; b=jWNlCuAsy1dEZkuGTEz4QJrTTRq7W1OY5VFFkfsf2AmRTZa3RLKcrmQ3iZBoGf/nmP/qu7oJHCfdaOHNZ/z/quRV5rVkH/3AK179Ip2gf7wpFsJpSxyXhoey6xv5y9mmTr4xRSCibvEYLiZ44bdT3L1wMGXvzP3ZerixVZH3r74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779157864; c=relaxed/simple;
-	bh=zSq27hCRRWynZ32PKcsPcfag+haeNfYjegB+QsH7EeM=;
+	s=arc-20240116; t=1779158134; c=relaxed/simple;
+	bh=koFwE+idMYDOoYR+8Hxm4I7rPO2TtkAQfWHm46h45bc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n9T3L6OpICp9h61HEvIHwfnEzhqidthgH/i9jwBFqiYqDC1vMkZmXU0oz7n3mia4ziQy9nL9FtyfGuw5/+AVa7gsH1amo+8gs6XewlkdVcCvw33RRHrXRUasT99D+Fyt1RtKkxPD7ic74iK6hqzkvF2BGkQwXVDJElfcsWl4gwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHjgOXal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4A3C2BCB7;
-	Tue, 19 May 2026 02:31:02 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=lTVLbWrXVe6u072BOWxEvtvMEApx5Q2WRE75u/SEd9p8KvjN3S/6SYHoY3ieSV+3lM0+fK/Il0QAsb7Bo7AZVU8HcfoHTQd6UnZetlx+n7PTfVA7Rr4rffs9nbwRcPbGYp+3iavHehg2+olPlLNMEHFbb0PEiVJHFK/D9ZR9H7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoOX9otl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50875C2BCB7;
+	Tue, 19 May 2026 02:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779157864;
-	bh=zSq27hCRRWynZ32PKcsPcfag+haeNfYjegB+QsH7EeM=;
+	s=k20201202; t=1779158133;
+	bh=koFwE+idMYDOoYR+8Hxm4I7rPO2TtkAQfWHm46h45bc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GHjgOXal1hDmtjoyLfAKvnjJ8/xr2AgtgIyfwYbgROuEryuCqjMfdMTXOSvX5EMq8
-	 TLau4dXDjFMmMoEmxOOCy1+PlV4Axs1TK9ZiAnXB6RhjMzbT4J3MqjezZVzc3RXJKn
-	 ToeXfAsj+dpyVf8rSYvSr+nMQwBXSlhyac0YtYj4rYW/nkTDyUk1E0Eq1OAiGPWvrj
-	 3IpqvRSIpNQHAgz2/UeVGTr9+LcRBV/OwDb+10KAi0soHsqFmRN62OX2GXAKQjTj8r
-	 OSGhY6wK2mUbTE67ZN020JfZqz31rpOLVROoMxXSJgKyP3fv0Wc/HUhPRWDPLKwxHQ
-	 +ws99kiARgg5g==
-Message-ID: <d8957a1d-fe8b-4a77-a697-0b99318186b6@kernel.org>
-Date: Tue, 19 May 2026 12:30:59 +1000
+	b=UoOX9otl68KyE8B++Yz777x8VZKxNouICaPEXyaZTtNC7/kbRPr6quM8ngRSb3HCw
+	 hhaPJsQpiOHyXsKRmv6a3BgAUrtbVuU7Np+N+c7yFRIGcqe+KBlW4pKnH42vrjahFJ
+	 Fv4YQ11nxOTJ/AeeUikWoqAMy/urmAegcTFvhlVlSc1ymAvXO/UeXdq8bPNBw2eroD
+	 yw1VfcNDZYJHg3qu5tvaw4jjOLc7oegoHN8DFCCr+Y+0y8XVk1lSqWQCE3hDoQqQug
+	 05mYdLL4PD6VXPuktAJ9YmBGdtsLPQB6ZVVctT1tg2uiD9pHzA4rhClOCGlh6xy2AX
+	 QUeOo7X5a4bNg==
+Message-ID: <c70fa8ff-8677-4f0d-b43b-c34e9f6e6492@kernel.org>
+Date: Tue, 19 May 2026 12:35:29 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,13 +53,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 5.15.y] mptcp: pm: ADD_ADDR rtx: always decrease sk
+Subject: Re: [PATCH 6.12.y] mptcp: pm: ADD_ADDR rtx: always decrease sk
  refcount
 Content-Language: fr
 To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
 Cc: Mat Martineau <martineau@kernel.org>, Jakub Kicinski <kuba@kernel.org>
-References: <2026051231-caucasian-twisty-3275@gregkh>
- <20260519012226.2019700-1-sashal@kernel.org>
+References: <2026051230-anime-juniper-5ad1@gregkh>
+ <20260518144734.1381693-1-sashal@kernel.org>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -105,18 +105,18 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <20260519012226.2019700-1-sashal@kernel.org>
+In-Reply-To: <20260518144734.1381693-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249446-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249447-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	HAS_ORG_HEADER(0.00)[];
@@ -132,15 +132,15 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 288F55766FB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: CEE7E576740
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 Hi Sasha,
 
-On 19/05/2026 11:22, Sasha Levin wrote:
+On 19/05/2026 00:47, Sasha Levin wrote:
 > From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 > 
 > [ Upstream commit 9634cb35af17019baec21ca648516ce376fa10e6 ]
