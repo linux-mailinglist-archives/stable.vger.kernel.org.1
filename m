@@ -1,186 +1,172 @@
-Return-Path: <stable+bounces-249700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FVIAj7VDGqJnAUAu9opvQ
-	(envelope-from <stable+bounces-249700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:25:18 +0200
+	id 6COmG9/UDGqJnAUAu9opvQ
+	(envelope-from <stable+bounces-249699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:23:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B105852CA
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:25:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF2558527F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83FE2301B717
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:24:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C276302472A
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FE73E7BC2;
-	Tue, 19 May 2026 21:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90133E7BA8;
+	Tue, 19 May 2026 21:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NB8Q9UYc"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OlUf+Sdl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACC03B8BDA
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 21:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DF13D9DCB
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 21:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779225846; cv=none; b=U4wQFZhdshp4Ekkym7/B2p4NX9rQMY+Ak7EEzgUqYdc8ymc5/Uq6D0ZaQJy7fPJ6imSALx5FSsUnK9Vh61kDqMhfsflZj9noRXXblZd02JH33lMfXSfgdU+JeNwbKTccH/qrdKpxht8OjVhCLlNmOsC/OOEFmzo7gFQ3gtFjePQ=
+	t=1779225816; cv=none; b=A6ix8eF79ThLHQF65ipq8p4TrT6Z4bQwh/IwnuHEw1oBCDRQMXMsXSf/pIaBz+85WV2NGB0ZKWUDy/4PN4plH4AYQoe0Xf20fIxbXLcxmLjpXeEk+48eGJCKz7FlBlN5kJNFT1Hh61UQnNQEe4FITbq+6Qwo4rDE/gmWV9l0Gi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779225846; c=relaxed/simple;
-	bh=XZxRbYNB+p8MYv18ejMQ4A6b45jzlV4FremS2KhPQ9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WAUaDYASl0m9/Cm+MBnEm3pi1RA4M8W4JouMtsBXynxX/lcRcLRiiqBDGKg/Bwf6KgObyQso4y9NofBosYsyHJ2lSJ6ThBgPoWX5SykNC++Xp5bkG5lAhT8Kh7fFkIX8qk1Kp7jGvLLncwczAUn9zN9HIpgq5mUDv5znrKYarag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NB8Q9UYc; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-67b8d9c26bbso9433216a12.2
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 14:24:04 -0700 (PDT)
+	s=arc-20240116; t=1779225816; c=relaxed/simple;
+	bh=lWpu8BLqWj1TfNJlm3ClQfJmScLbNoYxCmBu95VgfzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QOW9PBIuoITEo2uSQrDghcO7DOeULAzf7g16ZWVVq3GiAmFmbXF7ExM5t6xtwFS6CcoA6jchYGEryYVb2Rw5FEpc9RD59o4Jh+rgZFh2EmQhqibYukpgdujpDBqcu+SgadHhAY4KN24005YyqZgLoJiAsYxEqLksQICB2EJj/xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OlUf+Sdl; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso505ad.0
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 14:23:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779225843; x=1779830643; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nPKRLa3wLXnIh4n1MboCUOELValbCWPOOcATx5jo12c=;
-        b=NB8Q9UYcygv0OIEymIvT9a6PCp05ij/iH2qfOHDqyLcQUAwGpU5KE9ihFHdoU7jmQm
-         a2ro741XH0GBb8gwbJFl8zEZxXze8DwRHdJChKN8ERVo+eyL9qXjld2vY3tKDs85i3Hd
-         kuoZjMVJxYYwOxlOEcUWOjBMjSKIwNkQ4T/VJcdge/7otuy6ORASC+Dd+ME8UqH+5yBi
-         4Vptnt5JZMPM2ZL9/W9da2MGQmj7H7IIAhtm8dBnq9vZMhIvtQNaxqeCenlkIKVK8ZiH
-         clQFhTy+u+KmivMxQzHKzRmypI9pygJcZp/Nkq9rR1lAbfDd5eTSxhhH42ooj4fDLfVh
-         iEhQ==
+        d=google.com; s=20251104; t=1779225815; x=1779830615; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQ56lnoRLJyhWveNJGv3cFgJb4oUuS+nNxeIsg+gH7Y=;
+        b=OlUf+SdlQxGGE420K3w/hBZFOOiiyiNflgf+i0Ze7GEHpZwBHdXHBw5SWQmvBaRWBz
+         Itss8MFwpuN4P9ZSEB7H7maXMWl5Hwk9L4djSAxmS38ESM+99UhFvPNOLXS/bLLam9JB
+         ANIFxm6w7VADD/C/VxC4fuhIsIw+iR8uLEcrGC/xYAjf5ywx3ZRlGpERtoVRc9zRGOMZ
+         0tCeFsPx8Qt1hSgfCBBEBEB7sxguj9ao2PeduAvI5wmKwT9Hp1ROwIU24ulKGq4zVehq
+         qZ1F6Rhq0HjG7LACg7VyHTIApf2kzIIlAaWYmEH4oF59YdgAuW9zffLpckZhVN+HlANc
+         cofQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779225843; x=1779830643;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nPKRLa3wLXnIh4n1MboCUOELValbCWPOOcATx5jo12c=;
-        b=Kdyq7E6nUpeMvKZMk0S3vxRMpeaJJ8ouROI1D8Z57xaXhEnLGpF4lyGx+8Tvd4itS3
-         0qkjsAKojLVwrLKYc3WVUumlLN4VdjTbCWwmjaTogkrA1EY5/XnZXuObB1GmZYFAscaA
-         IZcAxELMBl6HUijyYQnolCvjeXOkIDvEKXFTh/aC21CA5q0hHe4a3fMYor2gX4vfhPui
-         BFowKTHlU5JtyZKlHE/yyzE0Xi6B8uAz9j200WrXeBNeSHVPltHv4t7TcSwYJ0J5sXXt
-         dDtKTMHag03EZyT0XQn89s2lpC7rjQfNtLuTqdTkJ3KEkgl3s40m6LEv/DDRLcvkKZwK
-         EH/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+srTVl7Wo91sYn+lx/f0ksrsDCehdGR6rUm3htdTFdbhk5DaQWTzjIA+k1pJ7xE7/QEmr3OtI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypz8Sv26SdUoy9YSGv9lkTB/3eM+6Vt9w7JNr6G+pAwcFTlnIM
-	TcCnbA5Ev0wFgolR6K4lH9y6zf8j8cQ8nRxDfWjMvhSNg8H8iqqK8ocX
-X-Gm-Gg: Acq92OENTBPpJHRIyycawENeSXmzsojunJCbwNHLpQjnzF3FkKg/697XxlqeUMBaGqv
-	VN0rjCohidlKXE0JmV3DKeyAzVaYsEx2H59oWBZYZQBGhqmJg0kr2+wPqjpTQO9mgZyAfr2EnZy
-	MxARQWGO9xIEXzRKHy/FHKglqlOVZGMCbg9A967ICLc06JlquoYe9i7n68+VGRR10LcdvjKDwgR
-	s/mLMzFgc90twz/+FJnMjnd7hTIkUJfdKygahu7aEkNBsZ0imlVNUhTEF1wP3tkvVGha6Va669F
-	U8kbFhUo1jTB6A/+dXnk6o/IEIlMTTOnc9nlmj5M1l2HB7tGZMQU7dkKv+PUfyrzn+f8EnKVy8/
-	QTPMY0cGJcXT9jjDBzo42msQY1mKW6ppQU0/nPa7FNjqMYYf5q23n5l61hTyhEaz5YIKsd8DxUm
-	kjjJNt2o3BqN82tUs4a7m43YTo/APruZmNfHgU7N2HwYvonuclhUrGEdElXtzLO5D+8JVE7Uv5M
-	g==
-X-Received: by 2002:a05:6402:1d88:b0:679:223c:d181 with SMTP id 4fb4d7f45d1cf-683bd096b2dmr8279933a12.15.1779225843297;
-        Tue, 19 May 2026 14:24:03 -0700 (PDT)
-Received: from node ([202.47.63.86])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6831187d5f0sm6891416a12.28.2026.05.19.14.24.00
+        d=1e100.net; s=20251104; t=1779225815; x=1779830615;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JQ56lnoRLJyhWveNJGv3cFgJb4oUuS+nNxeIsg+gH7Y=;
+        b=dYj88UbaHxVDVKljoCK5E5dTx9pGqMMllQMi5wtM01S08TWGe6M/c/DRW4W4OofUic
+         tXOOskb77JMIQKw8SfZAoN9+/d24g+L6iscAg68w7vsJSsVYYiVQoX0lydsHn5wz1WIP
+         duBcWSBTDLT8Hl+W8++mXRZOGlPhrn35oJJZJSozp/8m+ihKb7SyT8M7qA9s5FUHIelq
+         eW4FZ5kZzBauh/7vKLvBYQns5V3yDng3WlyD03jrmI0VxLAspPL1mjnaJkoJ4Ke40thq
+         ErcnKmAK3HSU5jCC9TLDCEAb5mbS6U+TxkEnL/UcBvT4kHUD9EVSh0yQYehwDGwH033q
+         3bxw==
+X-Forwarded-Encrypted: i=1; AFNElJ+4UWjWOvyVJpajQvnaM6Zg3NCHm5Yxv5kf5yYgqjeAPy0TuhawIhALFiEM901c47cQOI/TBdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9202JXWGYCfNKgEzC8wEdbFDNXMPIwFLA7XwSJykt2Qpim7r9
+	wG4bsw+VhTLQeUGT+MDM9slpsBllWtuDyBXZXviOntLHL4eQGo2tKvCHTnzx4dShhA==
+X-Gm-Gg: Acq92OGMZWhUJ+5kHEBlHR6aeUgCDBIRD4pQLwjZ/tevQITcAxW/iE3MCq6xOMKbujl
+	skCwjb8q4pzXVJ1zjkLHppjyYzU4VMfClAxb4YJ5dZZnE6wcx8zA9uO2j2SeGmQeLWGA1F7S8Bv
+	I4cy2EJkm6i84TAuICF4ygDuG4ZwUfUExlRcH1rhmGIDteAzjxA1hHaEy4jyutAsHIGD11lOm+Z
+	Hd6FQwHiVKX23ArD1ZznEjYkUZrjISOLs1iB3iz/ZLGWOXVEpxniBYYYcw0lUrFxPY+aI7WZ+fN
+	7XSm093hM8pyAEY4I2X3V3BjhA1ELyV7p+9fMoc1E0N+Bo5j8JhNtNmBTg9GIQvvsiWe/Mm6vXy
+	4DOtvlVqzJsB6mEBLJCHBtuRhKLHp7gKUsf2RUTR2rTWKY8Eusrw0D3dXz2mgpFVz8j0mhqGYMq
+	0N19iqCjJ2792czHp+KESI4W89cAnWeDLurrfEFbx6jcKznhHEf6Ys92eMpxtPkZ39kJcCK0RQj
+	BJHQdE=
+X-Received: by 2002:a17:902:ef52:b0:2bd:6dad:7ccb with SMTP id d9443c01a7336-2bdb32bb6damr8726015ad.23.1779225814226;
+        Tue, 19 May 2026 14:23:34 -0700 (PDT)
+Received: from google.com (171.46.125.34.bc.googleusercontent.com. [34.125.46.171])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f196660easm18608271b3a.11.2026.05.19.14.23.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 14:24:02 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH] netfilter: nf_conntrack_irc: fix parse_dcc() off-by-one OOB read
-Date: Tue, 19 May 2026 17:23:28 -0400
-Message-ID: <20260519212328.28290-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        Tue, 19 May 2026 14:23:33 -0700 (PDT)
+Date: Tue, 19 May 2026 21:23:28 +0000
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Andrii Kuchmenko <capyenglishlite@gmail.com>
+Cc: linux-modules@vger.kernel.org, chleroy@kernel.org, mcgrof@kernel.org,
+	dmitry.torokhov@gmail.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] module: decompress: check return value of
+ module_extend_max_pages()
+Message-ID: <20260519212328.GA2614626@google.com>
+References: <20260518143233.16091-1-capyenglishlite@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260518143233.16091-1-capyenglishlite@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[strlen.de,nwl.cc,vger.kernel.org,netfilter.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-249700-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249699-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[samitolvanen@google.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 74B105852CA
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6AF2558527F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-parse_dcc() treats data_end as an inclusive end pointer, but its only
-caller passes data_limit = ib_ptr + datalen, which points one past the
-last valid byte.
+Hi Andrii,
 
-The newline search loop iterates while tmp <= data_end, so when no
-newline is present, *tmp is read at tmp == data_end, one byte beyond
-the region filled by skb_header_pointer().
+On Mon, May 18, 2026 at 05:32:33PM +0300, Andrii Kuchmenko wrote:
+> module_extend_max_pages() calls kvrealloc() internally and returns
+> -ENOMEM on allocation failure. The return value is never checked.
 
-irc_buffer is kmalloc'd as MAX_SEARCH_SIZE + 1 bytes and datalen is
-capped at MAX_SEARCH_SIZE, so the stray read does not fault.  The byte
-is uninitialized or stale; if it contains an ASCII digit, simple_strtoul
-will consume it and produce a wrong DCC IP or port in the conntrack
-expectation.  The extra allocation byte is also a fragile guard: if the
-cap or allocation size changes, this becomes a real out-of-bounds read.
+We should definitely fix this, but I'm not sure the rest of the
+commit message is entirely accurate.
 
-Change the loop and its post-loop check to use strict less-than,
-consistent with the caller's exclusive-end convention.  Update the
-function comment accordingly.
+> The decompression loop then continues calling module_get_next_page(),
+> which writes struct page pointers into info->pages[]. When used_pages
+> reaches the stale max_pages value (not updated due to the failed
+> extend), a subsequent write to info->pages[used_pages++] goes out of
+> bounds into adjacent heap memory.
+> 
+> Adjacent slab objects in the same kmalloc cache (pipe_buffer,
+> seq_operations, cred) can be corrupted, potentially leading to local
+> privilege escalation on kernels without SLAB_VIRTUAL mitigation.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
----
- net/netfilter/nf_conntrack_irc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Looking at the code:
 
-diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
-index 522183b9a..9a7b8f622 100644
---- a/net/netfilter/nf_conntrack_irc.c
-+++ b/net/netfilter/nf_conntrack_irc.c
-@@ -59,7 +59,7 @@ static const char *const dccprotos[] = {
- /* tries to get the ip_addr and port out of a dcc command
-  * return value: -1 on failure, 0 on success
-  *	data		pointer to first byte of DCC command data
-- *	data_end	pointer to last byte of dcc command data
-+ *	data_end	one past end of data
-  *	ip		returns parsed ip of dcc command
-  *	port		returns parsed port of dcc command
-  *	ad_beg_p	returns pointer to first byte of addr data
-@@ -77,10 +77,10 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
- 
- 	/* Make sure we have a newline character within the packet boundaries
- 	 * because simple_strtoul parses until the first invalid character. */
--	for (tmp = data; tmp <= data_end; tmp++)
-+	for (tmp = data; tmp < data_end; tmp++)
- 		if (*tmp == '\n')
- 			break;
--	if (tmp > data_end || *tmp != '\n')
-+	if (tmp >= data_end || *tmp != '\n')
- 		return -1;
- 
- 	*ad_beg_p = data;
--- 
-2.54.0
+- struct load_info info is zero-initialized in init_module_from_file().
 
+- If module_extend_max_pages() fails, info->pages remains NULL and
+  info->max_pages and info->used_pages both remain 0.
+
+- module_get_next_page() sees info->max_pages == info->used_pages
+  immediately and calls module_extend_max_pages(info, 0).
+
+- kvrealloc() is called with a size of 0 and it returns ZERO_SIZE_PTR.
+
+- Because ZERO_SIZE_PTR != NULL, module_extend_max_pages() sets
+  info->pages to ZERO_SIZE_PTR and returns 0.
+
+- module_get_next_page() writes to info->pages[info->used_pages++],
+  and the write to ZERO_SIZE_PTR results in an immediate oops.
+
+This isn't great, but I do not see a potential for an out-of-bounds
+write or slab corruption in this specific case. What am I missing?
+
+Sami
 
