@@ -1,212 +1,208 @@
-Return-Path: <stable+bounces-249639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJ4IE6+PDGqGjAUAu9opvQ
-	(envelope-from <stable+bounces-249639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:28:31 +0200
+	id 2FfnH5mSDGp1jAUAu9opvQ
+	(envelope-from <stable+bounces-249640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7D25825F1
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:28:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0348358286B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D30E305083B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:27:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B00F300902F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED2940961F;
-	Tue, 19 May 2026 16:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2987407CF1;
+	Tue, 19 May 2026 16:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AOJL2ScV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DT5YpL3C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7E3EA961
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779208044; cv=pass; b=Vnh1uJdI9YnlCR2khNI0yCOk0+UStrdnOUDaFPhsDAdN4ikwoJ9QF0SPGw6BCJS5dChoABQa5f+ytrZghoTzu5DOagY0yVFhMH2xZD9Fh0YfQi5qyitmG8HPxt2tE7i+Lx//+6yvzzIxARtGv00cMXSqtoR5MyEwmuIzygtfEfQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779208044; c=relaxed/simple;
-	bh=B6BJ3Zsa1dczVVp0M9UD9HVDpJCBAvt2NLaHwYhQoew=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A053F660E
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 16:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779208527; cv=none; b=i2QNxgxSB+QzR3alHai78Bcob0Yk2Gpvg4QmVXVBiuzJwRPLv0vib238qTHl4tAUEsZTffq4oIk1DXMO2F7n5kEREXw2PuwImnb/TYbqUd2fzVU+FPOawTzYUSn6/ZZJU2BFUi27PR36PRACPn92yY0aR4hcpW2vZsFeNRwKGtk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779208527; c=relaxed/simple;
+	bh=k9mbCai1MNnKEsP/pjwtInPRPk68NXdhRhWhHBwjoSQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fq2wTR/b2c4zGUDP4tOzOe2mOFd91Kq4DQGl4xLKR2csgL6wMyOBn9Fda5z31UhmR0KhbYBYc3a3LUkES44PHfK9Iu0C2UOvsV7N3lQJCpRjA11VGcd15ZDsYYRLuREnCOUxbgBXQA/A9JdPY7FEfWj12B2T50+QAf17qKlrEgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AOJL2ScV; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-67be871ed3fso8541650a12.1
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 09:27:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779208042; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Mw4xTbHJQp5pcXVZ11irBIe7hA+1jeS6o+pydxa5gWSmRxuL9HREjhtQRTNRYOQ4St
-         GANxPseVbG3YKdkBxW1P/nYlLDoVzefR8Zv3KfkLXfz9E+5g7Fba5PQtV7BovD3C5kAH
-         LKC40gHQESU+x6MSwKFG4Sc99Zeb9bhhwtZpndC/SrJWbxCEiGyRyp3sGp8aJzyKteKx
-         /Cyu/skr9xr06n1tGQ7LwO9Iu8Gg3v0WKs1rt15xPSD9MjBxYaF7cJMO/ttmXzfQYj3i
-         f39hFEV2W3KAKnx9QfJnKOF+flab3DBB9iGEvXegK5obHTZlk/OSGr5g//EAun6oXNjn
-         mpEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
-        fh=Bj0OGKGfw9tBcOhwF0uXUg+irJ1w6Qb9ZFiZveDEdvo=;
-        b=cQeq4AmUK9ACgM65wxJc19KSNXlOaw06LWCuXDMI+9haZT4UE2L+NPEVQWJ2LYMwB8
-         ms5Ry947CX3CqqO2XQ5+aLxLeP8sUCCMX5/VojnhXVM7eZqHDqRuMFf6leQvt7BG763Z
-         hCDHugGMX1TwI0kxUU9jCO1JahR0vi+deN83GgiJc+cGRGvki9BG8cYQfqfCiOOumAlr
-         kTFbWDNv1z/R3+rLOj/8fztNkCOls1/PuWY0sei0mUrH/ZVbO65gWNeNF318Njk7TS9c
-         V91lkdqXY6vHdL2HU0ugWfNPka4fxXqIyosp09Nki7fjBl+hHk+dPnRf2shxLUVoRwRc
-         D4Gg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 To:Cc:Content-Type; b=QI9mdU3qojQSFl2LQTa8UQX+sH+JoPgyECBZUaZFpmoCCZnypx2+kNNrKtD7PA9v+dC5z0tasKHoqDnzna4LP0Ujb+UjwXFYRFXg90y3IfrvkMEAqUpIBNhMdDEcWfuwqYqSCKvOpizt6sYozRgd/B517jS8VEDCVGMwlpmF9KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DT5YpL3C; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6870a365c77so64691a12.0
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 09:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779208042; x=1779812842; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
-        b=AOJL2ScV0gHxhzWMeYgnozojKksV50S1PyHfAe/SxObvSctFfnHXVg8CUtIYaQIjkJ
-         UYoxR1Cc1HkdTH017gSzgDk/Q3vi/IF1JyAO8VQ2S2iCiFZIDISVzjhA8qFGOeQI+ZyQ
-         VN0gWXhJQ9XewAy1hq0dzeuh38Pho5sLIsMxdnMgiry6+8+PtGABzkOwEimxQv+Anl81
-         WEaOqwvpBFdE/StwUKuesxG5tfcICuoYMlHULWFbgbhffOxillFKB5su4gH/5Izr7cLr
-         NbESmd31uNVV/4hxMNvFFBbWYldaeFIc8GHEocRTp14kN1nvaPARPYLC9TuDey3HnuCF
-         mmfQ==
+        d=linuxfoundation.org; s=google; t=1779208524; x=1779813324; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NiNM83ZQYTuKfyrru+DlBd9o7+KhR16wDR5z2HsiXKo=;
+        b=DT5YpL3C3KcDjTKdeSHYriKR3P3nN56BY9IeZjakYWV0ZfoIoaA1Vlb/k2A8qOzgx9
+         BZxF4w2MYIwctPjw06lycM9AMuRI3n4gmggOAE7bihlE3L42bcI577rM9/U+jWt0WleR
+         iofCiqGy1VM/+MjqK8ZYlwLWthhfmpEAsLKXg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779208042; x=1779812842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5usbpjdW6V4GRZxIENdpTSPGB2A/F8Hn+HvhpsraCUY=;
-        b=AtPb0G/nWDrW24ERZC5vgcdRFCB5v8N/7eZVCHci5vMHWr6nR7p10bnuWqgc0/sZa1
-         C12pOJtmjos+Ah+7sSTfkN6zPHb2XHG27e2wgfmKBglSeOBhNgAQaDhKbCqPsw06uzxH
-         lhfGH/EGHJtanCX260F3uXTfQZJ85r5GWEdYY4bnlrQOn4g7kOP3cLvyuEVWkYOxx2j8
-         SekcbQ7p+o9dJ2QH6IXAIEizKN5Qh23XyRnc/ozhNsmBMKLMx49NaouHIQc22OGqWIf5
-         RGqclgz8ni0Boi645jqVzHNPv4FmmGu4DlbpG0WFhL+8jGeKkpIkqvhq1ReiCpoCE9BM
-         w/Bg==
-X-Forwarded-Encrypted: i=1; AFNElJ9adggffv0fyZIfQdTt6RNhxa9kjsVQ+0KioCDgFz69J9wWknKdldUPbTEinV7XyHKV00RIju8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF6jU5fUpv7wnzGIM0bGRTk+d5Nw4/jN0ek/ytvmhIMKUIYJ+a
-	SF0XheLuy3e46V1OQ9kNMf9wgi5GUqkpUgrPuf6R4l3kPo5ySYsm69lGmYEIaLGr1fRotWFio34
-	k4lIo/IPbLoc+7c+DfIufAMmbYr1kW5A=
-X-Gm-Gg: Acq92OFhxj0YrzHT/OHKNQH4fbZfCgLoj+Fx+60eRrgyhSOMvKptYQBd/Ncib3neuxh
-	CLH1P9xV4Gn/x2GdRMUVKqIQ1+mostusmX7uz56JVx3872o7T66qJCDvjtepWi2nce3RW3/ak8a
-	2vrlZ9bxTDGMWYeVqpvmOfDOoghn+3p0wXjGDF05g7NU9zTHvn2uaYCGzxMZOT347mEm6fiaoRz
-	23uh7P1o2938HhPvIwiDa0U4HWUUjaiFX/MR06TmkWux7rDNxvM16N10PzHmlDXcUHwvM0OkSTc
-	L6d3s1DEGHU2Kz2CFn2nxkBIZ9AkvQN3bjej5ZWy
-X-Received: by 2002:a17:907:9719:b0:bd5:2a43:b471 with SMTP id
- a640c23a62f3a-bd52a43b4bfmr929160266b.48.1779208041621; Tue, 19 May 2026
- 09:27:21 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779208524; x=1779813324;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NiNM83ZQYTuKfyrru+DlBd9o7+KhR16wDR5z2HsiXKo=;
+        b=OV4nvFnuKllfu+l9els2jG8NNGyuVu8KA2Zp1xhPbXt29ehUMYfqvt5z4u2MtTbgtZ
+         pK5N7I0WegSaN0qpJdRWOFrmoc3gbkgnSv06kJiRMwqo4PGQ0RwwqDV6G2J5Lx57TBnG
+         /+2dqYyQRfZf0iRZwe0d4RtiDbhWroYCoEHrhA9EQ8EQ82CrEDb6HPsWEPaKxwaNQD37
+         uZ9jCnWLDckyIYdU7RwBun5qIjq8UohIdE5KuhdAz9pnyeAJ9VAjPQzwlWxTI4pBZLYY
+         iOHk3qm/CNllGdh8Es+B6Xp9X6yPHTxE3N2fUSH36mjNU0QTxNs8gPvdUNOG5zJspC0l
+         Ojag==
+X-Forwarded-Encrypted: i=1; AFNElJ+Xx45UuA5OyL/gZU8Zv2/Ua8aJJLzKdPw8ds0e6PNOZ4pg+BZ0vOOkU8aS/t6KKB86EC+jdDM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB5oNn6PHqv2mACQX1kLaLzgv/76Av06pHMsGC5Tv/9v/31jmJ
+	tyDtLu+t6/D2cahofPxpCZnO0RuX1GLw1I3vPzZgNc4ec/BXL/V+VoAx8lzheZJPReuwk3/5S/A
+	hq1KIW/0=
+X-Gm-Gg: Acq92OEF/MkUXLNsh2JkSdH9rPXV/W2FTq3W1izuNfYWa5oDWy4zDlrcE15X9cTa0DU
+	brkckB/eGy3f+NYdDe1ZMzf2GZoLtbEwJ/lj9i320wvQihGjJVkWTjWbxarWPDaPCVk6heu8vQN
+	kg6KpTDkXwQFTP8Gc4ke2gOZoTQSWfC3Nyp7XE0HIUkDYsRuhkFqzt+g8OFl3isF9tXF5i/0Nes
+	ZnK0DtTxehUnVlSFwSg6BAMjbsdhvZMnLve2o2dTWGy/6S9yvtDGhBqcobTsdPbQ6Uf/HE6zS30
+	sKR0vLii2XxcCgGwQZg4juMFvyKNlbB/bwGDqyO3WfsAM0TgbKDyFwkydHONGgtIPBDLWugSJvj
+	D1agwk6xSHQynQtIsZFvNfo+cH98hisA4DQEKUpo1PiMlCJCyEiXAeTDoD4tJ4cZPFrhQPaGca8
+	5SyhIyp/mExnVCIxgvlKXdeVUdnWred2ibBJLjF4gf0QqS3f18Hy4RkmnvE4DSjqsSz7900hyvE
+	M9M1qZX6w==
+X-Received: by 2002:a17:906:8e0e:b0:bd1:d244:ca24 with SMTP id a640c23a62f3a-bd517861053mr1207279766b.14.1779208523761;
+        Tue, 19 May 2026 09:35:23 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4eb6320sm724883566b.59.2026.05.19.09.35.22
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 May 2026 09:35:22 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-67e24b8ef55so6434481a12.1
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 09:35:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8Wn79xbXzOOy3ptPsQrvzjwhLohQIM0/5n66hYHsOKMxJPe6LS9FNvKPkoa3EvouqaAPRHsIU=@vger.kernel.org
+X-Received: by 2002:a17:907:15d5:b0:bd3:1b44:2ec with SMTP id
+ a640c23a62f3a-bd51785f67amr869397266b.15.1779208522442; Tue, 19 May 2026
+ 09:35:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519151008.1399226-1-qkrwngud825@gmail.com> <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
-In-Reply-To: <5d00b63c-1802-450f-8e54-8da6c0aeedc2@intel.com>
-From: Juhyung Park <qkrwngud825@gmail.com>
-Date: Wed, 20 May 2026 01:27:10 +0900
-X-Gm-Features: AVHnY4LdRR3qD6dMJRp9P0dqGJ2iwd73wpIsKyKrAimUaQe9thTXgPYirbbLgfM
-Message-ID: <CAD14+f2p7D6eco+-O0X6zWwi-XaxGLs0nQKDAC8eVWhQmB1VhA@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	David Hildenbrand <david@kernel.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dan Williams <djbw@kernel.org>, Dave Jiang <dave.jiang@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org, 
-	nvdimm@lists.linux.dev, Matthew Wilcox <willy@infradead.org>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+ <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
+ <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
+ <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
+ <20260519-gehversuche-lokomotive-cd720c53bab1@brauner> <20260519-lehrling-backt-261d022de809@brauner>
+In-Reply-To: <20260519-lehrling-backt-261d022de809@brauner>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Tue, 19 May 2026 09:35:06 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj+NgoDH3GSicJ140SV8OoDd71pLmL3fgFEsTcgoMC6Og@mail.gmail.com>
+X-Gm-Features: AVHnY4LU0PA_bfa48mWWsfNlNCKTB0_1yiHae_SgLHiE0_gyU2glxZoUUeLssSY
+Message-ID: <CAHk-=wj+NgoDH3GSicJ140SV8OoDd71pLmL3fgFEsTcgoMC6Og@mail.gmail.com>
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field post-exit
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Qualys Security Advisory <qsa@qualys.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249639-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-249640-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qkrwngud825@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,intel.com:email]
-X-Rspamd-Queue-Id: ED7D25825F1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[torvalds@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0348358286B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Dave,
-
-On Wed, May 20, 2026 at 1:02=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
- wrote:
+On Tue, 19 May 2026 at 08:49, Christian Brauner <brauner@kernel.org> wrote:
 >
-> On 5/19/26 08:10, Juhyung Park wrote:
-> >  #endif
-> >       } else {
-> > -             pagetable_free(page_ptdesc(page));
-> > +             /*
-> > +              * Use __free_pages() to honor @order: vmemmap PMD leaves
-> > +              * freed here are not compound pages, so pagetable_free()
-> > +              * would lose leak 511 of 512 pages per 2 MB chunk.
-> > +              */
-> > +             __free_pages(page, order);
-> >       }
-> >  }
->
-> I find myself really wondering how much of this came from a human and
-> how much from the LLM. Could you share that with us?
+> One thing I played with is to move dumpability and exec namespace into
+> struct task_exec_state which hangs around until the task is freed.
 
-Not my first kernel contribution, just so you know. (first in mm tho)
+I like that just because it would actually make *sense* to have some
+kind of "this is the state that we got at execve time", and just share
+it across all processes that started from that execve.
 
-I asked Claude to write both the commit body and comment and it was
-too verbose. I manually trimmed it down.
-Sorry if it still sounds too LLM-ish.
+But I'd go much further than you presumably did - I'd not tie it to
+'struct mm_struct' AT ALL. Even a regular fork() would just keep the
+"this is the execve() that started this all".
 
-This was tested on a VM with virtualized CXL device and toggling it
-back and forth was visibly causing leaks. kmemleak was unable to catch
-this (rightfully so), so I skeptically asked Claude to see if it can
-figure it out while pwd was the kernel source the VM was running.
-"Access the VM at "ssh -p2223 root@192.168.0.185". There's a memory
-leak whenever CXL memory switches modes via: daxctl reconfigure-device
---mode=3Dsystem-ram dax0.0 --force, daxctl reconfigure-device
---mode=3Ddevdax dax0.0 --force. Figure out why. If you need to reboot
-the VM, do not do it yourself and ask me."
+Because I'm not 100% convinced we really want to synchronize any of
+this with 'struct mm_struct'. Yes, it's what the historical behavior
+is, but does it really make a lot of sense?
 
-It did in 6 minutes and it basically told me to revert bf9e4e30f353. I
-was very skeptical and reviewed manually (with my short knowledge of
-mm) why this would be a correct fix.
+In reality, all "normal" programs will either share nothing, or share
+everything. And in many ways, 'struct mm_struct' is not really special
+wrt any of the other things we're sharing. Certainly not for anything
+that uses
 
->
-> We're trying to get _away_ from using the 'struct page' APIs on page
-> tables. This goes backwards. Worst case, do:
->
->         /* vmemmap PMD leaves are not compound pages */
->         for (i =3D 0; i < 1<<order; i++)
->                 pagetable_free(page_ptdesc(&page[i]));
->
-> Right?
+    ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS);
 
-Shouldn't I worry about the loop overhead? With order =3D=3D 9, that's 512
-iterations. That's compounded to O(N) when the entire memory size is
-in consideration.
+which literally has nothing to do with the mm.
 
->
-> Even better would be to *make* these compound pages.
->
-> Even better than that would be to use some 'struct ptdesc' space to
-> explicitly store the order, just like compound pages. But that's
-> probably not trivial and probably not great for a bug fix.
+For that one, it would actually make more sense to have dumpability
+flag be about 'struct files_struct' (or 'struct fs_struct'). But
+keeping it all in some "this was the exec that gave us the original
+rules" would actually make a *lot* more sense, even if it then got
+shared between fork() cases.
+
+Because imaging that you had a setuid process that started out with
+elevated privileges, and then forked a lot of helpers. Those helpers
+still have information that may be privileged, and if they do a
+'setreuid()' to drop privileges, that information may still be valid.
+
+Only when it really does a new exec has it changed "domains".
+
+Now *that* would actually make a ton of sense to me. And perhaps more
+importantly, that kind of "this is the state we got at execve time"
+could then contain the actual execve credentials and namespace, so
+then ptrace_may_access() could really use *that* information, and not
+the odd hodgepodge of "mm->dumpable" and "cred->user_ns" and
+"mm->user_ns".
+
+Again: what makes "cred->user_ns" and "mm->user_ns" so special - and
+we use both of them for different cred tests - but then we happily
+cross pid namespaces, for example, as long as the kernel mapping is
+the same?
+
+So I think having a "exec context" would make a *lot* of sense. And be
+quite conceptually simple: it would basically be a subset of our
+existing 'bprm', except it would be attached to the thread, and then
+clone - all forms of it - would just increase the refcount on it.
+
+Yes, this would be *very* different from the current 'tied to 'struct
+mm_struct'" model, and very visibly so across fork(), but I really
+think it would finally make all of it make *sense*.
+
+Think of the fundamental race of a suid binary that then does a
+fork(), drops privileges in the child, and does an 'execve()'. The
+child process really has a *lot* of potentially very sensitive
+information in its mm, but currently we think it's all accessible to
+the user that matches the dropped privileges. Isn't that fundamentally
+wrong? Having a exec_state would fix it very naturally..
+
+                     Linus
 
