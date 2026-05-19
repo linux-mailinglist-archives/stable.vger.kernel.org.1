@@ -1,131 +1,165 @@
-Return-Path: <stable+bounces-249493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOcqCr8jDGpqXAUAu9opvQ
-	(envelope-from <stable+bounces-249493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:47:59 +0200
+	id 0FJbDtMiDGpqXAUAu9opvQ
+	(envelope-from <stable+bounces-249494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CB857A748
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:47:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9140657A5FC
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 10:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4EBE4304BD45
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 08:32:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0915B3028B5B
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 08:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC283E0C5A;
-	Tue, 19 May 2026 08:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pccyd7ig"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03E33E9299;
+	Tue, 19 May 2026 08:43:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FF53E0C61
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 08:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A00A3E7BDE;
+	Tue, 19 May 2026 08:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779179575; cv=none; b=dxIw6NktFZhuV7ooTr9lvD30bMNeVxdt6pQvCUnzzaRgl47n8j9pviW5yH0DEeFPLjCMk/u7hRMGDSEm4EY1dBMpdr6A34oB6Y5QHGrlxJb6hVYoewZ6HqRkMBPGTgHtXjuLTzYEeht+fNCWWGTPAAhaZzlX5G+6MGSMI8r3nXM=
+	t=1779180234; cv=none; b=bDakxNIvvaA0cy0X+/iRkk2j08Fie8mYEnrMVt2pX5n7UYlGmGDWSJMN9Y8DzUaoyXgUUGdBRcVnP0YrhP8PQswkTMX9hDuSOuW77k5m2lbYefwvgUpuTcChfTzKiaAEkmMB7e+jiz+0+AbVRyrArWB3EYg5XB5u+QLETtXhahM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779179575; c=relaxed/simple;
-	bh=wnrS4dcVqmKW4AB86g4pJmocMvF9ZK6MkX8Xv5p8yF8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JEL2UnEbdZXEzwL3+4cqkuQpXgPV/wuGXhcdT7Pubc2xCpw0/o0UWlvMzOwAeUmsjOLvF5yJYXylxELm0/dpW3XX9x9NgAogc7UZMsGrTkTIalVmUNGdKYJshsNfHabBEORnz9caaM2CL+nWqareiwePNy5JAqiGy8y2jS23dzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pccyd7ig; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DA0F71A3621;
-	Tue, 19 May 2026 08:32:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AA6E5606E9;
-	Tue, 19 May 2026 08:32:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5E83A11AF8B81;
-	Tue, 19 May 2026 10:32:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779179570; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VlqOUs/HlxKHLGHUE043tCFwBQNWXwKu63vYHdIURK8=;
-	b=pccyd7igbtHf6/xloNwwoUnJHRjSHf7XHOburEAzTu/CG4FaFGuZ7RhzXaNC6tSn+tO9YO
-	rah5eg1k9zTVvxmv5+71dTeR0ky4PY4VZuIe4VfEX3gunRiKpkY9MLj9Vf0cEg5m4E0DTe
-	2CNL89hvU+mz6m08r/oUgE3jHlVU8qjzxHeFf0R05H/uRb9nsK/exUl8AkI7AFHVvmXtNt
-	FCbOdHS+VEh3NvEkGGeHNFeBRCUCc/Bg/A1prjtU4aTvV/fkchLe7msklZx+NGLjMv/ucD
-	at4uzn9D5D7veKTVDm2KGOgzOpc9tS545rcLTKKS5xc7D/2NeIwn2YUgcqnECw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Jagan Teki <jagan@amarulasolutions.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20260430194944.78119-1-osama.abdelkader@gmail.com>
-References: <20260430194944.78119-1-osama.abdelkader@gmail.com>
-Subject: Re: (subset) [PATCH v4 1/2] drm/bridge: chipone-icn6211: use
- devm_drm_bridge_add in i2c probe
-Message-Id: <177917956604.84587.1196053606706642578.b4-ty@b4>
-Date: Tue, 19 May 2026 10:32:46 +0200
+	s=arc-20240116; t=1779180234; c=relaxed/simple;
+	bh=iSJ0AS2xXghWt1W8sPzLPnGhDWHB+FN/8/ONggYmDVk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=he8R6NdHqHwynqakfDhd975HAF3sEeyPllTbHKEJQjFSUZ28GEVVsov7Z37Cg129UZejjR8xK/vqMbGJ7THaPgVz5a9p6lhM0WAyIKieqHROspBq0DuZvdxmQvBOixQQ69N8Ziw5zD9e7hFdjXU4X2oJXX55WXp6ym8cXJMiBtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-01 (Coremail) with SMTP id qwCowADXemapIgxqiN6_EA--.144S2;
+	Tue, 19 May 2026 16:43:31 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: suzuki.poulose@arm.com,
+	mike.leach@arm.com,
+	james.clark@linaro.org,
+	leo.yan@arm.com,
+	alexander.shishkin@linux.intel.com,
+	mathieu.poirier@linaro.org,
+	peterz@infradead.org,
+	acme@redhat.com
+Cc: coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] coresight: drop lookup reference in coresight_get_sink_by_id()
+Date: Tue, 19 May 2026 16:43:17 +0800
+Message-ID: <20260519084317.1472444-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADXemapIgxqiN6_EA--.144S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4ktFykXFy8CF4DKFyrXrb_yoW8ur18pr
+	WDKa45ArW5Gr4Ik397XrnrZr45A340yw4SgryfGw1q9w1FqF9avFyUXrnYq3Z3CrWkKFyI
+	gr17tFy0ga4UJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,denx.de,lists.freedesktop.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249493-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[bootlin.com:+];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	R_DKIM_NA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,bootlin.com:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 35CB857A748
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249494-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9140657A5FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+bus_find_device() returns a device with its reference count
+incremented. coresight_get_sink_by_id() only uses the returned device
+to find the matching CoreSight sink by id and does not need to
+transfer this lookup reference to its callers.
 
-On Thu, 30 Apr 2026 21:49:42 +0200, Osama Abdelkader wrote:
-> Use devm_drm_bridge_add() so the bridge is released if probe
-> fails after registration, and drop drm_bridge_remove() in chipone_i2c_probe.
+Keeping the reference forces callers such as etm_setup_aux() to know
+about the internal lookup implementation and to drop the reference
+themselves. This is error-prone and led to a leaked reference when a
+user-selected sink is used for perf AUX tracing.
 
-Applied, thanks!
+Drop the reference inside coresight_get_sink_by_id() after converting
+the device to the corresponding coresight_device. The CoreSight path
+code takes device references it needs when building/using the path.
 
-[1/2] drm/bridge: chipone-icn6211: use devm_drm_bridge_add in i2c probe
-      commit: 73d01051e8040c0b1de7fd26b3b8d0c2ffa6895c
+Found by code review.
 
-Best regards,
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Cc: stable@vger.kernel.org
+Fixes: 226443925887 ("coresight: Use event attributes for sink selection")
+---
+ drivers/hwtracing/coresight/coresight-core.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index 46f247f73cf6..2cca4ed83e2c 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -624,11 +624,24 @@ static int coresight_sink_by_id(struct device *dev, const void *data)
+ struct coresight_device *coresight_get_sink_by_id(u32 id)
+ {
+ 	struct device *dev = NULL;
++	struct coresight_device *csdev;
+ 
+ 	dev = bus_find_device(&coresight_bustype, NULL, &id,
+ 			      coresight_sink_by_id);
++	if (!dev)
++		return NULL;
++
++	csdev = to_coresight_device(dev);
++
++	/*
++	 * bus_find_device() returns a device with its reference count
++	 * incremented. coresight_get_sink_by_id() only performs a lookup;
++	 * the CoreSight path code takes the references it needs when the
++	 * path is built, so drop the lookup reference here.
++	 */
++	put_device(dev);
+ 
+-	return dev ? to_coresight_device(dev) : NULL;
++	return csdev;
+ }
+ 
+ /**
 -- 
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+2.43.0
 
 
