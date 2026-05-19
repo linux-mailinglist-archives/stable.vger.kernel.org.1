@@ -1,157 +1,158 @@
-Return-Path: <stable+bounces-249613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEr0CoV3DGqihwUAu9opvQ
-	(envelope-from <stable+bounces-249613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:45:25 +0200
+	id aGayC7Z1DGqihwUAu9opvQ
+	(envelope-from <stable+bounces-249614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:37:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28051580C45
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:45:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00D7580AAD
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:37:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04518309A53F
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:30:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BE2B330E5823
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E3C32571D;
-	Tue, 19 May 2026 14:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6052C348C40;
+	Tue, 19 May 2026 14:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="iIAJb4aL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AolN45es"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19EB280331
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 14:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FE6326D45;
+	Tue, 19 May 2026 14:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779201029; cv=none; b=Ea/hI0zWCWYEL1sV64TLsF0DvBMYFS1cyaW7+CBKxMSlsOqxBJqE1jAGKgLoJh6qlX/GLCqS+DlHKnypdRtE0P1P+JF6FCcHaen8wJ+TXe9Dny+CMXXrSQ3VV82ZqRhsn8DVXL/j0S6Sbe8d+MierCK/YY4h3YezqZF4+0Nu2Gw=
+	t=1779201147; cv=none; b=ZyW9+ALKdqwpPKP55J415bXz0ZaprGLLbxfV7O7K4MbBMWTw7sxh6oI7NQNPnJRKhgwhVJ22+RDYPmFEWU7KwPfmxy8+9w7t57FfGJKTZCNj9fHoK2BmoT9YiWpdNEetQThtKduRVsSYozTnL4EJmRkoGumscL1hoX31xvKDzbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779201029; c=relaxed/simple;
-	bh=xVlYxYIeHhvu7QE0wN2skagDW3LUz6aqOlnUqRxJNac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RYZL59ChExr1TUqRrq7EXV71qy/UHXZMKBhCrhl9853BjB1l3GektauTczdXj8hJFsobmm4uZY58Z5EGD6JajdxePNaXfacJ+8dJUKfXiMj3Xkv7WfC3AY9UbvdGAwcr9nV/d4cPPb9Sjn4AbZPzikMjxkSZ5WH6NrDJEY7KoTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=iIAJb4aL; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8b821f39a12so38846826d6.2
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 07:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1779201027; x=1779805827; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kaAsMUfND4CCo/Yp/chnDoXFX+KRgMMX2KDfI9OYfN4=;
-        b=iIAJb4aLT5ZKY1jGe1Vf6EZpPanjedpi+yi73vDR2yTRkM/MG2S0WOo4FTbevkvG6D
-         kYGV4e9H7Wo93jnTj5C8I2mY4d35jLRisujo/nn2DGnF/FdxgRE/smwC6F0eYpO9vOwt
-         CH11U2FHxa5rTEsXEdkKlbThln3/ApnMd+OGZcEu1jVwhOuxITVZoVbdrbwdQWa3Q+8/
-         OYbJov7oDc2GeUtcosGG8Zy/T+Bpum2sRjD5aZUnA+Sndr0qO1Ekrrz3xcXKOA4N1jqO
-         MYznOjjILm2J1tfFSRVP9dUej5eWj+4i4akF3o+hljs4tRttZPPXTKXULwMiuSA/6jng
-         tyxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779201027; x=1779805827;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kaAsMUfND4CCo/Yp/chnDoXFX+KRgMMX2KDfI9OYfN4=;
-        b=pWivNGESDBQVBHiFz1KJWPNRVEvLVNwdHIKl5pMBjCWKRLF9Yq0tNtejgOZqCZOsJZ
-         6dFQqOAvIlgGTWb7EiH4u2DCA40VKX48b4jiu/uArYjUSH1C9TiM89PZ4UyIjoRFPF+Y
-         lunaShB1Qvc/bTR/RgbDj6c0S8EpFhPiq5K+VDXLWtbhTARx2sinqEQmjD2xb3AsxzF/
-         tDfysSSxqLLlfeg32CDZ0G4OqV8dsws4Urjm1QwJoPeCarbtf022gbA85HVtBN8dWdSU
-         dh/l1X6CCThWEZqAq6GbJioT4acWTn8rj2ihr/qYAWiWGJxazAs5h7m3RvMLK2do3zFw
-         iJGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+WyxGazauwx1aslrkQRpeZfKyEXRWhcQ4N4yyLPdqvyGdr+6jhyyTvypRAkXaPQrToVeYWgcQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHvCvbPf09fEIZ0wqauY3obvo5pyJEgttG5/yuBftdxeeNSOID
-	MeNvS2GaE2OTWMTF+sj5IaEqZA3ooOE080//guzjnI5b0eotYbvDu/l4KReDon7DeTs=
-X-Gm-Gg: Acq92OG48OOwd8s63DpkTA1omTN+5SH1cZrPZ5yCFberlxaAPjZD9gZ8A0fj143qfnQ
-	9Wy9tivtECLKdSj7Vddkz3nCBEObqldfx7IX7spui1IAJ3sb+SkRDg0Q6/0pSmr9gJ0otoUwFr5
-	dEDWGVnCndjF8yqJM96+m2V+CrwzQszZ7HB/hPUGyZD1jgAvfMXjEiHonT6UKffiVWj9uEFYtGG
-	v+q1ncnVzhcX93qg3OfBi8eHh0vwUmmY1FpxRbAtZ+zRoQdk0xtozqUu2sT2Xs6epB0uE1/I9mB
-	Xf6YAYocVPe+VGXv0Riuw5tDSMLmNEB7K8lU9uZaX9ovN7yNcm+NO6a+HLchiA9VCFieKhJsWyj
-	C3pMrfxjAjYuWD9qm2MjRhLytyZGgOTaN82hv9HNi5eoSzW6oitYDrMAks/7hDrYwsZGAXCt5IQ
-	fdYTWtDWYvUJTDyLoBXHrqovEj2vu9nQK/Jdtz8nfZvhA5r+4wDyTqa2vWAwZQ7nLDwMF+cK1ak
-	QeWm+PyT5hbP0g7
-X-Received: by 2002:a05:6214:46a0:b0:8a5:104b:e361 with SMTP id 6a1803df08f44-8ca0f6f3944mr322587386d6.50.1779201026652;
-        Tue, 19 May 2026 07:30:26 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca3608c1desm91696546d6.2.2026.05.19.07.30.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 07:30:26 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wPLSj-0000000F7UP-2wvG;
-	Tue, 19 May 2026 11:30:25 -0300
-Date: Tue, 19 May 2026 11:30:25 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Heechan Kang <gganji11@naver.com>
-Cc: Brett Creeley <brett.creeley@amd.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fwctl: pds: Validate RPC input size before parsing
-Message-ID: <20260519143025.GC7702@ziepe.ca>
-References: <20260517062232.1858747-1-gganji11@naver.com>
+	s=arc-20240116; t=1779201147; c=relaxed/simple;
+	bh=2PJptEChJaCA6iOrUEbZlahop1pl1YR76qbc3eR5LI0=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=EuTE9RtTknpk87xiyATOTonWDPXFh08AiGoyEgZWLFQhyxhnGc0KdkybopLII/q4p2SjpM1FBD3l5zJ4TFJOEJ5e5MhD/VEXxw2x2M/8eYfoPLhk/QaTuU3iys0dxht70eMy8qNGSZDhJAZwC3JuwOXsvDljq4Z3H20hHZm0afU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AolN45es; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779201146; x=1810737146;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=2PJptEChJaCA6iOrUEbZlahop1pl1YR76qbc3eR5LI0=;
+  b=AolN45escv27d/+zfHEcILJbABxw/m++IZtazzEOSM21IjhQlt0ePHGC
+   1XojqrnUAHbTVv6OvX1T/692DToAc6BFSfN9z8QuxXcj9zqdEQAdor5px
+   I7G/Ia8DqifW51PEcjF9k3EB1nPEa/il18Z8A2AMzdsqEki6FzCQXqwmD
+   kIHfd5kNo8CvqMeX0CYIVwqHiGJLwtifviRgRJlfXJwDd1kQ/KFtd1FEL
+   DaReQdkPYFs8Ga3zLzHhUoBgauw8fOgFaEzinO5rQtRlsCY424YuovIvu
+   40MXhUJYTopDgL9sNoUjUFbVwxugHDOq/5YUSiUczIEj0NFlm0Z81TP1V
+   w==;
+X-CSE-ConnectionGUID: 6Kj1lv57QV+pX7ksasfPug==
+X-CSE-MsgGUID: MVbHEtTqRfaWrt3imSK1lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="102757202"
+X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
+   d="scan'208";a="102757202"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 07:32:25 -0700
+X-CSE-ConnectionGUID: xedhRpiMRS2e5I/krbvSDQ==
+X-CSE-MsgGUID: GNsVSIvCTsSo0qnuQk/pIw==
+X-ExtLoop1: 1
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.236])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 07:32:22 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 19 May 2026 17:32:19 +0300 (EEST)
+To: ZhaoJinming <zhaojinming@uniontech.com>
+cc: srinivas.pandruvada@linux.intel.com, Hans de Goede <hansg@kernel.org>, 
+    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86/intel/tpmi: Fix memory leak in mem_write()
+ error path
+In-Reply-To: <20260519082136.2999917-1-zhaojinming@uniontech.com>
+Message-ID: <b1006ce4-f596-b2aa-421a-518fe3cfe1f0@linux.intel.com>
+References: <20260519082136.2999917-1-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260517062232.1858747-1-gganji11@naver.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249614-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249613-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	DMARC_NA(0.00)[ziepe.ca];
-	FREEMAIL_TO(0.00)[naver.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:mid,ziepe.ca:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,naver.com:email]
-X-Rspamd-Queue-Id: 28051580C45
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,linux.intel.com:mid]
+X-Rspamd-Queue-Id: D00D7580AAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, May 17, 2026 at 03:22:32PM +0900, Heechan Kang wrote:
-> The fwctl core allocates the device-specific RPC input buffer with
-> fwctl_rpc.in_len and passes that buffer to the driver callback.
+On Tue, 19 May 2026, ZhaoJinming wrote:
+
+> In mem_write(), when the IS_ALIGNED() check fails, the function returns
+> -EINVAL directly without freeing the 'array' allocated by
+> parse_int_array_user(). This causes a memory leak.
 > 
-> pdsfc_fw_rpc() casts the buffer to struct fwctl_rpc_pds and then calls
-> pdsfc_validate_rpc(), which reads fields from that structure before
-> checking that the input buffer is large enough to contain it. A short
-> in_len can make pds_fwctl read beyond the allocation.
+> Other error paths in the same function correctly use 'goto exit_write'
+> to free the array before returning. Fix this inconsistency by using
+> the same pattern for the alignment check.
 > 
-> Reject pds RPC buffers that are smaller than struct fwctl_rpc_pds before
-> parsing any pds-specific fields.
-> 
-> Fixes: 92c66ee829b9 ("pds_fwctl: add rpc and query support")
-> Cc: stable@vger.kernel.org # v6.15+
-> Signed-off-by: Heechan Kang <gganji11@naver.com>
+> Fixes: 8e0a2fc68ec3 ("platform/x86/intel/tpmi: Use 32 bit aligned address for debugfs mem write")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
 > ---
->  drivers/fwctl/pds/main.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/platform/x86/intel/vsec_tpmi.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
+> index 16fd7aa41f20..2a428bfcb209 100644
+> --- a/drivers/platform/x86/intel/vsec_tpmi.c
+> +++ b/drivers/platform/x86/intel/vsec_tpmi.c
+> @@ -495,8 +495,10 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+>  	addr = array[2];
+>  	value = array[3];
+>  
+> -	if (!IS_ALIGNED(addr, sizeof(u32)))
+> -		return -EINVAL;
+> +	if (!IS_ALIGNED(addr, sizeof(u32))) {
+> +		ret = -EINVAL;
+> +		goto exit_write;
+> +	}
+>  
+>  	if (punit >= pfs->pfs_header.num_entries) {
+>  		ret = -EINVAL;
 
-Applied to for-rc, thanks
+Hi,
 
-Jason
+Thanks for finding this problem. This function looks a prime candidate for 
+cleanup.h conversion.
+
+Please do this with a 2 patch series. The first patch converts kfree() to 
+__free() and moves array declaration next to parse_int_array_user() (as 
+instructed by the long comment in cleanup.h) and has fixes tag. The second 
+patch should converyt the mutex lock/unlock to guard and doesn't need 
+fixes tag. This way, we get rid of all gotos here.
+
+-- 
+ i.
+
 
