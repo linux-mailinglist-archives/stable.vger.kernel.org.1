@@ -1,133 +1,196 @@
-Return-Path: <stable+bounces-249557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGC5Jq9JDGoMdAUAu9opvQ
-	(envelope-from <stable+bounces-249557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:29:51 +0200
+	id IC1OKM9HDGoMdAUAu9opvQ
+	(envelope-from <stable+bounces-249558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:21:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43B457D9E6
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:29:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBEF57D769
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 13:21:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5538030B36A3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:14:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C06030390CB
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 11:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9E5494A0C;
-	Tue, 19 May 2026 11:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC8749218B;
+	Tue, 19 May 2026 11:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TINSegdQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnpuijNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CF648AE1D;
-	Tue, 19 May 2026 11:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE95F3D9DD2;
+	Tue, 19 May 2026 11:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779189239; cv=none; b=s1ijFVWWpLyY3cbXTTPNKJuw8yen4dxT9iyyvWg7h9mmDyO3X0uRO3XGERDZxGHjQ11kBgKcpFI7hbfLtsiPUNMS7Cy6tFOw2Een6kMkvx/n4ettK4PGuHf/GzKNfPIyQnZhjFbCZDogWwg6rMFwza0Un5trZOEo/Pj1vhK1JLU=
+	t=1779189450; cv=none; b=ltc2Uvg748yPvTY+9Is/SiIUGaPN59UiDYO4dc7sLehMAaXFFk4tZz1kb0PREuZeJpyV0u0+USoseVLNCwu1awE4RyY7+GMvpFR27a4owWmoKtSoIBupEMvqpj79uWaz/w1RXBRy73qPGDtsgaLil6iTqYPgwr7iUkiMMUULuGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779189239; c=relaxed/simple;
-	bh=mfa9SifBsP6J8LO5EKlvOvLigWU4xg3oCF/9wKmqQeM=;
+	s=arc-20240116; t=1779189450; c=relaxed/simple;
+	bh=zcTypGm3Q1duJWFrYfJXEjCJKrG/qdQGKtb71feK/2U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VpSlAUazcE0k7Kr/FjIckT7Ri/TZsci9i1YoNow7p2ZlHbHZdkJg2Bzano3tCDwbGBcxPDd4wDuGu+0wvGIjiNTHjCGb9mTSXoVkFkfPMY00rBIR3JJVC/iS+EZ7dkLjVVW6YRXVccDWcw30TelX1orIkCNyw5y6afYL18MgFG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TINSegdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130F3C2BCF6;
-	Tue, 19 May 2026 11:13:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NKG3REhwZlQK6pwkKfIaETg2E+zc7X9w0JQo1Lkra68jbdT/SGhoaaYKZIYswbWezYAPH6rNrR9I1jHU2vm6orqXkVcDbCwkq/PlSm306wS6QvfVuS9vETZLkNsEdco6woPRYIn4ELnNOSwGAMAX62n2wlq+F07EFXo7nCvkRY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnpuijNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845ECC2BCB3;
+	Tue, 19 May 2026 11:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779189238;
-	bh=mfa9SifBsP6J8LO5EKlvOvLigWU4xg3oCF/9wKmqQeM=;
+	s=k20201202; t=1779189449;
+	bh=zcTypGm3Q1duJWFrYfJXEjCJKrG/qdQGKtb71feK/2U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TINSegdQ+UDTB7rVfCHhUs/rdE3ytigX9A4BdoHdLu1rGN8SqmQS7VdUE3pIBW0hU
-	 rwIXtyiYtEmBHYgKtNyuZv55/25EGbgTd35wFbw7iCd+22NB3AmwrMVEkiHykgPBzX
-	 rYp92El0+gN5tE6nQj8JDS18grnn1RgoJtaZt125Xo3Uy18u+wGkoyHnnY3Eg7k1g2
-	 7F0+hLsOzU1cruUDNxF08AhRexpixj1MsUjP2nxG3zd0Ken8LmczF+ODmD/El4T7YJ
-	 l5j9TjKBOT3DdMEdFYdLF880EzspbcUrGwQb9TO4B0WLtIJVV/gVc3wtq0hzsGWTUl
-	 W25qeKIZ/P+fg==
-Date: Tue, 19 May 2026 12:13:54 +0100
+	b=YnpuijNST2TIL5Ybp71NKoSOwkL9kMJUY059nFETh9rUMJZ760CSXGXgkrSjTjpus
+	 9TBtXgVuwf+SA1pt8dFQ0KA8eiNci/doaxVdv+ABV9ioIuSIMJK0qvXzpC5vhSoY/j
+	 Q+o/3XmkJunkTYvfhhKBfyrWZzNawxD7v8VyT4XKnhHqBjapp6ShvJ1vPphTe+5sfM
+	 AwcAgHEbjJD/HLnhv+uhnov2ps6J4sr7dxsENuKr6j9JGIukuR4lQlNmN64GGWSuwd
+	 +aPWmuM1Hp48CW69xui4Nm6nUbuyxfI8MXpJuqFkQWO0O7Bi9wNqnlr4eFc3uTQAUi
+	 y62izp9uqcwrw==
+Date: Tue, 19 May 2026 12:17:23 +0100
 From: Lee Jones <lee@kernel.org>
-To: Ping Cheng <pinglinux@gmail.com>
-Cc: Ping Cheng <ping.cheng@wacom.com>,
+To: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>,
+	Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
+	Bastien Nocera <hadess@hadess.net>,
+	Ping Cheng <ping.cheng@wacom.com>,
 	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Icenowy Zheng <uwu@icenowy.me>, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org, greybus-dev@lists.linaro.org,
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: wacom: Fix OOB write in
- wacom_hid_set_device_mode()
-Message-ID: <20260519111354.GT305027@google.com>
-References: <20260513075935.1715836-1-lee@kernel.org>
- <CAF8JNhKTMpT3CGq_oDqaGVygqXK0jjvrvjxbAWUerqtWzdB9+Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] HID: Proper fix for OOM in hid-core
+Message-ID: <20260519111723.GU305027@google.com>
+References: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
+ <20260506091606.GB305027@google.com>
+ <20260512101723.GU305027@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF8JNhKTMpT3CGq_oDqaGVygqXK0jjvrvjxbAWUerqtWzdB9+Q@mail.gmail.com>
+In-Reply-To: <20260512101723.GU305027@google.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249557-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-249558-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,wacom.com:email]
-X-Rspamd-Queue-Id: A43B457D9E6
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8BBEF57D769
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 13 May 2026, Ping Cheng wrote:
+On Tue, 12 May 2026, Lee Jones wrote:
 
-> On Wed, May 13, 2026 at 1:05 AM Lee Jones <lee@kernel.org> wrote:
-> >
-> > wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
-> > usage is always located in the first field (field[0]) of the feature report.
-> > However, a device can specify HID_DG_INPUTMODE in a different field.
-> >
-> > If HID_DG_INPUTMODE is in a field other than the first one and the first
-> > field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
-> > this leads to an out-of-bounds write to r->field[0]->value.
-> >
-> > Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
-> > hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
-> > this stored field index to access the correct field and add bounds
-> > checks to ensure both the field index and the value index are within
-> > valid ranges before writing.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
-> > Signed-off-by: Lee Jones <lee@kernel.org>
+> On Wed, 06 May 2026, Lee Jones wrote:
 > 
-> Patch looks sensible to me. Thank you for your effort, Lee!
+> > On Mon, 04 May 2026, Benjamin Tissoires wrote:
+> > 
+> > > Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> > > bogus memset()") enforced the provided data to be at least the size of
+> > > the declared buffer in the report descriptor to prevent a buffer
+> > > overflow.
+> > > 
+> > > We only had corner cases of malicious devices exposing the OOM because
+> > > in most cases, the buffer provided by the transport layer needs to be
+> > > allocated at probe time and is large enough to handle all the possible
+> > > reports.
+> > > 
+> > > However, the patch from above, which enforces the spec a little bit more
+> > > introduced both regressions for devices not following the spec (not
+> > > necesserally malicious), but also a stream of errors for those devices.
+> > > 
+> > > Let's revert to the old behavior by giving more information to HID core
+> > > to be able to decide whether it can or not memset the rest of the buffer
+> > > to 0 and continue the processing.
+> > > 
+> > > Note that the first commit makes an API change, but the callers are
+> > > relatively limited, so it should be fine on its own. The second patch
+> > > can't really make the same kind of API change because we have too many
+> > > callers in various subsystems. We can switch them one by one to the safe
+> > > approach when needed.
+> > > 
+> > > The last 2 patches are small cleanups I initially put together with the
+> > > 2 first patches, but they can be applied on their own and don't need to
+> > > be pulled in stable like the first 2.
+> > > 
+> > > Cheers,
+> > > Benjamin
+> > > 
+> > > Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+> > > ---
+> > > Changes in v3:
+> > > - fixed ghib -> ghid in greybus
+> > > - fixed i386 size_t debug size reported by kernel-bot
+> > > - Link to v2: https://lore.kernel.org/r/20260416-wip-fix-core-v2-0-be92570e5627@kernel.org
+> > > 
+> > > Changes in v2:
+> > > - added a small blurb explaining the difference between the safe and the
+> > >   non safe version of hid_safe_input_report
+> > > - Link to v1: https://lore.kernel.org/r/20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org
+> > > 
+> > > ---
+> > > Benjamin Tissoires (4):
+> > >       HID: pass the buffer size to hid_report_raw_event
+> > >       HID: core: introduce hid_safe_input_report()
+> > >       HID: multitouch: use __free(kfree) to clean up temporary buffers
+> > >       HID: wacom: use __free(kfree) to clean up temporary buffers
+> > > 
+> > >  drivers/hid/bpf/hid_bpf_dispatch.c |  6 ++--
+> > >  drivers/hid/hid-core.c             | 67 ++++++++++++++++++++++++++++++--------
+> > >  drivers/hid/hid-gfrm.c             |  4 +--
+> > >  drivers/hid/hid-logitech-hidpp.c   |  2 +-
+> > >  drivers/hid/hid-multitouch.c       | 18 ++++------
+> > >  drivers/hid/hid-primax.c           |  2 +-
+> > >  drivers/hid/hid-vivaldi-common.c   |  2 +-
+> > >  drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++--
+> > >  drivers/hid/usbhid/hid-core.c      | 11 ++++---
+> > >  drivers/hid/wacom_sys.c            | 46 +++++++++-----------------
+> > >  drivers/staging/greybus/hid.c      |  2 +-
+> > >  include/linux/hid.h                |  6 ++--
+> > >  include/linux/hid_bpf.h            | 14 +++++---
+> > >  13 files changed, 109 insertions(+), 78 deletions(-)
+> > 
+> > What's the plan for this set Benjamin? -rcs or -next?
 > 
-> Tested-by: Ping Cheng <ping.cheng@wacom.com>
-> Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+> Are there any updates on this set please?
+> 
+> FYI, this set is still important to us.
+> 
+> Ideally, if all is well, it would go into the -rcs for v7.1.
 
-Thank you Ping, I appreciate your review.
+I'm still actively tracking these.
 
-HID folks - any movement on this please?
+It looks like Mark has been reverting them from -next and I'm getting
+complaints from the Stable folks that they are causing build errors.
+
+  drivers/hid/hid-core.c: In function 'hid_safe_input_report':
+  drivers/hid/hid-core.c:2195:16: error: too many arguments to function '__hid_input_report'
+    2195 |         return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
+
+Are you folks still working on this set?
 
 -- 
 Lee Jones
