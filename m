@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-249438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLGnDpzAC2olMAUAu9opvQ
-	(envelope-from <stable+bounces-249438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:45:00 +0200
+	id uIg5NQ/CC2qWMQUAu9opvQ
+	(envelope-from <stable+bounces-249439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:51:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589F0576280
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:44:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AFB5762D1
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 03:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 741C53016EEA
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 01:44:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB12F302BCE0
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 01:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673C32F8EA5;
-	Tue, 19 May 2026 01:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51F32EFDA6;
+	Tue, 19 May 2026 01:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b="Wsc/Wp+e"
+	dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b="NOWK4btJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m60156.netease.com (mail-m60156.netease.com [210.79.60.156])
+Received: from mail-m15571.qiye.163.com (mail-m15571.qiye.163.com [101.71.155.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E732D5432
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 01:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.79.60.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F094F28727D
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 01:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779155093; cv=none; b=l75QH3KvvbqCl9qEkxNp48NEf+y0Yv6uuxovXanrOOA1CpFOoLaxjdAIC+4+lPE9Vei7REgHr/AcX7pPTCd7qmUzhaZT8ER4ZB8FPIXZjV6XvdhytUNIrhZu+Xe4r+dD7gJN3MlZ4+ME0N0XHXeaVYoDuaM8lNU70DQLo0THb4w=
+	t=1779155466; cv=none; b=qRK0jji1mQ94tsnR1N0vZFHmF/hz5e0uWHMQbd9KLZoHOE9SqD8awdK64GJ46GaMm55gq4p9xGo+/BNqho0Nc1uo9W/NTAY6o8medegabncsqEsioA4Xs6oba0QB7bmqp4BtTjWsCZgNf4YiieAlbmLL3lfwno1uHdW5c8Su2x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779155093; c=relaxed/simple;
+	s=arc-20240116; t=1779155466; c=relaxed/simple;
 	bh=XMHmCIpx0UnQDSjerejScAS9qmpys3C3vCwvEjhNq/Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qO3BtuZEhoEnjNXDqueEbFrrAcxXNQPjY8vfSowVxLtQrOsHoibUvYP1tkJF4lQfRUdZzKQF4txMnPy2g4otn9zLiZddItJQ7tGdYewgyZEtx7ooGLkt+6YC2Bqjh4emo1nFBBOUpyB7JBUjiqs/r2WTwmxX/KNbDFWXveyalxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=senarytech.com; spf=pass smtp.mailfrom=senarytech.com; dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b=Wsc/Wp+e; arc=none smtp.client-ip=210.79.60.156
+	 MIME-Version; b=pCiVkBqOEIPns9Eh3EpCahJePqIKdOgMe4DfMgGRx8KUjXNyv2sX5IK6H0fREEeLl9f8EsFhcD7em1UJDISR4vl/MEfAuw+GmZUN8nwpgt5STDrasHVl9DJxAEQNE8+RyrI8Y2SCKvr5KDMLC4XzcUdOWYBkDQ6qDoyyBR8t4Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=senarytech.com; spf=pass smtp.mailfrom=senarytech.com; dkim=pass (1024-bit key) header.d=senarytech.com header.i=@senarytech.com header.b=NOWK4btJ; arc=none smtp.client-ip=101.71.155.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=senarytech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=senarytech.com
 Received: from localhost.localdomain (unknown [112.95.78.112])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3ee8524aa;
-	Tue, 19 May 2026 09:44:40 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3ee86b46f;
+	Tue, 19 May 2026 09:45:41 +0800 (GMT+08:00)
 From: Mao Weiming <alex.mao@senarytech.com>
 To: alex.mao@senarytech.com
 Cc: stable@vger.kernel.org
 Subject: [PATCH v2] cpuidle: coupled: Fix use-after-free on device unregister
-Date: Tue, 19 May 2026 01:44:24 +0000
-Message-Id: <20260519014424.38-1-alex.mao@senarytech.com>
+Date: Tue, 19 May 2026 01:45:33 +0000
+Message-Id: <20260519014533.37-1-alex.mao@senarytech.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260518064324.<v1-msgid>-1-alex.mao@senarytech.com>
 References: <20260518064324.<v1-msgid>-1-alex.mao@senarytech.com>
@@ -53,41 +53,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e3de8138009d1kunm85fbc65e3a6f53
+X-HM-Tid: 0a9e3de9040509d1kunmd55619983a71c6
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSB1OVh5PGUlDTBkZTh1IQ1YVFA
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSB1PVkMYTElOT0hPSUJKH1YVFA
 	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlKSklVQk5VTENVSkpJWVdZFhoPEhUdFFlBWU9LSFVKT0
 	1MTk9MVUpLS1VKQktCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=Wsc/Wp+eutCCCWvP9wvjXd1PkJpkygaGhq6Bd1jcVZCHUPltNcP1x2hYOeN4OkYqiFP3mIs54oMnN93H2YBGKJXJEOT7Mdczj9BxZi7lphcGNHnhf+TveccuQ/aQevQ8yXenj1+pEDiXKJXTdo26XMhIrzpCqPd8gw6cpFx9xBU=; c=relaxed/relaxed; s=default; d=senarytech.com; v=1;
+	b=NOWK4btJd26V6JaBAlywvQt1Kg/iSPRkBg207rtvhzZhHvgF6OMjAAMUjGMk1qaIA3nTHR2Vb6ZbJHdKO1XlcK24CKneQDmmn3Lr+z7PFNSmegz3ioTlRJ+DAaHNeYwtYaDOEANMtRCM9l9zzfjkqS9mFujuiy+jdBnscQlk27M=; c=relaxed/relaxed; s=default; d=senarytech.com; v=1;
 	bh=NtpIfGfp7Zep09C5MBG8n8u+2XAw+1BZqdy5wKDEbBw=;
 	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[senarytech.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[senarytech.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[senarytech.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249439-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alex.mao@senarytech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[senarytech.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249438-lists,stable=lfdr.de];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_NONE(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[senarytech.com:+]
-X-Rspamd-Queue-Id: 589F0576280
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 44AFB5762D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
