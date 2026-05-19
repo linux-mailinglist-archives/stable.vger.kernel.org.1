@@ -1,248 +1,191 @@
-Return-Path: <stable+bounces-249653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFEJBqCiDGq8jwUAu9opvQ
-	(envelope-from <stable+bounces-249653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:49:20 +0200
+	id +IkDKjOjDGq8jwUAu9opvQ
+	(envelope-from <stable+bounces-249654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:51:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5B05834E7
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2807158353C
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 19:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5432D30C61B2
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:45:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CDE4300DA76
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53263F660E;
-	Tue, 19 May 2026 17:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66200369D65;
+	Tue, 19 May 2026 17:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cu+FmfFP"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HOEA5lBV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010042.outbound.protection.outlook.com [40.93.198.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4283EA953;
-	Tue, 19 May 2026 17:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779212718; cv=none; b=n/RfMki3rOrJdDPdRk+bJLMpvECG2/flywrGl4V6XFNOTws4BrZiNXDw5Vg1aXqTluO6Sf/H5ss8NJsqO0tFHGL22R9DK8r/QKgfmfNxjkYpnWyaebqebvvBHjBnCvVGwjQhY1e27g39f93wdNRdYBKxeptmQ/zJPjlT8ZWNVO8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779212718; c=relaxed/simple;
-	bh=Akh3Zfn8+lYDQjfzNyhBVf7AJoRyxFn7W6oAfZBtfUc=;
-	h=Date:To:From:Subject:Message-Id; b=Ew0jMIk5pW1lcFlYBlknFFE7dgh6tgfhTSnH40o/ViSj7Pc4l9q/SHKFNMcKIt0MPQMQjqZ7Vv5njbiv/vXhgbn397xAtn/fJiwJH4itDEukGLjX4CQLco4tfY0+LETx79i3y1YJnHodMqfHHyNuF2cVKQvsygrGe/iUQWDwKFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cu+FmfFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F154C2BCB3;
-	Tue, 19 May 2026 17:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1779212718;
-	bh=Akh3Zfn8+lYDQjfzNyhBVf7AJoRyxFn7W6oAfZBtfUc=;
-	h=Date:To:From:Subject:From;
-	b=cu+FmfFPUSoyusL1MLssSX541tq3FfxOG86zjP06Fb6TmmI+7vwM6WdNtw+c2sxd8
-	 E2xZ5WO3ogQ7SETM9CNDCftpQVH3CqRWHd9COrKlEDQlx8y+TwkovOLPOzhBjpEy2M
-	 jdORehbz9R2654i1ZVv2bKHgFWBX71SrlqDb5tB8=
-Date: Tue, 19 May 2026 10:45:17 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,michael.bommarito@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch added to mm-nonmm-unstable branch
-Message-Id: <20260519174518.3F154C2BCB3@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4DA3438AA
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 17:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779212768; cv=fail; b=PZpFWsVFY0GNNKHT3diXj39YtjQhyt13GFaAzTCeCtU5snjFrM0QrWen0p2s6SelizhwVpUvIlbhYQTc6bOh4AgXRU0u4iIM9J2y5QyE8j7KyJ3RqB9EpxdL0/iQqX4L9I4kRcaytUOeOgpXTb8zIYAUBEf45aI4C9GE5BI8VfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779212768; c=relaxed/simple;
+	bh=oMI2XNSu4SiY8PglFmAc+pxp6/eJ1p2rDp38m6T9sMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YV+0z81mzuvooXOiNSeAVAfPGyzn98E8V1nrh4jk8J8wPGcIvSfy41Gbw9Yah7oL7VCQFyqUM8hMdFBcoi8pORn2oLj8jek0jCi08UkT9UKcnI1oPpuMX59H5/Ut2+y17SxpYzGeRVH43QfPKjdRlqkd1Xj6wn2eEqwroalQ+K0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HOEA5lBV; arc=fail smtp.client-ip=40.93.198.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IqhuoVPhShMMnLEG1R3Gw6ccJJm2LaIEVK5S4CdnnJF319yYgV8s0GbcXMoGhSQzn2ykya1eJubeSkkBevesFQciSvVIqeqGg0K8IDUpy3QLhCbw5x6gjicB8czFaBpfcOeBWfMachgYFzThLT6xg8XpAxcdIGvDIbQQKzWL9cJzthauMz79iUcwHsRFF/TTZKU81CFaipCLJFHxObsqdkA92a6+bleQbVhNf+6+T6GIn66i8MkC14eHrneBdSx1ZzrioJAGaT5nYp+hGfBZ1jt+sFvJUQGQ3a3rcF84gEnMj/mscveurs4MRwfaP2dk8kwt5/yhoX0szIAxvrb18w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/ZdLWT4ZuNOZ8mhVDAfvF34w326j7CFVPumen/4Cjvo=;
+ b=vv+sKNzMP885lR0SLk1xHW+Y7Qw0EOjxWJlHOiA869onKl/woLemdhAe2LUkM+m6MMB0AdgzzMwha22DMH6e0+A/CZj8Ute4qEkvkiodPPcqBZqVeOu5DvAK11idjSw2f5HSeMeJFIZqgg6CzrecvWkLSSJYq849EBFo8XYScLhKWFgEUOZYcOz0tGb51KlVOIMP8NtvGeibM554yuq/JE+KsU9NdMApZdvwza+TsOOn0Qowax1gCe4JTN94HStPNr9Wp5u1aBKsOW8yUqcZim9WhVh/HNUb+J4hsnjXQQUfQkdwOuHGcHEkIYtwcHkjz+QKA14enxDrpGKx0HDaHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/ZdLWT4ZuNOZ8mhVDAfvF34w326j7CFVPumen/4Cjvo=;
+ b=HOEA5lBVr7iL02uaG2tOCOHkS4i/yx2/Tq8DSdGXFTq42LbTnozYw+V6uOT5YKiX0Cq7Y9ODYl/yW68dfHkr4BuAyzjpD+rwqNE2bnKvlp5CJJ93umg9vslur+bQiQbtnqB0uBpwdXHjD10hrdyZA54ifRuJegyKD2KOOdsTC4P9KdA4v5FFufwEHSXKi8mLEyPMp9gOqvlOTIjDFGknLWy8ePCMnWqwm5r+VAKRIFia2mAO4qjukGoC5cXID5OS4bPfE8DPaajaSKyddub/stTfH18uydA4b7OypuH8bP4oZA0xYYpSTMgOKh4ryxCPyM9xYA6iCG64oeiduwaQuA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by IA0PPFD7DCFAC03.namprd12.prod.outlook.com (2603:10b6:20f:fc04::be7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.34; Tue, 19 May
+ 2026 17:46:03 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.21.0048.013; Tue, 19 May 2026
+ 17:46:01 +0000
+Date: Tue, 19 May 2026 14:45:59 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: will@kernel.org, robin.murphy@arm.com, kevin.tian@intel.com,
+	joro@8bytes.org, praan@google.com, kees@kernel.org,
+	baolu.lu@linux.intel.com, miko.lenczewski@arm.com,
+	smostafa@google.com, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, jamien@nvidia.com
+Subject: Re: [PATCH v5 4/6] iommu/arm-smmu-v3: Skip EVTQ/PRIQ setup in kdump
+ kernel
+Message-ID: <20260519174559.GG3602937@nvidia.com>
+References: <cover.1778416609.git.nicolinc@nvidia.com>
+ <8de5639630e5723d6f371093cef93733f0ca534d.1778416609.git.nicolinc@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8de5639630e5723d6f371093cef93733f0ca534d.1778416609.git.nicolinc@nvidia.com>
+X-ClientProxiedBy: MN0PR02CA0015.namprd02.prod.outlook.com
+ (2603:10b6:208:530::16) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA0PPFD7DCFAC03:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b5ea1ff-2ee4-441c-67b0-08deb5ce7d14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|11063799006|18002099003|4143699003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	rZAK5QIxMoK6wM0gbJz9gPHHWyS4m+CRqwYnxzdX82SPlD56KuFgAn2hiM38JqHHhmJxPdCP7q2KDilbt2sotbQdd3DYiJFmtr4G9tNZn1idrZrITLH6YGznBHmoV2kLaP/W50tRdaluiEg1pFem2R++oXRGWwLgsnAWZz11/zEzFZePoNcz0P9TVfdUAbUv2RMa21GJMzmaA24Ilin/G6JF6lknGhu5aIsWMEjnym3SkN+zdsBLrtquIMg2e5A8thVXXfcfBbGqrwvmfPRtjLhoQPw36Vh2DzyYFAkWBIBJeNUU6XExximpKms1VVo8pgITSJawjaP4lPSCAXtuolQUMjE0srA5SEpU9yCwZJ6+W2qt/lR1bBKloSFX5A7Ng+3YgYI7J9VYIPk0t48jpjwYkcOh4MyTqmx1BMXt2rmNCMo2k8JpqVPJ+dUNNk1YFEHQtGV3+e7CwJvW9BuKxtZEPj5skfZ0bUq1XAv/a7k3rohfZqvv8dtNCZamyvWbJgv2antX/c9n3qvBXvUYSK549ak2KSpoeB9eeD9+rGlWynnlGJD1KJfzjDw8jfuzh695cZdfkPKQeaLX1bfqUxLKqzB5I/Kl2dIC8FN+PZE3yTbp7/nkmxVBWbRAcMM09163yl+ezKfegVI7tmDBS8IPZ8g87FAPvablKLUvLma1+ish2YxBAiUoFFgaATvZ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(11063799006)(18002099003)(4143699003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?O5huybD5PyL9kcJSoOrqGsInP0lM/cLh92wElr6rWM5o556JQR9VWsUjMEkH?=
+ =?us-ascii?Q?aT7iqNGRp2Q8J60qWCQvgN6uTw/N8pkr01vQXlOPpWdrfDAEYd8ZbODsWLYV?=
+ =?us-ascii?Q?WT6oOJYVoFGIhJf25GdPMBmLumw2852DT3DVN+enjWlYWBWUfPMwXrKvSc98?=
+ =?us-ascii?Q?7d8KTm5BwYRBVOsnPtSqImvzgul0aBsAA7pxGYmqaenJSKNX1wyKZNEQyLlX?=
+ =?us-ascii?Q?9AdClCdAtv7dTfIUw6oOFbvYEokD4LDDcMJhfNR921qbx3feA+f7XsTSET7N?=
+ =?us-ascii?Q?nzWHX3/SFVgGXVW3inNB5HA6JJOo94tPIPDR3k3R0S59RmleI2C03IUD86B1?=
+ =?us-ascii?Q?S8Moksq6jfW3WBqMTNHGVJMff2iaUEMw1qmUmQ6wHAWISQGtcXCy7Y5uFqYj?=
+ =?us-ascii?Q?o+ZxG79Mp/y2je7qXjPOcFMez3ecfhMoxd/Lql8aB2UhC/F5LtGDj5moXjm4?=
+ =?us-ascii?Q?q4TKLPN/MMr6XMZDyiysp8+a9KPpqrnqRQtwQEc5sGbkN4kUGPi5Uk/uPoio?=
+ =?us-ascii?Q?ruFXZJ9HYp7Xuys88yToxTW6F9JzK0H/xzB1QVnqlGp9et0wr6Anaiq2wFut?=
+ =?us-ascii?Q?6zVEOQSU9LBwgkfdmMJredrfjK75rOc12XMJkKX/r/ybHiPDnfFJ4s+4lio0?=
+ =?us-ascii?Q?mR7R7EKfaUefxxyjVd3NAB9FQaiqGcuHsVXtFG7BjW789jvMlT7tQoUkeO0w?=
+ =?us-ascii?Q?fvggo/wD4o3400/RTt9nrHMYI8ipqatN/AXFHvs/cmgotC5gQTLWQ16GXNPv?=
+ =?us-ascii?Q?fBEJT7yBjY1CvSwmie3YuJR5IkusnoTGHnPohOeUzjNdwyuJflFi2t0mlOFk?=
+ =?us-ascii?Q?fKDM0qRpKSDhgS0bQE2BHFrcUeQHmtxwJazvf2jER34zIAWwdFOk4aYtrkYI?=
+ =?us-ascii?Q?8B1ZK+LpivoJ+/qrNB2c16nyF6w6wMZk333rJprlPbvdxv2qeCyhhU9QdYfA?=
+ =?us-ascii?Q?b1gPatNuenk+bmWmkfERGkmerwc45JwmjnliVBmjHx4CHAhgPuTBYa3WeVmN?=
+ =?us-ascii?Q?6hLSiKceic0UGiymPkkwdv8fFG+ADHW8L2iNMAqWzCJtXdwACS1Yi2oKF8Td?=
+ =?us-ascii?Q?c27WcTq2IheN/0BnD6wGGSHv/efu4Z+l5KqCbiz5AWc45h46W2gQBAq4VxVR?=
+ =?us-ascii?Q?7giHLQtdvR3PoRlYV1t+37P3pS8ytk1UcYapEaAe6AhydF9c/tmG3GauDKL3?=
+ =?us-ascii?Q?MHTPXw08WHtLs1SdA/XijwsXcgachpFPgK5N7Qo/kORvkqpxyWLyW80AgOb3?=
+ =?us-ascii?Q?+Zp6Lf+CPEVfvBesteUHSdKypZsyD8b4wCBd0R4jov3+QOoKYFnfdKgv39jd?=
+ =?us-ascii?Q?hisGm8UJ2s2OLeUXonSAldCU7bsztI7mMJ85WbVA6Way0x+rmHlo7ozHUXTH?=
+ =?us-ascii?Q?8jLZcPnvG3AMni6dwzK5C23otLTpl74SFIe0byC8gUtkeZJvOVWQ4+ahQdSe?=
+ =?us-ascii?Q?EPl4/5ehQ8zWb61yQPI5FJT2Tmf/Au/Jhx+6rlF+8KTmjbi1+Pv2PSgnUVw6?=
+ =?us-ascii?Q?Ro3FeMS64+jNj3/LeA3khdZjg44T/319o0dCfIDv5LAXNVhRTfIXVz5Um0H2?=
+ =?us-ascii?Q?OBH7HWwjiIquF8SrJihYCWcENdM1NxAsVBUUYb6IeqKQExqri0zFIJ4rn5OQ?=
+ =?us-ascii?Q?a1j4ZXpNqiJH4VbEtrhcdJyYIEqm0aNnp23zicj2IKjR/R8CVviFU5LJqGLP?=
+ =?us-ascii?Q?u64cMGnAk2V5fr2sbdf/vefBc0LFfGONkzSjGbAZo1mCsvDv?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b5ea1ff-2ee4-441c-67b0-08deb5ce7d14
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 17:46:00.7779
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nwlVnSMPhNlgjfnPPV83gtla2zvYSORQ7cOTkT/Nc85AVobhs/sj8kkYWqbForDj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFD7DCFAC03
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249653-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249654-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,live.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fasheh.com:email]
-X-Rspamd-Queue-Id: 7B5B05834E7
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
+X-Rspamd-Queue-Id: 2807158353C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Sun, May 10, 2026 at 02:23:03PM -0700, Nicolin Chen wrote:
+> In kdump cases, the crashed kernel's CDs and page tables can be corrupted,
+> which could trigger event spamming. Also, we cannot serve page requests.
+> 
+> Skip the EVTQ/PRIQ setup entirely rather than enabling then disabling them.
+> 
+> Also add some inline comments explaining that.
+> 
+> Fixes: b63b3439b856 ("iommu/arm-smmu-v3: Abort all transactions if SMMU is enabled in kdump kernel")
+> Cc: stable@vger.kernel.org # v6.12+
+> Suggested-by: Kevin Tian <kevin.tian@intel.com>
+> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> ---
+>  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 43 +++++++++++++--------
+>  1 file changed, 27 insertions(+), 16 deletions(-)
 
-The patch titled
-     Subject: ocfs2: reject non-inline dinodes with i_size and zero i_clusters
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch
-
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Subject: ocfs2: reject non-inline dinodes with i_size and zero i_clusters
-Date: Tue, 19 May 2026 07:04:04 -0400
-
-On a volume mounted without OCFS2_FEATURE_INCOMPAT_SPARSE_ALLOC, a
-non-inline regular file with non-zero i_size and zero i_clusters is
-structurally malformed: the extent map declares no allocated clusters yet
-the size header claims content exists.  Keep rejecting that shape, but
-express it through a shared predicate so the same invariant is available
-to normal inode reads and online filecheck.
-
-The same zero-cluster shape is also malformed for non-inline directories. 
-ocfs2 directory growth allocates backing storage before advancing i_size,
-and ocfs2_dir_foreach_blk_el() later walks until ctx->pos reaches
-i_size_read(inode).  A forged directory dinode with a huge i_size and no
-clusters would repeatedly fail on holes while advancing through the
-claimed size.
-
-Sparse regular files remain exempt: on sparse-alloc volumes, truncate can
-legitimately grow i_size without allocating clusters.  System inodes and
-inline-data dinodes also retain their separate storage rules.
-
-Mirror the check in ocfs2_filecheck_validate_inode_block() as well. 
-filecheck reports through its own error namespace, so malformed
-size/cluster state is logged as a filecheck invalid-inode result rather
-than via ocfs2_error(), but it must not proceed into
-ocfs2_populate_inode().
-
-Link: https://lore.kernel.org/20260519110404.1803902-4-michael.bommarito@gmail.com
-Fixes: b657c95c1108 ("ocfs2: Wrap inode block reads in a dedicated function.")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://sashiko.dev/#/patchset/20260517111015.3187935-1-michael.bommarito%40gmail.com
-Assisted-by: Claude:claude-opus-4-7
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/inode.c |   60 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
-
---- a/fs/ocfs2/inode.c~ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters
-+++ a/fs/ocfs2/inode.c
-@@ -82,6 +82,24 @@ static bool ocfs2_dinode_has_unexpected_
- 	return !S_ISCHR(mode) && !S_ISBLK(mode) && di->id1.dev1.i_rdev != 0;
- }
- 
-+static bool ocfs2_dinode_has_size_without_clusters(struct super_block *sb,
-+						   struct ocfs2_dinode *di)
-+{
-+	umode_t mode = le16_to_cpu(di->i_mode);
-+
-+	if (le32_to_cpu(di->i_flags) & OCFS2_SYSTEM_FL)
-+		return false;
-+	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL)
-+		return false;
-+	if (!le64_to_cpu(di->i_size) || le32_to_cpu(di->i_clusters))
-+		return false;
-+
-+	if (S_ISDIR(mode))
-+		return true;
-+
-+	return !ocfs2_sparse_alloc(OCFS2_SB(sb)) && S_ISREG(mode);
-+}
-+
- void ocfs2_set_inode_flags(struct inode *inode)
- {
- 	unsigned int flags = OCFS2_I(inode)->ip_attr;
-@@ -1563,6 +1581,33 @@ int ocfs2_validate_inode_block(struct su
- 		goto bail;
- 	}
- 
-+	/*
-+	 * Non-inline directories must not have i_size without allocated
-+	 * clusters: directory growth adds storage before advancing i_size,
-+	 * and readdir walks i_size block-by-block.  A forged directory
-+	 * with zero clusters and a huge i_size would repeatedly fault on
-+	 * holes while advancing through the claimed size.
-+	 *
-+	 * Non-inline regular files have the same invariant on non-sparse
-+	 * volumes.  Sparse regular files are different: truncate can
-+	 * legitimately grow i_size without allocating clusters, so keep
-+	 * the sparse-alloc carveout for S_IFREG only.  System inodes and
-+	 * inline-data dinodes have their own storage rules.
-+	 */
-+	if (ocfs2_dinode_has_size_without_clusters(sb, di)) {
-+		if (S_ISDIR(le16_to_cpu(di->i_mode)))
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: directory i_size %llu with i_clusters 0 and no inline-data flag\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 (unsigned long long)le64_to_cpu(di->i_size));
-+		else
-+			rc = ocfs2_error(sb,
-+					 "Invalid dinode #%llu: regular file i_size %llu with i_clusters 0 and no inline-data flag on non-sparse volume\n",
-+					 (unsigned long long)bh->b_blocknr,
-+					 (unsigned long long)le64_to_cpu(di->i_size));
-+		goto bail;
-+	}
-+
- 	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
- 		struct ocfs2_inline_data *data = &di->id2.i_data;
- 
-@@ -1712,6 +1757,21 @@ static int ocfs2_filecheck_validate_inod
- 		     le16_to_cpu(di->i_mode),
- 		     (unsigned long long)le64_to_cpu(di->id1.dev1.i_rdev));
- 		rc = -OCFS2_FILECHECK_ERR_INVALIDINO;
-+		goto bail;
-+	}
-+
-+	if (ocfs2_dinode_has_size_without_clusters(sb, di)) {
-+		if (S_ISDIR(le16_to_cpu(di->i_mode)))
-+			mlog(ML_ERROR,
-+			     "Filecheck: invalid dinode #%llu: directory i_size %llu with i_clusters 0 and no inline-data flag\n",
-+			     (unsigned long long)bh->b_blocknr,
-+			     (unsigned long long)le64_to_cpu(di->i_size));
-+		else
-+			mlog(ML_ERROR,
-+			     "Filecheck: invalid dinode #%llu: regular file i_size %llu with i_clusters 0 and no inline-data flag on non-sparse volume\n",
-+			     (unsigned long long)bh->b_blocknr,
-+			     (unsigned long long)le64_to_cpu(di->i_size));
-+		rc = -OCFS2_FILECHECK_ERR_INVALIDINO;
- 	}
- 
- bail:
-_
-
-Patches currently in -mm which might be from michael.bommarito@gmail.com are
-
-ocfs2-reject-dinodes-with-non-canonical-i_mode-type.patch
-ocfs2-reject-dinodes-whose-i_rdev-disagrees-with-the-file-type.patch
-ocfs2-reject-non-inline-dinodes-with-i_size-and-zero-i_clusters.patch
-
+Jason
 
