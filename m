@@ -1,197 +1,171 @@
-Return-Path: <stable+bounces-249704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QN8sHcnbDGpbowUAu9opvQ
-	(envelope-from <stable+bounces-249704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:13 +0200
+	id ENKGGdPbDGp5owUAu9opvQ
+	(envelope-from <stable+bounces-249705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC99585523
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE3858552A
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CC7A301ECD7
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:52:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4029E3044A5F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 21:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FD13B52F5;
-	Tue, 19 May 2026 21:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C623E5577;
+	Tue, 19 May 2026 21:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MsYoRyby"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYZb0aeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F82A395DAA
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 21:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2120395DAA;
+	Tue, 19 May 2026 21:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779227537; cv=none; b=EC53GT4S4jxmZ8w6hOvsv9YkU5HR2Pk4Z+FC7B39Bnb/V15vd/LTGuTUiZHklOBn9N6DNJjB6j/1Y9x5w24ja009lsh+W+6ZOBD4nhobz4dJz8mSv/bMgOLPgPkdNrAYchk1KP3YDARk3zvGieFIV4RcVpjlZIlgl0tpM685oTg=
+	t=1779227545; cv=none; b=c+b6+9R5HJAQdWJk3G6mhWCusZD/xV2EDlmHRDA/QbT9bDtvbljn/Wh0IE+6S1NS+/bonXxosNbpth0X3Tw9RXaLex/81+S/CTP8LNhLW2Q+SiP+YO4m3XSxBGJ7NSXRW+fp9LOxhx+RfwO/ZlY4SI/yEptkh6twrrxNUMvMl/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779227537; c=relaxed/simple;
-	bh=gWTw3nIQBFCZ5yhMNWUHEDLOy2Bb2a9RdFo/9JSx3Rw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=BkA77h7obnIh65D3q1W6benfIFxQQflkRTuoa/N0ERpj3zFM8TE2zoolbUZTEummNlecRASyZZM4gNzrbOzFiPktFtSEd3KmMgu3mg3IlIrWxO335tu/65phz1LHTiPK9T8UWd3ZIzfAt7UVIDKtgeqTfoMsWGVpsQl7HhciJsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MsYoRyby; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD7E1F000E9;
-	Tue, 19 May 2026 21:52:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779227535;
-	bh=hbNL8A/9L4h5m2K9/Sbmf4X0mZVOLkpQOD2l2GUfgH8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MsYoRybynENNTCGOj5Sb8uoJZTBelACh8X0O4u0SEIFR8bp3JIv7dY6FB8uFgA6A3
-	 xucxjzUu0ZeFXZyo1rMG8scATrsvJrwORBPMMZxfH5vwvSZ3uSlVEDkZmM7jf2JAC8
-	 1bTSmmO76PGlxvuLXyw7BV/GcLZkdFDTWtf40E4k=
-Date: Tue, 19 May 2026 14:52:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: David Carlier <devnexen@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
- Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
- hugetlb_mfill_atomic_pte() resubmission path
-Message-Id: <20260519145215.ef37484626f23a82fc7ef992@linux-foundation.org>
-In-Reply-To: <EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
-References: <20260322052120.14021-1-devnexen@gmail.com>
-	<EE9ACFDB-E601-4C1D-87D1-F5DAC2767CE2@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1779227545; c=relaxed/simple;
+	bh=MoZsOmuW47OYpJJ4yLCIUL/ufJHjeBhhRzuIUGeNSOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Ke5U1sa4TDe5Bo66ty1Nipy5DaI6qEV+Rerfg0sAmiaL7/w7LDA44Gy+/DMtCKGYUY5xU6UoZJ4UEBT0DNOzqC79ZImK24Hy1VD/fl7bdowD2K2UdL8FFZYBvw4Z5nzDuocc6in6pHTlo61/bgGk8VkjoE49SGkUEx4IX/S5Sb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYZb0aeK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 3EA941F000E9;
+	Tue, 19 May 2026 21:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779227544;
+	bh=+EgRr6uYLBJZxjzag9UjRODPlRA2X3MbxClA5xBAP9I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=gYZb0aeKE/0pnEJTfpGwR3qnpY5m+HTsmRpPjDfuVZSexD9Ru+n4DHo8hPLbait5f
+	 6oAldMXsPpCmxnhoqcwAx8SJfRQ2fhVnTUlyY8MFd9Gc9LkjncJnM8iUrdtD/KNM88
+	 ikupHvJaNUmqlatrAADCo2ArtGSlWQ2h2b9PfuCg5EAhmPzOvLif4R+9VipButX3RD
+	 ZSz4wMmKEbbuJl2e7iWWwkMZYDbt7Q7uy/ZPoxUuxCQ/okmcNgClpUt+Vs968arwQz
+	 rn6piz0kgael8HP8NWHC85wGUVeXFa8cNCRA6Zrl64MW309lo1RWpxHV0tYAU3MHZU
+	 cP6gYoU7TvD3A==
+Date: Tue, 19 May 2026 16:52:22 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Ziyao Li <liziyao@uniontech.com>, niecheng1@uniontech.com,
+	zhanjun@uniontech.com, guanwentao@uniontech.com,
+	Kexy Biscuit <kexybiscuit@aosc.io>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+	kernel@uniontech.com,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Lain Fearyncess Yang <fsf@live.com>,
+	Ayden Meng <aydenmeng@yeah.net>, Mingcong Bai <jeffbai@aosc.io>,
+	stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: Re: [PATCH v8] PCI: loongson: Override PCIe bridge supported speeds
+ for Loongson-3C6000 series
+Message-ID: <20260519215222.GA18171@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9d815df3b33a63223112b97440c01247935363c1.camel@xry111.site>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249704-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249705-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_CC(0.00)[gmail.com,suse.de,kernel.org,huawei.com,google.com,kvack.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	FREEMAIL_CC(0.00)[amd.com,kernel.org,google.com,uniontech.com,aosc.io,vger.kernel.org,lists.linux.dev,linux.intel.com,live.com,yeah.net,loongson.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,suse.de:email]
-X-Rspamd-Queue-Id: CDC99585523
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0AE3858552A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, 4 Apr 2026 20:59:11 +0800 Muchun Song <muchun.song@linux.dev> wrote:
-
-> 
-> 
-> > On Mar 22, 2026, at 13:21, David Carlier <devnexen@gmail.com> wrote:
+On Tue, May 19, 2026 at 10:23:22AM +0800, Xi Ruoyao wrote:
+> On Mon, 2026-05-18 at 13:53 -0500, Mario Limonciello wrote:
+> > > > Also, the amdgpu driver reads the value by pcie_get_speed_cap() in
+> > > > amdgpu_device_partner_bandwidth(), for its dynamic adjustment of PCIe
+> > > > clocks and lanes in power management. We hope this patch can prevent
+> > > > similar problems in future driver changes (similar checks may be
+> > > > implemented in other GPU, storage controller, NIC, etc. drivers).
+> > > 
+> > > Why is this paragraph here?  Is there code in
+> > > amdgpu_device_partner_bandwidth() that wouldn't be needed after this
+> > > patch?
 > > 
-> > When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-> > hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
-> > copy_user_large_folio() subsequently fails, folio_put() restores the global
-> > hugetlb pool count through free_huge_folio(), but the per-VMA reservation
-> > map entry is left in an inconsistent state.
+> > I don't think that would be the case as this patch is a pure quirk for
+> > one device.
 > > 
-> > Add the missing restore_reserve_on_error() call before folio_put(), matching
-> > the first-attempt error path which already handles this correctly.
+> > The policy we have in amdgpu_device_partner_bandwidth() takes into 
+> > account specifically the topology of dGPUs that have integrated PCI 
+> > switches.
 > > 
-> > Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
+> > We need to look at the speed and width of the link partner connected to 
+> > the switch not between the switch and the GPU PCI device.
 > 
-> Hi David,
+> Yes, the paragraph was intended to explain why the lower speed only
+> manifests on some (not all) PCIe devices, for example amdgpu, with the
+> incorrect LinkCap2 from hardware.
 > 
-> Thanks for this fix. The patch looks good to me and clearly solves the
-> reservation leak in the resubmission path of hugetlb_mfill_atomic_pte().
+> > > This patch updates pdev->supported_speeds, which is used by
+> > > pcie_get_speed_cap(), which is in turn used by
+> > > amdgpu_device_partner_bandwidth().
+> > > 
+> > > Is the point just that users of pcie_get_speed_cap() (currently just
+> > > amdgpu, radeon, and sysfs) will now see the correct maximum link speed
+> > > for Loongson-3C6000 bridges?
+> > > 
+> > > And the "checks" you refer to would be the tests in
+> > > amdgpu_device_get_pcie_info() that use the results of
+> > > pcie_get_speed_cap()?
+> > 
+> > I think I agree with Bjorn to drop the paragraph, it just adds confusion 
+> > to the reader.
+> > 
+> > You can have a sentence along the lines of "Updating the speeds to the
+> > correct actual support of the hardware avoids quirks in drivers 
+> > consuming the speed information".
 > 
-> However, I'm a bit curious about the Fixes tag. While commit 8cc5fcbb5be8
-> did introduce this code structure and the retry path, it seems the bug
-> wasn't actually introduced there. At that time, copy_huge_page() returned
-> void, so the failure path simply did not exist.
+> Yes, it will seem better.
 > 
-> Instead, looking at the git history, the failure branch `if (ret)` was
-> added later by commit 1cb9dc4b475c ("mm: hwpoison: support recovery from
-> HugePage copy-on-write faults"). It modified copy_user_large_folio() to
-> return an int and introduced error handling paths that unfortunately
-> missed restoring the reservations. Should the Fixes tag perhaps point to
-> 1cb9dc4b475c instead?
-> 
-> Furthermore, if commit 1cb9dc4b475c is indeed the root cause, I noticed
-> it also introduced similar error handling paths in other places. For
-> example, in copy_hugetlb_page_range():
-> 
->         ret = copy_user_large_folio(new_folio, pte_folio, addr, dst_vma);
->         folio_put(pte_folio);
->         if (ret) {
->                 folio_put(new_folio);
->                 break;
->         }
-> 
-> Here, new_folio was allocated with alloc_hugetlb_folio(), which consumes
-> reservations. But if the copy fails, new_folio is freed via folio_put()
-> without calling restore_reserve_on_error() first.
-> 
-> Does this imply we might have similar reservation leaks in other error
-> paths touched by 1cb9dc4b475c? I'd love to hear your thoughts on this.
+> Bjorn: do you need a v9 or would you just amend the message in your
+> tree?
 
-It's been a while.  Can people please refocus on this?
+I amended the commit log:
 
-David, your patch had cc:stable but I'm not seeing a description of the
-userspace-visible effects of the bug.  Can you please describe?
+  ...
 
+  As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if more
+  than one speed is supported"), bwctrl will be disabled if there's only
+  one 2.5 GT/s value in vector 'supported_speeds'.
 
-From: David Carlier <devnexen@gmail.com>
-Subject: mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
-Date: Sun, 22 Mar 2026 05:21:20 +0000
-
-When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. 
-If copy_user_large_folio() subsequently fails, folio_put() restores the
-global hugetlb pool count through free_huge_folio(), but the per-VMA
-reservation map entry is left in an inconsistent state.
-
-Add the missing restore_reserve_on_error() call before folio_put(),
-matching the first-attempt error path which already handles this
-correctly.
-
-Link: https://lore.kernel.org/20260322052120.14021-1-devnexen@gmail.com
-Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: yuehaibing <yuehaibing@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/hugetlb.c~mm-hugetlb-restore-reservation-on-error-in-hugetlb_mfill_atomic_pte-resubmission-path
-+++ a/mm/hugetlb.c
-@@ -6290,6 +6290,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
-+			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
- 			folio_put(folio);
- 			goto out;
- 		}
-_
-
+  Manually override the 'supported_speeds' field for affected PCIe bridges
+  with those found on the upstream bus to correctly reflect the supported
+  link speeds.  Updating the speeds to reflect what the hardware actually
+  supports avoids quirks in drivers consuming the speed information.
 
