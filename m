@@ -1,157 +1,288 @@
-Return-Path: <stable+bounces-249630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB63E0SMDGr0iwUAu9opvQ
-	(envelope-from <stable+bounces-249630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:13:56 +0200
+	id sDJGLPiJDGo1iwUAu9opvQ
+	(envelope-from <stable+bounces-249631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:04:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9504582124
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:13:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56256581E8A
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6FBDE3045DD3
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:42:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E761F309A80F
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047993090E8;
-	Tue, 19 May 2026 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039C03AFD1B;
+	Tue, 19 May 2026 15:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="fzU10xQg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMdOb61l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6162F2765F5
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 15:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779205333; cv=pass; b=bt6eaj1k3fjBm9xYLTMMCgI5WyiI4h+eL18+doeNFqycGOmxNwE/fIVsVBA1NujKyUOfX3iHZDlEab6ScvWe/p7ar4RT9lljzevCdq8pwqD0XVAevmrmikVWgjNEr2CBDv4ALfMl+eEkcTGsIM3Crv2EPyioPfuxPzzWXyo6ZHc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779205333; c=relaxed/simple;
-	bh=IGhdNMGmhqiwDqIsGMKMjYg4siHGnTWYXEgLbA3AK5w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qvyWm9OGWy3GF1FqnkCZnjWsnBfYf+7Zw386bc8QoiR2ctl3A/ChzCaq2aT3CarEk3o85jZvhApUUCH6hH2C/JzEkO8DS1YUrcknxjhu7DuoAEnz+Ur3e1J5qYsSkr0mMqPEpmqrLrRl6ZufTAFtrwvMJhagnYKxbL7w6fmwmdA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=fzU10xQg; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50e5c7eb565so43919441cf.3
-        for <stable@vger.kernel.org>; Tue, 19 May 2026 08:42:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779205331; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jq34+twIaXOxDP7wN0sJM9J69QhUE6u2TBE2R8aikS9h+0jsOREw8Zkl0oeAOM+3rW
-         pP3Lobtnzs+qIY7PN24TcGfGW7qUrcz9rfrxD38F1NrXsz5y4/rFFTrgbuNBZarPapTq
-         oqYYNuL0uNmkAY/05MPJPEDL+dC/BCn5Y8YqgzBnZGiMpq3Bh+1rkOjqBq22/uHr0clI
-         kx3rnp3alzqixOhnmuHsJ9PI40YpuGcAdxI8wGl0hIoxJE6fjsp5PxKbThyQZVxIGdBS
-         CbZgz2ZtNO7lODLxfCr3n7utvnNRH+zcc+MAA24JjCAZVNqKfbtSWMz+1zqUgXWdKo4e
-         BW6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0DthtS1U1pZ4Fbe0dWrF5fFOKxVek98WD7TwcKkU6hc=;
-        fh=qugFPmDUbl3Rikvuj6e4s9sL6AxxHqRXhCyBeuz0AY8=;
-        b=LJoSsJ1Qhb9PNDcu5lcdSj+FZ9mljn4F6hBHasZKABCbDsDgnHqjuC5Zb4MrV9SmWm
-         K6iMpii3U++9hG3YWxFAHQLLvrZ2/ACp27iIBacKSJe1wBdM94NPvWzWxYKwPlYzOCCc
-         KraOj4QRfKOHmvlm0cgRo7Kkf++tKgMl8VWC/Z5EbDNznDZSzdDv69YEbxol0CVoUgSC
-         UVng9OYDvMyAZLdBo1YW+As+EHkCEvZLPK89hihDfhN+LwiQ0HTJ4bgxhET3LHpQsngT
-         ICx5123Hcu8Lx0HmTLMU9yu6rdrzBt5LN3JG5ZWs7XJkvgsmP/sIOm6cvs90QjY+TEBa
-         8b6g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1779205331; x=1779810131; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0DthtS1U1pZ4Fbe0dWrF5fFOKxVek98WD7TwcKkU6hc=;
-        b=fzU10xQg5bzlmWQx8Q3C9G4eXRlo3UQV+1Aa+Y6CPaQr8YmNSYATd5UMS5EbnpC7mr
-         aDHixamBc8Xs7lTZxUfdraBiNH6WdQ4PW0hKsoBJ1O28d/1BYbRPlgUZj+YgIUYlhYEl
-         vPkNpvO0htxj0FeXSFDvMDYaecYTwaxXqzTpk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779205331; x=1779810131;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0DthtS1U1pZ4Fbe0dWrF5fFOKxVek98WD7TwcKkU6hc=;
-        b=MvXWlvsKUBc0erAI3qdckmFi2Ct/Q3qMc47kzy2SaJHcw/zfgzTJ+UGOpQlw1drjhW
-         6FXyPd915yGYYtuuWvg6ZKJxDNPijcWLa30qj7pE1u+F7pKqajnZQz0tNNqM0NLyd4WW
-         DaAD/hbxj57tjNPJzaMmADMB4aWo5NdRswcayRyVUU30SPTY6qeJChiE8+DQzAm0uzIo
-         0Ba0CItdaOCS5A6llhRSmno6kJ+s93iR5xQd4jVi29cVF6iVsx5dIm2Tixnd489NR8G9
-         mYOP3YBSw7K2D3bHzc6xWAMPr4vHhxgN38l5ukxydV4zvILyxnjYTRFoujl3QnMoH4+J
-         DgGg==
-X-Forwarded-Encrypted: i=1; AFNElJ/kxRc6tu5TJXJ4jIqrK4ZqWleqvq04KyooZp98SoIi3ReI0z4ysesgAu5ykx3LVH8IfHDaNtQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8NColihRDMRz3oO7tXiBWQX2to33H1JqA+MA6AkOQ7r+hajga
-	bDAvuxw/tW5GrW96IAfZmmRqtwPkAzMgYLWkMR2us0btRaO2+27GVinMpe5D2q1YxehBGNIirQP
-	RbrC95Au1rDg5gq+wpv6a3gZpTpmgsWCYSrl86E6DLQ==
-X-Gm-Gg: Acq92OEk/5h6p9odiVBDTR6M5Ie8Kckn6AbJ8XtqFCWJLBID/Osk7/fsrQ68c+OIIiv
-	0a7xFG4R4XKd+uFJ0RWlBFCy0Ie2gCIfo+7zA9XcYxY6Pu6zoD4n6UYhwac0X8CS9CVtVNv2Xpq
-	GFZeABO46Oq/XeYEZ3o+dPo9v8uu7v/c4KyQCVv59ptPDn/CoFkT78TOWflxz6cT93VWHrMHbWg
-	hEgAjsWVp3F6FIwJiA82jdg2b6upAxR/JsDej67J1hXiuOZwq0WR4a1naW/UwVl2ze0i4LKXUnX
-	b7+QZO0DVfgJheMlVQ8VIIcXoAJw+LVqMWmcbc8=
-X-Received: by 2002:a05:622a:2614:b0:50f:135d:9508 with SMTP id
- d75a77b69052e-5165a30cc40mr246584771cf.55.1779205331232; Tue, 19 May 2026
- 08:42:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1733AFD0A
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 15:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779205740; cv=none; b=GHlgZMpLPUKdHEtSUJMr7QjygkLJJSVcOI8DDJ9+KNegjI6WoUh3IRMfc2G7A6DN2qBl80IQNdNFjEfzb1zi33JVV6oyuUr73F3WFAg1PHnicNNzXBJLO0g9XERtv8nGpeBs9YBY+KkvsCmnfHs5PtPphk4afj30N1+hYNaYVDs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779205740; c=relaxed/simple;
+	bh=BmArmLUFabXkv1FN5bMis9iz2OEPjQisfyx08p2TqZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mlapATDg/6C/w62TzUhaEXYfwliGVaNOHGARHysffWQPb/BEVxypEhm5UnjvtVFXkk6JC3EHWBselm9PoZcioZd1dW79GBwFOdJdxFjQowdPou42nMa0ikdKo1fvMplIAuOEh73Nbw6rLxeQ0py5V5lXq6AfbFB3XKqUo37krWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMdOb61l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7404BC2BCB3;
+	Tue, 19 May 2026 15:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779205740;
+	bh=BmArmLUFabXkv1FN5bMis9iz2OEPjQisfyx08p2TqZA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YMdOb61loSo+TYmzJxw3rQ+H2q7bhA0m4nvzpCWSkkkBRASzRBUH0RDW6JviAUgh3
+	 0gfylxFkCJeL5GiKrVcIUE5MNw+GvsftDHC0Kam+HT0ZMntGQT1u/9G1XIfGeM5qYm
+	 W0zXLwX456416FGSFdqtblXKR8RLnShbjlLa4b3FuKQTeomTkTcRKdWbFzxteW5ZsR
+	 hbaolGCxFd1Rgt2OxaW9l5et7+UggRJaKET0W85BHOtjYMmVsN85Hxv4RBQ9bQaW7o
+	 6U+EN8HFYaxe2voKkafM1l53xlt7fmF2D8fawJR5UiXK2SGPPlHGNg8W+GKnFGu43I
+	 tj4VxDndWi9Vw==
+Date: Tue, 19 May 2026 17:48:52 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
+ post-exit
+Message-ID: <20260519-lehrling-backt-261d022de809@brauner>
+References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
+ <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
+ <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
+ <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
+ <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
+ <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519004746.3203156-1-mochs@nvidia.com> <CAJfpegsTsKqq+QQKyBexQFP1=EGd8YiMT=rbaCOPeTBvLsY_JQ@mail.gmail.com>
- <F3BA075C-8E63-4077-B701-63269703155E@nvidia.com>
-In-Reply-To: <F3BA075C-8E63-4077-B701-63269703155E@nvidia.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 19 May 2026 17:41:59 +0200
-X-Gm-Features: AVHnY4KcsTJrIRXcU7-IPyEiVnSNZcnyE9sN6B_1CphQIDbfkZs7nyMEQjPcuJw
-Message-ID: <CAJfpegsJ+ZQW_WteMypErq31hggYsMMkBOPd0o+vifhAS6dPvQ@mail.gmail.com>
-Subject: Re: [PATCH v3] fuse: back uncached readdir buffers with pages
-To: Matt Ochs <mochs@nvidia.com>
-Cc: Bernd Schubert <bschubert@ddn.com>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[szeredi.hu,quarantine];
-	R_DKIM_ALLOW(-0.20)[szeredi.hu:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Type: multipart/mixed; boundary="ej5tgo2oo7zqhnzi"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-diff];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249630-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249631-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miklos@szeredi.hu,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[szeredi.hu:+];
+	HAS_ATTACHMENT(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,szeredi.hu:dkim,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A9504582124
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vm:email]
+X-Rspamd-Queue-Id: 56256581E8A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 19 May 2026 at 17:34, Matt Ochs <mochs@nvidia.com> wrote:
 
-> With out_pages but without the byte-size cap, fuse_simple_request()
-> still returned -ENOMEM. Capping the request to 1048576 bytes / 16 pages
-> made the same test pass.
+--ej5tgo2oo7zqhnzi
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Can you tell why is it failing now?
+On Tue, May 19, 2026 at 09:37:25AM +0200, Christian Brauner wrote:
+> On Mon, May 18, 2026 at 08:41:43PM +0200, Jann Horn wrote:
+> > On Mon, May 18, 2026 at 8:11 PM Linus Torvalds
+> > <torvalds@linuxfoundation.org> wrote:
+> > > On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
+> > > >
+> > > > I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
+> > >
+> > > Possibly. That said, the permissions on that directory changes when
+> > > the process becomes a zombie, so it might almost accidentally be ok.
+> > >
+> > > > pidfd_getfd() is just more severe because it directly creates an FD
+> > > > for the file, instead of going through normal VFS open() permission
+> > > > checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
+> > > > stuff like anonymous pipes or memfds, where security mainly relies on
+> > > > not being able to reach the inode.
+> > >
+> > > If your security depends on "not reading the inode", your security is
+> > > not security, it's a joke.
+> > 
+> > I mean... __shmem_file_setup() explicitly creates files with
+> > S_IRWXUGO, and that is what memfd_create() uses. So the security of
+> > memfds in particular always relies on the inode not being reachable,
+> > unless LSM restrictions are involved.
+> > 
+> > user@vm:/tmp$ cat memfd_test.c
+> > #define _GNU_SOURCE
+> > #include <stdio.h>
+> > #include <stdlib.h>
+> > #include <sys/mman.h>
+> > 
+> > int main(void) {
+> >   system("grep ^Umask /proc/$PPID/status");
+> > 
+> >   int memfd = memfd_create("foo", MFD_CLOEXEC);
+> >   char cmd[1000];
+> >   sprintf(cmd, "stat --dereference /proc/$PPID/fd/%d", memfd);
+> >   system(cmd);
+> > }
+> > user@vm:/tmp$ gcc -o memfd_test memfd_test.c
+> > user@vm:/tmp$ ./memfd_test
+> > Umask:0002
+> >   File: /proc/699/fd/3
+> >   Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+> > Device: 0,1 Inode: 2064        Links: 0
+> > Access: (0777/-rwxrwxrwx)  Uid: ( 1000/    user)   Gid: ( 1000/    user)
+> > Access: 2026-05-18 18:24:31.669411864 +0000
+> > Modify: 2026-05-18 18:24:31.669411864 +0000
+> > Change: 2026-05-18 18:24:31.669411864 +0000
+> >  Birth: 2026-05-18 18:24:31.669411864 +0000
+> > user@vm:/tmp$
+> > 
+> > 
+> > (Anonymous pipes are less problematic in this aspect, get_pipe_inode()
+> > uses the current_fsuid() and sets mode 0600.)
+> > 
+> > > The /proc/pid/ interface has been around forever, and that's ignoring
+> > > regular ptrace too. Files have absolutely *never* been private, and
+> > > anybody who thinks they are some private thing is just wrong.
+> > >
+> > > And being a zombie doesn't even change that - files can stay around
+> > > afterwards, and it's not a problem.
+> > >
+> > > I really think the *only* bug was literally the whole "people didn't
+> > > think about mm->dumpable as a security thing wrt zombies"
+> > >
+> > > (And the entirely unrelated bug of IO-time vs open-time, which we've
+> > > had many many times because it's such an easy mistake to make).
+> > >
+> > > > I think that would be kind of ugly because here, the MM is not
+> > > > actually used for memory management thing; instead, the MM is just
+> > > > used as the one place we have that stores state that is shared between
+> > > > threads
+> > >
+> > > I agree. Except it is *not* "the one place". We have multiple shared places.
+> > >
+> > > In fact, I wonder if we should simply just move "dumpable" into
+> > > "struct sighand_struct" instead (or "signal_struct"). Those stay
+> > > around until the task is released, and they kind of are more natural
+> > > for core dumping, since it's about signals.
+> > 
+> > I think signal_struct is not unshared on exec; so in this sequence of events:
+> > 
+> >  - task T1 is a non-dumpable task
+> >  - task T1 creates another thread T2
+> >  - T2 exits
+> >  - T1 goes through execve and becomes dumpable
+> > 
+> > I believe T1 and T2 are still associated with the same signal_struct,
+> > which means that even though T2 is part of the pre-execve process, it
+> > shares state with the post-execve process and it would wrongly be
+> > considered dumpable.
+> > 
+> > I hadn't realized that the sighand_struct is unshared on execve, I
+> > guess putting it in sighand_struct might be an option. (An
+> > implementation detail regarding that is that a task can currently lose
+> > its sighand_struct while there are still references held to the task,
+> > but I guess changing that would be easy.)
+> 
+> struct sighand_struct is not unshared on CLONE_VM (without CLONE_THREAD)
+> during fork(). IOW, it's possible to do CLONE_VM without CLONE_SIGHAND.
+> Right now commit_creds() broadcasts dumpability changes to all tasks
+> using the given mm. If we move it to struct sighand_struct we break
+> that. Forcing CLONE_VM to imply CLONE_SIGHAND would break vfork().
 
-> I can rework the commit message to make that distinction clear.
+One thing I played with is to move dumpability and exec namespace into
+struct task_exec_state which hangs around until the task is freed. This
+kind of works and effectively splits the permission related stuff out of
+struct mm_struct. The problem is that callers now need to take care that
+exec_state and mm_struct are in-sync. And we have various interactions
+there. There's at least task_lock() and exec_update_lock(). For example,
+mm_access() relies on exec_update_lock() so task->exec_state needs to be
+updated alongside task->mm during exec_mmap(). It's all doable but it's
+certainly subtle on its own. One advantage one could argue for, is that
+this move makes it clear that dumpability is not just a concept tied to
+mm but is used for permission checks beyond it.
 
-Please remove the request size cap from this patch.   We need to
-discuss fixing that properly: limiting by max_write, while might seem
-to make the failure go away,  is conceptually wrong.
+Anyway, I have a draft of this. Please, it's not pretty and it's a PoC
+I've done it so that we can look at something rather than just wave
+hands. I don't even know if it compiles.
 
-Thanks,
-Miklos
+--ej5tgo2oo7zqhnzi
+Content-Type: text/x-diff; charset=utf-8
+Content-Disposition: attachment;
+	filename="0001-pidfd-refuse-access-to-tasks-that-have-started-exiti.patch"
+
+From c64938bbcf9f473db0e95b714746e57b03efc334 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Mon, 18 May 2026 10:32:11 +0200
+Subject: [PATCH] pidfd: refuse access to tasks that have started exiting
+ harder
+
+The recent ptrace fix closed a hole where someone could rely on task->mm
+becoming NULL during do_exit() to bypass dumpability checks. This api
+here leans on on the very same check and so inherits the fix.
+
+But there is no good reason to let it succeed at all once the target has
+entered do_exit(). PF_EXITING is set by exit_signals() at the very top
+of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
+the task is committed to dying and exit_files() will release the fdtable
+shortly.
+
+Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ kernel/pid.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/pid.c b/kernel/pid.c
+index fd5c2d4aa349..f55189a3d07d 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -885,10 +885,12 @@ static struct file *__pidfd_fget(struct task_struct *task, int fd)
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+-		file = fget_task(task, fd);
+-	else
++	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
+ 		file = ERR_PTR(-EPERM);
++	else if (task->flags & PF_EXITING)
++		file = ERR_PTR(-ESRCH);
++	else
++		file = fget_task(task, fd);
+ 
+ 	up_read(&task->signal->exec_update_lock);
+ 
+-- 
+2.47.3
+
+
+--ej5tgo2oo7zqhnzi--
 
