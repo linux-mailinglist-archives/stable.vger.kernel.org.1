@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-249423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A6rB5u0C2q2LAUAu9opvQ
-	(envelope-from <stable+bounces-249423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:53:47 +0200
+	id iPEONmy0C2q2LAUAu9opvQ
+	(envelope-from <stable+bounces-249420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:53:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82A2575CEF
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:53:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D83575C9E
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 02:53:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 647F93053BAC
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:52:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C8BB3038139
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 00:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36822DEA94;
-	Tue, 19 May 2026 00:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1C2874FB;
+	Tue, 19 May 2026 00:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="KDQrKJOq"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="FQgGJ4kO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C4C24A047
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 00:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCE726982C
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 00:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151955; cv=none; b=Jg8joLZgtqraVv4aa6pY+s6MR8do0aMOa1NmT90tymp3riRFG4l48+XrO0uptEuX4eBCdzZmLiy7zJEj0PFzsHR+drKckSXefL05HONzj99woBBpxmSbRQLoHxa1Pu3267IV0ET7d18GovOOfiTPUe7syRXcZxi3zsChGsTJlTs=
+	t=1779151953; cv=none; b=OmhO6MAZts83fNKQ8GHIqQBi6Nut3gnexahpDa2q89bzbdtA3XXGcxA8u2DtfANR/BEwi9pf+BO0VszIpk4xqm9KH4gS2Ej4kkZbVgGohC6IwGv5lAnKHrzuSIpQdCIKXtaaf7lq0rX44IBTEp4UxgMkjDYI0s3TN0Hy1BJOSXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151955; c=relaxed/simple;
-	bh=UKwTxR23bo/8190Ma3oEAswzHLxiNKOJzcKPyM3XidY=;
+	s=arc-20240116; t=1779151953; c=relaxed/simple;
+	bh=7oeVwKpqCxGqOnMbjsP+k2FBysBipybyK2sSj3BSta0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dx7yEHEOKsTNFXD+uglXgR12y+MLPy8rXzYTWnz+saz0IS2CdsVW8/u2Vi0z8zvenZmd5L7wviBGS8YgJG+aszDLA3IBd2c3xterk1m0XHZhcLHAxF7DLu9jnt1V6xD92C5hpER5THeH3VS7515ejvYSZOizHrfvkIRijZU1y1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=KDQrKJOq; arc=none smtp.client-ip=74.125.82.50
+	 In-Reply-To:To:Cc; b=tX8JyfJ6XK8MJcxZ2ZWQXmkcHCG+7RuXPIy8tZZi/Jfh3qdl7Sundp7QoO4ju9DuV1qfOQA24am55wNro0EDvWmo0qKd0azLEq5ZcLS9AnHnF2aTsswSCW6zkOSyu226oDjANM2lfUDb/Hr19hd5K9D8Hor3JWdCSCTg7un4DBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=FQgGJ4kO; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-132830d8281so11559004c88.1
-        for <stable@vger.kernel.org>; Mon, 18 May 2026 17:52:31 -0700 (PDT)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2f00a567cfaso2059638eec.0
+        for <stable@vger.kernel.org>; Mon, 18 May 2026 17:52:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=nexthop.ai; s=google; t=1779151951; x=1779756751; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ewneUiTeW4FFURX4JgSEmHD5g9yyYbAjzLEjC7sMhRw=;
-        b=KDQrKJOqDWANIBBqazkc/7Tn+rqj42Ln0vZTvIf3QMUiswXR4TAbNW1YZ4rIJOIESv
-         p3Tbw6e9tHRKbgfzvmXlMs9Vru6V1YY8vzVtSMd2AYE4PEBpeGgucIzSo43ZkMrVyQn+
-         C/z0/JSQTw3dWykRwUpqlhFEc4/CLEVGr+wXjj1Qg6a4bV52zonueb3Mhd5XIEOE7If4
-         IbkAnPyuEEn7ruNPQwcjd+jd86JipRALBX3Yxu3BWD3/siULZxHtddtKHkrP+Ss7R356
-         MXJj1dZHCrMh6luFHMFFhFGtBcYC1emEEOPfeC9cNMFo6/dA27qlpcgzSsmB3fcSb4w7
-         j0TQ==
+        bh=PonswPhkAzDBi/+Jp4z7N6H9Ghz98afuWr/1QrXWWfU=;
+        b=FQgGJ4kO77jKY8q6xhwk6HsxZOwX3rJWBa3v+NJx4m0MrakbxCRAamMStUDjYYHjPe
+         n7WXoMre5w7wxYSFx0pXDvph4r7/N62U7wgc7ydrtOwyj3dKHYtqaUa9mvq+KBJfv96L
+         QLZg7Ny+gHyYI5qIghKkp6WuQMHYwbHwY5+a5Ry+nMte2caSB5834Rb8Y3czXspxEYJM
+         KUxBW5RIqQsn/o3X49QfE0y6Ms+SV8hGSvkzu3Su8oVcp5PEzjpRsT1JfQf3npfXLxTF
+         fSC6SBJB1JR+PeY8J6fjxB3CPMM9YFo+ilKuWlo3BXqpnhe/YXMobz3+3Bnv+95s4zkF
+         Qp3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1779151951; x=1779756751;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ewneUiTeW4FFURX4JgSEmHD5g9yyYbAjzLEjC7sMhRw=;
-        b=UcfRIOqxfskj24GxRcr1Ce9tkvDHZfpFDrFuaQ4bELJ2kbP8OaYFwdp4wpglk39wCK
-         8e6QcxIz33yBAhcqBzMsiI/MTEm2q/com7PQOqTNVva2Tk+p7tfIjWe2bzWWucGaXxGF
-         iaLraviBKBHOsYFWhwDc1SdLky0R6U9kn8UKevMYGGM/sa9NkUTWs0PTaZmd2RLWcXb3
-         DN5w1iiWWmYPLf1qVVK88PdEKL+FYsIHJsIhGj4ClPPfzWsgqoCkhBwJxN78nWUUM9tB
-         ds5FupwNxdFSgxTgPmvRtiGElxULOrJjMZYTxiWQjzTrUVUf6ZlYKZCxXn/m3x2ALMDA
-         9Q/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/2Va+tioy4cfMxv6/aj8rKTy/YW4piy0zvascjCjCMj4okzRaykmuPYNhkeDIT0z6XBM5WbpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3oWx2+YQETIz8G8N3Q4z8Axle4qZI2bXljaCXRToXZHVSw19W
-	zEf7rVUteEMufJ9g7CUjetSX4w05nh1RsT9OlqMXH1tlCYnquspGSlGHlJxVKiEmK/g=
-X-Gm-Gg: Acq92OH6vfPQyK3gHJOb7JWEjHnDCCZI+0A8pVrESGISYr/1+TBfjeoxABi7UYMbl0m
-	JhgUttbTViNMxhHbS0KjnqFEcCVmLz61k2XDeKYV9+h+JFaOCTHXtKtGOB73HsH9rOiybVezcJM
-	ze2UKRxkcxOFi70Z0YBLG35u6epcsiP+8ACnjVCBlVOc61apguazCEI7Ff70+N1W5qMVfZ2cTro
-	0euGr9mcopxocQOdG2EniTTpYmAKm2IE16flIukkcfkdKqx/rVwsG8VZev0AeRTnpx/cySE7X2e
-	eLqtcdSO5AthAhfujebYAWzsiO1oStwD3aFmvC9wE8Wbor13qSEN83nUfZ7THVCECtvmi2z+0Oj
-	48RBUxXEeZcl2MTtpS+aTGQowdTNWlmLCPgpf3vayO5EVStVZ/U+PiYBMI1ok6XnriCdT9nWDl7
-	UKorSHoE8+MFzOU7xnL57k50Liew==
-X-Received: by 2002:a05:7022:4183:b0:132:1e01:8737 with SMTP id a92af1059eb24-1350542e5a3mr8640606c88.26.1779151950688;
-        Mon, 18 May 2026 17:52:30 -0700 (PDT)
+        bh=PonswPhkAzDBi/+Jp4z7N6H9Ghz98afuWr/1QrXWWfU=;
+        b=lX5P1H6nBdgJ/Cbt4ByMKINxsLQyupOPzHaPe16PbxPUh44aigkVLhA9acSMZDIToL
+         av9xPlL4s6SMl5DbgnxJR1m294Lvj8N8N8Pj7EQ1KUu4KAOCug1QlmF5YGCTCR5Z+E7b
+         /JfwXagC/g0JxcYWyA9jUK1V57uOZAtmHq6uZvXTU74QHkMlch1Kbr4V7E11gGeWudme
+         FmeWh++1Ol8WrTrPc9h0mvoNRAIIz9RYNTKyOTfINM37t7do8tfTfxvYlJLGPQa1tLvV
+         +x8LLzjyUdaArI6MdIBIDllN41Nuq5bQgkPteCiCB25ff/9aE9KC0k1oYfFmTO+JK+uM
+         ztGA==
+X-Forwarded-Encrypted: i=1; AFNElJ+hR7uauM1DNUQul6j05hbTJRwgmatKlJ4sC3jf0/vg0xQrTVlBy4k90yjlrdN3eWW7/rPkXzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+d8mqPOTBFAwqVuZH9tk5qQlK4z6ShqQAA2WvZ8D/LiDwxUfb
+	hsQRBBMAorKmLaEuteTicVIcUFMnGoC96445HQfyWG2Ax4OF2H/HZncwUGnws1Snx+o=
+X-Gm-Gg: Acq92OGFkSMJOu2TwX50fAal5vY/+1KG3LWunNyFCFthFANDPTnqxysKcq5OJk2u26C
+	WSUuaIMQoG+lDIGdEUyfOnulfxhmyVTcrttxugHduGYKb4D34NoKhGHnM69iTbt9euSmvgcN0h3
+	hDeWBOqAsDRMDfTzofm2bCso0Pkt5DjDPB86WzYW+ETsDc/LR7B3FHoQrjLQ8LofqpkigVT4Y/I
+	UlHTajZT7Qx+mG2/7SfTI7MnC7K6/1TC7y+Eot9E8cVYI89cZl5fk4SpIKKZBwrcE88nfp7JGHb
+	MnNWRtyGo9MC4Xa3ojx2hgZwcISBzCutG8DnyY91SKlC1cn+UWNYk1w6XJ5JdnkMZF7b71WBqC5
+	M/60AGCkXYlAuiE40LTr13YxUvcfZ7eT6LjwO166fOpYdg+VABw7hxqFxAKz6V7MjTBwtSfvRPD
+	XqK2hk7j1T8unk6QwF1R5p1RVr2w==
+X-Received: by 2002:a05:7022:238f:b0:135:60db:3412 with SMTP id a92af1059eb24-13560db354bmr3638913c88.10.1779151951380;
+        Mon, 18 May 2026 17:52:31 -0700 (PDT)
 Received: from [127.0.0.2] ([50.145.100.174])
         by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb93f3sm22546633c88.3.2026.05.18.17.52.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 17:52:30 -0700 (PDT)
+        Mon, 18 May 2026 17:52:31 -0700 (PDT)
 From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Date: Mon, 18 May 2026 17:52:25 -0700
-Subject: [PATCH v3 1/8] hwmon: (pmbus/adm1266) cap PDIO scan in
- get_multiple at ADM1266_PDIO_NR
+Date: Mon, 18 May 2026 17:52:26 -0700
+Subject: [PATCH v3 2/8] hwmon: (pmbus/adm1266) don't clobber GPIO bits
+ before PDIO read in get_multiple
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260518-adm1266-gpio-fixes-v3-1-e425e4f88139@nexthop.ai>
+Message-Id: <20260518-adm1266-gpio-fixes-v3-2-e425e4f88139@nexthop.ai>
 References: <20260518-adm1266-gpio-fixes-v3-0-e425e4f88139@nexthop.ai>
 In-Reply-To: <20260518-adm1266-gpio-fixes-v3-0-e425e4f88139@nexthop.ai>
 To: Guenter Roeck <linux@roeck-us.net>, 
@@ -99,23 +99,23 @@ Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
  Abdurrahman Hussain <abdurrahman@nexthop.ai>, 
  Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779151949; l=1909;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779151949; l=1613;
  i=abdurrahman@nexthop.ai; s=20260510; h=from:subject:message-id;
- bh=UKwTxR23bo/8190Ma3oEAswzHLxiNKOJzcKPyM3XidY=;
- b=xMhWNO55f7uVRzwHl8EIoXja68oza75rFM5LQtWDh61+3xx1p6acSL1AwhpH5fIuFDmlUhGJr
- K1cQHsXlSqTCoTjX5iLRkRb3K+kf+lgwi4Bd8npwGK39ZvPlUm6AqK9
+ bh=7oeVwKpqCxGqOnMbjsP+k2FBysBipybyK2sSj3BSta0=;
+ b=xDW5l49mtttRT+LsIzPeEnV6ZnDcneJeKt08CuJu2RFwl+Iq9V4lOY6NCS2cJYZMS5TA1QJKL
+ ALlOlTCDXjfAMwewAaxc+gY2de79j3fiY4570urPmwMWQqgOTr/ZOQs
 X-Developer-Key: i=abdurrahman@nexthop.ai; a=ed25519;
  pk=omTm9cCAbO0ZhS32aKfJDKue0W3sQGpG9ub5eYHif8I=
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[nexthop.ai:+];
-	TAGGED_FROM(0.00)[bounces-249423-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249420-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -125,38 +125,39 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C82A2575CEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 85D83575C9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-adm1266_gpio_get_multiple() iterates the PDIO portion of the
-caller-supplied mask using
+adm1266_gpio_get_multiple() zeroes *bits before the GPIO_STATUS loop
+and then a second time before the PDIO_STATUS loop:
 
-	for_each_set_bit_from(gpio_nr, mask,
-			      ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
+	*bits = 0;
+	for_each_set_bit(gpio_nr, mask, ADM1266_GPIO_NR) {
 		...
+		set_bit(gpio_nr, bits);
 	}
 
-where ADM1266_PDIO_STATUS is the PMBus command code (0xE9, i.e. 233),
-not the number of PDIO pins.  The intended upper bound is
-ADM1266_GPIO_NR + ADM1266_PDIO_NR = 25.
+	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, ...);
+	...
+	*bits = 0;
+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+		...
+		set_bit(gpio_nr, bits);
+	}
 
-gpiolib hands in a mask sized for gc.ngpio (= 25 bits on this chip),
-so the iteration walks find_next_bit() up to 242, reading up to 217
-extra bits (a handful of unsigned-long words: four on 64-bit, seven
-on 32-bit) of whatever lives past the end of the mask in the
-caller's stack.  Any incidental set bit in that range then drives a
-set_bit(gpio_nr, bits) call that writes past the end of the
-caller-supplied bits array too -- both out-of-bounds.
+The second *bits = 0 throws away every GPIO bit the first loop just
+populated, so callers asking for any combination of GPIO and PDIO
+pins always see the GPIO portion of the returned bits as zero.
 
-Substitute ADM1266_PDIO_NR for the constant so the scan stops at the
-last real PDIO bit.
+Drop the redundant second assignment so both halves of the result
+survive.
 
 Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
 Cc: stable@vger.kernel.org
@@ -164,22 +165,21 @@ Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index d90f8f80be8e..11f9a44f4361 100644
+index 11f9a44f4361..4dd67c02b412 100644
 --- a/drivers/hwmon/pmbus/adm1266.c
 +++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -211,7 +211,7 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+@@ -210,7 +210,6 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 
  	status = read_buf[0] + (read_buf[1] << 8);
  
- 	*bits = 0;
--	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_STATUS) {
-+	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
+-	*bits = 0;
+ 	for_each_set_bit_from(gpio_nr, mask, ADM1266_GPIO_NR + ADM1266_PDIO_NR) {
  		if (test_bit(gpio_nr - ADM1266_GPIO_NR, &status))
  			set_bit(gpio_nr, bits);
- 	}
 
 -- 
 2.53.0
