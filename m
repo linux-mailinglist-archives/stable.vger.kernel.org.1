@@ -1,223 +1,182 @@
-Return-Path: <stable+bounces-249618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLEJJKF6DGoSiQUAu9opvQ
-	(envelope-from <stable+bounces-249618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:58:41 +0200
+	id 6EgxKtZ9DGoSiQUAu9opvQ
+	(envelope-from <stable+bounces-249619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:12:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC5058101B
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 16:58:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060A05812C8
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E9333221D84
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:48:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BCB4304C8A1
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 14:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1EC3546E4;
-	Tue, 19 May 2026 14:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B08326D45;
+	Tue, 19 May 2026 14:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cU2mGBRz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IrDkPxvr"
 X-Original-To: stable@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010042.outbound.protection.outlook.com [40.93.198.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D063546D5;
-	Tue, 19 May 2026 14:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779202061; cv=fail; b=Q41+V3/Bo3LQ9IANvSZnNny790O+SjqjreTpthjopejWomTmJ4mkm2xljprn7YUakyVvajCIib/4ckbhsPiNz9R7BGHjqPd7/l0GqI4hGriQWDeUIyzOD0pGHyawV1MjNlyk1Ygbt256UwpJT6kgGQ4AADaEMlHM3BI2zhVtxFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779202061; c=relaxed/simple;
-	bh=FBdAV+0c35bxOs2gz0yZlOcFFaNLLgcAg3cs4duom54=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hE06tLvf5jah2OpwxgddYFR1BNR/WUYiPnLvFJQqY2HowQqzIYMKLqj1EZuZZFKgDid5B3sNGTenJtGCEOMSCLTVeMbKFeUYX8xaSrsQjxx2a+hiaHgxivXVoD6cZ2r1YAaZqGa5IWPxGGQWoevzzH3sFRtAV8cD/mY4WorCzME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cU2mGBRz; arc=fail smtp.client-ip=40.93.198.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YoFnLJ4iqyK2x+DQRcfTNZ/N/NUWBwO/kIOPcPTVrJCVeDv1fi9T9/3foToaPo1Db4gSIEspNGKH+KkxVMsOLB4K5fuuEeCCItjR0aBbP+/OB5oLxk6ApbGlwsKweiyNQs7UEelga6SGDBQkBbC9CirgGEeoYMLmnmm4IGMnfVKx+uWzXvYWf1tmJWyOeEY/u7jwow+2fMXkQehJJcTCNJdW2OOcsLU6jPf2HkOcktuEQ43lZntZSgItqVVD4jNzQyt/AIze+zqDK2nKjXO+j1I6S5QCn+cqACCu2wAbr5vQzRlYGOLk4HwUTi3w9fg4PQflGnkWFKddqEe0ZHLpVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w3iPY+8H0z0cGfeKfm9eO1Rar98Fab+gJJVy9TX4dtQ=;
- b=DaN/fbeOxheKNVZpWnMRiHffBPkFo+sByM1K4vIMnAa3olTbe6p7uXiUiyuh/YZHrkbcmm3yOqp/V9dIJCxtU7DQqdQ49Geb/Nihir735yYR0eu3JoZ8p6eBRIr28s9o/IFTGkB+iLrYpJypP0zbHFjs4DwqjssLnJxK1LV0dN15R8nlTb9tD2cbOmaLaRyQuQREIo6CGIq+dEZnWvcl+XqDzteffQiRWppdpqeEykSBDWfYl1p202RdwnhGvLpsc9yPgBH8lANp2ZMI09/B+4eAJTibq5VRrltTKa6sXbAFsK+ogZGdlvwNvoPQ9lgV7yJB3HUlLBr7s4HRgf9TWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w3iPY+8H0z0cGfeKfm9eO1Rar98Fab+gJJVy9TX4dtQ=;
- b=cU2mGBRzGxVviMVA8g8xpiZVmc6f4Xq2GUfxzv3CopeZjcrjlvXl6ezXSoENCseIK6L1UyvuDobaDSzjPy+u9XpAUxlgbjhBqQKEGby6SBM/uf1VS1cRh0C/k8IK3z7Nfrpnc4BMi7odf2Pp/Ie8WogKlDv+4wH/oDU2XQ07Xy3hJr/qXwb6j6SG4Q5lhoam909Wxd317wrC1+zMcxUIcYFvBtdTz677TXeRMZ4qiLHSR8a4OyMURmiqWz9atOJAcFW0wb/8wOQ4C4y4KezE//wrpCpn4S+FT72fAMC7zkpglccIwK2qs2fiLcfHBU9jR7dlz8KVlAiSQV2JT/w1Lw==
-Received: from BN9PR03CA0396.namprd03.prod.outlook.com (2603:10b6:408:111::11)
- by CH3PR12MB8754.namprd12.prod.outlook.com (2603:10b6:610:170::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Tue, 19 May
- 2026 14:47:30 +0000
-Received: from BL6PEPF0001AB57.namprd02.prod.outlook.com
- (2603:10b6:408:111:cafe::b3) by BN9PR03CA0396.outlook.office365.com
- (2603:10b6:408:111::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.24 via Frontend Transport; Tue, 19
- May 2026 14:47:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB57.mail.protection.outlook.com (10.167.241.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Tue, 19 May 2026 14:47:30 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 19 May
- 2026 07:47:02 -0700
-Received: from localhost (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 19 May
- 2026 07:47:01 -0700
-Date: Tue, 19 May 2026 17:46:53 +0300
-From: Leon Romanovsky <leonro@nvidia.com>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Vlad Dumitrescu
-	<vdumitrescu@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Bob Pearson
-	<rpearsonhpe@gmail.com>, Sean Hefty <shefty@nvidia.com>, Kees Cook
-	<kees@kernel.org>
-Subject: Re: [PATCH] IB/mad: cap RMPP reassembly window size to bound
- find_seg_location walk
-Message-ID: <20260519144653.GZ33515@unreal>
-References: <20260518212336.337104-1-michael.bommarito@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDB7280331;
+	Tue, 19 May 2026 14:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779202569; cv=none; b=l21zHXrJ+k3nJfYDDeJricHHyGTFbqceXyAzQ0eyGincKrkjOfNdcMSTuYajItyHBYFdxZQf9hZey8A68ka1Bk+md0fI7+FF2wSzMPXJaNbqBl2DeWBIJYaJ65VzAiIi8lVF2A1QatxwNJ36/OPnz3vUul6ZjOoFmBWNF99Owso=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779202569; c=relaxed/simple;
+	bh=q9+qi0pPB4wHF8JR1gEWaEjNcHR8ZBtdrSr/12td2L4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=uKPcshv4SQwTRD9oah9JRWSe/4mg8LNf6Dhbyz60oTDpeUc5zd/0wdcMEe6me0+jOfV7XQmUDuvHFvo7Q4jZe+ZqeC1VNNahiO7vrJRd4jVoCOWg57051ltRydmu5JY/R8S5o9HN0z0SgglGwtlXENlS3ZjioZ1AW2HXnnA1DYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IrDkPxvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBFDC2BCB3;
+	Tue, 19 May 2026 14:56:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779202568;
+	bh=q9+qi0pPB4wHF8JR1gEWaEjNcHR8ZBtdrSr/12td2L4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=IrDkPxvrS3HoITD7bVTIvkEOdBQIuDaMjVcV9yvSHmNDfG6ru0Y0TB/aHVgFmrnK4
+	 /pNsbcDqwAuB7CqhqlnE7zn5K8kkFOlY1aH/dBnZn3iIBF0IzNuZ1KYAAr+r2sCgVC
+	 qWO02j3IXZwGUGTyZq2kBpPMU+XvjcfgeRAXrTcZ8PyOt70oXZCS0zOkqtt1feqCmP
+	 J7XB0NUgv7ywjrWj3S3hTwscdxF+zzpgS8R3/WxZD/EENeLok9FPtIJPj4pqtDNuAP
+	 zlMqHz2Woc7D+VKUZ8j2q6LoaWm9U7hazvGp5Ykq54R6xNHN/c3BZaeAWvxnhH/tZH
+	 HAtJzS/0p2ZDw==
+Message-ID: <e26a39da-828f-4b9d-af15-71e827919dba@kernel.org>
+Date: Tue, 19 May 2026 16:56:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260518212336.337104-1-michael.bommarito@gmail.com>
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB57:EE_|CH3PR12MB8754:EE_
-X-MS-Office365-Filtering-Correlation-Id: f75c4d4c-5cdd-4bfe-3c89-08deb5b58da1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700016|11063799006|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	NxNZme9tPfasz60MgE//aS3obMWtQPO3ia1e0SAH6lMemiUi4X3QT6rQmZ0mVBdF+d6gFFxmAjPXvMEjmhLivRPXZfes/av2IzHGCp7Bb7/MdRfejtqbhPMQPHuJIe9JHuA8ZZxMZS7OQFwoyBRsMJca5TMj2SIUrcrlsiaGUE3J3ojH4jqli8N2tAm71fqFe5/vycEW/dmh1RXAeNwGC3Mhk/CRJhKT8PkgCBPbkIGpBnsY84IeDxPP1NkdYZc0zCsf0DhAZ9uyLJJIXfSOePhWZ6WECC4uSX9dmoJLt3AfYhblWLofrim+RZ3BDpfLUwJE/USJ59SxiKJ/04p73xbeVqPDMydg0l78ckisLtgg0QaY7QSc3OQgTX7cdoTn1CHGbau1X2pYStwS6ftDy/9FW76JkAqCvu4TANls84t58LT7IIoZ8a/Q/jGlUU2i1f4VITEWCTR6vx6g4SVXP7s7sDF/XcPAorZDVmVsB4vqdWtLmWsMSl73ODol7eGsUv41H8oTlgGBxWRXBpAp9GWMRnzErrpmvLx1ffeM7GM2304PoRiA88uAb4WFROAbe1t9Ui25cOMfwicG6VvDTUPCpl4T9S3bWgZFYstoooV8kfrKXSBV/S0bSUpJkGG9hqZlDvPXnTneLDHaHcH7f0ZDdbvF+ZqLCMs+HGbdnx9Y33hQUhru9+CXmL3nJ02PFvKVzRtWv/nKXs8TgfhGXEnCozIw+W9wk9n1B34cAUg=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(11063799006)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	S/jRIQEuKJ7FVBW+32hhnd7UA6+aFRtunWyDb30LWidRIYmKhTRb6oKnRoZljjb2f4Cnou0SBRsVlCc/kkwRpmId5376iKE+gGZ3jbSRPRoStbdmvbDqqfjN7kVm//4SAULFdCBjdhDTCkdtkKjGGaj5EdFreLfjjIYotLCNNV7qCbG0uLyi9IiUS/n0yP/j+Di4NX/tcUxWtqtBjyJC5Knn62E+zGhx+3zePz/pJ70MmsI94U8xLLlitGQw31cAldULLjXKHQx1lpsVTWnLl1rqtvxSsCPfur6rRxfPBM4bTkM5MQ8Q5sOwaSIvqmjDFx/fX07/zTGivkkaKJl1h8b3DWzIonlFuBSInj6/vvYXdLaO6+TvVoVzRIHXu9ivwzm4SVOAzBmft1w/whDZzk2n7PEow7EB7Zho5kwcpzLE0vRvRuctzI6zqkAHdm7f
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 14:47:30.1067
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f75c4d4c-5cdd-4bfe-3c89-08deb5b58da1
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB57.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8754
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] module: decompress: check return value of
+ module_extend_max_pages()
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+To: Andrii Kuchmenko <capyenglishlite@gmail.com>,
+ linux-modules@vger.kernel.org
+Cc: mcgrof@kernel.org, dmitry.torokhov@gmail.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260518143233.16091-1-capyenglishlite@gmail.com>
+ <be6734b9-112e-4e71-9013-1c6dc5f750da@kernel.org>
+Content-Language: fr-FR
+In-Reply-To: <be6734b9-112e-4e71-9013-1c6dc5f750da@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249618-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-249619-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nvidia.com,vger.kernel.org,gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leonro@nvidia.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: DFC5058101B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	REDIRECTOR_URL(0.00)[aka.ms];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 060A05812C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 18, 2026 at 05:23:36PM -0400, Michael Bommarito wrote:
-> A peer on the same InfiniBand subnet or RoCEv2 L2 (or any UDP/4791-
-> reachable peer for internet-exposed RoCEv2 ports) can pin a target
-> port's IB MAD kworker for milliseconds per low-bandwidth RMPP burst
-> by sending an RMPP management transaction with descending segment
-> numbers. QP1 GMP traffic is unauthenticated by IBTA spec, so no
-> credentials are required. The bug sits on the IB management path
-> (QP1 GMP RMPP reassembly), not the RDMA data plane, so RDMA verbs
-> throughput is unaffected; deployments that raise recv_queue_size to
-> tune management-plane throughput are quadratically more exposed,
-> because per-burst cost grows O(F^2) with the configured window.
-> 
-> drivers/infiniband/core/mad_rmpp.c::find_seg_location() walks
-> rmpp_recv->rmpp_wc->rmpp_list in reverse on every inbound RMPP DATA
-> segment to locate the insertion point keyed by segment number. The
-> walk is O(N) per insert under spin_lock_irqsave(&rmpp_recv->lock) in
-> kworker context, so F adversarially-reordered segments aggregate to
-> O(F^2). window_size() returns max(recv_queue.max_active >> 3, 1):
-> the IB MAD core default recv_queue_size of 512 yields window=64
-> (per-burst cost in the microsecond range), but tuned production
-> configs with recv_queue_size=8192 push window to 1024 and let a
-> single low-bandwidth burst pin the per-port MAD kworker for several
-> milliseconds.
-> 
-> Cap the effective window at IB_MAD_RMPP_MAX_WINDOW = 64 in
-> window_size() so admins tuning recv_queue_size for higher RX throughput
-> do not enlarge the walker attack surface. Real RMPP transactions in
-> the wild (SA queries, perf-counter reads) are well served by a window
-> of 64, which is also the IB MAD core default. A structural follow-up
-> would convert rmpp_recv->rmpp_wc->rmpp_list to an rb_tree keyed by
-> seg_num and lift the cap; that mirrors tcp_data_queue_ofo post-
-> CVE-2018-5390. For now the cap suffices.
-> 
-> Fixes: fa619a77046b ("[PATCH] IB: Add RMPP implementation")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
-> I reproduced this under x86_64 QEMU/KVM (4 vCPUs) on v7.1-rc2 with
-> CONFIG_RDMA_RXE + CONFIG_INFINIBAND_USER_MAD, a veth pair carrying
-> two rdma_rxe links, and raw RoCEv2/UDP/4791 packet injection with
-> descending seg_num while holding seg #1. Without the cap, F=1024
-> burst produces 1022 paired continue_rmpp invocations whose per-call
-> walker duration grows from ~1 us (early, near-empty list) to ~5 us
-> (late, ~1000-deep list), a 4x per-call amplification as the queue
-> deepens, with aggregate walker time per burst >= 1.5 ms (lower bound,
-> ftrace 1 us granularity). With the cap, the same F=1024 burst drops
-> to ~0.28 ms aggregate (5.4x reduction); F=32 in-window legitimate
-> RMPP still completes normally (30 walker calls, avg 1.5 us, max 3 us).
-> tools/testing/selftests/drivers/net/rdma/ carries no RMPP-specific
-> selftest in v7.1-rc2 (rdma_rxe self-tests do not exercise QP1 GMP
-> RMPP reassembly), so no in-tree selftest delta to report.
-> 
->  drivers/infiniband/core/mad_rmpp.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+Looks like something went wrong with that reponse, so let's try again:
 
-Please rewrite this patch in human language without AI slop.
-While working on this, please ensure that your commit message clearly
-explains why the change is needed and what issue it actually resolves.
 
-Thanks
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+
+
+
+Le 18/05/2026 à 18:21, Christophe Leroy (CS GROUP) a écrit :
+> 
+> 
+> Le 18/05/2026 à 16:32, Andrii Kuchmenko a écrit :
+>> [Vous ne recevez pas souvent de courriers de 
+>> capyenglishlite@gmail.com. Découvrez pourquoi ceci est important à 
+>> https://aka.ms/LearnAboutSenderIdentification ]
+>>
+>> module_extend_max_pages() calls kvrealloc() internally and returns
+>> -ENOMEM on allocation failure. The return value is never checked.
+>> The decompression loop then continues calling module_get_next_page(),
+>> which writes struct page pointers into info->pages[]. When used_pages
+>> reaches the stale max_pages value (not updated due to the failed
+>> extend), a subsequent write to info->pages[used_pages++] goes out of
+>> bounds into adjacent heap memory.
+>>
+>> Adjacent slab objects in the same kmalloc cache (pipe_buffer,
+>> seq_operations, cred) can be corrupted, potentially leading to local
+>> privilege escalation on kernels without SLAB_VIRTUAL mitigation.
+>>
+>> The call order in finit_module() is:
+>>
+>>    module_decompress()    <- vulnerable, runs FIRST
+>>    load_module()
+>>      module_sig_check()   <- signature check, runs SECOND
+>>
+>> Decompression happens before signature verification. A crafted
+>> compressed module submitted via finit_module(MODULE_INIT_COMPRESSED_FILE)
+>> reaches this code path before any signature gate is applied. On kernels
+>> with module.sig_enforce=0 (default without SecureBoot) or with
+>> unprivileged user namespaces (Ubuntu, Debian default), this is
+>> reachable without CAP_SYS_MODULE.
+>>
+>> Confirmed present in mainline (tested on v6.14-rc3).
+>>
+>> Fix: add the missing error check after module_extend_max_pages() and
+>> return immediately on failure. This matches the pattern used by every
+>> other kvrealloc() caller in the module loading path.
+>>
+>> Fixes: 169a58ad824d ("module: add in-kernel support for decompressing")
+>> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>> Cc: Luis Chamberlain <mcgrof@kernel.org>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Andrii Kuchmenko <capyenglishlite@gmail.com>
+>> ---
+>> Changes in v2:
+>>   - Remove unnecessary initialization of 'error' to 0 (Christophe Leroy)
+>>   - Remove unrelated blank line after if (error) return error 
+>> (Christophe Leroy)
+>>
+>>   kernel/module/decompress.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
+>> --- a/kernel/module/decompress.c
+>> +++ b/kernel/module/decompress.c
+>> @@ -XXX,9 +XXX,12 @@ int module_decompress(struct load_info *info,
+>>                                  const void *buf, size_t size)
+>>   {
+>>          unsigned int n_pages;
+>>          int error;
+>>          ssize_t data_size;
+>>
+>>          n_pages = DIV_ROUND_UP(size, PAGE_SIZE) * 2;
+>>          error = module_extend_max_pages(info, n_pages);
+>> +       if (error)
+>> +               return error;
+>>          data_size = MODULE_DECOMPRESS_FN(info, buf, size);
+>>          if (data_size < 0) {
+>>                  error = data_size;
+>> -- 
+>> 2.39.0
+> 
+> 
+
 
