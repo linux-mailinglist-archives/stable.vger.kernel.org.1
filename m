@@ -1,288 +1,278 @@
-Return-Path: <stable+bounces-249631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDJGLPiJDGo1iwUAu9opvQ
-	(envelope-from <stable+bounces-249631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:04:08 +0200
+	id yIljNiuIDGo1iwUAu9opvQ
+	(envelope-from <stable+bounces-249632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:56:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56256581E8A
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 18:04:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83022581D45
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 17:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E761F309A80F
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:50:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E84AE30858CD
+	for <lists+stable@lfdr.de>; Tue, 19 May 2026 15:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039C03AFD1B;
-	Tue, 19 May 2026 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA5C3546CA;
+	Tue, 19 May 2026 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMdOb61l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QEiXkpkR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1733AFD0A
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 15:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779205740; cv=none; b=GHlgZMpLPUKdHEtSUJMr7QjygkLJJSVcOI8DDJ9+KNegjI6WoUh3IRMfc2G7A6DN2qBl80IQNdNFjEfzb1zi33JVV6oyuUr73F3WFAg1PHnicNNzXBJLO0g9XERtv8nGpeBs9YBY+KkvsCmnfHs5PtPphk4afj30N1+hYNaYVDs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779205740; c=relaxed/simple;
-	bh=BmArmLUFabXkv1FN5bMis9iz2OEPjQisfyx08p2TqZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlapATDg/6C/w62TzUhaEXYfwliGVaNOHGARHysffWQPb/BEVxypEhm5UnjvtVFXkk6JC3EHWBselm9PoZcioZd1dW79GBwFOdJdxFjQowdPou42nMa0ikdKo1fvMplIAuOEh73Nbw6rLxeQ0py5V5lXq6AfbFB3XKqUo37krWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMdOb61l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7404BC2BCB3;
-	Tue, 19 May 2026 15:48:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779205740;
-	bh=BmArmLUFabXkv1FN5bMis9iz2OEPjQisfyx08p2TqZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YMdOb61loSo+TYmzJxw3rQ+H2q7bhA0m4nvzpCWSkkkBRASzRBUH0RDW6JviAUgh3
-	 0gfylxFkCJeL5GiKrVcIUE5MNw+GvsftDHC0Kam+HT0ZMntGQT1u/9G1XIfGeM5qYm
-	 W0zXLwX456416FGSFdqtblXKR8RLnShbjlLa4b3FuKQTeomTkTcRKdWbFzxteW5ZsR
-	 hbaolGCxFd1Rgt2OxaW9l5et7+UggRJaKET0W85BHOtjYMmVsN85Hxv4RBQ9bQaW7o
-	 6U+EN8HFYaxe2voKkafM1l53xlt7fmF2D8fawJR5UiXK2SGPPlHGNg8W+GKnFGu43I
-	 tj4VxDndWi9Vw==
-Date: Tue, 19 May 2026 17:48:52 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jann Horn <jannh@google.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qualys Security Advisory <qsa@qualys.com>, Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ptrace: keep task's mm around in separate exit_mm field
- post-exit
-Message-ID: <20260519-lehrling-backt-261d022de809@brauner>
-References: <20260516-work-exit_mm-v1-1-76bcc7c2439d@kernel.org>
- <CAHk-=wgvUW=1qtJxYcvbA_WaTom6n73nT7S_=7tZd0bo49BNOA@mail.gmail.com>
- <CAG48ez3jeAAvy5mymVkLq84Lf27VyQqM9JkjFYzXps+-jLKMkg@mail.gmail.com>
- <CAHk-=wjxBg4Mb98zjJP95gYsC1kYzzBdtp-Yz+J3ZYD+3HrHyw@mail.gmail.com>
- <CAG48ez0Gz_GghVeVzaixAQRNYBdWHYEj3K6FXBSzc+8WNsFxtA@mail.gmail.com>
- <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832A433B6D0
+	for <stable@vger.kernel.org>; Tue, 19 May 2026 15:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779205802; cv=pass; b=kh3xX6k3g+Hb854HWu5wuACAwbI+F0eHbWS6B5hD+Zi0WhYb4gSp9aNZobqDxL/KLvUKR/oZt+RnYRsJGP0T/FE/ksi8ekLdTeYRjAqoKlVKZZ8BTI8VxY2O9MH5NM7Qj5yEFaLmsJsIN51xZydFXqiDdMLl4gynxrYB536XMFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779205802; c=relaxed/simple;
+	bh=x/7cCwdNDXXJxtXg1SGsgN05u2+rsVMZSWA2qFFjjh0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dZ9HDUX9OdJDUA/eF2K+WMUjXfVrmWBtGZ2j7p4bzIkgNGR0AntfbfYFBPlTP08mA7UMUST+tjSJAzIWyb2TM71+YJvx3paPXGtIExEC2Risd0ODTU7oNUYZdlyoBGHlm532T1lss+P6aht0WRQ9BrP4Wb+N5ZASXbS0RmRhtas=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QEiXkpkR; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-65c477a3278so3957582d50.3
+        for <stable@vger.kernel.org>; Tue, 19 May 2026 08:49:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779205798; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dVM74bRGDsSDQd+/Hlr2YfzqmrTsGf76NMCZgawSK/cyIriE8rMzTVMlbhYCX+NcZV
+         SkvvezEnYPhTAF5vRXJ3VQPPapyiQpz7fqKWu8nfqqGV+0CDxAvEpL1ddf48yyWfLkmA
+         MUUCmT98cT3imUNmvvt00cR8VMpyQPJ78GIq+wi938qIyZbPcEY0IkGEDqoNOwqQmcUu
+         cWDHC43dFbSgv4zV8SaULcaBRoo6MwDj4xJ1d0za0dUglOAjzEqN0TAmcsMNUMhd3KYv
+         qUuNQKJRv7HEtVPIZ8lX3EWn1kxGRLfZ9tENthYyqQm/rkX84agZumpR2b/tLJp1YXAO
+         o4wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=svXaO9Car/cL1x6P0kXNjSbwoRo/ZLSYkrf9JDZDMqE=;
+        fh=QO0/2+8tFDIbJbI4XddBcVTsil2EGIcRIPIRQw0tChI=;
+        b=IEZc7SBS4w8gCEWA7r1/F5rsI2wCAph0aPU8EUrBN3xvcqJ4XRm+JzVbBuhzg9pmKC
+         WiSA7EJ44dtu9Ww8sykd70sQlslw3WFzukfAqoOXFqxRZiE6DzGRQicblHLs7hOArK7t
+         cFOC5bomSCBETy9/7JrXkkCVgpL/BEU7Z0LhTUwt5gHtQzSq2+mOxxYUKKg8OIISQ1pj
+         V3gq5AnzNqMyXpIYTocZP+hO5+LjEplCP6SY/Jhm1pIxWNe8fRuabcG6wigXuUJ9cC+R
+         tGsr/omoED9Z0S/qGtOtEQuKc3zj21yNh+WfRU9LrRbQ/oxrms8ga7QDDtQhnOfD+pWZ
+         K8Ww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779205798; x=1779810598; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=svXaO9Car/cL1x6P0kXNjSbwoRo/ZLSYkrf9JDZDMqE=;
+        b=QEiXkpkRj4+tE3U+2AlitOx/CXjgde+D3wyFc+K/ivxh2pXy0UmTqgrtXuqMm68o1V
+         jOZkrPoI1ajdVVx6Mlz0Z7jN+VSM8k84LKF0NZAUCLgnZS8eNTSxAXSZZ/QGhTpmjoi2
+         cfUrsM7wBc7xOOos/MtU1uyfZqKSkKqhfAImmnQte4ywipgLktjLiuSGOarn2fD35y3G
+         lMaa1Z8nt6DZA/18qQaXmFlA7lnM0e4SnMgqAnW53oKmw/q8ZmaJedqbOKSrrhQYw4io
+         eUF6rjZIC4zrgXcW5KyaXU9XYjEe8NMJLeNUFq9xf6GJUHYFsfbmTkHPRLlnpSilp7hF
+         yw+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779205798; x=1779810598;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=svXaO9Car/cL1x6P0kXNjSbwoRo/ZLSYkrf9JDZDMqE=;
+        b=iXkeGvA41OjtizYkcstOlajoLVUxGNsbgmA9Tr9ufOajcNqAC6GrM6BLvrJCl5yw0a
+         xbhOrhCl5N6Us3SlUslRY0+3jnnq5Zo3QTTJPGwgANov7/olsLE5kIqtnMYLEITMsIpP
+         TMUmsIKeZhs9CuMVs5un8GcOHCrByf5U82797BJsYou9f6I9f5C5BhHsjF1RJeHnQSNQ
+         7TD97C7Z/QTe83wzCwRbaIajbkaKb4vms782pzrcUjqOwuBb0WCLVcClHawGZSS0QGcy
+         pKNe9dvQUAYWOSnaFhrUYt151xc1P9bI3Zj73b38jDTIrF8MzKK2lq+qgQ4smpScOoFI
+         BuPg==
+X-Forwarded-Encrypted: i=1; AFNElJ8gLp4WuHKEBSvyS7iFwA7M4cqZeFatxfMs3hFAEMkmFOLdXSgyaqeEY8NIiUZc4MVWxzQpUNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLh3enT6732ZqQpqR4IiAaF8RolbOluQoPAX6GxLxS3QznTgUS
+	QyEuIsFt+Ak1WZcJxyUJoBwqo+j/AnG90XR056onYbwl8D6vGLRA0lFdOuEDqdkahlBys6PydUu
+	6ire3Nuung1VSPgtrtSz0QGr2znKRLfE=
+X-Gm-Gg: Acq92OHMov2oglvi3P4rdTo9Y1HOETTMlMOmcITStsPg45DU0Ig+fQ2Lt1aqNLtond6
+	vXVL4WoHKV2gHmaPhPJbnMhPIFwSsVoTAnmvDVtv7d7xIIi/boEPaz/HkdCrPuICc3iFhOpfv62
+	VzxDEZSLELFycdB0+zop2fCg5hGXKgEhrRLuQklteFOJ57CwXwQsCfKLH/3cLX99qzTvxeI+FRR
+	9CaAmSxMhelMY/E3Mh1x7kvUBBK3X/rLsCeOV8vNYZ4SeoA27ikARpIA8Z6rReN+GDywCgA6KCl
+	lReaZf1QKTyw6gc5zIPum4Kz3B9hdMbtPQUB+FQirjpCXH1HNLASNfCkfI41My/DrobiwA==
+X-Received: by 2002:a05:690e:12cd:b0:65e:41dc:e8de with SMTP id
+ 956f58d0204a3-65e41dcecd9mr12441208d50.61.1779205798318; Tue, 19 May 2026
+ 08:49:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="ej5tgo2oo7zqhnzi"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260519-gehversuche-lokomotive-cd720c53bab1@brauner>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info> <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh> <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+ <2026051909-impurity-nemesis-2f65@gregkh> <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+ <2026051942-uproar-drainpipe-6370@gregkh>
+In-Reply-To: <2026051942-uproar-drainpipe-6370@gregkh>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 19 May 2026 11:49:47 -0400
+X-Gm-Features: AVHnY4L0X8LYGYt87xzFEQmSQ0jaH-sWR5xnvms9EdsiDiaiEGK8SYnDvpGiMU0
+Message-ID: <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>, 
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net, 
+	kuba@kernel.org, Linux kernel regressions list <regressions@lists.linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-diff];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249631-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249632-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vm:email]
-X-Rspamd-Queue-Id: 56256581E8A
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linuxfoundation.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 83022581D45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Greg,
 
---ej5tgo2oo7zqhnzi
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-
-On Tue, May 19, 2026 at 09:37:25AM +0200, Christian Brauner wrote:
-> On Mon, May 18, 2026 at 08:41:43PM +0200, Jann Horn wrote:
-> > On Mon, May 18, 2026 at 8:11 PM Linus Torvalds
-> > <torvalds@linuxfoundation.org> wrote:
-> > > On Mon, 18 May 2026 at 10:20, Jann Horn <jannh@google.com> wrote:
+On Tue, May 19, 2026 at 11:19=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
+> > Hi Greg,
+> >
+> > On Tue, May 19, 2026 at 8:07=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
+> > > > On 5/19/26 12:30, Greg KH wrote:
+> > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote=
+:
+> > > > >> On 5/15/26 17:10, Thorsten Leemhuis wrote:
+> > > > >>> On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+> > > > >>>
+> > > > >>>> The following changes since commit c78bdba7b9666020c0832150a4f=
+c4c0aebc7c6ac:
+> > > > >>>>   net: phy: DP83TC811: add reading of abilities (2026-05-14 15=
+:17:12 +0200)
+> > > > >>>>
+> > > > >>>> are available in the Git repository at:
+> > > > >>>>
+> > > > >>>>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/blue=
+tooth.git tags/for-net-2026-05-14
+> > > > >>>>
+> > > > >>>> for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6=
+275c00282:
+> > > > >>>>
+> > > > >>>>   Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026=
+-05-14 09:58:08 -0400)
+> > > > >>>
+> > > > >>> It seems this PR sadly came too late for this week's net PR to =
+mainline
+> > > > >>> that was merged yesterday.
+> > > > >>>
+> > > > >>> TWIMC, from my point of view, it would be great if we somehow c=
+ould
+> > > > >>> still get the changes from this PR or at least the btmtk fix it
+> > > > >>> contains[1] to mainline this week before -rc4, as it is fixing =
+a
+> > > > >>> regression known since 2026-04-24 that at least five people enc=
+ountered
+> > > > >>> with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btm=
+tk:
+> > > > >>> validate WMT event SKB length before struct access") [006b9943b=
+982 in
+> > > > >>> -next].
+> > > > >>
+> > > > >> Greg, Sasha, that [1] fix I was talking about now reached -next =
+as
+> > > > >> 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTR=
+L
+> > > > >> events") and will likely hit mainline on Thursday or so with the=
+ weekly
+> > > > >> -net PR to -mainline. If that's good enough for you, I'd say it =
+would be
+> > > > >> good to pick this up for the next round of stable kernels.
+> > > > >
+> > > > > That "Fixes:" tag is referring to something that is also not in a=
+ny
+> > > > > tree, but that commit does have a cc: stable in it.  So do we nee=
+d both
+> > > > > of these:
 > > > >
-> > > > I mean... /proc/$pid/task/fd/$n probably has the same problem, no?
+> > > > Valid question, as yes, there is a slight mixup here:
+> > > >
+> > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length be=
+fore struct access")
+> > > >
+> > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is t=
+he
+> > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
+> > > > btmtk: validate WMT event SKB length before struct access") -- the =
+one
+> > > > that is causing the regression that I want to get fixed. So we now =
+only
+> > > > need:
+> > > >
+> > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL e=
+vents")
 > > >
-> > > Possibly. That said, the permissions on that directory changes when
-> > > the process becomes a zombie, so it might almost accidentally be ok.
-> > >
-> > > > pidfd_getfd() is just more severe because it directly creates an FD
-> > > > for the file, instead of going through normal VFS open() permission
-> > > > checks. But /proc/$pid/task/fd/$n is theoretically also dangerous for
-> > > > stuff like anonymous pipes or memfds, where security mainly relies on
-> > > > not being able to reach the inode.
-> > >
-> > > If your security depends on "not reading the inode", your security is
-> > > not security, it's a joke.
-> > 
-> > I mean... __shmem_file_setup() explicitly creates files with
-> > S_IRWXUGO, and that is what memfd_create() uses. So the security of
-> > memfds in particular always relies on the inode not being reachable,
-> > unless LSM restrictions are involved.
-> > 
-> > user@vm:/tmp$ cat memfd_test.c
-> > #define _GNU_SOURCE
-> > #include <stdio.h>
-> > #include <stdlib.h>
-> > #include <sys/mman.h>
-> > 
-> > int main(void) {
-> >   system("grep ^Umask /proc/$PPID/status");
-> > 
-> >   int memfd = memfd_create("foo", MFD_CLOEXEC);
-> >   char cmd[1000];
-> >   sprintf(cmd, "stat --dereference /proc/$PPID/fd/%d", memfd);
-> >   system(cmd);
-> > }
-> > user@vm:/tmp$ gcc -o memfd_test memfd_test.c
-> > user@vm:/tmp$ ./memfd_test
-> > Umask:0002
-> >   File: /proc/699/fd/3
-> >   Size: 0         Blocks: 0          IO Block: 4096   regular empty file
-> > Device: 0,1 Inode: 2064        Links: 0
-> > Access: (0777/-rwxrwxrwx)  Uid: ( 1000/    user)   Gid: ( 1000/    user)
-> > Access: 2026-05-18 18:24:31.669411864 +0000
-> > Modify: 2026-05-18 18:24:31.669411864 +0000
-> > Change: 2026-05-18 18:24:31.669411864 +0000
-> >  Birth: 2026-05-18 18:24:31.669411864 +0000
-> > user@vm:/tmp$
-> > 
-> > 
-> > (Anonymous pipes are less problematic in this aspect, get_pipe_inode()
-> > uses the current_fsuid() and sets mode 0600.)
-> > 
-> > > The /proc/pid/ interface has been around forever, and that's ignoring
-> > > regular ptrace too. Files have absolutely *never* been private, and
-> > > anybody who thinks they are some private thing is just wrong.
-> > >
-> > > And being a zombie doesn't even change that - files can stay around
-> > > afterwards, and it's not a problem.
-> > >
-> > > I really think the *only* bug was literally the whole "people didn't
-> > > think about mm->dumpable as a security thing wrt zombies"
-> > >
-> > > (And the entirely unrelated bug of IO-time vs open-time, which we've
-> > > had many many times because it's such an easy mistake to make).
-> > >
-> > > > I think that would be kind of ugly because here, the MM is not
-> > > > actually used for memory management thing; instead, the MM is just
-> > > > used as the one place we have that stores state that is shared between
-> > > > threads
-> > >
-> > > I agree. Except it is *not* "the one place". We have multiple shared places.
-> > >
-> > > In fact, I wonder if we should simply just move "dumpable" into
-> > > "struct sighand_struct" instead (or "signal_struct"). Those stay
-> > > around until the task is released, and they kind of are more natural
-> > > for core dumping, since it's about signals.
-> > 
-> > I think signal_struct is not unshared on exec; so in this sequence of events:
-> > 
-> >  - task T1 is a non-dumpable task
-> >  - task T1 creates another thread T2
-> >  - T2 exits
-> >  - T1 goes through execve and becomes dumpable
-> > 
-> > I believe T1 and T2 are still associated with the same signal_struct,
-> > which means that even though T2 is part of the pre-execve process, it
-> > shares state with the post-execve process and it would wrongly be
-> > considered dumpable.
-> > 
-> > I hadn't realized that the sighand_struct is unshared on execve, I
-> > guess putting it in sighand_struct might be an option. (An
-> > implementation detail regarding that is that a task can currently lose
-> > its sighand_struct while there are still references held to the task,
-> > but I guess changing that would be easy.)
-> 
-> struct sighand_struct is not unshared on CLONE_VM (without CLONE_THREAD)
-> during fork(). IOW, it's possible to do CLONE_VM without CLONE_SIGHAND.
-> Right now commit_creds() broadcasts dumpability changes to all tasks
-> using the given mm. If we move it to struct sighand_struct we break
-> that. Forcing CLONE_VM to imply CLONE_SIGHAND would break vfork().
+> > > Ok, but that "Fixes:" tag pointing to an invalid commit is going to b=
+e a
+> > > nightmare to track over time, ugh.
+> >
+> > Hmm, did we get the wrong hash or something? Usually, that would show
+> > up in the verify-fixes.sh, but perhaps it didn't capture it this time
+> > for some reason, perhaps I'm running an outdated version or something
+> > similar.
+>
+> Something went wrong if we ended up with a patch in the stable trees,
+> yet this fix is referring to it as a different git sha.  Don't know
+> where the disconnect happend :(
 
-One thing I played with is to move dumpability and exec namespace into
-struct task_exec_state which hangs around until the task is freed. This
-kind of works and effectively splits the permission related stuff out of
-struct mm_struct. The problem is that callers now need to take care that
-exec_state and mm_struct are in-sync. And we have various interactions
-there. There's at least task_lock() and exec_update_lock(). For example,
-mm_access() relies on exec_update_lock() so task->exec_state needs to be
-updated alongside task->mm during exec_mmap(). It's all doable but it's
-certainly subtle on its own. One advantage one could argue for, is that
-this move makes it clear that dumpability is not just a concept tied to
-mm but is used for permission checks beyond it.
+041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
+struct access")
 
-Anyway, I have a draft of this. Please, it's not pretty and it's a PoC
-I've done it so that we can look at something rather than just wave
-hands. I don't even know if it compiles.
+I don't have that in any of our tree either, this is actually
+634a4408c061 on all trees in the chain:
 
---ej5tgo2oo7zqhnzi
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment;
-	filename="0001-pidfd-refuse-access-to-tasks-that-have-started-exiti.patch"
+https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/com=
+mit/?id=3D634a4408c061
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=
+=3D634a4408c061
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3D634a4408c061
 
-From c64938bbcf9f473db0e95b714746e57b03efc334 Mon Sep 17 00:00:00 2001
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 18 May 2026 10:32:11 +0200
-Subject: [PATCH] pidfd: refuse access to tasks that have started exiting
- harder
+Or actually that was the hash before it got rebased on bluetooth-next tree:
 
-The recent ptrace fix closed a hole where someone could rely on task->mm
-becoming NULL during do_exit() to bypass dumpability checks. This api
-here leans on on the very same check and so inherits the fix.
+https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.gi=
+t/commit/?id=3D041e88fb0c08
 
-But there is no good reason to let it succeed at all once the target has
-entered do_exit(). PF_EXITING is set by exit_signals() at the very top
-of do_exit(), before exit_mm() and exit_files() run. Once we observe it,
-the task is committed to dying and exit_files() will release the fdtable
-shortly.
+But I didn't send the PR from that three so perhaps somebody else sent
+it to stable with the wrong fixes tag?
 
-Fixes: 8649c322f75c ("pid: Implement pidfd_getfd syscall")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- kernel/pid.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/pid.c b/kernel/pid.c
-index fd5c2d4aa349..f55189a3d07d 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -885,10 +885,12 @@ static struct file *__pidfd_fget(struct task_struct *task, int fd)
- 	if (ret)
- 		return ERR_PTR(ret);
- 
--	if (ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
--		file = fget_task(task, fd);
--	else
-+	if (!ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS))
- 		file = ERR_PTR(-EPERM);
-+	else if (task->flags & PF_EXITING)
-+		file = ERR_PTR(-ESRCH);
-+	else
-+		file = fget_task(task, fd);
- 
- 	up_read(&task->signal->exec_update_lock);
- 
--- 
-2.47.3
+> thanks,
+>
+> greg k-h
 
 
---ej5tgo2oo7zqhnzi--
+
+--=20
+Luiz Augusto von Dentz
 
