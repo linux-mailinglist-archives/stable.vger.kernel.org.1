@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCmiFajzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:20 +0200
+	id +DnPC3n6DWrt5AUAu9opvQ
+	(envelope-from <stable+bounces-252367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ADD594919
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49723595B0B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B366C3136CE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 135DE308F823
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A9A3A4526;
-	Wed, 20 May 2026 17:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAC23F789B;
+	Wed, 20 May 2026 18:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8YUwahY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrYPgCGR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EA83EBF35;
-	Wed, 20 May 2026 17:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9709636A02E;
+	Wed, 20 May 2026 18:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298731; cv=none; b=gOT5Ub1xfZGl31C1ooNpvRKowAtgQ+jK0vmG+m7M6j9NPUN5OTbE7OWuB5vOudJPW1WDX56729bhZX3LsKRavJyf6KpoMKrKMoPVX83kAHB4ScCeiRFrfpuutiS/v1wLthlSMOYItIW+ZdUjtlTn6wKB1iEcJ084q5lSaYLTu3E=
+	t=1779300489; cv=none; b=anURCcVERM8wBWosQTthdFd7HsSnjL04o4OVA7Y7vFWLLf/R7NQrXINu480KbM+8Mrsxvz1zDTTemUL3o5r3W/dCGcQtoz3Npo7S8GygHH/Ug+Xa558dmX8YugPTCYtALUbOM9Etc7+pJgyBOySAELYw6W3vCD/EuGH17wZ9InM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298731; c=relaxed/simple;
-	bh=eW3SoQEUI8aeoe0JWlZKr829VX8CK7D0AyljsGejEaQ=;
+	s=arc-20240116; t=1779300489; c=relaxed/simple;
+	bh=1oL98J7Ts+bls1wCKx3UX5rhIPc5N0MPcCR+3o1hDZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKku7H7ITEqaWm2Y5Iypqu0JlSFTvdHa0pgg2xyZXeCXU5YVZeCTfmLVVkRaHkEbCxwmxLbnPOdcljqUXBN0WIINeRAzHaIJsNXcH3x6ujdWZbC85o9PW5G4T89zMzKW2VQyLt9fj1odzGRxiMiZcJ0EymT8hi3RUzx9BZPgIiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8YUwahY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71F61F000E9;
-	Wed, 20 May 2026 17:38:49 +0000 (UTC)
+	 MIME-Version; b=SObDstuEIwDTjM6W1WikwUncurVQnZ23HMGiY2cIVQS8aPVusHC/EgqqZY7+rqBvYd53CsrSd4qtX0eHV4JVj7VeIQfgpxPct6SdcIOcsSaJqIzb/LbHCzjJVCjFXBPGi+AvGdoYAL/cCH5INcFf3Qb5LPUkpZome0iQeld2UsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrYPgCGR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092241F000E9;
+	Wed, 20 May 2026 18:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298730;
-	bh=CH+oIATs090m6gNBh5Oq53e/KXL18ng3VWdf+gadahM=;
+	s=korg; t=1779300488;
+	bh=PG54tiLZlXIfpPtCoNGIVfcZUpxSLXrq60KaJlIiRdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F8YUwahYxtdosAkpNNdO4b363TxHAF/Rm6iK+XpUEivPheI+pzeSo4dLziEUDnEdw
-	 lnZwSO30P+/zOZCRYY+VfwzWksUXxL5hrcIiLmNjyVyP+wCjNNZThG+6QAbpTMtts6
-	 zSU2icTlHxcE2Sy6cT7QaX1hMD2u2+ghjTmZGpCY=
+	b=zrYPgCGRHWfoFFiz3XAJLQ5zrpotwGnS8O5NrrPRu34WfS6Jhh7fP8n43RhwPqm3X
+	 FlhjTCKklGnte3QCu8wWLbabY68kE8H/i0u34EvlhjrXBbWZWGO5oU671DLnnZzmz+
+	 ovdQSoo9inEdzn436UGvw8RsbuOD1F2SGMQhFRLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 521/957] perf maps: Fix copy_from that can break sorted by name order
+Subject: [PATCH 6.12 193/666] drm/msm/a6xx: Fix dumping A650+ debugbus blocks
 Date: Wed, 20 May 2026 18:16:44 +0200
-Message-ID: <20260520162145.832798900@linuxfoundation.org>
+Message-ID: <20260520162115.384116131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +66,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252367-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251726-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 00ADD594919
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 49723595B0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Connor Abbott <cwabbott0@gmail.com>
 
-[ Upstream commit f552b132e4d5248715828e7e5c2bf7889bf05b2e ]
+[ Upstream commit cc83f71c9be0715fe93b963ffa9767d5d84354ed ]
 
-When an parent is copied into a child the name array is populated in
-address not name order. Make sure the name array isn't flagged as sorted.
+These should be appended after the existing debugbus blocks, instead of
+replacing them.
 
-Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 1e05bba5e2b8 ("drm/msm/a6xx: Update a6xx gpu coredump")
+Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714270/
+Message-ID: <20260325-drm-msm-a650-debugbus-v1-1-dfbf358890a7@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index ff82d1d937b2f..23aa8a95d0454 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -1032,16 +1032,9 @@ int maps__copy_from(struct maps *dest, struct maps *parent)
- 				map__put(new);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 8f104f7fcaa29..dac88af9b3d09 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -346,7 +346,7 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
+ 			sizeof(*a6xx_state->debugbus));
+ 
+ 	if (a6xx_state->debugbus) {
+-		int i;
++		int i, j;
+ 
+ 		for (i = 0; i < ARRAY_SIZE(a6xx_debugbus_blocks); i++)
+ 			a6xx_get_debugbus_block(gpu,
+@@ -354,8 +354,6 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
+ 				&a6xx_debugbus_blocks[i],
+ 				&a6xx_state->debugbus[i]);
+ 
+-		a6xx_state->nr_debugbus = ARRAY_SIZE(a6xx_debugbus_blocks);
+-
+ 		/*
+ 		 * GBIF has same debugbus as of other GPU blocks, fall back to
+ 		 * default path if GPU uses GBIF, also GBIF uses exactly same
+@@ -366,17 +364,19 @@ static void a6xx_get_debugbus_blocks(struct msm_gpu *gpu,
+ 				&a6xx_gbif_debugbus_block,
+ 				&a6xx_state->debugbus[i]);
+ 
+-			a6xx_state->nr_debugbus += 1;
++			i++;
  		}
- 		maps__set_maps_by_address_sorted(dest, maps__maps_by_address_sorted(parent));
--		if (!err) {
--			RC_CHK_ACCESS(dest)->last_search_by_name_idx =
--				RC_CHK_ACCESS(parent)->last_search_by_name_idx;
--			maps__set_maps_by_name_sorted(dest,
--						dest_maps_by_name &&
--						maps__maps_by_name_sorted(parent));
--		} else {
--			RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
--			maps__set_maps_by_name_sorted(dest, false);
--		}
-+		RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
-+		/* Values were copied into the name array in address order. */
-+		maps__set_maps_by_name_sorted(dest, false);
- 	} else {
- 		/* Unexpected copying to a maps containing entries. */
- 		for (unsigned int i = 0; !err && i < n; i++) {
+ 
+ 
+ 		if (adreno_is_a650_family(to_adreno_gpu(gpu))) {
+-			for (i = 0; i < ARRAY_SIZE(a650_debugbus_blocks); i++)
++			for (j = 0; j < ARRAY_SIZE(a650_debugbus_blocks); i++, j++)
+ 				a6xx_get_debugbus_block(gpu,
+ 					a6xx_state,
+-					&a650_debugbus_blocks[i],
++					&a650_debugbus_blocks[j],
+ 					&a6xx_state->debugbus[i]);
+ 		}
++
++		a6xx_state->nr_debugbus = i;
+ 	}
+ }
+ 
 -- 
 2.53.0
 
