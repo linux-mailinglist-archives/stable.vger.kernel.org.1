@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BL7A4cfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:31 +0200
+	id KHArD0D9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAEA59A4A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDFE5963CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12FA1360F66B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3B6A230FD0C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDCF3F1ADC;
-	Wed, 20 May 2026 17:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32633E95A4;
+	Wed, 20 May 2026 18:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As8d2ZD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvDUkGZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707D03F0A83;
-	Wed, 20 May 2026 17:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A6F3FA5EB;
+	Wed, 20 May 2026 18:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299115; cv=none; b=B0PR5i0oeVT6YBu39dUagqLYlM29jOuoJN1CYonYouOqGcE9EEDq8LGLG1bZD6O//zX7rf8Yd3hE7BZlMKiYgOieC0b27ljBWupBT0xW79SXKNdp3sj1MB36bLjcml/Z4ZfCfAY6aO+UkVDnoq4+FxFV/FlfDOpqiL2Uc1BlHAg=
+	t=1779300739; cv=none; b=kaKFW3e21DOETvsCG6XJjy7yV/c4G+QcbKlqgtBIr/dAM8x8UsPyD2riWEpuQZhYMEfhtNjvKH16YKgM9iTf16nFZxqoaJVB4L6NP0OeCAd1Y1u1PkNJeDKVy58jEq06EhodEcwolrwjvm9p2FaNAyirtG9isvPGvVwqo7BaTak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299115; c=relaxed/simple;
-	bh=XBlm2zds2r9fEuWWGgy3ZmPYlyUYQ9mAT1lQxUwrlaw=;
+	s=arc-20240116; t=1779300739; c=relaxed/simple;
+	bh=H8dYVYYjYtnPdrJGuiVpiJilxa+VzqUocLXppYqSoUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtVr9nfteAVgPiOrkV88iAAvKa2X0JiPCyaB+f6UhI60G+Q1TurhJ11nnWDhpylMJtYpXBIFqEw3dgrId6WYiUpBqO9ZI8FRfeS3uIH1zcsi6wVexvXwLEqcI49YnxHRWuDZJ0kaxDAbQJFKU1BF02vaQTXwlj3s5wQ3ddZ5E8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As8d2ZD1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36431F000E9;
-	Wed, 20 May 2026 17:45:13 +0000 (UTC)
+	 MIME-Version; b=F6X47uJ+tVfX4RevHkEIPmhZWWAw++qiBsRorPCQgykWq+cKFRh5P64LyMn+Mzm29wtwVBQS/4CmajtwcJ1ajzq0ZAGz3cxO4hpvQjKj0Kk+/vLkDjyKDiRyf4jnDB23WRxgXgp5PWOg/4AraylmbxZMDAftERUW3gyDkgeR7U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvDUkGZO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52CA1F000E9;
+	Wed, 20 May 2026 18:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299114;
-	bh=U3inOPqVkBJx3i580ZWaZE/bkZ1IRv7G2jHwta0Scg0=;
+	s=korg; t=1779300738;
+	bh=n6N0Ss8ajuP8ZfbS0tKJgVuqZqSt2FxBgfpYHWyjq3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=As8d2ZD1OFX9X9YJkqrbaAMVLJqS3OGrorOlh4tbl5ElRytdo9NSvHVcMEptK5o7F
-	 /1q4/A+j6hxo9Im8/aFCwPRSj1MbaCRaW8jLok7DF+tRSiddW1QPkMygfKT9b5JTZ/
-	 I0gaeEldvabc5SG73Gm3tUky0ofEfCf+EDp5vqLo=
+	b=VvDUkGZOgux+Ls1cpmiMxw1QLYzFfLyogtyIIJtIL/5QbnEWfM2vEP+ERo/vssbjt
+	 Ij4Bf+yZnoakUpJW2ZmoiytYivpJ+oBID9WK1R4pU58t6k5ifyHKdA6jesQtjlYcVm
+	 j3lPBDhskaCBTOOIDiAMVDbLKmbG48HVsO6aAwo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 616/957] macvlan: fix macvlan_get_size() not reserving space for IFLA_MACVLAN_BC_CUTOFF
+Subject: [PATCH 6.12 288/666] arm64: dts: qcom: sm8450: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:18:19 +0200
-Message-ID: <20260520162147.893389492@linuxfoundation.org>
+Message-ID: <20260520162117.458884620@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +70,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251875-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252463-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
-X-Rspamd-Queue-Id: 6DAEA59A4A4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,0.134.86.160:email]
+X-Rspamd-Queue-Id: 0EDFE5963CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit fa92a77b0ed4d5f11a71665a232ac5a54a4b055d ]
+[ Upstream commit db0c5ef1abda6effdc5c85d6688fb6af2b351ae5 ]
 
-macvlan_get_size() does not account for IFLA_MACVLAN_BC_CUTOFF, but
-macvlan_fill_info() conditionally includes it when port->bc_cutoff != 1.
-This causes nla_put_s32() to fail with -EMSGSIZE when the netlink skb
-runs out of space, triggering a WARN_ON in rtnetlink and preventing the
-interface from being dumped.
+The reported problem of some non-working UHS-I speed modes on SM8450
+originates in commit 0a631a36f724 ("arm64: dts: qcom: Add device tree
+for Sony Xperia 1 IV"), and then it was spread to all SM8450 powered
+platforms by commit 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable
+SDHCI SDR104/SDR50 on all boards").
 
-The bug can be reproduced with:
+The tests show that the rootcause of the problem was related to an
+overclocking of SD cards, and it's fixed later on by commit a27ac3806b0a
+("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs").
 
-  ip link add macvlan0 link eth0 type macvlan mode bridge
-  ip link set macvlan0 type macvlan bc_cutoff 0
-  ip -d link show macvlan0   # fails with -EMSGSIZE
+Since then both SDR50 and SDR104 speed modes are working fine on SM8450,
+tested on SM8450-HDK:
 
-The bc_cutoff feature was added in commit 954d1fa1ac93 ("macvlan: Add
-netlink attribute for broadcast cutoff"), which added the nla_put_s32()
-call in macvlan_fill_info() but missed adding the corresponding
-nla_total_size(4) in macvlan_get_size(). A follow-up commit
-55cef78c244d ("macvlan: add forgotten nla_policy for
-IFLA_MACVLAN_BC_CUTOFF") fixed the missing nla_policy entry but still
-did not fix the size calculation.
+SDR50 speed mode:
 
-Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260413085349.73977-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.6254 s, 43.6 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.3266 s, 87.1 MB/s
+
+Remove the restrictions on SD card speed modes from the SM8450 platform
+dtsi file and enable UHS-I speed modes.
+
+Fixes: 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable SDHCI SDR104/SDR50 on all boards")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-5-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index e9d288a05e39e..35dcaa985cfdc 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1682,6 +1682,7 @@ static size_t macvlan_get_size(const struct net_device *dev)
- 		+ macvlan_get_size_mac(vlan) /* IFLA_MACVLAN_MACADDR */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN_USED */
-+		+ nla_total_size(4) /* IFLA_MACVLAN_BC_CUTOFF */
- 		);
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index cfa880c577a40..f5be69e3be997 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4599,9 +4599,6 @@ sdhc_2: mmc@8804000 {
+ 			bus-width = <4>;
+ 			dma-coherent;
  
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0x0>;
+-
+ 			status = "disabled";
+ 
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
