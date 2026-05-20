@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-252014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HM1IDH+DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:17 +0200
+	id IAAqEO/sDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-251081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B49B5967A2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63F95934BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20206387BEB6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88A4830E4EA8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDEF3F23A4;
-	Wed, 20 May 2026 17:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3C23D75C7;
+	Wed, 20 May 2026 17:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMnpeIXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1pDocAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466893F20F9;
-	Wed, 20 May 2026 17:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BC1372EDE;
+	Wed, 20 May 2026 17:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299520; cv=none; b=EpVFSp28b5SNmpAXpkUcOcR05pbS7IkBDfngSSFTVbsBzTIg8S421NMzCn9TYKl4Q0dWQkaPiT9ifsLJk7tdHSKBIk2c4d80rxwm0FnSF+2N/Tiy/MBmvZX/fO2ixoVGfKXLUME2wfFKdw6PqAH2xc/9mr/NdbCuiAVFUD700xs=
+	t=1779297050; cv=none; b=lRp5LwM+AbWQ1dWYXwlKrgS2wWodn17g6xnhlMHd//Sszrb+h5EuAc9tJWMBHn8toFpUNHXM/tQ0imIa4py3Htozja1liY1MUVsTSoF5+GkKg7SgznRQZSFQpQfdciaGYMNM/GdephCvl+70Zziebumc2JB9yjFGvDPGO1fewog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299520; c=relaxed/simple;
-	bh=LcLIJ66I2ORGiE5+xL/Ci8EGerrn1ANbUTdig14MbyI=;
+	s=arc-20240116; t=1779297050; c=relaxed/simple;
+	bh=fztoqgVzaIesVqWX6NsaxAemvlKWppfrdjRrsN/4Qak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQPZ3VQtLs8Wow87CVthpbFSy/auts4Fyn6XHNzPhEfW8EpJKUodBN13vAbtTCesFThvYIc02gSOgRIzl7nPmZ96yFrpTosuc4hA/6r9423/Yjs05nfk09tw4aYu4mpRMRMazpFdLHFdI/rvqGgJPz29So5S6LI8IUQwnVypNKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMnpeIXZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647241F000E9;
-	Wed, 20 May 2026 17:51:58 +0000 (UTC)
+	 MIME-Version; b=swFEMBGX1i8xt1MjnKFGmLu+oNZFZnNmKW9tEHHVvPCGguVScWsu4py1+VpJMbaebnO7kqKdC1W2zESJhdZNd7eJRBnJPD1+ujz3T5NuCjs41O+Q5hZsOlCp8FDRiHqxdtzJ8neE7dUaME+T2fS7uEuzTiRYl3Kegc0mrtFEtM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1pDocAV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743221F000E9;
+	Wed, 20 May 2026 17:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299518;
-	bh=97Cg3YdxLbzj2dJfBXuMkACRO/kWmDuiHUovQaLz+BM=;
+	s=korg; t=1779297048;
+	bh=SBEiP+RYS8h2pigGj3pbIJQi/0TR1ahe4Jrx9hZvsJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QMnpeIXZJbAkvM31cSD2D5tJEoCMbAqh0aSNvHkcQapExlBzjb2elEZhUtiY5MXqL
-	 5fHh/ld+b42QUcSSZLBS7b5OQzJGk6PTKb55MqDV8pA46Eveui115EHSQNxe92K4lF
-	 2Z/UAsyV+yxKArbJuHDlTzWaecBcAUXXc/OZhTRI=
+	b=d1pDocAVXC4viYjDrle/psOpkEcAxajsjQ8T1RuYPu9uGWsNTTd8dia8brn74C1qD
+	 +0WCZEgvZOxdOVpmKqh6Tn2jJzbN5ppN/AE8Y+sOmwNKo0pVJygA5hIA9odaBZo32K
+	 UAE1YPkvJkDmC/gsg+RzJNkm4A9a2mRunQ1raM3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Petr Oros <poros@redhat.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 796/957] s390/mm: Fix phys_to_folio() usage in do_secure_storage_access()
-Date: Wed, 20 May 2026 18:21:19 +0200
-Message-ID: <20260520162151.825492172@linuxfoundation.org>
+Subject: [PATCH 7.0 1030/1146] ice: add dpll peer notification for paired SMA and U.FL pins
+Date: Wed, 20 May 2026 18:21:20 +0200
+Message-ID: <20260520162211.539255464@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252014-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251081-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,56 +89,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5B49B5967A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: E63F95934BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit b95e0e792822bad8fc9eb33ea3a90005e29e75e9 ]
+[ Upstream commit 9e5dead140af10e8b5f975b8f04e46197d48d274 ]
 
-In case of a Secure-Storage-Access exception the effective aka virtual
-address which caused the exception is contained within the TEID.
+SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+SMA2/U.FL2).  When one pin's state changes via a PCA9575 GPIO write,
+the paired pin's state also changes, but no notification is sent for
+the peer pin.  Userspace consumers monitoring the peer via dpll netlink
+subscribe never learn about the update.
 
-do_secure_storage_access() incorrectly uses phys_to_folio() instead of
-virt_to_folio() to translate the virtual address to the corresponding
-folio.
+Add ice_dpll_sw_pin_notify_peer() which sends a change notification for
+the paired SW pin.  Call it from ice_dpll_pin_sma_direction_set(),
+ice_dpll_sma_pin_state_set(), and ice_dpll_ufl_pin_state_set() after
+pf->dplls.lock is released.  Use __dpll_pin_change_ntf() because
+dpll_lock is still held by the dpll netlink layer (dpll_pin_pre_doit).
 
-Fix this by using virt_to_folio() instead of phys_to_folio().
-
-Fixes: 084ea4d611a3 ("s390/mm: add (non)secure page access exceptions handlers")
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-11-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/fault.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 32 +++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index d1f165048055b..069f72703a915 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -433,7 +433,7 @@ void do_secure_storage_access(struct pt_regs *regs)
- 		panic("Unexpected PGM 0x3d with TEID bit 61=0");
- 	}
- 	if (is_kernel_fault(regs)) {
--		folio = phys_to_folio(addr);
-+		folio = virt_to_folio((void *)addr);
- 		if (unlikely(!folio_try_get(folio)))
- 			return;
- 		rc = uv_convert_from_secure(folio_to_phys(folio));
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 721a3f4d6a28f..27b460926bace 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -1154,6 +1154,32 @@ ice_dpll_input_state_get(const struct dpll_pin *pin, void *pin_priv,
+ 				      extack, ICE_DPLL_PIN_TYPE_INPUT);
+ }
+ 
++/**
++ * ice_dpll_sw_pin_notify_peer - notify the paired SW pin after a state change
++ * @d: pointer to dplls struct
++ * @changed: the SW pin that was explicitly changed (already notified by dpll core)
++ *
++ * SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
++ * SMA2/U.FL2).  When one pin's routing changes via the PCA9575 GPIO
++ * expander, the paired pin's state may also change.  Send a change
++ * notification for the peer pin so userspace consumers monitoring the
++ * peer via dpll netlink learn about the update.
++ *
++ * Context: Called from dpll_pin_ops callbacks after pf->dplls.lock is
++ *          released.  Uses __dpll_pin_change_ntf() because dpll_lock is
++ *          still held by the dpll netlink layer.
++ */
++static void ice_dpll_sw_pin_notify_peer(struct ice_dplls *d,
++					struct ice_dpll_pin *changed)
++{
++	struct ice_dpll_pin *peer;
++
++	peer = (changed >= d->sma && changed < d->sma + ICE_DPLL_PIN_SW_NUM) ?
++		&d->ufl[changed->idx] : &d->sma[changed->idx];
++	if (peer->pin)
++		__dpll_pin_change_ntf(peer->pin);
++}
++
+ /**
+  * ice_dpll_sma_direction_set - set direction of SMA pin
+  * @p: pointer to a pin
+@@ -1344,6 +1370,8 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 
+ unlock:
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+ 
+ 	return ret;
+ }
+@@ -1462,6 +1490,8 @@ ice_dpll_sma_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 
+ unlock:
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, sma);
+ 
+ 	return ret;
+ }
+@@ -1657,6 +1687,8 @@ ice_dpll_pin_sma_direction_set(const struct dpll_pin *pin, void *pin_priv,
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_sma_direction_set(p, direction, extack);
+ 	mutex_unlock(&pf->dplls.lock);
++	if (!ret)
++		ice_dpll_sw_pin_notify_peer(&pf->dplls, p);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
