@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KcQNfIXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:10 +0200
+	id SJrqBXT5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD195997ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E8C59588E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B226831EBE24
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D131E31652D0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AB13A6EE0;
-	Wed, 20 May 2026 17:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D133F929A;
+	Wed, 20 May 2026 17:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLuPr7sf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZV7Bysc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5383264EB;
-	Wed, 20 May 2026 17:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA42C3FD15F;
+	Wed, 20 May 2026 17:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297295; cv=none; b=aQFXBCCAf1xLcQiySSTekM0EmpsmOzp3RfboEx2X63BR2RgV96asJxguxumW0SCun0kSsq7LWKJ/jMVGy2yT6ECs029jdPkIZBUYtNp8jhHYjPuQGImi3lihVxxw51lSBTSleKvivi11CEBYKD3oKi9fsfFxQfxf3mn1tBnWHUs=
+	t=1779299909; cv=none; b=UoXZUDKsS3Yxk4AQiuea3oRL5jr3Yu+rCGWGU4YUw93i+6dnFrcvmEb/1/eHHuCGibkM4Ui7b1ti6gsRjQhJje1chcOICicaDktbA/u1WT3Fr+iOmswPyHvhbDbgPP4GAPBV2XMrDF0NFxXzq1OjgWHUokCpkh2/feqXsC+VlSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297295; c=relaxed/simple;
-	bh=eaO+XrH6FKhVb5QWD045TFqrU/DLwNtGw+mAKB0cBlE=;
+	s=arc-20240116; t=1779299909; c=relaxed/simple;
+	bh=uRkQvkKYfP/sJRzN2NV2Tm8zvnNgZ3zHLpgrjHWgeZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1wGZVB7B4ZJUSNRxQJp8vatfU9FuffNM3bCj6ffJ+GENG4PYAuN27n+ZcW8TbJx78ravTGDnAGKv2H3v9MqoQNSgO3jLkHe0k+pkrutVb0kD2dRP3tETAsqgZfWxFyFVLqKmzT1Pp/Qu/WFNIShYcDMRNgeXRonsy94DBB7bgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLuPr7sf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5C61F000E9;
-	Wed, 20 May 2026 17:14:53 +0000 (UTC)
+	 MIME-Version; b=SJVFgI0HegLedLt/6GsZEuquacp38uEWNYhtclLJU4erUXwt23mXs3V3zVILfQ/ruOQhvToChOWvrF5gG6ucHT+Mv2gdNhCxpgYU1L0cAvt/Nf6s+iJzanjDiqVuaghitc7Tms/JNTOdIDPNGCe1tUR3dlPxbrHylmtBxiQaTi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZV7Bysc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240121F00893;
+	Wed, 20 May 2026 17:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297294;
-	bh=u98IIrcPxfBXCSOppigpQxFF55cskErVDnQ0dNOuJvQ=;
+	s=korg; t=1779299907;
+	bh=SAA13nuY3DFvNu+/v4QP6tOyY/g25NhA1Ns8G2NlYnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bLuPr7sfxlHco8arCQiWioG2rSUXlmanciCbnuS7ivxxDs+b1TJG1js2u5516qQ7w
-	 kGWDU93Aev6AAYOp6nBVfTadA8xE4XPuWYiKO6E1Dc0ikFB6kbdNrV3oI1txruz0Ag
-	 xczjSaNOOB1Zi+JyCAM9uND7Wk7BuqQArpvD3p8k=
+	b=QZV7ByscK5nvNPBDC2DSEurjcMZfZQzhYoHeHiFEl7OcUQ0GwFQ/06TW42JI4774E
+	 4kjsEdJO+B6zBy75blbS4xFU5lGbQkCauJDROyi7b2BFiVRmLwA9HziwcLaqlLvGSX
+	 /6uysKE6pdaDNSw4UGv64reASQsOQDXFxPqbeKIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 7.0 1123/1146] iommu: Replace per-group resetting_domain with per-gdev blocked flag
+	Zoran Ilievski <goodboy@rexbytes.com>,
+	Sukhdeep Singh <sukhdeeps@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 890/957] net: atlantic: preserve PCI wake-from-D3 on shutdown when WOL enabled
 Date: Wed, 20 May 2026 18:22:53 +0200
-Message-ID: <20260520162213.655927017@linuxfoundation.org>
+Message-ID: <20260520162153.871412608@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,336 +68,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251175-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252145-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,nvidia.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 4BD195997ED
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,marvell.com:email]
+X-Rspamd-Queue-Id: B1E8C59588E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Zoran Ilievski <goodboy@rexbytes.com>
 
-commit b296ca1fb43aa435edd86131f5230f70c03b2829 upstream.
+commit 2c308cf34284420963607d677d576a2b4124d8bd upstream.
 
-The core tracks device resetting states with a per-group resetting_domain,
-while a reset is actually per group-device. Such a mismatch might lead to
-confusion and even difficulty to untangle per-gdev handling requirement.
+The shutdown handler aq_pci_shutdown() unconditionally calls
+pci_wake_from_d3(pdev, false), clearing the PCI PME_En bit even when
+wake-on-LAN has been configured. While aq_nic_shutdown() correctly
+programs the NIC firmware via aq_nic_set_power() to listen for magic
+packets, the PCI subsystem will not propagate the resulting PME wake
+event from D3, so the system never wakes after poweroff.
 
-Shuai found that cxl_reset_bus_function() calls pci_reset_bus_function()
-internally while both are calling pci_dev_reset_iommu_prepare/done(). And
-the solution requires the core to track at the group_device level as well.
+WOL from suspend (S3) is unaffected because aq_suspend_common() does
+not touch pci_wake_from_d3() and relies on the PM core's wake
+configuration via device_may_wakeup().
 
-Introduce a 'blocked' flag to struct group_device, to allow a multi-device
-group to isolate concurrent device resets independently.
+This affects all atlantic-supported NICs (AQC107/108/111/112/113);
+users have reported that WOL works if the atlantic driver is never
+loaded, but breaks once it has run its shutdown path.
 
-As the reset routine is per gdev, it cannot clear group->resetting_domain
-without iterating over the device list to ensure no other device is being
-reset. Simplify it by replacing the resetting_domain with a 'recovery_cnt'
-in the struct iommu_group.
+Pass the configured WOL state to pci_wake_from_d3() instead of a
+literal false, so the PCI PME_En bit is preserved when the user has
+armed WOL via ethtool.
 
-No functional change. But this is essential to apply following bug fixes.
-
-Fixes: c279e83953d9 ("iommu: Introduce pci_dev_reset_iommu_prepare/done()")
+Fixes: 90869ddfefeb ("net: aquantia: Implement pci shutdown callback")
 Cc: stable@vger.kernel.org
-Reported-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Closes: https://lore.kernel.org/all/absKsk7qQOwzhpzv@Asurada-Nvidia/
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Zoran Ilievski <goodboy@rexbytes.com>
+Reviewed-by: Sukhdeep Singh <sukhdeeps@marvell.com>
+Link: https://patch.msgid.link/20260511064002.1857-1-goodboy@rexbytes.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommu.c |  102 ++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 78 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -61,14 +61,14 @@ struct iommu_group {
- 	int id;
- 	struct iommu_domain *default_domain;
- 	struct iommu_domain *blocking_domain;
--	/*
--	 * During a group device reset, @resetting_domain points to the physical
--	 * domain, while @domain points to the attached domain before the reset.
--	 */
--	struct iommu_domain *resetting_domain;
- 	struct iommu_domain *domain;
- 	struct list_head entry;
- 	unsigned int owner_cnt;
-+	/*
-+	 * Number of devices in the group undergoing or awaiting recovery.
-+	 * If non-zero, concurrent domain attachments are rejected.
-+	 */
-+	unsigned int recovery_cnt;
- 	void *owner;
- };
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c
+@@ -371,7 +371,7 @@ static void aq_pci_shutdown(struct pci_d
+ 	pci_disable_device(pdev);
  
-@@ -76,12 +76,32 @@ struct group_device {
- 	struct list_head list;
- 	struct device *dev;
- 	char *name;
-+	/*
-+	 * Device is blocked for a pending recovery while its group->domain is
-+	 * retained. This can happen when:
-+	 *  - Device is undergoing a reset
-+	 */
-+	bool blocked;
- };
- 
- /* Iterate over each struct group_device in a struct iommu_group */
- #define for_each_group_device(group, pos) \
- 	list_for_each_entry(pos, &(group)->devices, list)
- 
-+static struct group_device *__dev_to_gdev(struct device *dev)
-+{
-+	struct iommu_group *group = dev->iommu_group;
-+	struct group_device *gdev;
-+
-+	lockdep_assert_held(&group->mutex);
-+
-+	for_each_group_device(group, gdev) {
-+		if (gdev->dev == dev)
-+			return gdev;
-+	}
-+	return NULL;
-+}
-+
- struct iommu_group_attribute {
- 	struct attribute attr;
- 	ssize_t (*show)(struct iommu_group *group, char *buf);
-@@ -2195,6 +2215,8 @@ EXPORT_SYMBOL_GPL(iommu_attach_device);
- 
- int iommu_deferred_attach(struct device *dev, struct iommu_domain *domain)
- {
-+	struct group_device *gdev;
-+
- 	/*
- 	 * This is called on the dma mapping fast path so avoid locking. This is
- 	 * racy, but we have an expectation that the driver will setup its DMAs
-@@ -2205,14 +2227,18 @@ int iommu_deferred_attach(struct device
- 
- 	guard(mutex)(&dev->iommu_group->mutex);
- 
-+	gdev = __dev_to_gdev(dev);
-+	if (WARN_ON(!gdev))
-+		return -ENODEV;
-+
- 	/*
--	 * This is a concurrent attach during a device reset. Reject it until
-+	 * This is a concurrent attach during device recovery. Reject it until
- 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
- 	 *
- 	 * Note that this might fail the iommu_dma_map(). But there's nothing
- 	 * more we can do here.
- 	 */
--	if (dev->iommu_group->resetting_domain)
-+	if (gdev->blocked)
- 		return -EBUSY;
- 	return __iommu_attach_device(domain, dev, NULL);
- }
-@@ -2269,19 +2295,24 @@ EXPORT_SYMBOL_GPL(iommu_get_domain_for_d
- struct iommu_domain *iommu_driver_get_domain_for_dev(struct device *dev)
- {
- 	struct iommu_group *group = dev->iommu_group;
-+	struct group_device *gdev;
- 
- 	lockdep_assert_held(&group->mutex);
- 
-+	gdev = __dev_to_gdev(dev);
-+	if (WARN_ON(!gdev))
-+		return NULL;
-+
- 	/*
- 	 * Driver handles the low-level __iommu_attach_device(), including the
- 	 * one invoked by pci_dev_reset_iommu_done() re-attaching the device to
- 	 * the cached group->domain. In this case, the driver must get the old
--	 * domain from group->resetting_domain rather than group->domain. This
-+	 * domain from group->blocking_domain rather than group->domain. This
- 	 * prevents it from re-attaching the device from group->domain (old) to
- 	 * group->domain (new).
- 	 */
--	if (group->resetting_domain)
--		return group->resetting_domain;
-+	if (gdev->blocked)
-+		return group->blocking_domain;
- 
- 	return group->domain;
- }
-@@ -2440,10 +2471,10 @@ static int __iommu_group_set_domain_inte
- 		return -EINVAL;
- 
- 	/*
--	 * This is a concurrent attach during a device reset. Reject it until
-+	 * This is a concurrent attach during device recovery. Reject it until
- 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
- 	 */
--	if (group->resetting_domain)
-+	if (group->recovery_cnt)
- 		return -EBUSY;
- 
- 	/*
-@@ -3577,10 +3608,10 @@ int iommu_attach_device_pasid(struct iom
- 	mutex_lock(&group->mutex);
- 
- 	/*
--	 * This is a concurrent attach during a device reset. Reject it until
-+	 * This is a concurrent attach during device recovery. Reject it until
- 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
- 	 */
--	if (group->resetting_domain) {
-+	if (group->recovery_cnt) {
- 		ret = -EBUSY;
- 		goto out_unlock;
+ 	if (system_state == SYSTEM_POWER_OFF) {
+-		pci_wake_from_d3(pdev, false);
++		pci_wake_from_d3(pdev, self->aq_hw->aq_nic_cfg->wol);
+ 		pci_set_power_state(pdev, PCI_D3hot);
  	}
-@@ -3670,10 +3701,10 @@ int iommu_replace_device_pasid(struct io
- 	mutex_lock(&group->mutex);
- 
- 	/*
--	 * This is a concurrent attach during a device reset. Reject it until
-+	 * This is a concurrent attach during device recovery. Reject it until
- 	 * pci_dev_reset_iommu_done() attaches the device to group->domain.
- 	 */
--	if (group->resetting_domain) {
-+	if (group->recovery_cnt) {
- 		ret = -EBUSY;
- 		goto out_unlock;
- 	}
-@@ -3944,12 +3975,12 @@ EXPORT_SYMBOL_NS_GPL(iommu_replace_group
-  * routine wants to block any IOMMU activity: translation and ATS invalidation.
-  *
-  * This function attaches the device's RID/PASID(s) the group->blocking_domain,
-- * setting the group->resetting_domain. This allows the IOMMU driver pausing any
-+ * incrementing the group->recovery_cnt, to allow the IOMMU driver pausing any
-  * IOMMU activity while leaving the group->domain pointer intact. Later when the
-  * reset is finished, pci_dev_reset_iommu_done() can restore everything.
-  *
-  * Caller must use pci_dev_reset_iommu_prepare() with pci_dev_reset_iommu_done()
-- * before/after the core-level reset routine, to unset the resetting_domain.
-+ * before/after the core-level reset routine, to decrement the recovery_cnt.
-  *
-  * Return: 0 on success or negative error code if the preparation failed.
-  *
-@@ -3962,6 +3993,7 @@ EXPORT_SYMBOL_NS_GPL(iommu_replace_group
- int pci_dev_reset_iommu_prepare(struct pci_dev *pdev)
- {
- 	struct iommu_group *group = pdev->dev.iommu_group;
-+	struct group_device *gdev;
- 	unsigned long pasid;
- 	void *entry;
- 	int ret;
-@@ -3971,8 +4003,12 @@ int pci_dev_reset_iommu_prepare(struct p
- 
- 	guard(mutex)(&group->mutex);
- 
-+	gdev = __dev_to_gdev(&pdev->dev);
-+	if (WARN_ON(!gdev))
-+		return -ENODEV;
-+
- 	/* Re-entry is not allowed */
--	if (WARN_ON(group->resetting_domain))
-+	if (WARN_ON(gdev->blocked))
- 		return -EBUSY;
- 
- 	ret = __iommu_group_alloc_blocking_domain(group);
-@@ -3988,6 +4024,13 @@ int pci_dev_reset_iommu_prepare(struct p
- 	}
- 
- 	/*
-+	 * Update gdev->blocked upon the domain change, as it is used to return
-+	 * the correct domain in iommu_driver_get_domain_for_dev() that might be
-+	 * called in a set_dev_pasid callback function.
-+	 */
-+	gdev->blocked = true;
-+
-+	/*
- 	 * Stage PASID domains at blocking_domain while retaining pasid_array.
- 	 *
- 	 * The pasid_array is mostly fenced by group->mutex, except one reader
-@@ -3997,7 +4040,7 @@ int pci_dev_reset_iommu_prepare(struct p
- 		iommu_remove_dev_pasid(&pdev->dev, pasid,
- 				       pasid_array_entry_to_domain(entry));
- 
--	group->resetting_domain = group->blocking_domain;
-+	group->recovery_cnt++;
- 	return ret;
  }
- EXPORT_SYMBOL_GPL(pci_dev_reset_iommu_prepare);
-@@ -4019,6 +4062,7 @@ EXPORT_SYMBOL_GPL(pci_dev_reset_iommu_pr
- void pci_dev_reset_iommu_done(struct pci_dev *pdev)
- {
- 	struct iommu_group *group = pdev->dev.iommu_group;
-+	struct group_device *gdev;
- 	unsigned long pasid;
- 	void *entry;
- 
-@@ -4027,11 +4071,13 @@ void pci_dev_reset_iommu_done(struct pci
- 
- 	guard(mutex)(&group->mutex);
- 
--	/* pci_dev_reset_iommu_prepare() was bypassed for the device */
--	if (!group->resetting_domain)
-+	gdev = __dev_to_gdev(&pdev->dev);
-+	if (WARN_ON(!gdev))
-+		return;
-+
-+	if (!gdev->blocked)
- 		return;
- 
--	/* pci_dev_reset_iommu_prepare() was not successfully called */
- 	if (WARN_ON(!group->blocking_domain))
- 		return;
- 
-@@ -4047,6 +4093,13 @@ void pci_dev_reset_iommu_done(struct pci
- 	}
- 
- 	/*
-+	 * Update gdev->blocked upon the domain change, as it is used to return
-+	 * the correct domain in iommu_driver_get_domain_for_dev() that might be
-+	 * called in a set_dev_pasid callback function.
-+	 */
-+	gdev->blocked = false;
-+
-+	/*
- 	 * Re-attach PASID domains back to the domains retained in pasid_array.
- 	 *
- 	 * The pasid_array is mostly fenced by group->mutex, except one reader
-@@ -4057,7 +4110,8 @@ void pci_dev_reset_iommu_done(struct pci
- 			pasid_array_entry_to_domain(entry), group, pasid,
- 			group->blocking_domain));
- 
--	group->resetting_domain = NULL;
-+	if (!WARN_ON(group->recovery_cnt == 0))
-+		group->recovery_cnt--;
- }
- EXPORT_SYMBOL_GPL(pci_dev_reset_iommu_done);
- 
 
 
 
