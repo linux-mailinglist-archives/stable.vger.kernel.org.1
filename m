@@ -1,213 +1,246 @@
-Return-Path: <stable+bounces-250246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEvjJdTlDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:20 +0200
+	id oKTRGz8QDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B115592793
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F75A598C3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9961230A1961
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AC9332C4E60
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AFA3D3D1C;
-	Wed, 20 May 2026 16:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE633A3E60;
+	Wed, 20 May 2026 16:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GwGMNYlj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGEVYHYp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f99.google.com (mail-dl1-f99.google.com [74.125.82.99])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA29236A352
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 16:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294910; cv=none; b=ucKTpBT5Pl4+sArvaZWTm0Ujub2PUL0dGT8EiOgjUU46iJ5KbBaZhT1jFqezIrnv7oQ+HcYY2OcxhY1f+GybCCpMM0XmYuvS+R3DH/mYqMUdZNCXNnpeB9b8yd3MuQG+s/oVYp4XvG4XhwkRTVAImwS4x/CcUiwG/MKUZul3uJ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294910; c=relaxed/simple;
-	bh=3lGRAEnQMtX4zERAKSIZdMRkPZ+RvRXWmkS38F/ap7E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CdDP8xpk8+ETa3k41YCxsbU46Q72QmeFPPAPonpc4yX5RxJFLFOKFDBsZx+xVgGrc4gwdYWnmANAfvZZU2RFGUbOc3N80xJn5xZI3HZxu26aJFndfoCul2Hfs4oFHBRFUTrBo+gKNKrvxtU5G4KeHZuOUtdFlDk6uPftJEronAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GwGMNYlj; arc=none smtp.client-ip=74.125.82.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-dl1-f99.google.com with SMTP id a92af1059eb24-1329fc4bf77so641683c88.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 09:35:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779294908; x=1779899708;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=k1YJJ1YFmprPS6ntzC8PQrKknM/3MWPFYqmao9X/xvo=;
-        b=re+/tJy8/fDk/6TGw6qCXCLdWDWWXvGWLfd71f98i+ZmbmK8IsDtnSa1y1XA0DkOWg
-         7zihyXFq7D1/boY6mmIsHV+LKDmQS2ASm/z0ypE18pQRwbYT+NnEmM+4hZMy/nfZq8BT
-         bwfyH0mNZRTggRh8YD51AsUpDNXehNnwIUq0eI0a2Jtiop/qh1YRmeK9zm5DbkBt9MeL
-         DJ337hiWHWSIuimpg3SkdPDqRG1KU+cO9XP5uOaoUJwPpFQP9Mgj3LEGX90U8LcRot09
-         yMnWGceaFVty9uNSRqWMYW6xsKKLqF+ydSFA5rRD8xgMqAzhQWA8X/u1fKYy5sd0EjZJ
-         GmVg==
-X-Gm-Message-State: AOJu0YxjKos2UhSlutuIyOyRroxvjiDIWBQgXOaVCls3JXAi/vXllyXC
-	w2S8XNgnHHrAS7he5mDbclsbvNJtp+JJU/GClG0oek1SNrSK7mRF7daH+/QbDVF+PheryQD3Yx4
-	5Uur6gHBY2W1wgfDludKvnpYyMk11OduxIgEHE5feNrfkaogOEyStUXOo38dvwf3emwRgZFvyRe
-	eOF44iA6nqQ2cMk8HuGQncRvwLwa+OjH9h8sEt5hxh/pw4QMG92EK/04tvcxAcg8/QmhacYL6Fd
-	0uuMYioLsC6MdJT
-X-Gm-Gg: Acq92OG3XcgEt9V77MWlhQOt3jn+lZveIO2J1fR8twYNzxUiJwqNf/lZMwKjTNT45q6
-	WsVuju28Hk9Kj6l6+Ww/sasLva03aHuUj8dygKx5g1xwJ0dhK+e3IWmXg1RuKBHGGC0Fk3ZLKTo
-	EU+1ZUDS79pJ43FHcrUkzzAjvm0XzjlmAdND7CTc2l3fDy99K/aE0mCx7qBspPUtV8XIqQpwL3l
-	ap7k9jrC4soBBuLw5RTfnTHERXbkdpaVP4ZdMUDTbXpcpSnFjnVtj6ml3dXBe7uHTvLqcnLVTSi
-	7wMX0OHEoYfIZdad8YQhXEqjfmwx8Kx8oD8x6d6sMzJWzNOR1S5iFmpJ7LXfIMp6GQYHNWwKEEV
-	kf+Z5hG/iwaUWmodN2Y6YR18FocK2ARdjaLSDiUPKpLCJeCXoVg8w8aoIKxjn2rFJ3mnQfv3oGO
-	WIa9pgu3YheEhesByCZqotxVM+EPucQVLitoLbueEKDAmUR0vCzO7ExOhmZO6/mfyF
-X-Received: by 2002:a05:7022:438a:b0:11a:e426:911a with SMTP id a92af1059eb24-13504627246mr11252058c88.15.1779294907925;
-        Wed, 20 May 2026 09:35:07 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-102.dlp.protect.broadcom.com. [144.49.247.102])
-        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-134cc127865sm2337149c88.6.2026.05.20.09.35.07
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 May 2026 09:35:07 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1353a6f29deso1238170c88.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 09:35:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3E636F421
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 16:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779295429; cv=pass; b=EaOysJaL9aWnD1XpbtzJaMQquLki909oXzOQirREwIR+yCEW83xPL64jI5jHBpCee1DqiTgpT1CxPHOT3vmhJbcFKGfPWaZksixrmxwnVNN4Dx6sEL1HSsamjKTJoGS7ud1JLx5L9FaUTpq9QYg5KH2PsWfhR/qT/a4qS2gUStk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779295429; c=relaxed/simple;
+	bh=K0SmBd3i+Evg01AmybdJImEVnXbgwxW02OAxKC+QiMs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kCUIHfKjHtnH3SbA7ptYd6PGISuvXue8y8t7mtNPJt1jkskNJCU/WLUtRDcAnLmeScgIDT9+E6tdhseP6Stuils1Izmu8dsHRy630IwVumRs/J3uCriQnYOuxbldZiwNeRtDlytmSN4BRhwiyHfDnmPtJfqxjhHQgZpmyRIGTsQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGEVYHYp; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c1a170a50so6446273c88.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 09:43:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779295426; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W+96nrYmE6thsJwTSpFpOql6KUFY7aw+/EdV2bSX6u3kB/Ebh6XHmFEjDHB1zzz7oc
+         gGjXIRLMj3pFmOcwKCwfsVWxxq/xJBJn6ed9lQ+QnH7bHVbDzpMqDgN9jzuGqnwsp0bv
+         To3keU6Z67nBJxOo7pja7Cs9uLtM2KQISersJSW5/V34nnFFNADgCeEm6DUahjF4Wcos
+         IxOuqgewT4XtQQ7PvUJiNnrTuCoiEBggQftWswbDLbtjlLSvyorM11mqmSMRXaJZUavY
+         7YTnQnohtZE4ZUJlamknjuuGe99C5haMHG0TF2jrnhjqMGbGMOpKsieuKpbX5KoWtFwp
+         Um9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=awmx7wqZavYrfGTB2OHvccP0wAddCGzaOcms0KgYzqw=;
+        fh=tFuhktYGRSerdBNe5jaX3ULO7sZw4Jq0MK/A2kh1HJc=;
+        b=SctFqqTDZuZtFlD36ka+ICFr/H4tknvvdRAl+JSjciT8FEqCXxuwxea17dyBRxibGv
+         XTr1c6NFBXaVzbEMcdKzJZJldsmR+qh2lSwvJoSLYwJtrHy/Y7aqxfXBg0hil5j9kib9
+         gQQ+wyeifa/3iWeRuG2HBXcHYBvWLZTxLvIRRV3r6Q+TREZMAQPHbnGdIQBfNN9yxMQL
+         4/qX2yEWOsTAysKlzFXkk8aGb54yxTQrxOmpx7t7TCvnK0mTGZSePWIwuf8zyWnU8L6i
+         5SkTL3x2OWuNFvEZ8mPdWNSqpMMDneE7Wd/tA/101azrQHPQu7hG4csG+wnK2Sx6yu9r
+         zWyw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1779294905; x=1779899705; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1YJJ1YFmprPS6ntzC8PQrKknM/3MWPFYqmao9X/xvo=;
-        b=GwGMNYljw6jBdzJepJMLbeQNNXO5dD9AGOQAnHSzthnCgY8wOt3+6Nir+1jpOdLoNN
-         3WLo08ybTjH6mC/GtGPE3EVZpaetLUoqwdTaPuEAJjrJoYvvrV5RmuVX9FIBfXI0+REZ
-         jph+oeSQzt/7hFtxGYwdc/DV/2UaKeKgmZveE=
-X-Received: by 2002:a05:7022:607:b0:133:3c47:932e with SMTP id a92af1059eb24-1350494e402mr11987647c88.28.1779294905370;
-        Wed, 20 May 2026 09:35:05 -0700 (PDT)
-X-Received: by 2002:a05:7022:607:b0:133:3c47:932e with SMTP id a92af1059eb24-1350494e402mr11987597c88.28.1779294904668;
-        Wed, 20 May 2026 09:35:04 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ed3sm27311954c88.1.2026.05.20.09.35.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 09:35:04 -0700 (PDT)
-Message-ID: <6541a5f4-a150-44b9-af27-8712cdafc1ae@broadcom.com>
-Date: Wed, 20 May 2026 09:35:02 -0700
+        d=gmail.com; s=20251104; t=1779295426; x=1779900226; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=awmx7wqZavYrfGTB2OHvccP0wAddCGzaOcms0KgYzqw=;
+        b=XGEVYHYpEk86uK0aEWdS6+bAG1fijNZQXwmdqVlua5G5j1OIoTFS/OjXfmBzIypqp2
+         Wrth8ovNUxl0n1ymgTETqkTlwcKPmWGYxLDpRnmZ6yilRiRUJCqvdiYPFP6CPgNBnbCO
+         MKshDq0weY7mpUA1xjx/ldIjyFMRUtoU71GQUiHGmX/GevzzJGBnhGVrq+utrBOP49be
+         F9e3f1+d0uu/ZxVJOcyd6ZxpOcTb42vVDeDNj/ug7MyVg8JH0tiNFdfj6Va9vSDazvmD
+         AsDDYCk32PBb9ZNo8iF/ONW5OAkt7P0PSCLyVRZDcVZGpFJ3nJTiapTZRbJNBtNLk9Gn
+         QLmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779295426; x=1779900226;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=awmx7wqZavYrfGTB2OHvccP0wAddCGzaOcms0KgYzqw=;
+        b=ogYx9lKywEh+R34BrNKQjWxA9mtHV2G4A8MozTPALnPoNE4Ys7PxRhgT8fzuIttkmS
+         cGWbNhbv6s3AlNOZgSliPIOA1grTZ7AlPpbRtybGXG3ZaVFnQt+clKMlNxdYd2zqIrSA
+         DNMDdLt3oiiGreqJ2DJlN82La5tGLkN/AdY0PgM96/56vglRjzrupKd/z8qVAzEvWCu8
+         I9PiuLy5BVjMmWIS0C2/M/3DJO89aDme/nmwvBtVchxAXGmR7f6Twb1tpyAaN274DTsD
+         0GGDVYv8e644C7UJOD+1Fs/VbyGr7u4VZHeR32/YE8sevClXdqptNpg44xUAQEHx5Q7k
+         /UQw==
+X-Forwarded-Encrypted: i=1; AFNElJ8YgsiYd8aFReBcfCZG0+h7yLPtClrIyx9ZCYPeaFc37Z8Qub2Orr4Sg3CVoyHKdFCNL4M07MU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbmdTtxJ74BtjP7KM3MdgiGAXcWzRtNm+mIs1SBlbCTyuaaHSw
+	aTlp5x3jWbvkWsXNkzx9kda3im2REh7fGVE0oT2FNYMlE1LXblX9kYrNCaL45HbcCcnLY8cqV9w
+	dNO0Ny1WPYL7kUE8N8DRR2y1UghSN288=
+X-Gm-Gg: Acq92OGJrQiVCdMC5BqpTZuHlrJfnwCNaIoTGt0Zh6/XJB0BXfFGJjW3T7K2+ZmcHXr
+	eSC67bOz+9r8w5QoQmJCwsxaEB/S7ywIMpTNMUmqUgtczGC8EW+cteKcoLNZOZQhCe/AnJP6Mnb
+	Z+FOkbuSEfLE55NoGhBrV7Ki2k+lROTasSLjujYKi53N83604ZtdIksPMY/b3ctZlc3Nud/mb/+
+	+Ct08PgtotIzcW9xp7iF/RCWn9MIKLbOev9erW7pAc81Re1YEO8YURaSeoSDPR8eqo5WDHTwGCK
+	JzJpuVmiFzscwp1iOm76XlMSXU6jslF66dyPDEGtmPrwSNNzfsw=
+X-Received: by 2002:a05:7022:311:b0:12d:b396:eaed with SMTP id
+ a92af1059eb24-1350440ae04mr11257475c88.9.1779295426034; Wed, 20 May 2026
+ 09:43:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable 6.1 v2 5/5] perf build: Remove
- -Wno-unused-but-set-variable from the flex flags when building with clang <
- 13.0.0
-To: stable@vger.kernel.org
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>,
- Adrian Hunter <adrian.hunter@intel.com>, Ian Rogers <irogers@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
- "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
- "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-kernel@vger.kernel.org>,
- "open list:BPF [MISC]" <bpf@vger.kernel.org>,
- "open list:CLANG/LLVM BUILD SUPPORT" <llvm@lists.linux.dev>,
- bcm-kernel-feedback-list@broadcom.com
-References: <20260520163320.3073037-1-florian.fainelli@broadcom.com>
- <20260520163320.3073037-6-florian.fainelli@broadcom.com>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20260520163320.3073037-6-florian.fainelli@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+References: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <beca1657-0180-4f9b-8de1-ca7776c9614a@fnnas.com> <CAHYQsXRN6uof4yyDR6qGteQ=wZTt86VUx7km6k=LbNAQ3wxGiQ@mail.gmail.com>
+ <282278bc-7d71-4049-89f4-a9f3968504dd@fnnas.com> <CAHYQsXQhTn905RGCrw-qeb--VHsRGR2KEWm5X0ZJEW+krTJaNA@mail.gmail.com>
+ <6224b47c-9a7e-4bbf-90ce-4b98691ceaa3@fygo.com>
+In-Reply-To: <6224b47c-9a7e-4bbf-90ce-4b98691ceaa3@fygo.com>
+From: Yuhao Jiang <danisjiang@gmail.com>
+Date: Wed, 20 May 2026 11:43:34 -0500
+X-Gm-Features: AVHnY4KDm-qnXxJ9KW6U_J1BC5ffsE8cI5knCTNO8d5QEmcndtCLxjNThpU5ufo
+Message-ID: <CAHYQsXSy09tmOKok3O-PqJqVKXBFMZB0M4E=s5AQbnbdagCLQg@mail.gmail.com>
+Subject: Re: [PATCH] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
+To: yukuai@fygo.com
+Cc: yukuai@fnnas.com, Junrui Luo <moonafterrain@outlook.com>, Song Liu <song@kernel.org>, 
+	Li Nan <linan122@huawei.com>, NeilBrown <neil@brown.name>, 
+	Jonathan Brassow <jbrassow@redhat.com>, linux-raid@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-250246-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250444-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,broadcom.com:email,broadcom.com:mid,broadcom.com:dkim];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[fnnas.com,outlook.com,kernel.org,huawei.com,brown.name,redhat.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florian.fainelli@broadcom.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[danisjiang@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 5B115592793
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,outlook.com:email,fnnas.com:email]
+X-Rspamd-Queue-Id: 7F75A598C3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 09:33, Florian Fainelli wrote:
-> From: Arnaldo Carvalho de Melo <acme@redhat.com>
-> 
-> clang < 13.0.0 doesn't grok -Wno-unused-but-set-variable, so just remove
-> it to avoid:
-> 
->    error: unknown warning option '-Wno-unused-but-set-variable'; did you mean '-Wno-unused-const-variable'? [-Werror,-Wunknown-warning-option]
->    make[4]: *** [/git/perf-6.5.0-rc4/tools/build/Makefile.build:128: /tmp/build/perf/util/pmu-flex.o] Error 1
->    make[4]: *** Waiting for unfinished jobs....
-> 
-> Fixes: ddc8e4c966923ad1 ("perf build: Disable fewer bison warnings")
-> Cc: Adrian Hunter <adrian.hunter@intel.com>
-> Cc: Ian Rogers <irogers@google.com>
-> Cc: Jiri Olsa <jolsa@kernel.org>
-> Cc: Namhyung Kim <namhyung@kernel.org>
-> Link: https://lore.kernel.org/lkml/ZNUSWr52jUnVaaa%2F@kernel.org/
-> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-> Change-Id: I8db8a372d1e83d26fbe8beda2bcf4d1a871a2b80
+Hi Kuai,
 
-Argh, sorry the Change-Id snuck in there, let me know if you need me to 
-resubmit.
--- 
-Florian
+So in this case, how should my name be shown on this security patch?
+Because I reported this bug. Most maintainers added my name in the
+reported-by tag.
+
+Thanks,
+Yuhao
+
+On Wed, May 20, 2026 at 6:52=E2=80=AFAM Yu Kuai <yukuai@fnnas.com> wrote:
+>
+> Hi,
+>
+> =E5=9C=A8 2026/4/28 16:37, Yuhao Jiang =E5=86=99=E9=81=93:
+> > Hi Kuai,
+> >
+> > Looks like different maintainers have different rules. :(
+> > Can you send me the patchwork resource?
+>
+> Usually just a link to lore url is enough.
+>
+> >
+> > Thanks.
+> >
+> > On Tue, Apr 28, 2026 at 4:32=E2=80=AFPM Yu Kuai <yukuai@fnnas.com> wrot=
+e:
+> >> Hi,
+> >>
+> >> =E5=9C=A8 2026/4/19 13:59, Yuhao Jiang =E5=86=99=E9=81=93:
+> >>> Hi Kuai,
+> >>>
+> >>> This report was reported by me, so Junrui added me as Reported-by.
+> >> This is fine, however, please do not add downstream reported-by tag.
+> >> If you want to add the reported-by tag, please report the problem to
+> >> patchwork first. :)
+> >>
+> >>> Thanks,
+> >>>
+> >>> On Sun, Apr 19, 2026 at 12:43=E2=80=AFAM Yu Kuai <yukuai@fnnas.com> w=
+rote:
+> >>>
+> >>>      Hi,
+> >>>
+> >>>      =E5=9C=A8 2026/4/16 11:39, Junrui Luo =E5=86=99=E9=81=93:
+> >>>      > setup_geo() extracts near_copies (nc) and far_copies (fc) from=
+ the
+> >>>      > user-provided layout parameter without checking for zero. When=
+ fc=3D0
+> >>>      > with the "improved" far set layout selected, 'geo->far_set_siz=
+e =3D
+> >>>      > disks / fc' triggers a divide-by-zero.
+> >>>      >
+> >>>      > Validate nc and fc immediately after extraction, returning -1 =
+if
+> >>>      > either is zero.
+> >>>      >
+> >>>      > Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far'
+> >>>      and 'offset' algorithms (part 1)")
+> >>>      > Reported-by: Yuhao Jiang<danisjiang@gmail.com>
+> >>>
+> >>>      So again I can't find a report, and Reported-by usually should b=
+e
+> >>>      followed
+> >>>      by a Closes link to the original report.
+> >>>
+> >>>      Applied with Reported-by tag removed.
+> >>>
+> >>>      > Cc:stable@vger.kernel.org <mailto:Cc%3Astable@vger.kernel.org>
+> >>>      > Signed-off-by: Junrui Luo<moonafterrain@outlook.com>
+> >>>      > ---
+> >>>      >   drivers/md/raid10.c | 2 ++
+> >>>      >   1 file changed, 2 insertions(+)
+> >>>
+> >>>      --
+> >>>      Thansk,
+> >>>      Kuai
+> >>>
+> >>>
+> >>>
+> >>> --
+> >>> Yuhao Jiang
+> >> --
+> >> Thansk,
+> >> Kuai
+> >
+> >
+> --
+> Thansk,
+> Kuai
+
+
+
+--=20
+Yuhao Jiang
 
