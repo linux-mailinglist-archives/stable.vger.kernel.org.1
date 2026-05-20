@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF2xHXDuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:04 +0200
+	id ePr8DekMDmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064E0593977
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54994598735
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7099031675FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40DD333745F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A083EAC9B;
-	Wed, 20 May 2026 17:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E357E3FFAC0;
+	Wed, 20 May 2026 18:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp56E5Ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODvlqWiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1054231842;
-	Wed, 20 May 2026 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE863F8706;
+	Wed, 20 May 2026 18:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297010; cv=none; b=pVf0k+j7HpLIy9m+v2kF7UnfqrGMZbA+fEsgwTjrPvZRZ2AAMz0FvSJKtibuutpkYYbjbV1s3b5sWDLs2CAH3YNWl62Qf7/RNJaHakxGFpP3gGgiBWbRG9FWaYyJNefUsCWiaxOoxrzURVC3Xq9vgO0GNdjCpD2gf6IcZU2hoWw=
+	t=1779302381; cv=none; b=I8txvVI6NZrXn1mM21Ms7pk84fvwxQrAC+Usc4hrW/vljOyaGyEgPTJrfb5+ShYSEf0W910qxO9yvf+3IRzL0PKAiYh7DCu+s7aG3Eb6UpJNV6mKzRA1rdJF+Y1vDZk/ziUMCHF2ETrmo22r0PKgx8A9Of0yDdWeCHodR0mdJaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297010; c=relaxed/simple;
-	bh=FWynegx31euydPh2JlkNlV/FGJ3Qp9IFKVqwYxc6Wms=;
+	s=arc-20240116; t=1779302381; c=relaxed/simple;
+	bh=R7AVEkwPleYOLD1Lmu3sLII6cPtqIKOvY3dOUkX43uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGze3vcGzD0hp0M0MH9+T9TRE5dtL7duYLYCEtHyIBJfc5VL6N7z2rqK/RKJTnQYqQP4cgRRbtmk5ua0e3SV10Mq68h54VeFH5zYHNPUVo8HomP427xgdNRWqr7+76mRpDA0XzNSUmvCj/j+bnqXvOmSKZfG72oVU9CLw+f6Fuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp56E5Ls; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D1F1F000E9;
-	Wed, 20 May 2026 17:10:08 +0000 (UTC)
+	 MIME-Version; b=X/PJsKoJD3tJVYGfDfZgC5BtaJDRZJkTh4lYfEqUWMcg2QSXQJBTotqEMiwjCCxwhV+sKNEmUCIw5FQFqltJzP6odqyBfGzFqhzu4lMb9/2Pc5bAmq8Sm4EFcuZX+WvU5RzGfKTpbMxwGo4fwiBqyq+XB/swMvw53zZVbPpder0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODvlqWiU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039F81F000E9;
+	Wed, 20 May 2026 18:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297009;
-	bh=7C2aNz0JgS71lOJson9pSzolRV8+3H+GkHjv41Zk0PU=;
+	s=korg; t=1779302380;
+	bh=6epOETupvezAWJkqbx0Z59qEfQ/XtHq9LjsMBeyizG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xp56E5Lsvbjqm4Sbg9c1AH6u+DEu+QymrrSJaYmfVcSwExtMzM0l8rwjUS2UmQEci
-	 2NPFB1GTQFDCSjQYePpfXPbfLrw2RRi4WHqDBqK+o7WR2sNAM+7Y2tSGti3FwTM8uY
-	 8n7PIEyP6X52IC/4H3v0zoZZFHMKdMs5TwpI5QFg=
+	b=ODvlqWiUhWyszsCJ1PHEYPL5ThJoQ9WAdSMdDtUZoi1XvjqlROknEeeWX1qI1FFF9
+	 u2+W2Y/2W78frbat0j3KtZy4sLcN4rktp7JlAlUc6nmzj5y1CCto5HKXmO2FavjC8b
+	 cb/0nmijj7xMsbZhtw/6LB9li4MyCgGAjZY2fnvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1017/1146] bonding: print churn state via netlink
+Subject: [PATCH 6.6 244/508] pinctrl: pinctrl-pic32: Fix resource leak
 Date: Wed, 20 May 2026 18:21:07 +0200
-Message-ID: <20260520162211.247422735@linuxfoundation.org>
+Message-ID: <20260520162103.939272420@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +69,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251065-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253091-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 064E0593977
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 54994598735
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 4916f2e2f3fc9aef289fcd07949301e5c29094c2 ]
+[ Upstream commit fe5560688f3ba98364c7de7b4f8dc240ffd1ff75 ]
 
-Currently, the churn state is printed only in sysfs. Add netlink support
-so users could get the state via netlink.
+Fix three possible resource leaks by using the devres version of
+clk_prepare_enable(). Also, update error message accordingly.
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20260224020215.6012-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
+Detected by Smatch:
+drivers/pinctrl/pinctrl-pic32.c:2211 pic32_pinctrl_probe() warn:
+'pctl->clk' from clk_prepare_enable() not released on lines: 2208.
+
+drivers/pinctrl/pinctrl-pic32.c:2274 pic32_gpio_probe() warn:
+'bank->clk' from clk_prepare_enable() not released on lines: 2264,2272.
+
+Fixes: 2ba384e6c3810 ("pinctrl: pinctrl-pic32: Add PIC32 pin control driver")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_netlink.c | 9 +++++++++
- include/uapi/linux/if_link.h       | 2 ++
- 2 files changed, 11 insertions(+)
+ drivers/pinctrl/pinctrl-pic32.c | 20 ++++----------------
+ 1 file changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index 286f11c517f76..ea1a80e658aeb 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -29,6 +29,8 @@ static size_t bond_get_slave_size(const struct net_device *bond_dev,
- 		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE */
- 		nla_total_size(sizeof(s32)) +	/* IFLA_BOND_SLAVE_PRIO */
- 		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_ACTOR_PORT_PRIO */
-+		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE */
-+		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE */
- 		0;
- }
+diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
+index bf827ab081a1d..f87b5964e8b31 100644
+--- a/drivers/pinctrl/pinctrl-pic32.c
++++ b/drivers/pinctrl/pinctrl-pic32.c
+@@ -2173,16 +2173,10 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
+ 	if (IS_ERR(pctl->reg_base))
+ 		return PTR_ERR(pctl->reg_base);
  
-@@ -77,6 +79,13 @@ static int bond_fill_slave_info(struct sk_buff *skb,
- 					IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
- 					ad_port->partner_oper.port_state))
- 				goto nla_put_failure;
-+
-+			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
-+				       ad_port->sm_churn_actor_state))
-+				goto nla_put_failure;
-+			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
-+				       ad_port->sm_churn_partner_state))
-+				goto nla_put_failure;
- 		}
+-	pctl->clk = devm_clk_get(&pdev->dev, NULL);
++	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(pctl->clk)) {
+ 		ret = PTR_ERR(pctl->clk);
+-		dev_err(&pdev->dev, "clk get failed\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(pctl->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "clk enable failed\n");
++		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+ 		return ret;
+ 	}
  
- 		if (nla_put_u16(skb, IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
-diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index e9b5f79e1ee17..83a96c56b8cad 100644
---- a/include/uapi/linux/if_link.h
-+++ b/include/uapi/linux/if_link.h
-@@ -1568,6 +1568,8 @@ enum {
- 	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
- 	IFLA_BOND_SLAVE_PRIO,
- 	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
-+	IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
-+	IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
- 	__IFLA_BOND_SLAVE_MAX,
- };
+@@ -2238,16 +2232,10 @@ static int pic32_gpio_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	bank->clk = devm_clk_get(&pdev->dev, NULL);
++	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(bank->clk)) {
+ 		ret = PTR_ERR(bank->clk);
+-		dev_err(&pdev->dev, "clk get failed\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(bank->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "clk enable failed\n");
++		dev_err(&pdev->dev, "Failed to get and enable clock\n");
+ 		return ret;
+ 	}
  
 -- 
 2.53.0
