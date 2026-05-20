@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLjTNhAVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:52 +0200
+	id oFWNLKLrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AEE59933D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E27593171
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CEC6F313FDB1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 826F7301603D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7296C3769E0;
-	Wed, 20 May 2026 18:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615D23A3E9C;
+	Wed, 20 May 2026 17:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XG/cn9ML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z38Lc+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6573DC4DA;
-	Wed, 20 May 2026 18:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C97A3F20E5;
+	Wed, 20 May 2026 17:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300865; cv=none; b=mK7MPq4kmImPxMkq/t8W7g/dAGEClGuEbGXbBtZX1c8fG/XQh7cDeHJ9O/NW78Su3QE91ttSRiUv7NRCLGd8QJPjGu6OnNRaRZ5a7QtPEUDyvrq5+3KUrkO5OlgFqkT2XO3U5Tb3xBh2fdp6mHETW1cqDi1cpbeEwxGRIiyFma0=
+	t=1779296700; cv=none; b=CwXJ5waBQ7uvYa0gFS3warMqO5gd/+ZS68cFNFuJ6GnF+8UoobbKmVvMQsQ7jVztK1zIDCiV5o3kWzFmk6ozkbp3QXS09mT6WWCZrV4C05dtx64oG75I/p5oAlOU3pTaTzSG8a4xbyAxOzkXp/J7IAg9iwegVoi9YEEII8LxSXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300865; c=relaxed/simple;
-	bh=hbl/Y30VauLguiH7L/KozQ+sNeX4jpHH4rhJIRIZ/F4=;
+	s=arc-20240116; t=1779296700; c=relaxed/simple;
+	bh=QkESb/m5ZLqdzr+A8Jrh9XRPjxKqZg2KOrRdEirmeAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quiBxGzpfoCssOjQmPdItsJ1FqHuBRNcQovJYUghkbT2s1vmljbgIcFrxxE3JC4P3KICvMKQWhqLiVYIJu8vOeWRR/P5xMJuYAgF6n3N4btIdNysX+aryGTwX5q6kZ0hsbB+cAlnVBtXd77dMeJMMzKYsyh3hXCP9uov9NZr0Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XG/cn9ML; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735071F000E9;
-	Wed, 20 May 2026 18:14:23 +0000 (UTC)
+	 MIME-Version; b=CrttrYJIwqxUnuBSJJFL9OrIJVcGvc/FPhKQ25GP4QUFxn92T9WXYjQspe79ZWBkPsvdU1hBrsLtS0TAfY1pvooPHKt4HE5RiowIRllufcy3uxObWdiPh8Mld43gzy/Cap4Hw+VFVaV/PWVcXtItEVn3dY0AIVsKeCcPV3Tn+Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z38Lc+V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B9C1F00893;
+	Wed, 20 May 2026 17:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300864;
-	bh=KYHg7kpezx+bs/dJL7sqiayYKEAzp6do0p7g0R6zTt8=;
+	s=korg; t=1779296698;
+	bh=TLBqnwb2WEiG/kohbp7iD11+cNf8h0rwxlP+LzDw2ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XG/cn9MLvg3YQGPp5IcIAuBdgf5PZACVNWJpsMW2O93Rb6sa7BisQ2vcZakI6RdKW
-	 Nl0uscxcYJQ5+qlh373tEbYxIho93ilEhc2k3t+RtI3bz7ckMUQYCGftAA569ThJ2R
-	 pnWnxmuDyk/R7eMFjeQ2HQEbbl2TWCNHzsvbHO8g=
+	b=0z38Lc+VvUiDo+W+xRHaRR0H2uCN8Z8RzBuylvaXjwh2RbYVX//JIEcN6HeptCXSC
+	 0Y6U1REff0N30EIKNo0u4cQ+Gk101vx3AZZ+WKwfhG5ZgpAsXJxUy1R9i4F1MA3S7/
+	 DFiPoVDBqhjujn305doyyS1Nz0CTAOU5aAK+WN6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 336/666] mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
+Subject: [PATCH 7.0 0897/1146] rculist: add list_splice_rcu() for private lists
 Date: Wed, 20 May 2026 18:19:07 +0200
-Message-ID: <20260520162118.514478524@linuxfoundation.org>
+Message-ID: <20260520162208.535222904@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +64,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252511-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250945-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 14AEE59933D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 57E27593171
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f74de390557bf2bcc5dca4a357b41c0701d3f76e ]
+[ Upstream commit f902877b635551513729bdf9a8d1422c4aab7741 ]
 
-Certain chips have inconsistent Sector Map Parameter Table (SMPT) data,
-which leads to the wrong map ID being identified, causing failures to
-detect the correct sector map.
+This patch adds a helper function, list_splice_rcu(), to safely splice
+a private (non-RCU-protected) list into an RCU-protected list.
 
-To fix this, introduce smpt_map_id() into the struct spi_nor_fixups.
-This function will be called after the initial SMPT-based detection,
-allowing chip-specific logic to correct the map ID.
+The function ensures that only the pointer visible to RCU readers
+(prev->next) is updated using rcu_assign_pointer(), while the rest of
+the list manipulations are performed with regular assignments, as the
+source list is private and not visible to concurrent RCU readers.
 
-Infineon S25FS512S needs this fixup as it has inconsistency between map
-ID definition and configuration register value actually obtained.
+This is useful for moving elements from a private list into a global
+RCU-protected list, ensuring safe publication for RCU readers.
+Subsystems with some sort of batching mechanism from userspace can
+benefit from this new function.
 
-Co-developed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+The function __list_splice_rcu() has been added for clarity and to
+follow the same pattern as in the existing list_splice*() interfaces,
+where there is a check to ensure that the list to splice is not
+empty. Note that __list_splice_rcu() has no documentation for this
+reason.
+
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: a6134e62dba2 ("netfilter: nf_tables: join hook list via splice_list_rcu() in commit phase")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+ include/linux/rculist.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 56718f954a859..3aeca2299ddb1 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -410,6 +410,8 @@ struct spi_nor_flash_parameter {
-  * @post_bfpt: called after the BFPT table has been parsed
-  * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-  *                   number of dummy cycles in read register ops.
-+ * @smpt_map_id: called after map ID in SMPT table has been determined for the
-+ *               case the map ID is wrong and needs to be fixed.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -428,6 +430,7 @@ struct spi_nor_fixups {
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
- 	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
-+	void (*smpt_map_id)(const struct spi_nor *nor, u8 *map_id);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	int (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 86d869810d07a..20b791568d5f0 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -726,6 +726,16 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- 	return read_dummy;
+diff --git a/include/linux/rculist.h b/include/linux/rculist.h
+index 2abba7552605c..e3bc442256922 100644
+--- a/include/linux/rculist.h
++++ b/include/linux/rculist.h
+@@ -261,6 +261,35 @@ static inline void list_replace_rcu(struct list_head *old,
+ 	old->prev = LIST_POISON2;
  }
  
-+static void spi_nor_smpt_map_id_fixups(const struct spi_nor *nor, u8 *map_id)
++static inline void __list_splice_rcu(struct list_head *list,
++				     struct list_head *prev,
++				     struct list_head *next)
 +{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_map_id)
-+		nor->manufacturer->fixups->smpt_map_id(nor, map_id);
++	struct list_head *first = list->next;
++	struct list_head *last = list->prev;
 +
-+	if (nor->info->fixups && nor->info->fixups->smpt_map_id)
-+		nor->info->fixups->smpt_map_id(nor, map_id);
++	last->next = next;
++	first->prev = prev;
++	next->prev = last;
++	rcu_assign_pointer(list_next_rcu(prev), first);
++}
++
++/**
++ * list_splice_rcu - splice a non-RCU list into an RCU-protected list,
++ *                   designed for stacks.
++ * @list:	the non RCU-protected list to splice
++ * @head:	the place in the existing RCU-protected list to splice
++ *
++ * The list pointed to by @head can be RCU-read traversed concurrently with
++ * this function.
++ */
++static inline void list_splice_rcu(struct list_head *list,
++				   struct list_head *head)
++{
++	if (!list_empty(list))
++		__list_splice_rcu(list, head, head->next);
 +}
 +
  /**
-  * spi_nor_get_map_in_use() - get the configuration map in use
-  * @nor:	pointer to a 'struct spi_nor'
-@@ -779,6 +789,8 @@ static const u32 *spi_nor_get_map_in_use(struct spi_nor *nor, const u32 *smpt,
- 		map_id = map_id << 1 | !!(*buf & read_data_mask);
- 	}
- 
-+	spi_nor_smpt_map_id_fixups(nor, &map_id);
-+
- 	/*
- 	 * If command descriptors are provided, they always precede map
- 	 * descriptors in the table. There is no need to start the iteration
+  * __list_splice_init_rcu - join an RCU-protected list into an existing list.
+  * @list:	the RCU-protected list to splice
 -- 
 2.53.0
 
