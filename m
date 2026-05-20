@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gC5PFtjmDWqx4gUAu9opvQ
-	(envelope-from <stable+bounces-250359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:40 +0200
+	id wPsrLA0XDmpn6AUAu9opvQ
+	(envelope-from <stable+bounces-251294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA6059292A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09D35996A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D475301F491
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB580351B35E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5299342CBA;
-	Wed, 20 May 2026 16:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86653A6EE0;
+	Wed, 20 May 2026 17:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsIt6BKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEUUsxE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A532D12EE;
-	Wed, 20 May 2026 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F3C35AC18;
+	Wed, 20 May 2026 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295207; cv=none; b=BbqhIg3Uis6XAI1vuaBGSqhdBpyyuLYwDkE8YhCMMwhbCIwLSZA13jeX505Fnd2X5tS2H4lzjJFb1OQJX6lwG0zg/qxiQaT9/lrdqYTVgZjqwzpTpsUJ8p9CdHRixIp4bsIPkHJZJ5pN1x8I+HFFrZTjm/WAb90PgTT6lvAGB9g=
+	t=1779297610; cv=none; b=e1WCK9SbadiRorJ1RDBzOhZrgpkBXcdowThDX9jQDY24xw7pundNcNzttZc9Xa2TZwzcbyQ7CGq61BdGaT8lUdOAFweTlJNmSGPqO4MWz2OV0lFq6tUypgAeuOx8OLeASbmoal+0KU1tYY+FASUs2M8YbDrZr0tBmj417R1TLKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295207; c=relaxed/simple;
-	bh=KV/5/6d5W527gnGAM58lQRmAShbr8Sq3pJJTzryBp4g=;
+	s=arc-20240116; t=1779297610; c=relaxed/simple;
+	bh=zqbeO7O99kojDgQP83L9V2j8OSi0nlIiqgmmeZGXWXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o2ddRf6qUOB9LAAeAVltY99qYvBkzDU50Y1e/XKSyFOr+8k79DvYdu1BvBaBgjRi2IQzy7Np/GSXb7T0/4Fh/srGOkj9UQdABv94XTsfernM6ZNzuoRW1GGQV6hUvKAEV5k4zR2EaKq4d/OKAXJQX2Cx3xUjdQQr5ijuBpf3p3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsIt6BKZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFD91F000E9;
-	Wed, 20 May 2026 16:40:05 +0000 (UTC)
+	 MIME-Version; b=d8uJOU8FmrHti2qJP9TFrxPin3ixdXiKUQX41UtR9rSt5EYtjoCQvzKjJHKtovUBBj7J/H25O+zMsxloAwRtSUKG3m5hRXtWREBmUlSOmfWU0Wopsc5jGJg94F4cZY6OGHxe7vsZz06l9q0wV179tu5WFteuq5teD2GYW4jqFIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEUUsxE/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413A61F000E9;
+	Wed, 20 May 2026 17:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295206;
-	bh=X1/FFulbl1rquXocq5YwLMjE82z4v5chU//tgwyruUo=;
+	s=korg; t=1779297608;
+	bh=i/BRn6VBE3YyRx7bwGS9wNRDZno3XfiaoaAcj1LFDuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qsIt6BKZ6/OMxyZkvytxekDvWOalX1FEVf6WnFiHOl1HvfSfteXE9fT/oUqXNTX0b
-	 OcHdNOsg8cYIg3fPcwRnWz0ZTyArkToA/frTPQCd1NHJISErFmaw7r+eArpD4N0MXS
-	 0NbmVCn3EFskCHizHxXb1etSOzOFrkHn6PPyyC8g=
+	b=bEUUsxE/7qV9DUl7Z/cM+S+rpqLzHeGGpn+81zXo+uzUgvhPDFWkD7/GSfaN+bTSg
+	 AQ9TFGZ+K7G3TBM6PwgSyvjZPBt6bMXxQq1vy6CFSGFhvdRM/DiMH4jyeSn/YNYvmm
+	 5hup+n8DbLw1UNI+Nk09yTtoM0HtAry+xosysAlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Oswald <stevepeter.oswald@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0330/1146] PCI: Prevent shrinking bridge window from its required size
+Subject: [PATCH 6.18 097/957] wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
 Date: Wed, 20 May 2026 18:09:40 +0200
-Message-ID: <20260520162155.665744238@linuxfoundation.org>
+Message-ID: <20260520162136.663354696@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,243 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250359-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251294-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CCA6059292A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,zju.edu.cn:email]
+X-Rspamd-Queue-Id: F09D35996A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit dc4b4d04e1caa3552f000d84d832779ebe51b093 ]
+[ Upstream commit 1146d0946b5358fad24812bd39d68f31cd40cc34 ]
 
-Steve reported an eGPU (either Radeon Instinct MI50 32GB or NVIDIA 3080
-10GB) connected via Thunderbolt was not assigned sufficient BAR space in
-v6.11, so the amdgpu and nvidia drivers were unable to initialize the
-device.
+When the mt7915 pci chip is detaching, the mt7915_crash_data is
+released in mt7915_coredump_unregister(). However, the work item
+dump_work may still be running or pending, leading to UAF bugs
+when the already freed crash_data is dereferenced again in
+mt7915_mac_dump_work().
 
-pci_bridge_distribute_available_resources() -> ... ->
-adjust_bridge_window() is called between __pci_bus_size_bridges()
-and assigning the resources. Since the commit 948675736a77 ("PCI: Allow
-adjust_bridge_window() to shrink resource if necessary")
-adjust_bridge_window() can also shrink the bridge window.  The shrunken
-size, however, conflicts with what __pci_bus_size_bridges() ->
-pbus_size_mem() calculated as the required bridge window size. By shrinking
-the size, adjust_bridge_window() prevents the rest of the resource fitting
-algorithm from working as intended.  Resource fitting logic is expecting
-assignment failures when bridge windows need resizing, but there are cases
-where failures are no longer happening after the commit 948675736a77 ("PCI:
-Allow adjust_bridge_window() to shrink resource if necessary").
+The race condition can occur as follows:
 
-The commit 948675736a77 ("PCI: Allow adjust_bridge_window() to shrink
-resource if necessary") justifies the change by the extra reservation
-made due to hpmemsize parameter, however, the kernel code contradicts
-that statement. (For simplicity, finer-grained hpmmiosize and hpmmiopref
-parameters that can be used to the same effect as hpmemsize are ignored in
-this description.)
+CPU 0 (removal path)               | CPU 1 (workqueue)
+mt7915_pci_remove()                | mt7915_sys_recovery_set()
+ mt7915_unregister_device()        |  mt7915_reset()
+  mt7915_coredump_unregister()     |   queue_work()
+   vfree(dev->coredump.crash_data) | mt7915_mac_dump_work()
+                                   |  crash_data-> // UAF
 
-pbus_size_mem() calls calculate_memsize() twice. First with add_size=0
-to find out the minimal required resource size. The second call occurs
-with add_size=hpmemsize (effectively) but the result does not directly
-affect the resource size only resulting in an entry on the realloc_head
-list (a.k.a. add_list). Yet, adjust_bridge_window() directly changes
-the resource size which does not include what is reserved due to
-hpmemsize. Also, if the required size for the bridge window exceeds
-hpmemsize, the parameter does not have any effect even on the second
-size calculation made by pbus_size_mem(); from calculate_memsize():
+Fix this by ensuring dump_work is properly canceled before
+the crash_data is deallocated. Add cancel_work_sync() in
+mt7915_unregister_device() to synchronize with any pending
+or executing dump work.
 
-  size = max(size, add_size) + children_add_size;
-
-The commit ae4611f1d7e9 ("PCI: Set resource size directly in
-adjust_bridge_window()") that precedes the commit 948675736a77 ("PCI:
-Allow adjust_bridge_window() to shrink resource if necessary") is also
-related to causing this problem. Its changelog explicitly states
-adjust_bridge_window() wants to "guarantee" allocation success.
-Guaranteed allocations, however, are incompatible with how the other
-parts of the resource fitting algorithm work. The given justification
-fails to explain why guaranteed allocations at this stage are required
-nor why forcing window to a smaller value than what was calculated by
-pbus_size_mem() is correct. While the change might have worked by chance
-in some test scenario, too small bridge window does not "guarantee"
-success from the point of view of the endpoint device resource
-assignments. No issue is mentioned within the changelog so it's unclear
-if the change was made to fix some observed issue nor and what that
-issue was.
-
-The unwanted shrinking of a bridge window occurs, e.g., when a device with
-large BARs such as eGPU is attached using Thunderbolt and the Root Port
-holds less than enough resource space for the eGPU. The GPU resources are
-in order of GBs and the default hotplug allocation is a mere 2MB
-(DEFAULT_HOTPLUG_MMIO_PREF_SIZE). The problem is illustrated by this log
-(filtered to the relevant content only):
-
-  pci 0000:00:07.0: PCI bridge to [bus 03-2c]
-  pci 0000:00:07.0:   bridge window [mem 0x6000000000-0x601bffffff 64bit pref]
-  pci 0000:03:00.0: PCI bridge to [bus 00]
-  pci 0000:03:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
-  pci 0000:03:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
-  pci 0000:03:00.0: PCI bridge to [bus 04-2c]
-  pcieport 0000:00:07.0: Assigned bridge window [mem 0x6000000000-0x601bffffff 64bit pref] to [bus 03-2c] cannot fit 0xc00000000 required for 0000:03:00.0 bridging to [bus 04-2c]
-  pci 0000:03:00.0: bridge window [mem 0x800000000-0x10003fffff 64bit pref] to [bus 04-2c] add_size 100000 add_align 100000
-  pcieport 0000:00:07.0: distributing available resources
-  pci 0000:03:00.0: bridge window [mem 0x800000000-0x10003fffff 64bit pref] shrunken by 0x00000007e4400000
-  pci 0000:03:00.0: bridge window [mem 0x6000000000-0x601bffffff 64bit pref]: assigned
-
-The initial size of the Root Port's window is 448MB (0x601bffffff -
-0x6000000000). __pci_bus_size_bridges() -> pbus_size_mem() calculates the
-required size to be 32772 MB (0x10003fffff - 0x800000000) which would fit
-the eGPU resources. adjust_bridge_window() then shrinks the bridge window
-down to what is guaranteed to fit into the Root Port's bridge window. The
-bridge window for 03:00.0 is also eliminated from the add_list (a.k.a.
-realloc_head) list by adjust_bridge_window().
-
-After adjustment, the resources are assigned and as the bridge window for
-03:00.0 is assigned successfully, no failure is recorded. Without a
-failure, no attempt to resize the window of the Root Port is required.  The
-end result is eGPU not having large enough resources to work.
-
-The commit 948675736a77 ("PCI: Allow adjust_bridge_window() to shrink
-resource if necessary") also claims nested bridge windows are sized the
-same, which is false. pbus_size_mem() calculates the size for the parent
-bridge window by summing all the downstream resources so the resource
-fitting calculates larger bridge window for the parent to accommodate the
-childen. That is, hpmemsize does not result the same size for the case
-where there are nested bridge windows.
-
-In order to fix the most immediate problem, don't shrink the resource size
-in adjust_bridge_window() as hpmemsize had nothing to do with it.  When
-considering add_size, only reduce it up to what is added due to hpmemsize
-(if required size is larger than hpmemsize, the parameter has no impact,
-see calculate_memsize()). Unfortunately, if the tail of the bridge window
-was aligned in calculate_memsize() from below hpmemsize to above it, the
-size check will falsely match but the check at least errs to the side of
-caution. There's not enough information available in adjust_bridge_window()
-to know the calculated size precisely.
-
-This is not exactly a revert of the commits e4611f1d7e9 ("PCI: Set resource
-size directly in adjust_bridge_window()") and 948675736a77 ("PCI: Allow
-adjust_bridge_window() to shrink resource if necessary") as shrinking still
-remains in place but is implemented differently, and the end result behaves
-very differently.
-
-It is possible that those two commits fixed some other issue that is not
-described with enough detail in the changelog and undoing parts of them
-results in another regression due to behavioral change.  Nonetheless, as
-described above, the solution by those two commits was flawed and the
-issue, if one exists, should be solved in a way that is compatible with the
-rest of the resource fitting algorithm instead of working against it.
-
-Besides shrinking, the case where adjust_bridge_window() expands the bridge
-window is likely somewhat wrong as well because it removes the entry from
-add_list (a.k.a. realloc_head), but it is less damaging as that only
-impacts optional resources and may have no impact if expanding by hpmemsize
-is larger than what add_size was. Fixing it is left as further work.
-
-Fixes: 948675736a77 ("PCI: Allow adjust_bridge_window() to shrink resource if necessary")
-Fixes: ae4611f1d7e9 ("PCI: Set resource size directly in adjust_bridge_window()")
-Reported-by: Steve Oswald <stevepeter.oswald@gmail.com>
-Closes: https://lore.kernel.org/linux-pci/CAN95MYEaO8QYYL=5cN19nv_qDGuuP5QOD17pD_ed6a7UqFVZ-g@mail.gmail.com/
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260219153951.68869-1-ilpo.jarvinen@linux.intel.com
+Fixes: 4dbcb9125cc3 ("wifi: mt76: mt7915: enable coredump support")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20260130145759.84272-1-duoming@zju.edu.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 42 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 61f769aaa2f6c..1f87b018799f9 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1837,6 +1837,7 @@ static void adjust_bridge_window(struct pci_dev *bridge, struct resource *res,
- 				 resource_size_t new_size)
- {
- 	resource_size_t add_size, size = resource_size(res);
-+	struct pci_dev_resource *dev_res;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 5ea8b46e092ef..d2b163a5fce5b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1287,6 +1287,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
  
- 	if (resource_assigned(res))
- 		return;
-@@ -1849,9 +1850,46 @@ static void adjust_bridge_window(struct pci_dev *bridge, struct resource *res,
- 		pci_dbg(bridge, "bridge window %pR extended by %pa\n", res,
- 			&add_size);
- 	} else if (new_size < size) {
-+		int idx = pci_resource_num(bridge, res);
-+
-+		/*
-+		 * hpio/mmio/mmioprefsize hasn't been included at all? See the
-+		 * add_size param at the callsites of calculate_memsize().
-+		 */
-+		if (!add_list)
-+			return;
-+
-+		/* Only shrink if the hotplug extra relates to window size. */
-+		switch (idx) {
-+			case PCI_BRIDGE_IO_WINDOW:
-+				if (size > pci_hotplug_io_size)
-+					return;
-+				break;
-+			case PCI_BRIDGE_MEM_WINDOW:
-+				if (size > pci_hotplug_mmio_size)
-+					return;
-+				break;
-+			case PCI_BRIDGE_PREF_MEM_WINDOW:
-+				if (size > pci_hotplug_mmio_pref_size)
-+					return;
-+				break;
-+			default:
-+				break;
-+		}
-+
-+		dev_res = res_to_dev_res(add_list, res);
- 		add_size = size - new_size;
--		pci_dbg(bridge, "bridge window %pR shrunken by %pa\n", res,
--			&add_size);
-+		if (add_size < dev_res->add_size) {
-+			dev_res->add_size -= add_size;
-+			pci_dbg(bridge, "bridge window %pR optional size shrunken by %pa\n",
-+				res, &add_size);
-+		} else {
-+			pci_dbg(bridge, "bridge window %pR optional size removed\n",
-+				res);
-+			pci_dev_res_remove_from_list(add_list, res);
-+		}
-+		return;
-+
- 	} else {
- 		return;
- 	}
+ void mt7915_unregister_device(struct mt7915_dev *dev)
+ {
++	cancel_work_sync(&dev->dump_work);
+ 	mt7915_unregister_ext_phy(dev);
+ 	mt7915_coredump_unregister(dev);
+ 	mt7915_unregister_thermal(&dev->phy);
 -- 
 2.53.0
 
