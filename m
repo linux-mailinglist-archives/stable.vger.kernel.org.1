@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4G7XC8fzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:51 +0200
+	id GO7oH/UpDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF568594969
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC00559B274
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2AAD93034EEC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 137313534BEC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C93A3E9C;
-	Wed, 20 May 2026 17:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA773F8706;
+	Wed, 20 May 2026 18:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld7L/Hcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iFsShtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8C510F2;
-	Wed, 20 May 2026 17:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB683DA5B6;
+	Wed, 20 May 2026 18:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298778; cv=none; b=aBlcw6QpjE5XSoYqJWZ2Pv0Ilg0/rQx7oWIVqb+Va1yBufBEC44LQu8AHlrXBLydTsEtDO0IED4NbWiOyCImv6L4oidfw+Z6qFyz6bcL3a0dd58ZeBJnww9pOS1jpLsuZ1kz57oBGJCNvmJ6fqRjPJl62y8YjT6VKPgdH0dQloc=
+	t=1779301756; cv=none; b=AU87mwo3gzaaA3kMGAn1ry0jRodm1W/OKzyhutCVwl4IeDHvTpRd/ReXECnTJgMWDD4/DE528Decqj5dRttxPS0u3SU2axcUBs37Y0mc6uyrCFcOupHPWbKkqymKr23YqLzhb+76NPakJAfUxY7hMN+NkQy2fFj14PiGGlj+kEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298778; c=relaxed/simple;
-	bh=P0sa9xAZHZ6Fyz5aB43kKzWPy1H3u5s39ccjj1Ay1oc=;
+	s=arc-20240116; t=1779301756; c=relaxed/simple;
+	bh=kOTJsKsULHbhuLKRzQMBU7Yc7tBmmxYPLZTcyroYwyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Alw4/WtqvAUPk0+zmtSrp4C//29QhbK5mtvNiPtCZgJWNpJpBiNQlGlKn7PhM8AgXa/FnaHu5ZJ6LdAniXbbOv6WKEif8p1hMMwrOATB1olJKu355tJQwz3+cuIlapu2mpegXOKapUrNf8MmQo2gOpCZRzPmoDyDN0UhKfiWwLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld7L/Hcn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FADF1F000E9;
-	Wed, 20 May 2026 17:39:36 +0000 (UTC)
+	 MIME-Version; b=Ms/RiS/gK/KwYuad/PkWomPus2Z/hFV63VCJss+oUu09xCHFEolNBq8c/Eac60hdOgYuQ1SydG1YjlsxmbSuvsduWhEpuQ0tmlXqM9/e4SHdUraEX1JC/zUzYsevPdpJVyAN/UheAMocxaG8I/rFt/yPtrh2FfeFOQw5bk8NVGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iFsShtx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01F71F000E9;
+	Wed, 20 May 2026 18:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298777;
-	bh=NEMte8mGAzc/JVTgmnf4qrbLydIlXkKG27makuFK1N0=;
+	s=korg; t=1779301755;
+	bh=Y0+ZqQRgWoQd4HmXOx7F9sSIzh+GuLSMfCdWoSpJA5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ld7L/HcnFN4kEJ9/ZRri7zkKBDJqAy9c1bjRUEDecI97946Ut0tbrmI29q+Q2QcIN
-	 DEfflzC+qvO/FRHgppKBsqh9iVzvHp10RcZ0qpQMl9IUEUZqfVe+kWBybt2oG2t/H5
-	 T0zN9nBP8VvoRcEAmiBuCSmrXqb8jmpesezZTxYQ=
+	b=0iFsShtxcrOt96p/+OH856JduEJRLY4DcN/VdqGtUd2VYODzBIo5crStmzUTw/W7R
+	 e1JT3xxnH1BFStgEaMmDYGosM18PHa7hPJ3pAsv1VV2sVRIWCgPBslLuJPj2eSMlCt
+	 NpoxlV838sQbneMSooFmWcDlv2HpYeRCFcA5gS5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Luke Jones <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 541/957] platform/x86: asus-wmi: fix screenpad brightness range
+Subject: [PATCH 6.6 001/508] blk-cgroup: wait for blkcg cleanup before initializing new disk
 Date: Wed, 20 May 2026 18:17:04 +0200
-Message-ID: <20260520162146.266171949@linuxfoundation.org>
+Message-ID: <20260520162058.609606751@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +65,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252851-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ljones.dev:email,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AF568594969
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,lst.de:email]
+X-Rspamd-Queue-Id: DC00559B274
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 8d95d1f4aa5c76202b0833a70998769384612488 ]
+[ Upstream commit 3dbaacf6ab68f81e3375fe769a2ecdbd3ce386fd ]
 
-Fix screenpad brightness range being too limited without reason:
-testing this patch on a Zenbook Duo showed the hardware minimum not being
-too low, therefore allow the user to configure the entire range, and
-expose to userspace the hardware brightness range and value.
+When a queue is shared across disk rebind (e.g., SCSI unbind/bind), the
+previous disk's blkcg state is cleaned up asynchronously via
+disk_release() -> blkcg_exit_disk(). If the new disk's blkcg_init_disk()
+runs before that cleanup finishes, we may overwrite q->root_blkg while
+the old one is still alive, and radix_tree_insert() in blkg_create()
+fails with -EEXIST because the old blkg entries still occupy the same
+queue id slot in blkcg->blkg_tree. This causes the sd probe to fail
+with -ENOMEM.
 
-Fixes: 2c97d3e55b70 ("platform/x86: asus-wmi: add support for ASUS screenpad")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Luke Jones <luke@ljones.dev>
-Link: https://patch.msgid.link/20260302174431.349816-3-denis.benato@linux.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix it by waiting in blkcg_init_disk() for root_blkg to become NULL,
+which indicates the previous disk's blkcg cleanup has completed.
+
+Fixes: 1059699f87eb ("block: move blkcg initialization/destroy into disk allocation/release handler")
+Cc: Yi Zhang <yi.zhang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20260311032837.2368714-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ block/blk-cgroup.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index e6fe6ed6a63da..9026744d72267 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -127,7 +127,6 @@ module_param(fnlock_default, bool, 0444);
- #define NVIDIA_TEMP_MIN		75
- #define NVIDIA_TEMP_MAX		87
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 75e9d5a9d707c..40c9d5805b88b 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -24,6 +24,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/slab.h>
+ #include <linux/delay.h>
++#include <linux/wait_bit.h>
+ #include <linux/atomic.h>
+ #include <linux/ctype.h>
+ #include <linux/resume_user_mode.h>
+@@ -618,6 +619,8 @@ static void blkg_destroy_all(struct gendisk *disk)
  
--#define ASUS_SCREENPAD_BRIGHT_MIN 20
- #define ASUS_SCREENPAD_BRIGHT_MAX 255
- #define ASUS_SCREENPAD_BRIGHT_DEFAULT 60
- 
-@@ -4143,13 +4142,13 @@ static int read_screenpad_brightness(struct backlight_device *bd)
- 		return err;
- 	/* The device brightness can only be read if powered, so return stored */
- 	if (err == BACKLIGHT_POWER_OFF)
--		return asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
-+		return bd->props.brightness;
- 
- 	err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &retval);
- 	if (err < 0)
- 		return err;
- 
--	return (retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK) - ASUS_SCREENPAD_BRIGHT_MIN;
-+	return retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK;
+ 	q->root_blkg = NULL;
+ 	spin_unlock_irq(&q->queue_lock);
++
++	wake_up_var(&q->root_blkg);
  }
  
- static int update_screenpad_bl_status(struct backlight_device *bd)
-@@ -4189,22 +4188,19 @@ static int asus_screenpad_init(struct asus_wmi *asus)
- 	int err, power;
- 	int brightness = 0;
+ static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
+@@ -1459,6 +1462,18 @@ int blkcg_init_disk(struct gendisk *disk)
+ 	bool preloaded;
+ 	int ret;
  
--	power = read_screenpad_backlight_power(asus);
-+	power = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_SCREENPAD_POWER);
- 	if (power < 0)
- 		return power;
- 
--	if (power != BACKLIGHT_POWER_OFF) {
-+	if (power) {
- 		err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &brightness);
- 		if (err < 0)
- 			return err;
- 	}
--	/* default to an acceptable min brightness on boot if too low */
--	if (brightness < ASUS_SCREENPAD_BRIGHT_MIN)
--		brightness = ASUS_SCREENPAD_BRIGHT_DEFAULT;
- 
- 	memset(&props, 0, sizeof(struct backlight_properties));
- 	props.type = BACKLIGHT_RAW; /* ensure this bd is last to be picked */
--	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX - ASUS_SCREENPAD_BRIGHT_MIN;
-+	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX;
- 	bd = backlight_device_register("asus_screenpad",
- 				       &asus->platform_device->dev, asus,
- 				       &asus_screenpad_bl_ops, &props);
-@@ -4215,7 +4211,7 @@ static int asus_screenpad_init(struct asus_wmi *asus)
- 
- 	asus->screenpad_backlight_device = bd;
- 	asus->driver->screenpad_brightness = brightness;
--	bd->props.brightness = brightness - ASUS_SCREENPAD_BRIGHT_MIN;
-+	bd->props.brightness = brightness;
- 	bd->props.power = power;
- 	backlight_update_status(bd);
- 
++	/*
++	 * If the queue is shared across disk rebind (e.g., SCSI), the
++	 * previous disk's blkcg state is cleaned up asynchronously via
++	 * disk_release() -> blkcg_exit_disk(). Wait for that cleanup to
++	 * finish (indicated by root_blkg becoming NULL) before setting up
++	 * new blkcg state. Otherwise, we may overwrite q->root_blkg while
++	 * the old one is still alive, and radix_tree_insert() in
++	 * blkg_create() will fail with -EEXIST because the old entries
++	 * still occupy the same queue id slot in blkcg->blkg_tree.
++	 */
++	wait_var_event(&q->root_blkg, !READ_ONCE(q->root_blkg));
++
+ 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
+ 	if (!new_blkg)
+ 		return -ENOMEM;
 -- 
 2.53.0
 
