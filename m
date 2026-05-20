@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-251502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HBzNX/+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:35 +0200
+	id eJklN5T1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA52C596906
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B81594EC4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 492533103D72
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF8403108592
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7903A3826;
-	Wed, 20 May 2026 17:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846983D5642;
+	Wed, 20 May 2026 17:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1abocQD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOxog8vL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AEF1B7910;
-	Wed, 20 May 2026 17:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199AC331220;
+	Wed, 20 May 2026 17:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298148; cv=none; b=nd+7HnNXHBoyrHlhsajvBa57O9Drm9bDQ239jOACULfBh+s2cvFpgA01a5pU6M+VCQ4T9sft55QJ+JimvaQLO6mqIKaGqfX6FjzVD5tKlXdtp5MkrfTnErPUuBRyMIW7qdpXsPEwJ8AqL0eC+94jz/sF+phOTfUcrA9nOJZ7n6Q=
+	t=1779298153; cv=none; b=iyDJeXVQZZ3mYtOd3UKO4lqpnx/bjm8/5XQZua+oUyRk3Ef0DjSRuOzslKy/H7V2BP/BYm4wVM6zanq7wWx0ximItzkNz31MEbWlGdeSw5PBi6+N7ObEcDpOuyKiQv1g5dPfffhObnHHSmUkpuqdozQUNBUnS13KXruBzU0ufEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298148; c=relaxed/simple;
-	bh=ZsTpjTxMCmmdeDrUROEYgkmY94bv9Z0qCstTQN7ERag=;
+	s=arc-20240116; t=1779298153; c=relaxed/simple;
+	bh=XvCHcCGXS7WOZxVvwCoZz2LSIMIO0ZKO0QqPsdAFgUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8GEAqDPUW2o8pJA1bQxGjuicNWfPNDB9WudwLfZ5daxlvBaFV6D0mZOXq6xlBusQ1/QsCfn8qwQzyRqr1PdtO5A61UjZe+2T63saxupjFZSIJr0SrEfb0P7qE/FMXNwrmo6f0kMAQa60x/bqCxGEbV56bTJY0uGb6eUGQTI7Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1abocQD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440E31F000E9;
-	Wed, 20 May 2026 17:29:06 +0000 (UTC)
+	 MIME-Version; b=d+uIEQhvCVUz3DK3VyLfLfYRfzMcQdYsMoz8wAQ1Eku73T4GlK++ixKKv5uRFzsRfK0FdAo6qicmnrM+bu84brD6TK4HfkbannJcTiSni1EUAhFEEs0aeIK0hTX7cZnqVrR4nbIdDL9oZ4N1sXlp+OnV2/6eFZkTDWZ476qsa+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOxog8vL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B6C1F000E9;
+	Wed, 20 May 2026 17:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298146;
-	bh=HFaWfXOeTE/U6koVfeTf/fRZVY9LItVSSagcyaECILo=;
+	s=korg; t=1779298152;
+	bh=SquYIIW8zxlc/R070UXhIMlb8sFwfHfe9qdAptxkXfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v1abocQDcfRfMEnVJHtISRdWWqchQXY7ZL7qyaeYot0s9fJVZsGijELpYEHg8jRLh
-	 NK8VP5i89PCMHRFARC4+jwuvJg+7JMttKH5O3/1MRillePMQHIuQsvm8JmHbqfTiT0
-	 fRyqvwYXDWZ51+WVmYZXCFQgqmO8RSAVCNKAgdQ0=
+	b=sOxog8vLZvbwIYPS/FWGNnGeiFFH3mEFH3ugI9N58HoVyAoUIYjPcDWIuf6rtOqBl
+	 4F8FjsldLZYUniGFU6aG5nd0GFjej7YiaIus4hjwEedqtTBqBrj1O3wrwB206Di0LA
+	 bhE08yZ0bVB9jWqFHs5sAb97Xh4wWWJf62xG7a6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahsan Atta <ahsan.atta@intel.com>,
 	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Laurent M Coquerel <laurent.m.coquerel@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Wojciech Drewek <wojciech.drewek@linux.intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 299/957] crypto: qat - disable 420xx AE cluster when lead engine is fused off
-Date: Wed, 20 May 2026 18:13:02 +0200
-Message-ID: <20260520162141.018027105@linuxfoundation.org>
+Subject: [PATCH 6.18 300/957] crypto: qat - fix compression instance leak
+Date: Wed, 20 May 2026 18:13:03 +0200
+Message-ID: <20260520162141.038689838@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251502-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251504-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,intel.com:email]
-X-Rspamd-Queue-Id: DA52C596906
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,apana.org.au:email]
+X-Rspamd-Queue-Id: 88B81594EC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,60 +102,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ahsan Atta <ahsan.atta@intel.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit f216e0f2d1787e662bb6662c9c522185aa3b855a ]
+[ Upstream commit 795c24c677c7a1c12f5768daf22a874a2890662f ]
 
-The get_ae_mask() function only disables individual engines based on
-the fuse register, but engines are organized in clusters of 4. If the
-lead engine of a cluster is fused off, the entire cluster must be
-disabled.
+qat_comp_alg_init_tfm() acquires a compression instance via
+qat_compression_get_instance_node() before calling qat_comp_build_ctx()
+to initialize the compression context. If qat_comp_build_ctx() fails, the
+function returns an error without releasing the compression instance,
+causing a resource leak.
 
-Replace the single bitmask inversion with explicit test_bit() checks
-on the lead engine of each group, disabling the full ADF_AE_GROUP
-when the lead bit is set.
+When qat_comp_build_ctx() fails, release the compression instance with
+qat_compression_put_instance() and clear the context to avoid leaving a
+stale reference to the released instance.
 
-Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Fixes: fcf60f4bcf54 ("crypto: qat - add support for 420xx devices")
+The issue was introduced when build_deflate_ctx() (which always returned
+void) was replaced by qat_comp_build_ctx() (which can return an error)
+without adding error handling for the failure path.
+
+Fixes: cd0e7160f80f ("crypto: qat - refactor compression template logic")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@linux.intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_420xx/adf_420xx_hw_data.c   | 20 +++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/crypto/intel/qat/qat_common/qat_comp_algs.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-index 53fa91d577ed0..cb52aaa323a7e 100644
---- a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-@@ -96,9 +96,25 @@ static struct adf_hw_device_class adf_420xx_class = {
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c b/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
+index 8b123472b71cc..4273a0ecb6c80 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
+@@ -133,7 +133,7 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm)
+ 	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
+ 	struct qat_compression_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct qat_compression_instance *inst;
+-	int node;
++	int node, ret;
  
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
--	u32 me_disable = self->fuses[ADF_FUSECTL4];
-+	unsigned long fuses = self->fuses[ADF_FUSECTL4];
-+	u32 mask = ADF_420XX_ACCELENGINES_MASK;
+ 	if (tfm->node == NUMA_NO_NODE)
+ 		node = numa_node_id();
+@@ -146,7 +146,13 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm)
+ 		return -EINVAL;
+ 	ctx->inst = inst;
  
--	return ~me_disable & ADF_420XX_ACCELENGINES_MASK;
-+	if (test_bit(0, &fuses))
-+		mask &= ~ADF_AE_GROUP_0;
+-	return qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, QAT_DEFLATE);
++	ret = qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, QAT_DEFLATE);
++	if (ret) {
++		qat_compression_put_instance(inst);
++		memset(ctx, 0, sizeof(*ctx));
++	}
 +
-+	if (test_bit(4, &fuses))
-+		mask &= ~ADF_AE_GROUP_1;
-+
-+	if (test_bit(8, &fuses))
-+		mask &= ~ADF_AE_GROUP_2;
-+
-+	if (test_bit(12, &fuses))
-+		mask &= ~ADF_AE_GROUP_3;
-+
-+	if (test_bit(16, &fuses))
-+		mask &= ~ADF_AE_GROUP_4;
-+
-+	return mask;
++	return ret;
  }
  
- static u32 uof_get_num_objs(struct adf_accel_dev *accel_dev)
+ static void qat_comp_alg_exit_tfm(struct crypto_acomp *acomp_tfm)
 -- 
 2.53.0
 
