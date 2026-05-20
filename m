@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-252665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0G8eBogHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:08 +0200
+	id yH8IAIL5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3407F597EDB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008F65958B9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0AB41311D1F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9386930D5975
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6468E2C11FE;
-	Wed, 20 May 2026 18:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031C83F4DD7;
+	Wed, 20 May 2026 17:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG9/3zQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJDZnS4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E609348C55;
-	Wed, 20 May 2026 18:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B283C39B483;
+	Wed, 20 May 2026 17:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301271; cv=none; b=At0BNwD8grqpKUsHpXoh3+L75ezVqsyyE1SoXKWL68MzJFFaW4DcYW/fbWfQMf3U87V7y9heeJuBOQ1SYehn6bT2J+BG/+U7RZr4Bkz90Vn1nitzcfSiQ+1TkFNhC03puSvtBIg5QErXgloKDhXKD0U/0tesVT7bfO3zSJT5f4k=
+	t=1779299564; cv=none; b=SO4h1EwatlBfozAK7VGf5PdEdjE/Q4LUwJ4ntUl3FYi7FW7KjhvoMJsP/1GQex40kHfRbBnwBif9UsTzKIN+/HRTSD+l/3EXJV0xSXDL8pjJAj7kKuH8w2RZmaSgk6HE+lf9Q++x7PDRhxHVpqPdGuLbi4nuzfEmrXzTQS9I6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301271; c=relaxed/simple;
-	bh=SyWXhLy0TE3UspBn92qQnp4NM9N5wJdOYpV666kc/vE=;
+	s=arc-20240116; t=1779299564; c=relaxed/simple;
+	bh=BMRgcE4nKSReXGy/pQlvx6pTHbNnc8eDCWFl1ICCBFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ik1oc+wmKzKc25y9vOlBcpnUNdzmPnCLtWcbeW17fJa5I1G3R0VDYZ2pLzEr6Hq/QkT4YczjZtprhSTB7n4Smj7lPOPCN7LZ6L3XwvZzy2eJyU3U99vWbaOcUNT2gcUCG0T8QJyIfCxSaAZRAEP1GZ1iFikct2yFaCsfJ71WdfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG9/3zQB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997F81F000E9;
-	Wed, 20 May 2026 18:21:09 +0000 (UTC)
+	 MIME-Version; b=sny6G72vIWEnaYpcKp5Tj1yoGth9YT5AsBzNGNAclybiKdDC3s+y5SQ9ypl5DrUg8AS3m7QSljtcUoIgJXfTwV1eHo0J+E3ppU/+LIBRCdWo8/LXGoY9CSBCOKjJP7OgAtulgt1yJmX/d0IktIcgiAZ8lLnawq3V+F8YN+6h6ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJDZnS4T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D971F000E9;
+	Wed, 20 May 2026 17:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301270;
-	bh=JWdtBCzCdCk4J6dIQUXRxV3Y1KFq+waCRv5iiEk2qXI=;
+	s=korg; t=1779299563;
+	bh=ZnD9xXasB2OrUpk6px7N9/1Wz8qDpPa9/15VP00aEzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qG9/3zQBIrZS1kjOEXyQIzo8OBMUL8CWqcboK1mplmO9n9cErQhBq2TK+CWYUSenR
-	 J8xh1/AkhAWFX4Yk/NqgBRKz5PX0ol3LsIHLq5zthXx/ACUeYa0b5D0uOUsXkD0ah2
-	 BDmIyk7h9xndVtpcT+CZg0fhpydkqV3jL8HhsJLc=
+	b=gJDZnS4TNEOGnaYqJLamjrtPfqtdgeN0QnfGnPd5l4+/fITmDBtmrCZDZxS7kfMOJ
+	 FyHb0kNbxvAxwO+FgXxt7TWJ3yhKccA6UOsU7Lu+xLrEJbexyolp5mkpnx00ZtBN/w
+	 Oqydr1O5nSmGP39UkDpqvsXzoL43ZbNLtBJUbDy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 492/666] virtio_net: Split struct virtio_net_rss_config
+Subject: [PATCH 6.18 820/957] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
 Date: Wed, 20 May 2026 18:21:43 +0200
-Message-ID: <20260520162121.927113263@linuxfoundation.org>
+Message-ID: <20260520162152.350719501@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,84 +71,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252665-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252031-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,alibaba.com:email,daynix.com:email]
-X-Rspamd-Queue-Id: 3407F597EDB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 008F65958B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 976c2696b71da376d42e63ca3802eb2aafc164eb ]
+[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
 
-struct virtio_net_rss_config was less useful in actual code because of a
-flexible array placed in the middle. Add new structures that split it
-into two to avoid having a flexible array in the middle.
+bareudp_fill_metadata_dst() passes bareudp->sock to
+udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
+The socket is only created in bareudp_open() and NULLed in
+bareudp_stop(), so calling this function while the device is down
+triggers a NULL dereference via sock->sk.
 
-Suggested-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Link: https://patch.msgid.link/20250321-virtio-v2-1-33afb8f4640b@daynix.com
+ BUG: kernel NULL pointer dereference, address: 0000000000000018
+ RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
+ Call Trace:
+  <TASK>
+  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
+  do_execute_actions (net/openvswitch/actions.c:901)
+  ovs_execute_actions (net/openvswitch/actions.c:1589)
+  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
+  genl_rcv_msg (net/netlink/genetlink.c:1209)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
+
+Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
+in the same driver.
+
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3bc06da858ef ("virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/virtio_net.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/bareudp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
-index ac9174717ef13..963540deae66a 100644
---- a/include/uapi/linux/virtio_net.h
-+++ b/include/uapi/linux/virtio_net.h
-@@ -327,6 +327,19 @@ struct virtio_net_rss_config {
- 	__u8 hash_key_data[/* hash_key_length */];
- };
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 0df3208783ad9..da5866ba06999 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -529,6 +529,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct in6_addr saddr;
+ 		struct socket *sock = rcu_dereference(bareudp->sock);
  
-+struct virtio_net_rss_config_hdr {
-+	__le32 hash_types;
-+	__le16 indirection_table_mask;
-+	__le16 unclassified_queue;
-+	__le16 indirection_table[/* 1 + indirection_table_mask */];
-+};
++		if (!sock)
++			return -ESHUTDOWN;
 +
-+struct virtio_net_rss_config_trailer {
-+	__le16 max_tx_vq;
-+	__u8 hash_key_length;
-+	__u8 hash_key_data[/* hash_key_length */];
-+};
-+
-  #define VIRTIO_NET_CTRL_MQ_RSS_CONFIG          1
- 
- /*
+ 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
+ 					     0, &saddr, &info->key,
+ 					     sport, bareudp->port, info->key.tos,
 -- 
 2.53.0
 
