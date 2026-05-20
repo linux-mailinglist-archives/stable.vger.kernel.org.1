@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNjcH4n6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:41 +0200
+	id ELYHKA/yDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27532595B42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F9859440F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D02632F0E26
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FDDA3225A6E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0363F23C2;
-	Wed, 20 May 2026 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C483CAE97;
+	Wed, 20 May 2026 16:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDI+2mJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDQXOH3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192C3F0762;
-	Wed, 20 May 2026 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8437372B31;
+	Wed, 20 May 2026 16:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297821; cv=none; b=p4ifJ7grXxcDdSSKmV2bT9M965qqKUcrUUtqkeG2u1RkucvZ0WKwSbFwXD1aIjR/ktP7k+3jRg8DZ4eNj/4Qemo17Eh2KJ1mGyDLuPO4sKhVIYN6A014Hwl8yiWlrhqfC43OfBTHfwDAuM/aIb2Iv5FfwcyqIT5z7F6mz3A7RDM=
+	t=1779295304; cv=none; b=R/SIOcg5mSAxCkxTHwTRhB2sCAi7Kog/eKmnVJ58QgmJ6dc9rlYhIPads/AF4XIY9eDEfGcXg0E3LP2jNdSkid9eHFlGe9rOgjQqBzcCzjBK+LBDC5LmudiUqbPERpGQhe8npO8XbCGRUpKDZUinEcnwp0jdRuIYxpAOqIQ/o30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297821; c=relaxed/simple;
-	bh=elYrbd3YWPuACsCrycB3lSIM+W8JLVxhxpnyqJYMmhU=;
+	s=arc-20240116; t=1779295304; c=relaxed/simple;
+	bh=YgDYFhd/v3/yUOL1cDhg0PG5JY1MvNQJmrPtw6IZSAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkZX0nGtybU7US45/SpoEAfHM7BfzIIZmzGA5DqCMUjnkJVOKOR+mc6gF9SC30L9UxgqiyVFt/GYU9DWeOqsmMMab5i3/+NiWhkZXo2CXZg5nD5cV6+ks5KXmNDLLT0Jj0jztQfrChKEQaqtYUSA8TwVJC3Bf5eCglMJs8K7QKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDI+2mJ+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B97E1F000E9;
-	Wed, 20 May 2026 17:23:39 +0000 (UTC)
+	 MIME-Version; b=VODumibHwhYKajc8MbAxlXa9E+a1DrtDRm3oX0LM5lhaUJ/nUiwMuCmjr5h9EBdZe+4jVblfHCO5u4A1dHarW+B2dkGZLEpZz3Qx3AH9WnGVn/En7MUvYjpYrghuk9nbI9bFp9NVvUzCACbQZdyGrSJUfaErUqA7rHB6fiVgIFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDQXOH3K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E811F000E9;
+	Wed, 20 May 2026 16:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297820;
-	bh=1I2MHsJsdDzL6Pwv3XfwI74a0TM7MMZm5VCCf7FgefQ=;
+	s=korg; t=1779295303;
+	bh=SadrXLWub/UCfZJ/NV3P2yk/LWdBZOrHIUfbl/Ue56s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oDI+2mJ+3tywATJ0yquaKSp1pDYEWqjktdcyGfyLfL3rOPHewismv9J0lk0nm7/a+
-	 85Qavhiq2FIs/yfHhTbjy/Vke2xVMCv1cs2Zk0xyiOuJlu/AD13FLgm6pgspySCVf9
-	 uQAPtNVaetjRphf8idFtnYK99WhkcHb/KH0v1duU=
+	b=SDQXOH3Kt/PMSweskbe+PO8IN2bQxdOVxpBZ+4lkvBakUim+ze/C9+EP6HKAWwAYf
+	 q3gTOEsw6vw5XF+0kvMM5K2AjflqLIE8tYThjCTWeSKu/QpLOzCG+q2ydyf28JJ/UA
+	 ie7LTtmfCuunxIxN91VzKC81sV40S2TFVCVGuc/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 135/957] macsec: Support VLAN-filtering lower devices
+Subject: [PATCH 7.0 0368/1146] drm/msm/dpu: drop INTF_0 on MSM8953
 Date: Wed, 20 May 2026 18:10:18 +0200
-Message-ID: <20260520162137.482801659@linuxfoundation.org>
+Message-ID: <20260520162156.529338122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,214 +73,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251377-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250396-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 27532595B42
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 93F9859440F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit a363b1c8be879c79a688eaf93ba01b63f8b0e63c ]
+[ Upstream commit 7090420420d5a7d7c88b21d16962f2a230be3ef3 ]
 
-VLAN-filtering is done through two netdev features
-(NETIF_F_HW_VLAN_CTAG_FILTER and NETIF_F_HW_VLAN_STAG_FILTER) and two
-netdev ops (ndo_vlan_rx_add_vid and ndo_vlan_rx_kill_vid).
+There is no INTF_0 on MSM8953. Currently catalog lists dummy INTF_NONE
+entry for it. Drop it from the catalog.
 
-Implement these and advertise the features if the lower device supports
-them. This allows proper VLAN filtering to work on top of MACsec
-devices, when the lower device is capable of VLAN filtering.
-As a concrete example, having this chain of interfaces now works:
-vlan_filtering_capable_dev(1) -> macsec_dev(2) -> macsec_vlan_dev(3)
-
-Before the mentioned commit this used to accidentally work because the
-MACsec device (and thus the lower device) was put in promiscuous mode
-and the VLAN filter was not used. But after commit [1] correctly made
-the macsec driver expose the IFF_UNICAST_FLT flag, promiscuous mode was
-no longer used and VLAN filters on dev 1 kicked in. Without support in
-dev 2 for propagating VLAN filters down, the register_vlan_dev ->
-vlan_vid_add -> __vlan_vid_add -> vlan_add_rx_filter_info call from dev
-3 is silently eaten (because vlan_hw_filter_capable returns false and
-vlan_add_rx_filter_info silently succeeds).
-
-For MACsec, VLAN filters are only relevant for offload, otherwise
-the VLANs are encrypted and the lower devices don't care about them. So
-VLAN filters are only passed on to lower devices in offload mode.
-Flipping between offload modes now needs to offload/unoffload the
-filters with vlan_{get,drop}_rx_*_filter_info().
-
-To avoid the back-and-forth filter updating during rollback, the setting
-of macsec->offload is moved after the add/del secy ops. This is safe
-since none of the code called from those requires macsec->offload.
-
-In case adding the filters fails, the added ones are rolled back and an
-error is returned to the operation toggling the offload state.
-
-Fixes: 0349659fd72f ("macsec: set IFF_UNICAST_FLT priv flag")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20260408115240.1636047-5-cratiu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7a6109ce1c2c ("drm/msm/dpu: Add support for MSM8953")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/713990/
+Link: https://lore.kernel.org/r/20260325-drop-8953-intf-v1-1-d80e214a1a75@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 71 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 63 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 5200fd5a10e5c..5d820ef619469 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -2584,7 +2584,9 @@ static void macsec_inherit_tso_max(struct net_device *dev)
- 		netif_inherit_tso_max(dev, macsec->real_dev);
- }
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+index b44d02b48418f..2162ff917b0f8 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+@@ -121,13 +121,6 @@ static const struct dpu_dspp_cfg msm8953_dspp[] = {
  
--static int macsec_update_offload(struct net_device *dev, enum macsec_offload offload)
-+static int macsec_update_offload(struct net_device *dev,
-+				 enum macsec_offload offload,
-+				 struct netlink_ext_ack *extack)
- {
- 	enum macsec_offload prev_offload;
- 	const struct macsec_ops *ops;
-@@ -2616,14 +2618,35 @@ static int macsec_update_offload(struct net_device *dev, enum macsec_offload off
- 	if (!ops)
- 		return -EOPNOTSUPP;
- 
--	macsec->offload = offload;
--
- 	ctx.secy = &macsec->secy;
- 	ret = offload == MACSEC_OFFLOAD_OFF ? macsec_offload(ops->mdo_del_secy, &ctx)
- 					    : macsec_offload(ops->mdo_add_secy, &ctx);
--	if (ret) {
--		macsec->offload = prev_offload;
-+	if (ret)
- 		return ret;
-+
-+	/* Remove VLAN filters when disabling offload. */
-+	if (offload == MACSEC_OFFLOAD_OFF) {
-+		vlan_drop_rx_ctag_filter_info(dev);
-+		vlan_drop_rx_stag_filter_info(dev);
-+	}
-+	macsec->offload = offload;
-+	/* Add VLAN filters when enabling offload. */
-+	if (prev_offload == MACSEC_OFFLOAD_OFF) {
-+		ret = vlan_get_rx_ctag_filter_info(dev);
-+		if (ret) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "adding ctag VLAN filters failed, err %d",
-+					   ret);
-+			goto rollback_offload;
-+		}
-+		ret = vlan_get_rx_stag_filter_info(dev);
-+		if (ret) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "adding stag VLAN filters failed, err %d",
-+					   ret);
-+			vlan_drop_rx_ctag_filter_info(dev);
-+			goto rollback_offload;
-+		}
- 	}
- 
- 	macsec_set_head_tail_room(dev);
-@@ -2633,6 +2656,12 @@ static int macsec_update_offload(struct net_device *dev, enum macsec_offload off
- 
- 	netdev_update_features(dev);
- 
-+	return 0;
-+
-+rollback_offload:
-+	macsec->offload = prev_offload;
-+	macsec_offload(ops->mdo_del_secy, &ctx);
-+
- 	return ret;
- }
- 
-@@ -2673,7 +2702,7 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
- 	offload = nla_get_u8(tb_offload[MACSEC_OFFLOAD_ATTR_TYPE]);
- 
- 	if (macsec->offload != offload)
--		ret = macsec_update_offload(dev, offload);
-+		ret = macsec_update_offload(dev, offload, info->extack);
- out:
- 	rtnl_unlock();
- 	return ret;
-@@ -3486,7 +3515,8 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
- }
- 
- #define MACSEC_FEATURES \
--	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
-+	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST | \
-+	 NETIF_F_HW_VLAN_STAG_FILTER | NETIF_F_HW_VLAN_CTAG_FILTER)
- 
- #define MACSEC_OFFLOAD_FEATURES \
- 	(MACSEC_FEATURES | NETIF_F_GSO_SOFTWARE | NETIF_F_SOFT_FEATURES | \
-@@ -3707,6 +3737,29 @@ static int macsec_set_mac_address(struct net_device *dev, void *p)
- 	return err;
- }
- 
-+static int macsec_vlan_rx_add_vid(struct net_device *dev,
-+				  __be16 proto, u16 vid)
-+{
-+	struct macsec_dev *macsec = netdev_priv(dev);
-+
-+	if (!macsec_is_offloaded(macsec))
-+		return 0;
-+
-+	return vlan_vid_add(macsec->real_dev, proto, vid);
-+}
-+
-+static int macsec_vlan_rx_kill_vid(struct net_device *dev,
-+				   __be16 proto, u16 vid)
-+{
-+	struct macsec_dev *macsec = netdev_priv(dev);
-+
-+	if (!macsec_is_offloaded(macsec))
-+		return 0;
-+
-+	vlan_vid_del(macsec->real_dev, proto, vid);
-+	return 0;
-+}
-+
- static int macsec_change_mtu(struct net_device *dev, int new_mtu)
- {
- 	struct macsec_dev *macsec = macsec_priv(dev);
-@@ -3748,6 +3801,8 @@ static const struct net_device_ops macsec_netdev_ops = {
- 	.ndo_set_rx_mode	= macsec_dev_set_rx_mode,
- 	.ndo_change_rx_flags	= macsec_dev_change_rx_flags,
- 	.ndo_set_mac_address	= macsec_set_mac_address,
-+	.ndo_vlan_rx_add_vid	= macsec_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid	= macsec_vlan_rx_kill_vid,
- 	.ndo_start_xmit		= macsec_start_xmit,
- 	.ndo_get_stats64	= macsec_get_stats64,
- 	.ndo_get_iflink		= macsec_get_iflink,
-@@ -3912,7 +3967,7 @@ static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
- 		offload = nla_get_u8(data[IFLA_MACSEC_OFFLOAD]);
- 		if (macsec->offload != offload) {
- 			macsec_offload_state_change = true;
--			ret = macsec_update_offload(dev, offload);
-+			ret = macsec_update_offload(dev, offload, extack);
- 			if (ret)
- 				goto cleanup;
- 		}
+ static const struct dpu_intf_cfg msm8953_intf[] = {
+ 	{
+-		.name = "intf_0", .id = INTF_0,
+-		.base = 0x6a000, .len = 0x268,
+-		.type = INTF_NONE,
+-		.prog_fetch_lines_worst_case = 14,
+-		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+-		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+-	}, {
+ 		.name = "intf_1", .id = INTF_1,
+ 		.base = 0x6a800, .len = 0x268,
+ 		.type = INTF_DSI,
 -- 
 2.53.0
 
