@@ -1,232 +1,350 @@
-Return-Path: <stable+bounces-249787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EKosN8V5DWqfxwUAu9opvQ
-	(envelope-from <stable+bounces-249787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:07:17 +0200
+	id dyvDL8t7DWoVyAUAu9opvQ
+	(envelope-from <stable+bounces-249789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:15:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BE858A66C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:07:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDDF58A805
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3D50300B2B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:07:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5E963008287
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA243B4EA0;
-	Wed, 20 May 2026 09:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0774439C00B;
+	Wed, 20 May 2026 09:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="qXZEOqXj"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="f6EMx2uw"
 X-Original-To: stable@vger.kernel.org
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012059.outbound.protection.outlook.com [52.101.66.59])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B0E3B52F4;
-	Wed, 20 May 2026 09:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DC12D7DC6
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 09:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779268033; cv=fail; b=fz/QxGFtIvM8Lx886tMbEbUs4OA3CMAC6N0lnxTY6oaR2204f+tObWJcLRSPKlL4WC7Bau6R4bFmvorMbZ7Bsi8Laf9oE0uISYVCYnBcR2XjCFNVOvgCcNp2wDBSxBZErA8k6KkScQoo+m8smI7hq7F0HGN/GvFts8lpKZgV+VA=
+	t=1779268482; cv=fail; b=q9wvlrTaUQhxXSHeWr8CfOZziJts4MlFdbI4msyu3ILbDNvMpvnaFtkqv/LY/Og62zezu5plZTs5/u/qyr+S+5ezvC0fROWT1z1JXqOAaWGpsJ7rBaGZZjgdr+pANaG/SZ0Phl3wJlaTF15um9wppcLDLiTK96yGbLzGX0Xvd9w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779268033; c=relaxed/simple;
-	bh=NjMe62FLOQBSSGKY0sdk/UDXhWNAfm320t5C7pNpypk=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TwH2kfjnuiqFsexxUla73vyzj2cQm9fRlwNmNj+PAS2nujZ0nmfPxcUIqPpTa71VCY8CVrOR5aauzWSY9AgiyqAa7cOOlXsiZP2JvkOTWKHVLiHAVTCwrH0T6t69sY3P2z8jjuDX9XflUCn/OP4dEoIaf5gDWVRVpDBkeweJyWk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=qXZEOqXj; arc=fail smtp.client-ip=52.101.66.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1779268482; c=relaxed/simple;
+	bh=xMaJ/HA4q/zGAYOlSkWZQnawY+vUlY9193uGmWRBTWI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=iX/D9h7aMUcVEI14+k2PGX/9ygKh6sTvJSnzhj+tLuGIhhuBiN26NsLekmRZznMTZResahJhsQ2FjkbZaqYW4wAQ/XO0tNc/HglcWwb49wVeBNjA/AviGZwAU0bIskMN6GwpkFtmVIALaO3ByDPhGqynhposS6wJivkxI/td1/I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=f6EMx2uw; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64K51rAq1372086;
+	Wed, 20 May 2026 02:14:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=qKfCm0jFz
+	TJKt/sIc6IDIYXftMOiF0QxVFwQSMgLO0c=; b=f6EMx2uwdOeTFWiiSjpBUYadI
+	PRSBADAg8d1MYB56eK5oW9W1+d/wllz7agZ27owNv+fkTbc3/jREanJGj3kC7/4Q
+	hgBwjYSOKtc33bP+nITLRdB47yJLztQN2dpvqdl7nzBJ9ZFZSykz0BQoq1XuO/zh
+	OIMjkUBs9o6Fhvc5MTWY9z+YZPxIK9QFx9dK68yOcXMEYnbchjAPJs7s00U0fLHC
+	ssTgKZxh/CXsV9KCbQyFeZw/iUaHrqxECf6ki/YPtIwVDuU1IjIxpEqv50XQdGWl
+	WCwA3PQNAin+fockoWlcgNYu4F0H+mnfb5kguQ3xPJdpSwV8x6W71ww+fjJEQ==
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010016.outbound.protection.outlook.com [52.101.61.16])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4e6r3gcw53-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2026 02:14:28 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yEUHyYLMTN3HIyO4y3tp/DHXKCOp1/QNbr7g7ZthekyuQRijo5jJ5BZxIV/uxzD+GC+rLiC6J8Gpbg3B25lPEfP+9+RF7NdjlpxRJNVhoTgWxrfZEDC32ro/T60le5s3kbgtU2P20Vn2VC37utsrdRLixDznLpT1rhIFOoh9iRohpFCWdj4pyUumN4nPasczrXdftLexCrUiV98w2yu1aUUl4bhHjdXFxSyIZyW7NjimLCZNDy9ROLtflrlpF+SZpCV01jbsDPpfKTF4ZNxauk5DUokiuj0d8r54LhZkv5sLO6KcxhNyWEW8QY0AfxT9MWW7evFBfF/0inj35J8g1Q==
+ b=l/xvyxM0Rrtoe3nImn0XUr7xuzo7lBDRyV+Tu8dwq8WyZ0bdSvwO+U1aX7JJZJbm3nRDvYwYE+OYdkGFGHQ9Hzl2LzqNLsGOOKXmeeHkW1+VfMP7e2iuLPWabgZFFGCi8evQ6JQaEqGo7HQwiWEuAVxZkDo6XWm/FUscqYl+XmTlj/zm0FZhUWyhSDdxaKHVthTEls4oaHQBhIfqLgYjQ2ll3OqdChWVoZsPhtV4bmIXrTsVKOlb1z8YQK6YfOj+vpxBfAyD51rnomwE/sjIBFbVg33g14jvTBesh6Xy6auSbXwg57Ff7ksRpVpHhRy5Ry5WbMrPEWfkq+HUthgVbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j4CtjOiTU9R5m2IeMHe81HPmmTfZeKtiWDS2pfNRvvw=;
- b=rBVE/2Fbva6ol0ncbRIsHJTXr/hhmToF9v0UNKFNSRBot2N7MomXUSG0HvhN7owpSqbVB+yl7Ol8TuxL2RsEocTJVdc1BPb4XMfCkJ/ZoiPxAvJypd0Uhvsv8Bzd6bjtJR5SoIlS6Pl/A9v0vxy90DFdeF2Mmcr2KiYRWgNomSr0TIgnsjD7IlFXyPGSVjHIwlc/ombc3/5/2mAPtft+XH+q+Qyu+e3XfJ5qR5RSkZhrgIGdP/7bFMHsr10RZIA9M0KriGGBSxGKZCs82p37qhlVfA9KsoIPYtstZYOhfaYUj2nJEIeBIoEauzwBtCLykNE41yoURq1HMjW3qxb2tg==
+ bh=qKfCm0jFzTJKt/sIc6IDIYXftMOiF0QxVFwQSMgLO0c=;
+ b=ITZyKUWy0yaDrfHM2igGwCkJ1hNTQDGVJdLcVOjrvAqW9l96PwxgpGY0/n39ByKogbe5orS3PdiMitSjJ8pQ6L160LRWL4ngzMNNg3KIwd+yH4nXIKUmtBIPf2eqC0T1Qic73My6H9Jcv799krFmkciX1o/hCbPcy/mI14lR1Qg7L0FZiK1vpZ5Tl74/pSWX76qCwsc4agKYZjCsiijcBjcNbaPriplD8pzFIeUH44wxfnO4KQCVzh0y1j2hvzhXbk6WIcj1WuftQqD+1twj8GXgUb5jo9v3Qm4yXNJXjsNnJJepK7MJ16Dc+PJPGJGcuGQ0mZ1YEIeSXea1qFaTAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j4CtjOiTU9R5m2IeMHe81HPmmTfZeKtiWDS2pfNRvvw=;
- b=qXZEOqXjHRqRbZnslGawfOUY1RrV0/l+jtXZ6Hq5k+QsnsHTSfjTBEnH4Whd7bH3TrI+OtNqxhwS/coJwd0zmPLNkhje+TKz4d549OS8Ip0FLKB6vQCqPwOI2I0djdxY44jDJyOA+tBjzYwtUNZMb1J2933faiGREgeP+60oG47FA5kAh0chXJwvDxi8OqrrxEPFWhQhf8rp7r8+4kCFIPG+IsWo9Q8nIPd83YcDms0o562o+ba5vpdpPHRhVbD1pnQj7yaD5IhgwU/0SYJvLyYuUaMyVjzSNB5LRbXAIGUZKfKrBc0HsYYtMGdK6l4he6SevTEUo2r0pvEbF1IKTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by AS8PR04MB8277.eurprd04.prod.outlook.com (2603:10a6:20b:3fc::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.24; Wed, 20 May
- 2026 09:07:07 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 09:07:07 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: aisheng.dong@nxp.com,
-	andi.shyti@kernel.org,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	carlos.song@nxp.com
-Cc: linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PACTH v2] i2c: imx-lpi2c: mark I2C adapter when hardware is powered down
-Date: Wed, 20 May 2026 17:09:10 +0800
-Message-ID: <20260520090910.2879570-1-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from DS4PPF641CF4859.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::26) by PH0PR11MB5175.namprd11.prod.outlook.com
+ (2603:10b6:510:3d::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.16; Wed, 20 May
+ 2026 09:13:51 +0000
+Received: from DS4PPF641CF4859.namprd11.prod.outlook.com
+ ([fe80::794e:2099:77b9:92f6]) by DS4PPF641CF4859.namprd11.prod.outlook.com
+ ([fe80::794e:2099:77b9:92f6%6]) with mapi id 15.20.9913.009; Wed, 20 May 2026
+ 09:13:51 +0000
+From: Xiangyu Chen <xiangyu.chen@windriver.com>
+To: will@kernel.org
+Cc: catalin.marinas@arm.com, stable@vger.kernel.org,
+        gregkh@linuxfoundation.org
+Subject: proposal to fix CVE-2026-23346 on 6.12 or older kernel
+Date: Wed, 20 May 2026 17:13:36 +0800
+Message-Id: <20260520091337.3799553-1-xiangyu.chen@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI3PR02CA0007.apcprd02.prod.outlook.com
- (2603:1096:4:295::9) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+X-ClientProxiedBy: SE2P216CA0029.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:114::6) To DS4PPF641CF4859.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::26)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|AS8PR04MB8277:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27b02370-fe1f-4540-f822-08deb64f2ac7
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: DS4PPF641CF4859:EE_|PH0PR11MB5175:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e1d5a4e-94c5-400b-188f-08deb6501b9b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014|11063799006|56012099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014|5023799004|3023799007|11063799006|56012099003|18002099003|3613699012;
 X-Microsoft-Antispam-Message-Info:
-	yxdOX2MhVZ3bJjykbrjUIs+1EAQqg0Ge5Gc7BFafxyyN2wO64pXbmsiL0vwgkHubNL5L1x9XR1rZF1Ahp/4BfvOLNAzAz813L134OgxSJe8WWxPmta28LM7ae3z//GyY9W3F0sbQ6jTqC3D9wu1mDRdIn3tgBMturvvo0bgLhCvLBt+JFMnCnZuYm8d6rcseqoyL5goW9pcwayJgfemZeig2W9Kzj1s9T9QobdynTzN2ugnJSDe7Jm8hTb0i2gUGiEZtSam4UY4HWaq1+xo1PJDocrL7rQxWGbfgnxCe7rBsgD/BlZh04Q5TrMLIRLeuRP19raztyMhSuhSrb37TWtY1XpPVtdCCPAyktRDrkr7CzSQPY5vRjfPuZcqDqxT6jRNlIJT9E1VUKnNTYpmIHhmRwYPoHBSyfAiZmFQxQBqQsoSN29RphlaTiQfB0FYS04jZ8qMlLmAiijW3As/B7dSFNWt3a7TPJgUmRRYKAVPYRz+9HRvP1fas/HwG3xQXU+FKla8DlAc8PbvdILOJCi/UJBOUGmycXbea318w59Tdua2rVTR7PNoXAGVqcO2cBvaARVdpEuvcvGuVlOODBNpHCdyc+SgCVPyydy2WKyTazJaEqeRyUr0EiPub55iWGhsYAYLUF4uvDNEANVT5PsIul4h5wyOfjuK5CDoRbjv2APQfcZYo4GFZpqLPRTy6oceuYNHQ3vwzUGQ8PZLL0kUOf7tWIwsD4kTYnWgGmTK1f1wkpKqozp9mN2HnUG5c
+	TwI0+co6U8WFNSshtMzhW/iLqK8uGtqVlXhd9U8tYAWG5KBx4WYrP3cPVQCuYcVvwxiPFl2iPocycMrBENCFIZOQfN23eio23gC8+KpDawfjObp0CiRLLQdsnLsD7UqsPN4e62o1Zfaigs7EN17Fh6HyQnHqyRA1LxA2P5QFUHiv3p/1aUy83jC+TvQPIg5ThileIpeDWjUqvLb4f6uqLbSZVOnDAfxvvCJlZh+7/rsINglkm/UmbGF9vyGeggWLF5DTDuv9Jk8Uvk5N9gh0+Ir/inuc+et7kz6rD1TOgsgfXbpZuwbX4LBSHu7NCODmkZ9VO1QARMn3f1oeOZ6+rx+yR9BwcYBP1j8nqTCtr6TT2dsfLNnqWm8XQONA/V/2GsWd1VVVnbC8GxQG9skvXgn5NEm5Zkfl4pY0WyWMCeHVYHL6iA/iUOmzDxWLp5IC/vDdgREt60xJ+kI+zN/RvulxDcq7fAhu5+lJeRd/6nKMQh8wYn3j95v9NYM6GGNMmTlFm/1CzfKgmSYZVPbGgBTutOurbGXSIQXUmlqWEdSnpPHhMOPjzwZyJ4ASMXMRyDjc/NtYWQojgsk/yzAEf2omFtTZbwgp0IJ1BQnHLujpAOTw0WElHJzY+g6X9Kc6ML7iG/vcxz5MEN4tnvNOpRLJpjM6j9R5oOqsjnZ0Mb8mlp4ItlgSwIWl8KxHdz7vfvI+8mnZllsFuw0f40H+1RqB83znLR6fGlCoESiLDvO92kI/2vH2XyjB8y7HOXsWGxG1mhQCBCx8eun4imugbw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014)(11063799006)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPF641CF4859.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014)(5023799004)(3023799007)(11063799006)(56012099003)(18002099003)(3613699012);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?I7pM9xpeE+3b8Gw/CD07rLJK71uoOYgxV2dmS1BAUdTjXDMEZ/h8pU1yuHA5?=
- =?us-ascii?Q?TEKFy3tDd8z4dzrOL0S77ZT0ZzHhYP053FDuGkreRTOTTrcgn9PKLVNOSvhH?=
- =?us-ascii?Q?qSb6/TUV6S74co7g+ZVfq1f+fdi5Zu3v2ywJzf0uhh+cG2Qka9gGbe+xnZ8P?=
- =?us-ascii?Q?dAvj1KDSYOVhNlvOWwNvL/H1Jc/TU9zpUy0mqGAD23YmRsGLoB7uh24R1MQC?=
- =?us-ascii?Q?6uxGPcWC2YdprzwBjT49h2e9F0r+8loGFk+A6o99UR8OBlb8UyultOXqZGdk?=
- =?us-ascii?Q?4+ek72Df2am/kyEe1VE6qQtVTQ706+CRXR9gxb0l83KSC74DzEkaNA/h3Gpm?=
- =?us-ascii?Q?YFJiS99HvSZ2kGkU3Pn7MZBQIxO/R3d0Vwc7eQyrZO8GnvkZwKvH7zNVmKQs?=
- =?us-ascii?Q?b8LTedUw3K9rehlh/IGCBvwm0Ed23BOP7DY7jul2N+InltOlv4f3Es82D5Lg?=
- =?us-ascii?Q?He0VKLdq8FXvMRr1VjKcN5X8/uqVAWlwrGT1bYhs3CBPIvNf5/FrQtoie7KJ?=
- =?us-ascii?Q?r0BYgcBd5faXp83Y2l9Iu22xJCTONXO77a1dD9vA9+nSHiWg3A9JlqrNVK74?=
- =?us-ascii?Q?WVSDbIfAjYPsZRE4/3ACAsX3rrognrtOlsoayS+kPUuWDNghZPn4IqcXdOn2?=
- =?us-ascii?Q?sPYCzatBjREIuyrjRVCA2H0arfz/QHb3UQ+yOKxi6MRvGYzF8Be+3lHKcPtS?=
- =?us-ascii?Q?gO9XKiz8ecqennu5dl4GaKeCzcjqAP/Hj01DX8xaSognJfyMzRREzh1fam1n?=
- =?us-ascii?Q?7OIHbrf7qoEyxyhoGbiCatYUdMO6fjsjKjonurQVGX82do35U4hTjyIbOfPu?=
- =?us-ascii?Q?RwQMrTSH+oxH35Hrty/dpXSm4b/OvMpSA7unhBRVREjRaHgJCN6isYOQ2+vK?=
- =?us-ascii?Q?G/2tm3m98c6wWWOdpkHgKAWxAyKD7za93V8IayzqS1CiAtcc1EcDki1lmKx2?=
- =?us-ascii?Q?oZ6aaPICFu10oQOrbCbo9F0nuZ+wjweO/i5cP0I5dZPxDYmxTfEJIo1tT9+K?=
- =?us-ascii?Q?KRZ19uHnl6jYAwnFTRke5qcPimUE7Xlpdwst8LavI15SOHQNFKDtlnjVpyoP?=
- =?us-ascii?Q?A1Hc0G1S5PfDQ6BhdhLZqtRZeVxj0iAoJa5+7Ig4SV8ZdXyW/V4hMjsS/w7Z?=
- =?us-ascii?Q?+ohKJvOFR9/5yLDPLin5lAwrU1m4MirgHCeURaRSXQaZp9IpeR93/XK+MmMC?=
- =?us-ascii?Q?ADGWNNTtZoCyxDdY+xaPlnxfpX9pBZDeG+ViclV81yMZzr8f6ZGZBusSdWpG?=
- =?us-ascii?Q?dvbxIRb8TJxEzpH1Lw9r7uymopSwHwBF2ApiPjRPlGaPWdwC0b6hbxGwIu6Q?=
- =?us-ascii?Q?9lDKQiEhV5odvLmhj2D634Q+1yxLfdq9nycCpLYRHb0LCyor5R2JOjplJy1Z?=
- =?us-ascii?Q?dHPHuUdUK84ay28EfSG3X8wKr/Jjw6kcLzGtJVsUu5lbrDuZpjzN9kuurpyM?=
- =?us-ascii?Q?2nN0OytyOW1DCwImoO4ca0JG70/94nXOW1A8RSnUE0vwOUk8wnIeSONLkFLv?=
- =?us-ascii?Q?oeDKtBpQVIxOWmKZOP7VrL/mk4UqjIE6Z6v72X7Umzu/DqT51NU4qackQtO+?=
- =?us-ascii?Q?ul4lSoT2P0F3REFeZ+ax7v/Ea0Us/i3NM542aYx636Td4DSbxfVDu6v5XtUf?=
- =?us-ascii?Q?nNNDq7R9I57NxKZRd6fx71V08zuBoz2cR9WjM3KcGWYjf3kz69bZmG2a9QIs?=
- =?us-ascii?Q?5VBXbmIOfRANp4S/PR2CxMHN6Xd4G2VYjQz7qafwd3nn4WKt2+U0Hw12Hgs9?=
- =?us-ascii?Q?XzilZMQwkw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27b02370-fe1f-4540-f822-08deb64f2ac7
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
+	=?us-ascii?Q?Oe9UK/3+VEPPlNmi8jDtXMf2uP4K/0a56eKOJ9EzKx8g1Bj377UsekuyfrUq?=
+ =?us-ascii?Q?9jU6u9cADcbz4zK4UKOd7FbTI9gBgILBWISOpKo2Z/kyG4ePbUO8UYJblJMl?=
+ =?us-ascii?Q?hOIZtgnazUBkawkHiW2FrzGRZ5G8th9mbt6/TCH1D0TILizI8MGAJ1d6BnYq?=
+ =?us-ascii?Q?jrj2v3NB0syK1N98oEqVq1CZU5e0i12iik+cGELZkCufkaaaR2mYzgOOGneB?=
+ =?us-ascii?Q?/Th1fljPcfSWjzqrVE0nRIxp8/M+rfO7eA+ebY47w4AeGeENNDbrLlWeb9rm?=
+ =?us-ascii?Q?0xp7E8fWIKLDF/DjvvGiLpzTmiQsyObSm59UOslpWN+q4UhLLlkJEJ8GF/nr?=
+ =?us-ascii?Q?YGhXk+F8uWq4qE+sKBA9K9zEILREIqy4Z4t3MgWtFl+TooizSu/g16jLmAoA?=
+ =?us-ascii?Q?7xrufT6U2Zo7Vc8IAykX6YVtasLDmc+tc/JWhGe5ucZ1oMzbnXLvwz10KYn9?=
+ =?us-ascii?Q?DrRfjN2xFk09RvwaaVrqLOewy2Jhv4dyIK69EIpJPEW521uhxjtW5T46Tqiq?=
+ =?us-ascii?Q?la6QzO7AZY6AAHLw4ylJKUz7hOD/2gVhX+MRJ2ltUIYJhfmQLu8k0Z/0h8eC?=
+ =?us-ascii?Q?99/LDn1aLRG8s1BzYN+awrrXRjvDmmRj4/JfXrdYYBy3YyW/JMR//xnL4//x?=
+ =?us-ascii?Q?F5LH2LyM9DMgcQsrHYKhJ/a/g21vPuf3QgK+YK25jT6lxEC+VlCk7ES5W/ht?=
+ =?us-ascii?Q?GTZ8Pa+zLqWp0hTv73IrK+8hxFYVoCHh+F3jSVGfBU6zKHPARmy/+bvZNkFA?=
+ =?us-ascii?Q?ZTU5grjgDfCN5cQ0trj1HsT6A5lkHXOhkE+4uNTjXbCJt09IXMj/sNqNjLlX?=
+ =?us-ascii?Q?MwFXAfqYGnb6ocWWqUYRgr53bYtLFenm7R754GH2nWADu1jFgHDZlxibQpYl?=
+ =?us-ascii?Q?Gfbd1QF9lM3gtIm4XMFRNVtPnnsG1SKHanlur7z2mlodEE+C+Fj9XUzOta94?=
+ =?us-ascii?Q?3ZB2h1DyVD62+8iN1OtHd/HlRRm/misfuGmGd0yV7u1r6gv/o48p5SEQhqjh?=
+ =?us-ascii?Q?uZMS7B0Rl6gpQZw8FERBnqfkiBTl2b99atNcstePxLVqfRFtnpxnaHwCmtUQ?=
+ =?us-ascii?Q?YTQDqdaACbUahXQ3/gcw6COVAWZ/wIAlr/4nOmNAX6AGdXBoCu03JoaKnl4y?=
+ =?us-ascii?Q?9gM0EMOOBjG2fLlEJ9cz6PgbgQDVFVgNrI69C2LfE7vx6hZLjwzNvHfe39P0?=
+ =?us-ascii?Q?Rdwa9dINa8if9NSqYKsegYPoQORpHoxVYlVPMNc3CIBHxHnZ7kHzsVkYoLUL?=
+ =?us-ascii?Q?Qwot+VKCCEboRAqIlxNnbZPUFBmlLLveD16Qi1WVnv5RSnxc1pWDAYxPwybg?=
+ =?us-ascii?Q?HsufyWaEzsfMOzp274CHvE1xE9+DXbOvYePFMWr53egXVe+TwaOzIsijpXtb?=
+ =?us-ascii?Q?1PJoeHNvVdDs9fu2gLQY8BNCnbAct/TwdTYR8tbVrriGq/YccvfIT4gfTU7f?=
+ =?us-ascii?Q?YpcpZxA6atProb0cZg/vHAxMBarRholyRvxP7o0eIBxxddVXKACTAD+rXgD+?=
+ =?us-ascii?Q?bw5qMGCZ3cyTrmeS9JnM0IRnzzB3nReEVwANAcquYdI00rgTs0651PB/A2sW?=
+ =?us-ascii?Q?wQBFv2YwB9zPuPFkGk2wHUMrVW3cTXqBuyM3i+mxHwMA+QQ+H/TE6nmL5hWT?=
+ =?us-ascii?Q?7Np3S8GBGEbdRSFuL4RtbUaUSA2ddi9hoHT3/8mhjViFnBiNz+6Y1eikmEAn?=
+ =?us-ascii?Q?7BJX3ikyc1YyMqaladkqyn5/aLsVA8EboGhRz6Sv6qfLRgQz34Y12bV9YVSC?=
+ =?us-ascii?Q?kAWTQ2J0v+9jrmfkEhyNKp9xcMa556U=3D?=
+X-Exchange-RoutingPolicyChecked:
+	eT8KQOvxPoMdB0Xcr+R3q0MfdXEFMXvHWE9F2M4QXVZ9OPuXSPFeBWFdN6DmEPGbdK+6e7FYRmDhm5XHWvknhNK0W7nl8G+vD6KLPYjGst0czm3Kp3F7HDCr8Aaegy2lJWxF2G9ZHTfGpU6MPFjiFEyvWvNcTl88at9hRJSJHXMFaS8ry/1ktDhnRuf2MaMPYKnYT/2JeNy1k9i2NlBVjOcnjuVGUsUiR7ZxsXmnWwWZQp9B1vYCRlvGXCLwjhwk+vKRvQ+Y+hr0hpweJcRQvP4dwHQIIufYDi6bdq4jIsXS9U1pXdNak2czNFawCtfLi8c9bQhByVx7K2fFIaDBAA==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e1d5a4e-94c5-400b-188f-08deb6501b9b
+X-MS-Exchange-CrossTenant-AuthSource: DS4PPF641CF4859.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:07:07.1835
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:13:51.2932
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2GWUJsbxFRRiCtxwZiiUWtWXt8gbXI0bxPpTsNdLEXbeqLG/ttmDb+Yi5P7FVMrpGHgLjDB3Gbd4o5pCeNG1wA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8277
-X-Spamd-Result: default: False [1.94 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1QIF+hGRwGauTV/xy9LEYaEQhMFo1LxMYMa8D+iZRCzsiBj+oCdi8/QULry/hVz/ORfVUt+tazn0QxNe8BomdbQkU0s2zec4VepemK2foBA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5175
+X-Proofpoint-GUID: eeA4KcfTDOpcz1YOjWlXbf2MJqdPgveM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDA4OCBTYWx0ZWRfX8LS1SxpjfPBh
+ p7bSZQpKyRGhd6yA4DhS3nKbf1w15wG7qwibJVnxch8/gQYQoetCXm/f2m5XtTl4ZjkNFCtJrEg
+ mGJQKGupoaOJZ2vya738Op9uG+lV8+ljgXgi/qu5AXufnu6FkGLnfi/I+qpuJWxpiQ7d227+HBI
+ xGv7LbirrdMLWoD3+0KuFePtkCaNZJLpWxeRSzSBfyJu2f5jxlLwo4ig8SibWZkAPKi2/J86YdL
+ 3Q4Md6fdorUT1ahxRc84yk7cTA7nOjA2RGo5akNbD3wwqbaufiW80QWJy8kP7IN60hIa7k2R8r0
+ sbnazDH6nGrSPv6HM5v6Hqg5c4TfIxYl1tk3KK8fvv2Bzdx/R5/BxV/ZKQOqQaWNP4ORi2OB4QT
+ 2pScfqZLUG7qWKCXHDq2pVI2/Y0+NJ9dZlse43Bz30hM5ejXz2nDuTr9MkIY6PHtLT1rBQOhYJD
+ N6rQyDLUh0N40o42p3A==
+X-Authority-Analysis: v=2.4 cv=I45Vgtgg c=1 sm=1 tr=0 ts=6a0d7b74 cx=c_pps
+ a=ItoRIIcZIWT0tNr6APkIeA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=iKiJcTA2PjBS6x5JeXcw:22 a=zuSxMGlbhfVIKaXoyrkA:9
+X-Proofpoint-ORIG-GUID: eeA4KcfTDOpcz1YOjWlXbf2MJqdPgveM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ adultscore=0 clxscore=1011 spamscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605200088
+X-Spamd-Result: default: False [1.34 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249787-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[nxp.com,kernel.org,pengutronix.de,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249789-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carlos.song@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[xiangyu.chen@windriver.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[NXP1.onmicrosoft.com:dkim,oss.nxp.com:mid,nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 19BE858A66C
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 3CDDF58A805
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Carlos Song <carlos.song@nxp.com>
+Hi Will,
 
-Mark the I2C adapter as suspended during system suspend to block further
-transfers, and resume it on system resume. This prevents potential hangs
-when the hardware is powered down but clients still attempt I2C transfers.
+I am looking a CVE issue(CVE-2026-23346) on stable kernel. It was fixed by
+commit:8f098037139b ("arm64: io: Extract user memory type in ioremap_prot()").
 
-Fixes: 1ee867e465c1 ("i2c: imx-lpi2c: add target mode support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Change for v2:
-  - Call i2c_mark_adapter_suspended() before pm_runtime_force_suspend()
-    to prevent potential deadlock if a transfer is active during suspend.
-  - Roll back with i2c_mark_adapter_resumed() if pm_runtime_force_suspend()
-    fails.
----
- drivers/i2c/busses/i2c-imx-lpi2c.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+I have already reproduced it on 6.12 and 6.6 stable kernel[1], but
+directly porting the upstream patch's macro changes inside <asm/io.h> creates
+circular build dependencies due to the architecture-specific GENERIC_IOREMAP
+refactoring introduced in the stable kernel lifecycle.
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index a01c23696481..01ee38131ef2 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -1635,7 +1635,18 @@ static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
- 
- static int __maybe_unused lpi2c_suspend_noirq(struct device *dev)
- {
--	return pm_runtime_force_suspend(dev);
-+	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
-+	int ret;
-+
-+	i2c_mark_adapter_suspended(&lpi2c_imx->adapter);
-+
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret) {
-+		i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
-+		return ret;
-+	}
-+
-+	return 0;
- }
- 
- static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
-@@ -1655,6 +1666,8 @@ static int __maybe_unused lpi2c_resume_noirq(struct device *dev)
- 	if (lpi2c_imx->target)
- 		lpi2c_imx_target_init(lpi2c_imx);
- 
-+	i2c_mark_adapter_resumed(&lpi2c_imx->adapter);
-+
- 	return 0;
- }
- 
+Since this issue was triggered by generic_access_phys() passes a 'pgprot_t'
+value determined from the user mapping of the target 'pfn' being accessed by the kernel.
+On arm64, this 'pgprot_t' contains all non-address bits from the pte, including user
+permission controls (PTE_USER). When a process attempts to read the target memory via
+cross-process subsystems (such as reading /proc/<pid>/mem or via ptrace), the kernel
+re-maps this memory using ioremap_prot(). Since the PTE_USER bit is incorrectly preserved
+in the temporary kernel-space mapping, it triggers a level 3 permission fault on systems
+with PAN (Privileged Access Never) enabled, resulting in an immediate kernel panic.
+
+To bypass header dependency traps safely, I have changed the backport code, this backport
+confines the fix entirely inside the implementation layer of arch/arm64/mm/ioremap.c:
+1. It uses pgprot_val() to safely unpack page properties into a pteval_t mask.
+2. It introduces a targeted safety check (if (prot_val & PTE_USER)) to
+   selectively strip away volatile user permission parameters.
+3. It maps the memory through pure kernel attributes, leaving standard
+   peripheral device drivers completely unaffected.
+
+(see [PATCH 6.12 1/1] arm64: io: correct user memory type in ioremap_prot() ).
+The code I have verified on qemuarm64, after applied the fix, crash won't happen anymore.
+
+So, could you help to review, if we can use this solution to fix this CVE on an older stable
+kernel? Thanks.
+
+
+[1] Test steps:
+
+1.1 Code & script:
+C code:
+------
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+
+// Using QEMU RTC HW address
+#define PHYSICAL_ADDR 0x09010000 
+#define MAP_SIZE 4096
+
+int main() {
+    int i = 180;
+    int fd = open("/dev/mem", O_RDWR | O_SYNC);
+    if (fd < 0) {
+        perror("failed to open /dev/mem");
+        return 1;
+    }   
+
+    // Start map
+    void *map_base = mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, PHYSICAL_ADDR);
+    if (map_base == MAP_FAILED) {
+        perror("failed to mmap");
+        close(fd);
+        return 1;
+    }
+
+    printf("Put those info to script PID:%d, VADDR:%p\n", getpid(), map_base);
+
+    // Keep running for script trigger the issue.
+    while(i > 0) {
+        sleep(1);
+        i--;
+    }
+
+    munmap(map_base, MAP_SIZE);
+    close(fd);
+    return 0;
+}
+------ End of C code ------
+
+Python code:
+-----------
+python3 -c '
+pid = 506
+vaddr = 0x7f9de3f000
+f = open(f"/proc/{pid}/mem", "rb")
+f.seek(vaddr)
+f.read(4)
+'
+------End of Python code------
+
+1.2 Usage:
+Ensure kernel enabled the CONFIG_ARM64_PAN and CONFIG_DEVMEM
+
+Start Qemuarm64 with -cpu cortex-a55 -M virt, e.g.:
+qemu-system-aarch64 \
+    -cpu cortex-a55 \
+    -M virt \
+    -m 2G \
+    -smp 2 \
+    -kernel ./arch/arm64/boot/Image \
+    -append "console=ttyAMA0 root=/dev/vda rw earlycon" \
+    -drive if=none,file=rootfs.img,id=hd0,format=raw \
+    -device virtio-blk-device,drive=hd0 \
+    -nographic
+
+
+After enter the qemu, using cat /proc/iomem to get a vaild MMIO
+address, here is using RTC address (#define PHYSICAL_ADDR 0x09010000).
+
+Build the C code, put the binary to target qemu system and run it, the
+C reproducer would output the PID and mapped address, here example pid
+is 506 and virtual address is 0x7f9de3f000.
+
+Fill pid and virtual address to python code, without fix, kernel would crash
+with "Unable to handle kernel read from unreadable memory".
+Based on crash info, pstate: 20400005 (... +PAN ...) and FSC = 0x0f: level 3 permission fault
+Call trace:
+[ 678.563102] __memcpy_fromio+0x50/0x98
+[ 678.563436] __access_remote_vm+0x294/0x3a8
+[ 678.563901] access_remote_vm+0x18/0x30
+[ 678.564308] mem_rw+0x1e0/0x370
+[ 678.564534] mem_read+0x1c/0x30
+[ 678.564754] vfs_read+0xcc/0x2d0
+[ 678.564975] ksys_read+0x7c/0x120
+[ 678.565192] __arm64_sys_read+0x24/0x38
+[ 678.565450] invoke_syscall+0x5c/0x138
+[ 678.565729] el0_svc_common.constprop.0+0x48/0xf0
+[ 678.566038] do_el0_svc+0x24/0x38
+[ 678.566264] el0_svc+0x38/0x108
+[ 678.566514] el0t_64_sync_handler+0x120/0x130
+[ 678.566823] el0t_64_sync+0x190/0x198
+....
+
+The behavior is the same as description of
+commit:8f098037139b ("arm64: io: Extract user memory type in ioremap_prot()")
+
+
+Thanks!
+
+Br,
+Xiangyu
+
+Xiangyu Chen (1):
+  arm64: io: correct user memory type in ioremap_prot()
+
+ arch/arm64/mm/ioremap.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
 -- 
-2.43.0
+2.34.1
 
 
