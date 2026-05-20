@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKZ3I2bvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:10 +0200
+	id aCh5MlchDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-252026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B13593CCE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EB459A643
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9728D31CB189
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9729301727B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F9F3F7A85;
-	Wed, 20 May 2026 17:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09D03F6C4E;
+	Wed, 20 May 2026 17:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hrwtdsxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9wM0xit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA4F3D6CB7;
-	Wed, 20 May 2026 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BBA3F660B;
+	Wed, 20 May 2026 17:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297205; cv=none; b=V6kpoZ3qQJ7pZueAWbqH2GEsrwgGu1KbpKzDsHq+V24SoJXLGzm4a/3XxJk9PJK2DeuT64Xa4AmlfySYEB67svTkThrsnwCV7khOZgVQFf2c7p1kOJ1uHeTc7dxlgRPr9nVz32LO0xTujxEutqt/Y+gClGnacdVbecA2afBdvG8=
+	t=1779299551; cv=none; b=IEuKxg+l9L4hFxLx2nLMwdFyMdnRqusQSkTcBzcRTlFA24McGEjNgvUSYE+cR/qQ3aVt03Vtrg15fD9AJlg+DrlnNpxjhSeO5qcgyU82StbWLuIwHog9E5B2FvWnli/JajV5qge+o4tHYr/VKjmN13xgpyhx42L09vH0OR/7Qqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297205; c=relaxed/simple;
-	bh=5K5f5fZs5U1jmZWcNMVHk03QFngu4vmsVwNXcvoEov8=;
+	s=arc-20240116; t=1779299551; c=relaxed/simple;
+	bh=lUaAMRJw9gWqxh7drORQqK4Z3qCQm0ef0WgaCgh7J4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTkfx7sXZ1TPMWpULJPkcN/mI/wcaMtRlbQp1vzY3tk4vvwjPqy9U7hu1kAurnaYJHoeuvaxiELy5Alx02icKMc+vK3fgd9NDJf6hN27TajH0aEfC0h46p5uAyC51ZBSJ9Ff9/13+1kJzH7+4zkTiZ8iKIB6+6FvKHiK3mQIn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hrwtdsxg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007F61F000E9;
-	Wed, 20 May 2026 17:13:23 +0000 (UTC)
+	 MIME-Version; b=MsLZpNK6Iy6IshA0Ll6s9lboJxCcj0DSuaHxZGzdV53LTyvYGVjdEdXSwmsSLv7gA/8lW2+q2sk2IzBNhwZCZH/xfPwLG+ycssojrzA4BY4p6AMqBBmLhee7vd899CX44zbG2wuRYwToTEWdt5gnqmYoAiVxjOobDvGSkxNlWP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9wM0xit; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075D11F000E9;
+	Wed, 20 May 2026 17:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297204;
-	bh=FihiYs5QTLqKw1S0A9ddAmvG4RNYtMhaK7MwGnsBlG0=;
+	s=korg; t=1779299550;
+	bh=JX+i9WKY5oATkhPrCQF1k6PQ5yuADJjFv7qrKhlPQ+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hrwtdsxgosi0nVJP8+IUJpDKYaYLnodZDwqF57dzXc7eOkxIzJHm5uTdsizUzEZ54
-	 duKrjjGvBlNaXd9mOg+c13miqHbuZyMB1o7A/ADtbD08XfiGLxDXVHoQ0Clp5feZ4e
-	 8CQreXGoCp5btyLS/gNALgHQ+XkfpT4kE9RYJQ+4=
+	b=m9wM0xitANWbuNe/N1/La1yY/4zb5Yj+9l/Js9ixLcwPqW49DPOWvhiVG0H0rVCMl
+	 L22scWbNxKTJq4OE26oPMLVaCuH/4+fScn6IL3vSXtQa0Y/LoN5eiQAToklXl3p3bh
+	 MwVT9wLaBOXx6nD/e1BDqa9WKXYWOBG11Gro4cic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 1048/1146] net: ena: PHC: Check return code before setting timestamp output
+	Yiming Qian <yimingqian591@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 815/957] net: psp: check for device unregister when creating assoc
 Date: Wed, 20 May 2026 18:21:38 +0200
-Message-ID: <20260520162211.948305464@linuxfoundation.org>
+Message-ID: <20260520162152.241420479@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252026-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251141-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 20B13593CCE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 38EB459A643
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Kiyanovski <akiyano@amazon.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 24a08d7d6218d60c033015cf4870b6096446e734 upstream.
+[ Upstream commit b89769f936a8fa9e66de72ddc1b71a9745a488e6 ]
 
-ena_phc_gettimex64() is setting the output parameter regardless
-of whether ena_com_phc_get_timestamp() succeeded or failed.
+psp_assoc_device_get_locked() obtains a psp_dev reference via
+psp_dev_get_for_sock() (which uses psp_dev_tryget() under RCU);
+it then acquires psd->lock and drops the reference. Before
+the lock is taken, psp_dev_unregister() can run to completion:
+take psd->lock, clear out state, unlock, drop the registration
+reference.
 
-When ena_com_phc_get_timestamp() returns an error, the timestamp
-parameter may contain uninitialized stack memory (e.g., when PHC is
-disabled or in blocked state) or invalid hardware values. Passing
-these to userspace via the PTP ioctl is both a security issue
-(information leak) and a correctness bug.
+The expectation is that the lock prevents device unregistration,
+but much like with netdevs special care has to be taken when
+"upgrading" a reference to a locked device. Add the missing
+check if device is still alive. psp_dev_is_registered() exists
+already but had no callers, which makes me wonder if I either
+forgot to add this or lost the check during refactoring...
 
-Fix by checking the return code after releasing the lock and only
-setting the output timestamp on success.
-
-Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260507003518.22554-1-akiyano@amazon.com
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260427190606.366101-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_phc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/psp/psp_nl.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/amazon/ena/ena_phc.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_phc.c
-@@ -46,9 +46,12 @@ static int ena_phc_gettimex64(struct ptp
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 8aaca62744c3c..3f63ffbc5c575 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -303,8 +303,13 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
  
- 	spin_unlock_irqrestore(&phc_info->lock, flags);
+ 	psd = psp_dev_get_for_sock(socket->sk);
+ 	if (psd) {
+-		err = psp_dev_check_access(psd, genl_info_net(info));
+-		if (err) {
++		/* Extra care needed here, psp_dev_get_for_sock() only gives
++		 * us access to struct psp_dev's memory, which is quite weak.
++		 */
++		mutex_lock(&psd->lock);
++		if (!psp_dev_is_registered(psd) ||
++		    psp_dev_check_access(psd, genl_info_net(info))) {
++			mutex_unlock(&psd->lock);
+ 			psp_dev_put(psd);
+ 			psd = NULL;
+ 		}
+@@ -317,7 +322,6 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
  
-+	if (rc)
-+		return rc;
-+
- 	*ts = ns_to_timespec64(timestamp_nsec);
- 
--	return rc;
-+	return 0;
- }
- 
- static int ena_phc_settime64(struct ptp_clock_info *clock_info,
+ 	id = info->attrs[PSP_A_ASSOC_DEV_ID];
+ 	if (psd) {
+-		mutex_lock(&psd->lock);
+ 		if (id && psd->id != nla_get_u32(id)) {
+ 			mutex_unlock(&psd->lock);
+ 			NL_SET_ERR_MSG_ATTR(info->extack, id,
+-- 
+2.53.0
+
 
 
 
