@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-252240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL1dO6EjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:01 +0200
+	id ICFcJiIcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418AF59A86D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34909599E74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE78B39130BA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4684D34A7C63
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008493F7A85;
-	Wed, 20 May 2026 18:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFF0359A6F;
+	Wed, 20 May 2026 17:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra3f0/NF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKWLHaGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A283F6619;
-	Wed, 20 May 2026 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C5C29D26E;
+	Wed, 20 May 2026 17:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300159; cv=none; b=H1uheDIGvj/G+fc6zN0+S+3ooT5TiyBFz4rYupCX/J6BfyvctvR3nDz68jDPjHKQ8ECL4Lo4V7KNz0KY8oJham+NfpIVFh+r/+OmRstu5BpvlhRHgdpRrRXL3kxOpZm1WHezb3DJlghxhJE2B0/m3H9jJ1oh1+Rl1nchQEI9y3U=
+	t=1779298474; cv=none; b=BZc0xUTIQiJ1yBTjYy2fyINvXmgQEws2wilijX9qe0B90SKHXnW1z+Hq0HBGKyRONCDDGHL+E8s77EOLn3PVOePQGbr4SKYk/7YWBneCZlFNUR+zmzHGkDeM2U20DeZT8gPl0qdfgA5pL0DjcE8udbPlkybILpCPcwFpeMQMUSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300159; c=relaxed/simple;
-	bh=ANT7gatbiLbt6U5UXnQyHU8wuu+SymJntrx7GC3BzIw=;
+	s=arc-20240116; t=1779298474; c=relaxed/simple;
+	bh=X4x3skrMcaKXkXriZvATjQHIuAuYb1pcQwXEEMz6Yv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ci4KVppZJIhhDcg9mqxjlc88+etqlhbpi/lOKEgo/m+2hzkmLnhLYG9OgLRbc3Sdj78x8EKxIjWKu8gbhwiLMukAhL/AvWHB+UbvXJOhSFL10WABqbOG8w7E5sTz5aHthLnrSVSG2MOZ69Q3k6WG3eR4jj61fwynNtAtV9wZk5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra3f0/NF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127E21F000E9;
-	Wed, 20 May 2026 18:02:37 +0000 (UTC)
+	 MIME-Version; b=HrQNawSq5w4wzfTbDkzsvUNuhxYwwRQZqVEwrDHUNR8fpLEGVp5fPolNPhheNAsgcyvVAePeYn6TLf7zxjvWg5XYY6eVKA888kI9UMntUyPY33Jvj1hmdnIZcQyma/cYFA1i471WwadBYhlyjwBVHkEVfFC1GabQd8lf0asF/tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKWLHaGs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E4A1F000E9;
+	Wed, 20 May 2026 17:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300158;
-	bh=IXp5OFCthmsmvjPoKBu2LeCjDGMjj8xs7wt4btt85UM=;
+	s=korg; t=1779298473;
+	bh=Pn4sNs4sgSQmastDVc3tTPiXkL5G+MFR8+LabGxtNkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ra3f0/NFtvT5QN9sAeX/ST65WJsGtkHVIzse/Rfr4ridPclxckz9BciMN+koAVXqN
-	 yBi3MD5bInAzdEcI3EREQtash5XRqYZ6xoxyMbsQnplG3a6fIDAa8IahOCyQRaZnsR
-	 xakgCMtM75FuN3rx6WX2n0EgLAdIkqbVMGyYGavQ=
+	b=OKWLHaGsN2RWOrDk0NEQGiIYmE1BS3pb5JQQkB14sfqmpzdWKcpcohQ1hriFQO1Oi
+	 cHGHbY0Xv07UWFxcyuMYxQtzOsUANZ78Ryqe7S2KLrER2VIXFZRapyuMz37Xf2tNvo
+	 n/PxgETBFbNLpLZMg1rSQ981TUuihptfK28VhOGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Sun <2022090917019@std.uestc.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/666] bpf: Drop task_to_inode and inet_conn_established from lsm sleepable hooks
-Date: Wed, 20 May 2026 18:14:39 +0200
-Message-ID: <20260520162112.704454423@linuxfoundation.org>
+Subject: [PATCH 6.18 397/957] arm64: dts: qcom: monaco: correct Iris corners for the MXC rail
+Date: Wed, 20 May 2026 18:14:40 +0200
+Message-ID: <20260520162143.136420643@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252240-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251627-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,uestc.edu.cn:email,hust.edu.cn:email]
-X-Rspamd-Queue-Id: 418AF59A86D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 34909599E74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit beaf0e96b1da74549a6cabd040f9667d83b2e97e ]
+[ Upstream commit bba8d9ba7df8f6592552377049fc84958fd0575a ]
 
-bpf_lsm_task_to_inode() is called under rcu_read_lock() and
-bpf_lsm_inet_conn_established() is called from softirq context, so
-neither hook can be used by sleepable LSM programs.
+The corners of the MVS0 / MVS0C clocks on the MMCX rail don't always
+match the PLL corners on the MXC rail. Correct the performance corners
+for the MXC rail following the PLL documentation.
 
-Fixes: 423f16108c9d8 ("bpf: Augment the set of sleepable LSM hooks")
-Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Closes: https://lore.kernel.org/bpf/3ab69731-24d1-431a-a351-452aafaaf2a5@std.uestc.edu.cn/T/#u
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20260407122334.344072-1-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: bf6ec39c3f36 ("arm64: dts: qcom: qcs8300: add video node")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260313-iris-fix-corners-v1-3-32a393c25dda@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_lsm.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs8300.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
-index 3bc61628ab251..0849453b36176 100644
---- a/kernel/bpf/bpf_lsm.c
-+++ b/kernel/bpf/bpf_lsm.c
-@@ -355,8 +355,6 @@ BTF_ID(func, bpf_lsm_sb_umount)
- BTF_ID(func, bpf_lsm_settime)
+diff --git a/arch/arm64/boot/dts/qcom/qcs8300.dtsi b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+index 7a4c3e872d8ee..8580884a16e98 100644
+--- a/arch/arm64/boot/dts/qcom/qcs8300.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+@@ -4743,19 +4743,19 @@ opp-366000000 {
  
- #ifdef CONFIG_SECURITY_NETWORK
--BTF_ID(func, bpf_lsm_inet_conn_established)
--
- BTF_ID(func, bpf_lsm_socket_accept)
- BTF_ID(func, bpf_lsm_socket_bind)
- BTF_ID(func, bpf_lsm_socket_connect)
-@@ -379,7 +377,6 @@ BTF_ID(func, bpf_lsm_current_getsecid_subj)
- BTF_ID(func, bpf_lsm_task_getsecid_obj)
- BTF_ID(func, bpf_lsm_task_prctl)
- BTF_ID(func, bpf_lsm_task_setscheduler)
--BTF_ID(func, bpf_lsm_task_to_inode)
- BTF_ID(func, bpf_lsm_userns_create)
- BTF_SET_END(sleepable_lsm_hooks)
+ 				opp-444000000 {
+ 					opp-hz = /bits/ 64 <444000000>;
+-					required-opps = <&rpmhpd_opp_nom>,
++					required-opps = <&rpmhpd_opp_svs_l1>,
+ 							<&rpmhpd_opp_nom>;
+ 				};
  
+ 				opp-533000000 {
+ 					opp-hz = /bits/ 64 <533000000>;
+-					required-opps = <&rpmhpd_opp_turbo>,
++					required-opps = <&rpmhpd_opp_nom>,
+ 							<&rpmhpd_opp_turbo>;
+ 				};
+ 
+ 				opp-560000000 {
+ 					opp-hz = /bits/ 64 <560000000>;
+-					required-opps = <&rpmhpd_opp_turbo_l1>,
++					required-opps = <&rpmhpd_opp_nom>,
+ 							<&rpmhpd_opp_turbo_l1>;
+ 				};
+ 			};
 -- 
 2.53.0
 
