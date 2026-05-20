@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-253085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PpUFr4tDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:10 +0200
+	id kBhPMLv9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B964459B797
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFAC59660C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32F603943007
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01CD13422285
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC1C3FE660;
-	Wed, 20 May 2026 18:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235F13F44CB;
+	Wed, 20 May 2026 17:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W93mVHu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oip7pu6o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169453F660B;
-	Wed, 20 May 2026 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B303E5ECF;
+	Wed, 20 May 2026 17:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302366; cv=none; b=o0jrX/vc7MSqZvuQzm31tkLerJ799tEyrrLvJheIvh8y4S6hg3aMYaa+yrYi0F1G5bRzTrDickauPmuAhoQpvq1XOTNB5O/A96r5oOyycg5gmbl2ppLqbpFvEy5Lapq9OhDOLtIQ4T1rPdbB3dcuzd+GIbyAQnx4hNPe5sVXYTA=
+	t=1779299430; cv=none; b=WKASn3PwrtaJdocdaCNaWwnItHAOvTHMT725GqD+xznrWDT5XmGbwKbWozt7/aUyb/YHDfgpn5jwiOBJzoN+nnFZuuoKz29/cglmg7A+/vV8reCoahKdZOzrRYUUUNYjBsbsOBHako2UrbDOOPEdM3tFoY5f6DKMpKulYcYwmWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302366; c=relaxed/simple;
-	bh=1eZeWZNIA+gmw8+BrjwZQLUijlHYdDKQGvjjgm7qizE=;
+	s=arc-20240116; t=1779299430; c=relaxed/simple;
+	bh=DWgYu8BebPO9EXER8CoSFP6sYIWoS9PsyYKWiz6vHEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXPRPEg8gpyG2+DCmPQ8LtbYB2qlftC4IS+qjYpSXtcIeamxtMBL4acubg4Dyl751Uhvx+PL6FuhfFCoTvNQdeRyvPrV2PuyNRmBOks4oFnDpG5QDLbceG5P3PcJsdG1KLl2CLk9N6gnVspSTKBZpvpfqMDeipTLe5q/AKcH9TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W93mVHu7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9F51F0089F;
-	Wed, 20 May 2026 18:39:24 +0000 (UTC)
+	 MIME-Version; b=lJUnMWwG/cD6UGPMOeK3H+xfniwyoBEC/jY61GXaqh3ezih9bgFeRMa9yj72RbH6iQBd3wR56wvx3aGgss/gAlqVWD3eQNz/pVrrkW28/W/Iio3vAseegaUccV/si19o3guo2NMq7YRgp1j+5v6iQqFAqBzyGMYKqY/0hd2q1h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oip7pu6o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A081F00893;
+	Wed, 20 May 2026 17:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302364;
-	bh=O1krnNwC0m0t0kxpv5OPzBgGoXEnqcxuBV68r9jAUPQ=;
+	s=korg; t=1779299429;
+	bh=bJ3I2ACWAz/Uebfd4JC90ezFLJWiujluFfX2HuqxyhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W93mVHu7TzAyBu4rEuHM+qxJEqqym5DHvAMxTggt93FQc/qtgJXlxbCDvmEQY6Reo
-	 XSsh7lFqT3ytuwm3liIZnpqG4yccSV5gqF7B9pQ2M8XVVPJL4NzUWMZEF+Lhqtboiq
-	 JygQj91b17Jdx/yW/cgYwnaDWQWXWIpIk59c5Tyk=
+	b=Oip7pu6ohuGW2Ba+WWVr4jJBiZH0o2G+WsElAJckqmzp2zxe2rkl8lyh9DciybxN/
+	 N9S3vGcKW6j8JXx1UKvs7Okj0LjjYI8eD13TME8+3kX/K7bfXNXxWf6kM2evX+HmSF
+	 /tnVrjUg0c8kCdasC7dsupXe18HBuz4CCld3bu7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/508] ARM: dts: imx27-eukrea: replace interrupts with interrupts-extended
+Subject: [PATCH 6.18 752/957] netfilter: xt_policy: fix strict mode inbound policy matching
 Date: Wed, 20 May 2026 18:20:35 +0200
-Message-ID: <20260520162103.233494401@linuxfoundation.org>
+Message-ID: <20260520162150.872954677@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +74,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251980-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-253085-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B964459B797
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,lzu.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 1CFAC59660C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-[ Upstream commit 0477a6b31e2874e554e3bcfac9883684b8f8ca2d ]
+[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
 
-The property interrupts use default interrupt controllers. But pass down
-gpio<n> as phandle. Correct it by use interrupts-extended.
+match_policy_in() walks sec_path entries from the last transform to the
+first one, but strict policy matching needs to consume info->pol[] in
+the same forward order as the rule layout.
 
-Fixes: d8cae888aa2bc ("ARM: dts: Add support for the cpuimx27 board from Eukrea and its baseboard")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Derive the strict-match policy position from the number of transforms
+already consumed so that multi-element inbound rules are matched
+consistently.
+
+Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi      | 8 ++++----
- .../boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/netfilter/xt_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-index c7e9235848782..9f0e65526d5f9 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-@@ -106,7 +106,7 @@ uart8250@3,200000 {
- 		compatible = "ns8250";
- 		clocks = <&clk14745600>;
- 		fsl,weim-cs-timing = <0x0000d603 0x0d1d0d01 0x00d20000>;
--		interrupts = <&gpio2 23 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts-extended = <&gpio2 23 IRQ_TYPE_LEVEL_LOW>;
- 		reg = <3 0x200000 0x1000>;
- 		reg-shift = <1>;
- 		reg-io-width = <1>;
-@@ -119,7 +119,7 @@ uart8250@3,400000 {
- 		compatible = "ns8250";
- 		clocks = <&clk14745600>;
- 		fsl,weim-cs-timing = <0x0000d603 0x0d1d0d01 0x00d20000>;
--		interrupts = <&gpio2 22 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts-extended = <&gpio2 22 IRQ_TYPE_LEVEL_LOW>;
- 		reg = <3 0x400000 0x1000>;
- 		reg-shift = <1>;
- 		reg-io-width = <1>;
-@@ -132,7 +132,7 @@ uart8250@3,800000 {
- 		compatible = "ns8250";
- 		clocks = <&clk14745600>;
- 		fsl,weim-cs-timing = <0x0000d603 0x0d1d0d01 0x00d20000>;
--		interrupts = <&gpio2 27 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts-extended = <&gpio2 27 IRQ_TYPE_LEVEL_LOW>;
- 		reg = <3 0x800000 0x1000>;
- 		reg-shift = <1>;
- 		reg-io-width = <1>;
-@@ -145,7 +145,7 @@ uart8250@3,1000000 {
- 		compatible = "ns8250";
- 		clocks = <&clk14745600>;
- 		fsl,weim-cs-timing = <0x0000d603 0x0d1d0d01 0x00d20000>;
--		interrupts = <&gpio2 30 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts-extended = <&gpio2 30 IRQ_TYPE_LEVEL_LOW>;
- 		reg = <3 0x1000000 0x1000>;
- 		reg-shift = <1>;
- 		reg-io-width = <1>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-index d78793601306c..c71f802983304 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-@@ -76,7 +76,7 @@ ads7846@0 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_touch>;
- 		reg = <0>;
--		interrupts = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
-+		interrupts-extended = <&gpio4 25 IRQ_TYPE_LEVEL_LOW>;
- 		spi-cpol;
- 		spi-max-frequency = <1500000>;
- 		ti,keep-vref-on;
+diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
+index cb6e8279010a4..b5fa65558318f 100644
+--- a/net/netfilter/xt_policy.c
++++ b/net/netfilter/xt_policy.c
+@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
+ 		return 0;
+ 
+ 	for (i = sp->len - 1; i >= 0; i--) {
+-		pos = strict ? i - sp->len + 1 : 0;
++		pos = strict ? sp->len - i - 1 : 0;
+ 		if (pos >= info->len)
+ 			return 0;
+ 		e = &info->pol[pos];
 -- 
 2.53.0
 
