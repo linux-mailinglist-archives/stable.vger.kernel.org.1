@@ -1,328 +1,243 @@
-Return-Path: <stable+bounces-249937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAQFE8fBDWr32wUAu9opvQ
-	(envelope-from <stable+bounces-249937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:14:31 +0200
+	id IGHKBEvDDWr32wUAu9opvQ
+	(envelope-from <stable+bounces-249936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:20:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4530258F647
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:14:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC3758F7A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D977F3066962
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:02:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60B82319F7D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EBC3E7BCB;
-	Wed, 20 May 2026 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEE1325491;
+	Wed, 20 May 2026 14:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="C5n40Iuz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="np5Eo/MD"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E94F3E7BB5
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F7C3E7179
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779285756; cv=none; b=k5LL6s9n+LCLjappqjbysr/onRAr8i+9GdqHgqSpO12pzgWN5a/Luu+mit9Orb0DU64Ks4vPV7GTb16Yoq++2wxjr99IrZokLrf1uJ/FBNsTQRQzfUJVhsfrZF0etOFe7c2Y1mTrk2hVt7GbQZeJu7rabwJ1xoZwFxyxpdakl+w=
+	t=1779285755; cv=none; b=tKSRoKJiCMpvfYJ92TdqgHf5ivtlvWJ6K0OPGj6o9AJsqreUz7BkcTYn97Mpr5ZHlOjet/ivdy9u21ohnV8ZJ0mWHNQBZSrpG1l0yZuPwiu2VlK3jxD0bvuM2lrF1uqJfCsSteJZQZinr4TNaAVuhBsB7nHAwQ66gL+e0wQ3SaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779285756; c=relaxed/simple;
-	bh=qweb2liQy0LkasezJVbUY35ZabLZpGCk+uWueF+/AAs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EAw/k0C2kBzO0LkWuICSc3H36n4O9vrFgSHfh0skKB63YkxlMiXCxyYnKTSFdV7gS2nRnSTqUrIQ5kwqXAKOo7Pjs8BTb0lO4nXGKkgxmknysY+lS4Woo9lXF4XVbvBVC7nVrwJrz1zjsyV//6n6ZMsjtjyx26FdOq6tcYaZHrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=C5n40Iuz; arc=none smtp.client-ip=34.218.115.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1779285755; c=relaxed/simple;
+	bh=lfU22JuMTGqpNRTq06SvaHT2aCYrYJ0561qqJVpzVFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iC/f2HjZg31coBgBjSP0/907NWY+b+8FuMKu/jqHVXvS+iRqz7Ma3y4k/DtbLy6J1WsX5L9hkAM1FWIDAaj/rwyeX9edJSWzZUpC2PHDehw+JfXEJUaIxa2QC4jsonGeQMN4mlbaU6bAdO01U/vG+jg7z3PvlDInJmjR9qxaswI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=np5Eo/MD; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2f3c623322bso3002957eec.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 07:02:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1779285754; x=1810821754;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Qo9Dte9ErgoFlmwH1S4V1Rhw1b2TTsk60wHP8SaYcm4=;
-  b=C5n40IuzQuorBC1XBxizsh0763FxB/KQDL9kNJG2L1QPliTY/suGMozb
-   Einubh+rzWpk2OOqszfVJlMzUZLCD2tftCsU8F3C5jPiRvyKY3vQZqwb0
-   j7b3nvtOPlkkXOk7t/R0FSK5pDgY3WKC0dhint+rVrw5HdG7HAfP+N4X8
-   XitKrjwTcXmVmiep57/R30k11OFPY6+Y6F33wP2HPTugFPNQ4dX+DmATG
-   obyqev67c9jCTkcqCN1gY+AcrXWeWZPNXYD5B+MXb1nfVaxbqkSJoqyH8
-   krZsGVORR6YX1JrQkgsDyA5EAAOGjXmM7iQrYzXGCp5BIJ6UL6ahqyFta
-   g==;
-X-CSE-ConnectionGUID: P2FYl7a4SheSfijr//9nlg==
-X-CSE-MsgGUID: NBr0rL01RSi08bJHV3HY+Q==
-X-IronPort-AV: E=Sophos;i="6.23,244,1770595200"; 
-   d="scan'208";a="19889374"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 14:02:31 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:19608]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.29.251:2525] with esmtp (Farcaster)
- id 0b4dfb8f-3e47-49e9-b7cf-97ee01b0b7c4; Wed, 20 May 2026 14:02:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 0b4dfb8f-3e47-49e9-b7cf-97ee01b0b7c4
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 20 May 2026 14:02:30 +0000
-Received: from dev-dsk-dssauerw-1b-2c5f429c.eu-west-1.amazon.com
- (10.13.238.31) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Wed, 20 May 2026
- 14:02:28 +0000
-From: David Sauerwein <dssauerw@amazon.de>
-To: <stable@vger.kernel.org>
-CC: <nh-open-source@amazon.com>, Danilo Krummrich <dakr@kernel.org>, "Gui-Dong
- Han" <hanguidong02@gmail.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, "David
- Sauerwein" <dssauerw@amazon.de>
-Subject: [PATCH 6.6.y 2/2] driver core: platform: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 14:02:00 +0000
-Message-ID: <20260520140200.45804-2-dssauerw@amazon.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260520140200.45804-1-dssauerw@amazon.de>
-References: <20260520140200.45804-1-dssauerw@amazon.de>
+        d=gmail.com; s=20251104; t=1779285753; x=1779890553; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=QH/+hBnpTGrzN0wXR/d49KtC+d0ximgNyQb80BoPFYo=;
+        b=np5Eo/MD5LAX/iJ9qESoz0oIMTdgSbEJmsZTcRYlokvoFDq/Ea8LChtTEnlVZTgreM
+         hfRx650/UjmJzeQ16wg8BYwSRTs1QUPkBgbrv0O9eLKG32Z3BQO4WhJobJzggqyZt5kW
+         iWOfoKKQ9S3Itlj9fKXoHZQF3Fhge3SnLC3iWHazfcNrrbF2B8BjpH1bKo47l2Nrul1l
+         32qTlUKqw0qkCkM5lzYGIGsYrNzW45qTpzHwhuxTff7OOh40Aqyv6c9kJ2bpJbrLisMd
+         UTmi1rEnH3iRE0M9ZEGt5mbsdCkxirccvp1/VSZ7HJqbrNKbHTfMVF4aKSUyf5d4OXT9
+         9kuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779285753; x=1779890553;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QH/+hBnpTGrzN0wXR/d49KtC+d0ximgNyQb80BoPFYo=;
+        b=bnQYhKUcAaPQ1NgHTFKNDJPUsh1phusHyvIIucGXlBPXCjS18dMLkTAleTbalK14jP
+         XUDBHm1gDzE8C61HBLd15kUs8IIXaDtJ0AA3JcyfjjayslNlCWibUdr1q9vh0wn7vcfG
+         P4luw5Xb2S4mPqE9QDiiJVkR1q1T3JLVAvvzj0hUbvBzzB11A5t9jBQVK3uEuNpILxzS
+         /4rOIiTHhVEzxbIzLbwFvICSSm9PwmGdsVhRYiTC7WbdokrHJAFXkzQE/rc3KXkSrENR
+         GxXTsKUNyPzXcMsdD2TESbS36MX3l2CS/cPZWtQUnbpcIAf6P8yrkjtCGG54gVakfdBe
+         ZBvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8z2QFYHU4oEfkwAoi0Eut+RrjcjSB5igHBXqjhnx+aaRkqYB8/nne9G+EDDrRviPBoqvfyXGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkwmwa38KS6DLdHWR8x69luVPXA4+gCHotUHiOZ8RCrOXUtdEH
+	X4R/gkH7csEDQeM6qFBzbCpRiUP1qjI75QoVFSz9ToYH2EU4irB4xpaB
+X-Gm-Gg: Acq92OF7x0BRMTz7J7dwnRrsnkpzY1mh/ZYjaanysd7/feWhH0c9xpn4xgQRYvTgoBI
+	FZaqLD61qfvbqxF+eF23uefzO/rXExhF4u1aAa68aaeut0O8ax3O/wukjIHKiVr5e78tJfudnGo
+	Z95LYjurG5eCmLO0MVGHT6E6Q+el4GMvvpSqBRY41+ammQHGrJwyWwSfzgMx91F7jHjq7A76USR
+	TSFAYzVuTU7QktAG5Bx8mqdMuw5O2+bE0THZjWm4zMp9vp/uQlkAD30erUW9PNxE5b0yOX6wTww
+	yDe69ekqcP56Qx/lSzOr8h443Wm4YBAsdCVG/MMMB6Zc73zu9QCumV6rqvw0JpNrDTheW7p287/
+	iFyeJTrb8tJqrzbXZC5N1PuFTM0V54mhsKm7bNIeHoHYb0JkhiqKQPlE+AFqksdUz5lGrlqQltt
+	TbOJs3UICdiv5AZn1FoCQ/Ybw/KlNmECt90MKAXQaAjckgkVXbkVqW//Lqd2ErQzq0tVwg5VHAU
+	fveCKn6TZQ=
+X-Received: by 2002:a05:7300:6c21:b0:2da:4216:7ea3 with SMTP id 5a478bee46e88-303983c6376mr13070641eec.14.1779285752147;
+        Wed, 20 May 2026 07:02:32 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-302973bbd50sm18484883eec.20.2026.05.20.07.02.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 May 2026 07:02:31 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <57f31aba-b7d0-4e8d-8abe-84e4fc6cad84@roeck-us.net>
+Date: Wed, 20 May 2026 07:02:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D046UWB004.ant.amazon.com (10.13.139.164) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] hwmon: (pmbus/adm1266) GPIO, NVMEM, and debugfs
+ accessor fixes
+To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+ Alexandru Tachici <alexandru.tachici@analog.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+References: <20260518-adm1266-gpio-fixes-v3-0-e425e4f88139@nexthop.ai>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260518-adm1266-gpio-fixes-v3-0-e425e4f88139@nexthop.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,amazon.de:email,amazon.de:mid,amazon.de:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url];
-	FREEMAIL_CC(0.00)[amazon.com,kernel.org,gmail.com,linuxfoundation.org,amazon.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249937-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[amazon.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dssauerw@amazon.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-249936-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4530258F647
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7BC3758F7A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Danilo Krummrich <dakr@kernel.org>
+On 5/18/26 17:52, Abdurrahman Hussain wrote:
+> Eight pre-existing bugs in the adm1266 driver's userspace-facing
+> accessors and probe ordering.  Each is reachable any time userspace
+> touches an ADM1266 GPIO/PDIO line via the gpiolib char-dev or sysfs
+> interfaces, opens the nvmem device, or reads the sequencer_state
+> debugfs entry.  Five landed when GPIO support was added (commit
+> d98dfad35c38), one when blackbox/NVMEM was added (commit
+> 15609d189302), and one when the sequencer_state debugfs entry was
+> added (commit ed1ff457e187).
+> 
+> Patch 1 caps the PDIO scan loop in adm1266_gpio_get_multiple() at
+> ADM1266_PDIO_NR (16) instead of ADM1266_PDIO_STATUS (0xE9 = 233, a
+> PMBus command code that ended up in the bound by mistake).  As
+> written, the scan walks find_next_bit() up to bit 242 across a
+> 25-bit caller mask, reading out of bounds and -- if any of that
+> incidental memory contains a set bit -- driving a corresponding
+> out-of-bounds write to the caller's bits array.
+> 
+> Patch 2 drops a redundant "*bits = 0" reset that sits between the
+> GPIO and PDIO halves of adm1266_gpio_get_multiple().  As written,
+> the GPIO bits the first loop populates are immediately discarded
+> before the PDIO loop runs, so any caller asking for a mix of GPIO
+> and PDIO lines sees the GPIO half always reported as 0.
+> 
+> Patch 3 adds the missing "ret < 2" length check after the three
+> i2c_smbus_read_block_data() calls in adm1266_gpio_get() and
+> adm1266_gpio_get_multiple().  A device returning a 0- or 1-byte
+> response would otherwise compose pin status from uninitialised
+> stack memory and leak it to userspace via gpiolib.
+> 
+> Patch 4 moves adm1266_config_gpio() past pmbus_do_probe() in
+> adm1266_probe() so the gpio_chip isn't registered (and reachable
+> from userspace) until the PMBus state the GPIO accessors depend
+> on is initialised.  This is a prerequisite for patch 6.
+> 
+> Patch 5 does the same for adm1266_config_nvmem(): the nvmem
+> device is now also registered after pmbus_do_probe(), so the
+> nvmem callback (adm1266_nvmem_read) cannot race
+> pmbus_do_probe()'s own device accesses.
+> 
+> Patch 6 takes pmbus_lock at the top of adm1266_gpio_get(),
+> adm1266_gpio_get_multiple(), and adm1266_gpio_dbg_show() so the
+> GPIO PMBus reads can't land between a PAGE write and the paged
+> read pmbus_core does in another thread.
+> 
+> Patch 7 takes pmbus_lock in adm1266_nvmem_read() so its memset /
+> blackbox refill / memcpy run as a single critical section.  The
+> NVMEM core does not serialise concurrent reg_read invocations, so
+> without this two readers racing at offset 0 can interleave the
+> memset on data->dev_mem with another reader's memcpy to userspace
+> and return torn data.  The same lock also serialises the refill's
+> PMBus traffic against pmbus_core's own PAGE+register sequences.
+> 
+> Patch 8 takes pmbus_lock in adm1266_state_read() (the
+> sequencer_state debugfs handler) for the same defensive-locking
+> reason: any direct device access from outside pmbus_core should
+> be ordered with respect to pmbus_core's own.
+> 
+> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 2b38efc05bf7a8568ec74bfffea0f5cfa62bc01d ]
+Series applied.
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
-
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
-
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
-
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 3d713e0e382e ("driver core: platform: add device binding path 'driver_override'")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260303115720.48783-5-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: David Sauerwein <dssauerw@amazon.de>
----
- drivers/base/platform.c         | 37 +++++----------------------------
- drivers/bus/simple-pm-bus.c     |  4 ++--
- drivers/clk/imx/clk-scu.c       |  3 +--
- drivers/slimbus/qcom-ngd-ctrl.c |  6 ++----
- include/linux/platform_device.h |  5 -----
- sound/soc/samsung/i2s.c         |  6 +++---
- 6 files changed, 13 insertions(+), 48 deletions(-)
-
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index 76bfcba25003..1cc9a876b3cd 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -561,7 +561,6 @@ static void platform_device_release(struct device *dev)
- 	kfree(pa->pdev.dev.platform_data);
- 	kfree(pa->pdev.mfd_cell);
- 	kfree(pa->pdev.resource);
--	kfree(pa->pdev.driver_override);
- 	kfree(pa);
- }
- 
-@@ -1265,38 +1264,9 @@ static ssize_t numa_node_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(numa_node);
- 
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
--	device_unlock(dev);
--
--	return len;
--}
--
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *platform_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_numa_node.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
- 
-@@ -1336,10 +1306,12 @@ static int platform_match(struct device *dev, struct device_driver *drv)
- {
- 	struct platform_device *pdev = to_platform_device(dev);
- 	struct platform_driver *pdrv = to_platform_driver(drv);
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (pdev->driver_override)
--		return !strcmp(pdev->driver_override, drv->name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Attempt an OF style match first */
- 	if (of_driver_match_device(dev, drv))
-@@ -1482,6 +1454,7 @@ static const struct dev_pm_ops platform_dev_pm_ops = {
- struct bus_type platform_bus_type = {
- 	.name		= "platform",
- 	.dev_groups	= platform_dev_groups,
-+	.driver_override = true,
- 	.match		= platform_match,
- 	.uevent		= platform_uevent,
- 	.probe		= platform_probe,
-diff --git a/drivers/bus/simple-pm-bus.c b/drivers/bus/simple-pm-bus.c
-index aafcc481de91..cb71774400d4 100644
---- a/drivers/bus/simple-pm-bus.c
-+++ b/drivers/bus/simple-pm-bus.c
-@@ -36,7 +36,7 @@ static int simple_pm_bus_probe(struct platform_device *pdev)
- 	 * that's not listed in simple_pm_bus_of_match. We don't want to do any
- 	 * of the simple-pm-bus tasks for these devices, so return early.
- 	 */
--	if (pdev->driver_override)
-+	if (device_has_driver_override(&pdev->dev))
- 		return 0;
- 
- 	match = of_match_device(dev->driver->of_match_table, dev);
-@@ -78,7 +78,7 @@ static int simple_pm_bus_remove(struct platform_device *pdev)
- {
- 	const void *data = of_device_get_match_data(&pdev->dev);
- 
--	if (pdev->driver_override || data)
-+	if (device_has_driver_override(&pdev->dev) || data)
- 		return 0;
- 
- 	dev_dbg(&pdev->dev, "%s\n", __func__);
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index 564f549ec204..3a68576cdae7 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -700,8 +700,7 @@ struct clk_hw *imx_clk_scu_alloc_dev(const char *name,
- 		return ERR_PTR(ret);
- 	}
- 
--	ret = driver_set_override(&pdev->dev, &pdev->driver_override,
--				  "imx-scu-clk", strlen("imx-scu-clk"));
-+	ret = device_set_driver_override(&pdev->dev, "imx-scu-clk");
- 	if (ret) {
- 		platform_device_put(pdev);
- 		return ERR_PTR(ret);
-diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
-index fe3a96577f31..d0d289c49c8d 100644
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1537,10 +1537,8 @@ static int of_qcom_slim_ngd_register(struct device *parent,
- 		ngd->id = id;
- 		ngd->pdev->dev.parent = parent;
- 
--		ret = driver_set_override(&ngd->pdev->dev,
--					  &ngd->pdev->driver_override,
--					  QCOM_SLIM_NGD_DRV_NAME,
--					  strlen(QCOM_SLIM_NGD_DRV_NAME));
-+		ret = device_set_driver_override(&ngd->pdev->dev,
-+						 QCOM_SLIM_NGD_DRV_NAME);
- 		if (ret) {
- 			platform_device_put(ngd->pdev);
- 			kfree(ngd);
-diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
-index 7a41c72c1959..8828b0d275d7 100644
---- a/include/linux/platform_device.h
-+++ b/include/linux/platform_device.h
-@@ -31,11 +31,6 @@ struct platform_device {
- 	struct resource	*resource;
- 
- 	const struct platform_device_id	*id_entry;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- 
- 	/* MFD cell pointer */
- 	struct mfd_cell *mfd_cell;
-diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-index 3af48c9b5ab7..925782e67673 100644
---- a/sound/soc/samsung/i2s.c
-+++ b/sound/soc/samsung/i2s.c
-@@ -1364,10 +1364,10 @@ static int i2s_create_secondary_device(struct samsung_i2s_priv *priv)
- 	if (!pdev_sec)
- 		return -ENOMEM;
- 
--	pdev_sec->driver_override = kstrdup("samsung-i2s", GFP_KERNEL);
--	if (!pdev_sec->driver_override) {
-+	ret = device_set_driver_override(&pdev_sec->dev, "samsung-i2s");
-+	if (ret) {
- 		platform_device_put(pdev_sec);
--		return -ENOMEM;
-+		return ret;
- 	}
- 
- 	ret = platform_device_add(pdev_sec);
--- 
-2.47.3
-
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+Thanks,
+Guenter
 
 
