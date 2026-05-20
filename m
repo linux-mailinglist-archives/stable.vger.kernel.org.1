@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EISTGdUWDmpn6AUAu9opvQ
-	(envelope-from <stable+bounces-251284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:25 +0200
+	id sDPwIUfwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE9059965A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5B0593EAC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEA7C341E12C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDD33345968D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C951136F421;
-	Wed, 20 May 2026 17:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD697371071;
+	Wed, 20 May 2026 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTGeFAnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqbbMO0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8113933F59D;
-	Wed, 20 May 2026 17:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81069370AE5;
+	Wed, 20 May 2026 16:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297583; cv=none; b=ZrEGJDK5kY44np40bj3tc9wXMDJh9LGQiVnh6pytj/PXuykpiLpeB7kZj7jqEcnnuh4mu7xE0O7UmUmXUqHDckCLc2tgM4KmjD7a/1GQIFZQGKBYueldwBou9g/ny/AowCZPINp33/tcpG6t8tF8EImC6EqXFbY9NnzsPN+tGwg=
+	t=1779295069; cv=none; b=DAFFAkukCUKCqs5AloIL3+R9fjAXQNZ/vWm2SKPuvPfJ4J3mBpdIS4Hwl9+GgLg6cTLM1S19pez+BIog9Pq/dTf+gbZpNrZCojY/9RVt7+lFYu++zyI/Tvrr4NRym3XelMBwchpppCWIjBPQRne+ZipOazLCVwP3P2qW5l3YtLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297583; c=relaxed/simple;
-	bh=7Jc1aPw9uwxSC0JXBisaeAudo+094XJ1mYFTT7wt7N0=;
+	s=arc-20240116; t=1779295069; c=relaxed/simple;
+	bh=Zlv498hCmdMzxVqIdjk/ZwujCSaOvxPNobCXBJ4wcnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byJvsu8M5AV9aArO5wq7quMYJQ8QxhudTegNop4Gg5/TJ6dh910teomsOBC+OQCamWsFQsszmItVoG1lpYogUd1Lrz6lsiUPbjy0oxGsswNoG3LYR+pkLfm42SKLW/9vGT11UKvzlZSYQ/F7Mq8tv20GiP+M5ezi9AM612OBprc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTGeFAnf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F131F000E9;
-	Wed, 20 May 2026 17:19:41 +0000 (UTC)
+	 MIME-Version; b=eKo8VIqWb1BovC+xM2gc6SNweEdiC0byACdh5Cqsg/GixLKIFgXaxZ2iqGBdZI1tqmj7u6hUPvbk95Kb4deHi4uhdPFM3SieFVNSlP6zNnXkYtxHVgn+0ls7WtU+Tiq5ooxJl2lE6bHwu52RPyWNthxkNLw/adwigndSlLGgb6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqbbMO0u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBAE1F000E9;
+	Wed, 20 May 2026 16:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297582;
-	bh=3QKHgdfMflFmFQ+6ZUuJTHs8QyU7QgO5h94+3kIx/7o=;
+	s=korg; t=1779295066;
+	bh=C9oH5FtdcDJveJf+Oz9bGhJr8/UtrguHU99BV7e79Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DTGeFAnfGE4xm6Cn2PwZDG3vh/G8pb2Z9W10bmmNdu5boZYWMTZ9tha0pnm7YFHV9
-	 bBq0N+hcYL0GeIN0un1MeV5bomYUbJNVEyv4tvhZb69V2arRrDLfEqj0nnfceFsdRA
-	 I/nSgQaT3QEzlN/o+67T7U0gsYhdNeYkvv0UcAYY=
+	b=AqbbMO0uyM9drzRRzAwujR+uZtuvU54CCsy5DKnqfUMjJOo3kPEkglpQ/Y+8JHK+Z
+	 OTu3iSfuaHTAuFqId7ciMWBT8jcWTDbYTG5MKP6KV8O0fLOQ7nYUvCSIDIopmeZ84y
+	 7jMdptUJ4HW89KRPKvC8tuUHB/Bc2CT0x/sqfjI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 044/957] locking: Fix rwlock support in <linux/spinlock_up.h>
-Date: Wed, 20 May 2026 18:08:47 +0200
-Message-ID: <20260520162135.514178938@linuxfoundation.org>
+Subject: [PATCH 7.0 0278/1146] media: i2c: og01a1b: Fix V4L2 subdevice data initialization on probe
+Date: Wed, 20 May 2026 18:08:48 +0200
+Message-ID: <20260520162154.508504251@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +65,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251284-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250306-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: DDE9059965A
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: CD5B0593EAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 756a0e011cfca0b45a48464aa25b05d9a9c2fb0b ]
+[ Upstream commit 535b7f106991c7d8f0e5b8e1769bfb8b1ce9d3d6 ]
 
-Architecture support for rwlocks must be available whether or not
-CONFIG_DEBUG_SPINLOCK has been defined. Move the definitions of the
-arch_{read,write}_{lock,trylock,unlock}() macros such that these become
-visbile if CONFIG_DEBUG_SPINLOCK=n.
+It's necessary to finalize the camera sensor subdevice initialization on
+driver probe and clean V4L2 subdevice data up on error paths and driver
+removal.
 
-This patch prepares for converting do_raw_{read,write}_trylock() into
-inline functions. Without this patch that conversion triggers a build
-failure for UP architectures, e.g. arm-ep93xx. I used the following
-kernel configuration to build the kernel for that architecture:
+The change fixes a previously reported by v4l2-compliance issue of
+the failed VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT test:
 
-	CONFIG_ARCH_MULTIPLATFORM=y
-	CONFIG_ARCH_MULTI_V7=n
-	CONFIG_ATAGS=y
-	CONFIG_MMU=y
-	CONFIG_ARCH_MULTI_V4T=y
-	CONFIG_CPU_LITTLE_ENDIAN=y
-	CONFIG_ARCH_EP93XX=y
+  fail: v4l2-test-controls.cpp(1104): subscribe event for control 'User Controls' failed
 
-Fixes: fb1c8f93d869 ("[PATCH] spinlock consolidation")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260313171510.230998-2-bvanassche@acm.org
+Fixes: 472377febf84 ("media: Add a driver for the og01a1b camera sensor")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spinlock_up.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/media/i2c/og01a1b.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
-index 1e84e71ca495e..3a50976471d71 100644
---- a/include/linux/spinlock_up.h
-+++ b/include/linux/spinlock_up.h
-@@ -48,16 +48,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
- 	lock->slock = 1;
- }
+diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
+index c7184de6251ae..7b892b26203c0 100644
+--- a/drivers/media/i2c/og01a1b.c
++++ b/drivers/media/i2c/og01a1b.c
+@@ -1042,6 +1042,7 @@ static void og01a1b_remove(struct i2c_client *client)
+ 	struct og01a1b *og01a1b = to_og01a1b(sd);
  
--/*
-- * Read-write spinlocks. No debug version.
-- */
--#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
--
- #else /* DEBUG_SPINLOCK */
- #define arch_spin_is_locked(lock)	((void)(lock), 0)
- /* for sched/core.c and kernel_lock.c: */
-@@ -68,4 +58,14 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
+ 	v4l2_async_unregister_subdev(sd);
++	v4l2_subdev_cleanup(&og01a1b->sd);
+ 	media_entity_cleanup(&sd->entity);
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 	pm_runtime_disable(og01a1b->dev);
+@@ -1153,11 +1154,18 @@ static int og01a1b_probe(struct i2c_client *client)
+ 		goto probe_error_v4l2_ctrl_handler_free;
+ 	}
  
- #define arch_spin_is_contended(lock)	(((void)(lock), 0))
- 
-+/*
-+ * Read-write spinlocks. No debug version.
-+ */
-+#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
++	ret = v4l2_subdev_init_finalize(&og01a1b->sd);
++	if (ret < 0) {
++		dev_err_probe(og01a1b->dev, ret,
++			      "failed to finalize subdevice init\n");
++		goto probe_error_media_entity_cleanup;
++	}
 +
- #endif /* __LINUX_SPINLOCK_UP_H */
+ 	ret = v4l2_async_register_subdev_sensor(&og01a1b->sd);
+ 	if (ret < 0) {
+ 		dev_err(og01a1b->dev, "failed to register V4L2 subdev: %d",
+ 			ret);
+-		goto probe_error_media_entity_cleanup;
++		goto probe_error_v4l2_subdev_cleanup;
+ 	}
+ 
+ 	/* Enable runtime PM and turn off the device */
+@@ -1167,6 +1175,9 @@ static int og01a1b_probe(struct i2c_client *client)
+ 
+ 	return 0;
+ 
++probe_error_v4l2_subdev_cleanup:
++	v4l2_subdev_cleanup(&og01a1b->sd);
++
+ probe_error_media_entity_cleanup:
+ 	media_entity_cleanup(&og01a1b->sd.entity);
+ 
 -- 
 2.53.0
 
