@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251570-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHM3IKb4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:38 +0200
+	id sPh4Mxz8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251570-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A4E595617
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B400595FBD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3953309BFE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6835315D9B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0242A3F4DDB;
-	Wed, 20 May 2026 18:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BA236F421;
+	Wed, 20 May 2026 17:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPqs67Ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uNtiKrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A243F88B5;
-	Wed, 20 May 2026 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5458A359A6F;
+	Wed, 20 May 2026 17:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300082; cv=none; b=eLe5XbWH4i7RyxcNvr0X1hY36hJW1j3VbllwG1TLTIOmdClrmev6RK5gTFdpcG0xIoCr6mxwVfpXG3QmzwrIngm/UscA4G4iTyVpfl49sKPjSCJR8KFdkmZeawb/BVcb5ftXs0dT1vS8S9t8T+TCSNZebhO128BG4Fcn4/yEyYY=
+	t=1779298324; cv=none; b=ojKKjosKVTpTEMe5CuebkMrGTLh/FlAu2Xl0mVYqnUvB4CPP2wO/7BF61OkOPVSG7Gd+f8e3nj2GQCP+bvkLESwAC378rseD/BYayPUDFemOznhOtiQKR3JHO+gF8LDmu65UGgm9v1YKwOXUNqB0Znr/KvNHsPZTJxqx7180e5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300082; c=relaxed/simple;
-	bh=+/m2jaKgOwC5N1VTIpmnxQ8YObtlqmq+iVh1fnh6FKg=;
+	s=arc-20240116; t=1779298324; c=relaxed/simple;
+	bh=QD9j7V5zCRKSjEcJGCmeQ9ari82xbkG8QX9OVvJ2Gfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6ACitIzIlyZ+roC8LqLDUCBS4MTWE/XbKpZbpN2kWsQBLdXoJ+G0ISuRol/v0UXXvqVunDjAqPODNhLKB0pUMYkBprypNKWXS+v8olNtOcYh3R3bt9aTGwQlkLD9VnQ0YB6j0L51iSGhToua3FTUgc4cC2qJy6mzWpJ14ie9BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPqs67Ib; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4241F00893;
-	Wed, 20 May 2026 18:01:19 +0000 (UTC)
+	 MIME-Version; b=TRntK+PYOJpuHKWMtJ3qQ/IUTxgxz0AJGhEix8UFCeqFxas6p8id+EwKJgw6c+LLDa6nsW5rU4Tv3kDBpJY8B3eOgs/STbrjz3skB+RbKncjoV3n7dvrwYycQfCbjLEqr8SZq9qnpSXbtx6BXO7LB3zn9TXRyTby2Xwt06r9ohE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uNtiKrW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EF31F00893;
+	Wed, 20 May 2026 17:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300079;
-	bh=RkZba11OqC47P0zCQDWsevQJvbz+6NsH+K4VvYWSFsM=;
+	s=korg; t=1779298323;
+	bh=+2czx6mpFb3rDAF2Fq1iXAk+1v0Q9XiloyAKnyGY5Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NPqs67IbqLzDEyzK4oA7yR8j0mOdLKMR12gcGdVpfrzmemYN/GEoexskiLx2GhCpZ
-	 EvlvgyADWZvXvzcHTIDwMabdlIjpsxSFuTrXg9X2svP5fSpv4Fy0UaforO7Z/FLkwA
-	 bwUCkrJoJ5yQubc1hDZ5NIBMVuUDm82w1rnVoV6w=
+	b=1uNtiKrWcyaJaMfRSt6c6ykzTIX2SIm6MMxGke+m31TwfOaKfGJ14n7Ihw8O88abO
+	 ytoUgKGa4MD1EQbTJyHoPhlm6M3qLGG7Cz+dP81nTeCuRqO8zh4ZsBky8pQ9dbHwec
+	 lsNsaJT76fvS9JQ4PQxFO2fso5xRYq8sSOzg3myo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/666] params: Replace __modinit with __init_or_module
+Subject: [PATCH 6.18 368/957] arm64: dts: imx8mp-evk: Enable pull select bit for PCIe regulator GPIO (M.2 W_DISABLE1)
 Date: Wed, 20 May 2026 18:14:11 +0200
-Message-ID: <20260520162112.107129846@linuxfoundation.org>
+Message-ID: <20260520162142.508883195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,96 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252210-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251570-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,atomlin.com:email]
-X-Rspamd-Queue-Id: 26A4E595617
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6B400595FBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
+[ Upstream commit d1e7eab6033f9885a02c4b4e8f09e34d8e9d21ab ]
 
-Remove the custom __modinit macro from kernel/params.c and instead use the
-common __init_or_module macro from include/linux/module.h. Both provide the
-same functionality.
+The current pin configuration for MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06
+sets the weak pull-up but does not enable the pull select field.
+Bit 8 in the IOMUX register must be set in order for the weak pull-up
+to actually take effect.
 
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
+Update the pinctrl setting from 0x40 to 0x140 to enable both the pull
+select and the weak pull-up, ensuring the line behaves as expected.
+
+Fixes: d50650500064 ("arm64: dts: imx8mp-evk: Add PCIe support")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/params.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index 9935ff599356b..2be5a083f9399 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -595,12 +595,6 @@ static ssize_t param_attr_store(struct module_attribute *mattr,
- }
- #endif
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+index 3730792daf501..d957d6cc20f7f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
+@@ -995,7 +995,7 @@ MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07	0x40
  
--#ifdef CONFIG_MODULES
--#define __modinit
--#else
--#define __modinit __init
--#endif
--
- #ifdef CONFIG_SYSFS
- void kernel_param_lock(struct module *mod)
- {
-@@ -625,9 +619,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
-  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
-  * if there's an error.
-  */
--static __modinit int add_sysfs_param(struct module_kobject *mk,
--				     const struct kernel_param *kp,
--				     const char *name)
-+static __init_or_module int add_sysfs_param(struct module_kobject *mk,
-+					    const struct kernel_param *kp,
-+					    const char *name)
- {
- 	struct module_param_attrs *new_mp;
- 	struct attribute **new_attrs;
-@@ -763,7 +757,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
+ 	pinctrl_pcie0_reg: pcie0reggrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x40
++			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x140
+ 		>;
+ 	};
  
--struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
-+struct module_kobject * __init_or_module
-+lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
 -- 
 2.53.0
 
