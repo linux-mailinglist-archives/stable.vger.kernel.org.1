@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-252538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKyEE6z7DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:32 +0200
+	id wKOsErIADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA19F595E30
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB3F5970EF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8766C311ECED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2FDA231282D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCBF3A6B99;
-	Wed, 20 May 2026 18:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0433FBB7D;
+	Wed, 20 May 2026 18:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib8jbMvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUb3v6ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D087E37DE8A;
-	Wed, 20 May 2026 18:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC36369D7A;
+	Wed, 20 May 2026 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300936; cv=none; b=Og29paEW6sgf1UzgjMfeZ7Kl90AauMUdNrf4MaoO8ktNW71zg1Ezf8gWX+WfAYYcCE+X1OePqd8dwTBplVCC+Cl9RDynwY1TzOkwWOSNfEfbNwjBckKBjCD850Pfz+TwZXOP0sI47zTRXOHXVBP0OrqsNqsDpvG1gsx3BWvr6co=
+	t=1779302139; cv=none; b=l4DhuJWb0sOUI2vMUQn87lF3jTDnBpOQIsk8afLrs475bxLvW2mbF3b1wnrdyRgPQTPgZTKK0FX+g1sdwJUyn7TFzpqjSZCF/g1IXqaoHssImi0UmSrikyhW0FuDvN3Jj42aclNLtxetToqqdnHaMfSEaQ2RhGxBZNBADMbc9M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300936; c=relaxed/simple;
-	bh=SP4K6D90WwzEGBeb3D8RGWzFfq6Nae5ftH+NVPv4mQA=;
+	s=arc-20240116; t=1779302139; c=relaxed/simple;
+	bh=WsfQzTVaQoXqoDD9E4FOTQeFlYuB90xgZirLdzSgZVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGl2S+PBtiqnOFnh9EgaCP0WrwnpNqp1txBb7uFfEoukj6NFGfwXjsw1vjBo/FWiBaJ9Tnil8aRVvh2GLY9MLh3Sa1JKC5+s4mGNTlFWfl9MDYfBmbQyEZy3WCOlh/R7cTHFSoa+Suxr5ZYP8mg46YzoST+kA+0Kiook89VDb7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib8jbMvd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F183C1F00893;
-	Wed, 20 May 2026 18:15:34 +0000 (UTC)
+	 MIME-Version; b=s+fHgT8uS88hM8h/87Z6kL2ARWBnFOYhog0IH5ZXVDmMy9Kz/U99v9T+WaQW20N4CySN94p5AG/XJLMxjHDY+DeK4GmWuwl/3GV+EcVVf3VbV5aFywlmcxKo1P5ZtAOZ5O4B3Y8EdwH+slf3usyq6hkeZR+njcW5IB6rSAut2zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUb3v6ij; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AFF1F000E9;
+	Wed, 20 May 2026 18:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300935;
-	bh=OTs8LV/8WKLT+BuxVijvKN54nxKa0c5Ge2aBd86pDHI=;
+	s=korg; t=1779302138;
+	bh=2nBngbAMkOBqTyVwTbbG3WJcUTRSUt2+JbX7UMMNSLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ib8jbMvddiHeTYnX8f8slBKxc5i2rpnWtrHI+AYdb9+ASRxrP+1+xcqZMqZOSAq7S
-	 HnD8KgxalEvIdg+omku1HMLcGr+IFOOU749iwRsL7bNqCdiS5vgIhAdDvzH2+iec8Z
-	 xuOPWcBHSBqC0RsRRPB/9nc+TFb1QJ17spTh/iR4=
+	b=XUb3v6ijc7Tl/ni8IMehMIYJxyzK5GxIYLci+ZtH2o6UZoMIiIZ9OCy9dG9IRLYTl
+	 iuFEy1XDYqM8bOvdW3B+ByIKrMo5kKE/6v1a3gYXMgz7ntZjpnDQpUVzSOjsFYkk+Z
+	 W1HgWzdAjmJ6U1LaVpsbPDKfihkb83NjToAQ+p3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu-Chun Lin <eleanor.lin@realtek.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hillf Danton <hillf.zj@alibaba-inc.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/666] pinctrl: realtek: Fix function signature for config argument
+Subject: [PATCH 6.6 152/508] Documentation: fix a hugetlbfs reservation statement
 Date: Wed, 20 May 2026 18:19:35 +0200
-Message-ID: <20260520162119.129271959@linuxfoundation.org>
+Message-ID: <20260520162101.929913158@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +78,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252999-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252538-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,realtek.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA19F595E30
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BBB3F5970EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor.lin@realtek.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-[ Upstream commit 1f5451844786ed203605528dca9e5d84ed378160 ]
+[ Upstream commit 7a197d346a44384a1a858a98ef03766840e561d4 ]
 
-The argument originates from pinconf_to_config_argument(), which returns a
-u32. Therefore, the arg parameter should be an unsigned int instead of enum
-pin_config_param.
+Documentation/mm/hugetlbfs_reserv.rst has
+	if (resv_needed <= (resv_huge_pages - free_huge_pages))
+		resv_huge_pages += resv_needed;
+which describes this code in gather_surplus_pages()
+	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
+	if (needed <= 0) {
+		h->resv_huge_pages += delta;
+		return 0;
+	}
+which means if there are enough free hugepages to account for the new
+reservation, simply update the global reservation count without
+further action.
 
-Fixes: e99ce78030db ("pinctrl: realtek: Add common pinctrl driver for Realtek DHC RTD SoCs")
-Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+But the description is backwards, it should be
+	if (resv_needed <= (free_huge_pages - resv_huge_pages))
+instead.
+
+Link: https://lkml.kernel.org/r/20260302201015.1824798-1-jane.chu@oracle.com
+Fixes: 70bc0dc578b3 ("Documentation: vm, add hugetlbfs reservation overview")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/realtek/pinctrl-rtd.c | 2 +-
+ Documentation/mm/hugetlbfs_reserv.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/realtek/pinctrl-rtd.c b/drivers/pinctrl/realtek/pinctrl-rtd.c
-index 2440604863327..4c876d1f6ad59 100644
---- a/drivers/pinctrl/realtek/pinctrl-rtd.c
-+++ b/drivers/pinctrl/realtek/pinctrl-rtd.c
-@@ -279,7 +279,7 @@ static const struct rtd_pin_sconfig_desc *rtd_pinctrl_find_sconfig(struct rtd_pi
- static int rtd_pconf_parse_conf(struct rtd_pinctrl *data,
- 				unsigned int pinnr,
- 				enum pin_config_param param,
--				enum pin_config_param arg)
-+				unsigned int arg)
- {
- 	const struct rtd_pin_config_desc *config_desc;
- 	const struct rtd_pin_sconfig_desc *sconfig_desc;
+diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
+index 4914fbf07966c..a49115db18c76 100644
+--- a/Documentation/mm/hugetlbfs_reserv.rst
++++ b/Documentation/mm/hugetlbfs_reserv.rst
+@@ -155,7 +155,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
+ the global reservation count resv_huge_pages is adjusted something like the
+ following::
+ 
+-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
++	if (resv_needed <= (free_huge_pages - resv_huge_pages)
+ 		resv_huge_pages += resv_needed;
+ 
+ Note that the global lock hugetlb_lock is held when checking and adjusting
 -- 
 2.53.0
 
