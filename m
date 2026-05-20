@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFAFO83oDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:01 +0200
+	id yP7MAvX6DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-251398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC37D592CE7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E3A595C50
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DF0D314F9A1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF65134064AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A9A3D75A0;
-	Wed, 20 May 2026 16:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB643F39D1;
+	Wed, 20 May 2026 17:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwoXKFFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVxE2ev2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B226A369D4C;
-	Wed, 20 May 2026 16:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E083D75DA;
+	Wed, 20 May 2026 17:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295509; cv=none; b=kIjT/WOkyzrzshGXNM9RG4DmVTtzZnf6GrzRkxAAQEDr5y01GbwBMLZgHjaNN5KJedB78z9J9xjy44sqZ93xIlrcCb/YpnWMCipNtj9/W9QlrAj43A4Tyu50YRAghatSvii71ZT+F3W0SjGg1AVRLxMmLbxeHFf2+lwjf8g3bcE=
+	t=1779297876; cv=none; b=t/dBM0F70MZNq7WmCLenRvCQ5XHoxZz3rXzRb/vE2qU0URCnKujIqGjUSJm33uJtf0n9t6Agk56W1rp1uHFSc+buXigCg2KG4iHxCtWoyw5dTq+LSFCzqukoR1Ny7I+6kcMcrBwcpul5bVY44VaHWbW0LtSfLVRi1L+JkPrvdK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295509; c=relaxed/simple;
-	bh=Wl4llWjACVR2WMC6BcVC8h9Evee8mdVyKlvdv2wMUEo=;
+	s=arc-20240116; t=1779297876; c=relaxed/simple;
+	bh=XsEf9dA7jvocWOn/E2lIp/3sXVp3YG0amxiyqqs/QSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ntNZHddtcnt+7S/mk/NgiA1RNxeYSWcDX4zsMX/4zGHBYFe4Fc0m82KEujs9WAjAC3159pKgbcaD4V4vAbfMGswtcDkebFgqhRl/F4amvZ/BpohDThb5JiqOmhN08QaSAM3mQRKqYgrK4mFA06Is+nyPF+n4fKmIfndCLiuhhHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwoXKFFa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCC41F000E9;
-	Wed, 20 May 2026 16:45:07 +0000 (UTC)
+	 MIME-Version; b=k6DlOwFKPGsYw2muyPnAH6bhy8VNvu90MIro5nCPqR5zV1OuVKjaUgxzBn+UXUNMY7eXycGi1ENP10NT+3ZL/RlC3sRflBtawO6gLR6RT46qL8z8p6U7VruvAjbUq9CTOUZ0n5LdBnrdViY8buwqZLA2it4vpNneDp0iQU98oeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVxE2ev2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD321F000E9;
+	Wed, 20 May 2026 17:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295508;
-	bh=G8UQkiU0k+LK78dOgHrENAjXEpB/VAT5WFh62JFJsGw=;
+	s=korg; t=1779297875;
+	bh=CUvLExw7Y56i6JLXy9cUm8d52idTkT1TJbkh/R9lP4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KwoXKFFaces6vIFcq+cMjbRAoeqCwDFzo8CChSG2wr8h/8wKXz0hMQHKlhF0SxQCg
-	 SeFgfsIhLtvrYzLPuP/xZEpZ45+lgnesJpzWYC8oDIPJGU4dqlWUvWh5eyy19k7h9A
-	 qjxfEsnC62Oj6lCqfngzomS/sHPz6bGd7zQ+Zudk=
+	b=GVxE2ev2KtUlnpOTXSXAukZ4zyO82PkUAOqQqRLgApJDpxb1SW6P4Y/lILjkBsrXZ
+	 GbhhH2rOEupfZZFHFOqR18skaCpH1Xc6oIhWyigSYNNsOc0j9UFghtCe7ejOiLygIM
+	 BFtAmFvCQ/Lp/S6ra7lke4mG6JeyxTupClQtpJi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Sasha Levin <sashal@kernel.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 7.0 0429/1146] drm/fb-helper: Fix a locking bug in an error path
-Date: Wed, 20 May 2026 18:11:19 +0200
-Message-ID: <20260520162157.898362793@linuxfoundation.org>
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 197/957] ASoC: sti: use managed regmap_field allocations
+Date: Wed, 20 May 2026 18:11:20 +0200
+Message-ID: <20260520162138.822143584@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250476-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251398-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: BC37D592CE7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,svanheule.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: 89E3A595C50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Sander Vanheule <sander@svanheule.net>
 
-[ Upstream commit bd64240dc88caaf7b96dd869f36f165f51b52039 ]
+[ Upstream commit 1696fad8b259a2d46e51cd6e17e4bcdbe02279fa ]
 
-The name of the function __drm_fb_helper_initial_config_and_unlock() and
-also the comment above that function make it clear that all code paths
-in this function should unlock fb_helper->lock before returning. Add a
-mutex_unlock() call in the only code path where it is missing. This has
-been detected by the Clang thread-safety analyzer.
+The regmap_field objects allocated at player init are never freed and
+may leak resources if the driver is removed.
 
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Christian König <christian.koenig@amd.com> # radeon
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> # msm
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 63c971af4036 ("drm/fb-helper: Allocate and release fb_info in single place")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260403205355.1181984-1-bvanassche@acm.org
+Switch to devm_regmap_field_alloc() to automatically limit the lifetime
+of the allocations the lifetime of the device.
+
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-3-sander@svanheule.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_fb_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/sti/uniperif_player.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
-index 05803169bed57..16bfbfb0af161 100644
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -1641,8 +1641,10 @@ __drm_fb_helper_initial_config_and_unlock(struct drm_fb_helper *fb_helper)
- 	drm_client_modeset_probe(&fb_helper->client, width, height);
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index f1b7e76f97b58..45d35b887e4eb 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1028,11 +1028,11 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 		return PTR_ERR(regmap);
+ 	}
  
- 	info = drm_fb_helper_alloc_info(fb_helper);
--	if (IS_ERR(info))
-+	if (IS_ERR(info)) {
-+		mutex_unlock(&fb_helper->lock);
- 		return PTR_ERR(info);
-+	}
+-	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	player->clk_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[0]);
+ 	if (IS_ERR(player->clk_sel))
+ 		return PTR_ERR(player->clk_sel);
  
- 	ret = drm_fb_helper_single_fb_probe(fb_helper);
- 	if (ret < 0) {
+-	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	player->valid_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[1]);
+ 	if (IS_ERR(player->valid_sel))
+ 		return PTR_ERR(player->valid_sel);
+ 
 -- 
 2.53.0
 
