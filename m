@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LXdAO/vDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:27 +0200
+	id 6KPBDGolDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34FD593DD6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A62359AB49
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9D03F319BA9A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF153396055B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746EE3EE1C0;
-	Wed, 20 May 2026 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3466E3FB060;
+	Wed, 20 May 2026 18:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3S4a7Ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOq0iDiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228F93EFD14;
-	Wed, 20 May 2026 17:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4BA3F8707;
+	Wed, 20 May 2026 18:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296515; cv=none; b=uCTSBwWZjLamgRpqTcbjxG3DAJo+daWRNDFp8gs2VFV4VpTXOYwb94PT8Q8UAxTvWE5XPkxLjhLLp6gqgjXQbOnKsqcX7DpAa8MmwK7OshiUDlr8zZzpeT9QrxIz8VBxNiAdUrPoQpH7LzldjRwKhUqHmD/7QmWJ2TBJDKEclbs=
+	t=1779300655; cv=none; b=Ew2XJgPYdtnnomR4JeommYJLp7SHtH5uugUIt1awoEn64Bt7Vl9hMTuVOUP0ROZb+CIpS/w7B/A1y8ssRfPcJlWmzgt95C9RcVsAfy5AeE5PwUXoaUC23ZKfcmfSl+CPb3D/FuoXSpJ2ZYbMxVVNy9lZuoaJWPVaoaJWcEAIiKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296515; c=relaxed/simple;
-	bh=hNCZOnR0pYgqi4hmsB3+qxj2IzP572f3yNaEaksUogE=;
+	s=arc-20240116; t=1779300655; c=relaxed/simple;
+	bh=tEf6ogrzbu5AV0ONF5dWYUUhlfK8tliZANX710htPuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TyKOxWP9VDIujpOKJqRf70zoVfK3ClU2j6WIgg1YoXiGReElFpGJJvGdUgvWZspZqMy5AWpYdvcYp1jDsTtRBCkQ9H+dVKsPzpVSJlGZoMRHu/KAmZqq6NGled9kNoK5G0cO8jDc8nxZsgmYZXu+beeADoKIKSoSb2P2SzWkTkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3S4a7Ud; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5B11F00896;
-	Wed, 20 May 2026 17:01:53 +0000 (UTC)
+	 MIME-Version; b=LGEu7XxnjsymXk6x+PgA0YjVbfWBJznvJ7hHVvlKg8OWW+zFpcB/rJiVZb9sAwlINGCpRUCvhY7nSFmFvpyJdc4aymIukh5y9LIO+eDZxW5gm+DADKDEMBLDt6Fuq3cRFbZbIoWzXVrdY3s3KCne9LGURqSrHX2pqHF6Ad4U4fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOq0iDiY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A271F00894;
+	Wed, 20 May 2026 18:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296514;
-	bh=IPEqzashwUId1bw3vbb7PyxmvYRkZN2Fn5EB5NuU0No=;
+	s=korg; t=1779300653;
+	bh=UZaRHUJEiwIYjde1l2AK0NfJUtyBnWGj8tJBAztR1Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E3S4a7UdH1GlWTKpb+PuwlbRBJu3S9RX1+cdoytTYIH3O0I/DpWwBt3hcVUuuW/yS
-	 kIwb1h6tVp4brBHnzobjRpaQ6dNNCYD1ix5SKKAhNbTmLXa1QPkjzMA31o8v76M8PR
-	 tbwjZ4+fZsnBOqnxRz6UOlUmA+oZ86l5tyw6XGHw=
+	b=KOq0iDiY1AFpaSkjrMDbu9V8444tXRgu4hKGzNJWo5f3vuqXHOqBdLMUVG+aW3gAo
+	 5+7v8wV6HbD2l9+CxmAYYNVFAdKuGbzO70+D+9t3GLxtTjaNpGaKeSie7NmWjAPZXX
+	 mUalbHPLNYfrto4ymKq5ngGLmCFoaJC796GvQss8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akif <akif.sait111@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0777/1146] ksmbd: fix use-after-free in smb2_open during durable reconnect
+Subject: [PATCH 6.12 216/666] iommu/amd: Fix clone_alias() to use the original devices devid
 Date: Wed, 20 May 2026 18:17:07 +0200
-Message-ID: <20260520162205.800701618@linuxfoundation.org>
+Message-ID: <20260520162115.891053190@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250867-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-252431-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D34FD593DD6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7A62359AB49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akif <akif.sait111@gmail.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 1baff47b81f94f9231c91236aa511420d0e266b9 ]
+[ Upstream commit faad224fe0f0857a04ff2eb3c90f0de57f47d0f3 ]
 
-In smb2_open, the call to ksmbd_put_durable_fd(fp) drops the reference
-to the durable file descriptor early during the durable reconnect
-process. If an error occurs subsequently (eg, ksmbd_iov_pin_rsp fails)
-or a scavenger accesses the file, it leads to a use-after-free when
-accessing fp properties (eg fp->create_time).
+Currently clone_alias() assumes first argument (pdev) is always the
+original device pointer. This function is called by
+pci_for_each_dma_alias() which based on topology decides to send
+original or alias device details in first argument.
 
-Move the single put to the end of the function below err_out2 so fp
-stays valid until smb2_open returns.
+This meant that the source devid used to look up and copy the DTE
+may be incorrect, leading to wrong or stale DTE entries being
+propagated to alias device.
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Signed-off-by: Akif <akif.sait111@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by passing the original pdev as the opaque data argument to
+both the direct clone_alias() call and pci_for_each_dma_alias(). Inside
+clone_alias(), retrieve the original device from data and compute devid
+from it.
+
+Fixes: 3332364e4ebc ("iommu/amd: Support multiple PCI DMA aliases in device table")
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/iommu/amd/iommu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 135c74e6c4be6..e3a120a2d0596 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3015,29 +3015,23 @@ int smb2_open(struct ksmbd_work *work)
- 		if (dh_info.reconnected == true) {
- 			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
- 					lc, sess->user, name);
--			if (rc) {
--				ksmbd_put_durable_fd(dh_info.fp);
-+			if (rc)
- 				goto err_out2;
--			}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 3e28aefdc6a02..a5adc4714f5c9 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -382,11 +382,12 @@ static struct iommu_dev_data *search_dev_data(struct amd_iommu *iommu, u16 devid
+ 	return NULL;
+ }
  
- 			rc = ksmbd_reopen_durable_fd(work, dh_info.fp);
--			if (rc) {
--				ksmbd_put_durable_fd(dh_info.fp);
-+			if (rc)
- 				goto err_out2;
--			}
+-static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
++static int clone_alias(struct pci_dev *pdev_origin, u16 alias, void *data)
+ {
+ 	struct dev_table_entry new;
+ 	struct amd_iommu *iommu;
+ 	struct iommu_dev_data *dev_data, *alias_data;
++	struct pci_dev *pdev = data;
+ 	u16 devid = pci_dev_id(pdev);
+ 	int ret = 0;
  
- 			fp = dh_info.fp;
+@@ -433,9 +434,9 @@ static void clone_aliases(struct amd_iommu *iommu, struct device *dev)
+ 	 * part of the PCI DMA aliases if it's bus differs
+ 	 * from the original device.
+ 	 */
+-	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], NULL);
++	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], pdev);
  
- 			if (ksmbd_override_fsids(work)) {
- 				rc = -ENOMEM;
--				ksmbd_put_durable_fd(dh_info.fp);
- 				goto err_out2;
- 			}
+-	pci_for_each_dma_alias(pdev, clone_alias, NULL);
++	pci_for_each_dma_alias(pdev, clone_alias, pdev);
+ }
  
- 			file_info = FILE_OPENED;
- 
- 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
--			ksmbd_put_durable_fd(fp);
- 			if (rc)
- 				goto err_out2;
- 
-@@ -3807,6 +3801,9 @@ int smb2_open(struct ksmbd_work *work)
- 		ksmbd_debug(SMB, "Error response: %x\n", rsp->hdr.Status);
- 	}
- 
-+	if (dh_info.reconnected)
-+		ksmbd_put_durable_fd(dh_info.fp);
-+
- 	kfree(name);
- 	kfree(lc);
- 
+ static void setup_aliases(struct amd_iommu *iommu, struct device *dev)
 -- 
 2.53.0
 
