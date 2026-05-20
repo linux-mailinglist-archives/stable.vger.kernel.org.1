@@ -1,130 +1,132 @@
-Return-Path: <stable+bounces-249722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPq9MeEHDWpQsQUAu9opvQ
-	(envelope-from <stable+bounces-249722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:01:21 +0200
+	id D3amJFILDWpesgUAu9opvQ
+	(envelope-from <stable+bounces-249723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:16:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DDA586728
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:01:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD86D5867C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BF1A3037EE4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:59:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBC3B301E95E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 01:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9239284682;
-	Wed, 20 May 2026 00:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF5D2D9EFF;
+	Wed, 20 May 2026 01:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3eByz9F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqOkAmqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E16B29AB02;
-	Wed, 20 May 2026 00:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F4A285061;
+	Wed, 20 May 2026 01:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779238796; cv=none; b=aeM6M30QIkky9aZCo9l4qcSHz8YXoyemCKLAchO29Ux0BIDwlqZCSb0jMtAr0dANK3sf/jod6R1+4ZX3f4blKoEXxsr35l/aQLxpCefI+QUMLfU0a2WDEffFUUHj34GJgv+WoBsA+7tZvbwAMUG9HdbGO8aEEz5V6xEBy/PIV+E=
+	t=1779239757; cv=none; b=kvrKn+W999216CiHHQvP6z/CVhQ3cJKUAQxSfgRRpbqjiuGsO3+MrxulPxwSpaxK9JxcLE/z24O/2FEfhcDn1jQZGk2joYJjUBo3v8E6F2ZdcuwrTpVVvvZgEDQQMcWrzHFzQdMDRWG7wMqlX2x5aNDTWaYEdzaFKCHCebSKtgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779238796; c=relaxed/simple;
-	bh=Gk+zrEidxeyH8/m65U8s2CofRddr5N2qo9NAbJEoFtc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lySeViyEHsz7Cdwg477yvb1JftZouuLtDQYmFJlQj2EioV+cZH46Xglu5aKcJwvPnXR3teMSGxMUBLW2F9SNwHuK+Vn2Wpv3/SEcChRLCbZjHdqfr5MQ7zUgOf5aXRB8gMQUijRc8GtmZmn0VWMmuIZqsxbrNdEX/SRm+wVZdTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3eByz9F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CFA1F000E9;
-	Wed, 20 May 2026 00:59:55 +0000 (UTC)
+	s=arc-20240116; t=1779239757; c=relaxed/simple;
+	bh=iMyq01rBZERRH9e8tzJEI2hI9k/rW8wFOEsDjxpIXI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aMUpdsLub/E60Qk15igldvsrS+oQoSATHWsv/rpL97Na9t5uoujCQYfB3ghxQFm/CDi3slW6XcNtITvHWyCCqfZ1CiPX1LADVdeJpWOHoIvz+aqIBiryMBk1SO6tm392JafHNTubfJ0h5+STFmTczCu/PveQt8tVUE25lgR7hjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqOkAmqJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685651F000E9;
+	Wed, 20 May 2026 01:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779238795;
-	bh=LTA03XVNuI2B4/4ZJtJTbBevnemJyRqVpLCixthwgCs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=F3eByz9FMv5J+9uICJjxo8nttu3TVFovs/DyLrQtM9EnGBEczlPLkgzHqfwZ3+NAP
-	 l/+QsLqMRqzIsjAQT/teKVI4+Nq/hc65mpLMfuEuoEqXDrVm1hIZSPUoEipOaByLWz
-	 JK6LpT2TyPGkbdF+fQBMBtVBMuqYgr5Rj5Na+mngxBGOkuC+woVTolwRNzDu0/fenU
-	 NJL6RMWF14cb+dqrTJjgWJF059FNDTpfmO59d13EzzuwsiMkjZ7+OvCnQUwC5UuvpG
-	 +Ss5/jtDsnGLCoRZnWKnqiuJdM1DLJYW7Daw5RgeC4N6f2auklID0pk4+gTXReJy0k
-	 Bpa9uMm5sWDhg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197A0383BF53;
-	Wed, 20 May 2026 01:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779239755;
+	bh=ZCaU6+VJbWf/ON+TfBNoaRwtJMxXOyq2Ap1E51+Y6vk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NqOkAmqJtSRAFLPaCEgDqX5+u0T8Nup7ZJN0BNuJoENp2sYDl2ZwRm2yDioS8GJ9U
+	 nWzX/OCvD1KsoXWD1frTukwLHJLI5IbOSBotl50soKbliEXC+CSnS7KMZSc9YNNJdd
+	 gIe+lu1IyKyiNJHJ4la0B6rjXDDTm/+aOmrD7d0VB5qYoKCno2py3I0lSF0CO/xDtB
+	 1CE2W0/Cv/fRlO9tfFPupkf5oLJ6Qe18HenARUtIEQr43ScwAkuwx+gJ9O+yW99usn
+	 t7sQcLQeo7botT90GNMWSdsCphAt0Vv201+YSWVXMVCXzM0SjoHv4Mrt7jpREXD8E5
+	 6u3yuNt1YMYXQ==
+Date: Tue, 19 May 2026 21:15:54 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mateusz Redzynia <mateuszx.redzynia@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>, Alva Lan <alvalan9@foxmail.com>
+Subject: Re: [PATCH 6.6.y] ASoC: SOF: Intel: hda: Fix NULL pointer dereference
+Message-ID: <ag0LStilQENyQa49@laps>
+References: <tencent_D2D615381730920DE9B46435691FBD92C708@qq.com>
+ <20260519220508.reply-0006@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] octeontx2-pf: avoid double free of pool->stack on AQ
- init
- failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177923880590.2938085.17920392610827952238.git-patchwork-notify@kernel.org>
-Date: Wed, 20 May 2026 01:00:05 +0000
-References: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
-In-Reply-To: <20260515151826.1005397-1-dawei.feng@seu.edu.cn>
-To: Dawei Feng <dawei.feng@seu.edu.cn>
-Cc: sgoutham@marvell.com, gakula@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn, stable@vger.kernel.org,
- zilin@seu.edu.cn
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260519220508.reply-0006@kernel.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249722-lists,stable=lfdr.de,netdevbpf];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,intel.com,kernel.org,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-249723-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 21DDA586728
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,intel.com:email]
+X-Rspamd-Queue-Id: DD86D5867C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+On Tue, May 19, 2026 at 08:54:19PM -0400, Sasha Levin wrote:
+>On Tue, May 19, 2026 at 06:44:10PM +0800, Alva Lan wrote:
+>> From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+>>
+>> [ Upstream commit 16c589567a956d46a7c1363af3f64de3d420af20 ]
+>>
+>> If there's a mismatch between the DAI links in the machine driver and
+>> the topology, it is possible that the playback/capture widget is not
+>> set, especially in the case of loopback capture for echo reference
+>> where we use the dummy DAI link. Return the error when the widget is not
+>> set to avoid a null pointer dereference like below when the topology is
+>> broken.
+>[...]
+>> [ Minor context conflict resolved. ]
+>> Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+>
+>Queued for 6.6, thanks.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Ugh...
 
-On Fri, 15 May 2026 23:18:26 +0800 you wrote:
-> otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
-> allocation fails, but leaves the pointer unchanged. Later,
-> otx2_sq_aura_pool_init() unwinds the partial setup through
-> otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
-> cn20k_pool_aq_init() implementation has the same bug in
-> its corresponding error path.
-> 
-> [...]
+This backport is missing the !swidget NULL check that the upstream commit also
+adds.  Upstream 16c589567a95 adds two checks in hda_dai_get_ops(): one for !w
+and one for !swidget.  Your patch only adds the !w check, so the later "sdai =
+swidget->private" still crashes when w is non-NULL but w->dobj.private is NULL.
 
-Here is the summary with links:
-  - [net] octeontx2-pf: avoid double free of pool->stack on AQ init failure
-    https://git.kernel.org/netdev/net/c/9b244c242bec
+I'm going to drop it for now.
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha
 
