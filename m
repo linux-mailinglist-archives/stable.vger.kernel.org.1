@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AuFEXjwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:44 +0200
+	id +GEnM1sODmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:41:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC686593F52
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3245459899F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 423B731486BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C7B6311E881
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3653C3A3833;
-	Wed, 20 May 2026 17:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA7036EAB8;
+	Wed, 20 May 2026 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kupyufnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N54OXk53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16B335F619;
-	Wed, 20 May 2026 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491F436CE19;
+	Wed, 20 May 2026 16:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297406; cv=none; b=QfL7qq+PcFBmNwCze4AgKx6FTUHb6G00IBd8qwSyoZSQPwqvx1+W3VeJxxs6shdw1nUVqaKl9mwUqBR97FdFeW5USbL8MAC088m8z2TO6WMOxrATt4Q2moxjxze1jmBDwnyhVWqkTCUlOgDrBOd46m65fy+l/JEawxJwnnNSvTk=
+	t=1779294954; cv=none; b=XmNOLuJi2ca8Tr3Ova3fRKwH3bUO9C0er24u/0tm6Da0UrCgCyhrdLeZq3LRQoa+FtZbuEwytYtX/Hfva+zGG1DGASdLEec3qHyVqdT4CmgI+8YRGHw8dRhynOcToQHb8wCyOJlxEEUzu1B+Y666nDcPMzhyG2r6AB4VgizqbnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297406; c=relaxed/simple;
-	bh=5fyaSUIMzmM57b3l6W9iLWBmN9dZONvZZp1WtVu9YHI=;
+	s=arc-20240116; t=1779294954; c=relaxed/simple;
+	bh=co7Ft017AoLTb5K7Hf2Q48MVOvgi154QybTuHGVXLCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jG8o2+X58KzrbyAZQF4UWaYEW3Or/+ZExoWp8Z1Yryc5eWCkTmucFrgfjpExvrga72tFsH+1ifOBxYbcygZOO0bMQBIiMwq0rUlIuFzWn3+tlZEmnRJjLq0NSUWONkQbZiGp1R1VqxE9ZQTzywEL5sc1ibLs14wjA93638FalBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kupyufnT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CD21F000E9;
-	Wed, 20 May 2026 17:16:43 +0000 (UTC)
+	 MIME-Version; b=jVzOtGKmNssb8zrK7VIjEGfn96PiDfIpNDZRVisvugjitAPYDy75MuHA/y1f4ePuxZeJHpDzTL6JoCEWjj6LBEwmjs8a/qSp/3Bz18OINZp2pRrcfDCS6Gms4xZK9XLyWKdfwOPATwF2hf/NUv7mgiv+rGrkBL1IVa63XUpjwKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N54OXk53; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF72C1F000E9;
+	Wed, 20 May 2026 16:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297404;
-	bh=D9zqkVdWRamgseCAMzFGPRlwAEJn1ruFXYYOQ+auI1Q=;
+	s=korg; t=1779294953;
+	bh=TI9T/9/nQ/fUsKhKBT8g7a7uSFDZ83sM5e7eAVBPnxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kupyufnTarBfudMJKBJfto23DPtRKsqZJE0+aQ+lai6cTZKPvSwcQEYud8ygxOUQU
-	 UrVil/N892/KUyMERvtYFhLDYYI0IMWlXbEFbkwNIWp+TcLRiDRyxM4fuTm1u9bNe4
-	 UP9jLoUY8TnsDFIWGTk3kDIFt3iuLoxdfY7IJNQo=
+	b=N54OXk53DNK155LEjEJNp8c3WDOYQDdMdzxFZucibr7UVtSBqlA49s2m2nypL3OpY
+	 MW1FGnK0Jcpu5Awmu5t6fgUFTzUgpRVG3iUGXUMojZkolGKQ+CX3m/DRZFAQeVucb3
+	 ezed3T6aGlgW6NwsDJ48Ng3+iR/ogIwQBB5fwhyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyungjung Joo <jhj140711@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 002/957] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
+Subject: [PATCH 7.0 0235/1146] PCI: endpoint: pci-ep-msi: Fix error unwind and prevent double alloc
 Date: Wed, 20 May 2026 18:08:05 +0200
-Message-ID: <20260520162134.613714756@linuxfoundation.org>
+Message-ID: <20260520162153.565377045@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +68,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251217-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-250263-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: DC686593F52
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,valinux.co.jp:email]
+X-Rspamd-Queue-Id: 3245459899F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyungJung Joo <jhj140711@gmail.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
+[ Upstream commit 1cba96c0a795124c3229293ed7b5b5765e66f259 ]
 
-omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
-but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
+pci_epf_alloc_doorbell() stores the allocated doorbell message array in
+epf->db_msg/epf->num_db before requesting MSI vectors. If MSI allocation
+fails, the array is freed but the EPF state may still point to freed
+memory.
 
-Later, omfs_make_empty() uses
+Clear epf->db_msg and epf->num_db on the MSI allocation failure path so
+that later cleanup cannot double-free the array and callers can retry
+allocation.
 
-    sbi->s_sys_blocksize - OMFS_DIR_START
+Also return -EBUSY when doorbells have already been allocated to prevent
+leaking or overwriting an existing allocation.
 
-as the length argument to memset().  Since s_sys_blocksize is u32,
-a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
-an unsigned underflow there, wrapping to a value near 2^32.  That drives
-a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
-memory far beyond the backing block buffer.
-
-Add the corresponding lower-bound check alongside the existing upper-bound
-check in omfs_fill_super(), so that malformed images are rejected during
-superblock validation before any filesystem data is processed.
-
-Fixes: a3ab7155ea21 ("omfs: add directory routines")
-Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
-Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 1c3b002c6bf6 ("PCI: endpoint: Add RC-to-EP doorbell support using platform MSI controller")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20260217063856.3759713-4-den@valinux.co.jp
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/omfs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/endpoint/pci-ep-msi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
-index 135c49c5d848c..31218d89b7580 100644
---- a/fs/omfs/inode.c
-+++ b/fs/omfs/inode.c
-@@ -512,6 +512,12 @@ static int omfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 		goto out_brelse_bh;
+diff --git a/drivers/pci/endpoint/pci-ep-msi.c b/drivers/pci/endpoint/pci-ep-msi.c
+index 51c19942a81ef..1395919571f83 100644
+--- a/drivers/pci/endpoint/pci-ep-msi.c
++++ b/drivers/pci/endpoint/pci-ep-msi.c
+@@ -50,6 +50,9 @@ int pci_epf_alloc_doorbell(struct pci_epf *epf, u16 num_db)
+ 		return -EINVAL;
  	}
  
-+	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
-+		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
-+			sbi->s_sys_blocksize);
-+		goto out_brelse_bh;
-+	}
++	if (epf->db_msg)
++		return -EBUSY;
 +
- 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
- 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
- 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
+ 	domain = of_msi_map_get_device_domain(epc->dev.parent, 0,
+ 					      DOMAIN_BUS_PLATFORM_MSI);
+ 	if (!domain) {
+@@ -79,6 +82,8 @@ int pci_epf_alloc_doorbell(struct pci_epf *epf, u16 num_db)
+ 	if (ret) {
+ 		dev_err(dev, "Failed to allocate MSI\n");
+ 		kfree(msg);
++		epf->db_msg = NULL;
++		epf->num_db = 0;
+ 		return ret;
+ 	}
+ 
 -- 
 2.53.0
 
