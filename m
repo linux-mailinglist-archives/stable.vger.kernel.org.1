@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIQ8Nx35DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:37 +0200
+	id EAekK5QTDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5DA595776
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D345990EB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55AEE305148D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A32D30D27DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD853EAC82;
-	Wed, 20 May 2026 18:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6723B3E9C3D;
+	Wed, 20 May 2026 16:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MK9lzXld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZYmIjZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312483F4DC0;
-	Wed, 20 May 2026 18:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EFF3BBA0E;
+	Wed, 20 May 2026 16:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300265; cv=none; b=gInpjSLxuAP1/+JGfjbAd/YP3FwhY2bgmSBjGcyJ2fFq9DFvgwWHwRWIDb3DQcaU13WvNXfKy/LxMCnlAr+Ev6UB57r//Dw4UtaaNV594IObKk42Sq62xspcnyQRiIjWGyYkzrWfK5e/hjg2YeNG1tQmVDNF0mAwadch/AgVMlw=
+	t=1779296096; cv=none; b=FYyVAUDz2lQSdt2POH+itdCLKx1YxcdBc52EfSMMQqpKcNyvecnn+/nvC+4k6wrFa4L5jfHH5qW7hbzXAYG4PyqwwGWgREAf7vdfJe6KXQoLT282y6d939l2+1GWhMt9ek3MCNBOZTd1NqSg5tNsCwPPIybNBdXh9CdlGBkd4zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300265; c=relaxed/simple;
-	bh=kFZTbSTFZ5WEwNQQnaTNXJ/aZcPRd7pffqh6kDdkQ5E=;
+	s=arc-20240116; t=1779296096; c=relaxed/simple;
+	bh=uX+cJLs8aiBGqBdxLQqMjCJ3n1+ovjOIP5BT8jJ3ftU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKlJV4R3UcCknO+Jl4RgV+tn/KYkWaeoO0ljVyxtiQuc7nRGr8BzH8dfBm3rt3485OgQqbPZ0TqxbmGG+PjkF7HRphb/LpSfZU7/gYW5ZN6SNCXzBw97Kw8tlon5rqlQzUWnExntZAvWz84pKB4hcbyfWPgWyrwnFqMYQIfqh/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MK9lzXld; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969D91F000E9;
-	Wed, 20 May 2026 18:04:23 +0000 (UTC)
+	 MIME-Version; b=Dv6+0OpVm06dsNQjF/qSc0w8Ej6O+H3RRwSBCIGhjnQfQlzee0QAgDB832+fzRnPV3MbtgXpPLMBaL5UfQXGrgTSASp0yrsp3uSldSdZdSrJJFNOW1cwP3sfit7cXyaXDVsN+EnPU7fzHY1sK5yHu9yOUSt6Bd5n/0CXyOn7GF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZYmIjZ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406101F000E9;
+	Wed, 20 May 2026 16:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300264;
-	bh=gRsIR8rH+yPXDLUbjh6tZ5KLECztYBFuTrWPu7DJeAA=;
+	s=korg; t=1779296094;
+	bh=HjCRey48jiFzZEzuuueKOTaafSc/cbjtBuWKmyiSgpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MK9lzXldr7iNL1D9+hc/GV+E0SPxqd4FGTihUnKSCtdDt0v47TJW6JalyRiHG7LHT
-	 Ha9ESDlz9Ps3i7OnyyfBKt/2uWYO3Qiyr8YDesrlMvJzl3/lgm2QrYAy84RajfrN+9
-	 pRCKofngNRG2Q5q7QurUosJ6sMXlrMjMp7TC12Ww=
+	b=KZYmIjZ+vQf1hB7l5C8B15AW8s+42qlCSnL9oijWIF48r9uZQT0lueR7yZSSenEDF
+	 6WLcVm9ecOQhzOb89IIIf8FBHWEEDwWr5YvDSCzYMo6cNPPFRj590aayo30CnqqBgR
+	 ncL6gNAoMvxR9XOHsC2jcEvgUMHxrCVTRk7mbzFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/666] Bluetooth: fix locking in hci_conn_request_evt() with HCI_PROTO_DEFER
+Subject: [PATCH 7.0 0669/1146] usb: typec: ps883x: Fix Oops at unbind
 Date: Wed, 20 May 2026 18:15:19 +0200
-Message-ID: <20260520162113.562541079@linuxfoundation.org>
+Message-ID: <20260520162203.327935053@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +66,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250703-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252281-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,iki.fi:email]
-X-Rspamd-Queue-Id: 4D5DA595776
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 44D345990EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Mostafa Saleh <smostafa@google.com>
 
-[ Upstream commit 5c7209a341ff2ac338b2b0375c34a307b37c9ac2 ]
+[ Upstream commit 381133848a033c2086cf9cafb226f425bd0414ff ]
 
-When protocol sets HCI_PROTO_DEFER, hci_conn_request_evt() calls
-hci_connect_cfm(conn) without hdev->lock. Generally hci_connect_cfm()
-assumes it is held, and if conn is deleted concurrently -> UAF.
+When trying to unbind a device in order to bind to it vfio-platform as:
 
-Only SCO and ISO set HCI_PROTO_DEFER and only for defer setup listen,
-and HCI_EV_CONN_REQUEST is not generated for ISO.  In the non-deferred
-listening socket code paths, hci_connect_cfm(conn) is called with
-hdev->lock held.
+  echo bc0000.geniqup  > /sys/bus/platform/devices/bc0000.geniqup/driver/unbind
 
-Fix by holding the lock.
+I get the following Oops:
 
-Fixes: 70c464256310 ("Bluetooth: Refactor connection request handling")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[  436.478639] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
+[  436.487762] Mem abort info:
+[  436.490716]   ESR = 0x0000000096000004
+[  436.494595]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  436.500071]   SET = 0, FnV = 0
+[  436.503250]   EA = 0, S1PTW = 0
+[  436.506505]   FSC = 0x04: level 0 translation fault
+[  436.511533] Data abort info:
+[  436.514558]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[  436.520215]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  436.525436]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  436.530918] user pgtable: 4k pages, 48-bit VAs, pgdp=00000008861a9000
+[  436.537554] [0000000000000020] pgd=0000000000000000, p4d=0000000000000000
+[  436.544548] Internal error: Oops: 0000000096000004 [#1]  SMP
+[  436.550374] Modules linked in:
+[  436.553542] CPU: 2 UID: 0 PID: 671 Comm: bash Tainted: G        W           7.0.0-rc3-g56fcdd0911a5-dirty #2 PREEMPT
+[  436.564440] Tainted: [W]=WARN
+[  436.567515] Hardware name: LENOVO 91B6CTO1WW/3796, BIOS O6NKT3BA 05/02/2025
+[  436.574675] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[  436.581841] pc : ps883x_retimer_remove+0x14/0x94
+[  436.586605] lr : i2c_device_remove+0x28/0x84
+[  436.591017] sp : ffff8000847137c0
+
+That's because the ps883x_retimer_remove() retrieves the driver data
+from i2c_get_clientdata() which was never set at probe. So, add
+i2c_set_clientdata() at the end of the probe.
+
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 257a087c8b52 ("usb: typec: Add support for Parade PS8830 Type-C Retimer")
+Link: https://patch.msgid.link/20260313155534.1916773-1-smostafa@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/usb/typec/mux/ps883x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 8a14c00ad7278..92270b99ee0f2 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3284,8 +3284,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 
- 	memcpy(conn->dev_class, ev->dev_class, 3);
- 
--	hci_dev_unlock(hdev);
--
- 	if (ev->link_type == ACL_LINK ||
- 	    (!(flags & HCI_PROTO_DEFER) && !lmp_esco_capable(hdev))) {
- 		struct hci_cp_accept_conn_req cp;
-@@ -3319,7 +3317,6 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 		hci_connect_cfm(conn, 0);
+diff --git a/drivers/usb/typec/mux/ps883x.c b/drivers/usb/typec/mux/ps883x.c
+index 5f2879749769e..1256252eceedc 100644
+--- a/drivers/usb/typec/mux/ps883x.c
++++ b/drivers/usb/typec/mux/ps883x.c
+@@ -444,6 +444,7 @@ static int ps883x_retimer_probe(struct i2c_client *client)
+ 		goto err_switch_unregister;
  	}
  
--	return;
- unlock:
- 	hci_dev_unlock(hdev);
- }
++	i2c_set_clientdata(client, retimer);
+ 	return 0;
+ 
+ err_switch_unregister:
 -- 
 2.53.0
 
