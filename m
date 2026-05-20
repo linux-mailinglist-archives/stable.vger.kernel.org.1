@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKEKInEhDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:41 +0200
+	id ID7LKwooDmp56gUAu9opvQ
+	(envelope-from <stable+bounces-252678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2D659A64C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 145BA59AF2B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEC2C3893F43
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D042B34E7531
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A4A3F39C9;
-	Wed, 20 May 2026 17:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8A23F8896;
+	Wed, 20 May 2026 18:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYGerEd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XkSPn19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C116E3F0A83;
-	Wed, 20 May 2026 17:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAA63FB7D2;
+	Wed, 20 May 2026 18:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299593; cv=none; b=jZs2n04hVXCQtjILMZftwJRhvC0BwcMSwe+R35Cg350u3qiCUXRxacECsCfSOTluFd0dXd+vQ0xQchmZxOJX8k0x3sKcGCTiIoLXoD+2LuGm+1ES9M7W7ZdpOBHR6cC1S88uT1skKa8H0SaNflPD71pBriPbdmrB6Bh8aDPoyiA=
+	t=1779301303; cv=none; b=t2RkstCDYImpLRrCVaYTzvDN7QNEEE0NUH+6R8JaJOmuHVn15UZ77cqpB6NepBMb8ZXoyL/EsMMjX4OJ3qPlLoLDI27yhXVDJS96bekvEGALVTuJvJN1iBzNB5DkfGe/4Gewtb3N8xHaaWwrxQJD1r0+ydfwqEaXTQLHphqAniM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299593; c=relaxed/simple;
-	bh=APgAErVJKI1ZDYLOoS6sBQTqsLw5Rm6QWbZjJnkYPy0=;
+	s=arc-20240116; t=1779301303; c=relaxed/simple;
+	bh=4lUzNai36WJYtjOsU0ZEV8UPbjr7skMeOqO3ISeS0zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ttJ6BdFob0E1HumSkgK/83srCMR6kkXGbx67P5utE3PdlvXZCw4hMqc0XeewDtVc7fuX5O/Kanoc0JySLZ4hBW9HrFznWplp7X8DAh/267lC5VkC0yV/NqNXec+l8+ECpLNKFmmxgOD4KePE9MGTUhfs/dIbEOfvYPlzqVK/CKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYGerEd8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F7D1F000E9;
-	Wed, 20 May 2026 17:53:12 +0000 (UTC)
+	 MIME-Version; b=tGJnrScO7osYDkORP98mwG6xS5cqUVcmoHlOrOgIb9UMxanOsr8kRT51PifEK8zJSg/i5Pt+f/0XZRWAvfyw0Cly7E9M5yHgr3+nwgobi9dYZffaESTpI8HnpqFTnDb/gMfbmHV0ufqO7EJkiCp3Eit/ZP7y112Bx+0Wa4aPJiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XkSPn19; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF281F000E9;
+	Wed, 20 May 2026 18:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299592;
-	bh=DoIvSsbLry12+G2+2nGAOvvHtzhQ1Jtyrwo/b2hOTe8=;
+	s=korg; t=1779301301;
+	bh=5d8/WRLLwd0pCtXcKHVfKhKqHv0NCCzDUQ1FujhdUBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sYGerEd8/MKboKGUl0hEsrb0S/AwsXmYV2SiDafM5wdf1Sl55hboa3uxC7+HEQSFO
-	 a7D2DFHryIMdsvgv99vPlVcyaUqXp6ONih+NZbrHBSFM/CjkWEPwpwgctk9OwIx4zN
-	 HG4oxHqo0mzvUiuHYm27ICSUUzuHCrFds5DcHhFM=
+	b=1XkSPn194WshtCPINTnxB0brPS1so6MHxk3PZ7NG6oHbF5+NgiZrx6Bv8589VxVRf
+	 +FkDh3q48uC7jihQuifl8ahRXvf0jFssAHFiPhzZtkTu6d0gqxwepWV5Qm/AhYSfzT
+	 FZq/6eEeT9QFkl8h5Q5wt6PsdoYBJn6wCAgMQq9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 830/957] drm/amd/display: Allow constructing DCE8 link encoder without DDC
-Date: Wed, 20 May 2026 18:21:53 +0200
-Message-ID: <20260520162152.567736902@linuxfoundation.org>
+Subject: [PATCH 6.12 503/666] mailbox: mtk-cmdq: Fix CURR and END addr for task insert case
+Date: Wed, 20 May 2026 18:21:54 +0200
+Message-ID: <20260520162122.163295248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252042-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252678-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,gmail.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 1B2D659A64C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email]
+X-Rspamd-Queue-Id: 145BA59AF2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 60af4605ef35ecb7ad649a8534b83a2f7c69576d ]
+[ Upstream commit d2591db9c8ef19fbb4d24ed15e0c6edfa6bc7917 ]
 
-When the DDC channel ID is set to CHANNEL_ID_UNKNOWN,
-pass NULL to the AUX regs array.
+Fix CURR and END address calculation for inserting a cmdq task into the
+task list by using cmdq_reg_shift_addr() for proper address converting.
+This ensures both CURR and END addresses are set correctly when
+enabling the thread.
 
-This is necessary to support embedded connectors without DDC.
-
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 155baf3038c1af50b602723022ed869b38e86a99)
+Fixes: a195c7ccfb7a ("mailbox: mtk-cmdq: Refine DMA address handling for the command buffer")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-index 8822d5818d29e..b645c0c8ec3c5 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-@@ -734,7 +734,8 @@ static struct link_encoder *dce80_link_encoder_create(
- 				      enc_init_data,
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
--				      &link_enc_aux_regs[enc_init_data->channel - 1],
-+				      enc_init_data->channel == CHANNEL_ID_UNKNOWN ?
-+				      NULL : &link_enc_aux_regs[enc_init_data->channel - 1],
- 				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
- 				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 80a10361492b0..f1159dabcd4e9 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -434,14 +434,14 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
+ 		if (curr_pa == end_pa - CMDQ_INST_SIZE ||
+ 		    curr_pa == end_pa) {
+ 			/* set to this task directly */
+-			writel(task->pa_base >> cmdq->pdata->shift,
+-			       thread->base + CMDQ_THR_CURR_ADDR);
++			gce_addr = cmdq_convert_gce_addr(task->pa_base, cmdq->pdata);
++			writel(gce_addr, thread->base + CMDQ_THR_CURR_ADDR);
+ 		} else {
+ 			cmdq_task_insert_into_thread(task);
+ 			smp_mb(); /* modify jump before enable thread */
+ 		}
+-		writel((task->pa_base + pkt->cmd_buf_size) >> cmdq->pdata->shift,
+-		       thread->base + CMDQ_THR_END_ADDR);
++		gce_addr = cmdq_convert_gce_addr(task->pa_base + pkt->cmd_buf_size, cmdq->pdata);
++		writel(gce_addr, thread->base + CMDQ_THR_END_ADDR);
+ 		cmdq_thread_resume(thread);
+ 	}
+ 	list_move_tail(&task->list_entry, &thread->task_busy_list);
 -- 
 2.53.0
 
