@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-252766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4P5ZHC0IDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:53 +0200
+	id MFOHIoD2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F8459802D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EB55950D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B880D30814FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 335B5301BA47
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8CA3F9F2D;
-	Wed, 20 May 2026 18:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A145D3F20FA;
+	Wed, 20 May 2026 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hq6yOZNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAHTUG6E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999EE3FCB1E;
-	Wed, 20 May 2026 18:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAFB3BE64B;
+	Wed, 20 May 2026 17:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301534; cv=none; b=LI9WaXI/qUaDiceBAQuFztdcqnMw5ewyAkkphITB1XS+scFclrMSyZ9qt8LeZDELQX12Eo6Tjk/O57gDewdpC7+aHolwhjQdwtJvAVYKQF0Sg8q1oCrbTwBjZ+MzTlfbGEN0kYQZrMqsKvtUx5I5EBBsuuCFOvPzeQOzo4THeH0=
+	t=1779299877; cv=none; b=WZAE7KQRpEFmNy5a3zSFA7jl8Y0bba3U0bG+h1eRShiZOz9fs874Gh0bq3/MVaHwqKCmmzYTVGjsBrf1s76UNkQYz3utHm9kkorG/YP55WyAmgDVjZmx38eyrnFTCq+RMLNpMqy5PtRs9QmRNjknKcrz8OpyQkcgp1blMpzu1yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301534; c=relaxed/simple;
-	bh=I8VthRmdnDR7ZcjLrcyaNIYAoE+AcoTxFy0Kbyahhas=;
+	s=arc-20240116; t=1779299877; c=relaxed/simple;
+	bh=pM2M8rixY4Lw/u2BZsxVlzDQ7OZbxeYb006+m2c8XOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tz7mmgulmfgt22BriXPsKxCHBpAYqcvxG5m1vM9kj0lWUIR4WjkY1UNOD79ZnbmhiCm8OWyLvdolHpTT1G1HpnI1CsRLbKo6UBpV7lshy/0IQOJrDK22IECm1h4rZPCIjvroZ6DaVD5Ii734N52K/h4RLaW/rdVNV2cISb0lz3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hq6yOZNc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC551F000E9;
-	Wed, 20 May 2026 18:25:32 +0000 (UTC)
+	 MIME-Version; b=nK1j/LMAyVxm3oyd6ENzSoZec+VGfXKPUZCDy7+bxRRd3KL8K4RxEEekEEEsu2+tJXwea99A7E35gTj1h5AshhXRkvcScsI7GTsS1DqhVeLxPrw6mdl36SGb0fGWHPnc7qqoM4quzqWUP6aCcqKQW7sppNnWJiLqRJyVgSsp05E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAHTUG6E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9596B1F000E9;
+	Wed, 20 May 2026 17:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301533;
-	bh=/aTKo3H31BYfzVO7OWxdGkXqa7q9kuYDPqP3Sj3mc2k=;
+	s=korg; t=1779299876;
+	bh=wu3Zg8v7eEm+D9Obw7pWwBwR7GblVBzIm0Se0Acnx68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hq6yOZNc6JrMZtUA+jr+c8yA4sncEVi34Fh0hQ1+m8FOGWLCd7MPYQFwAdMY5f0uP
-	 GotUeKti/KC7nNm0dWab+QN/dFiYupFkZASz2ydmwz+0iV9bKALnP/mDHzeinRfM7v
-	 J84xbAX4ML8x2v3nflRFbcJTpYZ+LwCe0uwr0teo=
+	b=bAHTUG6E9+Idi0njzNfV+5z6MSW4AajmiLx/niklOlMXCSuUhi/zZEnAyj1uL1TqU
+	 0vskOkBUfsYfVKBwZtrZHkb/JE/kXiKTIhWgo98GkX+5pKW0E1WYe+ZmmPea421Pw9
+	 7pGuQHmQZx1LQ569MOj+E8iup98TVuOujq0a1zW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 591/666] net: tls: fix strparser anchor skb leak on offload RX setup failure
+	Nicholas Carlini <nicholas@carlini.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 919/957] io-wq: check that the predecessor is hashed in io_wq_remove_pending()
 Date: Wed, 20 May 2026 18:23:22 +0200
-Message-ID: <20260520162124.073401903@linuxfoundation.org>
+Message-ID: <20260520162154.510886258@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,123 +67,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252766-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252133-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
-X-Rspamd-Queue-Id: 93F8459802D
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 10EB55950D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Nicholas Carlini <nicholas@carlini.com>
 
-[ Upstream commit 58689498ca3384851145a754dbb1d8ed1cf9fb54 ]
+commit d6a2d7b04b5a093021a7a0e2e69e9d5237dfa8cc upstream.
 
-When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
-calls tls_sw_free_resources_rx() to clean up the SW context that was
-initialized by tls_set_sw_offload(). This function calls
-tls_sw_release_resources_rx() (which stops the strparser via
-tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
-but never frees the anchor skb that was allocated by alloc_skb(0) in
-tls_strp_init().
+io_wq_remove_pending() needs to fix up wq->hash_tail[] if the cancelled
+work was the tail of its hash bucket. When doing this, it checks whether
+the preceding entry in acct->work_list has the same hash value, but
+never checks that the predecessor is hashed at all. io_get_work_hash()
+is simply atomic_read(&work->flags) >> IO_WQ_HASH_SHIFT, and the hash
+bits are never set for non-hashed work, so it returns 0. Thus, when a
+hashed bucket-0 work is cancelled while a non-hashed work is its list
+predecessor, the check spuriously passes and a pointer to the non-hashed
+io_kiocb is stored in wq->hash_tail[0].
 
-Note that tls_sw_free_resources_rx() is exclusively used for this
-"failed to start offload" code path, there's no other caller.
+Because non-hashed work is dequeued via the fast path in
+io_get_next_work(), which never touches hash_tail[], the stale pointer
+is never cleared. Therefore, after the non-hashed io_kiocb completes and
+is freed back to req_cachep, wq->hash_tail[0] is a dangling pointer. The
+io_wq is per-task (tctx->io_wq) and survives ring open/close, so the
+dangling pointer persists for the lifetime of the task; the next hashed
+bucket-0 enqueue dereferences it in io_wq_insert_work() and
+wq_list_add_after() writes through freed memory.
 
-The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
-the standard strparser"), because the standard strparser doesn't try
-to pre-allocate an skb.
+Add the missing io_wq_is_hashed() check so a non-hashed predecessor
+never inherits a hash_tail[] slot.
 
-The normal close path in tls_sk_proto_close() handles cleanup by calling
-tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
-the socket lock, because tls_strp_done() does cancel_work_sync() and
-the strparser work handler takes the socket lock.
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260428231559.1358502-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 204361a77f40 ("io-wq: fix hang after cancelling pending hashed work")
+Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls.h      | 1 +
- net/tls/tls_strp.c | 6 ++++++
- net/tls/tls_sw.c   | 4 ++++
- 3 files changed, 11 insertions(+)
+ io_uring/io-wq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index fca0c0e170047..97eba6f6ab653 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -186,6 +186,7 @@ int tls_strp_dev_init(void);
- void tls_strp_dev_exit(void);
- 
- void tls_strp_done(struct tls_strparser *strp);
-+void __tls_strp_done(struct tls_strparser *strp);
- void tls_strp_stop(struct tls_strparser *strp);
- int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
- void tls_strp_data_ready(struct tls_strparser *strp);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 98e12f0ff57e5..c72e883176273 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -624,6 +624,12 @@ void tls_strp_done(struct tls_strparser *strp)
- 	WARN_ON(!strp->stopped);
- 
- 	cancel_work_sync(&strp->work);
-+	__tls_strp_done(strp);
-+}
-+
-+/* For setup error paths where the strparser was initialized but never armed. */
-+void __tls_strp_done(struct tls_strparser *strp)
-+{
- 	tls_strp_anchor_free(strp);
- }
- 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 36351942903b9..4550f15d052dc 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2591,8 +2591,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
- void tls_sw_free_resources_rx(struct sock *sk)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
-+	struct tls_sw_context_rx *ctx;
-+
-+	ctx = tls_sw_ctx_rx(tls_ctx);
- 
- 	tls_sw_release_resources_rx(sk);
-+	__tls_strp_done(&ctx->strp);
- 	tls_sw_free_ctx_rx(tls_ctx);
- }
- 
--- 
-2.53.0
-
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1125,7 +1125,8 @@ static inline void io_wq_remove_pending(
+ 	if (io_wq_is_hashed(work) && work == wq->hash_tail[hash]) {
+ 		if (prev)
+ 			prev_work = container_of(prev, struct io_wq_work, list);
+-		if (prev_work && io_get_work_hash(prev_work) == hash)
++		if (prev_work && io_wq_is_hashed(prev_work) &&
++		    io_get_work_hash(prev_work) == hash)
+ 			wq->hash_tail[hash] = prev_work;
+ 		else
+ 			wq->hash_tail[hash] = NULL;
 
 
 
