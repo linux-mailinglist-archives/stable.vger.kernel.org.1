@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COijNBD8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:12 +0200
+	id EPS9Abj3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-250772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9DD595F6C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C605953AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAFB731A7DA9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D05C35925DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B18B3FB074;
-	Wed, 20 May 2026 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95793BBA0E;
+	Wed, 20 May 2026 16:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QF7Op7O9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1XfoE1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2555B3F58D6;
-	Wed, 20 May 2026 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52B736CDE9;
+	Wed, 20 May 2026 16:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300331; cv=none; b=Gts1FSX+8bVOqlHbJ6aj9IDCsJY7R6dKCM8WfgNyO/vQYjteiU96IfZHzLxYlq7m7pAvqz7wyRZ7J/bsqk1vIJNX6OgSxCqEevdgO/lbpaI512qYgYcypPLeETzyaRPPyN6vtvsIg2ETgEsjSSvlx9KCwtA57mT/rSpKUKa3usM=
+	t=1779296274; cv=none; b=A22oqoYo5WHTCp4yi37F9PZm8Yk6/r+EnqtyRfHcmRw4IE68GuIsP4ueUajGWLwCKqA0JiJAJnvPGsxtOFj0mMAelIr6lpwtHUozpSFO/rsHFlmz+BFiCXGczVuAb467su3O07aMoM2w/LkzrcvjSCovc+Pgdx192L9DOIZpSdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300331; c=relaxed/simple;
-	bh=KhLZgjWqj8V6jzKuDr9s/6hiiMlHys2JPm/FBm45UtE=;
+	s=arc-20240116; t=1779296274; c=relaxed/simple;
+	bh=5VohfhU5Lp3YarOINyjHBrjUcubN5U16g6iLoAlT1Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrR4szfPoYedYI3hkPdS5sMcHoIMhsDUf6M0Z81fnQVB0MTlNa7mw+TDf+/NzS6c/XooCyZOn9+kO2EBIN74xs47PA+/MgDfAoVniFkAR+T8kFowFUjEu4C1yyjQJu/1Y1VxOuSL18GXn71S9mbHhkNChF3t/lJFfHfVMdekI/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QF7Op7O9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8901E1F000E9;
-	Wed, 20 May 2026 18:05:29 +0000 (UTC)
+	 MIME-Version; b=sRFZl1IkjtaMuy3wh8fIKX8E0ysaHMP63sq0r7nYZXBU1mG7CKwy3u7BBFp8Ne3uLDtXk8rEjxSVs0b/XuoMOoUacMep8qp50faXNwd6MCxpT2gvjdYcjXBy/oDth6+ya5b3+dzEnnuv10BUYQiowGCE86WOoeP0EleqqizFiQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1XfoE1S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278681F00893;
+	Wed, 20 May 2026 16:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300330;
-	bh=/ERzw6/wR4vChasmLHaGZkpk5pnSXVAnjSS6JvvnFQU=;
+	s=korg; t=1779296273;
+	bh=7QHyu31np3zBraOPGj2wDdTbBkkpWP6YEbc1OLPl0cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QF7Op7O99BtkuNSHJ/N70TbqqQsX5IJy9TmjQCs1WvJt+ghzkG0cP573rhaxU3inZ
-	 qO/w1aSaN7s83nK6RKj1bc3GfFy9PN0Sy+N5zdds/M4Zx0/I4pnHqRdAbF0G4MfG0q
-	 qj+d3LYHJIQEWAHH6XAlCjR7pSN6oEemnomMilrg=
+	b=D1XfoE1S7mFgKL+Yi2SQvUcsAro9B0xmfvjGd92/maoVcxoqwlqpxXvpC6+2nyk2K
+	 nRPsCJSzTUM5z/g0mJj3rtfFlA1HHmgnTmliNwTZbdv9VDV7NmVmctwy01qvLgCRT9
+	 1n7h5jZqSHs3gDxYS7SZVIoDO6XS4d8GLVbEHxwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/666] PCI: dwc: Invoke post_init in dw_pcie_resume_noirq()
+Subject: [PATCH 7.0 0696/1146] clk: qcom: gcc-glymur: Add video axi clock resets for glymur
 Date: Wed, 20 May 2026 18:15:46 +0200
-Message-ID: <20260520162114.137588418@linuxfoundation.org>
+Message-ID: <20260520162203.940283436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252306-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250772-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,58 +87,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8F9DD595F6C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 73C605953AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Taniya Das <taniya.das@oss.qualcomm.com>
 
-[ Upstream commit c577ce2881f9c76892de5ffc1a122e3ef427ecee ]
+[ Upstream commit 1c8ce43e1e07ecc531fb517f95620ed85e998608 ]
 
-In some SoCs like i.MX95, CLKREQ# is pulled low by the controller driver
-before link up. After link up, if the 'supports-clkreq' property is
-specified in DT, the driver will release CLKREQ# so that it can go high and
-the endpoint can pull it low whenever required i.e., during exit from L1
-Substates.
+The global clock controller video axi reset clocks are required by
+the video SW driver to assert and deassert the clock resets during
+their power down sequence. Hence add these clock resets.
 
-Hence, at the end of dw_pcie_resume_noirq(), invoke the '.post_init()'
-callback if exists to perform the above mentioned action.
-
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251015030428.2980427-9-hongxing.zhu@nxp.com
-Stable-dep-of: edb5ca3262e2 ("PCI: dwc: Perform cleanup in the error path of dw_pcie_resume_noirq()")
+Fixes: efe504300a17 ("clk: qcom: gcc: Add support for Global Clock Controller")
+Signed-off-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260202-glymur_videocc-v2-3-8f7d8b4d8edd@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/gcc-glymur.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 3e3168204e303..92fd4810f2e21 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -990,6 +990,9 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/clk/qcom/gcc-glymur.c b/drivers/clk/qcom/gcc-glymur.c
+index 238e205735ed5..cd11470a75f3f 100644
+--- a/drivers/clk/qcom/gcc-glymur.c
++++ b/drivers/clk/qcom/gcc-glymur.c
+@@ -8507,6 +8507,7 @@ static const struct qcom_reset_map gcc_glymur_resets[] = {
+ 	[GCC_VIDEO_AXI0_CLK_ARES] = { 0x3201c, 2 },
+ 	[GCC_VIDEO_AXI1_CLK_ARES] = { 0x32044, 2 },
+ 	[GCC_VIDEO_BCR] = { 0x32000 },
++	[GCC_VIDEO_AXI0C_CLK_ARES] = { 0x32030, 2 },
+ };
  
-+	if (pci->pp.ops->post_init)
-+		pci->pp.ops->post_init(&pci->pp);
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
+ static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
 -- 
 2.53.0
 
