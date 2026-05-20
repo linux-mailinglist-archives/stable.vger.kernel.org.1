@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLypLyL6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:58 +0200
+	id MLF4FB/xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A3E595A3A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4970F594185
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B73D312153E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8687831E952E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B823F787E;
-	Wed, 20 May 2026 18:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E796D3EAC82;
+	Wed, 20 May 2026 16:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQX3ZiZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmgo5FA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A758371CEA;
-	Wed, 20 May 2026 18:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA203E95A4;
+	Wed, 20 May 2026 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300402; cv=none; b=kk3MC2om8biXb/sHEcXu8BbYFrnfn/K5KMDmWcMwhngcNNPnPliLZ39IiwnDm8kID3VcC15VtlMRdYSidVpQVm1nU5oyaEEQRUgSt/7b07q0v5oHiT0ZvAWZFPoIyXX62ua5IFW0Ra/nsG9B8CkJwDVIce5FWmi+uUK8UokAJU8=
+	t=1779296232; cv=none; b=G5Edm5PJ59gHQUQrL2+LdSExFG68xOp43uqo88gD6FafCsCiuLaziU3haOjt3poGy8azZSIMFIjULkgn/7crggufapYzrwWHt33+MNF0b5N39EO3NFRZ1MHt5bWN6aNdkws7+DPDxNE22Fq8k2+Fh2duxMy0edE0k03HQ966D6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300402; c=relaxed/simple;
-	bh=EO/80FK3EufDJ06+ziiIOjLFXUek7SI0SKdJISSowtk=;
+	s=arc-20240116; t=1779296232; c=relaxed/simple;
+	bh=IlnO+jQ3CgT2Qlsrondo2atbc4yE8tnDSUIbQLIBoow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgqbPzQV0gu1KYu2dLepB/Tg7p86SRlKBNb/U6NmpA2WcthntHu788nQqYSya+7JOy41kQsskFY9fTh0hhfybqVswnzXipLQ8CTBLgeBE/c3cFS5Ii2iblsFPyMq7tRIdLdWRXSOC6FVvwesFuKZPAFePStLhzA3dNkD992d2qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQX3ZiZm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC001F000E9;
-	Wed, 20 May 2026 18:06:40 +0000 (UTC)
+	 MIME-Version; b=mfZvPp6hJAuHd+c36A6SIJknNKCZEFa0R9f2QHLcCKyK4X1blfn5QjUo5De84fVWMy7gRujtER1lLQ7B4iUPocp9VDAEYnxOor1GBk1BEBKacAXPhwmgzO5kjiqgrwrVErrAE7NhvhfFYP7SiKLh2VPP7lbuxKlXtfJGXzqEY48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmgo5FA5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCA21F000E9;
+	Wed, 20 May 2026 16:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300401;
-	bh=jBDMyDmIPZI4IPMJ3hOpdF3YSEDzaGt/9vf6o0HarW4=;
+	s=korg; t=1779296231;
+	bh=2hr36skY3NkXXTzMzx+K/ZZLyJ90oNWhaec7WotU7Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SQX3ZiZmuzYQQ3OB06S2AY4jFNNPWf0QbX2wgw/wKDmcarad3NxxKPZIuuuVYxwkZ
-	 D9o3EQrNIA3dbzUJjtmKFLHh0Waff1m2ySaR2iv5msil1XViFoIzwVObikt050Var8
-	 eqZ7DU3vkGQFolxbG9ahfZQzvP1I5dXt/Z8439i8=
+	b=rmgo5FA52QFldqMGCWiwa19+RUTkg2bzdgpiRf+eCY1CpVHwf07zAl5K8mpdjlDFC
+	 h+LYTYjVVZ/+yhRPpFeI57UmhZaDAqGtplfYUZ600RZfSZqmVmXpeAap08e5uPKpDr
+	 A//zBiuFJqgCqYvJTbV6y144oT3ubJhjL/kpZOZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/666] padata: Remove cpu online check from cpu add and removal
+Subject: [PATCH 7.0 0720/1146] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
 Date: Wed, 20 May 2026 18:16:10 +0200
-Message-ID: <20260520162114.654025359@linuxfoundation.org>
+Message-ID: <20260520162204.498685815@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +66,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252333-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-250755-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 39A3E595A3A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,nxp.com:email,clkspec.np:url]
+X-Rspamd-Queue-Id: 4970F594185
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 73117ea6470dca787f70f33c001f9faf437a1c0b ]
+[ Upstream commit 4b84d496c804b470124cd3a08e928df6801d8eae ]
 
-During the CPU offline process, the dying CPU is cleared from the
-cpu_online_mask in takedown_cpu(). After this step, various CPUHP_*_DEAD
-callbacks are executed to perform cleanup jobs for the dead CPU, so this
-cpu online check in padata_cpu_dead() is unnecessary.
+The function pll6_bypassed() calls of_parse_phandle_with_args()
+but never calls of_node_put() to release the reference, causing
+a memory leak.
 
-Similarly, when executing padata_cpu_online() during the
-CPUHP_AP_ONLINE_DYN phase, the CPU has already been set in the
-cpu_online_mask, the action even occurs earlier than the
-CPUHP_AP_ONLINE_IDLE stage.
+Fix this by adding proper cleanup calls on all exit paths.
 
-Remove this unnecessary cpu online check in __padata_add_cpu() and
-__padata_remove_cpu().
-
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: c8c4a2972f83 ("padata: Put CPU offline callback in ONLINE section to allow failure")
+Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260203-clk-imx6q-v3-1-6cd2696bb371@gmail.com
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ drivers/clk/imx/clk-imx6q.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index e61bdc248551f..af10aff28ff68 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -755,32 +755,22 @@ EXPORT_SYMBOL(padata_set_cpumask);
+diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
+index f726c00aba721..5549ef6c31173 100644
+--- a/drivers/clk/imx/clk-imx6q.c
++++ b/drivers/clk/imx/clk-imx6q.c
+@@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *node)
+ 			return false;
  
- static int __padata_add_cpu(struct padata_instance *pinst, int cpu)
- {
--	int err = 0;
--
--	if (cpumask_test_cpu(cpu, cpu_online_mask)) {
--		err = padata_replace(pinst);
-+	int err = padata_replace(pinst);
+ 		if (clkspec.np == node &&
+-		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
++		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
++			of_node_put(clkspec.np);
+ 			break;
++		}
++		of_node_put(clkspec.np);
+ 	}
  
--		if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
--		    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_start(pinst);
--	}
-+	if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
-+	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_start(pinst);
+ 	/* PLL6 bypass is not part of the assigned clock list */
+@@ -249,6 +252,9 @@ static bool pll6_bypassed(struct device_node *node)
+ 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
+ 					 "#clock-cells", index, &clkspec);
  
- 	return err;
- }
++	if (!ret)
++		of_node_put(clkspec.np);
++
+ 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
+ 		return true;
  
- static int __padata_remove_cpu(struct padata_instance *pinst, int cpu)
- {
--	int err = 0;
--
--	if (!cpumask_test_cpu(cpu, cpu_online_mask)) {
--		if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
--		    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_stop(pinst);
--
--		err = padata_replace(pinst);
--	}
-+	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
-+	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_stop(pinst);
- 
--	return err;
-+	return padata_replace(pinst);
- }
- 
- static inline int pinst_has_cpu(struct padata_instance *pinst, int cpu)
 -- 
 2.53.0
 
