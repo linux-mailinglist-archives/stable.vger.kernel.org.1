@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCh5MlchDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:15 +0200
+	id WJ1VCtsnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EB459A643
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8462B59AED9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9729301727B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF6E3279264
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09D03F6C4E;
-	Wed, 20 May 2026 17:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA3F3E5ECF;
+	Wed, 20 May 2026 18:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9wM0xit"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzWxJTWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BBA3F660B;
-	Wed, 20 May 2026 17:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6029B78D;
+	Wed, 20 May 2026 18:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299551; cv=none; b=IEuKxg+l9L4hFxLx2nLMwdFyMdnRqusQSkTcBzcRTlFA24McGEjNgvUSYE+cR/qQ3aVt03Vtrg15fD9AJlg+DrlnNpxjhSeO5qcgyU82StbWLuIwHog9E5B2FvWnli/JajV5qge+o4tHYr/VKjmN13xgpyhx42L09vH0OR/7Qqg=
+	t=1779301258; cv=none; b=BIHi7crzr9zNXbQVeCx84eiuTo016XpNuS9fLazMO+OwFkUqG9domH9tGUlJvoupzO3FlCIbmVnKT9ehVVWMS0CyuV4Gecb0taQfE3VebmEcIhrN1VJjIUeaUZ5NIWSfiXjRJlqRU9fwqSBnzvU+DxQjeekw2Ks18JrP4JtDNc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299551; c=relaxed/simple;
-	bh=lUaAMRJw9gWqxh7drORQqK4Z3qCQm0ef0WgaCgh7J4k=;
+	s=arc-20240116; t=1779301258; c=relaxed/simple;
+	bh=Fn2yuHdThLWWesVX4l0c7AdopvbUV5kiqZ39Nl/8Sus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsLZpNK6Iy6IshA0Ll6s9lboJxCcj0DSuaHxZGzdV53LTyvYGVjdEdXSwmsSLv7gA/8lW2+q2sk2IzBNhwZCZH/xfPwLG+ycssojrzA4BY4p6AMqBBmLhee7vd899CX44zbG2wuRYwToTEWdt5gnqmYoAiVxjOobDvGSkxNlWP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9wM0xit; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075D11F000E9;
-	Wed, 20 May 2026 17:52:29 +0000 (UTC)
+	 MIME-Version; b=WEDoRx4aqanUCWgpu0/moQD8jSt5lelIW/3TwzCTi3j6aSAwigXqgtZrf25ckXrvmgCwCwIu5/J2oQ0OQwCDZf8wKn765GLmeiiCJCzvTI5jgExduyn2HcLenm3lfsOfelJhnenMoWyr1BWKe3tjSC+lJJt1KYVPG2b9wj0odH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzWxJTWX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948341F000E9;
+	Wed, 20 May 2026 18:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299550;
-	bh=JX+i9WKY5oATkhPrCQF1k6PQ5yuADJjFv7qrKhlPQ+k=;
+	s=korg; t=1779301257;
+	bh=7SG4EBr1usEIZ+8IH/jPbGGmUruW/9L7zgTJVgMEquQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m9wM0xitANWbuNe/N1/La1yY/4zb5Yj+9l/Js9ixLcwPqW49DPOWvhiVG0H0rVCMl
-	 L22scWbNxKTJq4OE26oPMLVaCuH/4+fScn6IL3vSXtQa0Y/LoN5eiQAToklXl3p3bh
-	 MwVT9wLaBOXx6nD/e1BDqa9WKXYWOBG11Gro4cic=
+	b=uzWxJTWXzbs1IbS3Kp2SoVlZ+OOtnpWWsAEza/NuFjmqB8xMYjegNzICvnHEINaMB
+	 XibS1VaZ6XAWlQCrNVl7QPCvVaPpLE6XX0hF/Ta0slM2dBAPXip5xuEPkILu7dmlm7
+	 utZG+nTSet/Gi1XoYGxxJ4yMz53cE+wnH4siTW2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 815/957] net: psp: check for device unregister when creating assoc
+Subject: [PATCH 6.12 487/666] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
 Date: Wed, 20 May 2026 18:21:38 +0200
-Message-ID: <20260520162152.241420479@linuxfoundation.org>
+Message-ID: <20260520162121.819758059@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,89 +75,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252026-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252660-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 38EB459A643
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: 8462B59AED9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b89769f936a8fa9e66de72ddc1b71a9745a488e6 ]
+[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
 
-psp_assoc_device_get_locked() obtains a psp_dev reference via
-psp_dev_get_for_sock() (which uses psp_dev_tryget() under RCU);
-it then acquires psd->lock and drops the reference. Before
-the lock is taken, psp_dev_unregister() can run to completion:
-take psd->lock, clear out state, unlock, drop the registration
-reference.
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-The expectation is that the lock prevents device unregistration,
-but much like with netdevs special care has to be taken when
-"upgrading" a reference to a locked device. Add the missing
-check if device is still alive. psp_dev_is_registered() exists
-already but had no callers, which makes me wonder if I either
-forgot to add this or lost the check during refactoring...
+Move this acquisition before we fill st.qdisc_stats with live data.
 
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260427190606.366101-1-kuba@kernel.org
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/psp/psp_nl.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/sched/sch_fq_codel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
-index 8aaca62744c3c..3f63ffbc5c575 100644
---- a/net/psp/psp_nl.c
-+++ b/net/psp/psp_nl.c
-@@ -303,8 +303,13 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 551b7cbdae90c..3f797ec4b0c2f 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -581,6 +581,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 	struct list_head *pos;
  
- 	psd = psp_dev_get_for_sock(socket->sk);
- 	if (psd) {
--		err = psp_dev_check_access(psd, genl_info_net(info));
--		if (err) {
-+		/* Extra care needed here, psp_dev_get_for_sock() only gives
-+		 * us access to struct psp_dev's memory, which is quite weak.
-+		 */
-+		mutex_lock(&psd->lock);
-+		if (!psp_dev_is_registered(psd) ||
-+		    psp_dev_check_access(psd, genl_info_net(info))) {
-+			mutex_unlock(&psd->lock);
- 			psp_dev_put(psd);
- 			psd = NULL;
- 		}
-@@ -317,7 +322,6 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
++	sch_tree_lock(sch);
++
+ 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
+ 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
+ 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
+@@ -589,7 +591,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	st.qdisc_stats.memory_usage  = q->memory_usage;
+ 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
  
- 	id = info->attrs[PSP_A_ASSOC_DEV_ID];
- 	if (psd) {
--		mutex_lock(&psd->lock);
- 		if (id && psd->id != nla_get_u32(id)) {
- 			mutex_unlock(&psd->lock);
- 			NL_SET_ERR_MSG_ATTR(info->extack, id,
+-	sch_tree_lock(sch);
+ 	list_for_each(pos, &q->new_flows)
+ 		st.qdisc_stats.new_flows_len++;
+ 
 -- 
 2.53.0
 
