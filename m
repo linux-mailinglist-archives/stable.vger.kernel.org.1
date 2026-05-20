@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BYfFf4WDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:06 +0200
+	id wERmCKHwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95960599697
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDD7593FD4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52019350DF34
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A65E7316D71A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C8E3D8138;
-	Wed, 20 May 2026 17:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEF3346FA1;
+	Wed, 20 May 2026 16:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg9rHsjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sR9+8pS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A343F36F421;
-	Wed, 20 May 2026 17:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A4A366048;
+	Wed, 20 May 2026 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297596; cv=none; b=jFYLEHsCeinhawChW+3hkKm7fk8bnuKxPkgkmZazEuMs2KmBCSzoEqJZftK9GtHQjxflKtCg5CgzPqR/NpAYau+wGGMP2qZeg4191qA+opsEmtQ2mcdOtT8VAjHayIqghVgoPuN/sIrVuEtDyE8LgtbmoGcDem7Nf1x0qltZvAs=
+	t=1779295191; cv=none; b=F2Gn5OJG08Gi8g4VCVt3cr+gBWZCd3eJ/rNsN/O/TJWXvv+XDVbSJNQBlaeqJMCfj/rZKH0hF4Wkdh7l3sC58WDgfFguqNvOaulggC3GBQ2PSB5wuHSMuxhRV5xKc8scyPqA55lJVYdoCK9JkeKPrFZ6QqUYSWtunbAqopo9hQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297596; c=relaxed/simple;
-	bh=8x74QNmQIfmsbOgOy9sTyS5OJo5Fi59DJIWaauETS8o=;
+	s=arc-20240116; t=1779295191; c=relaxed/simple;
+	bh=l1/Htgo++woRsD2AgHMYcvDmvCdY06s1EGFNxLGxtf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn1sBMmF+wvmpzx/uH5q/5RL6J0j86DLKvEzaKj72ttNEoBsbELcVND46ujZfuQgdSoT+NcpjPAYk4P+DzQGabRrHgJnvigSRWRmq2GngFQpAC23/j+Fh8kd/Hlq2vN+mvLEkk2KJKg2fdgiplH0w7fPfWj/HrsOK0V/Ydb62sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg9rHsjn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D431F000E9;
-	Wed, 20 May 2026 17:19:54 +0000 (UTC)
+	 MIME-Version; b=A4COQg+f/BsdUJFDrAXP2Xdj86gDgYb6/AlVWdOu9/VjF+j4nAuukVf6bnCA2PSrFc6gfI+zfva19J7g9yTZUR0brSjWWFNlnP4nZE/Llrx4+PBZMHgQ0Jzqz8Mqdm0DvPiGGNq+PyK4z9hHM0OmSVHKLU/mHv9MttbxuQgK8r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sR9+8pS+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D991F000E9;
+	Wed, 20 May 2026 16:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297595;
-	bh=KYoErrZ4Xsy1PKguyYQAEQKNPiUTrMs1lh9rl8dxu7M=;
+	s=korg; t=1779295190;
+	bh=JgwAF5eSerWzZ0+IEQZNnvTYvqY1Wu0GR/O8NssDZV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dg9rHsjnw6/8N8eJzatNvV0gNGHr0acEmRg1g0UeHdt2UyXKPEz4jxL856E55nHHI
-	 lRlHjnFxM8TOV37V60NJiXnP+1vpaAY6pV2rrcBFzkR/oLSUVvEXavrHZI4XwtIn6O
-	 nk8tiAEJERR7QdpuQVYvJZ8I1W294Kc+i272vZQA=
+	b=sR9+8pS+vBRlBdHm4vZ+cEK8MdoExKL80cwHT0CrLXOpBLx/HC5xhs2Uf03KN+O9U
+	 kjFTJbCFtWd1ml4bVXgE+zJU7zrNMd5cZmCdZKZ1E84wLfSX8OuHmyz82laU4vApam
+	 GpK7uTdPmLasZuP/2gohdO01idgwGTpqeNGn4WAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Alexey Charkov <alchark@flipper.net>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 092/957] wifi: mt76: mt7921: fix potential deadlock in mt7921_roc_abort_sync
+Subject: [PATCH 7.0 0325/1146] ASoC: rockchip: rockchip_sai: Set slot width for non-TDM mode
 Date: Wed, 20 May 2026 18:09:35 +0200
-Message-ID: <20260520162136.554692741@linuxfoundation.org>
+Message-ID: <20260520162155.553690229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,86 +74,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251289-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250353-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,nbd.name:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 95960599697
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,flipper.net:email]
+X-Rspamd-Queue-Id: ECDD7593FD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Alexey Charkov <alchark@flipper.net>
 
-[ Upstream commit d5059e52fd8bc624ec4255c9fa01a266513d126b ]
+[ Upstream commit 8a6391ec669366cbe7bde92b468c561e8b309fd6 ]
 
-roc_abort_sync() can deadlock with roc_work(). roc_work() holds
-dev->mt76.mutex, while cancel_work_sync() waits for roc_work()
-to finish. If the caller already owns the same mutex, both
-sides block and no progress is possible.
+Currently the slot width in non-TDM mode is always kept at the POR value
+of 32 bits, regardless of the sample width, which doesn't work well for
+some codecs such as NAU8822.
 
-This deadlock can occur during station removal when
-mt76_sta_state() -> mt76_sta_remove() -> mt7921_mac_sta_remove() ->
-mt7921_roc_abort_sync() invokes cancel_work_sync() while
-roc_work() is still running and holding dev->mt76.mutex.
+Set the slot width according to the sample width in non-TDM mode, which
+is what other CPU DAI drivers do.
 
-This avoids the mutex deadlock and preserves exactly-once
-work ownership.
+Tested on the following RK3576 configurations:
+- SAI2 + NAU8822 (codec as the clock master), custom board
+- SAI1 + ES8388 (codec as the clock master), RK3576 EVB1
+- SAI2 + RT5616 (SAI as the clock master), FriendlyElec NanoPi M5
 
-Fixes: 352d966126e6 ("wifi: mt76: mt7921: fix a potential association failure upon resuming")
-Co-developed-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20260126180013.8167-1-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+NAU8822 didn't work prior to this patch but works after the patch. Other
+two configurations work both before and after the patch.
+
+Fixes: cc78d1eaabad ("ASoC: rockchip: add Serial Audio Interface (SAI) driver")
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
+Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Link: https://patch.msgid.link/20260318-sai-slot-width-v1-1-1f68186f71e3@flipper.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ sound/soc/rockchip/rockchip_sai.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index ea6ff4c6bc90b..07495c97f1c12 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -371,12 +371,15 @@ void mt7921_roc_abort_sync(struct mt792x_dev *dev)
- {
- 	struct mt792x_phy *phy = &dev->phy;
+diff --git a/sound/soc/rockchip/rockchip_sai.c b/sound/soc/rockchip/rockchip_sai.c
+index 1bf614dbdf4d0..ed393e5034a49 100644
+--- a/sound/soc/rockchip/rockchip_sai.c
++++ b/sound/soc/rockchip/rockchip_sai.c
+@@ -628,6 +628,10 @@ static int rockchip_sai_hw_params(struct snd_pcm_substream *substream,
  
-+	if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
-+		return;
-+
- 	timer_delete_sync(&phy->roc_timer);
--	cancel_work_sync(&phy->roc_work);
--	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
--		ieee80211_iterate_interfaces(mt76_hw(dev),
--					     IEEE80211_IFACE_ITER_RESUME_ALL,
--					     mt7921_roc_iter, (void *)phy);
-+	cancel_work(&phy->roc_work);
-+
-+	ieee80211_iterate_interfaces(mt76_hw(dev),
-+				     IEEE80211_IFACE_ITER_RESUME_ALL,
-+				     mt7921_roc_iter, (void *)phy);
- }
- EXPORT_SYMBOL_GPL(mt7921_roc_abort_sync);
+ 	regmap_update_bits(sai->regmap, reg, SAI_XCR_VDW_MASK | SAI_XCR_CSR_MASK, val);
  
++	if (!sai->is_tdm)
++		regmap_update_bits(sai->regmap, reg, SAI_XCR_SBW_MASK,
++				   SAI_XCR_SBW(params_physical_width(params)));
++
+ 	regmap_read(sai->regmap, reg, &val);
+ 
+ 	slot_width = SAI_XCR_SBW_V(val);
 -- 
 2.53.0
 
