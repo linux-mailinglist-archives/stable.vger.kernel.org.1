@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOb/OUv4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:07 +0200
+	id oAbkOIznDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FE2595546
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808CE592A92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9FBBD325D6C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 540CF3054222
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E183A3833;
-	Wed, 20 May 2026 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B06934216C;
+	Wed, 20 May 2026 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/dlaBZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZdXHDPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D733C870E;
-	Wed, 20 May 2026 17:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC06536C5BF;
+	Wed, 20 May 2026 16:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298134; cv=none; b=dKvTrnFoIIFycPtu846LZrEe6v+ApYnHEsHg9BPeyvUqaRtRfIEVGZ1w1ABxwjDKtYZjryj4hQ3fQ2Xd8kBZbycJ9YZlZuP2n6vzKVx/+08hwTfX1YwlYNBUZhVWvv/F7/8wr9ZLJc8IYc9MP/IT73aSmLgR52rwsgaB+dfqbik=
+	t=1779295723; cv=none; b=IT1tQC3jH/J0gaTjg8i9MXqOQtjr/+HA781yklXODQ22ee8K/jgWoCnL8wCIAWKR2imQwdZveKr8QLgbMWVjssOmFhYI2Ngh+B1idIs3CeONB0VhwBIK1tNRtS6D3NZPb5E3iHD3gcYgOtf8o+iHTNVydlyCUdRa6/LrTL1ASWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298134; c=relaxed/simple;
-	bh=9JVDEeTqHJy9azlKZRnYQD1bUvMJBVvXSFTHA7Mrke8=;
+	s=arc-20240116; t=1779295723; c=relaxed/simple;
+	bh=7HbNSHUK3FoL8++yeWhFkFpVR9wK8D1ODoA0s1313Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyQOkdSt5/tuexilVE4OvzotIsmvFD8q3OtbSmRhZH4Mt3+5Yjvrr/kYVLUXP5HSs78hfJpXAVArC1i8nKumpCD7g2IxpXCrM1ew/kpRsYdloU25miocRGGzT4ZIhTDcm4FaUgbRpeUhoC5WdJKStNGIkSpuSgQ1VwL3ynCePvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/dlaBZt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260DB1F000E9;
-	Wed, 20 May 2026 17:28:52 +0000 (UTC)
+	 MIME-Version; b=d63nr3TJdCh+80niOEL+IglBGu6HePAWt8IVamQQ4NcZ1mEdB8+3b9Fh/EJ+s5n94QMEc8o1BeFeo1nJQ2O8psCZhjNij5SAZynYH32HqpyBSBgoaUa71G2wYzsMk20NpHaVzz2YJht4izOmm99xS4gMnaJHx7/fPwm8AcNMusU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZdXHDPZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC231F00893;
+	Wed, 20 May 2026 16:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298133;
-	bh=cFb3UQk623rhhmMlZULpKUpHevfv8QacbPoukC10ifw=;
+	s=korg; t=1779295721;
+	bh=ZbQqxaryPu1jNuSHIs2hyYPalN/RQ9/BrFCcvW97y0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l/dlaBZtotqh5CDPXlM5KME33xwroLQQK6ebFWW+2ZmWr/7LkX8bSirz1lZ9QdRxK
-	 T9oonOlFEj0CQWAzU8g7FGyUFsIBIBBGg6v6oAqGW1TiBGxV++ht0Xj9bsp0uXieWJ
-	 3AE06TRYAbBojdfgtOIh5o8KrU6yCnDENCPGuuTU=
+	b=hZdXHDPZCfUk7FNIH1RP2NqC2KsZ+1t3OILGQPQnWbnbEjA1u03xgrLTLIsESk1kN
+	 eucO7fSt3GmpaoXVqG5SSbHlIT/AXr+QrRK81JXeHyIyMfWt/vDEVgcva/8oPqy6Ks
+	 fA3HfZOlzPasT13/7KdM+tuWPtON5woLSbTcMSeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 294/957] iommu/amd: Fix clone_alias() to use the original devices devid
-Date: Wed, 20 May 2026 18:12:57 +0200
-Message-ID: <20260520162140.912535079@linuxfoundation.org>
+Subject: [PATCH 7.0 0528/1146] arm64: dts: qcom: sm8650: Enable UHS-I SDR50 and SDR104 SD card modes
+Date: Wed, 20 May 2026 18:12:58 +0200
+Message-ID: <20260520162200.130459495@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +70,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250557-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251497-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 27FE2595546
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 808CE592A92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit faad224fe0f0857a04ff2eb3c90f0de57f47d0f3 ]
+[ Upstream commit 93f823e7d48232e62fb8fb74481696609c90244a ]
 
-Currently clone_alias() assumes first argument (pdev) is always the
-original device pointer. This function is called by
-pci_for_each_dma_alias() which based on topology decides to send
-original or alias device details in first argument.
+The restriction on UHS-I speed modes was added to all SM8650 platforms
+by copying it from SM8450 and SM8550 dtsi files, and it was an actually
+reproducible problem due to the overclocking of SD cards. Since the latter
+issue has been fixed in the SM8650 GCC driver, UHS-I speed modes are
+working fine on SM8650 boards, below is the test performed on SM8650-HDK:
 
-This meant that the source devid used to look up and copy the DTE
-may be incorrect, leading to wrong or stale DTE entries being
-propagated to alias device.
+SDR50 speed mode:
 
-Fix this by passing the original pdev as the opaque data argument to
-both the direct clone_alias() call and pci_for_each_dma_alias(). Inside
-clone_alias(), retrieve the original device from data and compute devid
-from it.
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
 
-Fixes: 3332364e4ebc ("iommu/amd: Support multiple PCI DMA aliases in device table")
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.8086 s, 43.3 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.9448 s, 82.9 MB/s
+
+Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
+file, there is no indication that the SDHC controller is broken.
+
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-7-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 4beef73139611..5afd1621d715e 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -381,11 +381,12 @@ struct iommu_dev_data *search_dev_data(struct amd_iommu *iommu, u16 devid)
- 	return NULL;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index 75de839f7a2df..64a7480291d84 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -4976,9 +4976,6 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
  
--static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
-+static int clone_alias(struct pci_dev *pdev_origin, u16 alias, void *data)
- {
- 	struct dev_table_entry new;
- 	struct amd_iommu *iommu;
- 	struct iommu_dev_data *dev_data, *alias_data;
-+	struct pci_dev *pdev = data;
- 	u16 devid = pci_dev_id(pdev);
- 	int ret = 0;
+ 			bus-width = <4>;
  
-@@ -432,9 +433,9 @@ static void clone_aliases(struct amd_iommu *iommu, struct device *dev)
- 	 * part of the PCI DMA aliases if it's bus differs
- 	 * from the original device.
- 	 */
--	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], NULL);
-+	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], pdev);
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0>;
+-
+ 			qcom,dll-config = <0x0007642c>;
+ 			qcom,ddr-config = <0x80040868>;
  
--	pci_for_each_dma_alias(pdev, clone_alias, NULL);
-+	pci_for_each_dma_alias(pdev, clone_alias, pdev);
- }
- 
- static void setup_aliases(struct amd_iommu *iommu, struct device *dev)
 -- 
 2.53.0
 
