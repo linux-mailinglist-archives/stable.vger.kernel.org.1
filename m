@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAlrD4IRDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:42 +0200
+	id iAQvA6bxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A45598DF5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F995942D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7651232D9F33
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6600530BB539
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEDC372EF6;
-	Wed, 20 May 2026 16:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D625369999;
+	Wed, 20 May 2026 17:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWN8t6ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KepRHpxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BECA356762;
-	Wed, 20 May 2026 16:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3C7346E5E;
+	Wed, 20 May 2026 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295741; cv=none; b=jFUGUJ2DCPBH3haqi+meSnJivApbrj6F6iWvkHa8w9fFEO7rokEQin6mVBM70jEZSb5yLf3WaBrnfEbSSnG7uP3J/fYqeqyLDhHzFn4ACEyG0C1U53np/8Y/xqPqLE7OAkDyCsdfa3HmiGrqSeEGNzX2U5x/884bqi7AP0wPt5k=
+	t=1779298105; cv=none; b=kdKtxAyEuPKH8iCfsRydBvdSmi+ycmquBvxG+H8nqRrYFhTRWkJFp/jSzzQOlSVfVWb1L6fY8OVSRB43SzIjzfgki9pDjoXS4YAsWNBJ0YcqsnOK9KN9AcKuqcfKGZGvHc1ZIIlYYBAQ3A9k6rIsa1l9jbyslNeGqHqURiLYqDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295741; c=relaxed/simple;
-	bh=qadGBpnZEe2OeMoLQf39bNM+pOflBkjKxHl4T9Tc1WM=;
+	s=arc-20240116; t=1779298105; c=relaxed/simple;
+	bh=nDLrCp1JzZR5/EqQLdwli0qsTbIF5uMUNUyA08SSEi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAg5AGNAna5qE7HNpTn/3+mid121sc0dFZXn5ZPecE0wKg/eVADJ6tFtIGAdctxZRJ6OPjYyhZiAymI9DnNvpwOXceEYNH0LSCR4wTlhqnp82fE9ZYOCF4nQ24bUd2bwVDuJ/Vx1bIkODDsiDrirNG00CAaKMYfDvHIB4cBV/ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWN8t6ud; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78661F000E9;
-	Wed, 20 May 2026 16:48:59 +0000 (UTC)
+	 MIME-Version; b=THJjKP/fM7XUxC+eCvl4Yhe6O9Lo8Vt+8WUKXzw1kQGSxJnVrAaKf2KtlcXQ8F4kKPVV5OSg87TiV8tEOO5dJKvA9a00cTX1+S1lrL2RXfh1TcfBVR2AvTT9C/3+LzVEWAD37mwA1aOrB4hLqmVlwJgj+CzpDhuJL9NX51NGTC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KepRHpxz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6E91F000E9;
+	Wed, 20 May 2026 17:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295740;
-	bh=m4+aXRCM0fSl0s8NAodWz5MDhWqffxW9AbeNPDhirOs=;
+	s=korg; t=1779298104;
+	bh=TcEqDSaKuf2pMP3LLiydQAKalJ3kYo6V9XCcsren9uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WWN8t6udHf6KZfwlwMj9FpamLo4+rVnMc3/qCp4wxFtj2AEoEDf8z4enY7GeWJTCO
-	 dWXGdy5xRSaai7W6JIxxmNg2GawckGvMxQ5F5mTHB1TZd1e4eqkGbdUhfXVikkPWS/
-	 3XIjCacx0QnDWT4HJ9XWwpaTHjYVoVI6VWAIqx+U=
+	b=KepRHpxzdaq9jA65mR0NW9TcnCPXS+ktHMkwjA0BxpkfI/y/6dY+in8ylYVKf7KNT
+	 0S+8qykDnKsGs0X8vjfzacyoF8bu253ih3LdBkmZ8jLRQfleka7p9zXbBgGVr+Fqr7
+	 CsE+gj+sxhvqJi5aONDirKi7h0nErirVwvrEEFuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0517/1146] arm64: dts: qcom: kaanapali: Fix GIC_ITS range length
+Subject: [PATCH 6.18 284/957] ASoC: fsl_micfil: Add access property for "VAD Detected"
 Date: Wed, 20 May 2026 18:12:47 +0200
-Message-ID: <20260520162159.886559643@linuxfoundation.org>
+Message-ID: <20260520162140.698667577@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,68 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250564-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251485-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_PROHIBIT(0.00)[1.3.102.64:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,1.4.2.128:email]
-X-Rspamd-Queue-Id: 92A45598DF5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 85F995942D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 51cf2818376f5ebbc5f8753d5be547b1e7206021 ]
+[ Upstream commit c7661bfc7422443df394c01e069ae4e5c3a7f04c ]
 
-Currently, the GITS_SGIR register is cut off. Fix it up.
+Add access property SNDRV_CTL_ELEM_ACCESS_READ for control "VAD
+Detected", which doesn't support put operation, otherwise there will be
+issue with mixer-test.
 
-Fixes: 2eeb5767d53f ("arm64: dts: qcom: Introduce Kaanapali SoC")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260317-topic-its_range_fixup-v1-1-49be8076adb1@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/kaanapali.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_micfil.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/kaanapali.dtsi b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-index 9ef57ad0ca71d..9be86479ceef1 100644
---- a/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-+++ b/arch/arm64/boot/dts/qcom/kaanapali.dtsi
-@@ -1239,7 +1239,7 @@ intc: interrupt-controller@17000000 {
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index cac26ba0aa4b0..ddc56f77f1455 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -424,7 +424,13 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+ 	SOC_SINGLE("HWVAD ZCD Adjustment", REG_MICFIL_VAD0_ZCD, 8, 15, 0),
+ 	SOC_SINGLE("HWVAD ZCD And Behavior Switch",
+ 		   REG_MICFIL_VAD0_ZCD, 4, 1, 0),
+-	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.name = "VAD Detected",
++		.info = snd_soc_info_bool_ext,
++		.get = hwvad_detected,
++	},
+ };
  
- 			gic_its: msi-controller@17040000 {
- 				compatible = "arm,gic-v3-its";
--				reg = <0x0 0x17040000 0x0 0x20000>;
-+				reg = <0x0 0x17040000 0x0 0x40000>;
- 
- 				msi-controller;
- 				#msi-cells = <1>;
+ static int fsl_micfil_use_verid(struct device *dev)
 -- 
 2.53.0
 
