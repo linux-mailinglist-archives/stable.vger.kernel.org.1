@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IERaFGsDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-251971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:35 +0200
+	id EHUDJ2QBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6654E597606
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184C459731B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C18830FA0E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC85B3168ACC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301E7349AFF;
-	Wed, 20 May 2026 17:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2873F8706;
+	Wed, 20 May 2026 18:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeJjcjJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxA2F9S+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2642F363F;
-	Wed, 20 May 2026 17:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340763E2AAD;
+	Wed, 20 May 2026 18:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299406; cv=none; b=WQG2EtaRWLDFtsW0xgnQC5eRShL4I1jBMPnn7VwWay9HTJdS3RH3C1tQoeaHsdhb/KCQpZB8EsOquHkJIbGmrSXliSINz2h0KJay0F3Qn7zlkh7AJ6zruG48QJa2qZS2wZqI9xPiIFuCG09mjBA6Jus4c9Gyw5Cp6AJA0voWC5s=
+	t=1779302315; cv=none; b=rUDTev9i18jMXyGSlm7zup+gGpxOQakf/7u7HM0myxZwqPMpN7cKktpLcLU3jVxGZTsQrEvdCoiGv96UCQG8HnW0QZw+vqpNVKoWQTJ/n6CBliSiyhdVNc4UNqddFt6aYIOMq6PxNNjuN37SyO2Ha+qULS0aqWjsEUI6UpFKKj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299406; c=relaxed/simple;
-	bh=w6M79GfyH9aahNyyGzMPH50t3XLga4a8AXY95gMB9Ow=;
+	s=arc-20240116; t=1779302315; c=relaxed/simple;
+	bh=NGFEOI48nVvzudXj8ktnmtGwvyw1JxXNviw8SOEaQqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFn0zahXrNjRQL7/hCbw2u75QhfpZfUcxKaAUdatc8GjXxmOXKpi78IPouEdrHA3s4q/Mvbx83fo7sSejlGPTEl/AWMlqHu+lUcjqRuuBX9vtUvc+4kmiPcIV2mVgn5YJ4yURv0PYr6fKJLfkmUvpvFUPVq45inMZ7IIxBNnbOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeJjcjJm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAE51F000E9;
-	Wed, 20 May 2026 17:50:05 +0000 (UTC)
+	 MIME-Version; b=XT6W7faYrZiyeTnOBnCYO0umY8lpDtRi0UbXjwRvrpDhNXArQBDBoAlAHc/8lvIwF8Is2rpv4JMD3LvdKcOW7BBI0cgqIqR3hg1ub+2AKEOILf62BGYHCxSdhxkCvHpc/pZp/Lzn2uMtEjaFX9jikOPUa3wZ4gkPjlo81pVmhu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxA2F9S+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999841F00897;
+	Wed, 20 May 2026 18:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299405;
-	bh=y8UNG/strGtQAC0lX2tx60VlNOtX67KJKB+pmRLc+gs=;
+	s=korg; t=1779302314;
+	bh=L+fjxv4O16ZZs6WqoUzaOs5lrowhqm/y0ONbHhUJjQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QeJjcjJmDe5FAHE8BftcD2jGAjanLtJ+4R26evuZndam/GH0JICwp7U1bU8DWoefq
-	 hZkvcUjvAtsK/4S6jdE8GsWswK+PCAnIhHxEL0DFsyaFlxRGoyuf/egkI31VEsFOvH
-	 E44+KLLJMl/CGEd2b/iJtgBZyKOt+XrxNkHQkH70=
+	b=fxA2F9S+PASU5umIXN1ukrJ+mvicsBlJO0GKGQq8EqvXy1XsCC4mS1rk/nPR/nQSf
+	 Tp1qBi/ddFWdHLVJoRUAmnXsYS8pJaXUQDsRp6uogs44TLX5x90B1bCwjaLWSWntW5
+	 BOfi2uJRDL7E1yy6ftMda5XAXb+Oo2Y04aXr51+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 761/957] ACPICA: Provide #defines for EINJV2 error types
+Subject: [PATCH 6.6 221/508] ima: check return value of crypto_shash_final() in boot aggregate
 Date: Wed, 20 May 2026 18:20:44 +0200
-Message-ID: <20260520162151.067202552@linuxfoundation.org>
+Message-ID: <20260520162103.427853523@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251971-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-253066-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6654E597606
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,meta.com:email,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 184C459731B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 1f6008538384453eb4c13a3d7ff9e37ee8aee6b9 ]
+[ Upstream commit 870819434c8dfcc3158033b66e7851b81bb17e21 ]
 
-EINJV2 defined new error types by moving the severity (correctable,
-uncorrectable non-fatal, uncorrectable fatal) out of the "type".
+The return value of crypto_shash_final() is not checked in
+ima_calc_boot_aggregate_tfm(). If the hash finalization fails, the
+function returns success and a corrupted boot aggregate digest could
+be used for IMA measurements.
 
-ACPI 6.5 introduced EINJV2 and defined a vendor defined error type
-using bit 31. This was dropped in ACPI 6.6.
+Capture the return value and propagate any error to the caller.
 
-Link: https://github.com/acpica/acpica/commit/e82d2d2fd145
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20260421150216.11666-2-tony.luck@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 0c00cfbcfcff ("ACPI: APEI: EINJ: Fix EINJV2 memory error injection")
+Fixes: 76bb28f6126f ("ima: use new crypto_shash API instead of old crypto_hash")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/actbl1.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ security/integrity/ima/ima_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
-index 7f35eb0e84586..b074244cbdcbf 100644
---- a/include/acpi/actbl1.h
-+++ b/include/acpi/actbl1.h
-@@ -1129,6 +1129,12 @@ enum acpi_einj_command_status {
- #define ACPI_EINJ_CXL_MEM_FATAL             (1<<17)
- #define ACPI_EINJ_VENDOR_DEFINED            (1<<31)
+diff --git a/security/integrity/ima/ima_crypto.c b/security/integrity/ima/ima_crypto.c
+index 51ad29940f05c..2b611bf169dd9 100644
+--- a/security/integrity/ima/ima_crypto.c
++++ b/security/integrity/ima/ima_crypto.c
+@@ -837,7 +837,7 @@ static int ima_calc_boot_aggregate_tfm(char *digest, u16 alg_id,
+ 		}
+ 	}
+ 	if (!rc)
+-		crypto_shash_final(shash, digest);
++		rc = crypto_shash_final(shash, digest);
+ 	return rc;
+ }
  
-+/* EINJV2 error types from EINJV2_GET_ERROR_TYPE (ACPI 6.6) */
-+
-+#define ACPI_EINJV2_PROCESSOR               (1)
-+#define ACPI_EINJV2_MEMORY                  (1<<1)
-+#define ACPI_EINJV2_PCIE                    (1<<2)
-+
- /*******************************************************************************
-  *
-  * ERST - Error Record Serialization Table (ACPI 4.0)
 -- 
 2.53.0
 
