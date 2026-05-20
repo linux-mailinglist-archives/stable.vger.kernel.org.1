@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-253273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKUXIqAHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:32 +0200
+	id AIg6OHYEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B476597F10
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5303359785C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 932E4399CC08
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E0E1342291F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A7A239E76;
-	Wed, 20 May 2026 18:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442A03EDAC6;
+	Wed, 20 May 2026 18:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNkRseuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCAAynHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5664B2C15AB;
-	Wed, 20 May 2026 18:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED153F9280;
+	Wed, 20 May 2026 18:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302847; cv=none; b=olY4XkBjwJ5li+7dHpvNFGLsxacNHjg+ZlDMb23PCOcogJ/IMv7+4esNwXhEpCH7ZPCOvChSm0aXO00Snqs33G4zsUR1lPvp54J1H7PVwC+d4O8oaor/qUS1YPFpDyVbClwOupUsLo+UmrbhahB2DG6QinW431i+DPCtxKxFssk=
+	t=1779301648; cv=none; b=mxDDIrIwh8I0+DxdDSH0nvuD3pjaFmygH+KLzEOW4TYEagI4K1EDySRROnk0exrKcXT1bdqbhOL0kAqrSyb6+FvbrWkyxHvpHySass7RUQz85IWN/2qY7IQmuH/SA7kDEdouSx9QzY3lAIDY0kCj8at3SrfyEeCST3cOBxjlqCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302847; c=relaxed/simple;
-	bh=+UaEJl36i12vFspxQEVyDRNDiqHsp462LCH0mPsxE1E=;
+	s=arc-20240116; t=1779301648; c=relaxed/simple;
+	bh=8MbPBBLivY23wx+OasVGQNKSwjDQHZYNWTPW1OwnY2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0jZO39zl0XbLgY63wqCkNbhYnE0uonxAMa+fFVtK62+poWf8F+w5OLlSzxIhV5/38zWy/2lQSzc1O6HpLUB4y1ClB+dkFUW2qXnAF4yxNgcEhI91di/egvuZzhlKBcg/8mrTAogh5tdAAFQ8pDexXzNOBmmbKTlT3FS/WsMkmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNkRseuC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0A91F000E9;
-	Wed, 20 May 2026 18:47:25 +0000 (UTC)
+	 MIME-Version; b=kWwUNbK1Q6HO40jIKVJvIf1XNMhg7tEn16OTxx0x41V+O8ZQVSmqGhe+L8TGRF62luQa+OGxLx8Zf5Pt034SBhFCWTUdsIKygO6ZG8E3avZwp+cpNnM2++iBKNzMImCa06p0LJfbKeyZFCGVdmYAklo7KVKXHgQQ2ZO3De38IDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCAAynHS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D371F000E9;
+	Wed, 20 May 2026 18:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302846;
-	bh=/UPz3A1xHoBsYXjFt8K3asW3teIqbc/j/Ws+GSFX834=;
+	s=korg; t=1779301646;
+	bh=fxFY5QLBk4HRYnR5/q3+XGvM87dj6kFbp4Mq5UXxWTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TNkRseuCEl/26OxljW+WdEhZYArQbst68pg8H4Hf14chaWhh1tar6fVE8yqX3M531
-	 aY3pwNJG+1KxYmrccZEnnRc8wvh4AMZQx63t9kBDEZ5HMVaqCIcDRYLo/qppuDiZbL
-	 jzYd8Y2RYfr5tTtRsf47KTFNnmdwfktdrw+6dkrc=
+	b=qCAAynHSm+ys+5NrM9ilMObuxWiR+skNUiEzV2Ofn0MLrSq++MZo7N2miV1EXas0f
+	 RncGuZjn1otq6RvVwpLUNIAbIISSyODYGCma4wLUmk+CRW/TmFB50KBR7pAr93eofY
+	 PH//JxXrbwA2DMrJQjgzZmmDoqFYVM6yA8+8TP4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 421/508] ALSA: hda/conexant: Fix missing error check for jack detection
-Date: Wed, 20 May 2026 18:24:04 +0200
-Message-ID: <20260520162107.727149049@linuxfoundation.org>
+	Xiaoli Feng <xifeng@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 634/666] netfs: fix error handling in netfs_extract_user_iter()
+Date: Wed, 20 May 2026 18:24:05 +0200
+Message-ID: <20260520162125.016902019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +70,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253273-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252810-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4B476597F10
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5303359785C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit b0e2333a231107adedd38c6fcfe1adc6162716fc ]
+commit 0aad5704c6b4d14007d4eab15883e8524e4310f4 upstream.
 
-In cx_probe(), the return value of snd_hda_jack_detect_enable_callback()
-is ignored. This function returns a pointer, and if it fails (e.g., due
-to memory allocation failure), it returns an error pointer which must
-be checked using IS_ERR().
+In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
+extract user pages, bail out on -ENOMEM, otherwise return the error
+code only if @npages == 0, allowing short DIO reads and writes to be
+issued.
 
-If the registration fails, the driver continues to probe, but the jack
-detection callback will not be registered. This can lead to a kernel
-crash later when the driver attempts to handle jack events or accesses
-the uninitialized structure.
+This fixes mmapstress02 from LTP tests against CIFS.
 
-Check the return value using IS_ERR() and propagate the error via
-PTR_ERR() to the probe caller.
-
-Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20260428080450.108801-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+Reported-by: Xiaoli Feng <xifeng@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-10-dhowells@redhat.com
+Cc: netfs@lists.linux.dev
+Cc: stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_conexant.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/netfs/iterator.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index abcad66356d59..f6e563e03edf2 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -1186,6 +1186,7 @@ static void add_cx5051_fake_mutes(struct hda_codec *codec)
- static int patch_conexant_auto(struct hda_codec *codec)
- {
- 	struct conexant_spec *spec;
-+	struct hda_jack_callback *callback;
- 	int err;
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -22,7 +22,7 @@
+  *
+  * Extract the page fragments from the given amount of the source iterator and
+  * build up a second iterator that refers to all of those bits.  This allows
+- * the original iterator to disposed of.
++ * the original iterator to be disposed of.
+  *
+  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
+  * allowed on the pages extracted.
+@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct i
+ 		ret = iov_iter_extract_pages(orig, &pages, count,
+ 					     max_pages - npages, extraction_flags,
+ 					     &offset);
+-		if (ret < 0) {
+-			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
++		if (unlikely(ret <= 0)) {
++			ret = ret ?: -EIO;
+ 			break;
+ 		}
  
- 	codec_info(codec, "%s: BIOS auto-probing.\n", codec->core.chip_name);
-@@ -1202,7 +1203,12 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	case 0x14f11f86:
- 	case 0x14f11f87:
- 		spec->is_cx11880_sn6140 = true;
--		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
-+		callback = snd_hda_jack_detect_enable_callback(codec, 0x19,
-+				cx_update_headset_mic_vref);
-+		if (IS_ERR(callback)) {
-+			err = PTR_ERR(callback);
-+			goto error;
-+		}
- 		break;
+@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct i
+ 		npages += cur_npages;
  	}
  
--- 
-2.53.0
-
++	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
++		for (i = 0; i < npages; i++)
++			unpin_user_page(bv[i].bv_page);
++		kvfree(bv);
++		return ret;
++	}
++
+ 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
+ 	return npages;
+ }
 
 
 
