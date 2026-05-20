@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFvxGSLuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:46 +0200
+	id yECeCFoDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-251958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB01593896
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F565975E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09F53317E386
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3444130B1575
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE2D3F787F;
-	Wed, 20 May 2026 17:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BB83F39F5;
+	Wed, 20 May 2026 17:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx1UkWMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJAJH3OV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55B43E7155;
-	Wed, 20 May 2026 17:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F283F23BF;
+	Wed, 20 May 2026 17:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296907; cv=none; b=pCtwzYs0eMbKcgkQmRfx7mZuTjbKL0EIuQSm6oLor/ahXtyXDW8oN1MANQR9MnqZ+74qIGBDxCMZMn4JmThmKgW0eNr9ApHAVPqMpVpC22svuqyeus3kkzcckKrTfNixtZBGO8BZtE4o96k/yk7sX9NDw9byz0fr15t+rxok6fc=
+	t=1779299373; cv=none; b=h5Y3aQNoyBnHCdNXlNJKDVx/ksRzvfTMw46b963LQ8J5/RoAKM7qHAlr0anqod0+GoaunERQNAqwfvP2p2A3SUxOkjWcjzy/e8V6gHL3u7XGsNnh/3L6+R8WKAPf9qFRUFxmAtkmNcLaWECJAk+F1eptwl5pqdI29VnHVPecopA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296907; c=relaxed/simple;
-	bh=09OcRX83sQsCxScDxQFOB5Qu11zKxzrWH4w8yH7MTcA=;
+	s=arc-20240116; t=1779299373; c=relaxed/simple;
+	bh=uGuo/tju361dEomd9P+FpXkW2Z7ddT+3OVKLe4yYmOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rTYpjUTidrX2UYzhzHXAg51W4kokTtzW5SNotRPeZQDZjpKPTGzryzp/Oyr68m9BtPfFBiNBDBop9ESrjFGycSDRUNqdL7aCNfUYaDm+SmmOsbI39MNYHheokSxAqyJqe2ddw4kzySBAG9oRcL/NgZZ5mz+qaYD4v9CZ3mKWCuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx1UkWMk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C6F1F000E9;
-	Wed, 20 May 2026 17:08:26 +0000 (UTC)
+	 MIME-Version; b=X3SKo0QIQKujSpvUrKIqRBuJKdHxEqeek5mybat7Q3S9+ET+V8ySncm3Rs223UaKNYzrPh8NVtViCXQhal8eZEZ6FMrjI2/d+yDc1Jts50WEP6u82OQLgrwBADDT+jUtvn3iLwvViU80GSRvyyQW9IIcw4kGnVjw1s0LVMm7Dfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJAJH3OV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AD21F00893;
+	Wed, 20 May 2026 17:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296906;
-	bh=Np3wftlBu1g6AnaEamjpYV6NAKeKjwJdtUzJcld2Dw4=;
+	s=korg; t=1779299371;
+	bh=0aTo8JezqNi7SMsZOvbh/uEhJiL+ZDS2fW2u6JWBjsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mx1UkWMkeqUViEWE49kpyVCGJiMXTqq2qTJvZrmWtFfMspD+Yy11FYji3981bks0K
-	 B8BmrbsGI/na+Nheubx8UGkGOaA4RpOlJaD29pSG+53NqSAIfC3iw5pW5yoISy561K
-	 P0jFdMJSd+Ia4yLSTgIMkZYvcSf3OLvrvK24jq+k=
+	b=NJAJH3OVn8PT8ZgY0U0GuSRuzdlU9U7cWLMhh6QMCjIIU1nEZPQHym/7WogG78ZGV
+	 xo09bku50w0J/GqgnYaEMAzePrdYuWikSQMvoPKq7oDQzEZvV25IDCYx5EU7D0dQ8Z
+	 T6iGGj7vwZvfm3lrZLhKZpkOxKOXOzy+Jxpuq1U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0977/1146] drm/amdgpu/jpeg: set no_user_fence for JPEG v5.0.0 ring
-Date: Wed, 20 May 2026 18:20:27 +0200
-Message-ID: <20260520162210.343591858@linuxfoundation.org>
+Subject: [PATCH 6.18 745/957] netfilter: arp_tables: fix IEEE1394 ARP payload parsing
+Date: Wed, 20 May 2026 18:20:28 +0200
+Message-ID: <20260520162150.717296241@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251025-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251958-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 2AB01593896
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 26F565975E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit ea7c61c5f895e8f9ea0ffffa180498ef9c740152 ]
+[ Upstream commit 1e8e3f449b1e73b73a843257635b9c50f0cc0f0a ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+Weiming Shi says:
 
-Fixes: dfad65c65728 ("drm/amdgpu: Add JPEG5 support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 0f43893d3cd478fa57836697525b338817c9c23d)
+"arp_packet_match() unconditionally parses the ARP payload assuming two
+hardware addresses are present (source and target). However,
+IPv4-over-IEEE1394 ARP (RFC 2734) omits the target hardware address
+field, and arp_hdr_len() already accounts for this by returning a
+shorter length for ARPHRD_IEEE1394 devices.
+
+As a result, on IEEE1394 interfaces arp_packet_match() advances past a
+nonexistent target hardware address and reads the wrong bytes for both
+the target device address comparison and the target IP address. This
+causes arptables rules to match against garbage data, leading to
+incorrect filtering decisions: packets that should be accepted may be
+dropped and vice versa.
+
+The ARP stack in net/ipv4/arp.c (arp_create and arp_process) already
+handles this correctly by skipping the target hardware address for
+ARPHRD_IEEE1394. Apply the same pattern to arp_packet_match()."
+
+Mangle the original patch to always return 0 (no match) in case user
+matches on the target hardware address which is never present in
+IEEE1394.
+
+Note that this returns 0 (no match) for either normal and inverse match
+because matching in the target hardware address in ARPHRD_IEEE1394 has
+never been supported by arptables. This is intentional, matching on the
+target hardware address should never evaluate true for ARPHRD_IEEE1394.
+
+Moreover, adjust arpt_mangle to drop the packet too as AI suggests:
+
+In arpt_mangle, the logic assumes a standard ARP layout. Because
+IEEE1394 (FireWire) omits the target hardware address, the linear
+pointer arithmetic miscalculates the offset for the target IP address.
+This causes mangling operations to write to the wrong location, leading
+to packet corruption. To ensure safety, this patch drops packets
+(NF_DROP) when mangling is requested for these fields on IEEE1394
+devices, as the current implementation cannot correctly map the FireWire
+ARP payload.
+
+This omits both mangling target hardware and IP address. Even if IP
+address mangling should be possible in IEEE1394, this would require
+to adjust arpt_mangle offset calculation, which has never been
+supported.
+
+Based on patch from Weiming Shi <bestswngs@gmail.com>.
+
+Fixes: 6752c8db8e0c ("firewire net, ipv4 arp: Extend hardware address and remove driver-level packet inspection.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/netfilter/arp_tables.c  | 18 +++++++++++++++---
+ net/ipv4/netfilter/arpt_mangle.c |  8 ++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
-index 46bf15dce2bd0..72a4b2d0676fa 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
-@@ -680,6 +680,7 @@ static const struct amd_ip_funcs jpeg_v5_0_0_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v5_0_0_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v5_0_0_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v5_0_0_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v5_0_0_dec_ring_set_wptr,
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 1cdd9c28ab2da..97ead883e4a13 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -110,13 +110,25 @@ static inline int arp_packet_match(const struct arphdr *arphdr,
+ 	arpptr += dev->addr_len;
+ 	memcpy(&src_ipaddr, arpptr, sizeof(u32));
+ 	arpptr += sizeof(u32);
+-	tgt_devaddr = arpptr;
+-	arpptr += dev->addr_len;
++
++	if (IS_ENABLED(CONFIG_FIREWIRE_NET) && dev->type == ARPHRD_IEEE1394) {
++		if (unlikely(memchr_inv(arpinfo->tgt_devaddr.mask, 0,
++					sizeof(arpinfo->tgt_devaddr.mask))))
++			return 0;
++
++		tgt_devaddr = NULL;
++	} else {
++		tgt_devaddr = arpptr;
++		arpptr += dev->addr_len;
++	}
+ 	memcpy(&tgt_ipaddr, arpptr, sizeof(u32));
+ 
+ 	if (NF_INVF(arpinfo, ARPT_INV_SRCDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->src_devaddr, src_devaddr,
+-					dev->addr_len)) ||
++					dev->addr_len)))
++		return 0;
++
++	if (tgt_devaddr &&
+ 	    NF_INVF(arpinfo, ARPT_INV_TGTDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->tgt_devaddr, tgt_devaddr,
+ 					dev->addr_len)))
+diff --git a/net/ipv4/netfilter/arpt_mangle.c b/net/ipv4/netfilter/arpt_mangle.c
+index a4e07e5e9c118..f65dd339208e8 100644
+--- a/net/ipv4/netfilter/arpt_mangle.c
++++ b/net/ipv4/netfilter/arpt_mangle.c
+@@ -40,6 +40,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += pln;
+ 	if (mangle->flags & ARPT_MANGLE_TDEV) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
+ 		   (arpptr + hln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
+@@ -47,6 +51,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += hln;
+ 	if (mangle->flags & ARPT_MANGLE_TIP) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
+ 		   (arpptr + pln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
 -- 
 2.53.0
 
