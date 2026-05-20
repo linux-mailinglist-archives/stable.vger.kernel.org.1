@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id b5OILyLwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:18 +0200
+	id aJ/gITQWDmpb6AUAu9opvQ
+	(envelope-from <stable+bounces-251216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001A9593E44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16535599545
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F6ED336F45F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 195F83297AC8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DC339A05A;
-	Wed, 20 May 2026 16:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB9A372691;
+	Wed, 20 May 2026 17:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMNcW83p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Spx2aMv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF28375ACB;
-	Wed, 20 May 2026 16:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D8B3DC4DA;
+	Wed, 20 May 2026 17:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295001; cv=none; b=D6sBtiDc65KQS/Dq+oXaef0DcWxo65oepX59cR+BMNsnjzkrfhKyO//agCgn372+3eWz8tTxqjPP+DkoXBrVHX4KQvHzbd7+o/+/oWqxrQox2y8mTBqTU8w6cb6nM5VMCR2WlfScezacNujfLcsWCj7skkd92U4CfBw/RYEf/rM=
+	t=1779297403; cv=none; b=k3xakmoRubDfloQclSq1rskBorZbXgbz5VrIHYQv7DJk2PHCj3VqAg4VVXTz8Nvs+9noDqJI/mdClgvVpbMyheEquAosxbYCmkyYXttLlQbXMORbhea1W20v/Z7JcfsQz1bqr8sujwvj+IP0rK2att6HO7dhPMDxNphlCepcQjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295001; c=relaxed/simple;
-	bh=bcO688jFA5sMK3+6HZitp+iw44zQpdzsyf6qUtDj6Wo=;
+	s=arc-20240116; t=1779297403; c=relaxed/simple;
+	bh=9IKl3NTpmZdrZRzB/N/HPDK9/+/Lxw9HwC4LGeVmVDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+9Mqypt+DQouop1ODEfKfxm+FsryNej6gVCukWUsd5haDvG5RWZBxmieRFubmxhvSH7u8GESuzrKR39M0UpKo51zpyMl/ly6jduUFHVZDXdOYg8yI1EGWzF3GX5d3zamKEugX6wmIZ35QTSa9QOb4mvWoDixeEigBTH3zDPI4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMNcW83p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0170C1F000E9;
-	Wed, 20 May 2026 16:36:39 +0000 (UTC)
+	 MIME-Version; b=B2/Gh2arhiyEZevukcEAOeNTP0YdaKC6ZXCMpr4LE3JQe8Ty7tRLjvcoKNhXg2HX3p8bABHgUNAcjI+utdl5b/GdLzyVcZ2zBCI61gUJKlj2W//ziLWnqEYugv5MwXTPKmUw7+vFEq2dJSbxVOAVwZbTtwV0a8XsLjNWhkmVdxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Spx2aMv2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7021F000E9;
+	Wed, 20 May 2026 17:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295000;
-	bh=ZdCGm7/iV84o//A07vUbWFW6iFYPp8h0FqBJrUvjl4I=;
+	s=korg; t=1779297402;
+	bh=Cp3ZyUqpvZ0bdNKCOHjla6dS10YvFgEgKByyak00wcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uMNcW83pJhwNOoOKXjk7Pk6kFv8ODV5zCgvUWHuGZ2Sx91BQCVTaBqepHLLOw5UFH
-	 R9DI+JaxjoLkech+qbYymWzx+RAmCpjuWjymouKo0FRWPPkihdKZUygWeAASzigU+F
-	 kQizZgnU7KcopTvdZERPG3SlFUL/jyLwC1JB4BQo=
+	b=Spx2aMv2bT7/h23u5YnDnYl4b4YK0NLnQikpT0SZXiULjUkNJ0eZ0/02zmkGwmTUZ
+	 /VFyAKwRUb2oVL0TUbGlJ342EhFOLP21Y1+c9i2ap9Gapm81X8NqWI18JypKjFcLGQ
+	 NbYxloouceyNe1phl/DM63eZpTXEPPQMTTcNmSlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0251/1146] dm cache: fix write path cache coherency in passthrough mode
-Date: Wed, 20 May 2026 18:08:21 +0200
-Message-ID: <20260520162153.914660321@linuxfoundation.org>
+Subject: [PATCH 6.18 019/957] OPP: Move break out of scoped_guard in dev_pm_opp_xlate_required_opp()
+Date: Wed, 20 May 2026 18:08:22 +0200
+Message-ID: <20260520162134.977680055@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251216-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250281-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 001A9593E44
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 16535599545
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
+[ Upstream commit 3d2398f44a2d48fb1c575a6e0bc6b38f3e689e22 ]
 
-In passthrough mode, dm-cache defers write bio submission until cache
-invalidation completes to maintain existing coherency, requiring the
-target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
-returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
+The commit ff9c512041f2 ("OPP: Use mutex locking guards")
+unintentionally made the for loop run longer than required.
 
-Reproduce steps:
+scoped_guard() is implemented as a for loop. The break statement now
+breaks out out the scoped_guard() and not out of the outer for loop.
+The outer loop always iterates to completion.
 
-1. Create a cache device
+Fix it.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into the cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first data block, and check io ordering using ftrace
-
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
-fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
---direct=1 --size 64k
-
-5. ftrace logs show that write operations to the cache origin (252:2)
-   and metadata operations (252:0) are unsynchronized: the origin write
-   occurs before metadata commit.
-
- <snip>
-       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
-       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
-       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
-       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
- kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: ff9c512041f2 ("OPP: Use mutex locking guards")
+Reported-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/opp/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index ae1edffd14eaa..b608e88acd511 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1703,6 +1703,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
- 				bio_drop_shared_lock(cache, bio);
- 				atomic_inc(&cache->stats.demotion);
- 				invalidate_start(cache, cblock, block, bio);
-+				return DM_MAPIO_SUBMITTED;
- 			} else
- 				remap_to_origin_clear_discard(cache, bio, block);
- 		} else {
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 775d4a36f2f54..157c84b689feb 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2741,8 +2741,8 @@ struct dev_pm_opp *dev_pm_opp_xlate_required_opp(struct opp_table *src_table,
+ 					break;
+ 				}
+ 			}
+-			break;
+ 		}
++		break;
+ 	}
+ 
+ 	if (IS_ERR(dest_opp)) {
 -- 
 2.53.0
 
