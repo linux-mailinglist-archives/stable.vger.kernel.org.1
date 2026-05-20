@@ -1,150 +1,277 @@
-Return-Path: <stable+bounces-250005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIxnBO/RDWpP3gUAu9opvQ
-	(envelope-from <stable+bounces-250005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:27 +0200
+	id GD4AExfSDWpP3gUAu9opvQ
+	(envelope-from <stable+bounces-250006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A4C590BB3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9965C590BDA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 029DB32BD097
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:09:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86EE532CEC80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD333F210F;
-	Wed, 20 May 2026 15:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB513F54AA;
+	Wed, 20 May 2026 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccwhAOED"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="dFcv12YC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764983F0A99;
-	Wed, 20 May 2026 15:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289404; cv=none; b=jAKcUncISgflP6tggguRU668l5KQMc2A4MbhubSHsEHjJeEJZ5XGZlCDQktfex2QZliuOqvsX95eN3jmlIUQ7X65pOUZp6vGOB1H7XegeQgq3yakpTCNYr0FiU2FumwpLOMxi8sdlJOQD7cgyg9AtFcpkT+lw1qd7gd7dSzWM40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289404; c=relaxed/simple;
-	bh=VQHyb17cPuxRJcgPBDayEOQwcwW8AT/T/v4GmQ4BmyA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XFcO2I5TF59WZvlvL07KyUk1JFjEQ7tZYebMCrjx98vLGRe8/GCHhH60IwVF20uglIbshroRhS38z31rQ3ZZBjdKtzE3n+PZ5HX7GuPg0qd1/eNN/okJLzOJgt0i1FTVqZGFGmtkocM11CW0519CtnSWmJoQxSjrVFf/koigzBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccwhAOED; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AF01F000E9;
-	Wed, 20 May 2026 15:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779289403;
-	bh=cKMYreO0fJ6K2NQBHB0YB/VMVoRVOkqTPgCMvuDnzSM=;
-	h=From:To:Cc:Subject:Date;
-	b=ccwhAOED6qKyLpnVxZpflqp6L40gksi+/8sUEO3OLyFkxb+iOeJTXbu9ukTTsvYT6
-	 2hQuCN99rprN7msTZSIE9UpQNeo7Vsp+UdkFvWZelZFcgCwYltbDnsTybV/5KKe7/q
-	 p8cZh/NYjOS2ZmapWiH9md00CwlyX1n/X9nkZRHcrMT1Djc7gAWZZuHgRVJUutxs3H
-	 ZblNbPNlbij1AQ9GlpF6TCwjFhctmQJn4pl56JY5SmYx7I4lU7wtqd+A1DOdppO2yM
-	 vddqZxhGgG/0Pql6W4RJT7obhP5PT6aK875fCjfVgu1TEeQotKt6Eqe8P/XGMe/dac
-	 yWLduVnLK+k/A==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: trace esz at first setup
-Date: Wed, 20 May 2026 08:03:10 -0700
-Message-ID: <20260520150311.80925-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17C23EF647;
+	Wed, 20 May 2026 15:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779289486; cv=pass; b=JRsizeU7YJw94HJt1TE9Rk69YVDHtUfdrHBeZNjoH1YNNFJZ7dLJ1VrehVJdqoqvCw37PitR+03hvilF18iI7dtyhEi6LH7n8sc/SyFdglY/bg4JJGejEopr4NwwIolmz3PBVl0rD5h0aF8JcTvAOhWuNcYkxz08CDpSQ6GakkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779289486; c=relaxed/simple;
+	bh=glHPaZzUi4OSH2qNpXzuKmnnplibFsR17/L3DDNefT4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O4TygFb6JbOCf2My2HKjgTQFvJ40fn+FovIjAePXR15N3ZvU6/2oh4o5mJKPHn9kB7gIoeYdv3EiJiY1UnEbFlgUjyzH8D8ks2+5sMQIMyoRYY+HbZfZnPqHi+z3ZdU6gFYgBOmGZXmrUhbaG+scuCXJZU4fI+funs9ARB1mN2M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=dFcv12YC; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1779289462; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=H4H9wEPzL9F9DtuKYxJuHWRJCQZJ+AAQw8eTXUTgsdbgqWtPrLXuthO8YzeD7hBaiEIkya9PIMfxVfyKL4Wb03QL8904gzYW8epPtVniRJVqom0HlZ117Rmj+V7oOxuZc+FYgW5GzSJKQFfOXBLA1dktMobMc/9jIOUCO/7nSuU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1779289462; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aAAzUd7Ncpn7EM5gP2WjySDMAYuUVcl4Vo7wSz2utqs=; 
+	b=QNgx0gDg6ZY+o9niXoiW2GvJ7eGduzuJno2L/zBG95jaT8yIPmFS3Aj0cMu0y39yN9IgdGC+yLEgCmKrr+1ncQS58oFau0e6SxvOIMOO1IiSIvG3Ls4Z42sRcoXNC3q3eRrzWbjtLbhSEqS09p0hl4je0el9gC5P1AEixMT52Zg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779289462;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=aAAzUd7Ncpn7EM5gP2WjySDMAYuUVcl4Vo7wSz2utqs=;
+	b=dFcv12YC0WznA1JT+JNTOS5TAFX6vTuko9xjGSV+lXFs0GA2SxRRu7hj3KVE9qqj
+	GuGFs78IcujNEp8CelYiL56dllabikrYRboVcEnFZ2WYppQlVWzO1NjQyrDDugJU2GG
+	b+Dep1367e1TNtswNSddn/u0Fn08057sudkdzdTM=
+Received: by mx.zohomail.com with SMTPS id 1779289460798445.48512037796513;
+	Wed, 20 May 2026 08:04:20 -0700 (PDT)
+Message-ID: <43ecdd2f-5faf-432a-a814-77190b3ef239@collabora.com>
+Date: Wed, 20 May 2026 18:04:14 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
+ updates
+To: Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
+ kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ simona@ffwll.ch, sumit.semwal@linaro.org, christian.koenig@amd.com
+Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org,
+ syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260519082247.34470-1-kartikey406@gmail.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20260519082247.34470-1-kartikey406@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250005-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250006-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A7A4C590BB3
+	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:mid,collabora.com:dkim,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 9965C590BDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DAMON traces effective size quota from the second update, only if a
-change has been made by the update.  Tracing only changed updates was an
-intentional decision to avoid unnecessary same value tracing.  Always
-skipping the first value is just an unintended mistake.
+On 5/19/26 11:22, Deepanshu Kartikey wrote:
+> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
+> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
+> ignore its return value. The function can fail with -EINTR from
+> dma_resv_lock_interruptible() (signal during lock wait) or with
+> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
+> leaving the resv lock not held. The queue path then walks the object
+> array and calls dma_resv_add_fence(), which requires the lock held;
+> with lockdep enabled this trips dma_resv_assert_held():
+> 
+>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
+>   Call Trace:
+>    virtio_gpu_array_add_fence
+>    virtio_gpu_queue_ctrl_sgs
+>    virtio_gpu_queue_fenced_ctrl_buffer
+>    virtio_gpu_cursor_plane_update
+>    drm_atomic_helper_commit_planes
+>    drm_atomic_helper_commit_tail
+>    commit_tail
+>    drm_atomic_helper_commit
+>    drm_atomic_commit
+>    drm_atomic_helper_update_plane
+>    __setplane_atomic
+>    drm_mode_cursor_universal
+>    drm_mode_cursor_common
+>    drm_mode_cursor_ioctl
+>    drm_ioctl
+>    __x64_sys_ioctl
+> 
+> Beyond the WARN, mutating the dma_resv fence list without the lock
+> races with concurrent readers/writers and can corrupt the list.
+> 
+> Both call sites run inside the .atomic_update plane callback, which
+> DRM atomic helpers do not allow to fail (by the time it runs, the
+> commit has been signed off to userspace and there is no clean
+> rollback path). Moving the lock acquisition to .prepare_fb was
+> rejected because the broader lock scope deadlocks against other BO
+> locking paths in the same atomic commit.
+> 
+> Introduce virtio_gpu_lock_one_resv_uninterruptible() that uses
+> dma_resv_lock() instead of dma_resv_lock_interruptible(). This
+> eliminates the -EINTR failure mode -- the realistic syzbot trigger
+> -- without extending the lock hold across the commit. The helper
+> locks a single BO and rejects nents > 1 with -EINVAL; both fix
+> sites lock exactly one BO.
+> 
+> Use it from virtio_gpu_cursor_plane_update() and
+> virtio_gpu_resource_flush(); check the return value to handle the
+> remaining -ENOMEM case from dma_resv_reserve_fences() by freeing
+> the objs and skipping the plane update for that frame. The
+> framebuffer BOs touched here are not shared with other contexts
+> and lock contention is expected to be brief, so the loss of
+> signal-interruptibility is acceptable.
+> 
+> Other callers of virtio_gpu_array_lock_resv() (the ioctl paths)
+> continue to use the interruptible variant.
+> 
+> The bug was reported by syzbot, triggered via fault injection
+> (fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
+> -ENOMEM branch in dma_resv_reserve_fences().
+> 
+> Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
+> Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+> v4: Rename the helper to virtio_gpu_lock_one_resv_uninterruptible()
+>     and reject objs->nents > 1 with -EINVAL. The v3 helper's
+>     multi-object branch used drm_gem_lock_reservations(), which is
+>     interruptible, contradicting the "uninterruptible" name; both
+>     fix sites lock a single BO so the multi-object path is dropped.
+>     (Dmitry Osipenko)
+> v3: Drop the prepare_fb/cleanup_fb approach from v2 (it deadlocked
+>     against virtio_gpu_resource_flush(), which also locks the BO in
+>     the same atomic commit). Instead add an uninterruptible variant
+>     of the resv lock helper and use it in both
+>     virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush().
+>     (Dmitry Osipenko)
+> v2: Move resv lock acquisition from .atomic_update (which must not
+>     fail) to .prepare_fb (which may), per maintainer review of v1.
+>     The v1 approach of silently skipping the cursor update on lock
+>     failure violated the atomic-commit contract with userspace.
+> ---
+>  drivers/gpu/drm/virtio/virtgpu_drv.h   |  1 +
+>  drivers/gpu/drm/virtio/virtgpu_gem.c   | 17 +++++++++++++++++
+>  drivers/gpu/drm/virtio/virtgpu_plane.c | 10 ++++++++--
+>  3 files changed, 26 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
+> index f17660a71a3e..2f3531950aa4 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_drv.h
+> +++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
+> @@ -317,6 +317,7 @@ virtio_gpu_array_from_handles(struct drm_file *drm_file, u32 *handles, u32 nents
+>  void virtio_gpu_array_add_obj(struct virtio_gpu_object_array *objs,
+>  			      struct drm_gem_object *obj);
+>  int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs);
+> +int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs);
+>  void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs);
+>  void virtio_gpu_array_add_fence(struct virtio_gpu_object_array *objs,
+>  				struct dma_fence *fence);
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> index f22dc5c21cd4..435d37d36034 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_gem.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+> @@ -238,6 +238,23 @@ int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs)
+>  	return ret;
+>  }
+>  
+> +int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs)
+> +{
+> +	int ret;
+> +
+> +	if (objs->nents != 1)
+> +		return -EINVAL;
+> +
+> +	dma_resv_lock(objs->objs[0]->resv, NULL);
+> +
+> +	ret = dma_resv_reserve_fences(objs->objs[0]->resv, 1);
+> +	if (ret) {
+> +		virtio_gpu_array_unlock_resv(objs);
+> +		return ret;
+> +	}
+> +	return 0;
+> +}
+> +
+>  void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs)
+>  {
+>  	if (objs->nents == 1) {
+> diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+> index a126d1b25f46..652352424744 100644
+> --- a/drivers/gpu/drm/virtio/virtgpu_plane.c
+> +++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+> @@ -215,7 +215,10 @@ static void virtio_gpu_resource_flush(struct drm_plane *plane,
+>  		if (!objs)
+>  			return;
+>  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+> -		virtio_gpu_array_lock_resv(objs);
+> +		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
+> +			virtio_gpu_array_put_free(objs);
+> +			return;
+> +		}
+>  		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
+>  					      width, height, objs,
+>  					      vgplane_st->fence);
+> @@ -459,7 +462,10 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+>  		if (!objs)
+>  			return;
+>  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+> -		virtio_gpu_array_lock_resv(objs);
+> +		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
+> +			virtio_gpu_array_put_free(objs);
+> +			return;
+> +		}
+>  		virtio_gpu_cmd_transfer_to_host_2d
+>  			(vgdev, 0,
+>  			 plane->state->crtc_w,
 
-The mistake makes the tracepoint based investigation incomplete, because
-the first effective size quota is never traced.  It is not a big issue
-when the 'consist' quota tuner is used, because it keeps changing the
-quota in the usual setup.
+Applied to misc-next, thanks
 
-However, when the 'temporal' tuner is used, the quota value is not
-changed before the goal achievement status is completely changed.  For
-example, if the DAMOS scheme is started with an under-achieved goal, the
-quota is set to the maximum value, and kept the same value until the
-goal is achieved.  Because DAMON skips the first value, the user cannot
-know what effective quota the current scheme is using.  Only after the
-goal is achieved, the effective quota is changed to zero, and traced.
-
-Unconditionally trace the initial quota value to fix this problem.
-
-Note that the 'temporal' quota tuner was introduced by commit
-af738a6a00c1 ("mm/damon/core: introduce
-DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was added to 7.1-rc1.  But even
-with the 'consist' quota tuner, the tracing is unintentionally
-incomplete. Hence this commit marks the introduction of the trace event
-as the broken commit.
-
-Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
-Changes from RFC
-- RFC: https://lore.kernel.org/20260520005940.92003-1-sj@kernel.org
-- Drop RFC tag.
-
- mm/damon/core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 4e223857a0f99..0db6530825d1d 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2883,6 +2883,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	if (!quota->total_charged_sz && !quota->charged_from) {
- 		quota->charged_from = jiffies;
- 		damos_set_effective_quota(c, s);
-+		if (trace_damos_esz_enabled())
-+			damos_trace_esz(c, s, quota);
- 	}
- 
- 	/* New charge window starts */
-
-base-commit: 796dd9092b9c9d93dd48213582d45c43e93fa187
 -- 
-2.47.3
+Best regards,
+Dmitry
 
