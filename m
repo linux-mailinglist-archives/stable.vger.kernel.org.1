@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLgvKOMVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:23 +0200
+	id sPxUK7b+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195B85994C2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55182596A26
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED2AD323E383
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C1E031EE71A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955F93F4124;
-	Wed, 20 May 2026 17:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B9036A02E;
+	Wed, 20 May 2026 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8FkV0+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uphp0pV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3935F3D8137;
-	Wed, 20 May 2026 17:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9DB3F39C9;
+	Wed, 20 May 2026 17:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297329; cv=none; b=YOpo6Gn/c7jGaAfmJXU5t5u52KHgy1P4UYIKABW8I1QsDl55TBTWGMWpu+wKHUn8RJzz0/UVy91jniQlnI0Dx3OXGXgAfAIYX1wkfcVSeOfcCIBVG+8F8CGEdxlWa73eU3e1Tpr/1xExUMXzJX+Qe5ed7XejkYmerLYJh+Di++M=
+	t=1779299678; cv=none; b=OHp+9223yFMm/miqHwybO1XxbLty9qcrSDzdFFlxe4Ocqp9H0I/5S2wDvqNK7Qsqdur5iHapIYye0mDX0Vk4XoGAcAdN06c05WisMVrAg6Mset91iymv2TEe87l8UTvgSb6bv4vwsaGy/6LQHKhbO4oaeD5R3Y/DG35N6L65B0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297329; c=relaxed/simple;
-	bh=KtDkyEbi5kQCXjyzdTO7BtXQ8W3FRDkcPLjyAL2b9A4=;
+	s=arc-20240116; t=1779299678; c=relaxed/simple;
+	bh=pgeBajgwko9YJ8aooNthGAARFu1trpbG4JC2IOtatvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHOvy8lNBD9/3L9tkarDPxm07ZRjPyKxxjgRjaIpj7EjQeu4ZJeamcEja2soivia6dc1DADTpFq2MquvS27pn7PPXXhh+RVjnbQVk1q3TLZdRSkYQrsSU9KNt63V6DWOsb8PJP7sNkxVer/v3YGf9Dnb6QnK0Gkg43ixkWVkRaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8FkV0+u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A781F00893;
-	Wed, 20 May 2026 17:15:27 +0000 (UTC)
+	 MIME-Version; b=aw0ZvAw3RDR4d37RlPjQdq6KssGNw1kqx7R9v0Yr4nT4tew5L3dTogK3oBtAqPj+Ku4qFI0y9EdWCv1kwk6pebIIPL2HfnH4jjfw8p4XxpAICQhOckf37hC7aj05NsR2QYnh/qsqnVxupEtqLdHJ4dRX+q0+3hsK6TL/oQDrVVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uphp0pV4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A311F000E9;
+	Wed, 20 May 2026 17:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297328;
-	bh=aTGfqL+PAwvIFlov48O4bGYzK+Ee1468MNfJztO8QVE=;
+	s=korg; t=1779299677;
+	bh=vczTOpyEeisYkzrPdiCPOmMm/e+0Xz/vZBMYR8O3cKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M8FkV0+uVr4yyqHUg5aPhid7qr7Ka1aeFkg4zsrJZfDpwj0xCQaj5SC7Wlw20uim6
-	 k+mcg/367ds450WgSPS/ZHkiSuEBBUcYSfTv2PQZ7vHdFSrwddjkRfTcHThBjFKP/E
-	 A9ccfOXYKUzP8Cgm9zGgLygXDS6WmYM9sl+zOKC8=
+	b=uphp0pV4dELq7x+NGE/D8h6PMDDrfcTzksqKcTUZa2txdM4KT/g/bwdSdmSKbcgmR
+	 ocMEt0pt/kJIfUik+RPjWCAR12xtY2rnZnAz0Rv/iP/psMe8LKr2CD/9GVAwXxpA0M
+	 1JtAOEE4uhPjaWUzo/6AAAzAt3uIUlyHdC2nIrME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hristo Venev <hristo@venev.name>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 7.0 1096/1146] ceph: put folios not suitable for writeback
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 863/957] erofs: fix offset truncation when shifting pgoff on 32-bit platforms
 Date: Wed, 20 May 2026 18:22:26 +0200
-Message-ID: <20260520162213.046718077@linuxfoundation.org>
+Message-ID: <20260520162153.281388122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +66,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251188-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,venev.name,ibm.com,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252074-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ceph.com:url]
-X-Rspamd-Queue-Id: 195B85994C2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email]
+X-Rspamd-Queue-Id: 55182596A26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hristo Venev <hristo@venev.name>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 544576f0f05c4a759806acddfaaeb686f14fb4b0 upstream.
+[ Upstream commit c99493ce409c3b98fec1616dbcf24c102e006deb ]
 
-The batch holds references to the folios (see `filemap_get_folios`,
-`folio_batch_release`), so we need to `folio_put` the folios we remove.
+On 32-bit platforms, pgoff_t is 32 bits wide, so left-shifting
+large arbitrary pgoff_t values by PAGE_SHIFT performs 32-bit arithmetic
+and silently truncates the result for pages beyond the 4 GiB boundary.
 
-Tested on v6.18.
+Cast the page index to loff_t before shifting to produce a correct
+64-bit byte offset.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/74156
-Signed-off-by: Hristo Venev <hristo@venev.name>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 386292919c25 ("erofs: introduce readmore decompression strategy")
+Fixes: 307210c262a2 ("erofs: verify metadata accesses for file-backed mounts")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/addr.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/erofs/data.c  | 2 +-
+ fs/erofs/zdata.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1322,6 +1322,7 @@ void ceph_process_folio_batch(struct add
- 						  ceph_wbc, folio);
- 		if (rc == -ENODATA) {
- 			folio_unlock(folio);
-+			folio_put(folio);
- 			ceph_wbc->fbatch.folios[i] = NULL;
- 			continue;
- 		} else if (rc == -E2BIG) {
-@@ -1332,6 +1333,7 @@ void ceph_process_folio_batch(struct add
- 		if (!folio_clear_dirty_for_io(folio)) {
- 			doutc(cl, "%p !folio_clear_dirty_for_io\n", folio);
- 			folio_unlock(folio);
-+			folio_put(folio);
- 			ceph_wbc->fbatch.folios[i] = NULL;
- 			continue;
- 		}
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 58aea2b48580c..d685ee1d9c554 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -38,7 +38,7 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
+ 	 * However, the data access range must be verified here in advance.
+ 	 */
+ 	if (buf->file) {
+-		fpos = index << PAGE_SHIFT;
++		fpos = (loff_t)index << PAGE_SHIFT;
+ 		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
+ 		if (err < 0)
+ 			return ERR_PTR(err);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 71f01f0a07435..0f09f3ba32149 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1869,7 +1869,7 @@ static void z_erofs_pcluster_readmore(struct z_erofs_frontend *f,
+ 
+ 		if (cur < PAGE_SIZE)
+ 			break;
+-		cur = (index << PAGE_SHIFT) - 1;
++		cur = ((loff_t)index << PAGE_SHIFT) - 1;
+ 	}
+ }
+ 
+-- 
+2.53.0
+
 
 
 
