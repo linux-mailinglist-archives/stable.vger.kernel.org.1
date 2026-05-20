@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-250119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mK9ZIgzkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:40:44 +0200
+	id qC5uOCLkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF40592361
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AD9592403
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 279393070905
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E91E030010EB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8A0372EF7;
-	Wed, 20 May 2026 16:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BB0368946;
+	Wed, 20 May 2026 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC+eD83h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4OV0d+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031E370D43;
-	Wed, 20 May 2026 16:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0399033CE88;
+	Wed, 20 May 2026 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294594; cv=none; b=eibVjh0KFmPovSH/rJ+EK5awB7SXX2QfWWVgEt1DARr0/3AvEAaxKvxKJdJvmIz7hOQSozJRwzSYNXMuS1zGL2b/sA3EURB0QDaLc/F8N/qwsbxRvZI5MmmIotuF5JKRPlK9REpPhIUf+W2MDEkB4R/b8Y5/bi9iJLNviGaw7/U=
+	t=1779294623; cv=none; b=mUN/yhKw2UrODeIpCbD9bedDclZXUfLdNJBydhHWS/SraQhUOA4a87rbS4V+vNe+7sM3jK8CjSj/OvZ2GM7+QKFpB45c4mnGkK44IkZ1TH3uLL09yExvmNNxZDO6cl32cjcxkB+DpUtUcsKRz6PqdUan5vBywgNY2J99Fr8XtIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294594; c=relaxed/simple;
-	bh=5LtLX3zo8mn+fOnvXi+n8RnKLrBWRL8bAT7jc0H2xlo=;
+	s=arc-20240116; t=1779294623; c=relaxed/simple;
+	bh=ULgS5LdE9Ux6dZCc45zG/ZzS4kcQKSyfKDcsPQM/u1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NegDN4LUXo7Ro6NVFnr1jMaY0YNZJG6DfN/C9Tt4rT+ZkiIF47tlcKGfiasxQxxzElvhsEDQYQ3f3734I2gQ3OxNfen/1HWmvDlDa7trV2/vNYb96wYl/FPYjBXDDbQFdqItHz2FRl+Gqb5a6O8Icm6pe/WSCVurWWwKmCsQEug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC+eD83h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313A41F000E9;
-	Wed, 20 May 2026 16:29:52 +0000 (UTC)
+	 MIME-Version; b=n+Qff2nWU0RLx9DcgFKQay+p8laG2IFKbpF0w5IgjGFsMVv/IfkYbYLQiw8M34suaSI8z0lgyEILiP0dq7azUOgmJiCYv07KAOazJ1oBLiogaZVfCXyQKtJIMr+b0D2t9VgZwWVxQh6Kj1phx0oZcmtzVW3xSrMu07inEGB7gGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4OV0d+H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4841F000E9;
+	Wed, 20 May 2026 16:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294592;
-	bh=ESaPmnV34o7FfFAxOx8RNUCxu48WKIuCMan89RG0TBo=;
+	s=korg; t=1779294621;
+	bh=0wh7+KbVGG9VQlYq1L3aOUnSNSxT5P/ZDsGhJOZkDMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IC+eD83hwvLq0lSU/p7kto3GQ2aZ1haguuB4cDrN0y7DSC5XG+G+ZwcQtOrUUHprw
-	 p5S5cvjj2PfENb4RLkm4M/qfjLpS8j1Jw4dAfqSqGToa8l6PDXQj8sdWGZBXcoFmD5
-	 BkoLGbXRpFODLzgE/5k8lAMqr211tjodAz1Hlwog=
+	b=n4OV0d+HO5/+hnfxaGwURtdZz5GdLh8AK7yBruzQgK+IO0QbZ/QTB82R5BvUCShiU
+	 B9nbMZa75oiX/EigCDEALSFGwhqo7ht/HU13dyOnCW1AZ3xmk5GVPx4vuNP1352Vqs
+	 e9FkJIst4TpH+XPzW7lTKRGWwE4vtu9bwT+fkT3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Pavithra Prakash <pavrampu@linux.vnet.ibm.com>,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0081/1146] powerpc/pgtable-frag: Fix bad page state in pte_frag_destroy
-Date: Wed, 20 May 2026 18:05:31 +0200
-Message-ID: <20260520162150.186043004@linuxfoundation.org>
+Subject: [PATCH 7.0 0082/1146] powerpc/64s: Fix unmap race with PMD migration entries
+Date: Wed, 20 May 2026 18:05:32 +0200
+Message-ID: <20260520162150.208396115@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -77,11 +77,11 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250119-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250130-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.ibm.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.vnet.ibm.com,gmail.com,linux.ibm.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -94,8 +94,8 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2FF40592361
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: B2AD9592403
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,85 +105,174 @@ X-Rspamd-Server: lfdr
 
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit fda4d71651f71c44b35829d13f3c8bf920032f77 ]
+[ Upstream commit bbcbf045d6c778e82b47a35fc8728387708e9a3d ]
 
-powerpc uses pt_frag_refcount as a reference counter for tracking it's
-pte and pmd page table fragments. For PTE table, in case of Hash with
-64K pagesize, we have 16 fragments of 4K size in one 64K page.
+The following race is possible with migration swap entries or
+device-private THP entries. e.g. when move_pages is called on a PMD THP
+page, then there maybe an intermediate state, where PMD entry acts as
+a migration swap entry (pmd_present() is true). Then if an munmap
+happens at the same time, then this VM_BUG_ON() can happen in
+pmdp_huge_get_and_clear_full().
 
-Patch series [1] "mm: free retracted page table by RCU"
-added pte_free_defer() to defer the freeing of PTE tables when
-retract_page_tables() is called for madvise MADV_COLLAPSE on shmem
-range.
-[1]: https://lore.kernel.org/all/7cd843a9-aa80-14f-5eb2-33427363c20@google.com/
+This patch fixes that.
 
-pte_free_defer() sets the active flag on the corresponding fragment's
-folio & calls pte_fragment_free(), which reduces the pt_frag_refcount.
-When pt_frag_refcount reaches 0 (no active fragment using the folio), it
-checks if the folio active flag is set, if set, it calls call_rcu to
-free the folio, it the active flag is unset then it calls pte_free_now().
+Thread A: move_pages() syscall
+  add_folio_for_migration()
+    mmap_read_lock(mm)
+    folio_isolate_lru(folio)
+    mmap_read_unlock(mm)
 
-Now, this can lead to following problem in a corner case...
+  do_move_pages_to_node()
+    migrate_pages()
+      try_to_migrate_one()
+        spin_lock(ptl)
+        set_pmd_migration_entry()
+          pmdp_invalidate()     # PMD: _PAGE_INVALID | _PAGE_PTE | pfn
+          set_pmd_at()          # PMD: migration swap entry (pmd_present=0)
+        spin_unlock(ptl)
+        [page copy phase]       # <--- RACE WINDOW -->
 
-[  265.351553][  T183] BUG: Bad page state in process a.out  pfn:20d62
-[  265.353555][  T183] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x20d62
-[  265.355457][  T183] flags: 0x3ffff800000100(active|node=0|zone=0|lastcpupid=0x7ffff)
-[  265.358719][  T183] raw: 003ffff800000100 0000000000000000 5deadbeef0000122 0000000000000000
-[  265.360177][  T183] raw: 0000000000000000 c0000000119caf58 00000000ffffffff 0000000000000000
-[  265.361438][  T183] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-[  265.362572][  T183] Modules linked in:
-[  265.364622][  T183] CPU: 0 UID: 0 PID: 183 Comm: a.out Not tainted 6.18.0-rc3-00141-g1ddeaaace7ff-dirty #53 VOLUNTARY
-[  265.364785][  T183] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
-[  265.364908][  T183] Call Trace:
-[  265.364955][  T183] [c000000011e6f7c0] [c000000001cfaa18] dump_stack_lvl+0x130/0x148 (unreliable)
-[  265.365202][  T183] [c000000011e6f7f0] [c000000000794758] bad_page+0xb4/0x1c8
-[  265.365384][  T183] [c000000011e6f890] [c00000000079c020] __free_frozen_pages+0x838/0xd08
-[  265.365554][  T183] [c000000011e6f980] [c0000000000a70ac] pte_frag_destroy+0x298/0x310
-[  265.365729][  T183] [c000000011e6fa30] [c0000000000aa764] arch_exit_mmap+0x34/0x218
-[  265.365912][  T183] [c000000011e6fa80] [c000000000751698] exit_mmap+0xb8/0x820
-[  265.366080][  T183] [c000000011e6fc30] [c0000000001b1258] __mmput+0x98/0x300
-[  265.366244][  T183] [c000000011e6fc80] [c0000000001c81f8] do_exit+0x470/0x1508
-[  265.366421][  T183] [c000000011e6fd70] [c0000000001c95e4] do_group_exit+0x88/0x148
-[  265.366602][  T183] [c000000011e6fdc0] [c0000000001c96ec] pid_child_should_wake+0x0/0x178
-[  265.366780][  T183] [c000000011e6fdf0] [c00000000003a270] system_call_exception+0x1b0/0x4e0
-[  265.366958][  T183] [c000000011e6fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+Thread B: munmap()
+  mmap_write_downgrade(mm)
+  unmap_vmas() -> zap_pmd_range()
+    zap_huge_pmd()
+      __pmd_trans_huge_lock()
+        pmd_is_huge():          # !pmd_present && !pmd_none -> TRUE (swap entry)
+        pmd_lock() -> 		# spin_lock(ptl), waits for Thread A to release ptl
+      pmdp_huge_get_and_clear_full()
+        VM_BUG_ON(!pmd_present(*pmdp))  # HITS!
 
-The bad page state error occurs when such a folio gets freed (with
-active flag set), from do_exit() path in parallel.
+[  287.738700][ T1867] ------------[ cut here ]------------
+[  287.743843][ T1867] kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:187!
+cpu 0x0: Vector: 700 (Program Check) at [c00000044037f4f0]
+    pc: c000000000094ca4: pmdp_huge_get_and_clear_full+0x6c/0x23c
+    lr: c000000000645dec: zap_huge_pmd+0xb0/0x868
+    sp: c00000044037f790
+   msr: 800000000282b033
+  current = 0xc0000004032c1a00
+  paca    = 0xc000000004fe0000   irqmask: 0x03   irq_happened: 0x09
+    pid   = 1867, comm = a.out
+kernel BUG at :187!
+Linux version 6.19.0-12136-g14360d4f917c-dirty (powerpc64le-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #27 SMP PREEMPT Sun Feb 22 10:38:56 IST 2026
+enter ? for help
+[link register   ] c000000000645dec zap_huge_pmd+0xb0/0x868
+[c00000044037f790] c00000044037f7d0 (unreliable)
+[c00000044037f7d0] c000000000645dcc zap_huge_pmd+0x90/0x868
+[c00000044037f840] c0000000005724cc unmap_page_range+0x176c/0x1f40
+[c00000044037fa00] c000000000572ea0 unmap_vmas+0xb0/0x1d8
+[c00000044037fa90] c0000000005af254 unmap_region+0xb4/0x128
+[c00000044037fb50] c0000000005af400 vms_complete_munmap_vmas+0x138/0x310
+[c00000044037fbe0] c0000000005b0f1c do_vmi_align_munmap+0x1ec/0x238
+[c00000044037fd30] c0000000005b3688 __vm_munmap+0x170/0x1f8
+[c00000044037fdf0] c000000000587f74 sys_munmap+0x2c/0x40
+[c00000044037fe10] c000000000032668 system_call_exception+0x128/0x350
+[c00000044037fe50] c00000000000d05c system_call_vectored_common+0x15c/0x2ec
+---- Exception: 3000 (System Call Vectored) at 0000000010064a2c
+SP (7fff9b1ee9c0) is in userspace
+0:mon> zh
 
-... this can happen when the pte fragment was allocated from this folio,
-but when all the fragments get freed, the pte_frag_refcount still had some
-unused fragments. Now, if this process exits, with such folio as it's cached
-pte_frag in mm->context, then during pte_frag_destroy(), we simply call
-pagetable_dtor() and pagetable_free(), meaning it doesn't clear the
-active flag. This, can lead to the above bug. Since we are anyway in
-do_exit() path, then if the refcount is 0, then I guess it should be
-ok to simply clear the folio active flag before calling pagetable_dtor()
-& pagetable_free().
+commit a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages"),
+enabled migration for device-private PMD entries. Hence this is one
+other path where this warning could get trigger from.
 
-Fixes: 32cc0b7c9d50 ("powerpc: add pte_free_defer() for pgtables sharing page")
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+ ------------[ cut here ]------------
+ WARNING: arch/powerpc/mm/book3s64/hash_pgtable.c:199 at hash__pmd_hugepage_update+0x48/0x284, CPU#3: hmm-tests/1905
+ Modules linked in: test_hmm
+ CPU: 3 UID: 0 PID: 1905 Comm: hmm-tests Tainted: G    B   W    L   N  7.0.0-rc1-01438-g7e2f0ee7581c #21 PREEMPT
+ Tainted: [B]=BAD_PAGE, [W]=WARN, [L]=SOFTLOCKUP, [N]=TEST
+ Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
+ NIP [c000000000096b70] hash__pmd_hugepage_update+0x48/0x284
+ LR [c000000000096e7c] hash__pmdp_huge_get_and_clear+0xd0/0xd4
+ Call Trace:
+ [c000000604707670] [c000000004e102b8] 0xc000000004e102b8 (unreliable)
+ [c000000604707700] [c00000000064ec3c] set_pmd_migration_entry+0x414/0x498
+ [c000000604707760] [c00000000063e5a4] migrate_vma_collect_pmd+0x12e8/0x16c4
+ [c000000604707890] [c00000000059282c] walk_pgd_range+0x7fc/0xd2c
+ [c000000604707990] [c000000000592e40] __walk_page_range+0xe4/0x2ac
+ [c000000604707a10] [c000000000593534] walk_page_range_mm_unsafe+0x204/0x2a4
+ [c000000604707ab0] [c00000000063af10] migrate_vma_setup+0x1dc/0x2e8
+ [c000000604707b10] [c008000006a21838] dmirror_migrate_to_system.constprop.0+0x210/0x4b0 [test_hmm]
+ [c000000604707c30] [c008000006a245b0] dmirror_fops_unlocked_ioctl+0x454/0xa5c [test_hmm]
+ [c000000604707d20] [c0000000006aab84] sys_ioctl+0x4ec/0x1178
+ [c000000604707e10] [c0000000000326a8] system_call_exception+0x128/0x350
+ [c000000604707e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+ ---- interrupt: 3000 at 0x7fffbe44f50c
+
+Fixes: 75358ea359e7c ("powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race")
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/ee13e7f99b8f258019da2b37655b998e73e5ef8b.1773078178.git.ritesh.list@gmail.com
+Link: https://patch.msgid.link/9437e5ef28d1e2f5cbdd7f8286350ce93c1d43c5.1773078178.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/pgtable-frag.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 15 +++++++++++++++
+ arch/powerpc/mm/book3s64/pgtable.c           | 13 +++++++++----
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-index 77e55eac16e42..ae742564a3d56 100644
---- a/arch/powerpc/mm/pgtable-frag.c
-+++ b/arch/powerpc/mm/pgtable-frag.c
-@@ -25,6 +25,7 @@ void pte_frag_destroy(void *pte_frag)
- 	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
- 	/* We allow PTE_FRAG_NR fragments from a PTE page */
- 	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
-+		folio_clear_active(ptdesc_folio(ptdesc));
- 		pagetable_dtor(ptdesc);
- 		pagetable_free(ptdesc);
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index 1a91762b455d9..66a953046a49a 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1313,12 +1313,27 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+ {
+ 	pmd_t old_pmd;
+ 
++	/*
++	 * Non-present PMDs can be migration entries or device-private THP
++	 * entries. This can happen at 2 places:
++	 * - When the address space is being unmapped zap_huge_pmd(), and we
++	 *   encounter non-present pmds.
++	 * - migrate_vma_collect_huge_pmd() could calls this during migration
++	 *   of device-private pmd entries.
++	 */
++	if (!pmd_present(*pmdp)) {
++		old_pmd = READ_ONCE(*pmdp);
++		pmd_clear(pmdp);
++		goto out;
++	}
++
+ 	if (radix_enabled()) {
+ 		old_pmd = radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
+ 	} else {
+ 		old_pmd = hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
  	}
+ 
++out:
+ 	page_table_check_pmd_clear(mm, addr, old_pmd);
+ 
+ 	return old_pmd;
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 4b09c04654a8f..42c7906d0e436 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -209,16 +209,21 @@ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp, int full)
+ {
+ 	pmd_t pmd;
++	bool was_present = pmd_present(*pmdp);
++
+ 	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
+-	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)) ||
+-		   !pmd_present(*pmdp));
++	VM_BUG_ON(was_present && !pmd_trans_huge(*pmdp));
++	/*
++	 * Check pmdp_huge_get_and_clear() for non-present pmd case.
++	 */
+ 	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
+ 	/*
+ 	 * if it not a fullmm flush, then we can possibly end up converting
+ 	 * this PMD pte entry to a regular level 0 PTE by a parallel page fault.
+-	 * Make sure we flush the tlb in this case.
++	 * Make sure we flush the tlb in this case. TLB flush not needed for
++	 * non-present case.
+ 	 */
+-	if (!full)
++	if (was_present && !full)
+ 		flush_pmd_tlb_range(vma, addr, addr + HPAGE_PMD_SIZE);
+ 	return pmd;
+ }
 -- 
 2.53.0
 
