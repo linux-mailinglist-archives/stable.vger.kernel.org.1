@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-250355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDeDOiMPDmrc5wUAu9opvQ
-	(envelope-from <stable+bounces-250355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:35 +0200
+	id qHJpMNMYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50898598B0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFC6599912
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 185B934D07F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E67E33DBCDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA84532B123;
-	Wed, 20 May 2026 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657E32DC76C;
+	Wed, 20 May 2026 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6iY4NtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyMuzsEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5B7221F2F;
-	Wed, 20 May 2026 16:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAE1331220;
+	Wed, 20 May 2026 17:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295196; cv=none; b=oZWR42Wt4l6hFfEktKUTVBLkXpZUceM01HG4FdMYhzxkmR0dV1RTca6gsrWHAPZhI/p0Bch85GD5d2w4zKZWXc2EK8w6UniO9rWqWT/1ORfWbZORx0J4Li3zVKn5kdp5XCuiopUHa/Yb+Sl0zbFP00Yhw64OiWdtJPdpdOG0sWU=
+	t=1779297536; cv=none; b=eR8JP/ymcZsGdfy356Z1BeoNf7xnl6aej12UtB36XuJL/0S3N/40sxjf9a6RqAh58jBjPTUGPUfeI9jKPol7rIF3IcI/88TBJ81QldoyP3IqVAnULBgFv2BlyXhTy9C/BX9XU8BzhZu/kjSWbVGYS5ObTH2FK0SPP+fSkGZ96f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295196; c=relaxed/simple;
-	bh=gjWT0C+qquBlWgQk5So8qar7c9nYav3KApgyxe7dkw4=;
+	s=arc-20240116; t=1779297536; c=relaxed/simple;
+	bh=T7N+8hwKymuysgq4mCO5aOTswE2U0oPLf2s9qES+fd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RAZIjPVKh647l+rXt8tSVSvRdYgMIUsGvCEAXZ44aioyP1+2FEtHeKHW/4u9Wujx1oP7VKB10y9cpnh3P7mCsDpySxRERPYt8MqKBy3KvzRFKuwf6XvMSfx0Gha/8O7SlQqfSkuzwxdDbmMHCpPjq/Bz/RVbpO6WJbGaktJHPjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6iY4NtJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043B91F000E9;
-	Wed, 20 May 2026 16:39:54 +0000 (UTC)
+	 MIME-Version; b=rj1FmWqiRweXflMiPW06U0xQDzOUp4GdOZY8j171ruAth6m0LLycH4ldktJ/L8ET0CiyjUrnIKXAEsh7R6ztdarck/qQO9V+FUWSwSiz8gDfVcAgx9MjtPh7fUiwbKsQxvS5K0BEi+rtsriEmQubB+ie2bPlgKdJAij4KHo2gxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyMuzsEX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B981F000E9;
+	Wed, 20 May 2026 17:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295195;
-	bh=qtVXUu6Of3P93hnL//HpA1qlQz7RzZeO/PB6XXKujN0=;
+	s=korg; t=1779297535;
+	bh=tUVL/nuF94naZR1D9XQoNCZfPCB3CeWAOpmRpd1+XYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j6iY4NtJMpcQX/LX8kCsPAqc8qzUGEB5tVQiElBQ+UvQ8evDyk5xQKDQ/GtcvWPqN
-	 tB9+bQj1s1Pmjxtp86OLuAwJrfhOlE6gTwu+uEmA/kDqryRL/uzeIXzbUT7yb0a4ec
-	 OW1TuMCwmOnbk0S1Lw5rbnwZ9Edv1qzwBCJ6QK/0=
+	b=oyMuzsEXIA1UDJEU72WPYdm8/3JNPAuBFvXaa0B5dUOvmG3IxLE/j8Qu4+FEXNIQL
+	 LElgBaugNzA3bN8AW/hbOTDYsEinrYjTisn3+5P0fX81+MaTcepMXpNiV1NWAVn+1a
+	 GX+OPV1RrY2RqdJxn7cAkSCkSOeArqgH96vQD5hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ellen Pan <yunru.pan@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Bokun Zhang <bokun.zhang@amd.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0300/1146] drm/amdgpu: Remove dead negative offset check in amdgpu_virt_init_critical_region()
+Subject: [PATCH 6.18 067/957] params: Replace __modinit with __init_or_module
 Date: Wed, 20 May 2026 18:09:10 +0200
-Message-ID: <20260520162154.999434316@linuxfoundation.org>
+Message-ID: <20260520162136.017195720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +65,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250355-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251266-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 50898598B0C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,samsung.com:email,atomlin.com:email]
+X-Rspamd-Queue-Id: 3DFC6599912
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 4fce3dfab54d60ebaff1c7a9020a730a0708b705 ]
+[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
 
-amdgpu_virt_init_critical_region() stores init_hdr_offset as u64.
-The subsequent check for init_hdr_offset < 0 is therefore always false.
+Remove the custom __modinit macro from kernel/params.c and instead use the
+common __init_or_module macro from include/linux/module.h. Both provide the
+same functionality.
 
-Drop the unreachable validation and rely on the existing
-check_add_overflow() and VRAM end bounds check for offset validation.
-
-This resolves the Smatch warning about comparing an unsigned value
-against zero.
-
-drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c:953 amdgpu_virt_init_critical_region() warn: unsigned 'init_hdr_offset' is never less than zero.
-
-Fixes: 07009df6494d ("drm/amdgpu: Introduce SRIOV critical regions v2 during VF init")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Ellen Pan <yunru.pan@amd.com>
-Cc: Lijo Lazar <lijo.lazar@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Bokun Zhang <bokun.zhang@amd.com>
-Reviewed-by: Ellen Pan <yunru.pan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 5 -----
- 1 file changed, 5 deletions(-)
+ kernel/params.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 275745aa58292..1e284ecad2170 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -950,11 +950,6 @@ int amdgpu_virt_init_critical_region(struct amdgpu_device *adev)
- 	if (adev->virt.req_init_data_ver != GPU_CRIT_REGION_V2)
- 		return 0;
+diff --git a/kernel/params.c b/kernel/params.c
+index b96cfd693c996..7c2242f64bf08 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -596,12 +596,6 @@ static ssize_t param_attr_store(const struct module_attribute *mattr,
+ }
+ #endif
  
--	if (init_hdr_offset < 0) {
--		dev_err(adev->dev, "Invalid init header offset\n");
--		return -EINVAL;
--	}
+-#ifdef CONFIG_MODULES
+-#define __modinit
+-#else
+-#define __modinit __init
+-#endif
 -
- 	vram_size = RREG32(mmRCC_CONFIG_MEMSIZE);
- 	if (!vram_size || vram_size == U32_MAX)
- 		return -EINVAL;
+ #ifdef CONFIG_SYSFS
+ void kernel_param_lock(struct module *mod)
+ {
+@@ -626,9 +620,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
+  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
+  * if there's an error.
+  */
+-static __modinit int add_sysfs_param(struct module_kobject *mk,
+-				     const struct kernel_param *kp,
+-				     const char *name)
++static __init_or_module int add_sysfs_param(struct module_kobject *mk,
++					    const struct kernel_param *kp,
++					    const char *name)
+ {
+ 	struct module_param_attrs *new_mp;
+ 	struct attribute **new_attrs;
+@@ -761,7 +755,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
+ 
+-struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
++struct module_kobject * __init_or_module
++lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
 -- 
 2.53.0
 
