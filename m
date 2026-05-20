@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKeaKDgaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:52 +0200
+	id IJ4yLe/0DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6A7599B8B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55BF5594CE5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0A8DB3023C6A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A366306D151
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68680368968;
-	Wed, 20 May 2026 18:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC55336405A;
+	Wed, 20 May 2026 17:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCi+QkI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGstAd1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230E730DEAC;
-	Wed, 20 May 2026 18:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66862349AFF;
+	Wed, 20 May 2026 17:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302134; cv=none; b=d5rf3hoTHq55ag7286vSTHBJX93IyZ6oeH3sS/Gloyv41EmHqKqVpiy0BPwsrYNUJmFKiYYhRcL//kwaXf7g73Tb+EDNlUoFt+tRveb/pGzUo/lICfuQbyZdacYV9arEngCLo7UAieZrEYZN/TGnKTKCNHHNOB94ncH1rja7Cj8=
+	t=1779299173; cv=none; b=S6RpXfbO0dZxMhpY43dl5KUV01yuyB0FIkYtZfzJDHK3W2q3OcvTLX2C+IfAES6/l45iB7I1p5OwG3B3udMw/6j5sydt0ClmqBK+6fDGvnGuITAA80DmVCOfL+oAH/AfsqjKsS/u7LHYJjMvbe9Us3jSxijdlf5q4B9nX1hdAFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302134; c=relaxed/simple;
-	bh=RzjFHnXqnSvxXKrCxQXkxSqoDSPU8LZQPiMTxgUSrzk=;
+	s=arc-20240116; t=1779299173; c=relaxed/simple;
+	bh=frgD5WnDc6inQBlcztNdySqPBieYpq6+YL9bxJsMWNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLZmgkDZ1FwgyVG4RCbJwRlmMGNpbcntlm1vUztUPM1a6tjOmy2E41+ILluu3ZXBKgCs2l97XhcrN0Q94h1xXl9L/HvNObDmiCj1MTW3ZNOKOsLLxfQxpProPnAiXp0s0vOzzxBwBpp/7/qRAboFFhymDbG8ar7ZUOVb9xfhIN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCi+QkI6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872651F000E9;
-	Wed, 20 May 2026 18:35:32 +0000 (UTC)
+	 MIME-Version; b=Qbc9P/hupVBid9fyqIM3mbzRmJ7h2tCEpBKZInDlr/vUQyC6bwgvBtTB8efJF4gnj7FuVKZjQuBqi+ojKLFqqpn4STyhKMe4wircOL4XdommSfBoL5yyVBG+OsZLiRXvMqZ07L0fhawr1UJuS9wEQj0aYUHfhkPI6m9/gwiV9eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGstAd1I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFD51F000E9;
+	Wed, 20 May 2026 17:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302133;
-	bh=GRK4FyuyTs+imdHuDDdNPYSHasgiSDTPR+Rz4cECW0g=;
+	s=korg; t=1779299172;
+	bh=EwDUO7HTon8TMpuSV3dr/clmkTzjX6kBZTSIa3oWYk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bCi+QkI6tnbE0tmS9u5j+DnACYPB4t9u/ioKew2f2Wk0hbHoGNSpzcHdp22G4rXjm
-	 hkIGvmr5NgNhtjfYFQZTV1+c9oTtbjOiG0qz4ARbYcsPdM6auy8aR8nbxdK87gNjKA
-	 9jvx6L10U+3AgtxfBbUMT89S8L+qU6EOSLVkCKsY=
+	b=sGstAd1IMCvdc3ArcV1n4VN6PbhNyfU242D7zwMQ4YV4PIr8KHi8DpxmgREEXs8D1
+	 eLJsNlPBZSN0btAYhtifltrU9pxrffJj8BtobnBcOPkmyx4E+XjphVRnmeflfon3V1
+	 p458Fz+jZ76T5QNBkG1gwjWxcE/y22pq+rsuB8G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/508] PCI: mediatek-gen3: Prevent leaking IRQ domains when IRQ not found
+Subject: [PATCH 6.18 690/957] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
 Date: Wed, 20 May 2026 18:19:33 +0200
-Message-ID: <20260520162101.886991965@linuxfoundation.org>
+Message-ID: <20260520162149.504117277@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +66,200 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252997-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251897-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,chromium.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url]
-X-Rspamd-Queue-Id: AB6A7599B8B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 55BF5594CE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5573c44cb3fd01a9f62d569ae9ac870ef5f0e0ba ]
+[ Upstream commit 1ada03fdef82d3d7d2edb9dcd3acc91917675e48 ]
 
-In mtk_pcie_setup_irq(), the IRQ domains are allocated before the
-controller's IRQ is fetched. If the latter fails, the function
-directly returns an error, without cleaning up the allocated domains.
+sfb_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Hence, reverse the order so that the IRQ domains are allocated after the
-controller's IRQ is found.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-This was flagged by Sashiko during a review of "[PATCH v6 0/7] PCI:
-mediatek-gen3: add power control support".
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
 
-Fixes: 814cceebba9b ("PCI: mediatek-gen3: Add INTx support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260324052002.4072430-1-wenst%40chromium.org
-Link: https://patch.msgid.link/20260324093542.18523-1-wenst@chromium.org
+tc_sfb_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260421141655.3953721-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek-gen3.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sched/sch_sfb.c | 54 +++++++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
-index 975b3024fb08c..822d9b8e09f60 100644
---- a/drivers/pci/controller/pcie-mediatek-gen3.c
-+++ b/drivers/pci/controller/pcie-mediatek-gen3.c
-@@ -760,14 +760,14 @@ static int mtk_pcie_setup_irq(struct mtk_gen3_pcie *pcie)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	int err;
+diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
+index d2835f1168e1d..00286c930b8de 100644
+--- a/net/sched/sch_sfb.c
++++ b/net/sched/sch_sfb.c
+@@ -130,7 +130,7 @@ static void increment_one_qlen(u32 sfbhash, u32 slot, struct sfb_sched_data *q)
  
--	err = mtk_pcie_init_irq_domains(pcie);
--	if (err)
--		return err;
--
- 	pcie->irq = platform_get_irq(pdev, 0);
- 	if (pcie->irq < 0)
- 		return pcie->irq;
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen < 0xFFFF)
+-			b[hash].qlen++;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen + 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
+ 	}
+ }
+@@ -159,7 +159,7 @@ static void decrement_one_qlen(u32 sfbhash, u32 slot,
  
-+	err = mtk_pcie_init_irq_domains(pcie);
-+	if (err)
-+		return err;
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen > 0)
+-			b[hash].qlen--;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen - 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
+ 	}
+ }
+@@ -179,12 +179,12 @@ static void decrement_qlen(const struct sk_buff *skb, struct sfb_sched_data *q)
+ 
+ static void decrement_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
+ {
+-	b->p_mark = prob_minus(b->p_mark, q->decrement);
++	WRITE_ONCE(b->p_mark, prob_minus(b->p_mark, q->decrement));
+ }
+ 
+ static void increment_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
+ {
+-	b->p_mark = prob_plus(b->p_mark, q->increment);
++	WRITE_ONCE(b->p_mark, prob_plus(b->p_mark, q->increment));
+ }
+ 
+ static void sfb_zero_all_buckets(struct sfb_sched_data *q)
+@@ -202,11 +202,14 @@ static u32 sfb_compute_qlen(u32 *prob_r, u32 *avgpm_r, const struct sfb_sched_da
+ 	const struct sfb_bucket *b = &q->bins[q->slot].bins[0][0];
+ 
+ 	for (i = 0; i < SFB_LEVELS * SFB_NUMBUCKETS; i++) {
+-		if (qlen < b->qlen)
+-			qlen = b->qlen;
+-		totalpm += b->p_mark;
+-		if (prob < b->p_mark)
+-			prob = b->p_mark;
++		u32 b_qlen = READ_ONCE(b->qlen);
++		u32 b_mark = READ_ONCE(b->p_mark);
 +
- 	irq_set_chained_handler_and_data(pcie->irq, mtk_pcie_irq_handler, pcie);
++		if (qlen < b_qlen)
++			qlen = b_qlen;
++		totalpm += b_mark;
++		if (prob < b_mark)
++			prob = b_mark;
+ 		b++;
+ 	}
+ 	*prob_r = prob;
+@@ -295,7 +298,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  
- 	return 0;
+ 	if (unlikely(sch->q.qlen >= q->limit)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.queuedrop++;
++		WRITE_ONCE(q->stats.queuedrop,
++			   q->stats.queuedrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -348,7 +352,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	if (unlikely(minqlen >= q->max)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.bucketdrop++;
++		WRITE_ONCE(q->stats.bucketdrop,
++			   q->stats.bucketdrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -374,7 +379,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		}
+ 		if (sfb_rate_limit(skb, q)) {
+ 			qdisc_qstats_overlimit(sch);
+-			q->stats.penaltydrop++;
++			WRITE_ONCE(q->stats.penaltydrop,
++				   q->stats.penaltydrop + 1);
+ 			goto drop;
+ 		}
+ 		goto enqueue;
+@@ -390,14 +396,17 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			 * In either case, we want to start dropping packets.
+ 			 */
+ 			if (r < (p_min - SFB_MAX_PROB / 2) * 2) {
+-				q->stats.earlydrop++;
++				WRITE_ONCE(q->stats.earlydrop,
++					   q->stats.earlydrop + 1);
+ 				goto drop;
+ 			}
+ 		}
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.marked++;
++			WRITE_ONCE(q->stats.marked,
++				   q->stats.marked + 1);
+ 		} else {
+-			q->stats.earlydrop++;
++			WRITE_ONCE(q->stats.earlydrop,
++				   q->stats.earlydrop + 1);
+ 			goto drop;
+ 		}
+ 	}
+@@ -410,7 +419,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->q.qlen++;
+ 		increment_qlen(&cb, q);
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.childdrop++;
++		WRITE_ONCE(q->stats.childdrop,
++			   q->stats.childdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -599,12 +609,12 @@ static int sfb_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct sfb_sched_data *q = qdisc_priv(sch);
+ 	struct tc_sfb_xstats st = {
+-		.earlydrop = q->stats.earlydrop,
+-		.penaltydrop = q->stats.penaltydrop,
+-		.bucketdrop = q->stats.bucketdrop,
+-		.queuedrop = q->stats.queuedrop,
+-		.childdrop = q->stats.childdrop,
+-		.marked = q->stats.marked,
++		.earlydrop = READ_ONCE(q->stats.earlydrop),
++		.penaltydrop = READ_ONCE(q->stats.penaltydrop),
++		.bucketdrop = READ_ONCE(q->stats.bucketdrop),
++		.queuedrop = READ_ONCE(q->stats.queuedrop),
++		.childdrop = READ_ONCE(q->stats.childdrop),
++		.marked = READ_ONCE(q->stats.marked),
+ 	};
+ 
+ 	st.maxqlen = sfb_compute_qlen(&st.maxprob, &st.avgprob, q);
 -- 
 2.53.0
 
