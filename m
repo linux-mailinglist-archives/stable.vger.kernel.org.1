@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLAoC+ouDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:10 +0200
+	id qAfNCgb6DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820CF59B929
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3155595A08
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90DDB385A17F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46D3C312FDE3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53792409625;
-	Wed, 20 May 2026 18:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CDD3F65E6;
+	Wed, 20 May 2026 17:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN9EtNwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFI765q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17127409615;
-	Wed, 20 May 2026 18:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8093E29B8D0;
+	Wed, 20 May 2026 17:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302676; cv=none; b=ekjcGJRhuPYNFvHas5wsbxzkbUMgkk7Y5mnBc+CJySUDojJIsbMqlkw6pLuI/50iFwrBA8RxqFIhOJjAnACiltHGz+VRTuchGjkBd4aiOkEKT0aiOl1xE9iJ0/fC2c1GnydEAp4XkkHUNFtobMcFUv9oqK6nqq77avfVwl3u2tk=
+	t=1779299816; cv=none; b=IlEX941QigDk1nAy4qxo5eX/1IJHM3+DAToeTr8kDUUSlEdz/ai3ek+RqtXgO2HXFQrdgGKc4bCcBoFa8WBMZ7Zoamz0h0S34c3XF1EfeuffY7AnuAA54etLMnLxTuff0NU2Zvu3aggHLJWWrmJVZo+O9MvpQkzKl8q/g6PK+xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302676; c=relaxed/simple;
-	bh=+sMqd2+KQJ+OTbRem5CqET66Lt39K6iVQ+LbKrcHeFQ=;
+	s=arc-20240116; t=1779299816; c=relaxed/simple;
+	bh=Nn6/O0vlAbieHmxvq3lQFfMP9BYzPw5TQkL3gtob7qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvTbkQHbITIjKS6rzgQYBs0iVQzIBeyt1Q836VU78BLcTNsysxSZBa4xSZEtoR9jjO8j4CQ1WNDAIBWaqr8buQeC2H9Uu+RfEgw9nF8cdqaa9om0YnZdoVxoEXRk5mHQjhlWPT+OeL+T7/y6dfvYHJ5nXo4Kplm7XRWtRrPf5mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN9EtNwY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7A21F000E9;
-	Wed, 20 May 2026 18:44:34 +0000 (UTC)
+	 MIME-Version; b=XQdXnoc1ImngW0qSzQWCHD8cPsYDTNaCEDqUbH7DWbD6tjqnO3YEa/hU3KF+AfQ2oQMBwDc/GgD/gsWnqB8HRjZmyYlI4JncP+RrMnBdwmvgkkX7Qkp1c9DYNhkTogHd25R8qZ6Om+Um2+ps8I22VDY/l9PfyH5SROWSPjnSSvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFI765q0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C091F00894;
+	Wed, 20 May 2026 17:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302675;
-	bh=Utk43Uy3+35Hd3ugbSkWlvYfutEGPt0gVzXNX+srVJ4=;
+	s=korg; t=1779299815;
+	bh=hpjjqxy42siUggU8eJuX0k6mb+PiibEnKHaMACa2Oj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yN9EtNwYdChzMnwHZWxf4CjkfRi25uCwsrVdd3qNWun2xJJGZS3MufieDzpZ8p6Gg
-	 swjdk6/burPeulhzCRyGsRKwleSIBVoBT/ePZuAyHNDLBHr9LeBPWZ+TCvxnM7XzIP
-	 oWHKEXe1jnZZyU4oWjqx5AjFhdDwdE6GzAxxD0u8=
+	b=gFI765q0hDepCWXoVc+69W+xByhKJANbiY7yNPOcYIshqX1TFpMzZAOp6o7ah6ubR
+	 f/1Xspui/GDtPdayLfVEz/yBT76D3YnYD+nw1h6FDYcqNPOVqUtHvAJnwNBOJlX3vr
+	 d3nMsIpNw3oS4OIGl3niNgzpqc8MN9PHu40olvWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Vlad Poenaru <vlad.wing@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 358/508] mailbox: mailbox-test: free channels on probe error
+Subject: [PATCH 6.18 898/957] fuse: avoid 0x10 fault in fuse_readahead when max_pages == 0
 Date: Wed, 20 May 2026 18:23:01 +0200
-Message-ID: <20260520162106.389590792@linuxfoundation.org>
+Message-ID: <20260520162154.048212277@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +68,122 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253205-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252110-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 820CF59B929
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C3155595A08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Vlad Poenaru <vlad.wing@gmail.com>
 
-[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
+[ Upstream commit 4ea907108a5c ("fuse: use iomap for readahead") ]
 
-On probe error, free the previously obtained channels. This not only
-prevents a leak, but also UAF scenarios because the client structure
-will be removed nonetheless because it was allocated with devm.
+The upstream fix is the iomap conversion in commit 4ea907108a5c
+("fuse: use iomap for readahead"), which rewrote fuse_readahead()
+entirely and removed the buggy loop along with it.  That refactor
+is too invasive to backport to the pre-iomap readahead path still
+used by 6.18.y (and earlier stable branches), so this is a minimal,
+equivalent fix to the same bug on those branches.
 
-Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+When fc->max_read is smaller than PAGE_SIZE (common on aarch64 with
+64K base pages if the FUSE server advertises a small max_read in INIT),
+max_pages = min(fc->max_pages, fc->max_read / PAGE_SIZE) is 0, so
+cur_pages is 0 on every outer iteration.
+
+fuse_io_alloc(NULL, 0) then calls fuse_folios_alloc(0, ...), which
+calls kzalloc(0, ...) and gets back ZERO_SIZE_PTR == (void *)16.
+The "if (!ia->ap.folios)" guard in fuse_io_alloc does not catch
+ZERO_SIZE_PTR, so fuse_io_alloc happily returns an ia whose
+ap.folios is 0x10.
+
+The inner "while (pages < cur_pages)" loop runs zero times, then
+fuse_send_readpages(ia, ...) dereferences ap->folios[0] in
+folio_pos(), faulting at virtual address 0x10:
+
+  Unable to handle kernel NULL pointer dereference at virtual address
+  0000000000000010
+   fuse_readahead+0x14c/0x490
+   read_pages+0x80/0x318
+   page_cache_ra_unbounded+0x1c0/0x2b0
+   page_cache_ra_order+0xb8/0x368
+   page_cache_sync_ra+0x210/0x320
+   filemap_get_pages+0x290/0xdb0
+   generic_file_read_iter+0xd0/0x540
+   fuse_file_read_iter+0x8c/0x158
+   __arm64_sys_read+0x1a0/0x488
+
+addr2line on the aarch64 vmlinux maps fuse_readahead+0x14c to
+fs/fuse/file.c:897 inlined into :999, i.e. "folio_pos(ap->folios[0])"
+inside fuse_send_readpages.  The faulting instruction "ldr x8, [x8]"
+loads ap->folios[0]; ap->folios was previously loaded as 0x10
+(ZERO_SIZE_PTR).
+
+Without this fix the function would also spin forever, since
+"nr_pages -= pages" makes no progress when pages stays 0; in practice
+the NULL deref masks the spin.
+
+Bail out of the outer loop if cur_pages is 0 -- there is no work we
+can issue via FUSE in this iteration, and remaining folios will be
+handled by read_pages() falling back to ->read_folio.
+
+Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/fuse/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 6bdee87f30836..6d431a8b275c7 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -404,18 +404,27 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
- 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
--		if (!tdev->rx_buffer)
--			return -ENOMEM;
-+		if (!tdev->rx_buffer) {
-+			ret = -ENOMEM;
-+			goto err_free_chans;
-+		}
- 	}
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 00ff6374dc76b..50ade371298b3 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -974,6 +974,16 @@ static void fuse_readahead(struct readahead_control *rac)
+ 		unsigned cur_pages = min(max_pages, nr_pages);
+ 		unsigned int pages = 0;
  
- 	ret = mbox_test_add_debugfs(pdev, tdev);
- 	if (ret)
--		return ret;
-+		goto err_free_chans;
- 
- 	init_waitqueue_head(&tdev->waitq);
- 	dev_info(&pdev->dev, "Successfully registered\n");
- 
- 	return 0;
++		/*
++		 * If max_pages == 0 (e.g. fc->max_read < PAGE_SIZE on a
++		 * 64K-page kernel), cur_pages is 0 and we cannot make
++		 * progress.  Bailing here avoids passing 0 to fuse_io_alloc,
++		 * which would return an ia whose ap.folios is ZERO_SIZE_PTR
++		 * (0x10) -- later dereferenced by fuse_send_readpages.
++		 */
++		if (!cur_pages)
++			break;
 +
-+err_free_chans:
-+	if (tdev->tx_channel)
-+		mbox_free_channel(tdev->tx_channel);
-+	if (tdev->rx_channel)
-+		mbox_free_channel(tdev->rx_channel);
-+	return ret;
- }
- 
- static int mbox_test_remove(struct platform_device *pdev)
+ 		if (fc->num_background >= fc->congestion_threshold &&
+ 		    rac->ra->async_size >= readahead_count(rac))
+ 			/*
 -- 
 2.53.0
 
