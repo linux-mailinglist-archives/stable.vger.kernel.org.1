@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-250213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJzVBHzkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:36 +0200
+	id 6JWUBvnkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F48592484
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D955925D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46DBC3047BD6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:35:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F0713097B2C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E693F44FB;
-	Wed, 20 May 2026 16:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E9C372EF6;
+	Wed, 20 May 2026 16:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P846mU7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPt/4VVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A113F39F3;
-	Wed, 20 May 2026 16:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77A9369D64;
+	Wed, 20 May 2026 16:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294825; cv=none; b=ubvyofTknzhj2RbwjGC1qkQbze7EwhtZXI8ZG8syPMW3DhkYBr3QSjbUY7M/bvhzZjzxU0y0A4c/h0FxnWmn91OHHf4z9uekA5jrkFNAxVr4pKULXIE8WmAfLJ2l7uAikmlanh37DXMbNvlkk5p2IRjaxfBDb7D0wrX+PCuP4hw=
+	t=1779294828; cv=none; b=HyC+TaX4y8HWL52oa8xd81bwVqMLUxI6z0VKydQeY1tRTKyGLjXZO1zQiiExq2sVZGZYnzy6C2x669xuoHC/eojZSook7/Myop1cjXi5A0bUJkVDbI7ndX5YwnxRd9JhEcJBmOz8BHNY8vZjDnF2Z1mvvYqrrRAlhiWt3iaFH08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294825; c=relaxed/simple;
-	bh=Vt3eiNw89oP/QEbw/fgT3NLKyY6bwGHSKgqPit+jmls=;
+	s=arc-20240116; t=1779294828; c=relaxed/simple;
+	bh=LBnOwHsDPHBFexkxCiATzBVvc/OB3TIGhINyl0vn4H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD4KMHaa8Vcoe7L+a8R8dlzkaQdnzJe10bLS6JnOjAz6RUmwmo3BAqxBdEortBQv2AuhcTkI+9LRFvgxz6Xts70upe7vyGIW4ACAYp4e4MqnFGEDrTkVU8vjeTdRgMGiN0K5UcebVw29pCfoIyu++pPSmAkjh1xwl4o0h7Rsgi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P846mU7/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFE1F00893;
-	Wed, 20 May 2026 16:33:43 +0000 (UTC)
+	 MIME-Version; b=VvNMi9X5uuYkAGXnHNEE2trSbMMIpZiojL3m52EG4rt8NUmWcv7xhf4JKmVG4wp1BqgS4QgvoLggr6rncp4Bly0DGKncQcnrVV3X0tqWvie0Gju4cYWjsJlQpFCy9xrJmA2dNtb5/tCz9/vkhrLvv+kH/+TdHkNMAvYw7/l4Mxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPt/4VVH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415531F000E9;
+	Wed, 20 May 2026 16:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294824;
-	bh=vQt6kkLZ7V+wViX4iphm/JBFBQHPlCscP1DUfkIDTus=;
+	s=korg; t=1779294826;
+	bh=i7naAkZuYMo65msR3sCNMHrLY49XkiCHCKQ8287dfr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P846mU7/umgVAbn8qA+qqxwIw+XkdoJp89b/nDkS1DFiHQmn9z/D03KzyN8d8ty40
-	 DcjT5GOnhQHxUM9iF5ZszejYjOCiAffYEQ9KaybRZqeep5H7D38ZdNVh5s+y7ez1Vy
-	 DcsWACtCgBDDJLesDpu+0Sfa9RyHVZMfb6Q+rioc=
+	b=wPt/4VVHrE9HhqcOqwDMiJ5aw61QcM1PH1J/HcpQZ66YK1kg7/u9i9d5/OnOqHM//
+	 YhESvgpuSJrzAfneimNfHg1o5vivgY2O1BFjoSbgp8n7i87nlv1j1QSJ+FO7hrALj8
+	 xulNx/TUzqZ2O20CZD3cYvdahUenNY2JcxR2nPnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	STAR Labs SG <info@starlabs.sg>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0186/1146] bpf: Enforce regsafe base id consistency for BPF_ADD_CONST scalars
-Date: Wed, 20 May 2026 18:07:16 +0200
-Message-ID: <20260520162152.487419253@linuxfoundation.org>
+Subject: [PATCH 7.0 0187/1146] selftests/bpf: fix __jited_unpriv tag name
+Date: Wed, 20 May 2026 18:07:17 +0200
+Message-ID: <20260520162152.508032733@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,30 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-250214-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250213-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,starlabs.sg:email]
-X-Rspamd-Queue-Id: 89F48592484
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C4D955925D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,75 +102,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 2f2ec8e7730e21fc9bd49e0de9cdd58213ea24d0 ]
+[ Upstream commit cdd54fe98c00549264a92613af6bb0e9a5fd0d1c ]
 
-When regsafe() compares two scalar registers that both carry
-BPF_ADD_CONST, check_scalar_ids() maps their full compound id
-(aka base | BPF_ADD_CONST flag) as one idmap entry. However,
-it never verifies that the underlying base ids, that is, with
-the flag stripped are consistent with existing idmap mappings.
+__jited_unpriv was using "test_jited=" as its tag name, same as the
+priv variant __jited. Fix by using "test_jited_unpriv=".
 
-This allows construction of two verifier states where the old
-state has R3 = R2 + 10 (both sharing base id A) while the current
-state has R3 = R4 + 10 (base id C, unrelated to R2). The idmap
-creates two independent entries: A->B (for R2) and A|flag->C|flag
-(for R3), without catching that A->C conflicts with A->B. State
-pruning then incorrectly succeeds.
-
-Fix this by additionally verifying base ID mapping consistency
-whenever BPF_ADD_CONST is set: after mapping the compound ids,
-also invoke check_ids() on the base IDs (flag bits stripped).
-This ensures that if A was already mapped to B from comparing
-the source register, any ADD_CONST derivative must also derive
-from B, not an unrelated C.
-
-Fixes: 98d7ca374ba4 ("bpf: Track delta between "linked" registers.")
-Reported-by: STAR Labs SG <info@starlabs.sg>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20260410232651.559778-1-daniel@iogearbox.net
+Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
+Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260410-selftests-global-tags-ordering-v2-1-c566ec9781bf@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/bpf_misc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index bf5e146692e0a..5eaba53162d20 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -19674,6 +19674,13 @@ static bool check_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
-  * and r7.id=0 (both independent), without temp IDs both would map old_id=X
-  * to cur_id=0 and pass. With temp IDs: r6 maps X->temp1, r7 tries to map
-  * X->temp2, but X is already mapped to temp1, so the check fails correctly.
-+ *
-+ * When old_id has BPF_ADD_CONST set, the compound id (base | flag) and the
-+ * base id (flag stripped) must both map consistently. Example: old has
-+ * r2.id=A, r3.id=A|flag (r3 = r2 + delta), cur has r2.id=B, r3.id=C|flag
-+ * (r3 derived from unrelated r4). Without the base check, idmap gets two
-+ * independent entries A->B and A|flag->C|flag, missing that A->C conflicts
-+ * with A->B. The base ID cross-check catches this.
-  */
- static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
- {
-@@ -19682,7 +19689,15 @@ static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
- 
- 	cur_id = cur_id ? cur_id : ++idmap->tmp_id_gen;
- 
--	return check_ids(old_id, cur_id, idmap);
-+	if (!check_ids(old_id, cur_id, idmap))
-+		return false;
-+	if (old_id & BPF_ADD_CONST) {
-+		old_id &= ~BPF_ADD_CONST;
-+		cur_id &= ~BPF_ADD_CONST;
-+		if (!check_ids(old_id, cur_id, idmap))
-+			return false;
-+	}
-+	return true;
- }
- 
- static void clean_func_state(struct bpf_verifier_env *env,
+diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
+index c9bfbe1bafc12..1cd783aec11ad 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_misc.h
++++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
+@@ -140,7 +140,7 @@
+ #define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __not_msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_not_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
+-#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited=" XSTR(__COUNTER__) "=" msg)))
++#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
+ #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
+ #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
 -- 
 2.53.0
 
