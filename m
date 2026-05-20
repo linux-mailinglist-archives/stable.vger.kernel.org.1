@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sL+QOxcBDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:40 +0200
+	id eGPPMVzrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67077597280
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D375930EA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE563926AE5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F25603067CF7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CBB3F7AA9;
-	Wed, 20 May 2026 18:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A45373BEB;
+	Wed, 20 May 2026 16:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdpBToOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBhtiUE0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651363F787E;
-	Wed, 20 May 2026 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F53317160;
+	Wed, 20 May 2026 16:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300175; cv=none; b=INOgZwqZSQgge7AyKjucq0YeDKPwyLbXuCI+Bipqe/1qOHBNrqD05sS9EJgU5xE7452Iwm1KKLybE/CL2b1HkN6y/CStQK2G+JsbZb5ulVcYAYCDQk9sKKAnSVdZ53qWFqRZS0taScobJnMD/mFhzw48HebXqtERhL9WOx9+AEo=
+	t=1779296008; cv=none; b=quH9nk16LGYlz3flPSLfu8dSigg8fLLqrqWc4+EAe6ujEapw9jcgNjLOJBtddxiKW8xrudgxDaAaAA8Zmkwn9u+VqblKrzD6sqrcoTA4mu37veu/O+paL8QtR4p1x6ZW6CHXxW0TJg6Eupld4qwRmtWg5PmuQPapDV2nwwSvF4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300175; c=relaxed/simple;
-	bh=nclZ9JiycfGznSDjMZyVKsNUjlOyOxqetqwISJGaQGU=;
+	s=arc-20240116; t=1779296008; c=relaxed/simple;
+	bh=tc1mfRnUU7RQDH0IPM3U90Z8ld/9Z4IK0qfb8PghgNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjcnYSvKV2HwJwcEgIuPRdN8imb2uy3HskghTDgPxrB4d6FIe2EnBzbeHEcpzUlh2Wt1V1xQDnbIxzvG5uewLh0XVpFFokk6QNerG3y+hI5Hro4u9hkJgrrPUbqicriJlHNQDRhmJLmxWyVkVB2P5CbfE0PvBc6Cz8oBePQCkfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdpBToOw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7361F000E9;
-	Wed, 20 May 2026 18:02:53 +0000 (UTC)
+	 MIME-Version; b=L2VStihstVtFhSnJhUSwZ9PmFdubGRrqD2ny/KNI7XQTliQIjbswUXr/KBDwls42v34yuAwKWMsLZ8GZjk6Bp3z8fFsbOcklWa6TZEO7q4ziUMXdW7fxbghPiM2u7klq0v9txYZWfn67I61lN/gdS2WI47gtjctoejKcN/e1JrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBhtiUE0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D9B1F000E9;
+	Wed, 20 May 2026 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300174;
-	bh=A3Fye46jNKNb67mx8874n1XOCCCgPNMkn4YWTJ9IM6Y=;
+	s=korg; t=1779296007;
+	bh=xQXgfcPrl/3Hj3nryxzARTmbTDBFVCOZiZwlm+zjsr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IdpBToOwQaUAlpbMKtXA8kgWqiB/qg9UFvSSNVp3Vt7SZf3bQuHbvD3C7YZ/eiFXy
-	 5NFtxuJUg0/ZBY1UHw+FAyKI47DqgUrc4EzBORnIEj1xce36sw/PcQAmaEiakL+CJo
-	 I7ziSBsSu4Bpte3G4r71WeHhJcq56mUQfB6IK4fk=
+	b=rBhtiUE0tauUJ/apU63431qVUUK5azmpMAKTZ+bPgvN5GVNYimVRrn8QCWX+W/kde
+	 FVYM0Uwnys8hOkrRbZ5qzLuahAa4lw6zXNKTlAWOwcxZcbIS+L2HN60Al2ddQ2ES0G
+	 vcT9jQ0NsE7BDhYlCDyp3NQGkDP8QWCXnHnNI6N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/666] net: bcmgenet: fix off-by-one in bcmgenet_put_txcb
-Date: Wed, 20 May 2026 18:14:44 +0200
-Message-ID: <20260520162112.813898723@linuxfoundation.org>
+Subject: [PATCH 7.0 0635/1146] pinctrl: abx500: Fix type of argument variable
+Date: Wed, 20 May 2026 18:14:45 +0200
+Message-ID: <20260520162202.553934354@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252246-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250669-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tipi-net.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email]
-X-Rspamd-Queue-Id: 67077597280
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 98D375930EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 57f3f53d2c9c5a9e133596e2f7bc1c50688a6d38 ]
+[ Upstream commit 34006f77890d050e6d80cbee365b5d703c1140b4 ]
 
-The write_ptr points to the next open tx_cb. We want to return the
-tx_cb that gets rewinded, so we must rewind the pointer first then
-return the tx_cb that it points to. That way the txcb can be correctly
-cleaned up.
+The argument variable is assigned the return value of
+pinconf_to_config_argument(), which returns a u32. Change its type from
+enum pin_config_param to unsigned int to correctly store the configuration
+argument.
 
-Fixes: 876dbadd53a7 ("net: bcmgenet: Fix unmapping of fragments in bcmgenet_xmit()")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260406175756.134567-2-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 03b054e9696c ("pinctrl: Pass all configs to driver on pin_config_set()")
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pinctrl/nomadik/pinctrl-abx500.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 49f6e83d60139..ac9bd34f3b3ce 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1740,15 +1740,15 @@ static struct enet_cb *bcmgenet_put_txcb(struct bcmgenet_priv *priv,
- {
- 	struct enet_cb *tx_cb_ptr;
+diff --git a/drivers/pinctrl/nomadik/pinctrl-abx500.c b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+index fc7ebeda8440e..858fbaebcf8e5 100644
+--- a/drivers/pinctrl/nomadik/pinctrl-abx500.c
++++ b/drivers/pinctrl/nomadik/pinctrl-abx500.c
+@@ -852,7 +852,7 @@ static int abx500_pin_config_set(struct pinctrl_dev *pctldev,
+ 	int ret = -EINVAL;
+ 	int i;
+ 	enum pin_config_param param;
+-	enum pin_config_param argument;
++	unsigned int argument;
  
--	tx_cb_ptr = ring->cbs;
--	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
--
- 	/* Rewinding local write pointer */
- 	if (ring->write_ptr == ring->cb_ptr)
- 		ring->write_ptr = ring->end_ptr;
- 	else
- 		ring->write_ptr--;
- 
-+	tx_cb_ptr = ring->cbs;
-+	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
-+
- 	return tx_cb_ptr;
- }
- 
+ 	for (i = 0; i < num_configs; i++) {
+ 		param = pinconf_to_config_param(configs[i]);
 -- 
 2.53.0
 
