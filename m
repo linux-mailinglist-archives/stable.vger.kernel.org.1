@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEMPFlgXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:36 +0200
+	id gFyJEnPyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B266599707
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B577594586
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D320301831D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2509A3103902
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1213FCB27;
-	Wed, 20 May 2026 18:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B583D5642;
+	Wed, 20 May 2026 17:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3p94DyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/YqwN+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A270340A57;
-	Wed, 20 May 2026 18:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E7336A352;
+	Wed, 20 May 2026 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301434; cv=none; b=TlUX/mXv/vfHaV9mhkZ0iYgqa1pnJdl4nkIQmfBPFM62MEptnwTYw6U7W/ag7azwfcjxoNloKQUObenO8bgpEiLVF5WmbuwP8Pc59fJgkaXwY2+JSNE2X4eguBKKzjJcp8Ed1EbV6/QDiyyTc/w+a8AbjOA1XEWFJ8Wh96Y2k3o=
+	t=1779297266; cv=none; b=XSRmylVWWDVmTVQJLYrsDtBhCd6ZXAj86AWQ8IPNAD6MUCaE7d0BsxArxLuifyUCSoqD+awFXkFLjNbYokSOuJVab7XR1D6SFshhwkksK9sPHhzNbvkxean93NYVpd6Nop4Re4NdtfCybMqE8Evf00IGZa/kKQt34D0sfdmIaTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301434; c=relaxed/simple;
-	bh=HAWEUq9CUTpIq+MJODGb9xWGAlUMamk0LOdR5h7Umwo=;
+	s=arc-20240116; t=1779297266; c=relaxed/simple;
+	bh=16NO9k0Lr0f8528lJed1diyq/ICnUj4loDyglr7RWa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mb4SM+96Q+WzsDqiY/MINpMqIOHE6BfNnfRUvINLT1DXfYag5FBWJeiZ+x8AHfP5tLIKnJVr4icDJwpgesgxwOofctPHJbQ6ytpEr6kl6UaBANNckiQVw3ucMLhFmbQx0fZY35ICWIV5Pvsc/qrf4u66cjvQ9Dz9DqxWwhL+pzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3p94DyE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07111F000E9;
-	Wed, 20 May 2026 18:23:52 +0000 (UTC)
+	 MIME-Version; b=HN2zpG95OBfq7dzlXskJGK+eWnP1FQLID3QSSKtqbHZsr+lCkEud7lbL7uEKnpJ9ao/90UxnrzmRwygotTzQ9Js/taIXowbFWKl863AR1o652bl15Eyrs9XQ9HKjEJP6M6ophoBaaWFKqb4SfMFx/hGKB6hFWMlMZ3cQnmSrMSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/YqwN+g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BB61F000E9;
+	Wed, 20 May 2026 17:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301433;
-	bh=r3NtgaRdk+3QeBe/OJoiOrqxesDQGikR0zIYF3wW2w0=;
+	s=korg; t=1779297265;
+	bh=X+9Cc+r/0ZBYJZK//xgL/SBkakPR8P2dPzWIMTeR5Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M3p94DyEL/5sbTUJyXHEtvUWv+RUlnkY3cVXe6IC9EKnseBKQb6zWYeZ96tdAV7Dq
-	 qJ0lBY5SdCmzQNfh6Zvbqqj1ZVBgN4E+JUBrS+ir6JuyPj0qcn60a5lDs2zBygRObt
-	 HrlydeafwxEzbzeNAxUKhn+JOnhaTgb1VAdjYC8w=
+	b=o/YqwN+goXLwpUbPnUDo9vxM7bvlkSSYMVYanv00VG/oxe0eepmbFs0WEbEiSoK09
+	 YtPJfJR0KY3y+V9mYMJbUH1yPimArItajGrqE+O4uoZzdYAekQzEi47fc7+Oibrkc1
+	 UaGJLRH/5C3GwlPXeYo+ZaT0iWQ60FgadeyU1TiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Hui Tang <tanghui20@huawei.com>,
-	Zhang Qiao <zhangqiao22@huawei.com>
-Subject: [PATCH 6.12 552/666] sched/fair: Clear rel_deadline when initializing forked entities
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 7.0 1113/1146] irqchip/gic-v5: Allocate ITS parent LPIs as a range
 Date: Wed, 20 May 2026 18:22:43 +0200
-Message-ID: <20260520162123.231125804@linuxfoundation.org>
+Message-ID: <20260520162213.433306643@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,120 +69,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252728-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251164-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,huawei.com:email]
-X-Rspamd-Queue-Id: 8B266599707
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0B577594586
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-[ Upstream commit 3da56dc063cd77b9c0b40add930767fab4e389f3 ]
+commit a7c7e42654b6a8676610ee09d22901432c4851af upstream.
 
-A yield-triggered crash can happen when a newly forked sched_entity
-enters the fair class with se->rel_deadline unexpectedly set.
+The ITS MSI domain no longer manages LPI allocation directly. LPIs are
+allocated and freed by the parent LPI domain, which can now handle a
+full range of interrupts and unwind partial allocations internally.
 
-The failing sequence is:
+Make the ITS domain request and release the parent IRQs as a single
+range instead of iterating over each interrupt. The ITS allocation
+path then only needs to reserve EventIDs, allocate the parent range,
+and fill in the ITS irq_data for each MSI. Since no operation in the
+per-MSI loop can fail, the partial parent-free unwind becomes
+unnecessary.
 
-  1. A task is forked while se->rel_deadline is still set.
-  2. __sched_fork() initializes vruntime, vlag and other sched_entity
-     state, but does not clear rel_deadline.
-  3. On the first enqueue, enqueue_entity() calls place_entity().
-  4. Because se->rel_deadline is set, place_entity() treats se->deadline
-     as a relative deadline and converts it to an absolute deadline by
-     adding the current vruntime.
-  5. However, the forked entity's deadline is not a valid inherited
-     relative deadline for this new scheduling instance, so the conversion
-     produces an abnormally large deadline.
-  6. If the task later calls sched_yield(), yield_task_fair() advances
-     se->vruntime to se->deadline.
-  7. The inflated vruntime is then used by the following enqueue path,
-     where the vruntime-derived key can overflow when multiplied by the
-     entity weight.
-  8. This corrupts cfs_rq->sum_w_vruntime, breaks EEVDF eligibility
-     calculation, and can eventually make all entities appear ineligible.
-     pick_next_entity() may then return NULL unexpectedly, leading to a
-     later NULL dereference.
+On teardown, reset the ITS irq_data for the range and then release the
+parent range in one call, leaving LPI teardown to the LPI domain.
 
-A captured trace shows the effect clearly. Before yield, the entity's
-vruntime was around:
-
-  9834017729983308
-
-After yield_task_fair() executed:
-
-  se->vruntime = se->deadline
-
-the vruntime jumped to:
-
-  19668035460670230
-
-and the deadline was later advanced further to:
-
-  19668035463470230
-
-This shows that the deadline had already become abnormally large before
-yield_task_fair() copied it into vruntime.
-
-rel_deadline is only meaningful when se->deadline really carries a
-relative deadline that still needs to be placed against vruntime. A
-freshly forked sched_entity should not inherit or retain this state.
-Clear se->rel_deadline in __sched_fork(), together with the other
-sched_entity runtime state, so that the first enqueue does not interpret
-the new entity's deadline as a stale relative deadline.
-
-Fixes: 82e9d0456e06 ("sched/fair: Avoid re-setting virtual deadline on 'migrations'")
-Analyzed-by: Hui Tang <tanghui20@huawei.com>
-Analyzed-by: Zhang Qiao <zhangqiao22@huawei.com>
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260424071113.1199600-1-quzicheng@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260506093634.382062-4-sascha.bischoff@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-gic-v5-its.c |   22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index df76b32a013fb..9b238c9c71c67 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4453,6 +4453,7 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
- 	p->se.nr_migrations		= 0;
- 	p->se.vruntime			= 0;
- 	p->se.vlag			= 0;
-+	p->se.rel_deadline		= 0;
- 	INIT_LIST_HEAD(&p->se.group_node);
+--- a/drivers/irqchip/irq-gic-v5-its.c
++++ b/drivers/irqchip/irq-gic-v5-its.c
+@@ -937,6 +937,7 @@ static int gicv5_its_irq_domain_alloc(st
+ 	int ret, i;
  
- 	/* A delayed task cannot be in clone(). */
--- 
-2.53.0
-
+ 	its_dev = info->scratchpad[0].ptr;
++	device_id = its_dev->device_id;
+ 
+ 	ret = gicv5_its_alloc_eventid(its_dev, info, nr_irqs, &event_id_base);
+ 	if (ret)
+@@ -946,14 +947,11 @@ static int gicv5_its_irq_domain_alloc(st
+ 	if (ret)
+ 		goto out_eventid;
+ 
+-	device_id = its_dev->device_id;
++	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, NULL);
++	if (ret)
++		goto out_eventid;
+ 
+ 	for (i = 0; i < nr_irqs; i++) {
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
+-		if (ret) {
+-			goto out_free_irqs;
+-		}
+-
+ 		/*
+ 		 * Store eventid and deviceid into the hwirq for later use.
+ 		 *
+@@ -972,12 +970,6 @@ static int gicv5_its_irq_domain_alloc(st
+ 
+ 	return 0;
+ 
+-out_free_irqs:
+-	while (--i >= 0) {
+-		irqd = irq_domain_get_irq_data(domain, virq + i);
+-		irq_domain_reset_irq_data(irqd);
+-		irq_domain_free_irqs_parent(domain, virq + i, 1);
+-	}
+ out_eventid:
+ 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
+ 	return ret;
+@@ -1000,14 +992,14 @@ static void gicv5_its_irq_domain_free(st
+ 	bitmap_release_region(its_dev->event_map, event_id_base,
+ 			      get_count_order(nr_irqs));
+ 
+-	/*  Hierarchically free irq data */
+ 	for (i = 0; i < nr_irqs; i++) {
+ 		d = irq_domain_get_irq_data(domain, virq + i);
+-
+ 		irq_domain_reset_irq_data(d);
+-		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
+ 
++	/*  Hierarchically free irq data */
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
++
+ 	gicv5_its_syncr(its, its_dev);
+ 	gicv5_irs_syncr();
+ }
 
 
 
