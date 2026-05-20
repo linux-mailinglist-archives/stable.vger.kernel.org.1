@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-252637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCaEELj8DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:00 +0200
+	id CHmKHInuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EC65961ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64CD5939D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC90030D4FEE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7FEE30D5AA7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEC53F23C5;
-	Wed, 20 May 2026 18:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F863E277C;
+	Wed, 20 May 2026 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYBSFNNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYTYoe9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990EB347515;
-	Wed, 20 May 2026 18:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F6034041C;
+	Wed, 20 May 2026 17:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301197; cv=none; b=M7VRlO2ySJrgHAGdCU7uMUjOZUKPoIgoKgWOFF1DIFHntF9Du1SE+DLY1BzdtDO5G2UuODIwXuLxgySFQlx9zn08fpEu31CgPYOtrZiA7mPk8m2zf6HbdAo1/rk6QtIDkHOFWlsCvbB84k30WDkNylhrE/D6zw1mbFTQyvWazZk=
+	t=1779297029; cv=none; b=aln9lW4ElS4hejg2c60YIaHluBEzSP5KArqcGYHI0yk9AbkGC0iSAeNJXCFYsiw9LnqsMYTBgKahwzIp3C5sPU4uRCqvKU/CNCJCMCKvFzDbNZKoswzC1u/ukLh552tmDr4oW4hYtHJ6xVnEYaUrgtKKZs8sXqFiBBtHH1VDA3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301197; c=relaxed/simple;
-	bh=3ElX9vmnrk5Yz4DEM8+bQlCgUWLfvTwTsYDO18oX/m8=;
+	s=arc-20240116; t=1779297029; c=relaxed/simple;
+	bh=GpPpeNOx7su2zk0LxF55F1Weg3myNcbrYFwPbfwIB20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnjH/OGBY3MHPF92f+XNZ1TRs5xExB0nWKH3Re8zABdPbai5ZR9iH8xA+OmPTKn2QAUu0SIhNJ8C8euXJyhfA6cGwnXeouGAdSdlIVYnGpAC2JUIGO6zjyBqL7npNsW70UwJs5/jcOWd5i7qNHjRzXsggMugB9zQHiabl1c4t14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYBSFNNb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0271F000E9;
-	Wed, 20 May 2026 18:19:55 +0000 (UTC)
+	 MIME-Version; b=k1lqfrN//YcvV+96HZ6UrCA3Tp5pclOzGNsXvXB3VOtVw+c+zgyyRccX4pm8TsbYhqc4WqwV/QPgLhRZ4PqWQRg0VC1vwL1lDpKZSZqfgliWIsv5X6Xd/ulkObMdA1lvO3zF9+vnxNaW0oJCVKkx9aqYdgGJvfwzkHVPsclfSIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYTYoe9K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F84B1F000E9;
+	Wed, 20 May 2026 17:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301196;
-	bh=dcXQkmuSMWwWR3ponfDCHvZpZ2V6qZXW7z7LEoExF7E=;
+	s=korg; t=1779297028;
+	bh=oTO5dzUFtwGadASLqE/bPDjePcZsKZqb4s34dMxNhm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xYBSFNNbeM7he+20WwyRZeuW7NBxu+MbTCLkCMeL9uikey+TXRhcDtEHZzyLD49lL
-	 MP+qb0/3emdiJq9HlJWT0zfnkl6h6pyeTN8g5FVaE47/GKSASfcvydEdu8dkYqGkNN
-	 9+7iPqZoaGycf+WKJDp1hIRhyUJxgsU8if3f7hdE=
+	b=VYTYoe9KBAaCk5AkrezkKN6QGQaMEPkdjhb5kZBXHnh2vsK29QbEZtCXBA6bQW6Nn
+	 FF4C/r7EJ4L77ACeQmKmN8SwHOK9d6sOS8nqvpqwrMjqGf0GnTrajMPiBS3KgBSY35
+	 +6OQ5K4+IeGG56E7YQZtdCmVV5BBMOOTpcfRHFkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Joe Damato <joe@dama.to>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 462/666] ipv6: fix possible UAF in icmpv6_rcv()
+Subject: [PATCH 7.0 1023/1146] iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler
 Date: Wed, 20 May 2026 18:21:13 +0200
-Message-ID: <20260520162121.283509402@linuxfoundation.org>
+Message-ID: <20260520162211.380935893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252637-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251073-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,83 +89,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D5EC65961ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E64CD5939D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
+[ Upstream commit 34d33313b52eeac3a97ad2e3176d523ec70d9283 ]
 
-Caching saddr and daddr before pskb_pull() is problematic
-since skb->head can change.
+The V1 ADD_VLAN opcode had no success handler; filters sent via V1
+stayed in ADDING state permanently.  Add a fallthrough case so V1
+filters also transition ADDING -> ACTIVE on PF confirmation.
 
-Remove these temporary variables:
+Critically, add an `if (v_retval) break` guard: the error switch in
+iavf_virtchnl_completion() does NOT return after handling errors,
+it falls through to the success switch.  Without this guard, a
+PF-rejected ADD would incorrectly mark ADDING filters as ACTIVE,
+creating a driver/HW mismatch where the driver believes the filter
+is installed but the PF never accepted it.
 
-- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
-  when net_dbg_ratelimited() is called in the slow path.
+For V2, this is harmless: iavf_vlan_add_reject() in the error
+block already kfree'd all ADDING filters, so the success handler
+finds nothing to transition.
 
-- Avoid potential future misuse after pskb_pull() call.
-
-Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Joe Damato <joe@dama.to>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-4-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index 387400829b207..229ae205450d3 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -910,7 +910,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 	struct net *net = dev_net_rcu(skb->dev);
- 	struct net_device *dev = icmp6_dev(skb);
- 	struct inet6_dev *idev = __in6_dev_get(dev);
--	const struct in6_addr *saddr, *daddr;
- 	struct icmp6hdr *hdr;
- 	u8 type;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 93ca79c3e3b53..4f2defd2331b1 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -2876,9 +2876,13 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		spin_unlock_bh(&adapter->adv_rss_lock);
+ 		}
+ 		break;
++	case VIRTCHNL_OP_ADD_VLAN:
+ 	case VIRTCHNL_OP_ADD_VLAN_V2: {
+ 		struct iavf_vlan_filter *f;
  
-@@ -941,12 +940,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 
- 	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
- 
--	saddr = &ipv6_hdr(skb)->saddr;
--	daddr = &ipv6_hdr(skb)->daddr;
--
- 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
- 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 		goto csum_error;
- 	}
- 
-@@ -1029,7 +1026,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 			break;
- 
- 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 
- 		/*
- 		 * error of unknown type.
++		if (v_retval)
++			break;
++
+ 		spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_ADDING)
 -- 
 2.53.0
 
