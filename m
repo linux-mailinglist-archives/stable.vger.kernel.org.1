@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-252096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJMICQciDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:11 +0200
+	id IJLzIkDyDWrj4wUAu9opvQ
+	(envelope-from <stable+bounces-251130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A425C59A6EC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392875944CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC6E137C3A5E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 43E09311DBFA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FAA368941;
-	Wed, 20 May 2026 17:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024303F8704;
+	Wed, 20 May 2026 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm5acXIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2MAfrN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC5D33ADB9;
-	Wed, 20 May 2026 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA58B3F7ABB;
+	Wed, 20 May 2026 17:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299735; cv=none; b=BDuilkV1TaP4rlSjmuWi5f5Avah1skb6h3mevjo8x3uLzy196uJbAOSUgl2ciRSZVDjBjuYR/9gP0gfNWGrAm8ZMfyZGKhc2WI3hM47eoYc07MVSQtm9ohyvWdtIOnNfjO2Xl310WbYrq8WWHknB+NmcTIDiMCRz3lMKoSEo13I=
+	t=1779297176; cv=none; b=aB9C6iIAJuxY9li8mjFFmWfXcU3c05TOT1aLroojaDvrX3+qINs6E1L5VvxNkjQyEPDoMb/VE4mzCZzjqpShwRihKbYzOh3rZkc5sY3/kUvCc6qh1Zl+dc0HMRP/HPQYWIaI7NqEqeuo6Cj+Fd1tAe0m/fuBzb61rWwtTupAovY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299735; c=relaxed/simple;
-	bh=a8cZYxMb9BknCETHP7P3FOC8OKcp+fGejXhC6GyfaiY=;
+	s=arc-20240116; t=1779297176; c=relaxed/simple;
+	bh=TRKD74sZvSJyahU+zZ2Pw7bVADN34P8wVYQ3EpbVENY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPaScdSd99JZdTgWSHX5LDnbDMLBiEUznPEJMl/f0fosY9xqNzObDfHfhc6Yt6vPh7pGr3iPQFsiPP6OvAb5wfvAduL9RyFT6W4+7u7UO0i7TZsIKhf2ZAc+nodYid1aSWOUR3C3iqAAIh0/EGpLMcZhtSuYRV4006p5U/AadsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm5acXIL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECAF1F000E9;
-	Wed, 20 May 2026 17:55:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MLDA1XpX3hHqipzI5aaQfLCaL+bXtfgZqnvG1UWQNnafna+R7iNCHWgn+AHWoCnmuDrY5JSrW5HhV/Er6HhjuNo8qqioRqcvKT+wqFp3jCO2xzuURKAXDrtFgAdu/8mrYIZyofZMiRQBN5lpnsbRploB4GGqQkFX/df7fPhr5b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2MAfrN2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF321F000E9;
+	Wed, 20 May 2026 17:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299734;
-	bh=IlWVdU1kFpBl0vpuepgufRIFnyQcJK6y/ZZ3HT/RWLQ=;
+	s=korg; t=1779297175;
+	bh=clnC9/cbzYVY85JCkkYt1RO+nMsaIA1E+z9NSzWi07A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fm5acXILM97F8Rnd3sJ3iVWgXqPWKO9zmJ9D6AjGLXrYSrlwPB+R9iIjTE+/q7mA8
-	 h83nwngElDHCaIsTpObNv5WOCz4L+ANoHmTWSuiz4kBw7Gh/Q9j0ubqbYbGgQXkQDH
-	 5Hk3kyNRh9b1qdPBBW/teTnmG0M84ga8WtMSrY+Q=
+	b=y2MAfrN2whpDu3+6YHV6PrhySkIpNCn8NebRRGwSkUQBWJZ+NUu1izx4b8PfbdiFf
+	 tTODiwzDTnbg+5jdRIFYmxGBnJC2cLxz0uI2VkEziMTekqYGwIsjyz5xLPECd3hw8W
+	 UslsWyGYQUw6zrRhcyjFzGYsDkk+qSQiyg64Sjtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 844/957] iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler
-Date: Wed, 20 May 2026 18:22:07 +0200
-Message-ID: <20260520162152.867146167@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stable@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 7.0 1078/1146] platform/x86: intel: Move debugfs register before creating devices
+Date: Wed, 20 May 2026 18:22:08 +0200
+Message-ID: <20260520162212.632373878@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252096-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-251130-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A425C59A6EC
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 392875944CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 34d33313b52eeac3a97ad2e3176d523ec70d9283 ]
+commit ad3bff944c0f4f2e913298a9664391af32f87491 upstream.
 
-The V1 ADD_VLAN opcode had no success handler; filters sent via V1
-stayed in ADDING state permanently.  Add a fallthrough case so V1
-filters also transition ADDING -> ACTIVE on PF confirmation.
+It is possible that the driver handling device is enumerated before
+registering debugfs. If the driver wants to access debugfs by calling
+tpmi_get_debugfs_dir(), this will return error in this case.
 
-Critically, add an `if (v_retval) break` guard: the error switch in
-iavf_virtchnl_completion() does NOT return after handling errors,
-it falls through to the success switch.  Without this guard, a
-PF-rejected ADD would incorrectly mark ADDING filters as ACTIVE,
-creating a driver/HW mismatch where the driver believes the filter
-is installed but the PF never accepted it.
+Hence register debugfs before creating devices.
 
-For V2, this is harmless: iavf_vlan_add_reject() in the error
-block already kfree'd all ADDING filters, so the success handler
-finds nothing to transition.
-
-Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-4-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 811f67c51636 ("platform/x86/intel/tpmi: Add new auxiliary driver for performance limits")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Stable@vger.kernel.org
+Link: https://patch.msgid.link/20260430151103.1549733-2-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/intel/vsec_tpmi.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 9132f16d853e5..f1a01b8e2235c 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -2872,9 +2872,13 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		spin_unlock_bh(&adapter->adv_rss_lock);
- 		}
- 		break;
-+	case VIRTCHNL_OP_ADD_VLAN:
- 	case VIRTCHNL_OP_ADD_VLAN_V2: {
- 		struct iavf_vlan_filter *f;
+--- a/drivers/platform/x86/intel/vsec_tpmi.c
++++ b/drivers/platform/x86/intel/vsec_tpmi.c
+@@ -813,10 +813,6 @@ static int intel_vsec_tpmi_init(struct a
  
-+		if (v_retval)
-+			break;
+ 	auxiliary_set_drvdata(auxdev, tpmi_info);
+ 
+-	ret = tpmi_create_devices(tpmi_info);
+-	if (ret)
+-		return ret;
+-
+ 	/*
+ 	 * Allow debugfs when security policy allows. Everything this debugfs
+ 	 * interface provides, can also be done via /dev/mem access. If
+@@ -826,6 +822,12 @@ static int intel_vsec_tpmi_init(struct a
+ 	if (!security_locked_down(LOCKDOWN_DEV_MEM) && capable(CAP_SYS_RAWIO))
+ 		tpmi_dbgfs_register(tpmi_info);
+ 
++	ret = tpmi_create_devices(tpmi_info);
++	if (ret) {
++		debugfs_remove_recursive(tpmi_info->dbgfs_dir);
++		return ret;
++	}
 +
- 		spin_lock_bh(&adapter->mac_vlan_list_lock);
- 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_ADDING)
--- 
-2.53.0
-
+ 	return 0;
+ }
+ 
 
 
 
