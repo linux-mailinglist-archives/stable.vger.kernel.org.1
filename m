@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-253117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL6XOVwGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:08 +0200
+	id gChsO03+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1D6597C7E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A461596814
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57CFC26665A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3695A3881260
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080444028C2;
-	Wed, 20 May 2026 18:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500CA3F39D7;
+	Wed, 20 May 2026 17:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edEd59q3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLSAd3CU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C713A37DE8A;
-	Wed, 20 May 2026 18:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1877B3F39EE;
+	Wed, 20 May 2026 17:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302449; cv=none; b=WjB5TEhKyMAykzzoBqbtZN2RVF+b5kHClYcpNCc2sABnVZFCvFaqZIz57XqgWHm0NFsZA3E178qvPO2ToOKRCVxmz7IHXoqZ9Mu8WC8pfvJ0YudxCPJiixDRt6LAm7J0IaSRkBAnhTqwP7RVubMMlTUkxxaF737Y93ZiK6GucVc=
+	t=1779299541; cv=none; b=V68PU+cs5Tq3NQHWVy48KrCG/RvPptaxJp9YOHjPREeL0ysn/WSaCvTLD8qbB1rsviu/IrKGFBycDuWA/ktfuV3gEdQ/paEEXlz9rC8YKuSD9XvjrVkgxcB5Q6MY0N7Fn/JaQMsZrRqV4K6eEQGtuDUidq7cmD+7bsiA6TTO2mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302449; c=relaxed/simple;
-	bh=w1Ww499F4DhCPIj5LPeEUnyqOjBBzjTYMJbbfoWVupw=;
+	s=arc-20240116; t=1779299541; c=relaxed/simple;
+	bh=yB867VyZFkWCnbitMi7gc+GOKwXLrAJiOwDU2IkkkEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HK/O5ERRWSK8SHGZzszIlfuGlr+8ViIQDsODhOQA8xRMNCAd8AYvrPQK4QqpufEsQvKVs0OVIr5VfmL6MEUUtYBkb9LFZe+Bmboqa5b3G4CfDHUNrgLmulX6+pafiQDYRpv/Sj/lQOkOo9072FwfS9yfqY2TECknX10jC150LBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edEd59q3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5171F000E9;
-	Wed, 20 May 2026 18:40:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=do3H9SSfFqQYS23D/62cXj8CxqeaDd39dNqrcnPgoNFMCxUhq8Hetj/VrSKZ+BjyI3ExTxGt0VbZgrc4IUQsxOLxp9pN+VBqeLWYc5JsYWRifgmQ4QVxbLIliAo/fCzL8YI9QQlFPmu4Pe7G70hJFSVa8MTUQSHtTqqpih7UBcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLSAd3CU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C91C1F000E9;
+	Wed, 20 May 2026 17:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302448;
-	bh=DrHBOvxk2nN4hPohA3XWRZbDaE3w+eG+LRp8oePetQQ=;
+	s=korg; t=1779299540;
+	bh=UER6dtbUty/6TprRjJqqayeze4ANRyC2r4ckG+VMasU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=edEd59q3XEaNWbUWABR5vBCADZkf3YjDpjPesKTOaGcjNZpXzO6C8DcXlK4JV9lvf
-	 jvhBdkXrEM+bNpPYnv/wWIVYGKp0k4mTybVppUT/432C5Vu/ncActJfJm736os7FJX
-	 X4+dwrHxC1+99ZuFLtJKC2Nm99i+w8fZ/pEixFM8=
+	b=YLSAd3CUaEsFwQophK6NGF14KKBoDbCW9Gq71dYacyvnwibdj661txhX86ZY9aXZj
+	 KblBLfWfOmeBLdhBnbyzlrpIZrmom9Yl+bu5HfS5grwfrQRWIR+bS5Gf17FHmSapPx
+	 ajdEmN/8cp761mTf0uuLwdgvn/pS9FSj9pegWyEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 272/508] clk: qcom: dispcc-sm8450: use RCG2 ops for DPTX1 AUX clock source
+Subject: [PATCH 6.18 812/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v5.0.0 ring
 Date: Wed, 20 May 2026 18:21:35 +0200
-Message-ID: <20260520162104.537975446@linuxfoundation.org>
+Message-ID: <20260520162152.176036772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252022-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253117-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 4E1D6597C7E
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A461596814
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 141af1be817c42c7f1e1605348d4b1983d319bea ]
+[ Upstream commit ea7c61c5f895e8f9ea0ffffa180498ef9c740152 ]
 
-The clk_dp_ops are supposed to be used for DP-related clocks with a
-proper MND divier. Use standard RCG2 ops for dptx1_aux_clk_src, the same
-as all other DPTX AUX clocks in this driver.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260112-dp-aux-clks-v1-2-456b0c11b069@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: dfad65c65728 ("drm/amdgpu: Add JPEG5 support")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0f43893d3cd478fa57836697525b338817c9c23d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8450.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
-index 239cc726c7e29..ab796f4f0ac03 100644
---- a/drivers/clk/qcom/dispcc-sm8450.c
-+++ b/drivers/clk/qcom/dispcc-sm8450.c
-@@ -364,7 +364,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_dp_ops,
-+		.ops = &clk_rcg2_ops,
- 	},
- };
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+index 46bf15dce2bd0..72a4b2d0676fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+@@ -680,6 +680,7 @@ static const struct amd_ip_funcs jpeg_v5_0_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v5_0_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v5_0_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v5_0_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v5_0_0_dec_ring_set_wptr,
 -- 
 2.53.0
 
