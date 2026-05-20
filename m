@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-252031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yH8IAIL5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:18 +0200
+	id yNahLawNDmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 008F65958B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6BC598870
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9386930D5975
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 141BE315B2B1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031C83F4DD7;
-	Wed, 20 May 2026 17:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DA64028E0;
+	Wed, 20 May 2026 18:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJDZnS4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkmVzATy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B283C39B483;
-	Wed, 20 May 2026 17:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AE13FB072;
+	Wed, 20 May 2026 18:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299564; cv=none; b=SO4h1EwatlBfozAK7VGf5PdEdjE/Q4LUwJ4ntUl3FYi7FW7KjhvoMJsP/1GQex40kHfRbBnwBif9UsTzKIN+/HRTSD+l/3EXJV0xSXDL8pjJAj7kKuH8w2RZmaSgk6HE+lf9Q++x7PDRhxHVpqPdGuLbi4nuzfEmrXzTQS9I6wI=
+	t=1779302473; cv=none; b=NrDYoYgsoV8oAIJK3Zra40ThTN1xWSn8Mi4beq/Pu2ddv1+t+/wHNqn4rqFwPSrR47F+Te/L5E6PAqOEiaJxO9ESCx3BHAQCklZ0ndJWQNbNnWzRSZOj+ptfxpz6egkMd9E5yCJIBB0uuau11DVTWOcrJT6J+bjO2yD1ehjq0S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299564; c=relaxed/simple;
-	bh=BMRgcE4nKSReXGy/pQlvx6pTHbNnc8eDCWFl1ICCBFk=;
+	s=arc-20240116; t=1779302473; c=relaxed/simple;
+	bh=/4vuc370thoBnFIe3Q/64LDXRvLeji184SwNrO9INnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sny6G72vIWEnaYpcKp5Tj1yoGth9YT5AsBzNGNAclybiKdDC3s+y5SQ9ypl5DrUg8AS3m7QSljtcUoIgJXfTwV1eHo0J+E3ppU/+LIBRCdWo8/LXGoY9CSBCOKjJP7OgAtulgt1yJmX/d0IktIcgiAZ8lLnawq3V+F8YN+6h6ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJDZnS4T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D971F000E9;
-	Wed, 20 May 2026 17:52:43 +0000 (UTC)
+	 MIME-Version; b=U03zkydaMQbUw2rlzAO9jtTbWRI3xfUk6ow0+ct06nJf3Ae7gxmLn478C5xfLxDZBdteJbh0n9mp1rGsS6B+DPGXvsb+F5pI46x+2U2ksycjNvTuoZ4E3thPU3SyGuGQ/8t2bhB8U4nV9fW6D8YLBsV+i6lnH5MBMcsN8eXhfEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkmVzATy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED521F000E9;
+	Wed, 20 May 2026 18:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299563;
-	bh=ZnD9xXasB2OrUpk6px7N9/1Wz8qDpPa9/15VP00aEzg=;
+	s=korg; t=1779302472;
+	bh=q+6qMliBYdvYN1FAZloUe9JJYNqLCUOtn+P/gps3hvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gJDZnS4TNEOGnaYqJLamjrtPfqtdgeN0QnfGnPd5l4+/fITmDBtmrCZDZxS7kfMOJ
-	 FyHb0kNbxvAxwO+FgXxt7TWJ3yhKccA6UOsU7Lu+xLrEJbexyolp5mkpnx00ZtBN/w
-	 Oqydr1O5nSmGP39UkDpqvsXzoL43ZbNLtBJUbDy0=
+	b=KkmVzATyAKm/O5+Vu15RjDsJ8V8IvPWclFmHbsEwaklJN0c+Y7CuyanY5BTlyVf1R
+	 /II07Qhc2X51j0Fz1s+R+Ty71h8Tve1t8mzuH2zQfdrR5LcW1IQUutBjbeo3+Otz6O
+	 ht4SmJo6PJbLYK8Om3o6xMKTYUcDdyPcpluzeoTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 820/957] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
+Subject: [PATCH 6.6 280/508] clk: qcom: gcc-sc8180x: Use retention for USB power domains
 Date: Wed, 20 May 2026 18:21:43 +0200
-Message-ID: <20260520162152.350719501@linuxfoundation.org>
+Message-ID: <20260520162104.711124133@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,90 +70,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252031-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253126-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 008F65958B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CD6BC598870
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
+[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
 
-bareudp_fill_metadata_dst() passes bareudp->sock to
-udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
-The socket is only created in bareudp_open() and NULLed in
-bareudp_stop(), so calling this function while the device is down
-triggers a NULL dereference via sock->sk.
+The USB subsystem does not expect to lose its state on suspend:
 
- BUG: kernel NULL pointer dereference, address: 0000000000000018
- RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
- Call Trace:
-  <TASK>
-  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
-  do_execute_actions (net/openvswitch/actions.c:901)
-  ovs_execute_actions (net/openvswitch/actions.c:1589)
-  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
-  genl_rcv_msg (net/netlink/genetlink.c:1209)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
+    usb usb1: root hub lost power or was reset
 
-Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
-in the same driver.
+(The reinitialization usually succeeds, but it does slow down resume.)
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To maintain state during suspend, the relevant GDSCs need to stay in
+retention mode, like they do on other similar SoCs. Change the mode to
+PWRSTS_RET_ON to fix.
+
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 0df3208783ad9..da5866ba06999 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -529,6 +529,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct in6_addr saddr;
- 		struct socket *sock = rcu_dereference(bareudp->sock);
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 08011db603503..889c1ab6d63f2 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4105,7 +4105,7 @@ static struct gdsc usb30_sec_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_sec_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
-+		if (!sock)
-+			return -ESHUTDOWN;
-+
- 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
- 					     0, &saddr, &info->key,
- 					     sport, bareudp->port, info->key.tos,
+@@ -4123,7 +4123,7 @@ static struct gdsc usb30_prim_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
+@@ -4195,7 +4195,7 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_mp_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
 -- 
 2.53.0
 
