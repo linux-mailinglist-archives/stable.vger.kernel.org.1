@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJcAAQEBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:17 +0200
+	id 6MtDEvjtDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738D4597217
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D70C05937F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6A67314A832
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BCD73143F70
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A435347514;
-	Wed, 20 May 2026 18:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043303D8918;
+	Wed, 20 May 2026 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJxh30Ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/rLsGj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2175D342CB3;
-	Wed, 20 May 2026 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865B43F23C2;
+	Wed, 20 May 2026 17:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302242; cv=none; b=f8YzqNr7Co9y89fuzDq2IxBdgn3dHkKUs5RSop3ss35hj/gDCt6cup+pxfWBCH72Lk5zv+Z61hd3R4QGVKh5uhSOaqPoELMnrokXZhf+IJmeBd9RU+NZMngpP/4i98YqYx5aKuzpQzdKyLfM+bu44BJgDou73FVtt5c2uAHQu5g=
+	t=1779296873; cv=none; b=fHigcKmmlNgMpeCjrAbKQ5AHdNNWlzV0aJrzsSlU++fwxfgpRYp5gbQy40s8r+nwupOnx18So5D8XOFH+iUYAMR9rbgPX3la1SZncSiTe3p1ZQrw8a9m+bue2FIHlsj1IZvChkvtUoOGMrXa6B4D6k5kujxiPB9qKl8eYJTEgNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302242; c=relaxed/simple;
-	bh=6MO6VTzrWHH5SFYhjug5WNfOKi1D/HvkoOaGw8xWB1w=;
+	s=arc-20240116; t=1779296873; c=relaxed/simple;
+	bh=wF4Cj93NffJG+aJNrrWGKJLT8jFX50LJKNB2JrbvN24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HI2cPSrOHuYjO8rYSHKzKlvJzqTnajCyidLGUqD91JYljsZJdaDZHm398fltNoXudPmbJxAhcLE4uWPKoprfMh7Lgbl/qGciQFK29Vj28ZbD/OAEC38ZNeRZ7dHIGNRM3tw+P7R3X+386MVowr4MgzH4w8LKTTyCOj8x2v2ce3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJxh30Ul; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBA61F000E9;
-	Wed, 20 May 2026 18:37:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pmjk+v9/yd7l5jeMq7ZRWPx3wghr2oSMn7Ty2ZFcQgl3Ya83Jv92r37D+/Smwbu7ApUTQIUlVvyFvbZBOzBWFKwPRQ51903uSow9nDLkRzPlolDtlReuU/WGY2srYMgcIJfVo+WOgdl+3eqrHbaY1TvfcBis4CjFXGNf1WURF28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/rLsGj2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E561D1F000E9;
+	Wed, 20 May 2026 17:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302240;
-	bh=21fW8T2q63p49/t+YNnTmj0Z3Wp2cR/sw7wGwNlkiIg=;
+	s=korg; t=1779296872;
+	bh=8ime/L1RPMghicCRFvB6GufR+RvNEchthWaUkYuRuv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wJxh30UlgKK7BIu0V2+TQoCc/i3WRZU/7LS6YN7DrYd8JLdk/slw8UA/MYLjOM4lh
-	 1IaOsdpqAA3VaesSlP4TGA6zQCn34+en1qJLdPw23L1DorCjDHUhvc5rEdFBvONxFX
-	 6QhE4Qv0Q9qGZkyLljWQmFAEK1t1I175GBv1s5jM=
+	b=E/rLsGj2MJ34voJmS7zBJGbOeetuOnJs8PLTDVvLrigS0MhgmESQioYLfzQacRsRE
+	 3yR2LbvP+aEA2xTk2XmLoZzwMnGqJytl9ca0i0atHI0ZF5X5ZfTyBW+iljaStoPQaS
+	 OaSSzWryUsVplJg+wGrqsEMqSX6t409TUcIi+wMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/508] soc: qcom: ocmem: use scoped device node handling to simplify error paths
+Subject: [PATCH 7.0 0965/1146] drm/amdgpu/vcn: set no_user_fence for VCN v3.0 enc/dec rings
 Date: Wed, 20 May 2026 18:20:15 +0200
-Message-ID: <20260520162102.795431071@linuxfoundation.org>
+Message-ID: <20260520162210.072020710@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253038-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 738D4597217
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D70C05937F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit f4c1c19f5c0e5cf2870df91dedc6b40400fd9c8a ]
+[ Upstream commit f1e5a6660d7cbf006079126d9babbf0ccf538c6b ]
 
-Obtain the device node reference with scoped/cleanup.h to reduce error
-handling and make the code a bit simpler.
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240813-b4-cleanup-h-of-node-put-other-v1-4-cfb67323a95c@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 9dfd69cd89cd ("soc: qcom: ocmem: register reasons for probe deferrals")
+Fixes: cf14826cdfb5 ("drm/amdgpu: add VCN3.0 support for Sienna_Cichlid")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 663bed3c7b8b9a7624b0d95d300ddae034ad0614)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index c5fc6db9870a2..697c8a6a400b1 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -185,23 +185,20 @@ static void update_range(struct ocmem *ocmem, struct ocmem_buf *buf,
- struct ocmem *of_get_ocmem(struct device *dev)
- {
- 	struct platform_device *pdev;
--	struct device_node *devnode;
- 	struct ocmem *ocmem;
- 
--	devnode = of_parse_phandle(dev->of_node, "sram", 0);
-+	struct device_node *devnode __free(device_node) = of_parse_phandle(dev->of_node,
-+									   "sram", 0);
- 	if (!devnode || !devnode->parent) {
- 		dev_err(dev, "Cannot look up sram phandle\n");
--		of_node_put(devnode);
- 		return ERR_PTR(-ENODEV);
- 	}
- 
- 	pdev = of_find_device_by_node(devnode->parent);
- 	if (!pdev) {
- 		dev_err(dev, "Cannot find device node %s\n", devnode->name);
--		of_node_put(devnode);
- 		return ERR_PTR(-EPROBE_DEFER);
- 	}
--	of_node_put(devnode);
- 
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+index 2fe5b3fe287f9..81bba3ec2a937 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -1856,6 +1856,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_dec_sw_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_DEC_SW_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -2038,6 +2039,7 @@ static int vcn_v3_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ static const struct amdgpu_ring_funcs vcn_v3_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -2140,6 +2142,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v3_0_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v3_0_enc_ring_set_wptr,
 -- 
 2.53.0
 
