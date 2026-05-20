@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIymL1sVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:07 +0200
+	id oFxxLVkuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350FF5993AD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E6C59B86B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9C263113E32
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3967395DE78
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8C33F88B5;
-	Wed, 20 May 2026 17:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8435402444;
+	Wed, 20 May 2026 18:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRCSkEPa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7aAh+QV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E233F8896;
-	Wed, 20 May 2026 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D23FBEB3;
+	Wed, 20 May 2026 18:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297190; cv=none; b=mhfWR+rGpa7vUeXD9hiLHAG8GOlkAfrhKNU7Ss2dSu1Pe3qj33DkyMi+8o0VktdUC5auLpftYH0L48no4TtZOGl1Yv7/Pe7GzPe4gCljQpbymG4nNwlv1QG8RRvzBcXiwOt8W3N1fIcOcXZo6F1YRMgnIZsZUeyXWeC7tXafFFI=
+	t=1779302460; cv=none; b=rlL0mGCjwJev0LzAfyfrT2npAJLuUInWPk5tCezCxgYapDelVVhoTN+qGj14GRJ5BkJNqqWOUNyza8RIsndUTeOEyMBitCiWPmOPKnOuQ2gVwMZqekyJmADGMb5O8cyaSYXSzSRUyaEdG0xmx+nEcgVCi5GYpFOKgqPbV3A+TEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297190; c=relaxed/simple;
-	bh=oiP37jOO/oIO6DpigHBU8Rm0uDTffh96mnsTVl68I9I=;
+	s=arc-20240116; t=1779302460; c=relaxed/simple;
+	bh=3cA76pyM2X27qzBKfH/C+5umbCsHuD0QaG8XM74/z2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Esh5jqWOtuuHnISBUzuTx1AMxN3vV7ThetY/VogWQMeJJwjebsEUbnUdq31FbwbWlUaIvpwI5rYgCLrIQ337y7sq/1i8PaiNSsCuBMu66AgBQ0nGDEzuOHUZdhNEWiAV0AL6W2Jas+QTK0AHVCXb06skey1t1+DT5sg70k+e89M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRCSkEPa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289291F00893;
-	Wed, 20 May 2026 17:13:08 +0000 (UTC)
+	 MIME-Version; b=is5keNVqOv/7I2OHUoo5NPCgNSdf3zpYl+cm3/3UzdPpmSKIkN9sYpkoCCr/11d+BkavMMwpbMVBxP5quLV2SovmXNKI7R7aTHch8fIQa7u0dsCn7HNfjq+K3LpwNUXG/UFVEvxJ5I4iL/B1G4EdURQ5ejUbq2+Z5Nss3lP0hYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7aAh+QV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89911F000E9;
+	Wed, 20 May 2026 18:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297188;
-	bh=AtmxiJV1zlaAy4kiN2YZumpk5FZSu+00mckXbfb4Hyk=;
+	s=korg; t=1779302459;
+	bh=CeKTu0H5CAj+1C07oigDJNC137gNg97OjWf2GBxfdHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pRCSkEPa21au6Dhz78jdnw4KLeoEtwwIhciOnaB1VCiWBqFb1rI9v6vLXfKyItk42
-	 tkn9q0l/bdAGGA1A3CuwPvqd6Q+fVwJt/GUuGJWjUMLHtjhBChslaoxlDx/4YTFgci
-	 hz59eQDR9F4Ss7Jz94oiHX9v0s1Mww41RDqX5nwk=
+	b=o7aAh+QViKT9gqKs62O857fxrr9+T5IhFP51wJwN2OwFSaNt6FFjd9kzWU2nP3Kxt
+	 DKM6YpxhEFKtLeko5T83VKvKWyYwL9EWLckFN+c8IkJGPbEiEIBqcUZ6oakqHTl4Kk
+	 ZWG245y/JVFr3On/+I1xttkbM32VDD3jIT/UfkHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Robaina <rrobaina@redhat.com>,
-	Sergio Correia <scorreia@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 7.0 1047/1146] audit: fix incorrect inheritable capability in CAPSET records
-Date: Wed, 20 May 2026 18:21:37 +0200
-Message-ID: <20260520162211.924504830@linuxfoundation.org>
+	Yang Erkun <yangerkun@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 275/508] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
+Date: Wed, 20 May 2026 18:21:38 +0200
+Message-ID: <20260520162104.605302562@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251134-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-253121-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 350FF5993AD
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,acm.org:email,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 46E6C59B86B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Correia <scorreia@redhat.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
+[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
 
-__audit_log_capset() records the effective capability set into the
-inheritable field due to a copy-paste error. Every CAPSET audit
-record therefore reports cap_pi (process inheritable) with the value
-of cap_effective instead of cap_inheritable.
+The parameter def_reserved_size defines the default buffer size reserved
+for each Sg_fd and should be restricted to a range between 0 and 1,048,576
+(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
+function sg_proc_write_dressz enforces this limit, it is possible to bypass
+it by directly modifying the module parameter as shown below, which then
+causes a soft lockup:
 
-This silently corrupts audit data used for compliance and forensic
-analysis: an attacker who modifies inheritable capabilities to
-prepare for a privilege-escalating exec would have the change masked
-in the audit trail.
+echo -1 > /sys/module/sg/parameters/def_reserved_size
+exec 4<> /dev/sg0
 
-The bug has been present since the original introduction of CAPSET
-audit records in 2008.
+watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
+Modules loaded:
+CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
+PREEMPT disabled
+Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
+1.16.1-2.fc37 dated 04/01/2014
+...
+Call Trace:
 
-Cc: stable@vger.kernel.org
-Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
-Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sergio Correia <scorreia@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  sg_build_reserve+0x5c/0xa0
+  sg_add_sfp+0x168/0x270
+  sg_open+0x16e/0x340
+  chrdev_open+0xbe/0x230
+  do_dentry_open+0x175/0x480
+  vfs_open+0x34/0xf0
+  do_open+0x265/0x3d0
+  path_openat+0x110/0x290
+  do_filp_open+0xc3/0x170
+  do_sys_openat2+0x71/0xe0
+  __x64_sys_openat+0x6d/0xa0
+  do_syscall_64+0x62/0x310
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The fix is to use module_param_cb to validate and reject invalid values
+assigned to def_reserved_size.
+
+Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/auditsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2786,7 +2786,7 @@ void __audit_log_capset(const struct cre
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index f958bdf09587d..96921a661f64c 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1623,10 +1623,35 @@ sg_remove_device(struct device *cl_dev)
+ }
  
- 	context->capset.pid = task_tgid_nr(current);
- 	context->capset.cap.effective   = new->cap_effective;
--	context->capset.cap.inheritable = new->cap_effective;
-+	context->capset.cap.inheritable = new->cap_inheritable;
- 	context->capset.cap.permitted   = new->cap_permitted;
- 	context->capset.cap.ambient     = new->cap_ambient;
- 	context->type = AUDIT_CAPSET;
+ module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
+-module_param_named(def_reserved_size, def_reserved_size, int,
+-		   S_IRUGO | S_IWUSR);
+ module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
+ 
++static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
++{
++	int size, ret;
++
++	if (!val)
++		return -EINVAL;
++
++	ret = kstrtoint(val, 0, &size);
++	if (ret)
++		return ret;
++
++	/* limit to 1 MB */
++	if (size < 0 || size > 1048576)
++		return -ERANGE;
++
++	def_reserved_size = size;
++	return 0;
++}
++
++static const struct kernel_param_ops def_reserved_size_ops = {
++	.set	= def_reserved_size_set,
++	.get	= param_get_int,
++};
++
++module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
++		   S_IRUGO | S_IWUSR);
++
+ MODULE_AUTHOR("Douglas Gilbert");
+ MODULE_DESCRIPTION("SCSI generic (sg) driver");
+ MODULE_LICENSE("GPL");
+-- 
+2.53.0
+
 
 
 
