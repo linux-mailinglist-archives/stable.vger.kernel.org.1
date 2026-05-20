@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJ06NoL3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-251846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:46 +0200
+	id wDbZEckUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3C859530B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F53E5992E8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3687A304AC8D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8B4AA3155870
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C849A36405A;
-	Wed, 20 May 2026 17:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8F83E95A4;
+	Wed, 20 May 2026 18:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKCbQZPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWva3Tam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A821369D67;
-	Wed, 20 May 2026 17:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3327A3A6B6D;
+	Wed, 20 May 2026 18:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299039; cv=none; b=usGCwqc50AGZkA1ozZszyHU6kwGZixo5R7SlwPPEE14ESljQEmuiaY4lolxiSPis2iYYTm8U5mHnZk9mHP9u62ljl4AW3o3nUBUZ+Vv35Fwog5DYk6qgGKL1E+N0hP4g2thTqPXbw5Vl8RdhJAGTpBAnP/VuUz8YBIjYmmGFzPE=
+	t=1779300797; cv=none; b=UHxxENvho6+FZZSGYZPT6NeBKvlef/SBUm1grs7Tqu+qcQVJsdMnaZ5+RyUz/ovjMs9RSDike2+DmtW2I13ZmG9hMPuq2DXTmtlrUVqMABI8b3vh2DGVHxHiujmjO06gru3hOWVeyN3HOTplo5FUFi2HfstFtGLjUILUnfYzFVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299039; c=relaxed/simple;
-	bh=e1slj34NT5yoLZEGsHlXsHv/PNqK6Zd5TFuONa0p/aU=;
+	s=arc-20240116; t=1779300797; c=relaxed/simple;
+	bh=OLtvAQfTJdoJ5iqvUhXyo2OvkHn8OIAJbGeI9jKyR8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XndRRxAjpEzFyTz6rPuYlWiMA6jx7bS1Ll0DIFhEoqJQQ7XkECfaFgPmykyUkG5/11urUCmGqUHx87A4W0w12Emm2LtEF672jIvgq/0mXHgmfh9KhJ/VSFIExb9wkw2x91tPGE1jAtOgz4ixSO+yurqiRy4XhTENLLKxK+FKn10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKCbQZPX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04581F000E9;
-	Wed, 20 May 2026 17:43:57 +0000 (UTC)
+	 MIME-Version; b=DVVjZ6FAvnJhhW9fjiXm/KdrTdR0hbhtfED9bJJRCLtec3vlLJryZtgfeL170HNKbtdPEdpb4+drg0NvR/xWzS2/zyOYZa0UI5IIgw34l9jxWOaq14pQOe60z1bM3bY5fgHQZxX0vzT3NrsK2lQCxMxrxe5PvfF/ULKI5++1Jgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWva3Tam; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800051F000E9;
+	Wed, 20 May 2026 18:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299038;
-	bh=Xgx94cNeBpkcyVakK3hsQWz4avyWoyM0GKHtA2idNeU=;
+	s=korg; t=1779300796;
+	bh=8Ux8ATyhoElJps1H07spRUPeupRr0bcv6IK/htbXdmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vKCbQZPXO4Z5J3yveINfBvL2JIrUlw54lbMJJV9xtcUdCDq8XVlZyK7csqU/OKNAs
-	 wJyKZ7s58VVK5qZxO5q5O9gixpoAbmOGQlN9EFZ/ABG2+U9Kr9YSSBSSbBWTAb+94L
-	 Yf1x2qRYGlwsFZPFx6EY/pt/rTkui2qSetGlkXnc=
+	b=AWva3TamMQz3oL+TtI4dHoGXqFtzEb5MVpX0onotpKMxjrGJ5YJt/Hlkg1r3cP8K3
+	 e3XDJ3adqFsSttMIXSwYOlpJolg6igJte/GD1F4p5+2zFRaTr9Z4RyECGTho/k5OyU
+	 huVd7ltHbN4UB+Unb8DFcYAhQc+70VxXHPvC7CBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 639/957] tcp: annotate data-races around tp->dsack_dups
-Date: Wed, 20 May 2026 18:18:42 +0200
-Message-ID: <20260520162148.387302226@linuxfoundation.org>
+Subject: [PATCH 6.12 312/666] ARM: OMAP1: Fix DEBUG_LL and earlyprintk on OMAP16XX
+Date: Wed, 20 May 2026 18:18:43 +0200
+Message-ID: <20260520162117.984433071@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252485-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251846-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: AF3C859530B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,baylibre.com:email,iki.fi:email]
+X-Rspamd-Queue-Id: 3F53E5992E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-[ Upstream commit a984705ca88b976bf1087978fd98b7f3993da88c ]
+[ Upstream commit 7e74b606dd39c46d4378d6f6563f560a00ab8694 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+On OMAP16XX, the UART enable bit shifts are written instead of the actual
+bits. This breaks the boot when DEBUG_LL and earlyprintk is enabled;
+the UART gets disabled and some random bits get enabled. Fix that.
 
-Fixes: 7e10b6554ff2 ("tcp: add dsack blocks received stats")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-10-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 34c86239b184 ("ARM: OMAP1: clock: Fix early UART rate issues")
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Link: https://patch.msgid.link/aca7HnXZ-aCSJPW7@darkstar.musicnaut.iki.fi
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c       | 2 +-
- net/ipv4/tcp_input.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap1/clock_data.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 35c444caab8a8..3a5801ba3df1a 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4417,7 +4417,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 			  TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
- 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
--	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
-+	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
- 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
- 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 3e29134a54b19..90727e1e581e4 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1213,7 +1213,7 @@ static u32 tcp_dsack_seen(struct tcp_sock *tp, u32 start_seq,
- 	else if (tp->tlp_high_seq && tp->tlp_high_seq == end_seq)
- 		state->flag |= FLAG_DSACK_TLP;
+diff --git a/arch/arm/mach-omap1/clock_data.c b/arch/arm/mach-omap1/clock_data.c
+index c58d200e4816b..5203b047deac8 100644
+--- a/arch/arm/mach-omap1/clock_data.c
++++ b/arch/arm/mach-omap1/clock_data.c
+@@ -700,8 +700,8 @@ int __init omap1_clk_init(void)
+ 	/* Make sure UART clocks are enabled early */
+ 	if (cpu_is_omap16xx())
+ 		omap_writel(omap_readl(MOD_CONF_CTRL_0) |
+-			    CONF_MOD_UART1_CLK_MODE_R |
+-			    CONF_MOD_UART3_CLK_MODE_R, MOD_CONF_CTRL_0);
++			    (1 << CONF_MOD_UART1_CLK_MODE_R) |
++			    (1 << CONF_MOD_UART3_CLK_MODE_R), MOD_CONF_CTRL_0);
+ #endif
  
--	tp->dsack_dups += dup_segs;
-+	WRITE_ONCE(tp->dsack_dups, tp->dsack_dups + dup_segs);
- 	/* Skip the DSACK if dup segs weren't retransmitted by sender */
- 	if (tp->dsack_dups > tp->total_retrans)
- 		return 0;
+ 	/* USB_REQ_EN will be disabled later if necessary (usb_dc_ck) */
 -- 
 2.53.0
 
