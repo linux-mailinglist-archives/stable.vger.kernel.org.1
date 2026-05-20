@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDcjHHzwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:48 +0200
+	id eIniEf3mDWqx4gUAu9opvQ
+	(envelope-from <stable+bounces-250322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68E9593F70
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3097759294F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D8E930995D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 610413067CDF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8531A347512;
-	Wed, 20 May 2026 17:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145DE36167E;
+	Wed, 20 May 2026 16:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01SyFk+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXc+CjjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B30033BBAF;
-	Wed, 20 May 2026 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5731F9BE;
+	Wed, 20 May 2026 16:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297416; cv=none; b=X2nl1oyhKFbc6DIqgEASOA3TcIfC337ufX4otmB/C1I28wD9wGUkpSHa4zTQgOymYhzwAYaYnXDXfI0St/3IONUTDucpP3bQfc3s2dhSaWGbTwloYZf7A8CVSSQiEjNKGdoShbaHqFke0bnFBtU0xXZdee6dkMiuJFNICReNFfg=
+	t=1779295109; cv=none; b=tfbCT6b7PYW9lCXBSSC+Q8hEURiKc6kmG9rtrzJcT/eqJyIWALfNw73uxOn7WbkUVQzXH1FqYYf6cKUhl43PxVOs0sMP5ogk1SVvLrq16c9B4AGZBJ6fbYLFW2ZhFmUtaz/6rb91+ZYAlliZ5WsCLhozSQ5Ef6oYhNdZuYm1te4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297416; c=relaxed/simple;
-	bh=eAJZq5kxVSirTYPvLk0yvRFIcIjMwo6GLznjJmrU31E=;
+	s=arc-20240116; t=1779295109; c=relaxed/simple;
+	bh=zVqggzhwyfBQillqcW7/XxHUjF9xjH5VicIvIULKwS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgUa7mVeycHRyDdcYUKEIjf4t5H0unUkhTNXjXRD8BRaqr5MvevhUNYWm4OUOLok4WMfZ3BLM9MwH9/5RboUEmlqRnQ4iJBlTKpB/Np01kAcSELhDUDSd4eOpUcVj9qOEGhp9vd8bCpzVeCweDMLOtY+EBhR2Hp+9QT+JL/IJx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01SyFk+m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF28F1F000E9;
-	Wed, 20 May 2026 17:16:54 +0000 (UTC)
+	 MIME-Version; b=b/ZEpWCfCt7gyum/S8irLhxn8i3M3Tc0IMQaSOd5NNHWKtNIG2Lv5rI9AH5N/ibu7wsUhFwxe+GiBd+zFmMvsCWu1zwrCg7UudgKaKXKUwf/kdy58CzZ8CYA69stpxZrP5u+irOGh84SrzKnL1jNUrnNPsPwZoQJTOOeNbAamxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXc+CjjW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265C91F000E9;
+	Wed, 20 May 2026 16:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297415;
-	bh=ku4pi0ZbVyek84rRlZ91RTaiOyfkJ50S3aCtrGi+lbQ=;
+	s=korg; t=1779295108;
+	bh=2je1IGOMtO/3uLiimTP6wnTOYeU9RArtDAYZjqzBnMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=01SyFk+mHRhHc/eEQ9o8LJ+6AZYy2NzGggePQEGtEHOV6TsUT+l0vMSbTY2f7XLhM
-	 3gibXmlFuLJNt1qOaS5FBSdfaRw6HaaYUWbtFTSB2Bqf2BjfN+xzhTWE1qLgrBQU4G
-	 vS2ZN29myDgpcFiws55Aykl8MPgl93e2Uq/KPL2Y=
+	b=IXc+CjjWDcZAsKm9Me5UGI5zAlcgzSwJhNvCOwB3iBHczP7jq2+1RxU27pc+yI3Bp
+	 f3QlIhmB1GS4AaiLCyo+iAo4NeVf9zBpOBdvLzstOBGHhUIu3lOcLK42Odivs52VmB
+	 BE27eB9w+aGNOEJRxuLGF4DZeYw8iYApqwzjyw/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Kees Cook <kees@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 023/957] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
-Date: Wed, 20 May 2026 18:08:26 +0200
-Message-ID: <20260520162135.062145672@linuxfoundation.org>
+Subject: [PATCH 7.0 0257/1146] drm/amd/ras: Fix type size of remainder argument
+Date: Wed, 20 May 2026 18:08:27 +0200
+Message-ID: <20260520162154.048305386@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +68,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-251221-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-250322-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,arm.com:email,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E68E9593F70
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3097759294F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit 9f3d543a9f7371622aff389e69010ac6bac69ef8 ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+Forcing an int to be dereferenced at uint64_t for div64_u64_rem() runs
+the risk of endian confusion and stack overflowing writes. Seen while
+preparing to enable -Warray-bounds globally:
 
-Fix the check by removing ! from of_property_read_u32
+In file included from ../arch/x86/include/asm/processor.h:35,
+                 from ../include/linux/sched.h:13,
+                 from ../include/linux/ratelimit.h:6,
+                 from ../include/linux/dev_printk.h:16,
+                 from ../drivers/gpu/drm/amd/amdgpu/../ras/ras_mgr/ras_sys.h:29,
+                 from ../drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras.h:27,
+                 from ../drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c:24:
+In function 'div64_u64_rem',
+    inlined from 'ras_core_convert_timestamp_to_time' at ../drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c:72:9:
+../include/linux/math64.h:56:20: error: array subscript 'u64 {aka long long unsigned int}[0]' is partly outside array bounds of 'int[1]' [-Werror=array-bounds=]
+   56 |         *remainder = dividend % divisor;
+      |         ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+../drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c: In function 'ras_core_convert_timestamp_to_time':
+../drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c:70:19: note: object 'remaining_seconds' of size 4
+   70 |         int days, remaining_seconds;
+      |                   ^~~~~~~~~~~~~~~~~
 
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+Use a 64-bit type for the remainder calculation, but leave
+remaining_seconds as 32-bit to avoid 64-bit division later. The value of
+remainder will always be less than seconds_per_day, so there's no
+truncation risk.
+
+Fixes: ace232eff50e ("drm/amdgpu: Add ras module files into amdgpu")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/ras/rascore/ras_core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index 603dadcd3df58..5e3e9c1f32f8e 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -93,7 +93,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	int ret = 0, val;
+diff --git a/drivers/gpu/drm/amd/ras/rascore/ras_core.c b/drivers/gpu/drm/amd/ras/rascore/ras_core.c
+index 3f56f26abd6da..9df05b3963edb 100644
+--- a/drivers/gpu/drm/amd/ras/rascore/ras_core.c
++++ b/drivers/gpu/drm/amd/ras/rascore/ras_core.c
+@@ -62,14 +62,16 @@ int ras_core_convert_timestamp_to_time(struct ras_core_context *ras_core,
+ 			uint64_t timestamp, struct ras_time *tm)
+ {
+ 	int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+-	uint64_t month = 0, day = 0, hour = 0, minute = 0, second = 0;
++	uint64_t month = 0, day = 0, hour = 0, minute = 0, second = 0, remainder;
+ 	uint32_t year = 0;
+ 	int seconds_per_day = 24 * 60 * 60;
+ 	int seconds_per_hour = 60 * 60;
+ 	int seconds_per_minute = 60;
+ 	int days, remaining_seconds;
  
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
- 	}
+-	days = div64_u64_rem(timestamp, seconds_per_day, (uint64_t *)&remaining_seconds);
++	days = div64_u64_rem(timestamp, seconds_per_day, &remainder);
++	/* remainder will always be less than seconds_per_day. */
++	remaining_seconds = remainder;
+ 
+ 	/* utc_timestamp follows the Unix epoch */
+ 	year = 1970;
 -- 
 2.53.0
 
