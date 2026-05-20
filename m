@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-251542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGknE+n7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:33 +0200
+	id 8HnJHAUSDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BDB595EBC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB24598ECE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9B9833D3AC5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A7913356530
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC21359A6F;
-	Wed, 20 May 2026 17:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CBB318EC7;
+	Wed, 20 May 2026 16:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdxxC3Eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnppz/Y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9244C29D26E;
-	Wed, 20 May 2026 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9023D7D7E;
+	Wed, 20 May 2026 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298250; cv=none; b=VYrXABwhMGvYgGb9oMMBFbitZuL6VuSiNd4y9e2H1yfFvt0TJnKWyohFFkyNF+998Ipd5l42ZPviRTkDRtWTqDlaa1aOW0/AGnGQNfIyE+t7KM33VsTg8+HYAjT/+JMqw5rGWIru75DmIN69NY6gtCYFsJtoTqWUWjIqVPHGpjs=
+	t=1779295835; cv=none; b=NuwwBHZGTqUtY6Y2augIihgZuY6Zmc3ihMqpnnuuNfOBnrPTIYSuA/DNcnCk/BoP9pEotMs7AabOiBIRq5H1GlquKrmLSLytkhYQjr7u3mOJoDx/V3Oyt7zkr7T+w3IKfbCVAbJOesWafk3IF2OPZ7hPAlYHCIxOuniHtDY4/hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298250; c=relaxed/simple;
-	bh=mPbHzJKxM/mMyBKLrVnWj7x74V2cUhg0G+uzkWciq6o=;
+	s=arc-20240116; t=1779295835; c=relaxed/simple;
+	bh=NDzWkV1j+woVq2HW8j3eG0ez+bpn3aIkeWzH+sCROGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSbmsOSEgvlmV9Jo+P2/Lho7A1QI7Z1v1hPSc/5VTlYEf21MOQ8Vtj58iUJW2Yiue7RWqx9p4jJwjnE6JHc0/B+PXaqG5YXqbA95x9GR9qJno8oWYImY32ysZyJhUW3iRkhOKFemDKEcMbppVZ/2dCpGqIC2KdCRvOasEr6s2Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdxxC3Eb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8AF1F000E9;
-	Wed, 20 May 2026 17:30:48 +0000 (UTC)
+	 MIME-Version; b=OtC4eMfhuyfKqPsNdJHz+mVsNsNRn6XB9a1hqpwQ1YyRauD8DvpJPnC1YH/ek0n47lndWnrAutHTvoJ0F+pDCtunGnCLMLF9RY30TXpZJ2sq39hQz/67bbHy9YGr+vyBKyvyripNzxvaHEWRdfJNpeWlsCvtXGZHeoe+hRsafLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnppz/Y5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC821F000E9;
+	Wed, 20 May 2026 16:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298249;
-	bh=sWpC6qVx0nLA9GyHIg4X1j8Hk5AK3HvZgoCW4CUPuJQ=;
+	s=korg; t=1779295834;
+	bh=0Cb6KpLV1WkLy0v0Lzcuv2+cuM9FFFnKEYTbZmUrGa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JdxxC3EbCtTNCC+EYFo+7VRGmPATtQAVuJ0VB1gSwANR3hkHqZlIn8Xhir9YfoREy
-	 mFZhGzWgbdZ6AliMsjAckejS7HXONvBsWy7YcBPK0/kF+Er8YAqWmHMa0rXyuHfJjR
-	 Vrq+RSrhx25uYNgLBCuzmJJMpvtAarqmnpeBaLbo=
+	b=gnppz/Y5VQFt5bjKAGRjkX69g1J0hMl62Z9Pm5iKGiprlY/olwlBkykdY9PDpY7zW
+	 aESsQ2VtQB9f9yrYo+W/oDtfBCSbXZgjM/UeHy6/+GAeMNru2Uljhq4hZitAg3Uuem
+	 JpdgFNzbApg50djGUASoWK/qsXYhwspZEw1X4ZXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Haixin Xu <jerryxucs@gmail.com>,
-	Stephan Mueller <smueller@chronox.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 338/957] crypto: jitterentropy - replace long-held spinlock with mutex
+Subject: [PATCH 7.0 0571/1146] ocfs2: validate group add input before caching
 Date: Wed, 20 May 2026 18:13:41 +0200
-Message-ID: <20260520162141.861746090@linuxfoundation.org>
+Message-ID: <20260520162201.107061101@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,141 +73,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,chronox.de,gondor.apana.org.au,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251542-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-250600-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 88BDB595EBC
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,live.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: ADB24598ECE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haixin Xu <jerryxucs@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 01d798e9feb30212952d4e992801ba6bd6a82351 ]
+[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
 
-jent_kcapi_random() serializes the shared jitterentropy state, but it
-currently holds a spinlock across the jent_read_entropy() call. That
-path performs expensive jitter collection and SHA3 conditioning, so
-parallel readers can trigger stalls as contending waiters spin for
-the same lock.
+[BUG]
+OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
+ocfs2_set_new_buffer_uptodate():
 
-To prevent non-preemptible lock hold, replace rng->jent_lock with a
-mutex so contended readers sleep instead of spinning on a shared lock
-held across expensive entropy generation.
+kernel BUG at fs/ocfs2/uptodate.c:509!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
+Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
+Call Trace:
+ ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
+ ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7bbfb55a966d
 
-Fixes: bb5530e40824 ("crypto: jitterentropy - add jitterentropy RNG")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haixin Xu <jerryxucs@gmail.com>
-Reviewed-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[CAUSE]
+ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
+user-controlled group block before ocfs2_verify_group_and_input()
+validates that block number. That helper is only valid for newly
+allocated metadata and asserts that the block is not already present in
+the chosen metadata cache. The code also uses INODE_CACHE(inode) even
+though the group descriptor belongs to main_bm_inode and later journal
+accesses use that cache context instead.
+
+[FIX]
+Validate the on-disk group descriptor before caching it, then add it to
+the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
+validation failure path separate from the later cleanup path so we only
+remove the buffer from that cache after it has actually been inserted.
+This keeps the group buffer lifetime consistent across validation,
+journaling, and cleanup.
+
+Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy-kcapi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/ocfs2/resize.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index a53de7affe8d1..e9cd2b27d1e3c 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -42,6 +42,7 @@
- #include <linux/fips.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/slab.h>
- #include <linux/time.h>
- #include <crypto/internal/rng.h>
-@@ -193,7 +194,7 @@ int jent_read_random_block(void *hash_state, char *dst, unsigned int dst_len)
-  ***************************************************************************/
- 
- struct jitterentropy {
--	spinlock_t jent_lock;
-+	struct mutex jent_lock;
- 	struct rand_data *entropy_collector;
- 	struct crypto_shash *tfm;
- 	struct shash_desc *sdesc;
-@@ -203,7 +204,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
- {
- 	struct jitterentropy *rng = crypto_tfm_ctx(tfm);
- 
--	spin_lock(&rng->jent_lock);
-+	mutex_lock(&rng->jent_lock);
- 
- 	if (rng->sdesc) {
- 		shash_desc_zero(rng->sdesc);
-@@ -218,7 +219,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
- 	if (rng->entropy_collector)
- 		jent_entropy_collector_free(rng->entropy_collector);
- 	rng->entropy_collector = NULL;
--	spin_unlock(&rng->jent_lock);
-+	mutex_unlock(&rng->jent_lock);
- }
- 
- static int jent_kcapi_init(struct crypto_tfm *tfm)
-@@ -228,7 +229,7 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
- 	struct shash_desc *sdesc;
- 	int size, ret = 0;
- 
--	spin_lock_init(&rng->jent_lock);
-+	mutex_init(&rng->jent_lock);
- 
- 	/*
- 	 * Use SHA3-256 as conditioner. We allocate only the generic
-@@ -265,7 +266,6 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
- 		goto err;
+diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
+index 09724e7dc01ba..6375d50359725 100644
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -508,14 +508,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 		goto out_unlock;
  	}
  
--	spin_lock_init(&rng->jent_lock);
- 	return 0;
+-	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
+-
+ 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
+ 	if (ret) {
+ 		mlog_errno(ret);
+ 		goto out_free_group_bh;
+ 	}
  
- err:
-@@ -280,7 +280,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
- 	struct jitterentropy *rng = crypto_rng_ctx(tfm);
- 	int ret = 0;
++	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
++
+ 	trace_ocfs2_group_add((unsigned long long)input->group,
+ 			       input->chain, input->clusters, input->frees);
  
--	spin_lock(&rng->jent_lock);
-+	mutex_lock(&rng->jent_lock);
- 
- 	ret = jent_read_entropy(rng->entropy_collector, rdata, dlen);
- 
-@@ -306,7 +306,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+@@ -523,7 +523,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 	if (IS_ERR(handle)) {
+ 		mlog_errno(PTR_ERR(handle));
  		ret = -EINVAL;
+-		goto out_free_group_bh;
++		goto out_remove_cache;
  	}
  
--	spin_unlock(&rng->jent_lock);
-+	mutex_unlock(&rng->jent_lock);
+ 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
+@@ -577,9 +577,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
  
- 	return ret;
- }
+-out_free_group_bh:
++out_remove_cache:
+ 	if (ret < 0)
+-		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
++		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
++
++out_free_group_bh:
+ 	brelse(group_bh);
+ 
+ out_unlock:
 -- 
 2.53.0
 
