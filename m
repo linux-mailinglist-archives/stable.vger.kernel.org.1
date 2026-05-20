@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-252013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEMKGTchDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:43 +0200
+	id OEMQAR8nDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CC959A635
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B5159ADC5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03E9537B19C3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7669133625A0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8543F23BF;
-	Wed, 20 May 2026 17:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F9E3C140F;
+	Wed, 20 May 2026 18:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q636/qDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7JqQK9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2FE3F1AD9;
-	Wed, 20 May 2026 17:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B882348C55;
+	Wed, 20 May 2026 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299517; cv=none; b=T1CmR8G4wd4JSpFvO+pOkym44SQ/fWqNMt55sQnCpHWiMW5it192IVXePhQFfAH1a/EBRwo9rXf7YGuOTgolyxN2m52md3euB0dFXnyGOfGVq1hCaaa39OmC5HXBZ77Ehps6ZKFkjk6kzHbI1Fu8RV8xpnw6cifDkMkHLUbhKJU=
+	t=1779301092; cv=none; b=pYswcvAEAXlt6RaXh3EF+kPvBeCReHnC4hqLNhQkgPMtC8ZUmbJ2jEDKBsI+7O6meSZwH5knwx1ZPI7tllP8rjBXS3LoQzmj2ucz+JPsxTU7ywlWBIbftIua185eXn/5FNbiSePKvbNnXHX6NTLXsjaoCMLcuJKbnnVCs/ehqeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299517; c=relaxed/simple;
-	bh=GQX61aJOol9L0BtSHLeLxKAg0Qk6bCCXUr7NehcaBCM=;
+	s=arc-20240116; t=1779301092; c=relaxed/simple;
+	bh=2YN7SNDJ3wkJuvPzqGe8mU9nNJpV8LY6AH20e2h5vyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e100YZHisCcQQR6hJqsClQ2OkQ6GlakQLqDwUcIc8xL69GF/vEXu4lJHeqklTRM9iIj7lGM8LaxWqM/MBPULijzP/tXLY6dTQMFI8DiprGpykM0JmnsATdZ154UItHTBXeXrx+pR7vD5Edj9UMCqgP1ewXStPdtbqM9W7XPg5EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q636/qDT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C043F1F000E9;
-	Wed, 20 May 2026 17:51:55 +0000 (UTC)
+	 MIME-Version; b=X7K+YflvRycbtYZgC1c3nH9WWZW0pbliXf0XZok9Vl1c37365ugsrxuuhvskS8hef4mb3w4zkAb0uvcvmUK4F3wip4W5zkUIVGSN1xVe8nLPBfIp3XJGUF8gnkv98OtAIXJcelVziOxOe3ByusKYC09kwa1rpcaW+rHEoKDrReE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7JqQK9y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DBE1F000E9;
+	Wed, 20 May 2026 18:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299516;
-	bh=sLfi/wxuzAHTGHRQqAeA4iadAFqBVlffesXpLaqiu8o=;
+	s=korg; t=1779301091;
+	bh=bHvphwy5nDeHjn6Rpb/BDqgYvus55zIXNJiRvVmbWaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q636/qDTmj5haxQfNkMfbat/+GwJX78YeGkY0ASU52Kd4huocFDXwGDjfmF7POMt9
-	 wRvb/6eGU/jvnunoBbWz0ItDXD1Vv8HLfcBWJKtsWmzCih/D4gdsyY+8Z45jTjMAy9
-	 zvMkH7OyEC+i1fTm0+fEIZpLKeut9kptkFTCwU2E=
+	b=o7JqQK9yKBbWbCyHG4ulqTsSVea4fCmcUibHJgfn3mLF838jnERjpdzLycQC9R2pr
+	 v5h7jOC8UpgkYb6PvZenBBTlj5j11hsBsU6sIFCkYAFjhLb3YZPugbTZovOkRsejco
+	 NN/73jLlHt3UPqxWoxYx8N+9rQ8h0VkMwOt0J9Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 750/957] drm/amdgpu/uvd3.1: Dont validate the firmware when already validated
+Subject: [PATCH 6.12 422/666] clk: qcom: gcc-x1e80100: Keep GCC USB QTB clock always ON
 Date: Wed, 20 May 2026 18:20:33 +0200
-Message-ID: <20260520162150.827846532@linuxfoundation.org>
+Message-ID: <20260520162120.414615471@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +67,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252013-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252597-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: B4CC959A635
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 96B5159ADC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
 
-[ Upstream commit 13e4cf116dbf7a1fb8123a59bea2c098f30d3736 ]
+[ Upstream commit 05566ebcc0cd170bd4f50c907ee3ed8e106251e3 ]
 
-UVD 3.1 firmware validation seems to always fail after
-attempting it when it had already been validated.
-(This works similarly with the VCE 1.0 as well.)
+In Hamoa, SMMU invalidation requires the GCC_AGGRE_USB_NOC_AXI_CLK
+to be on for the USB QTB to be functional. This is currently
+explicitly enabled by the DWC3 glue driver, so an invalidation
+happening while the USB controller is suspended will fault.
 
-Don't attempt repeating the validation when it's already done.
+Solve this by voting for the GCC MMU USB QTB clock.
 
-This caused issues in situations when the system isn't able
-to suspend the GPU properly and so the GPU isn't actually
-powered down. Then amdgpu would fail when calling the IP
-block resume function.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2887
-Fixes: bb7978111dd3 ("drm/amdgpu: fix SI UVD firmware validate resume fail")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 889a2cfd889c4a4dd9d0c89ce9a8e60b78be71dd)
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260327-hamoa-usb-qtb-clk-always-on-v2-1-7d8a406e650f@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clk/qcom/gcc-x1e80100.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-index 2e79a3afc7748..1df45633e8120 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-@@ -242,6 +242,10 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
- 	uint64_t addr;
- 	uint32_t size;
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 0c49f0461ae32..e96faa529d3c4 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -7413,6 +7413,7 @@ static int gcc_x1e80100_probe(struct platform_device *pdev)
+ 	qcom_branch_set_clk_en(regmap, 0x32004); /* GCC_VIDEO_AHB_CLK */
+ 	qcom_branch_set_clk_en(regmap, 0x32030); /* GCC_VIDEO_XO_CLK */
+ 	qcom_branch_set_clk_en(regmap, 0x71004); /* GCC_GPU_CFG_AHB_CLK */
++	qcom_branch_set_clk_en(regmap, 0x7d01c); /* GCC_HLOS1_VOTE_AGGRE_NOC_MMU_USB_QTB_CLK */
  
-+	/* When the keyselect is already set, don't perturb it. */
-+	if (RREG32(mmUVD_FW_START))
-+		return;
-+
- 	/* program the VCPU memory controller bits 0-27 */
- 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
- 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
-@@ -284,6 +288,12 @@ static int uvd_v3_1_fw_validate(struct amdgpu_device *adev)
- 	int i;
- 	uint32_t keysel = adev->uvd.keyselect;
- 
-+	if (RREG32(mmUVD_FW_START) & UVD_FW_STATUS__PASS_MASK) {
-+		dev_dbg(adev->dev, "UVD keyselect already set: 0x%x (on CPU: 0x%x)\n",
-+			RREG32(mmUVD_FW_START), adev->uvd.keyselect);
-+		return 0;
-+	}
-+
- 	WREG32(mmUVD_FW_START, keysel);
- 
- 	for (i = 0; i < 10; ++i) {
+ 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
+ 	regmap_write(regmap, 0x52224, 0x0);
 -- 
 2.53.0
 
