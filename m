@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMKKOU8RDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:51 +0200
+	id MK75CfT8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50CDB598DAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1415962DD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA4BF351E887
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BCD7321FCD4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEC736D4E1;
-	Wed, 20 May 2026 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19074364EB0;
+	Wed, 20 May 2026 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnAT3HtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWFBRsYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A70436A370;
-	Wed, 20 May 2026 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CA2346E5E;
+	Wed, 20 May 2026 17:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295707; cv=none; b=Bd2i/90T7YCT3SMqU1zakzATZtqFCvYxcjq5eIRQ2apoD2U+5MSFnAaw0TggaXb/QC46oJ/wLbbl8Dc2MrGDTLbiKADo0ypMrloP2ZhjPFjIs/5mkPkGBGKg9kseDW+vu5D4L/yvd25PZvrdht2Hl6blbfAbQC1BSq/ATVi+xLU=
+	t=1779298010; cv=none; b=A8dPh0r+knfDwZNgoF59iPqQzWCDH95xOdAivtxUTJnWorGR/Bmmo5QN9BetMseicmZk/zVbq4pysWnlr8DNVPR3Ce/V59BdACcTExdJHl1sppJede/GFtW7d/wbrN7V0n1u9QfoeaoRaRBXh2VabrAP5FNnQWPrF3A8In2FElI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295707; c=relaxed/simple;
-	bh=Mt7xSOKsc+vzfrSLl5XZMyFyhkJribQqUqVE2bTuwyw=;
+	s=arc-20240116; t=1779298010; c=relaxed/simple;
+	bh=hCfqbR27pjxfU6tlCDQ0oJtpdMAufznvxNNYQZoNR8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H+dZejiF6fgRQ0SoJFfmgAwxdj6RxWF0dC3xKCpuO2Boe4Gh+790lY6H9O/EJMPvGGK/JL4ONu6UGzDIOgO9+Qu2ZArVZm576lmwRQxZIJYPcbyOli+44y05dF6Ph1sXVzMAQroMyPk8NSEeelTmRyg5s2t+CRH05yN/NOQhbrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnAT3HtB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293E91F000E9;
-	Wed, 20 May 2026 16:48:25 +0000 (UTC)
+	 MIME-Version; b=aVlnwhTtBwMPvhgDgX+Xrp4ivVKtmU0EWI3jlJR2EWdEgnsdiLoN72zYe+Tw7PcghZL6+qsHMxRgh6jLbOTYaJQCQTwbhjZr+PB5P+WBH7MtKKSd6dtV1ii/69woK8nBm/8GEGvqOrKZpiF2HU7bQV08aoOcFAwe3Nry2OzvYRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWFBRsYM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F24D1F00897;
+	Wed, 20 May 2026 17:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295705;
-	bh=Zh04V8itprip5pCfxzgRABLqFzr7uRJ4tXIEd5Hob1k=;
+	s=korg; t=1779298009;
+	bh=yadGzIpurOUkUBXEIH08AQadRxCoc/7SSPAzFE3CRgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HnAT3HtB+QeP5sjy9HRYtXBQlBktyRgoqdLa1CrwRF0wUcxBOqdIdusBFGcYjuEqw
-	 a9VnCGsFj+nR7ujoieM+Mvkl2cJLmthqUgUUSzrOuN5H1TShUNufMBEJAnh+G5gYNF
-	 CcdUdBt+o2JXvSRpSvvJhjO4bfRDYIuPG4nHuKrI=
+	b=WWFBRsYMkw3HvMu1AjDril/zC1y/SOaGq48qyuYNjfIyhhlpUX8xGWiLG/n5qfsZp
+	 EYLIM/+cjcX/Y6UUJeE0bjy2EhHrzakvXv8Oaz3o9zLxvJcHbMcTFEeSgf6+g4t8yV
+	 7hH5C+k7ZzDm5sqpS2EYAWaOFyh/kmEO4mRq6B6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biswapriyo Nath <nathbappai@gmail.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Alexander Koskovich <akoskovich@pm.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0480/1146] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+Subject: [PATCH 6.18 247/957] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
 Date: Wed, 20 May 2026 18:12:10 +0200
-Message-ID: <20260520162159.054373194@linuxfoundation.org>
+Message-ID: <20260520162139.899979983@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +64,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250551-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,mainlining.org,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251449-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mainlining.org:email]
-X-Rspamd-Queue-Id: 50CDB598DAE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,patchwork.freedesktop.org:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,pm.me:email]
+X-Rspamd-Queue-Id: 3F1415962DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-[ Upstream commit e8669e010991154bedadd1cd67700544e0362e99 ]
+[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
 
-The device was crashing on boot because the reserved gpio ranges
-was wrongly defined. Correct the ranges for avoid pinctrl crashing.
+The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
+("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
+always correct just the name was wrong.
 
-Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
-Tested-by: Biswapriyo Nath <nathbappai@gmail.com>
+Rename and reorder to maintain version sorting.
+
+Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20260126-xiaomi-willow-v3-5-aad7b106c311@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Patchwork: https://patchwork.freedesktop.org/patch/713717/
+Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
+ drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-index 418cfe67a2da8..c3edeee3af3ef 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-@@ -293,7 +293,7 @@ &sdhc_2 {
- };
- 
- &tlmm {
--	gpio-reserved-ranges = <22 2>, <28 6>;
-+	gpio-reserved-ranges = <0 4>, <30 4>;
- };
- 
- &usb3 {
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+index fed8e9b67011c..cdcf0cab7aaa2 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+@@ -306,10 +306,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
+ 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
+ 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
++	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
++		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
+ 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+-	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
+-		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
+ 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+index 38f303f2ed04c..4d760ffd8b4a8 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+@@ -19,8 +19,8 @@
+ #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
++#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
+-#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
+ #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
+ #define MSM_DSI_6G_VER_MINOR_V2_3_1	0x20030001
 -- 
 2.53.0
 
