@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-251478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aClrHLrxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:06 +0200
+	id MODNCLzxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D70594306
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DFA59430D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D831630A9A4F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 311DF30AA99D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B7A331220;
-	Wed, 20 May 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B57337754D;
+	Wed, 20 May 2026 17:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJDf0EJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzQO//xQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8C937754D;
-	Wed, 20 May 2026 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019EC346E5E;
+	Wed, 20 May 2026 17:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298087; cv=none; b=qTZIWI6lHRxdb3gQn+iS4g1Wo4j07yKkVwyEYQK5IuTKy5PvPVNTa5u6x+JhonQ8GzUtd1BclM6n45pOheKeEv22wGp9AQ4e5LWuWKNoqtKMo1kGVJvBT0Ow/YZsiRZpxDtpWiTafMgapYz2EwgFwEkKcSrAyn5hBJdSVAuaYRc=
+	t=1779298090; cv=none; b=DMd2vVRBT5Z5Dzfuu6qzrc/m2wpUXj/Oq0SDcuU8n/X+UhakhIb6/kb1MKhRqxN1mHSHu0cT59jF97OI+Gqy1xbGzAM+mezpWbWZ910ApR+fU2OcQQex/epSgNP/q7ef4C70P6BBwiJRCIOSFkSNUWv7U9TPaBezJiiiX5QKIrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298087; c=relaxed/simple;
-	bh=iaiW++AWkX3lc5jGrPhk4d1t6OuBqNRM5nAqAAeeiX0=;
+	s=arc-20240116; t=1779298090; c=relaxed/simple;
+	bh=iYCxWrn+/fFcHa11gvqQd9g8MvZEmu/NixCRTzV88QY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWcWfr+yRJLXaCkn8sudd/4y88YRyFRriaIJV2MYRah8e8Bv4lD752f7Je/SEuGQdNZDuDU+ui/RY11/Patzdh00/BcDG7V15Xp4k/hlLgXTi5GcsvVtVHCU+olU4yWuRx3NH337p9anEa7ereNMe60o9gMURBnsi0Kh7OvoJVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJDf0EJb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32F01F00893;
-	Wed, 20 May 2026 17:28:05 +0000 (UTC)
+	 MIME-Version; b=WRHFXbqkExx++Ze4b/TBklLSLATnn2sb1WnIypa/DgfUmnZhjBwZPxlRoled6pOd+erdm74nHfKiFilv1TDHnhpsP4BXhL26qn5x6A6a+WwkW0SdYflPDHZzFmzoEqJioIuoglp+lSYUmVcLle/CpNB4m+8ZvV/iPYZd5eK5p4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzQO//xQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686541F00896;
+	Wed, 20 May 2026 17:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298086;
-	bh=a19+RtSARQwYe+KekOLwazAbJTvcd5nuGw1whysag/I=;
+	s=korg; t=1779298088;
+	bh=3SnVf2IwYLGdxtKq3oH7eFSJVuNL/vCjDGQ77ynsHqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FJDf0EJb1sX+vjwovFUC7wRN0mi3FmJsduluC9kpLylXPVEEScgXjTpyltwjfidLl
-	 +Ev+FJy2NGp7roz1jioTWA7iumFc0RDbVxu1F5CUTEwatjuJ319nPVFCIWXvexMNV5
-	 I7RBRbSd5ut96TwAM7PvXLwdFKX04OnrCxovBT7k=
+	b=HzQO//xQvkprnG3UOx9c1qTxnaDwZFGz2HtM5kOPciKafdNwZomv5X8cgVUKBm0yA
+	 eoMNrlAtAyo026YHvPEo8hO73CJzXi8gUF1eTcpdMmsD/n4pTM1JD0t55pgclIi7fw
+	 kFUSr07l8eVYjogUqUsHVnvYnVDjEqduTJZxNmTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 278/957] drm/msm/a6xx: Use barriers while updating HFI Q headers
-Date: Wed, 20 May 2026 18:12:41 +0200
-Message-ID: <20260520162140.569743840@linuxfoundation.org>
+Subject: [PATCH 6.18 279/957] ALSA: hda/cmedia: Remove duplicate pin configuration parsing
+Date: Wed, 20 May 2026 18:12:42 +0200
+Message-ID: <20260520162140.591205193@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251478-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251479-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: D7D70594306
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 89DFA59430D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,70 +99,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit dc78b35d5ec09d1b0b8a937e6e640d2c5a030915 ]
+[ Upstream commit 579e7b820de5dd5124585413bb5e9c278d255436 ]
 
-To avoid harmful compiler optimizations and IO reordering in the HW, use
-barriers and READ/WRITE_ONCE helpers as necessary while accessing the HFI
-queue index variables.
+The cmedia_probe() function calls snd_hda_parse_pin_defcfg() and
+snd_hda_gen_parse_auto_config() twice unnecessarily. Remove The
+duplicate code.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714653/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-1-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Fixes: 0f1e8306dcbe ("ALSA: hda/cmedia: Rewrite to new probe method")
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Link: https://patch.msgid.link/20260401082625.157868-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/hda/codecs/cmedia.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-index 550de6ad68eff..ef1365afd767b 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-@@ -33,7 +33,7 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	struct a6xx_hfi_queue_header *header = queue->header;
- 	u32 i, hdr, index = header->read_index;
- 
--	if (header->read_index == header->write_index) {
-+	if (header->read_index == READ_ONCE(header->write_index)) {
- 		header->rx_request = 1;
- 		return 0;
- 	}
-@@ -61,7 +61,10 @@ static int a6xx_hfi_queue_read(struct a6xx_gmu *gmu,
- 	if (!gmu->legacy)
- 		index = ALIGN(index, 4) % header->size;
- 
--	header->read_index = index;
-+	/* Ensure all memory operations are complete before updating the read index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->read_index, index);
- 	return HFI_HEADER_SIZE(hdr);
- }
- 
-@@ -73,7 +76,7 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 
- 	spin_lock(&queue->lock);
- 
--	space = CIRC_SPACE(header->write_index, header->read_index,
-+	space = CIRC_SPACE(header->write_index, READ_ONCE(header->read_index),
- 		header->size);
- 	if (space < dwords) {
- 		header->dropped++;
-@@ -94,7 +97,10 @@ static int a6xx_hfi_queue_write(struct a6xx_gmu *gmu,
- 			queue->data[index] = 0xfafafafa;
+diff --git a/sound/hda/codecs/cmedia.c b/sound/hda/codecs/cmedia.c
+index 15e5a1118a6e8..a156bea7ca446 100644
+--- a/sound/hda/codecs/cmedia.c
++++ b/sound/hda/codecs/cmedia.c
+@@ -39,13 +39,6 @@ static int cmedia_probe(struct hda_codec *codec, const struct hda_device_id *id)
+ 		spec->out_vol_mask = (1ULL << 0x10);
  	}
  
--	header->write_index = index;
-+	/* Ensure all memory operations are complete before updating the write index */
-+	dma_mb();
-+
-+	WRITE_ONCE(header->write_index, index);
- 	spin_unlock(&queue->lock);
- 
- 	gmu_write(gmu, REG_A6XX_GMU_HOST2GMU_INTR_SET, 0x01);
+-	err = snd_hda_parse_pin_defcfg(codec, cfg, NULL, 0);
+-	if (err < 0)
+-		goto error;
+-	err = snd_hda_gen_parse_auto_config(codec, cfg);
+-	if (err < 0)
+-		goto error;
+-
+ 	err = snd_hda_parse_pin_defcfg(codec, cfg, NULL, 0);
+ 	if (err < 0)
+ 		goto error;
 -- 
 2.53.0
 
