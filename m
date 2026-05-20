@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-252102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIb6Ok0iDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:21 +0200
+	id gAe3JdYWDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472B259A72A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EB4599663
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C31537CB8CC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D22893023C4D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCCF29B8D0;
-	Wed, 20 May 2026 17:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7063D1CC6;
+	Wed, 20 May 2026 18:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duyDNupN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuHUHNWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B8C3BE64B;
-	Wed, 20 May 2026 17:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E6D372B31;
+	Wed, 20 May 2026 18:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299795; cv=none; b=aL8R+EPHq3VqrLm4zH9BWiwuIZS7avFDubyctaWabZSPXNlWXqD5m4TcdKXLHcXIijdngN/IT8gX3Ktdwb89LviO9Ga0GRA8sz0gyhycHVeSpL7rk5Nj4Czqw0WBMtVGdNyVjWuJ+msLnD9p1zsp7hkJJXwlgjjSXSCOQfNyUMc=
+	t=1779301366; cv=none; b=Gb6s/eXgzijqQ3p0XYyq2eYJB660Y4utXbTjj3lQ95Gn6JOPZP8ToJsgzIa9rr7McOHr1b6h/2uipAbL7ma/HC2sefjWsbw3lUCWJbJi4GcPJI05cKdDFmNcdxAUyK2kwriFn1/yk80E77Ei/JShXWzeLNfatNlAJjuMPVZ4v/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299795; c=relaxed/simple;
-	bh=ZT8qhOOu3YXO9eT+YrM7d7HQE4uzL1C77ddQc+kIrP4=;
+	s=arc-20240116; t=1779301366; c=relaxed/simple;
+	bh=gVffotVeCVJpTFyUDTfjHJ2budGGHdcUD0P+cuvK7No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeptVJJwsy8LAgy5zkWN9ItvQ6OIv9tRxsRwUi7Rtl1XXQfyKeOFPv7V7BsjUKFMM9ToISDXuPP7uwuMjmdOFYiaMlDYd51l/Tok9YTpQkr0oxFgdJR59cuioLxfS5unTJn4DNHWm2QlONQwFH5hjNPhI6enBuBoHESyiAgWjoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duyDNupN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD11E1F000E9;
-	Wed, 20 May 2026 17:56:33 +0000 (UTC)
+	 MIME-Version; b=RS2qtpOR9j00PF06nWaAEf7+wT45zAgc6CK8vCFdtgwZb/Z5PSmgxTNfUs6T5DlyKVJACUvz/MsyBwiZZhkDYznvsHgCxyM+i8kzIU5cetQCvamFCJs9qi3VfHNUrb24gRnFFb+aSKCDkcEkxmO5XxJh3Ec4I63TewZwAcQ5vBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuHUHNWj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0E31F000E9;
+	Wed, 20 May 2026 18:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299794;
-	bh=NVMDEnf5GUYbiTytH8QY7tJJeDPacGVEv6rjRs96qs0=;
+	s=korg; t=1779301364;
+	bh=+66sRqAigEpI3auvGqT23RXfOGcpapRKDmzAp0AEiOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=duyDNupNaZq5XpDlmV7dsbBMHh9QSsJZv+2ga2ELBNwU6GLv1Ocn69rXmsd6FnGU+
-	 EdI1ic4ks8RPdbc+89YsIbMdLgVwE1shL9nSHMsuvk9bUhlNU392q1qK+fSfT524mo
-	 hRugyvmpANByD5Zian0OQRtGicPW6X9T4a+K36ro=
+	b=IuHUHNWjyBAvDfXnnM1mtWaITHCLZs9bh6hyqkBlsJNubd0KVVdQFn03wTMdP7m67
+	 o3D8BJFQL22YhNl1oLguaI39omUpg/4oGGCO7KJuGezC0mkh9cpE+oBU0CL4fbq7vH
+	 GSgsIDIc1KIHePBOvlgeSjD19T8h1j39CfCuYeww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Demers <alexandre.f.demers@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 848/957] ice: fix SMA and U.FL pin state changes affecting paired pin
+Subject: [PATCH 6.12 520/666] drm/amdgpu: fix spelling typos
 Date: Wed, 20 May 2026 18:22:11 +0200
-Message-ID: <20260520162152.954617397@linuxfoundation.org>
+Message-ID: <20260520162122.534381078@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,174 +64,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252102-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252702-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 472B259A72A
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B7EB4599663
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Alexandre Demers <alexandre.f.demers@gmail.com>
 
-[ Upstream commit 6f9d8393c9f50fbc68b9c9e99f78ca5a7b43ff44 ]
+[ Upstream commit ce43abd7ec9464cf954f90e1c69e11768b02fa0a ]
 
-SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
-SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
-only have one active pin at a time: SMA1 output and U.FL1 output share
-the same CGU output, SMA2 input and U.FL2 input share the same CGU
-input.  The PCA9575 register bits determine which connector in each
-pair owns the signal path.
+Found some typos while exploring amdgpu code.
 
-The driver does not account for this pairing in two places:
-
-ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
-backing CGU pin without checking whether the U.FL pin is currently
-active.  Disconnecting an already inactive U.FL pin flips bits that
-the paired SMA pin relies on, breaking its connection.
-
-ice_dpll_sma_direction_set() does not propagate direction changes to
-the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
-never managed, so U.FL2 stays disconnected after SMA2 switches to
-output.  For both pairs the backing CGU pin of the U.FL side is never
-enabled when a direction change activates it, so userspace sees the
-pin as disconnected even though the routing is correct.
-
-Fix by guarding the U.FL disconnect path against inactive pins and by
-updating the paired U.FL pin fully on SMA direction changes: manage
-ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
-CGU pin whenever the peer becomes active.
-
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-8-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Alexandre Demers <alexandre.f.demers@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 13e4cf116dbf ("drm/amdgpu/uvd3.1: Don't validate the firmware when already validated")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 50 ++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c   | 6 +++---
+ drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c   | 3 ++-
+ drivers/gpu/drm/amd/amdgpu/vce_v2_0.c   | 2 +-
+ 4 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index c2ad39bfe177d..3254be7b0dca8 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -1090,6 +1090,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 				      enum dpll_pin_direction direction,
- 				      struct netlink_ext_ack *extack)
- {
-+	struct ice_dplls *d = &p->pf->dplls;
-+	struct ice_dpll_pin *peer;
- 	u8 data;
- 	int ret;
- 
-@@ -1108,8 +1110,9 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 	case ICE_DPLL_PIN_SW_2_IDX:
- 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
- 			data &= ~ICE_SMA2_DIR_EN;
-+			data |= ICE_SMA2_UFL2_RX_DIS;
- 		} else {
--			data &= ~ICE_SMA2_TX_EN;
-+			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
- 			data |= ICE_SMA2_DIR_EN;
- 		}
- 		break;
-@@ -1121,6 +1124,34 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 		ret = ice_dpll_pin_state_update(p->pf, p,
- 						ICE_DPLL_PIN_TYPE_SOFTWARE,
- 						extack);
-+	if (ret)
-+		return ret;
-+
-+	/* When a direction change activates the paired U.FL pin, enable
-+	 * its backing CGU pin so the pin reports as connected. Without
-+	 * this the U.FL routing is correct but the CGU pin stays disabled
-+	 * and userspace sees the pin as disconnected.  Do not disable the
-+	 * backing pin when U.FL becomes inactive because the SMA pin may
-+	 * still be using it.
-+	 */
-+	peer = &d->ufl[p->idx];
-+	if (peer->active) {
-+		struct ice_dpll_pin *target;
-+		enum ice_dpll_pin_type type;
-+
-+		if (peer->output) {
-+			target = peer->output;
-+			type = ICE_DPLL_PIN_TYPE_OUTPUT;
-+		} else {
-+			target = peer->input;
-+			type = ICE_DPLL_PIN_TYPE_INPUT;
-+		}
-+		ret = ice_dpll_pin_enable(&p->pf->hw, target,
-+					  d->eec.dpll_idx, type, extack);
-+		if (!ret)
-+			ret = ice_dpll_pin_state_update(p->pf, target,
-+							type, extack);
-+	}
- 
- 	return ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index cf41ef9e3ad83..f63b5a429b107 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -269,7 +269,7 @@ void amdgpu_gmc_sysvm_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc
+  * @mc: memory controller structure holding memory information
+  * @gart_placement: GART placement policy with respect to VRAM
+  *
+- * Function will place try to place GART before or after VRAM.
++ * Function will try to place GART before or after VRAM.
+  * If GART size is bigger than space left then we ajust GART size.
+  * Thus function will never fails.
+  */
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index 2dd89f490dc37..4dd1595dc3d88 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -98,7 +98,7 @@ static void uvd_v3_1_ring_emit_ib(struct amdgpu_ring *ring,
  }
-@@ -1172,6 +1203,14 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA1_MASK;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL1 is not active, setting TX_EN
-+			 * while DIR_EN is set would also deactivate
-+			 * the paired SMA1 output.
-+			 */
-+			if (data & (ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA1_TX_EN;
- 			enable = false;
- 		} else {
-@@ -1186,6 +1225,15 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA2_UFL2_RX_DIS;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL2 is not active, setting
-+			 * UFL2_RX_DIS could also disable the paired
-+			 * SMA2 input.
-+			 */
-+			if (!(data & ICE_SMA2_DIR_EN) ||
-+			    (data & ICE_SMA2_UFL2_RX_DIS)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA2_UFL2_RX_DIS;
- 			enable = false;
- 		} else {
+ 
+ /**
+- * uvd_v3_1_ring_emit_fence - emit an fence & trap command
++ * uvd_v3_1_ring_emit_fence - emit a fence & trap command
+  *
+  * @ring: amdgpu_ring pointer
+  * @addr: address
+@@ -242,7 +242,7 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
+ 	uint64_t addr;
+ 	uint32_t size;
+ 
+-	/* programm the VCPU memory controller bits 0-27 */
++	/* program the VCPU memory controller bits 0-27 */
+ 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
+ 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
+ 	WREG32(mmUVD_VCPU_CACHE_OFFSET0, addr);
+@@ -416,7 +416,7 @@ static int uvd_v3_1_start(struct amdgpu_device *adev)
+ 	/* Set the write pointer delay */
+ 	WREG32(mmUVD_RBC_RB_WPTR_CNTL, 0);
+ 
+-	/* programm the 4GB memory segment for rptr and ring buffer */
++	/* Program the 4GB memory segment for rptr and ring buffer */
+ 	WREG32(mmUVD_LMI_EXT40_ADDR, upper_32_bits(ring->gpu_addr) |
+ 		   (0x7 << 16) | (0x1 << 31));
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+index 0d291c497eed7..a1227867dc887 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+@@ -308,7 +308,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
+ 	/* enable VCPU clock */
+ 	WREG32(mmUVD_VCPU_CNTL,  1 << 9);
+ 
+-	/* disable interupt */
++	/* disable interrupt */
+ 	WREG32_P(mmUVD_MASTINT_EN, 0, ~(1 << 1));
+ 
+ #ifdef __BIG_ENDIAN
+@@ -318,6 +318,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
+ #endif
+ 	WREG32(mmUVD_LMI_SWAP_CNTL, lmi_swap_cntl);
+ 	WREG32(mmUVD_MP_SWAP_CNTL, mp_swap_cntl);
++
+ 	/* initialize UVD memory controller */
+ 	WREG32(mmUVD_LMI_CTRL, 0x203108);
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
+index 97ce06228a910..8a6c24b98f1fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
+@@ -278,7 +278,7 @@ static int vce_v2_0_stop(struct amdgpu_device *adev)
+ 	int status;
+ 
+ 	if (vce_v2_0_lmi_clean(adev)) {
+-		DRM_INFO("vce is not idle \n");
++		DRM_INFO("VCE is not idle \n");
+ 		return 0;
+ 	}
+ 
 -- 
 2.53.0
 
