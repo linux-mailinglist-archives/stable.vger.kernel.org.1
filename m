@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BDZMHQkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:32 +0200
+	id YMTQD0vyDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-250846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F9D59A9B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0695944F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28C5E383C31C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6BE9832734B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D810B3F54D1;
-	Wed, 20 May 2026 18:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177653BED1E;
+	Wed, 20 May 2026 17:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lknhfH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg/uS72V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB7D3F871A;
-	Wed, 20 May 2026 18:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF23F3CB2F8;
+	Wed, 20 May 2026 17:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300550; cv=none; b=V2PV/id4QGWmKieUMnOI34ZQSfp+ZxUuMwI8tBEkdOtYrhcpDvwaQ/u+5e6RDPvT1g5n5/0HAOD8VuzqnSXH3vVxbww9pBoaK9y7k6ClW4h9hrSTRNNvtBWtZeSFnPn/+dkaH5dpxJFwpGiqlhMt00sokyuLf5itXw5UCL0NmSY=
+	t=1779296459; cv=none; b=iBMdU4nQ3/uJg5bH4601LjOlzcuhzRFSMZL608znE9GSjkBhQydGluAZDH2njMDiBWSKW9C85AmCndyJuufonH3VPbDqkh9UP8h6D+BwwYjPnySU8RkSGdsoT+SY8l4+OLuzmgfCWulyd8XP5bFy8T+O4oGX00kKPxpRUYpTOHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300550; c=relaxed/simple;
-	bh=npGlunEeNuL0S3BYpEpBDJYqhHmmnyQYumASwi3A7hA=;
+	s=arc-20240116; t=1779296459; c=relaxed/simple;
+	bh=XgeaSrg4cv2gkkm7Say5k8cO9EFO4zZx0HoVsvVuvbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvh3IeGU3kOXOyo1CzZqJ/I+3Y/6mCWM5+vaqaIa//CF+96La2DumFT0trhj1wecIRhlQ13t5Wv+hyleX9LiVvDlJ3quQJXRkcQ08whsWAnwQKgHY10KNPHu9BmgxxZ/GRp5BoPHlnw6IcMEjW2BjxsdpCJOKb3NYVgvpugxzPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lknhfH5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A365D1F000E9;
-	Wed, 20 May 2026 18:09:08 +0000 (UTC)
+	 MIME-Version; b=bGULR+NjOnyFVKGDqysoFJKfAa++iztgYGcy4VA2LJ1H8paVhX0cTyZ3PZkM6GGonelGgL2n7mBHDoyjAtFn5m3wTy9msYk08bhV0EW9peXY731hphOL0yK26SaGAC5TaPzrgoN+Sw9ihc9aOupzUr4n1gMVXRBb+5CbzxfyCXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg/uS72V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A911F000E9;
+	Wed, 20 May 2026 17:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300549;
-	bh=zPMjidnEzkhOuQ04/clpWZycakdh0bFgVgZshwHCkjU=;
+	s=korg; t=1779296458;
+	bh=90gA57PbM3LqR6CehmUTjWTVbyI1EDCIchsUDGz6lK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0lknhfH5GX6neYBnmnliTVddl+zAMNAI5FTdnwHigSFLLnq0ML4jX5R0vK/8yQP9n
-	 feewEzWFP0KQLp9wgoOprRroGAkEpVDITFNfCB9zqMmHTJ39w60D+IhBqH0jrmJlSC
-	 lt8rgo+rQVALrkDyH2nbNEj7u53Pe37NQC2A/h40=
+	b=jg/uS72VzOnoClHybHY1emvgQKgCoZCXVG9p28JfMwJVUppQfc/suyOfgZRJ6wrWY
+	 1ct6Ou2sE5iHlknRTaTmOnAqOC/KMGQ1Rm5US98FrFGt3UZuwckIinJpUABeXnUeuH
+	 +YBGwgOIs4ZpFjcp9lrZChcFmM1+c6l+32oodT70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/666] crypto: qat - introduce fuse array
-Date: Wed, 20 May 2026 18:17:09 +0200
-Message-ID: <20260520162115.933551777@linuxfoundation.org>
+Subject: [PATCH 7.0 0780/1146] tcp: annotate data-races in tcp_get_info_chrono_stats()
+Date: Wed, 20 May 2026 18:17:10 +0200
+Message-ID: <20260520162205.867373830@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,294 +68,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252390-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250846-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 26F9D59A9B8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3A0695944F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f3bda3b9b69cb193968ba781446ff18c734f0276 ]
+[ Upstream commit 267bf3cf9a6f0ffb98b8afd983c1950e835f07c9 ]
 
-Change the representation of fuses in the accelerator device
-structure from a single value to an array.
+tcp_get_timestamping_opt_stats() does not own the socket lock,
+this is intentional.
 
-This allows the structure to accommodate additional fuses that
-are required for future generations of QAT hardware.
+It calls tcp_get_info_chrono_stats() while other threads could
+change chrono fields in tcp_chrono_set().
 
-This does not introduce any functional changes.
+I do not think we need coherent TCP socket state snapshot
+in tcp_get_timestamping_opt_stats(), I chose to only
+add annotations to keep KCSAN happy.
 
-Signed-off-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: b260d53561dd ("crypto: qat - disable 4xxx AE cluster when lead engine is fused off")
+Fixes: 1c885808e456 ("tcp: SOF_TIMESTAMPING_OPT_STATS option for SO_TIMESTAMPING")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c   |  2 +-
- drivers/crypto/intel/qat/qat_420xx/adf_drv.c         |  2 +-
- drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c |  2 +-
- drivers/crypto/intel/qat/qat_4xxx/adf_drv.c          |  2 +-
- .../crypto/intel/qat/qat_c3xxx/adf_c3xxx_hw_data.c   |  4 ++--
- drivers/crypto/intel/qat/qat_c3xxx/adf_drv.c         |  2 +-
- drivers/crypto/intel/qat/qat_c62x/adf_c62x_hw_data.c |  4 ++--
- drivers/crypto/intel/qat/qat_c62x/adf_drv.c          |  4 ++--
- .../crypto/intel/qat/qat_common/adf_accel_devices.h  | 12 +++++++++++-
- .../crypto/intel/qat/qat_common/adf_gen2_hw_data.c   |  2 +-
- .../intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c    |  6 +++---
- drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c      |  2 +-
- 12 files changed, 27 insertions(+), 17 deletions(-)
+ include/net/tcp.h | 10 +++++++---
+ net/ipv4/tcp.c    | 14 ++++++++++----
+ 2 files changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-index ef5f03be41906..0e7d0db475d5d 100644
---- a/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_420xx/adf_420xx_hw_data.c
-@@ -98,7 +98,7 @@ static struct adf_hw_device_class adf_420xx_class = {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 905587114d444..1946935388be6 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2161,10 +2161,14 @@ static inline void tcp_chrono_set(struct tcp_sock *tp, const enum tcp_chrono new
+ 	const u32 now = tcp_jiffies32;
+ 	enum tcp_chrono old = tp->chrono_type;
  
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
--	u32 me_disable = self->fuses;
-+	u32 me_disable = self->fuses[ADF_FUSECTL4];
- 
- 	return ~me_disable & ADF_420XX_ACCELENGINES_MASK;
++	/* Following WRITE_ONCE()s pair with READ_ONCE()s in
++	 * tcp_get_info_chrono_stats().
++	 */
+ 	if (old > TCP_CHRONO_UNSPEC)
+-		tp->chrono_stat[old - 1] += now - tp->chrono_start;
+-	tp->chrono_start = now;
+-	tp->chrono_type = new;
++		WRITE_ONCE(tp->chrono_stat[old - 1],
++			   tp->chrono_stat[old - 1] + now - tp->chrono_start);
++	WRITE_ONCE(tp->chrono_start, now);
++	WRITE_ONCE(tp->chrono_type, new);
  }
-diff --git a/drivers/crypto/intel/qat/qat_420xx/adf_drv.c b/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-index 41420e349572a..b24f0a55cf017 100644
---- a/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_420xx/adf_drv.c
-@@ -79,7 +79,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	adf_init_hw_data_420xx(accel_dev->hw_device, ent->device);
  
- 	pci_read_config_byte(pdev, PCI_REVISION_ID, &accel_pci_dev->revid);
--	pci_read_config_dword(pdev, ADF_GEN4_FUSECTL4_OFFSET, &hw_data->fuses);
-+	pci_read_config_dword(pdev, ADF_GEN4_FUSECTL4_OFFSET, &hw_data->fuses[ADF_FUSECTL4]);
- 
- 	/* Get Accelerators and Accelerators Engines masks */
- 	hw_data->accel_mask = hw_data->get_accel_mask(hw_data);
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-index bbd92c017c28e..a6d253ff20888 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -101,7 +101,7 @@ static struct adf_hw_device_class adf_4xxx_class = {
- 
- static u32 get_ae_mask(struct adf_hw_device_data *self)
+ static inline void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 202a4e57a2188..a8ff76c40f79b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4225,12 +4225,18 @@ static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
+ 				      struct tcp_info *info)
  {
--	u32 me_disable = self->fuses;
-+	u32 me_disable = self->fuses[ADF_FUSECTL4];
+ 	u64 stats[__TCP_CHRONO_MAX], total = 0;
+-	enum tcp_chrono i;
++	enum tcp_chrono i, cur;
  
- 	return ~me_disable & ADF_4XXX_ACCELENGINES_MASK;
- }
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-index 01b34eda83e91..6efbfed67c957 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-@@ -81,7 +81,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	adf_init_hw_data_4xxx(accel_dev->hw_device, ent->device);
- 
- 	pci_read_config_byte(pdev, PCI_REVISION_ID, &accel_pci_dev->revid);
--	pci_read_config_dword(pdev, ADF_GEN4_FUSECTL4_OFFSET, &hw_data->fuses);
-+	pci_read_config_dword(pdev, ADF_GEN4_FUSECTL4_OFFSET, &hw_data->fuses[ADF_FUSECTL4]);
- 
- 	/* Get Accelerators and Accelerators Engines masks */
- 	hw_data->accel_mask = hw_data->get_accel_mask(hw_data);
-diff --git a/drivers/crypto/intel/qat/qat_c3xxx/adf_c3xxx_hw_data.c b/drivers/crypto/intel/qat/qat_c3xxx/adf_c3xxx_hw_data.c
-index 201f9412c5823..e78f7bfd30b85 100644
---- a/drivers/crypto/intel/qat/qat_c3xxx/adf_c3xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_c3xxx/adf_c3xxx_hw_data.c
-@@ -27,8 +27,8 @@ static struct adf_hw_device_class c3xxx_class = {
- 
- static u32 get_accel_mask(struct adf_hw_device_data *self)
- {
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 	u32 straps = self->straps;
--	u32 fuses = self->fuses;
- 	u32 accel;
- 
- 	accel = ~(fuses | straps) >> ADF_C3XXX_ACCELERATORS_REG_OFFSET;
-@@ -39,8 +39,8 @@ static u32 get_accel_mask(struct adf_hw_device_data *self)
- 
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 	u32 straps = self->straps;
--	u32 fuses = self->fuses;
- 	unsigned long disabled;
- 	u32 ae_disable;
- 	int accel;
-diff --git a/drivers/crypto/intel/qat/qat_c3xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_c3xxx/adf_drv.c
-index b776f7ea0dfb5..fdbfcb0c8214f 100644
---- a/drivers/crypto/intel/qat/qat_c3xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_c3xxx/adf_drv.c
-@@ -134,7 +134,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	adf_init_hw_data_c3xxx(accel_dev->hw_device);
- 	pci_read_config_byte(pdev, PCI_REVISION_ID, &accel_pci_dev->revid);
- 	pci_read_config_dword(pdev, ADF_DEVICE_FUSECTL_OFFSET,
--			      &hw_data->fuses);
-+			      &hw_data->fuses[ADF_FUSECTL0]);
- 	pci_read_config_dword(pdev, ADF_C3XXX_SOFTSTRAP_CSR_OFFSET,
- 			      &hw_data->straps);
- 
-diff --git a/drivers/crypto/intel/qat/qat_c62x/adf_c62x_hw_data.c b/drivers/crypto/intel/qat/qat_c62x/adf_c62x_hw_data.c
-index 6b5b0cf9c7c74..32ebe09477a8d 100644
---- a/drivers/crypto/intel/qat/qat_c62x/adf_c62x_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_c62x/adf_c62x_hw_data.c
-@@ -27,8 +27,8 @@ static struct adf_hw_device_class c62x_class = {
- 
- static u32 get_accel_mask(struct adf_hw_device_data *self)
- {
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 	u32 straps = self->straps;
--	u32 fuses = self->fuses;
- 	u32 accel;
- 
- 	accel = ~(fuses | straps) >> ADF_C62X_ACCELERATORS_REG_OFFSET;
-@@ -39,8 +39,8 @@ static u32 get_accel_mask(struct adf_hw_device_data *self)
- 
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 	u32 straps = self->straps;
--	u32 fuses = self->fuses;
- 	unsigned long disabled;
- 	u32 ae_disable;
- 	int accel;
-diff --git a/drivers/crypto/intel/qat/qat_c62x/adf_drv.c b/drivers/crypto/intel/qat/qat_c62x/adf_drv.c
-index 5310149c311e2..e8d8a057bbce5 100644
---- a/drivers/crypto/intel/qat/qat_c62x/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_c62x/adf_drv.c
-@@ -134,7 +134,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	adf_init_hw_data_c62x(accel_dev->hw_device);
- 	pci_read_config_byte(pdev, PCI_REVISION_ID, &accel_pci_dev->revid);
- 	pci_read_config_dword(pdev, ADF_DEVICE_FUSECTL_OFFSET,
--			      &hw_data->fuses);
-+			      &hw_data->fuses[ADF_FUSECTL0]);
- 	pci_read_config_dword(pdev, ADF_C62X_SOFTSTRAP_CSR_OFFSET,
- 			      &hw_data->straps);
- 
-@@ -177,7 +177,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	hw_data->accel_capabilities_mask = hw_data->get_accel_cap(accel_dev);
- 
- 	/* Find and map all the device's BARS */
--	i = (hw_data->fuses & ADF_DEVICE_FUSECTL_MASK) ? 1 : 0;
-+	i = (hw_data->fuses[ADF_FUSECTL0] & ADF_DEVICE_FUSECTL_MASK) ? 1 : 0;
- 	bar_mask = pci_select_bars(pdev, IORESOURCE_MEM);
- 	for_each_set_bit(bar_nr, &bar_mask, ADF_PCI_MAX_BARS * 2) {
- 		struct adf_bar *bar = &accel_pci_dev->pci_bars[i++];
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-index 7830ecb1a1f15..cfe5bb9f5f7fe 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-@@ -52,6 +52,16 @@ enum adf_accel_capabilities {
- 	ADF_ACCEL_CAPABILITIES_RANDOM_NUMBER = 128
- };
- 
-+enum adf_fuses {
-+	ADF_FUSECTL0,
-+	ADF_FUSECTL1,
-+	ADF_FUSECTL2,
-+	ADF_FUSECTL3,
-+	ADF_FUSECTL4,
-+	ADF_FUSECTL5,
-+	ADF_MAX_FUSES
-+};
-+
- struct adf_bar {
- 	resource_size_t base_addr;
- 	void __iomem *virt_addr;
-@@ -343,7 +353,7 @@ struct adf_hw_device_data {
- 	struct qat_migdev_ops vfmig_ops;
- 	const char *fw_name;
- 	const char *fw_mmp_name;
--	u32 fuses;
-+	u32 fuses[ADF_MAX_FUSES];
- 	u32 straps;
- 	u32 accel_capabilities_mask;
- 	u32 extended_dc_capabilities;
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen2_hw_data.c b/drivers/crypto/intel/qat/qat_common/adf_gen2_hw_data.c
-index 1f64bf49b221c..2b263442c8565 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen2_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen2_hw_data.c
-@@ -115,8 +115,8 @@ u32 adf_gen2_get_accel_cap(struct adf_accel_dev *accel_dev)
- {
- 	struct adf_hw_device_data *hw_data = accel_dev->hw_device;
- 	struct pci_dev *pdev = accel_dev->accel_pci_dev.pci_dev;
-+	u32 fuses = hw_data->fuses[ADF_FUSECTL0];
- 	u32 straps = hw_data->straps;
--	u32 fuses = hw_data->fuses;
- 	u32 legfuses;
- 	u32 capabilities = ICP_ACCEL_CAPABILITIES_CRYPTO_SYMMETRIC |
- 			   ICP_ACCEL_CAPABILITIES_CRYPTO_ASYMMETRIC |
-diff --git a/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c b/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-index c0661ff5e9292..e48bcf1818cd1 100644
---- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-@@ -29,7 +29,7 @@ static struct adf_hw_device_class dh895xcc_class = {
- 
- static u32 get_accel_mask(struct adf_hw_device_data *self)
- {
--	u32 fuses = self->fuses;
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 
- 	return ~fuses >> ADF_DH895XCC_ACCELERATORS_REG_OFFSET &
- 			 ADF_DH895XCC_ACCELERATORS_MASK;
-@@ -37,7 +37,7 @@ static u32 get_accel_mask(struct adf_hw_device_data *self)
- 
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
--	u32 fuses = self->fuses;
-+	u32 fuses = self->fuses[ADF_FUSECTL0];
- 
- 	return ~fuses & ADF_DH895XCC_ACCELENGINES_MASK;
- }
-@@ -99,7 +99,7 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
- 
- static enum dev_sku_info get_sku(struct adf_hw_device_data *self)
- {
--	int sku = (self->fuses & ADF_DH895XCC_FUSECTL_SKU_MASK)
-+	int sku = (self->fuses[ADF_FUSECTL0] & ADF_DH895XCC_FUSECTL_SKU_MASK)
- 	    >> ADF_DH895XCC_FUSECTL_SKU_SHIFT;
- 
- 	switch (sku) {
-diff --git a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-index 5ddf567ffcad6..9a29bb15ef153 100644
---- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-@@ -134,7 +134,7 @@ static int adf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	adf_init_hw_data_dh895xcc(accel_dev->hw_device);
- 	pci_read_config_byte(pdev, PCI_REVISION_ID, &accel_pci_dev->revid);
- 	pci_read_config_dword(pdev, ADF_DEVICE_FUSECTL_OFFSET,
--			      &hw_data->fuses);
-+			      &hw_data->fuses[ADF_FUSECTL0]);
- 
- 	/* Get Accelerators and Accelerators Engines masks */
- 	hw_data->accel_mask = hw_data->get_accel_mask(hw_data);
++	/* Following READ_ONCE()s pair with WRITE_ONCE()s in tcp_chrono_set().
++	 * This is because socket lock might not be owned by us at this point.
++	 * This is best effort, tcp_get_timestamping_opt_stats() can
++	 * see wrong values. A real fix would be too costly for TCP fast path.
++	 */
++	cur = READ_ONCE(tp->chrono_type);
+ 	for (i = TCP_CHRONO_BUSY; i < __TCP_CHRONO_MAX; ++i) {
+-		stats[i] = tp->chrono_stat[i - 1];
+-		if (i == tp->chrono_type)
+-			stats[i] += tcp_jiffies32 - tp->chrono_start;
++		stats[i] = READ_ONCE(tp->chrono_stat[i - 1]);
++		if (i == cur)
++			stats[i] += tcp_jiffies32 - READ_ONCE(tp->chrono_start);
+ 		stats[i] *= USEC_PER_SEC / HZ;
+ 		total += stats[i];
+ 	}
 -- 
 2.53.0
 
