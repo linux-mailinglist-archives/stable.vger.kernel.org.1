@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-251241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGaHLKXwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:29 +0200
+	id mGraBGnwDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD36593FE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C851593F0D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EFC973153CA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B99E308DCAF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318C036A376;
-	Wed, 20 May 2026 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F75F3A6EE0;
+	Wed, 20 May 2026 17:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQlK6SL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNHZ8szm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27EC366075;
-	Wed, 20 May 2026 17:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5082C2F8EA5;
+	Wed, 20 May 2026 17:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297469; cv=none; b=oTmlhxkOZMldGvz8mNRU+5kNCHOwRL6WuftuFfDz3fuhwq9ijdSJTf5GvFAh9b3EzmdfEaUbib+NN2dCVidkGLAmZR7cxb78jUSxKuOe99AbTMapG4TauG5lGhuaPk3XHfzkh9bGInQXWk/EklcTUq9ezw+HBi3GJvUW/PxoqFU=
+	t=1779297379; cv=none; b=Z9mGnvpOZc8QPFF9YvP/1Gx8D/SKGa7xEfVu/1ohTGqR2AiOtf407Jie23zBawiJ6kMXlUuIiqKYBSk0pJNkEtfT+RXEV2lDwDgKdZgR2pvBPPnFJXMcrOjtU64zchxLD1BI0ASpkgF4GVWlHQZCcLgnIKFGw4ku3VPqooTvFO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297469; c=relaxed/simple;
-	bh=TZf5bVz9MBsFyfhoQewSOk8zs6Nxgoz0rUYzczHkGig=;
+	s=arc-20240116; t=1779297379; c=relaxed/simple;
+	bh=Sk5bSjviONHoFsuZ3FT/z38tUel/R2VJyzkHnEHwAJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TN+dPa7rwOYdN9mFMmp9wlsORJb9xp/FfGMzvcjmqEJqYdSJlSuXKn4r0o2Z9oIAlM7S3XwNan3KeuTX/TU5IT0aVuapLgsAzxMVKVkqH+gxxMoeZcpA6wGbjULssy3z5gdItk2TgMKUSVS1aZxIhOoQZQWMVtNFm0WwwPg+C08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQlK6SL1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DCB1F000E9;
-	Wed, 20 May 2026 17:17:47 +0000 (UTC)
+	 MIME-Version; b=dcAAXOaFKTrZKN1DcXk+LdC41ua6idy6FBfiGlep5xEkINejcLKgAMeCNlqjvuoZ8/7ysq6JjaH1DGBbnYyMahBKVGAlHEgVyjn2BlfGVWHU8oDoaE54pudAeiBbDohHgJWZCWJuMAbmumNU3ARG3bWis0+LHcBxdzbmKssi7XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNHZ8szm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B281E1F000E9;
+	Wed, 20 May 2026 17:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297467;
-	bh=Xg9sSSWa+3enJq6O+W5IilsZ8SU04pFja3AVLpRHr0k=;
+	s=korg; t=1779297378;
+	bh=mvH6cgkTWzovqJHiOKmGoxTKakhi5RjmPlGaPSi1tlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dQlK6SL1aXKdiKZVVTbBdZOewRmXUQRT5WVv7tTZE3jWrnyJs15YXe8BaSaMtfDFQ
-	 t1mu2tShFOlu1OreU+C1a4biPUKzlwRdaxLw3jQK4WL1kReoNQpxMoNj7ke8Oz2wXA
-	 aqOUJGKzHDZwe/KxZ0zvS9yvir2mK8Vsg61gEDA8=
+	b=JNHZ8szmHHtIC2qrAkvEsM+u25+tFQLoSYxbpi37NJGaPuThQtbzEovzvowUSJEuU
+	 4sMWdT78/4UIlPTIGj5cXVJOdm8IK0sbgQNuKTwklYrjwKjXRZcdjWFK9FeTf4vhNo
+	 p03URj4nttUS+cMXxZE+wR8YhEUpNueJf4tH1Wfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cole Leavitt <cole@unwrap.rs>,
-	Kees Cook <kees@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 009/957] pstore/ram: fix resource leak when ioremap() fails
-Date: Wed, 20 May 2026 18:08:12 +0200
-Message-ID: <20260520162134.764327286@linuxfoundation.org>
+Subject: [PATCH 6.18 010/957] erofs: verify metadata accesses for file-backed mounts
+Date: Wed, 20 May 2026 18:08:13 +0200
+Message-ID: <20260520162134.785057461@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -73,25 +74,26 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251207-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251241-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2AD36593FE6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9C851593F0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,50 +101,56 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cole Leavitt <cole@unwrap.rs>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
+[ Upstream commit 307210c262a29f41d7177851295ea1703bd04175 ]
 
-In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
-failure. Currently, if this happens, the function returns NULL without
-releasing the memory region acquired by request_mem_region().
+For file-backed mounts, metadata is fetched via the page cache of
+backing inodes to avoid double caching and redundant copy ops out
+of RO uptodate folios, which is used by Android APEXes, ComposeFS,
+containerd.  However, rw_verify_area() was missing prior to
+metadata accesses.
 
-This leads to a resource leak where the memory region remains reserved
-but unusable.
+Similar to vfs_iocb_iter_read(), fix this by:
+ - Enabling fanotify pre-content hooks on metadata accesses;
+ - security_file_permission() for security modules.
 
-Additionally, the caller persistent_ram_buffer_map() handles NULL
-correctly by returning -ENOMEM, but without this check, a NULL return
-combined with request_mem_region() succeeding leaves resources in an
-inconsistent state.
+Verified that fanotify pre-content hooks now works correctly.
 
-This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
-ram_core: fix incorrect success return when vmap() fails") which fixed
-a similar issue in the vmap() path.
-
-Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
-Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/erofs/data.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 7b6d6378a3b87..95675d4bab141 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
- 	else
- 		va = ioremap_wc(start, size);
- 
-+	/* We must release the mem region if ioremap fails. */
-+	if (!va)
-+		release_mem_region(start, size);
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 8ca29962a3dde..58aea2b48580c 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -29,6 +29,20 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
+ {
+ 	pgoff_t index = (buf->off + offset) >> PAGE_SHIFT;
+ 	struct folio *folio = NULL;
++	loff_t fpos;
++	int err;
 +
- 	/*
- 	 * Since request_mem_region() and ioremap() are byte-granularity
- 	 * there is no need handle anything special like we do when the
++	/*
++	 * Metadata access for file-backed mounts reuses page cache of backing
++	 * fs inodes (only folio data will be needed) to prevent double caching.
++	 * However, the data access range must be verified here in advance.
++	 */
++	if (buf->file) {
++		fpos = index << PAGE_SHIFT;
++		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
++		if (err < 0)
++			return ERR_PTR(err);
++	}
+ 
+ 	if (buf->page) {
+ 		folio = page_folio(buf->page);
 -- 
 2.53.0
 
