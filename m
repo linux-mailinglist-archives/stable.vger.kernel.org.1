@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-251253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HSHCKLwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:26 +0200
+	id ANNJKXbwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954CA593FDE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59FF593F46
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F10D316B86C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C30034B25B9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA833A3E9C;
-	Wed, 20 May 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2683546D0;
+	Wed, 20 May 2026 16:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuzrsPv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7NhgjXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE1335C1A0;
-	Wed, 20 May 2026 17:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE14361FFE;
+	Wed, 20 May 2026 16:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297501; cv=none; b=nXNFzuTGEpEQ6Hzv2s8kyQVnU8n+FL9ZQ3G3utcwIHcb85EcjIfGTfceKnnUh8K4yQHA2i2Ek0iyXQe4uayY3uKU7fxfY3z0e26s/xZcnvNDwAAVFwcqiGaq16g347uvCG1ffroAShyf881ARhaAk/+GVe/wgxLaeRczmge2FiA=
+	t=1779295102; cv=none; b=uPxHAq5XkpfuSr1wdKJh1WJ9g19caHxd8mRCMV/p0Gk3db/k1/5/NfydUoLrGuoAG4y2la9N6wS++LGY8c41R7IJK6MlKmcfr4eCnsU2FZ42fnF+jt5WJqzy8ERWwEEDTRLoL7/Dage9EtnIzzP83LhEAKpo563jY1WN3L2LRaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297501; c=relaxed/simple;
-	bh=SY3gxJIk9agpDARHeONTKSzOVvJt09E26uypu2AmDXw=;
+	s=arc-20240116; t=1779295102; c=relaxed/simple;
+	bh=j5xAfxZn3ZGyI2OWXh8POXxbPecU+7e1htkHYq6AeK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5+fkZht/6TO9dJkvxbO7uZGvq929xeyTIXQ6c1zok7LXD7YoCf63sbMhPDuHoZ8OZeNjLjL5icS74HRcagFEiD3+JrmLmjLzYw74UJkwpcJHAwm0TLECz9mSR2GOP87lHEETu6oVrp84E/VBIdoPk4pI/AVcLu9lwtqjmygk1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuzrsPv0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F131F00893;
-	Wed, 20 May 2026 17:18:19 +0000 (UTC)
+	 MIME-Version; b=FKdWGMjyqsbVM5UIB6D6zwSo/wy7PQDOseRRefH2TfxeMJcuVroH4pknM16hMB7uVUEbKgH9kvbRIbqCZNOQ3FM0aNZnKBeHDG7lIXhaR9nNa9D2CJhn8+jr69ZwNM/As+tc98EZVTm1fK6oT6wejBWZ3RTTcK8+XfTFxCOHSfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7NhgjXp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6B71F000E9;
+	Wed, 20 May 2026 16:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297499;
-	bh=Z/17KTTEuPMEV8fxQ1u0y5W0djQJLsGgMamCO7lvjww=;
+	s=korg; t=1779295100;
+	bh=iJLlBoG4H4w9hKmUNqLMDoeOZ4DAdBfiTvk8qgjGdng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MuzrsPv0tM5s9OFyeHrmYFxu65XvBcxknlNP19qNV9dOCfqSYW4jBoF0UwNu210LZ
-	 OKoF4roU00KxYDDQtY7p/TlwMILeQk+A/VdBC7nYCx2glysBftVx9sbcO5LnbpY1Eq
-	 Vlu0CZTeDBqnwKc44A1XPzLqCNI2q2uBaF/Jt404=
+	b=t7NhgjXpNPzr0yz/8UzXoDITcMNxX5FxzChHjro4iK/eZwDQ9kGAzbMkaiRvrTM+S
+	 hwDfnZFX038BrwQ80qT6x9rvovi+rmUXNfpIITyrPor5N78kcedKsVyfLSxIbADIIZ
+	 LJPYyjxVjv0GainLujzkO+FuSLnaOzfH9ZOno2u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yun Lu <luyun@kylinos.cn>,
-	Feng Yang <yangfeng@kylinos.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	syzbot@syzkaller.appspotmail.com,
+	Yaxing Guo <guoyaxing@bosc.ac.cn>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 056/957] bpf: test_run: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
-Date: Wed, 20 May 2026 18:08:59 +0200
-Message-ID: <20260520162135.774474116@linuxfoundation.org>
+Subject: [PATCH 7.0 0290/1146] iommu/riscv: Skip IRQ count check when using MSI interrupts
+Date: Wed, 20 May 2026 18:09:00 +0200
+Message-ID: <20260520162154.779716211@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251253-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250319-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,111 +86,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,msgid.link:url,hust.edu.cn:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 954CA593FDE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bosc.ac.cn:email]
+X-Rspamd-Queue-Id: E59FF593F46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Yang <yangfeng@kylinos.cn>
+From: Yaxing Guo <guoyaxing@bosc.ac.cn>
 
-[ Upstream commit 972787479ee73006fddb5e59ab5c8e733810ff42 ]
+[ Upstream commit 7217cee35aadbb07e12673bcf1dcf729e1b2f6c9 ]
 
-The bpf_lwt_xmit_push_encap helper needs to access skb_dst(skb)->dev to
-calculate the needed headroom:
+In RISC-V IOMMU platform devices that use MSI interrupts (indicated by the
+presence of 'msi-parent' in the device tree), there are no wired interrupt
+lines, so calling platform_get_irq_count() returns 0 or -ENXIO, causing the
+driver to fail during probe.
 
-	err = skb_cow_head(skb,
-			   len + LL_RESERVED_SPACE(skb_dst(skb)->dev));
+However, MSI interrupts are allocated dynamically via the MSI subsystem and
+do not appear in the device tree 'interrupts' property. Therefore, the
+driver should not require a non-zero IRQ count when 'msi-parent' is present.
 
-But skb->_skb_refdst may not be initialized when the skb is set up by
-bpf_prog_test_run_skb function. Executing bpf_lwt_push_ip_encap function
-in this scenario will trigger null pointer dereference, causing a kernel
-crash as Yinhao reported:
+This patch fixes the bug where probe fails when using MSI interrupts
+ (which do not have an 'interrupts' property in the device tree)..
 
-[  105.186365] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  105.186382] #PF: supervisor read access in kernel mode
-[  105.186388] #PF: error_code(0x0000) - not-present page
-[  105.186393] PGD 121d3d067 P4D 121d3d067 PUD 106c83067 PMD 0
-[  105.186404] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[  105.186412] CPU: 3 PID: 3250 Comm: poc Kdump: loaded Not tainted 6.19.0-rc5 #1
-[  105.186423] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  105.186427] RIP: 0010:bpf_lwt_push_ip_encap+0x1eb/0x520
-[  105.186443] Code: 0f 84 de 01 00 00 0f b7 4a 04 66 85 c9 0f 85 47 01 00 00 31 c0 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 48 8b 73 58 48 83 e6 fe <48> 8b 36 0f b7 be ec 00 00 00 0f b7 b6 e6 00 00 00 01 fe 83 e6 f0
-[  105.186449] RSP: 0018:ffffbb0e0387bc50 EFLAGS: 00010246
-[  105.186455] RAX: 000000000000004e RBX: ffff94c74e036500 RCX: ffff94c74874da00
-[  105.186460] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff94c74e036500
-[  105.186463] RBP: 0000000000000001 R08: 0000000000000002 R09: 0000000000000000
-[  105.186467] R10: ffffbb0e0387bd50 R11: 0000000000000000 R12: ffffbb0e0387bc98
-[  105.186471] R13: 0000000000000014 R14: 0000000000000000 R15: 0000000000000002
-[  105.186484] FS:  00007f166aa4d680(0000) GS:ffff94c8b7780000(0000) knlGS:0000000000000000
-[  105.186490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  105.186494] CR2: 0000000000000000 CR3: 000000015eade001 CR4: 0000000000770ee0
-[  105.186499] PKRU: 55555554
-[  105.186502] Call Trace:
-[  105.186507]  <TASK>
-[  105.186513]  bpf_lwt_xmit_push_encap+0x2b/0x40
-[  105.186522]  bpf_prog_a75eaad51e517912+0x41/0x49
-[  105.186536]  ? kvm_clock_get_cycles+0x18/0x30
-[  105.186547]  ? ktime_get+0x3c/0xa0
-[  105.186554]  bpf_test_run+0x195/0x320
-[  105.186563]  ? bpf_test_run+0x10f/0x320
-[  105.186579]  bpf_prog_test_run_skb+0x2f5/0x4f0
-[  105.186590]  __sys_bpf+0x69c/0xa40
-[  105.186603]  __x64_sys_bpf+0x1e/0x30
-[  105.186611]  do_syscall_64+0x59/0x110
-[  105.186620]  entry_SYSCALL_64_after_hwframe+0x76/0xe0
-[  105.186649] RIP: 0033:0x7f166a97455d
+Fixes: <d5f88acdd6ff> ("iommu/riscv: Add support for platform msi")
 
-Temporarily add the setting of skb->_skb_refdst before bpf_test_run to resolve the issue.
-
-Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Closes: https://groups.google.com/g/hust-os-kernel-patches/c/8-a0kPpBW2s
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20260304094429.168521-2-yangfeng59949@163.com
+Signed-off-by: Yaxing Guo <guoyaxing@bosc.ac.cn>
+Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/iommu/riscv/iommu-platform.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 6b04f47301c1e..65d7f8d51823e 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1093,6 +1093,21 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
- 		skb->ip_summed = CHECKSUM_COMPLETE;
- 	}
+diff --git a/drivers/iommu/riscv/iommu-platform.c b/drivers/iommu/riscv/iommu-platform.c
+index 83a28c83f9914..8f15b06e84997 100644
+--- a/drivers/iommu/riscv/iommu-platform.c
++++ b/drivers/iommu/riscv/iommu-platform.c
+@@ -68,12 +68,7 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
+ 	iommu->caps = riscv_iommu_readq(iommu, RISCV_IOMMU_REG_CAPABILITIES);
+ 	iommu->fctl = riscv_iommu_readl(iommu, RISCV_IOMMU_REG_FCTL);
  
-+	if (prog->type == BPF_PROG_TYPE_LWT_XMIT) {
-+		if (!ipv6_bpf_stub) {
-+			pr_warn_once("Please test this program with the IPv6 module loaded\n");
-+			ret = -EOPNOTSUPP;
-+			goto out;
-+		}
-+#if IS_ENABLED(CONFIG_IPV6)
-+		/* For CONFIG_IPV6=n, ipv6_bpf_stub is NULL which is
-+		 * handled by the above if statement.
-+		 */
-+		dst_hold(&net->ipv6.ip6_null_entry->dst);
-+		skb_dst_set(skb, &net->ipv6.ip6_null_entry->dst);
-+#endif
-+	}
+-	iommu->irqs_count = platform_irq_count(pdev);
+-	if (iommu->irqs_count <= 0)
+-		return dev_err_probe(dev, -ENODEV,
+-				     "no IRQ resources provided\n");
+-	if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
+-		iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
++	iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
+ 
+ 	igs = FIELD_GET(RISCV_IOMMU_CAPABILITIES_IGS, iommu->caps);
+ 	switch (igs) {
+@@ -120,6 +115,13 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
+ 		fallthrough;
+ 
+ 	case RISCV_IOMMU_CAPABILITIES_IGS_WSI:
++		iommu->irqs_count = platform_irq_count(pdev);
++		if (iommu->irqs_count <= 0)
++			return dev_err_probe(dev, -ENODEV,
++					     "no IRQ resources provided\n");
++		if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
++			iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
 +
- 	ret = bpf_test_run(prog, skb, repeat, &retval, &duration, false);
- 	if (ret)
- 		goto out;
+ 		for (vec = 0; vec < iommu->irqs_count; vec++)
+ 			iommu->irqs[vec] = platform_get_irq(pdev, vec);
+ 
 -- 
 2.53.0
 
