@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-252850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AIuDAkqDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:21 +0200
+	id KAlLEIEIDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-253334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E1459B298
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23F45980BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BAF73523C2E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D705A378A19E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE75368968;
-	Wed, 20 May 2026 18:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3364F43DA35;
+	Wed, 20 May 2026 18:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MBWxqQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pe2cUmbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C99371048;
-	Wed, 20 May 2026 18:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7FC40802A;
+	Wed, 20 May 2026 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301753; cv=none; b=WTjAGmcvaWD6YdKTG7+lTyUVM+2zv+BKe7pbgAYqmA6n6Duyg9wrii1BgPqbHFQoFrqcxb2B4M3nufd5e2f/kN+hWVwnmh0Er0HYOsN3gIl6t3GWdJcPF8AbxJGzhjEI+Qf05nRey/pu/pQmwDt1teaTlhu/iiWHeSgLE4jMeKw=
+	t=1779303010; cv=none; b=sGJZA0NlpUMfdmLLtc8a34M3DkhIot7Pj7YoG0PBDHBOqOo+uk/2aGH7erU8H46O0O/CWMSQzmqeUT7M0EBq0P8+hpepcziGykVaixy87Q8fRYBKqJF3UAd1eX3Bw4dedd4Gky17wFry5k1FPUf+UrffRwsBOSUQEDDIZVHjp8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301753; c=relaxed/simple;
-	bh=pF83hASNhldjD/TFzZ7929sR0yGTe/y2kLge1TpC20U=;
+	s=arc-20240116; t=1779303010; c=relaxed/simple;
+	bh=nOYY57mc98ZMvSC5UpccqmjbQmiIeZIhVZXSpkdutSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThcjLURAMJrvt/q9Bl4KTAB44jPSK1ngRG9XqrbgfTmJE7TRD2qtOVpaJaF4KaXyTZL4dZOLHwZJy5rIdaIk+jGXtfLm+0v1+of4koJeOmr27Z4pJItjH2jPA6NH7o9DQOjtM7XP1AVzLnKSdtb8tdNdVd+Ebav3H1lzsKCDW8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MBWxqQn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247061F00896;
-	Wed, 20 May 2026 18:29:11 +0000 (UTC)
+	 MIME-Version; b=Cv60zXD9Ofe+uTI+6wvLwnYaVCBSsDSH5kUQxl2k8zTEv363W9l4fP7EXRl7kbxEdDCDYu3oB/0M0F8DQHtU3q1ETXJB3ddo7TlXwdRNbcRigZLlKtBnlQJ+Iqzvv3628lLhvkqSMAD/EAmBP7B2WrEqhj7cUiCdlIubKlp9/WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe2cUmbA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696A1F000E9;
+	Wed, 20 May 2026 18:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301752;
-	bh=ueR+S5JDkDLdltD3Ih+b8EnZ9ftiv4AR7xpIn4qnAMM=;
+	s=korg; t=1779303006;
+	bh=zpInWXrG18iHPd5RdwxAP7K3nD2LroyKoneZJ4IIOPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0MBWxqQn6lnzWSoQzjW4WQDRZHGF4iwtiEd4kCs1r9Rlmp2mAsrUhi7KOtsq7mobD
-	 Xg5vURK86K0jB8XWIWcIfM/gsRrBg/d1euvVPSsSQEMoAvy3d/KhVNU3XB0/OdCm+c
-	 qKYX+BAQ45RdNhJa3CH9o+cr0+XVw4VmfN7HD6Bc=
+	b=Pe2cUmbATccWKfdmIUV5Qz0u3h8YUoHkDIUaf/6frhq+yTgORANzI68ojmmtw2Wws
+	 od7UOwn5Wq89Uq2zBgMplsNK/CYkfTqLZ6DsDvUNFfJUA6Yu1lubyvMp7kV9WC0jkr
+	 9oLQ1act80ik8IxAm0hFXpCi7oCSrug2rHSB2dAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Piyush Sachdeva <psachdeva@microsoft.com>,
-	Piyush Sachdeva <s.piyush1024@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 653/666] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Subject: [PATCH 6.6 441/508] Revert "crypto: nx - Migrate to scomp API"
 Date: Wed, 20 May 2026 18:24:24 +0200
-Message-ID: <20260520162125.437474328@linuxfoundation.org>
+Message-ID: <20260520162108.154534848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,190 +62,317 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253334-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252850-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 77E1459B298
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D23F45980BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
+This reverts commit 268ae55a4c4fbff3ff54f92a4642f497da814f49.
 
-[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
-
-When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
-or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
-using the full session key (Session.FullSessionKey) rather than just the
-first 16 bytes (Session.SessionKey).
-
-Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
-Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
-must be set to the full cryptographic key from the GSS authentication
-context. The encryption and decryption key derivation (SMBC2SCipherKey,
-SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
-signing key derivation continues to use Session.SessionKey (first 16
-bytes) in all cases.
-
-Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
-HMAC-SHA256 key input length for all derivations. When Kerberos with
-AES-256 provides a 32-byte session key, the KDF for encryption/decryption
-was using only the first 16 bytes, producing keys that did not match the
-server's, causing mount failures with sec=krb5 and require_gcm_256=1.
-
-Add a full_key_size parameter to generate_key() and pass the appropriate
-size from generate_smb3signingkey():
- - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
- - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
-
-Also fix cifs_dump_full_key() to report the actual session key length for
-AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
-like Wireshark receive the correct key for decryption.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ adapted upstream's void/hmac_sha256_init_usingrawkey-based generate_key() to 6.12's int-return crypto_shash_* form while threading full_key_size through all callers. ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/ioctl.c         |    2 +-
- fs/smb/client/smb2transport.c |   32 +++++++++++++++++++++++++-------
- 2 files changed, 26 insertions(+), 8 deletions(-)
+ drivers/crypto/nx/nx-842.c            | 33 ++++++++++++---------------
+ drivers/crypto/nx/nx-842.h            | 15 ++++++------
+ drivers/crypto/nx/nx-common-powernv.c | 31 +++++++++++++------------
+ drivers/crypto/nx/nx-common-pseries.c | 33 ++++++++++++++-------------
+ 4 files changed, 54 insertions(+), 58 deletions(-)
 
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -300,7 +300,7 @@ search_end:
- 		break;
- 	case SMB2_ENCRYPTION_AES256_CCM:
- 	case SMB2_ENCRYPTION_AES256_GCM:
--		out.session_key_length = CIFS_SESS_KEY_SIZE;
-+		out.session_key_length = ses->auth_key.len;
- 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
- 		break;
- 	default:
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -334,7 +334,8 @@ out:
+diff --git a/drivers/crypto/nx/nx-842.c b/drivers/crypto/nx/nx-842.c
+index b950fcce8a9be..82214cde2bcd9 100644
+--- a/drivers/crypto/nx/nx-842.c
++++ b/drivers/crypto/nx/nx-842.c
+@@ -101,13 +101,9 @@ static int update_param(struct nx842_crypto_param *p,
+ 	return 0;
  }
  
- static int generate_key(struct cifs_ses *ses, struct kvec label,
--			struct kvec context, __u8 *key, unsigned int key_size)
-+			struct kvec context, __u8 *key, unsigned int key_size,
-+			unsigned int full_key_size)
+-void *nx842_crypto_alloc_ctx(struct nx842_driver *driver)
++int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver)
  {
- 	unsigned char zero = 0x0;
- 	__u8 i[4] = {0, 0, 0, 1};
-@@ -355,7 +356,7 @@ static int generate_key(struct cifs_ses
+-	struct nx842_crypto_ctx *ctx;
+-
+-	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+-	if (!ctx)
+-		return ERR_PTR(-ENOMEM);
++	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 
+ 	spin_lock_init(&ctx->lock);
+ 	ctx->driver = driver;
+@@ -118,23 +114,22 @@ void *nx842_crypto_alloc_ctx(struct nx842_driver *driver)
+ 		kfree(ctx->wmem);
+ 		free_page((unsigned long)ctx->sbounce);
+ 		free_page((unsigned long)ctx->dbounce);
+-		kfree(ctx);
+-		return ERR_PTR(-ENOMEM);
++		return -ENOMEM;
  	}
  
- 	rc = crypto_shash_setkey(server->secmech.hmacsha256->tfm,
--		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
-+		ses->auth_key.response, full_key_size);
- 	if (rc) {
- 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
- 		goto smb3signkey_ret;
-@@ -430,6 +431,7 @@ generate_smb3signingkey(struct cifs_ses
- 			struct TCP_Server_Info *server,
- 			const struct derivation_triplet *ptriplet)
- {
-+	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
- 	int rc;
- 	bool is_binding = false;
- 	int chan_index = 0;
-@@ -464,17 +466,31 @@ generate_smb3signingkey(struct cifs_ses
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->chans[chan_index].signkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 	} else {
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->smb3signingkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
+-	return ctx;
++	return 0;
+ }
+-EXPORT_SYMBOL_GPL(nx842_crypto_alloc_ctx);
++EXPORT_SYMBOL_GPL(nx842_crypto_init);
  
-+		/*
-+		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
-+		 * (first 16 bytes). Encryption/decryption keys use
-+		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
-+		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
-+		 */
-+
-+		if (server->dialect == SMB311_PROT_ID &&
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			full_key_size = ses->auth_key.len;
-+
- 		/* safe to access primary channel, since it will never go away */
- 		spin_lock(&ses->chan_lock);
- 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
-@@ -484,13 +500,15 @@ generate_smb3signingkey(struct cifs_ses
- 		rc = generate_key(ses, ptriplet->encryption.label,
- 				  ptriplet->encryption.context,
- 				  ses->smb3encryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 		rc = generate_key(ses, ptriplet->decryption.label,
- 				  ptriplet->decryption.context,
- 				  ses->smb3decryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
+-void nx842_crypto_free_ctx(void *p)
++void nx842_crypto_exit(struct crypto_tfm *tfm)
+ {
+-	struct nx842_crypto_ctx *ctx = p;
++	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 
+ 	kfree(ctx->wmem);
+ 	free_page((unsigned long)ctx->sbounce);
+ 	free_page((unsigned long)ctx->dbounce);
+ }
+-EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
++EXPORT_SYMBOL_GPL(nx842_crypto_exit);
+ 
+ static void check_constraints(struct nx842_constraints *c)
+ {
+@@ -251,11 +246,11 @@ static int compress(struct nx842_crypto_ctx *ctx,
+ 	return update_param(p, slen, dskip + dlen);
+ }
+ 
+-int nx842_crypto_compress(struct crypto_scomp *tfm,
++int nx842_crypto_compress(struct crypto_tfm *tfm,
+ 			  const u8 *src, unsigned int slen,
+-			  u8 *dst, unsigned int *dlen, void *pctx)
++			  u8 *dst, unsigned int *dlen)
+ {
+-	struct nx842_crypto_ctx *ctx = pctx;
++	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct nx842_crypto_header *hdr =
+ 				container_of(&ctx->header,
+ 					     struct nx842_crypto_header, hdr);
+@@ -436,11 +431,11 @@ static int decompress(struct nx842_crypto_ctx *ctx,
+ 	return update_param(p, slen + padding, dlen);
+ }
+ 
+-int nx842_crypto_decompress(struct crypto_scomp *tfm,
++int nx842_crypto_decompress(struct crypto_tfm *tfm,
+ 			    const u8 *src, unsigned int slen,
+-			    u8 *dst, unsigned int *dlen, void *pctx)
++			    u8 *dst, unsigned int *dlen)
+ {
+-	struct nx842_crypto_ctx *ctx = pctx;
++	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 	struct nx842_crypto_header *hdr;
+ 	struct nx842_crypto_param p;
+ 	struct nx842_constraints c = *ctx->driver->constraints;
+diff --git a/drivers/crypto/nx/nx-842.h b/drivers/crypto/nx/nx-842.h
+index 58137ffd3835b..25fa70b2112cf 100644
+--- a/drivers/crypto/nx/nx-842.h
++++ b/drivers/crypto/nx/nx-842.h
+@@ -3,6 +3,7 @@
+ #ifndef __NX_842_H__
+ #define __NX_842_H__
+ 
++#include <crypto/algapi.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+@@ -100,8 +101,6 @@
+ #define LEN_ON_SIZE(pa, size)	((size) - ((pa) & ((size) - 1)))
+ #define LEN_ON_PAGE(pa)		LEN_ON_SIZE(pa, PAGE_SIZE)
+ 
+-struct crypto_scomp;
+-
+ static inline unsigned long nx842_get_pa(void *addr)
+ {
+ 	if (!is_vmalloc_addr(addr))
+@@ -180,13 +179,13 @@ struct nx842_crypto_ctx {
+ 	struct nx842_driver *driver;
+ };
+ 
+-void *nx842_crypto_alloc_ctx(struct nx842_driver *driver);
+-void nx842_crypto_free_ctx(void *ctx);
+-int nx842_crypto_compress(struct crypto_scomp *tfm,
++int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver);
++void nx842_crypto_exit(struct crypto_tfm *tfm);
++int nx842_crypto_compress(struct crypto_tfm *tfm,
+ 			  const u8 *src, unsigned int slen,
+-			  u8 *dst, unsigned int *dlen, void *ctx);
+-int nx842_crypto_decompress(struct crypto_scomp *tfm,
++			  u8 *dst, unsigned int *dlen);
++int nx842_crypto_decompress(struct crypto_tfm *tfm,
+ 			    const u8 *src, unsigned int slen,
+-			    u8 *dst, unsigned int *dlen, void *ctx);
++			    u8 *dst, unsigned int *dlen);
+ 
+ #endif /* __NX_842_H__ */
+diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
+index fd0a98b2fb1b2..8c859872c1839 100644
+--- a/drivers/crypto/nx/nx-common-powernv.c
++++ b/drivers/crypto/nx/nx-common-powernv.c
+@@ -9,7 +9,6 @@
+ 
+ #include "nx-842.h"
+ 
+-#include <crypto/internal/scompress.h>
+ #include <linux/timer.h>
+ 
+ #include <asm/prom.h>
+@@ -1032,21 +1031,23 @@ static struct nx842_driver nx842_powernv_driver = {
+ 	.decompress =	nx842_powernv_decompress,
+ };
+ 
+-static void *nx842_powernv_crypto_alloc_ctx(void)
++static int nx842_powernv_crypto_init(struct crypto_tfm *tfm)
+ {
+-	return nx842_crypto_alloc_ctx(&nx842_powernv_driver);
++	return nx842_crypto_init(tfm, &nx842_powernv_driver);
+ }
+ 
+-static struct scomp_alg nx842_powernv_alg = {
+-	.base.cra_name		= "842",
+-	.base.cra_driver_name	= "842-nx",
+-	.base.cra_priority	= 300,
+-	.base.cra_module	= THIS_MODULE,
+-
+-	.alloc_ctx		= nx842_powernv_crypto_alloc_ctx,
+-	.free_ctx		= nx842_crypto_free_ctx,
+-	.compress		= nx842_crypto_compress,
+-	.decompress		= nx842_crypto_decompress,
++static struct crypto_alg nx842_powernv_alg = {
++	.cra_name		= "842",
++	.cra_driver_name	= "842-nx",
++	.cra_priority		= 300,
++	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
++	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
++	.cra_module		= THIS_MODULE,
++	.cra_init		= nx842_powernv_crypto_init,
++	.cra_exit		= nx842_crypto_exit,
++	.cra_u			= { .compress = {
++	.coa_compress		= nx842_crypto_compress,
++	.coa_decompress		= nx842_crypto_decompress } }
+ };
+ 
+ static __init int nx_compress_powernv_init(void)
+@@ -1106,7 +1107,7 @@ static __init int nx_compress_powernv_init(void)
+ 		nx842_powernv_exec = nx842_exec_vas;
  	}
-@@ -505,7 +523,7 @@ generate_smb3signingkey(struct cifs_ses
- 			&ses->Suid);
- 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
- 	cifs_dbg(VFS, "Session Key   %*ph\n",
--		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
-+		 (int)ses->auth_key.len, ses->auth_key.response);
- 	cifs_dbg(VFS, "Signing Key   %*ph\n",
- 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+ 
+-	ret = crypto_register_scomp(&nx842_powernv_alg);
++	ret = crypto_register_alg(&nx842_powernv_alg);
+ 	if (ret) {
+ 		nx_delete_coprocs();
+ 		return ret;
+@@ -1127,7 +1128,7 @@ static void __exit nx_compress_powernv_exit(void)
+ 	if (!nx842_ct)
+ 		vas_unregister_api_powernv();
+ 
+-	crypto_unregister_scomp(&nx842_powernv_alg);
++	crypto_unregister_alg(&nx842_powernv_alg);
+ 
+ 	nx_delete_coprocs();
+ }
+diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
+index 0d26aafd08863..7e98f174f69b9 100644
+--- a/drivers/crypto/nx/nx-common-pseries.c
++++ b/drivers/crypto/nx/nx-common-pseries.c
+@@ -11,7 +11,6 @@
+ #include <asm/vio.h>
+ #include <asm/hvcall.h>
+ #include <asm/vas.h>
+-#include <crypto/internal/scompress.h>
+ 
+ #include "nx-842.h"
+ #include "nx_csbcpb.h" /* struct nx_csbcpb */
+@@ -1009,21 +1008,23 @@ static struct nx842_driver nx842_pseries_driver = {
+ 	.decompress =	nx842_pseries_decompress,
+ };
+ 
+-static void *nx842_pseries_crypto_alloc_ctx(void)
++static int nx842_pseries_crypto_init(struct crypto_tfm *tfm)
+ {
+-	return nx842_crypto_alloc_ctx(&nx842_pseries_driver);
++	return nx842_crypto_init(tfm, &nx842_pseries_driver);
+ }
+ 
+-static struct scomp_alg nx842_pseries_alg = {
+-	.base.cra_name		= "842",
+-	.base.cra_driver_name	= "842-nx",
+-	.base.cra_priority	= 300,
+-	.base.cra_module	= THIS_MODULE,
+-
+-	.alloc_ctx		= nx842_pseries_crypto_alloc_ctx,
+-	.free_ctx		= nx842_crypto_free_ctx,
+-	.compress		= nx842_crypto_compress,
+-	.decompress		= nx842_crypto_decompress,
++static struct crypto_alg nx842_pseries_alg = {
++	.cra_name		= "842",
++	.cra_driver_name	= "842-nx",
++	.cra_priority		= 300,
++	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
++	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
++	.cra_module		= THIS_MODULE,
++	.cra_init		= nx842_pseries_crypto_init,
++	.cra_exit		= nx842_crypto_exit,
++	.cra_u			= { .compress = {
++	.coa_compress		= nx842_crypto_compress,
++	.coa_decompress		= nx842_crypto_decompress } }
+ };
+ 
+ static int nx842_probe(struct vio_dev *viodev,
+@@ -1071,7 +1072,7 @@ static int nx842_probe(struct vio_dev *viodev,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = crypto_register_scomp(&nx842_pseries_alg);
++	ret = crypto_register_alg(&nx842_pseries_alg);
+ 	if (ret) {
+ 		dev_err(&viodev->dev, "could not register comp alg: %d\n", ret);
+ 		goto error;
+@@ -1119,7 +1120,7 @@ static void nx842_remove(struct vio_dev *viodev)
+ 	if (caps_feat)
+ 		sysfs_remove_group(&viodev->dev.kobj, &nxcop_caps_attr_group);
+ 
+-	crypto_unregister_scomp(&nx842_pseries_alg);
++	crypto_unregister_alg(&nx842_pseries_alg);
+ 
+ 	spin_lock_irqsave(&devdata_mutex, flags);
+ 	old_devdata = rcu_dereference_check(devdata,
+@@ -1251,7 +1252,7 @@ static void __exit nx842_pseries_exit(void)
+ 
+ 	vas_unregister_api_pseries();
+ 
+-	crypto_unregister_scomp(&nx842_pseries_alg);
++	crypto_unregister_alg(&nx842_pseries_alg);
+ 
+ 	spin_lock_irqsave(&devdata_mutex, flags);
+ 	old_devdata = rcu_dereference_check(devdata,
+-- 
+2.53.0
+
 
 
 
