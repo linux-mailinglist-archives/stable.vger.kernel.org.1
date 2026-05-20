@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBgeGgT5DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-252008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:12 +0200
+	id 6MCtEjEnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369B359572B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A601159ADDE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E7183143C04
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AB64339C25F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F053F8704;
-	Wed, 20 May 2026 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B7D3F8706;
+	Wed, 20 May 2026 18:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IernF0Cw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wta1FfFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711F3F7A9F;
-	Wed, 20 May 2026 17:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB883F23C5;
+	Wed, 20 May 2026 18:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299504; cv=none; b=P3zz1kh9IYCY4R1GO4QkJDrIPIy0t6kl4LAH3r0CxperALvnCucpBhuCIXUZpehDSdUovpp5butq48id41iywSlQMB6fBWy98Ngxl+fxzeQclTqeXMlF+GQ14K/9e1KfX6UY6Zpz9MvCu1iJVaWcvjDNVCWlWsBA0I0M+G9Nl00=
+	t=1779301108; cv=none; b=X/pPrvcuoBClgnkLaxDCw5DaQIBo5G1iFnDZvLbVIOPVbKxfj3p+7Roy+x+IXVvZTgJjEPugSctSBhb1ESjJFGYK9n0w+zEM8aCwytJ5B45Ou/qKbmJLneBFa/3xwpzGBaK7L80vwcmws6CDRa8drFLbf5o9dKXrp9uvKIXPQe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299504; c=relaxed/simple;
-	bh=5INQm0SyC41KZy0iXIwNE7Haci4c1suepJRoKAcq5pg=;
+	s=arc-20240116; t=1779301108; c=relaxed/simple;
+	bh=irF7/Wual0BRRs9qdm+V+wU487vGovF03cVY89Jj1J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0c4MnabHNG/0cXuonkOCTtq9Y35eEoLY0A8aBKCjDSRfCbDQQNeQW00flElNRg4amSrqtty9gLXfaP0ORm2sOq1jOuWM7m/JV8NHAWFsxr0WeKlajMgYDISd66enLPMIj0QYHXEoIIxa3kS/wiNnlOIgeVANFcgRCXJ0l8M36A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IernF0Cw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1B51F000E9;
-	Wed, 20 May 2026 17:51:42 +0000 (UTC)
+	 MIME-Version; b=arcFvy6Xzil8KKT7OvvhiiPlSLsEc4t4styGDY9YHojiTT0UEBkzJUPqGNH6KLm7bEIMXhEz7DYxFgUYUfNu42q+4EBsy4I8e3b3yoTnbDoMjuqJQdcSNOejj0owadaB3t7KFEY1EV5pBPWWMapVOsCaKLm3F54gqXL0YbEtrjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wta1FfFk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9FA1F000E9;
+	Wed, 20 May 2026 18:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299503;
-	bh=kz/W8+of0kfzJ7UVOGsoXuxsuU3WgVE/oi34L3xDx+k=;
+	s=korg; t=1779301106;
+	bh=sCx1jS3t99y3GNx+uu0G7pDuiQ3aezCayBlZ+BBL3eU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IernF0CwZhAmme+RMxOUiuPepA6YjauCRxVnbkSoNvAwoET0SuVBS3Vyi7xI1FoF9
-	 CqFFyxNKd8DJH8y0Obx1ekjJX1NXd+xBz77BN+vVmHVMFTcyUjHB8P26vXkavYp6iD
-	 JkKrKjR+C1E8gNAnfjdRvdzf76vkXRBmslmFNcis=
+	b=Wta1FfFkODHJ+0pt2KDa+8xRbbe1hzx1XXdGtPsS8UzH0rFvh4NCy7wbLY10+i1ta
+	 Ba0jf66V1enCJgtddLvEYi0EA3J8dkAWsmD9gybAJ1Y2oMHG0Bw/5bbLLCrcr9UvjX
+	 6/v0BfJOTv1jGaBirac741QKe2Tg6dG4ejMS8Yy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Madieu <john.madieu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	T Pratham <t-pratham@ti.com>,
+	Manorit Chawdhry <m-chawdhry@ti.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 755/957] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
+Subject: [PATCH 6.12 427/666] crypto: sa2ul - Fix AEAD fallback algorithm names
 Date: Wed, 20 May 2026 18:20:38 +0200
-Message-ID: <20260520162150.938670203@linuxfoundation.org>
+Message-ID: <20260520162120.527071032@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252008-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252603-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 369B359572B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
+X-Rspamd-Queue-Id: A601159ADDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Madieu <john.madieu@gmail.com>
+From: T Pratham <t-pratham@ti.com>
 
-[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
+[ Upstream commit 8451ab6ad686ffdcdf9ddadaa446a79ab48e5590 ]
 
-rockchip_spi_isr() decides whether the current interrupt was the
-cs-inactive event by reading IMR:
+For authenc AEAD algorithms, sa2ul is trying to register very specific
+-ce version as a fallback. This causes registration failure on SoCs
+which do not have ARMv8-CE enabled/available. Change the fallback
+algorithm from the specific driver name to generic algorithm name so
+that the kernel can allocate any available fallback.
 
-	if (rs->cs_inactive &&
-	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
-		ctlr->target_abort(ctlr);
-
-IMR is the interrupt mask register: it tells which sources are enabled,
-not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
-both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
-
-	if (rs->cs_inactive)
-		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
-			       rs->regs + ROCKCHIP_SPI_IMR);
-
-so the IMR check is always true once cs_inactive is enabled, and every
-PIO interrupt - including normal RF_FULL completions - is dispatched to
-ctlr->target_abort(), aborting the transfer. The bug is reachable on
-ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
-when the transfer is short enough to fall back to PIO
-(rockchip_spi_can_dma() returns false below fifo_len).
-
-Read ISR (which is RISR masked by IMR) so the check actually reflects
-which interrupt fired, and parenthesise the expression for clarity while
-at it.
-
-Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
-Signed-off-by: John Madieu <john.madieu@gmail.com>
-Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d2c8ac187fc92 ("crypto: sa2ul - Add AEAD algorithm support")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Reviewed-by: Manorit Chawdhry <m-chawdhry@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/sa2ul.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 45b1ad40a7efc..f7001c7bbe109 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -357,7 +357,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+index 461eca40e8789..d1c2d129ad418 100644
+--- a/drivers/crypto/sa2ul.c
++++ b/drivers/crypto/sa2ul.c
+@@ -1775,13 +1775,13 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha1",
+-				"authenc(hmac(sha1-ce),cbc(aes-ce))");
++				"authenc(hmac(sha1),cbc(aes))");
+ }
  
- 	/* When int_cs_inactive comes, spi target abort */
--	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
-+	if (rs->cs_inactive &&
-+	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
- 		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
+ static int sa_cra_init_aead_sha256(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha256",
+-				"authenc(hmac(sha256-ce),cbc(aes-ce))");
++				"authenc(hmac(sha256),cbc(aes))");
+ }
+ 
+ static void sa_exit_tfm_aead(struct crypto_aead *tfm)
 -- 
 2.53.0
 
