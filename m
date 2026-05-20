@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOK3AFv8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:27 +0200
+	id gJr7IKn4DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-251978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564B6596093
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 614E659562C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02CB13030F72
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08A22307FBEC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9310F37DE8A;
-	Wed, 20 May 2026 18:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FD3C4576;
+	Wed, 20 May 2026 17:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ftvq105p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ew7cGxC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6137836D9EA;
-	Wed, 20 May 2026 18:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B083F23BF;
+	Wed, 20 May 2026 17:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301134; cv=none; b=NA9iTNtd/tYQO6mLjaM8M6LFYqNkJVXGDEAWS0r3Yqi9Iy91ByaIhElfQWm2kt/n7FW3LNzcH+r+brHrmK/W/T6F1t7PPwkOiiIhCA7Ihwgqb1xrSt3qXkS+pUXFpzbjcdvTR4qGz57XlmHLJFMcuVyZ7+S0CTl/63CrNF1XlZc=
+	t=1779299425; cv=none; b=N3Dez+BwxCOmsAnphmxJnaDKncCa6le4laIzIvCP9VTOD8A5p4zqdnBnju5ZPnTxQSSadw6RUGH0nniSN/cAMGa0vPKdh6mQ46wWy44CHgfU4+imiIQNsJtt2sEPp5JTpkqF4eWUlgSCa3dO54Lll0HFehNXuekokJ2sjZKDprw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301134; c=relaxed/simple;
-	bh=0Zs+eh8QQQLzXQSsoqrSG1tLtzLpZLKtgYUDc7R55bM=;
+	s=arc-20240116; t=1779299425; c=relaxed/simple;
+	bh=2YNiOURkchvV+4m7XpmvQYs+TEqKHHft4fHry9w0lnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7Kz1rxusDSg+wrihra2agoOBI1EP72hLcFQwOZi+jqsGSjjddv0QjNioaVc/+sS98Q4QXXLQQRl+bsTRvk5xhIU6KPlGNCxgrFDwwR6CBHg8LRx3dKxHquuAgoZsIc3xjsKqeNXZqm35mRskzM4LdAJY8dWPka3l3KqUI6iKIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ftvq105p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CC61F000E9;
-	Wed, 20 May 2026 18:18:52 +0000 (UTC)
+	 MIME-Version; b=uF/eo6i+si/kyd+bgqOekYVmuz3v0om4xmQlZwhv63kanidzFYsS4/Vxch1Xw+rwCA8nvmBCjP/rOr1q2po4zJ+8G6l21qkDeks2151eZzBX49BAw6L8OPlQHK4epaYTCv6K8UD6bTvLCWCRLhOlwMlo48mx+edivpma4mZx43c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ew7cGxC6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE531F000E9;
+	Wed, 20 May 2026 17:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301133;
-	bh=VADHKVukZEmq8RZx3f0jSgdT+z2RH/SDHNiuEkH6mWY=;
+	s=korg; t=1779299424;
+	bh=/ETgaT6JWEgAD54VIvxPgnLvw3n47HSgkhV87qk//VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ftvq105pskAz+zr1JUtaypFDLgg4Nn0JFlTuBUYxNlM8gXgc/e8u6iExd6gZS8HM+
-	 EAo3FaXW8MyGiMpcKwJgIIDoGbOZxzz7uMMwAZgr4kKDe2waFDCdpLpZ4eY69Bl6rb
-	 neV4Qsh4L59eCkX0J6xwBMCWz9+1xlmF1cJXS0bA=
+	b=Ew7cGxC6XHPDPOSLuA+xWjfsnwHL6bEiYXm0JNFRKsQmRbB3hp06ZfDtyPgUmUL86
+	 DYHGDmeKM7fWgj3HDlw8MDBm0go/veaSBB+0bt3D4hOdlHc6gL/8WLLl1P14Qt+O7+
+	 +MZSmGSQDnuo2FTaQRYXey9j2KH/AokrxJbd0PCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 440/666] arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.18 768/957] net/sched: netem: validate slot configuration
 Date: Wed, 20 May 2026 18:20:51 +0200
-Message-ID: <20260520162120.809468145@linuxfoundation.org>
+Message-ID: <20260520162151.218146510@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251978-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252613-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.25:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 564B6596093
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,networkplumber.org:email]
+X-Rspamd-Queue-Id: 614E659562C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 721dec3ee9ff5231d13a412ff87df63b966d137b ]
+[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+Reject slot configurations that have no defensible meaning:
 
-While at here, also correct interrupt type as IRQ_TYPE_LEVEL_LOW.
+  - negative min_delay or max_delay
+  - min_delay greater than max_delay
+  - negative dist_delay or dist_jitter
+  - negative max_packets or max_bytes
 
-Fixes: cbd3ef64eb9d1 ("arm64: dts: Add support for Emtop SoM & Baseboard")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Negative or out-of-order delays underflow in get_slot_next(),
+producing garbage intervals. Negative limits trip the per-slot
+accounting (packets_left/bytes_left <= 0) on the first packet of
+every slot, defeating the rate-limiting half of the slot feature.
+
+Note that dist_jitter has been silently coerced to its absolute
+value by get_slot() since the feature was introduced; rejecting
+negatives here converts that silent coercion into -EINVAL. The
+abs() can be removed in a follow-up.
+
+Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-index 67d22d3768aa8..507d1824d99d9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-@@ -60,7 +60,7 @@ pmic@25 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupt-parent = <&gpio1>;
--		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 4bf65fcdaff02..41d60e904090d 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -826,6 +826,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
+ 	return 0;
+ }
  
- 		regulators {
- 			buck1: BUCK1 {
-@@ -194,7 +194,7 @@ MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA				0x400001c3
++static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
++{
++	const struct tc_netem_slot *c = nla_data(attr);
++
++	if (c->min_delay < 0 || c->max_delay < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
++		return -EINVAL;
++	}
++	if (c->min_delay > c->max_delay) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
++		return -EINVAL;
++	}
++	if (c->dist_delay < 0 || c->dist_jitter < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
++		return -EINVAL;
++	}
++	if (c->max_packets < 0 || c->max_bytes < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
++		return -EINVAL;
++	}
++	return 0;
++}
++
+ static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
+ {
+ 	const struct tc_netem_slot *c = nla_data(attr);
+@@ -1039,6 +1062,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto table_free;
+ 	}
  
- 	pinctrl_pmic: emtop-pmic-grp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
- 		>;
- 	};
- 
++	if (tb[TCA_NETEM_SLOT]) {
++		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
++		if (ret)
++			goto table_free;
++	}
++
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
 -- 
 2.53.0
 
