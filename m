@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HDTDoT3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-252143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:48 +0200
+	id qL4FB6QdDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD24F595318
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF059A15C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85228305AF0B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96A5933998CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ADD3FC5AE;
-	Wed, 20 May 2026 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5767E423149;
+	Wed, 20 May 2026 18:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEl8R9No"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X49jIoWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAC63FCB1E;
-	Wed, 20 May 2026 17:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA27421F11;
+	Wed, 20 May 2026 18:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299905; cv=none; b=iot5tO+SC561tPZ0tR8CyuUpNZSFQIWJVYOUpiNvs9YbRmkRZfVLMbjEHIrqaJC0oNxPMQ1zGr9XPCUcpdWkS+pWHGEFqPpBcjMlLhMEb03ttZXrEri5G7yRfxVE3i73t7+mhj9OWS4ulD1Yah3X4Am/3+yCNoATw4tTzPLV04g=
+	t=1779302761; cv=none; b=UwIoNMJzPEsUreKrvRLtnevm/1IG0HC1muF32iM2kijSjwTsKcdc+0vPjIOiPZE3Yv08LWEcPkqTNPYWUTiVYzQJyVYeeGa+x6xHwPj0HC0cR/+9K0Bqbg06maZy5AVq0BojUpDwhvNJ6R6AaMe0hK914Rd7dN3q5fqspgoXTuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299905; c=relaxed/simple;
-	bh=Kv3HkD4XNO+7eUuVdEjpFoqOfVbdXWx6nO34BV8jUS8=;
+	s=arc-20240116; t=1779302761; c=relaxed/simple;
+	bh=GbTamra561eF+3XSPrWm1Jc7SmZSsBhnZnL27vzlumo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qMNTrPDdTQeCrCVef8jYev4wZGj1LqwTIBJqRvIqnHz8kevzqmxKx4OKk5CteY4vYZ5dy8SXFs4/tGqm3E0AH0RhEbfmpNni5fd3FlJzbQE2DnUC0UWHWYsr9p/sTsMR3d7K35/+m2QBkC/KAD3u+yhueFqhFBhyvp5BCrB/vOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEl8R9No; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92AE1F00896;
-	Wed, 20 May 2026 17:58:21 +0000 (UTC)
+	 MIME-Version; b=BYGTV2hwDCNhnH+TJtXz14G6gIn/lD8OfEk1v8EJp7xtm+WVhPeRSQmkxItgELHG4qebGLuzas1cV9N3RNUQ/QkSn3hBSOxLorHx8x6eIXfL1SLQc3FzFLhr7lUBvUkAra+jXWz/Mh4kx2+AcBwZKfeShF95UQcZplSRtph9TH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X49jIoWB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE641F000E9;
+	Wed, 20 May 2026 18:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299902;
-	bh=5sFGp3DZGhwEzMaQPXc4t5V1/Ty5XwehKCe5ircoMtk=;
+	s=korg; t=1779302759;
+	bh=MFFD7KNTOZh1KN85yolISZG+4qf/8hroZqq7bRGZzl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kEl8R9NoTUWZcDmB1sNRmhj82Lp/2l3wfESB7HGQEot2sGz8PQshGJIcZp5gCh76L
-	 gwKR2boTLpPxzRjbcB6j2XuDkcknOVX8g5FI3KLavzdMef+JNMS7Ke1tRe6X6OFBYk
-	 J+ht/s6HZ0+s6NjbGUOzCuy3bD5EkDjOWAYNZD+g=
+	b=X49jIoWBqRZfokRG1bIRUz+NfKLUYYRdpX3hTifE2R9jR5DjohBoTfN3GRu+C23pD
+	 cpqjp+4o+iEDuuoBHPZRdTCYUF93iDFBHNzHXZaXyvghpobH2CXwurZyCMs0hVSkys
+	 JdH6nm4ePkK8AAM5Pnw7b69tOnjgKNMjcHpILK6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kim Phillips <kim.phillips@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 888/957] Revert "ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn"
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 348/508] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
 Date: Wed, 20 May 2026 18:22:51 +0200
-Message-ID: <20260520162153.827187278@linuxfoundation.org>
+Message-ID: <20260520162106.177818926@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253239-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252143-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: AD24F595318
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: 3ADF059A15C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit db5dadb562cabb6da49959b473ed0d9645b6f2da upstream.
+[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
 
-Some older systems don't support CPPC in the firmware and this just makes
-noise for them when booting.  Drop back to debug.
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-This reverts commit 21fb59ab4b9767085f4fe1edbdbe3177fbb9ec97.
+Move this acquisition before we fill st.qdisc_stats with live data.
 
-Fixes: 21fb59ab4b976 ("ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn")
-Suggested-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Kim Phillips <kim.phillips@amd.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260504230141.484743-2-mario.limonciello@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/acpi/cppc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_fq_codel.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/acpi/cppc.c
-+++ b/arch/x86/kernel/acpi/cppc.c
-@@ -88,19 +88,19 @@ static void amd_set_max_freq_ratio(void)
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 47b5a056165cb..056895df17854 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -568,6 +568,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 	struct list_head *pos;
  
- 	rc = cppc_get_perf_caps(0, &perf_caps);
- 	if (rc) {
--		pr_warn("Could not retrieve perf counters (%d)\n", rc);
-+		pr_debug("Could not retrieve perf counters (%d)\n", rc);
- 		return;
- 	}
++	sch_tree_lock(sch);
++
+ 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
+ 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
+ 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
+@@ -576,7 +578,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	st.qdisc_stats.memory_usage  = q->memory_usage;
+ 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
  
- 	rc = amd_get_boost_ratio_numerator(0, &numerator);
- 	if (rc) {
--		pr_warn("Could not retrieve highest performance (%d)\n", rc);
-+		pr_debug("Could not retrieve highest performance (%d)\n", rc);
- 		return;
- 	}
- 	nominal_perf = perf_caps.nominal_perf;
+-	sch_tree_lock(sch);
+ 	list_for_each(pos, &q->new_flows)
+ 		st.qdisc_stats.new_flows_len++;
  
- 	if (!nominal_perf) {
--		pr_warn("Could not retrieve nominal performance\n");
-+		pr_debug("Could not retrieve nominal performance\n");
- 		return;
- 	}
- 
+-- 
+2.53.0
+
 
 
 
