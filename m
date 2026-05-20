@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-250258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250259-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BNvAgXlDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:53 +0200
+	id 6LIUHorlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250259-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD245925E4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B795926D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3AB0A30A746F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24B52300B9B2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77683EFD3D;
-	Wed, 20 May 2026 16:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185D83E9C3D;
+	Wed, 20 May 2026 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tV6Wd4YH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10EbIzN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2723E9C3D;
-	Wed, 20 May 2026 16:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE05D32B10B;
+	Wed, 20 May 2026 16:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294941; cv=none; b=QA17SbE3/t5Jh5CD0Dmgu7XFw/RwtZw7FlrfTKPMhRFkXUqs4EwOemipzK2IVYKRRam+J4sRdsgxsQ4OPBCeuYkiF9peBwCechci5svaAE+tbY1mZMYatlIZHr4aDTVyvYKtoMGxUU2kNLiKL2ArZ7k6e8D/mLTLEqh9xgj6OuM=
+	t=1779294943; cv=none; b=N9YsdY4zoXJUVN/M8LLx235KiYPuP3CYfs7OVorCmOA1uMjcioruzoZhTxIVDY1W5iW0aNwir55IjBwjfzVrzktvfIczT7/epa9JoZMv16xyXQ8fjWD7OR1iMen/i5dMDVWQYO0Tmaa7sT1MiKZzU+sNc1dhKQbBt//SQKjx95I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294941; c=relaxed/simple;
-	bh=koW7mrs20CjKSDcVsn4c42pgGityshh+8+ddx4/IxfE=;
+	s=arc-20240116; t=1779294943; c=relaxed/simple;
+	bh=OtOeY6wisukgC/MAyo+QBUtoZfQgbfjUnsnfRwLs9nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVihPQrb+kDzZfpq3DZVuMNNhbnQCENi3R3dTK1Fmuk4Zyk4DZ0IMN3nGPS8u1PADJOWDdvdnwU20ow+7BkhnMQYVE+MKF5EeUUdT/NzCeYW/BQ2C09TmtFs1JTyGMOjz+CwdyRb8PWkuR25MPJhZf+EcZL3XsUnhPnojwLGCGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tV6Wd4YH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846381F000E9;
-	Wed, 20 May 2026 16:35:39 +0000 (UTC)
+	 MIME-Version; b=LswthA9jhiziWChWz4TMaVwrn0zKmiNJw/48RIh4w5lm9DAmuj/cr8nWE5wZmMdFHiP74Gr/hu0brSKiigtEAD3DlEzAqx0y2OZ0EsB4zPuucoQUi6oqx1t3wBkT0NL4yfkoQWfh+G9cQraJiRuFQ/JsKFIhTqefwjwJ0KHiB2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10EbIzN8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0261F000E9;
+	Wed, 20 May 2026 16:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294940;
-	bh=SP8nseoVCpy7EQiQF4wMaze9pv8zqEN2shs2B6agiv8=;
+	s=korg; t=1779294942;
+	bh=BWLghqFjo+IiTlSw7fkE/C2OdLB76cyyMEw61sLPfuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tV6Wd4YHStz5ZPZxeN41rmh0XCfpSaKrsj+Gy7JcoEMsDjTSB01/+SulOjznHvYy+
-	 wouAVJui+6OXPFF+QxY63BbCnI4u05udHqoo4DNTxiqdKY1hQtPY1h1vZwRourUMoG
-	 ObBjzhkm/GZOewhuVsZFZssYHWIMq2D82JzeWZDw=
+	b=10EbIzN8RhiibXva6CO/n3l71CrhZuIKXXEQIPk7n7Mej1hByWPU4BPuKL081eFXm
+	 oUU4UZuuIYHbpRquzEjGibeA0Eey4I4BWhMCWKwQcVZxf29uNHGjswtVM7O8OQ6qUA
+	 igTL1tMPx6ppfKg5QlQraC4CULrZzije5F0156/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@invisiblethingslab.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Nicolin Chen <b42378@freescale.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0230/1146] drm/virtio: Allow importing prime buffers when 3D is enabled
-Date: Wed, 20 May 2026 18:08:00 +0200
-Message-ID: <20260520162153.457299487@linuxfoundation.org>
+Subject: [PATCH 7.0 0231/1146] ASoC: soc-compress: use function to clear symmetric params
+Date: Wed, 20 May 2026 18:08:01 +0200
+Message-ID: <20260520162153.479934131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -73,25 +74,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250259-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250258-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 7DD245925E4
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E9B795926D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,40 +100,95 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Val Packett <val@invisiblethingslab.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit df4dc947c46bb9f80038f52c6e38cb2d40c10e50 ]
+[ Upstream commit 07c774dd64ba0c605dbf844132122e3edbdbea93 ]
 
-This functionality was added for using a KMS-only virtgpu with a physical
-(or SR-IOV) headless GPU in passthrough, but it should not be restricted
-to KMS-only mode. It can be used with cross-domain to pass guest memfds
-to the host compositor with zero copies (using udmabuf on both sides).
+Current soc-compress.c clears symmetric_rate, but it clears rate only,
+not clear other symmetric_channels/sample_bits.
 
-Drop the check for the absence of virgl_3d to allow for more use cases.
+	static int soc_compr_clean(...)
+	{
+		...
+		if (!snd_soc_dai_active(cpu_dai))
+=>			cpu_dai->symmetric_rate = 0;
 
-Fixes: ca77f27a2665 ("drm/virtio: Import prime buffers from other devices as guest blobs")
-Signed-off-by: Val Packett <val@invisiblethingslab.com>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patch.msgid.link/20251210154755.1119861-2-val@invisiblethingslab.com
+		if (!snd_soc_dai_active(codec_dai))
+=>			codec_dai->symmetric_rate = 0;
+		...
+	};
+
+This feature was added when v3.7 kernel [1], and there was only
+symmetric_rate, no symmetric_channels/sample_bits in that timing.
+
+symmetric_channels/sample_bits were added in v3.14 [2],
+but I guess it didn't notice that soc-compress.c is updating symmetric_xxx.
+
+We are clearing symmetry_xxx by soc_pcm_set_dai_params(), but is soc-pcm.c
+local function. Makes it global function and clear symmetry_xxx by it.
+
+[1] commit 1245b7005de02 ("ASoC: add compress stream support")
+[2] commit 3635bf09a89cf ("ASoC: soc-pcm: add symmetry for channels and
+			   sample bits")
+
+Fixes: 3635bf09a89c ("ASoC: soc-pcm: add symmetry for channels and sample bits")
+Cc: Nicolin Chen <b42378@freescale.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87ms15e3kv.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_prime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/soc.h      | 3 +++
+ sound/soc/soc-compress.c | 4 ++--
+ sound/soc/soc-pcm.c      | 4 ++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_prime.c b/drivers/gpu/drm/virtio/virtgpu_prime.c
-index 8adcf5c15d456..05756ed4f1dac 100644
---- a/drivers/gpu/drm/virtio/virtgpu_prime.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_prime.c
-@@ -310,7 +310,7 @@ struct drm_gem_object *virtgpu_gem_prime_import(struct drm_device *dev,
- 		}
- 	}
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 7d8376c8e1bed..1e0b7cd8d956e 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -1412,6 +1412,9 @@ struct snd_soc_dai *snd_soc_find_dai(
+ struct snd_soc_dai *snd_soc_find_dai_with_mutex(
+ 	const struct snd_soc_dai_link_component *dlc);
  
--	if (!vgdev->has_resource_blob || vgdev->has_virgl_3d)
-+	if (!vgdev->has_resource_blob)
- 		return drm_gem_prime_import(dev, buf);
++void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
++			    struct snd_pcm_hw_params *params);
++
+ #include <sound/soc-dai.h>
  
- 	bo = kzalloc_obj(*bo);
+ static inline
+diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
+index 7b81dffc6a935..b8402802ae784 100644
+--- a/sound/soc/soc-compress.c
++++ b/sound/soc/soc-compress.c
+@@ -69,10 +69,10 @@ static int soc_compr_clean(struct snd_compr_stream *cstream, int rollback)
+ 	snd_soc_dai_digital_mute(codec_dai, 1, stream);
+ 
+ 	if (!snd_soc_dai_active(cpu_dai))
+-		cpu_dai->symmetric_rate = 0;
++		soc_pcm_set_dai_params(cpu_dai, NULL);
+ 
+ 	if (!snd_soc_dai_active(codec_dai))
+-		codec_dai->symmetric_rate = 0;
++		soc_pcm_set_dai_params(codec_dai, NULL);
+ 
+ 	snd_soc_link_compr_shutdown(cstream, rollback);
+ 
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index afa9fad4457f2..9b12eedb77c33 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -423,8 +423,8 @@ void dpcm_dapm_stream_event(struct snd_soc_pcm_runtime *fe, int dir, int event)
+ 	snd_soc_dapm_stream_event(fe, dir, event);
+ }
+ 
+-static void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
+-				   struct snd_pcm_hw_params *params)
++void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
++			    struct snd_pcm_hw_params *params)
+ {
+ 	if (params) {
+ 		dai->symmetric_rate	   = params_rate(params);
 -- 
 2.53.0
 
