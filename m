@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-252695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULY/I7onDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:30 +0200
+	id kB0EK78DDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1563A59AEAD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 322425976A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 181703643DE2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65B303746662
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC43D2D7386;
-	Wed, 20 May 2026 18:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAEF3F9F2D;
+	Wed, 20 May 2026 18:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3mhxKBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tmh871KB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95731372B31;
-	Wed, 20 May 2026 18:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEAC332EBD;
+	Wed, 20 May 2026 18:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301347; cv=none; b=fPrZycEaFqtqsaYKoJiivylYEnP5sLjPHBW1BL8uYIbo39+WC5InNKGV4W4EaGapVAdCPaMc1dIJgK+oXCQhVAcG2l0G5yR8ICFJKy/JnvaZt6XmEYfWW7n/3bbAeKXjORIJklS+/Qp+Gellg0zudRqAT2ojZMQ95C9ESI915ds=
+	t=1779301482; cv=none; b=ZBhNsK72tgoNQkHYSoP5L1G9GRqFTPdOpnfN4kvCSbspfN6F6iUH2vjkUwbQZh5TGTNVfys5hmQD1Du3R1FVesQxxftzkqYlS9lrOJ0lz4roaHX6jfP2ixr1nW9fB5vtCHYsYb/Olx0ZSZrjm6WS11blfx5wM/H+tUYYxUkUgmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301347; c=relaxed/simple;
-	bh=mEJH8QLCVF2Gn2xD3FTgsaHMX1qsB8veIuS0MWKZFYQ=;
+	s=arc-20240116; t=1779301482; c=relaxed/simple;
+	bh=o9MZlLx5Vrw3vczWMvRGEXvYBq4i7XJaiN+J/lK8WYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uRodQQ9eZFenF95wYUZMnGTceUulluowkIk9pIhFoKuwSu4OvjLPlj4XXmp8O5GQE0yf/LdK/7oocm2YjVLEGZZoV5T+L9/TeCCSnorQ3cbIDoQepaC39l+ojRmCB/qc6vgoWJ+MnJ+9iSQYD1xFLAZ2Vr4TNY/xK1+H1TI9jiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3mhxKBH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16A71F000E9;
-	Wed, 20 May 2026 18:22:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O3E5ulO4gTkP86UBJn/3NNeWOhnrcF8mnBxianxdw5fbRzHRGmDB/xYOvJgYc8XwQuBbS2P1UG2zo9lRWPD1uoUKm3e4YwITRMMHAki6xIQIbvfe+7qZmjzqdPPdY7szRBKtlHtRZF2yOdtimcSj0XZhGpANlpOrr1SInba20Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tmh871KB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5186A1F000E9;
+	Wed, 20 May 2026 18:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301346;
-	bh=OMxIy8zKKlwbni1dLSftLiWC4z3zRJ+qo127/+mpMfQ=;
+	s=korg; t=1779301480;
+	bh=nj3EXp0COAyq4GBnZWNuBlc0lQCp8V/NeRf5zwIRTC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O3mhxKBH7u1OBz2ywBdGynxDTgnx2RiZkcihZJN+NE9lxZOiR5DiNZcM9bernxSrR
-	 1pcT4006m8+HWgKvKKJKuOnpCus3j7PcJ7t2afF4Gdf2EcFSsyniZaI52XaLtOHtmz
-	 1iqBc78p2gdCdgjSJ4Fa/HtM/1iLJwh4VkUGA4tQ=
+	b=Tmh871KBKKihxZbQB7sylg+MZ9MshNGAhCn9rhoudEER0PyIgvFNOUQGoPggzjjti
+	 /H+zxM84XlAGzzXYxK/MeGBUPJETrUIvPeKh1AWRDGCw/33CYWRtOtzcvr4NABf1Ck
+	 GMr/AFMAqwYTxSY0sgkospQ88eAvKw67TO8qwRYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 518/666] drm/amdgpu/gmc: Fix AMDGPU_GART_PLACEMENT_LOW to not overlap with VRAM
-Date: Wed, 20 May 2026 18:22:09 +0200
-Message-ID: <20260520162122.490528698@linuxfoundation.org>
+Subject: [PATCH 6.12 519/666] drm/amdgpu: fix AMDGPU_INFO_READ_MMR_REG
+Date: Wed, 20 May 2026 18:22:10 +0200
+Message-ID: <20260520162122.512581308@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
 References: <20260520162111.222830634@linuxfoundation.org>
@@ -66,8 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
@@ -75,13 +73,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252695-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252746-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,12 +88,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 1563A59AEAD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 322425976A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,48 +100,128 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 36d65da7570bf72ce28504fa9a81abfc728e6d96 ]
+[ Upstream commit 0ef196a208385b7d7da79f411c161b04e97283e2 ]
 
-When the GART placement is set to AMDGPU_GART_PLACEMENT_LOW:
-Make sure that GART does not overlap with VRAM when
-VRAM is configured to be in the low address space.
+There were multiple issues in that code.
 
-Solve this according to the following logic:
-- When GART fits before VRAM, use zero address for GART
-- Otherwise, put GART after the end of VRAM, aligned to 4 GiB
+First of all the order between the reset semaphore and the mm_lock was
+wrong (e.g. copy_to_user) was called while holding the lock.
 
-Previously, I had assumed this was not possible
-so it was OK to not handle it, but now we got a report
-from a user who has a board that is configured this way.
+Then we allocated memory while holding the reset semaphore which is also
+a pretty big bug and can deadlock.
 
-Fixes: 917f91d8d8e8 ("drm/amdgpu/gmc: add a way to force a particular placement for GART")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Then we used down_read_trylock() instead of waiting for the reset to
+finish.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 9e823f307074 ("drm/amdgpu: Block MMR_READ IOCTL in reset")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3d9de5d86a1658cadb311461b001eb1df67263ad)
+(cherry picked from commit 361b6e6b303d4b691f6c5974d3eaab67ca6dd90e)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 57 +++++++++++--------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index 564c68c9277b3..cf41ef9e3ad83 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -297,7 +297,10 @@ void amdgpu_gmc_gart_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,
- 		mc->gart_start = max_mc_address - mc->gart_size + 1;
- 		break;
- 	case AMDGPU_GART_PLACEMENT_LOW:
--		mc->gart_start = 0;
-+		if (size_bf >= mc->gart_size)
-+			mc->gart_start = 0;
-+		else
-+			mc->gart_start = ALIGN(mc->fb_end, four_gb);
- 		break;
- 	case AMDGPU_GART_PLACEMENT_BEST_FIT:
- 	default:
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index c626f66ded189..6788265157dbf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -786,68 +786,59 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_READ_MMR_REG: {
+-		int ret = 0;
+-		unsigned int n, alloc_size;
+-		uint32_t *regs;
+ 		unsigned int se_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
+ 		unsigned int sh_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+-
+-		if (!down_read_trylock(&adev->reset_domain->sem))
+-			return -ENOENT;
++		unsigned int alloc_size;
++		uint32_t *regs;
++		int ret;
+ 
+ 		/* set full masks if the userspace set all bits
+ 		 * in the bitfields
+ 		 */
+-		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
++		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
+ 			se_num = 0xffffffff;
+-		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (se_num >= AMDGPU_GFX_MAX_SE)
++			return -EINVAL;
+ 
+-		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
++		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
+ 			sh_num = 0xffffffff;
+-		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
++			return -EINVAL;
+ 
+-		if (info->read_mmr_reg.count > 128) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (info->read_mmr_reg.count > 128)
++			return -EINVAL;
+ 
+-		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+-		if (!regs) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
++		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs),
++				     GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 
++		down_read(&adev->reset_domain->sem);
+ 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+-
+ 		amdgpu_gfx_off_ctrl(adev, false);
++		ret = 0;
+ 		for (i = 0; i < info->read_mmr_reg.count; i++) {
+ 			if (amdgpu_asic_read_register(adev, se_num, sh_num,
+ 						      info->read_mmr_reg.dword_offset + i,
+ 						      &regs[i])) {
+ 				DRM_DEBUG_KMS("unallowed offset %#x\n",
+ 					      info->read_mmr_reg.dword_offset + i);
+-				kfree(regs);
+-				amdgpu_gfx_off_ctrl(adev, true);
+ 				ret = -EFAULT;
+-				goto out;
++				break;
+ 			}
+ 		}
+ 		amdgpu_gfx_off_ctrl(adev, true);
+-		n = copy_to_user(out, regs, min(size, alloc_size));
+-		kfree(regs);
+-		ret = (n ? -EFAULT : 0);
+-out:
+ 		up_read(&adev->reset_domain->sem);
++
++		if (!ret) {
++			ret = copy_to_user(out, regs, min(size, alloc_size))
++				? -EFAULT : 0;
++		}
++		kfree(regs);
+ 		return ret;
+ 	}
+ 	case AMDGPU_INFO_DEV_INFO: {
 -- 
 2.53.0
 
