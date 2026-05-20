@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-251393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJA9Oer6DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:18 +0200
+	id sJSVKnfvDWqa4wUAu9opvQ
+	(envelope-from <stable+bounces-250457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7BC595C0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E55593CFA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82F56332D77E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 25E28317C602
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFAE3D88FC;
-	Wed, 20 May 2026 17:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3C236B067;
+	Wed, 20 May 2026 16:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDy7xtSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzZKDM51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C84A3D6673;
-	Wed, 20 May 2026 17:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FB52D12EE;
+	Wed, 20 May 2026 16:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297863; cv=none; b=PkAmKCxZhbtknpLxtTDIw8U1x1aIpDNYfhSDAIZQvRntXNDIne7ATNBP3emuy8teE8wAebmhWupPHEQmK28U9ISNcOxAKOb2ptilOJ5XN4tI1C1AFZMz5OLC1afVX4w0IGLcyE7aoGoYj/kMdSo8E4+XuVqDLKWesGL2BpAMgWY=
+	t=1779295462; cv=none; b=mDJ82faQa9a2CEAeSLDQh5IHFxKdBpTiBVb7NUyglBkYUUlLRE2xHQ4ptXPcFRmdCcAV89sF4JxHDbCd2KuPZe27nfm5gWHg8B+TWglHeJd8zdAFux2zrOlmIkw5idl6e3Eg4q6xZLw3ks7lw3KYciF2rVO4yuAUGY9WIK/ONbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297863; c=relaxed/simple;
-	bh=aOiBogHvFIbzUp4AyUwI49cR2lR5c+Kjpzn792H36Rc=;
+	s=arc-20240116; t=1779295462; c=relaxed/simple;
+	bh=yUvJXh4Hy0uy/uENQ71sGWXSiFVRUy4Vih3mtRW8nDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8TyzaT76tOhDLyf1s/Xnyl+fNYIt4Nk2JbNevBgFLRZfd41xaNk8uZF9UfNuJXUT3j8BRkoKOtpK9mJsTsdM/s8ENfozHuN4rCh8j1jXYUKNWs6Yxv3d1cM1Ak8c9pBU5gAxkRIg/NnmqEu2nO3HrIUJFWiZP7z+jWrTPEBaBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDy7xtSv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92461F000E9;
-	Wed, 20 May 2026 17:24:21 +0000 (UTC)
+	 MIME-Version; b=qZB8QufWbxWlu/bY247APfUT2aMb3cgs+P/0zWYV2fLZzjtpUMTTvpHZ3q1LxJDMN7dRAOeUymmScGIE19NsrMgCSJ8OfyVY6At+wTQImzZDzUaeT3hNTQeiLKJ3hJg7SBksT2a0fxaA0JYtushm+/Yc/QanOkSrpiDNjXbJl1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzZKDM51; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EFC1F000E9;
+	Wed, 20 May 2026 16:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297862;
-	bh=G929Gli6PmyvPBhHhKL8gXkU/TkXPrmyTWic3QoMGG0=;
+	s=korg; t=1779295461;
+	bh=BHo9dEsljp6D3svok5vpY28es4JvXoNQ2pffAv2sayY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wDy7xtSv8gUV/2pZLp7ofn9U7a8d9gFhYQfjgaFS1LhRlWm4W6MoYU4F5y7HlUr53
-	 6rGs/cStvhufMww/UXLD+MCw/vqXq5I1OBDvn0DoBg3qRooh0C0TyWwyImz2vXyGTN
-	 PDBjQG/jLPPYmNUIZFweADprAghNACRXPrKXZKaY=
+	b=qzZKDM51eTUd1pH9dDmLyaGjbYNVopY/XaB1mAm877d1u2KgajpJhVzWr8dtY9GzQ
+	 7MDu1idhD0OlEBKy/m1jvvufGsZ+fobo+SyukmlOAXG8KuRgQTfor1hHMbV3cm9ug0
+	 xmq+LZoL3lkKGfQ6eZvlvWGvoz2/GTO5RFULyvLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 192/957] drm/sun4i: backend: fix error pointer dereference
-Date: Wed, 20 May 2026 18:11:15 +0200
-Message-ID: <20260520162138.714018624@linuxfoundation.org>
+Subject: [PATCH 7.0 0426/1146] PCI: dwc: Apply ECRC workaround to DesignWare 5.00a as well
+Date: Wed, 20 May 2026 18:11:16 +0200
+Message-ID: <20260520162157.832203281@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +69,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251393-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250457-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 4F7BC595C0C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: D5E55593CFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit 06277983eca4a31d3c2114fa33d99a6e82484b11 ]
+[ Upstream commit 40805f32dceadebb7381d911003100bec7b8cd51 ]
 
-The function drm_atomic_get_plane_state() can return an error pointer
-and is not checked for it. Add error pointer check.
+The ECRC (TLP digest) workaround was originally added for DesignWare
+version 4.90a. Tegra234 SoC has 5.00a DWC HW version, which has the same
+ATU TD override behaviour, so apply the workaround for 5.00a too.
 
-Detected by Smatch:
-drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
-'plane_state' dereferencing possible ERR_PTR()
-
-Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
-Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-13-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-index 2dded3b828df0..0484cc27c97ae 100644
---- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-@@ -490,6 +490,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
- 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
- 		struct drm_plane_state *plane_state =
- 			drm_atomic_get_plane_state(state, plane);
-+		if (IS_ERR(plane_state))
-+			return PTR_ERR(plane_state);
-+
- 		struct sun4i_layer_state *layer_state =
- 			state_to_sun4i_layer_state(plane_state);
- 		struct drm_framebuffer *fb = plane_state->fb;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index 5741c09dde7f4..bb4e82fbfd5c8 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -487,13 +487,13 @@ static inline void dw_pcie_writel_atu_ob(struct dw_pcie *pci, u32 index, u32 reg
+ static inline u32 dw_pcie_enable_ecrc(u32 val)
+ {
+ 	/*
+-	 * DesignWare core version 4.90A has a design issue where the 'TD'
+-	 * bit in the Control register-1 of the ATU outbound region acts
+-	 * like an override for the ECRC setting, i.e., the presence of TLP
+-	 * Digest (ECRC) in the outgoing TLPs is solely determined by this
+-	 * bit. This is contrary to the PCIe spec which says that the
+-	 * enablement of the ECRC is solely determined by the AER
+-	 * registers.
++	 * DWC versions 0x3530302a and 0x3536322a have a design issue where
++	 * the 'TD' bit in the Control register-1 of the ATU outbound
++	 * region acts like an override for the ECRC setting, i.e., the
++	 * presence of TLP Digest (ECRC) in the outgoing TLPs is solely
++	 * determined by this bit. This is contrary to the PCIe spec which
++	 * says that the enablement of the ECRC is solely determined by the
++	 * AER registers.
+ 	 *
+ 	 * Because of this, even when the ECRC is enabled through AER
+ 	 * registers, the transactions going through ATU won't have TLP
+@@ -563,7 +563,7 @@ int dw_pcie_prog_outbound_atu(struct dw_pcie *pci,
+ 	if (upper_32_bits(limit_addr) > upper_32_bits(parent_bus_addr) &&
+ 	    dw_pcie_ver_is_ge(pci, 460A))
+ 		val |= PCIE_ATU_INCREASE_REGION_SIZE;
+-	if (dw_pcie_ver_is(pci, 490A))
++	if (dw_pcie_ver_is(pci, 490A) || dw_pcie_ver_is(pci, 500A))
+ 		val = dw_pcie_enable_ecrc(val);
+ 	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_REGION_CTRL1, val);
+ 
 -- 
 2.53.0
 
