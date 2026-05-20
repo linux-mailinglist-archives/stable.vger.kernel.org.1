@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MdpOsL4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-250809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:06 +0200
+	id gGSlGykeDmox6QUAu9opvQ
+	(envelope-from <stable+bounces-251740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DD8595666
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C58B859A250
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0165E31D73C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B62730D27C0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E153F54D4;
-	Wed, 20 May 2026 16:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2FE3EC2DB;
+	Wed, 20 May 2026 17:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4SK9gkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mG+ma8ux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E2C3F1ADA;
-	Wed, 20 May 2026 16:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198153A3E9C;
+	Wed, 20 May 2026 17:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296362; cv=none; b=BN7MXhFekbFkxcwgo2E4Dixju9Dfcnh4g+lMHtlgpGjcOiSC9jn0Ilw4KCy5DgkLVh9PdXhX8ufqP3jXnPSsWz85KFhNm+8WcrXCf0eAhOfsbyTvMU32cQWmn9kyufg/kChrHCJ1fiMVxFsrIJrQwwDQhlmJ7twaXBv7B/RtFU4=
+	t=1779298768; cv=none; b=RCniNVbOR8cr8UWRHaPmLePFEPdw5Wfaa4mHEwLRsXZCz39UC3THRw9WnNaX0JPlMZDa41oKSNNlbtw83SnGaunqpVPSa4Qi8PiMmRzBAbcFWysH5QWZnmZ1IpU1iF3ZPpcbcT1ypl2WFwZaEAUKGynTCjWJv3c9z59VYhpjiA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296362; c=relaxed/simple;
-	bh=5m6LzCHm1sVHsfke0OM1L0XhLa3HcUVtEBl9KueYdsQ=;
+	s=arc-20240116; t=1779298768; c=relaxed/simple;
+	bh=REbnawxm6BtFCRPpm1FdQHba23Wq1amcSoNI5ILYdho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPewwvmn5NrfPTHhNyFC+gy4jxmOwoJhoDcsTEpqTwgoaxZ/fPrjW938lHn2l2np5rL3tJpEmTIZdFUpFoPpnAfwcWfiN//wrekQI5oNdll70oZBkfCPaESy+XAtykaMdpJr9BnSIIH5zZmI7WJirekjWF9AWw1sC47e4jH0U/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4SK9gkx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655371F000E9;
-	Wed, 20 May 2026 16:59:20 +0000 (UTC)
+	 MIME-Version; b=UdGF/Z7PQzdRKlnjJcNPzSQLtCXX/Z+JLCMn51oUo1SdzSXLOY0j2pYTkx/n7y8uLE+Q5qgsvCNkLCss4zaB43n/p31lRdy7DOm6acWy9JT50NNE2g1pTqxsR9hTuqQOHrPPnvCFxd8eoZoh78ddCLK14xf5y6zGpkIJPA454Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mG+ma8ux; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E47E1F000E9;
+	Wed, 20 May 2026 17:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296360;
-	bh=C8jdT0vOGbH8EPU44jd/llQY1G60dFRA2ULVlo6qKTY=;
+	s=korg; t=1779298767;
+	bh=hGBgn2UKf2jDnIGE+FNV9K06IXWHUnCKnuFNquqVGTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m4SK9gkxt2Ftc0LqwIDSd9RWlg6dwYdi16fI3zMB0vBc8g2XJFe4k6IbWDFdhKFLL
-	 b/PX6Gvik05LWwLB6sTDv/o2gZc2bJB3f8KTRgwmtbPF+gUgVLIDOsh6mxhohqCCoN
-	 TnL9rz5uX6Gf+MjMpliUXPX8hD1GFKQ4Fvo2GxNg=
+	b=mG+ma8ux8i8dntkE4LssyUjGTHkWTpt0ARzaCyK6uSthX6YFD67BO2mFXKAoO43yH
+	 3FSCKWKAQyvTauQH5i8wd032kVpsc1PYx6N2nJebGTeFVGnFPbgmyCqRaeVI/w1Y2b
+	 NGiAs7849O7SUlz9e5O2i5sc1rbjief9hmGS3MiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0769/1146] macvlan: fix macvlan_get_size() not reserving space for IFLA_MACVLAN_BC_CUTOFF
-Date: Wed, 20 May 2026 18:16:59 +0200
-Message-ID: <20260520162205.618853580@linuxfoundation.org>
+Subject: [PATCH 6.18 537/957] mfd: mc13xxx-core: Fix memory leak in mc13xxx_add_subdevice_pdata()
+Date: Wed, 20 May 2026 18:17:00 +0200
+Message-ID: <20260520162146.181605280@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +66,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250809-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251740-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
-X-Rspamd-Queue-Id: 56DD8595666
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C58B859A250
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit fa92a77b0ed4d5f11a71665a232ac5a54a4b055d ]
+[ Upstream commit a5a65a7fb2f7796bbe492cd6be59c92cb64377d1 ]
 
-macvlan_get_size() does not account for IFLA_MACVLAN_BC_CUTOFF, but
-macvlan_fill_info() conditionally includes it when port->bc_cutoff != 1.
-This causes nla_put_s32() to fail with -EMSGSIZE when the netlink skb
-runs out of space, triggering a WARN_ON in rtnetlink and preventing the
-interface from being dumped.
+The memory allocated for cell.name using kmemdup() is not freed when
+mfd_add_devices() fails. Fix that by using devm_kmemdup().
 
-The bug can be reproduced with:
-
-  ip link add macvlan0 link eth0 type macvlan mode bridge
-  ip link set macvlan0 type macvlan bc_cutoff 0
-  ip -d link show macvlan0   # fails with -EMSGSIZE
-
-The bc_cutoff feature was added in commit 954d1fa1ac93 ("macvlan: Add
-netlink attribute for broadcast cutoff"), which added the nla_put_s32()
-call in macvlan_fill_info() but missed adding the corresponding
-nla_total_size(4) in macvlan_get_size(). A follow-up commit
-55cef78c244d ("macvlan: add forgotten nla_policy for
-IFLA_MACVLAN_BC_CUTOFF") fixed the missing nla_policy entry but still
-did not fix the size calculation.
-
-Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260413085349.73977-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8e00593557c3 ("mfd: Add mc13892 support to mc13xxx")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20260120102622.66921-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/mc13xxx-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 1bbb3868f51d2..3073d67d0dffc 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1682,6 +1682,7 @@ static size_t macvlan_get_size(const struct net_device *dev)
- 		+ macvlan_get_size_mac(vlan) /* IFLA_MACVLAN_MACADDR */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN_USED */
-+		+ nla_total_size(4) /* IFLA_MACVLAN_BC_CUTOFF */
- 		);
- }
+diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
+index 920797b806ced..786eab3b2d03c 100644
+--- a/drivers/mfd/mc13xxx-core.c
++++ b/drivers/mfd/mc13xxx-core.c
+@@ -377,7 +377,7 @@ static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
+ 	if (snprintf(buf, sizeof(buf), format, name) > sizeof(buf))
+ 		return -E2BIG;
+ 
+-	cell.name = kmemdup(buf, strlen(buf) + 1, GFP_KERNEL);
++	cell.name = devm_kmemdup(mc13xxx->dev, buf, strlen(buf) + 1, GFP_KERNEL);
+ 	if (!cell.name)
+ 		return -ENOMEM;
  
 -- 
 2.53.0
