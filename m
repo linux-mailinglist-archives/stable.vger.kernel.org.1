@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKYtHRrvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:54 +0200
+	id iJMZG6cZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-251349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704F4593BD9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC95599A88
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4A5C43155326
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCC2731F5B25
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076FA3D8129;
-	Wed, 20 May 2026 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E936A376;
+	Wed, 20 May 2026 17:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLhkVJEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxTBWHVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0212367B8D;
-	Wed, 20 May 2026 16:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8975F3BED26;
+	Wed, 20 May 2026 17:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295341; cv=none; b=HbXVqDQCYuxc3QtLp2ZW9bljLxIU1A1ho0a5HIpnn8HvvqFTXjxsN4/ly03V0f8ejRYPc9ADi/4YqM9hAGgIQ2Y+tOp/WGtuzGr+F4ckwZ2ite7TT5dLSdOuMlZCySkZspbvVwp7QXbaXMxcKzBBnHvBlQaBSGLHAA/OcuYQiSg=
+	t=1779297747; cv=none; b=Z4Uc0ymEb4sxu0EmzPQxOYd8zE5bAL5aH7sHpf4WMZjB1vLUPWXOzCGA6PGumlJh67cjERdNCoUfGTsasxNHB8b7ogdGESGDc7D0u+ZDtAN2W9LcEVZHqQdpijvE7aaAX7pc3Hv8f11zmfHDRinF49R3Sr/P3+Mv7ne7VlgE+Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295341; c=relaxed/simple;
-	bh=g+ACEwJXmdAnPLT1i3bXC62c97awlzpCvXtm6ex0KQY=;
+	s=arc-20240116; t=1779297747; c=relaxed/simple;
+	bh=hvklo49y+K+3cyO0Z0qn/drdYbwS9A1QHNnOiBn0MoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnhVahv2dQBX0BRI3hijjkPzGkClqqR0RiQ/1YP7Bs62wq2J/+P9RgElMqgAT0/SWZNqorPX1hSfwz7yJp/q6wZ+fqDGAolodVAEgu43hOL6hSFNZaMGLEy3uWp2u85vF4UvSO6A3J69W4Rz+zP5Fzwi1HNqETEZ7j/iTACQ2/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLhkVJEl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1081F000E9;
-	Wed, 20 May 2026 16:42:19 +0000 (UTC)
+	 MIME-Version; b=O/sRuX00I277VE1DhhlmhVK9CeFengmFqHUs/7fsNynR0FXT3yUsGmVWfyvSUZmO4KnkbUsy+PRi0wz7rSr1tdObA0ynjGOzJxKdXbv7T4ILiPvuvbm08JZc5i5spX56USzr5tzVJVD70Xn3j6qMJ7bJFSOQmwhrl7NZuqbl7t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxTBWHVp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80821F000E9;
+	Wed, 20 May 2026 17:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295340;
-	bh=11A+oi3aNss0sycMck12qr566I8htnzD7pckwcm0b0o=;
+	s=korg; t=1779297746;
+	bh=dtjb4JtRlwI6F+LjfrFKyBlSP9G2TZ0c4lM6kIkUAXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tLhkVJElsMauh8+gzGTjUXv3m0GybQ7lCopia8BUdG+5zZAlFO7moDWKY3xjwsW8Q
-	 2xRHr3j96etOrJuMQ72rI9yaYslmhsUE424zWAMdPpfixvrkE3U4seVv2SjbIiXcfj
-	 ykIpaWj51gHE5qq+T/gq4wrFEWI2G2KKydroWs4w=
+	b=TxTBWHVpnWfuCMoewyJRYcHlUA6Yer+R7vqRnir0AfKyXPGt+v0n8IL8UgZUfrSlq
+	 aeWPR13DP8sQmt3Jb1pP8H6rHMQUVwFDBq0wCBQDQpOBakNGkN3zfJalhZNIKF0vIS
+	 rMdE6wJg68/xQ4LZCcBAHCCFE14RqobUTS650qTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0380/1146] iommu/amd: Fix clone_alias() to use the original devices devid
-Date: Wed, 20 May 2026 18:10:30 +0200
-Message-ID: <20260520162156.798774606@linuxfoundation.org>
+Subject: [PATCH 6.18 148/957] net: airoha: Add airoha_ppe_get_num_stats_entries() and airoha_ppe_get_num_total_stats_entries()
+Date: Wed, 20 May 2026 18:10:31 +0200
+Message-ID: <20260520162137.764018429@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +69,281 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251349-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250410-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 704F4593BD9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BFC95599A88
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit faad224fe0f0857a04ff2eb3c90f0de57f47d0f3 ]
+[ Upstream commit 15f357cd4581ce6e02e5e97719320600783140ec ]
 
-Currently clone_alias() assumes first argument (pdev) is always the
-original device pointer. This function is called by
-pci_for_each_dma_alias() which based on topology decides to send
-original or alias device details in first argument.
+Introduce airoha_ppe_get_num_stats_entries and
+airoha_ppe_get_num_total_stats_entries routines in order to make the
+code more readable controlling if CONFIG_NET_AIROHA_FLOW_STATS is
+enabled or disabled.
+Modify airoha_ppe_foe_get_flow_stats_index routine signature relying on
+airoha_ppe_get_num_total_stats_entries().
 
-This meant that the source devid used to look up and copy the DTE
-may be incorrect, leading to wrong or stale DTE entries being
-propagated to alias device.
-
-Fix this by passing the original pdev as the opaque data argument to
-both the direct clone_alias() call and pci_for_each_dma_alias(). Inside
-clone_alias(), retrieve the original device from data and compute devid
-from it.
-
-Fixes: 3332364e4ebc ("iommu/amd: Support multiple PCI DMA aliases in device table")
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-3-f28319666667@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 02f729643959 ("net: airoha: Fix FE_PSE_BUF_SET configuration if PPE2 is available")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.h |  10 +--
+ drivers/net/ethernet/airoha/airoha_ppe.c | 101 ++++++++++++++++++-----
+ 2 files changed, 81 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 760d5f4623b55..6dfd942c76ce5 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -403,11 +403,12 @@ struct iommu_dev_data *search_dev_data(struct amd_iommu *iommu, u16 devid)
- 	return NULL;
- }
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index cd13c1c1224f6..3e43f01e9a652 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -50,15 +50,9 @@
  
--static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
-+static int clone_alias(struct pci_dev *pdev_origin, u16 alias, void *data)
+ #define PPE_NUM				2
+ #define PPE1_SRAM_NUM_ENTRIES		(8 * 1024)
+-#define PPE_SRAM_NUM_ENTRIES		(2 * PPE1_SRAM_NUM_ENTRIES)
+-#ifdef CONFIG_NET_AIROHA_FLOW_STATS
++#define PPE_SRAM_NUM_ENTRIES		(PPE_NUM * PPE1_SRAM_NUM_ENTRIES)
+ #define PPE1_STATS_NUM_ENTRIES		(4 * 1024)
+-#else
+-#define PPE1_STATS_NUM_ENTRIES		0
+-#endif /* CONFIG_NET_AIROHA_FLOW_STATS */
+-#define PPE_STATS_NUM_ENTRIES		(2 * PPE1_STATS_NUM_ENTRIES)
+-#define PPE1_SRAM_NUM_DATA_ENTRIES	(PPE1_SRAM_NUM_ENTRIES - PPE1_STATS_NUM_ENTRIES)
+-#define PPE_SRAM_NUM_DATA_ENTRIES	(2 * PPE1_SRAM_NUM_DATA_ENTRIES)
++#define PPE_STATS_NUM_ENTRIES		(PPE_NUM * PPE1_STATS_NUM_ENTRIES)
+ #define PPE_DRAM_NUM_ENTRIES		(16 * 1024)
+ #define PPE_NUM_ENTRIES			(PPE_SRAM_NUM_ENTRIES + PPE_DRAM_NUM_ENTRIES)
+ #define PPE_HASH_MASK			(PPE_NUM_ENTRIES - 1)
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index b3632f964a580..117dfc21d6a81 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -32,6 +32,24 @@ static const struct rhashtable_params airoha_l2_flow_table_params = {
+ 	.automatic_shrinking = true,
+ };
+ 
++static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
++{
++	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
++		return -EOPNOTSUPP;
++
++	return PPE1_STATS_NUM_ENTRIES;
++}
++
++static int airoha_ppe_get_total_num_stats_entries(struct airoha_ppe *ppe)
++{
++	int num_stats = airoha_ppe_get_num_stats_entries(ppe);
++
++	if (num_stats > 0)
++		num_stats = num_stats * PPE_NUM;
++
++	return num_stats;
++}
++
+ static bool airoha_ppe2_is_enabled(struct airoha_eth *eth)
  {
- 	struct dev_table_entry new;
- 	struct amd_iommu *iommu;
- 	struct iommu_dev_data *dev_data, *alias_data;
-+	struct pci_dev *pdev = data;
- 	u16 devid = pci_dev_id(pdev);
- 	int ret = 0;
+ 	return airoha_fe_rr(eth, REG_PPE_GLO_CFG(1)) & PPE_GLO_CFG_EN_MASK;
+@@ -48,7 +66,7 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+ {
+ 	u32 sram_tb_size, sram_num_entries, dram_num_entries;
+ 	struct airoha_eth *eth = ppe->eth;
+-	int i;
++	int i, sram_num_stats_entries;
  
-@@ -454,9 +455,9 @@ static void clone_aliases(struct amd_iommu *iommu, struct device *dev)
- 	 * part of the PCI DMA aliases if it's bus differs
- 	 * from the original device.
- 	 */
--	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], NULL);
-+	clone_alias(pdev, iommu->pci_seg->alias_table[pci_dev_id(pdev)], pdev);
+ 	sram_tb_size = PPE_SRAM_NUM_ENTRIES * sizeof(struct airoha_foe_entry);
+ 	dram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(PPE_DRAM_NUM_ENTRIES);
+@@ -103,8 +121,13 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+ 	}
  
--	pci_for_each_dma_alias(pdev, clone_alias, NULL);
-+	pci_for_each_dma_alias(pdev, clone_alias, pdev);
+ 	if (airoha_ppe2_is_enabled(eth)) {
+-		sram_num_entries =
+-			PPE_RAM_NUM_ENTRIES_SHIFT(PPE1_SRAM_NUM_DATA_ENTRIES);
++		sram_num_entries = PPE1_SRAM_NUM_ENTRIES;
++		sram_num_stats_entries =
++			airoha_ppe_get_num_stats_entries(ppe);
++		if (sram_num_stats_entries > 0)
++			sram_num_entries -= sram_num_stats_entries;
++		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
++
+ 		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
+ 			      PPE_SRAM_TB_NUM_ENTRY_MASK |
+ 			      PPE_DRAM_TB_NUM_ENTRY_MASK,
+@@ -120,8 +143,13 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+ 			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
+ 					 dram_num_entries));
+ 	} else {
+-		sram_num_entries =
+-			PPE_RAM_NUM_ENTRIES_SHIFT(PPE_SRAM_NUM_DATA_ENTRIES);
++		sram_num_entries = PPE_SRAM_NUM_ENTRIES;
++		sram_num_stats_entries =
++			airoha_ppe_get_total_num_stats_entries(ppe);
++		if (sram_num_stats_entries > 0)
++			sram_num_entries -= sram_num_stats_entries;
++		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
++
+ 		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
+ 			      PPE_SRAM_TB_NUM_ENTRY_MASK |
+ 			      PPE_DRAM_TB_NUM_ENTRY_MASK,
+@@ -482,13 +510,21 @@ static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
+ 	return hash;
  }
  
- static void setup_aliases(struct amd_iommu *iommu, struct device *dev)
+-static u32 airoha_ppe_foe_get_flow_stats_index(struct airoha_ppe *ppe, u32 hash)
++static int airoha_ppe_foe_get_flow_stats_index(struct airoha_ppe *ppe,
++					       u32 hash, u32 *index)
+ {
+-	if (!airoha_ppe2_is_enabled(ppe->eth))
+-		return hash;
++	int ppe_num_stats_entries;
++
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries < 0)
++		return ppe_num_stats_entries;
+ 
+-	return hash >= PPE_STATS_NUM_ENTRIES ? hash - PPE1_STATS_NUM_ENTRIES
+-					     : hash;
++	*index = hash;
++	if (airoha_ppe2_is_enabled(ppe->eth) &&
++	    hash >= ppe_num_stats_entries)
++		*index = *index - PPE_STATS_NUM_ENTRIES;
++
++	return 0;
+ }
+ 
+ static void airoha_ppe_foe_flow_stat_entry_reset(struct airoha_ppe *ppe,
+@@ -502,9 +538,13 @@ static void airoha_ppe_foe_flow_stat_entry_reset(struct airoha_ppe *ppe,
+ static void airoha_ppe_foe_flow_stats_reset(struct airoha_ppe *ppe,
+ 					    struct airoha_npu *npu)
+ {
+-	int i;
++	int i, ppe_num_stats_entries;
++
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries < 0)
++		return;
+ 
+-	for (i = 0; i < PPE_STATS_NUM_ENTRIES; i++)
++	for (i = 0; i < ppe_num_stats_entries; i++)
+ 		airoha_ppe_foe_flow_stat_entry_reset(ppe, npu, i);
+ }
+ 
+@@ -515,10 +555,17 @@ static void airoha_ppe_foe_flow_stats_update(struct airoha_ppe *ppe,
+ {
+ 	int type = FIELD_GET(AIROHA_FOE_IB1_BIND_PACKET_TYPE, hwe->ib1);
+ 	u32 index, pse_port, val, *data, *ib2, *meter;
++	int ppe_num_stats_entries;
+ 	u8 nbq;
+ 
+-	index = airoha_ppe_foe_get_flow_stats_index(ppe, hash);
+-	if (index >= PPE_STATS_NUM_ENTRIES)
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries < 0)
++		return;
++
++	if (airoha_ppe_foe_get_flow_stats_index(ppe, hash, &index))
++		return;
++
++	if (index >= ppe_num_stats_entries)
+ 		return;
+ 
+ 	if (type == PPE_PKT_TYPE_BRIDGE) {
+@@ -1160,11 +1207,19 @@ static int airoha_ppe_flow_offload_destroy(struct airoha_eth *eth,
+ void airoha_ppe_foe_entry_get_stats(struct airoha_ppe *ppe, u32 hash,
+ 				    struct airoha_foe_stats64 *stats)
+ {
+-	u32 index = airoha_ppe_foe_get_flow_stats_index(ppe, hash);
+ 	struct airoha_eth *eth = ppe->eth;
++	int ppe_num_stats_entries;
+ 	struct airoha_npu *npu;
++	u32 index;
++
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries < 0)
++		return;
+ 
+-	if (index >= PPE_STATS_NUM_ENTRIES)
++	if (airoha_ppe_foe_get_flow_stats_index(ppe, hash, &index))
++		return;
++
++	if (index >= ppe_num_stats_entries)
+ 		return;
+ 
+ 	rcu_read_lock();
+@@ -1259,7 +1314,7 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ {
+ 	struct airoha_npu *npu = airoha_ppe_npu_get(eth);
+ 	struct airoha_ppe *ppe = eth->ppe;
+-	int err;
++	int err, ppe_num_stats_entries;
+ 
+ 	if (IS_ERR(npu))
+ 		return PTR_ERR(npu);
+@@ -1268,9 +1323,10 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ 	if (err)
+ 		goto error_npu_put;
+ 
+-	if (PPE_STATS_NUM_ENTRIES) {
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries > 0) {
+ 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
+-					      PPE_STATS_NUM_ENTRIES);
++					      ppe_num_stats_entries);
+ 		if (err)
+ 			goto error_npu_put;
+ 	}
+@@ -1407,8 +1463,8 @@ EXPORT_SYMBOL_GPL(airoha_ppe_put_dev);
+ 
+ int airoha_ppe_init(struct airoha_eth *eth)
+ {
++	int foe_size, err, ppe_num_stats_entries;
+ 	struct airoha_ppe *ppe;
+-	int foe_size, err;
+ 
+ 	ppe = devm_kzalloc(eth->dev, sizeof(*ppe), GFP_KERNEL);
+ 	if (!ppe)
+@@ -1433,8 +1489,9 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 	if (!ppe->foe_flow)
+ 		return -ENOMEM;
+ 
+-	foe_size = PPE_STATS_NUM_ENTRIES * sizeof(*ppe->foe_stats);
+-	if (foe_size) {
++	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
++	if (ppe_num_stats_entries > 0) {
++		foe_size = ppe_num_stats_entries * sizeof(*ppe->foe_stats);
+ 		ppe->foe_stats = dmam_alloc_coherent(eth->dev, foe_size,
+ 						     &ppe->foe_stats_dma,
+ 						     GFP_KERNEL);
 -- 
 2.53.0
 
