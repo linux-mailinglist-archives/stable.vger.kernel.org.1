@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WG0sJ74VDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:46 +0200
+	id kGKYBtBSDmqm9wUAu9opvQ
+	(envelope-from <stable+bounces-251944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:33:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A217C599471
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6048959D516
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:33:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9CDE73140D40
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9F4F359BB61
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AA237DE8A;
-	Wed, 20 May 2026 18:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BD63D5647;
+	Wed, 20 May 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gk+ih74o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJWQMO0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6933D347515;
-	Wed, 20 May 2026 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78D2369D67;
+	Wed, 20 May 2026 17:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301047; cv=none; b=NAX6pmy/r7EwqWqGDM+l6i/0HDzRzZSTcqSNkhEcl98aKwTsNypPW81DUFgtuetELGUoa0iwc9oywQA7c46T5Q5vrcjgh/4/jaefUfnyWIW04noyV1tACm7wMZEO2iIh8TczG4lXsNJUEaxYgtzc+FIIx0U3zH9OF6nBSgQG3Qk=
+	t=1779299339; cv=none; b=lbjsxk2ndgKeTks54satO6EyHLdTHUef2P2jAMukwsjkTfxrWQ3l+0uRkseNT9TQr+ac4IXsXYJJM1Xzb2ebhUE/MIwdHxoCOpZGuo+1dEhCtukcHNIOyIRadM+5BzQTf038ys0PcAV3jVZfAY1d2Cjw0QBV5+eTkd2Lqa1NftM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301047; c=relaxed/simple;
-	bh=LmEdbIw6lx5urXs036n/hL/5jmF0FgsOEMW+uBQ/jOE=;
+	s=arc-20240116; t=1779299339; c=relaxed/simple;
+	bh=FzR19AE1dA3+U9c2Qi3V3eXl6Gt8uMwuZ/STY3YGFIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWXTpwXV+rFJ+ThRkUwkhjOoVHwr1BzhEnzDNCE7zptfJRRAiKCCIxKHMmiW1EjCNeoLv52zS3hf5ptNiU9+6l2aNOoVBKgeRymAify2aMlQ+QAGjkoBu771WoCkIMK65zke1g+pMM+9ktjYo9vzznMN5cpN1cqmjK8Gappgdmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gk+ih74o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE821F000E9;
-	Wed, 20 May 2026 18:17:25 +0000 (UTC)
+	 MIME-Version; b=fzpKEx7fBqC9wZa1r7yVHnMflJWJ2DEFqBH1jOfXzvYaYHCstlAFohLhSwxbvT4kufwOO9wtcrjHd9n3eru+iiWAV14jlvLJMlENQ2pXaH+hVspYemh0RCei9gUKoLTruGy3hzA4Jc+mOIuarvVtZ9ksvDMRnx5tQOEek6fIbjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJWQMO0U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0B51F000E9;
+	Wed, 20 May 2026 17:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301046;
-	bh=Rv77f7UQsmyVdwNVHhDztBnkRO7TTcR6GleJs8Nq9c8=;
+	s=korg; t=1779299337;
+	bh=q6Spu6C9STJRZMPINCHGaVnVFOYFAnMm2+ejg3WuQew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gk+ih74okeSdWGw8JlKCIgDvzXb9RKDiZEtRnFfWrZg08ismhjYjyd/amGDRAR024
-	 s3LvKoiVbCAzLLftTBN1MnLUreAYZwmTAtW1327ZJ3BPX/s6aNA4ZQHGpdT5dG2R1P
-	 RZ52/hv0JPFBLAO582g/F2UcdyVS0UT7UzwKGb3o=
+	b=YJWQMO0UnEtd4KnQiwqdMJaSkdp5faODhS5k1iTKaCUyIDD6SpwXKHXjvjRkl2epu
+	 6rq7id4vzkX3rH9vdEftgUc/Ekr9uP6mfIY991FlHxJEwu2dDRUWFljJFUNJ2G99MK
+	 81Nn1HJMyjwYXd1LBtLhu4JeoE2LSJ63A1XXPHdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 406/666] dt-bindings: clock: qcom,gcc-sc8180x: Add missing GDSCs
+Subject: [PATCH 6.18 734/957] sched/psi: fix race between file release and pressure write
 Date: Wed, 20 May 2026 18:20:17 +0200
-Message-ID: <20260520162120.060936134@linuxfoundation.org>
+Message-ID: <20260520162150.476641631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +66,223 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252580-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251944-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,huaweicloud.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_SPAM(0.00)[0.998];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
-X-Rspamd-Queue-Id: A217C599471
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,33e571025d88efd1312c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email]
+X-Rspamd-Queue-Id: 6048959D516
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 76404ffbf07f28a5ec04748e18fce3dac2e78ef6 ]
+[ Upstream commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa ]
 
-There are 5 more GDSCs that we were ignoring and not putting to sleep,
-which are listed in downstream DTS. Add them.
+A potential race condition exists between pressure write and cgroup file
+release regarding the priv member of struct kernfs_open_file, which
+triggers the uaf reported in [1].
 
-Signed-off-by: Val Packett <val@packett.cool>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-2-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 3565741eb985 ("clk: qcom: gcc-sc8180x: Add missing GDSCs")
+Consider the following scenario involving execution on two separate CPUs:
+
+   CPU0					CPU1
+   ====					====
+					vfs_rmdir()
+					kernfs_iop_rmdir()
+					cgroup_rmdir()
+					cgroup_kn_lock_live()
+					cgroup_destroy_locked()
+					cgroup_addrm_files()
+					cgroup_rm_file()
+					kernfs_remove_by_name()
+					kernfs_remove_by_name_ns()
+ vfs_write()				__kernfs_remove()
+ new_sync_write()			kernfs_drain()
+ kernfs_fop_write_iter()		kernfs_drain_open_files()
+ cgroup_file_write()			kernfs_release_file()
+ pressure_write()			cgroup_file_release()
+ ctx = of->priv;
+					kfree(ctx);
+ 					of->priv = NULL;
+					cgroup_kn_unlock()
+ cgroup_kn_lock_live()
+ cgroup_get(cgrp)
+ cgroup_kn_unlock()
+ if (ctx->psi.trigger)  // here, trigger uaf for ctx, that is of->priv
+
+The cgroup_rmdir() is protected by the cgroup_mutex, it also safeguards
+the memory deallocation of of->priv performed within cgroup_file_release().
+However, the operations involving of->priv executed within pressure_write()
+are not entirely covered by the protection of cgroup_mutex. Consequently,
+if the code in pressure_write(), specifically the section handling the
+ctx variable executes after cgroup_file_release() has completed, a uaf
+vulnerability involving of->priv is triggered.
+
+Therefore, the issue can be resolved by extending the scope of the
+cgroup_mutex lock within pressure_write() to encompass all code paths
+involving of->priv, thereby properly synchronizing the race condition
+occurring between cgroup_file_release() and pressure_write().
+
+And, if an live kn lock can be successfully acquired while executing
+the pressure write operation, it indicates that the cgroup deletion
+process has not yet reached its final stage; consequently, the priv
+pointer within open_file cannot be NULL. Therefore, the operation to
+retrieve the ctx value must be moved to a point *after* the live kn
+lock has been successfully acquired.
+
+In another situation, specifically after entering cgroup_kn_lock_live()
+but before acquiring cgroup_mutex, there exists a different class of
+race condition:
+
+CPU0: write memory.pressure               CPU1: write cgroup.pressure=0
+===========================		  =============================
+
+kernfs_fop_write_iter()
+ kernfs_get_active_of(of)
+ pressure_write()
+   cgroup_kn_lock_live(memory.pressure)
+     cgroup_tryget(cgrp)
+     kernfs_break_active_protection(kn)
+     ... blocks on cgroup_mutex
+
+                                     	  cgroup_pressure_write()
+                                     	  cgroup_kn_lock_live(cgroup.pressure)
+                                     	  cgroup_file_show(memory.pressure, false)
+                                     	    kernfs_show(false)
+                                     	      kernfs_drain_open_files()
+                                     	        cgroup_file_release(of)
+                                     	          kfree(ctx)
+                                     	            of->priv = NULL
+                                     	  cgroup_kn_unlock()
+
+   ... acquires cgroup_mutex
+   ctx = of->priv;        // may now be NULL
+   if (ctx->psi.trigger)  // NULL dereference
+
+Consequently, there is a possibility that of->priv is NULL, the pressure
+write needs to check for this.
+
+Now that the scope of the cgroup_mutex has been expanded, the original
+explicit cgroup_get/put operations are no longer necessary, this is
+because acquiring/releasing the live kn lock inherently executes a
+cgroup get/put operation.
+
+[1]
+BUG: KASAN: slab-use-after-free in pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+Call Trace:
+ pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+ cgroup_file_write+0x36f/0x790 kernel/cgroup/cgroup.c:4311
+ kernfs_fop_write_iter+0x3b0/0x540 fs/kernfs/file.c:352
+
+Allocated by task 9352:
+ cgroup_file_open+0x90/0x3a0 kernel/cgroup/cgroup.c:4256
+ kernfs_fop_open+0x9eb/0xcb0 fs/kernfs/file.c:724
+ do_dentry_open+0x83d/0x13e0 fs/open.c:949
+
+Freed by task 9353:
+ cgroup_file_release+0xd6/0x100 kernel/cgroup/cgroup.c:4283
+ kernfs_release_file fs/kernfs/file.c:764 [inline]
+ kernfs_drain_open_files+0x392/0x720 fs/kernfs/file.c:834
+ kernfs_drain+0x470/0x600 fs/kernfs/dir.c:525
+
+Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+Reported-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=33e571025d88efd1312c
+Tested-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,gcc-sc8180x.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/cgroup/cgroup.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-index e364006aa6eab..99c97b2033fc5 100644
---- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-+++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
-@@ -312,5 +312,10 @@
- #define USB30_MP_GDSC						8
- #define USB30_PRIM_GDSC						9
- #define USB30_SEC_GDSC						10
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		11
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		12
-+#define HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC		13
-+#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			14
-+#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			15
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index da5f6f5400afa..b60fc0b2c6036 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3997,33 +3997,41 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
+ static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
+ 			      size_t nbytes, enum psi_res res)
+ {
+-	struct cgroup_file_ctx *ctx = of->priv;
++	struct cgroup_file_ctx *ctx;
+ 	struct psi_trigger *new;
+ 	struct cgroup *cgrp;
+ 	struct psi_group *psi;
++	ssize_t ret = 0;
  
- #endif
+ 	cgrp = cgroup_kn_lock_live(of->kn, false);
+ 	if (!cgrp)
+ 		return -ENODEV;
+ 
+-	cgroup_get(cgrp);
+-	cgroup_kn_unlock(of->kn);
++	ctx = of->priv;
++	if (!ctx) {
++		ret = -ENODEV;
++		goto out_unlock;
++	}
+ 
+ 	/* Allow only one trigger per file descriptor */
+ 	if (ctx->psi.trigger) {
+-		cgroup_put(cgrp);
+-		return -EBUSY;
++		ret = -EBUSY;
++		goto out_unlock;
+ 	}
+ 
+ 	psi = cgroup_psi(cgrp);
+ 	new = psi_trigger_create(psi, buf, res, of->file, of);
+ 	if (IS_ERR(new)) {
+-		cgroup_put(cgrp);
+-		return PTR_ERR(new);
++		ret = PTR_ERR(new);
++		goto out_unlock;
+ 	}
+ 
+ 	smp_store_release(&ctx->psi.trigger, new);
+-	cgroup_put(cgrp);
++
++out_unlock:
++	cgroup_kn_unlock(of->kn);
++	if (ret)
++		return ret;
+ 
+ 	return nbytes;
+ }
 -- 
 2.53.0
 
