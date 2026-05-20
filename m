@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-250047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAdNIFjiDWpF4gUAu9opvQ
-	(envelope-from <stable+bounces-250047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:28 +0200
+	id cPsDDlviDWop4gUAu9opvQ
+	(envelope-from <stable+bounces-250048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328D8592131
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED414592139
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2F113051ACC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EB5E3051AEF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E233D8103;
-	Wed, 20 May 2026 16:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A98F369D64;
+	Wed, 20 May 2026 16:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUeiOUIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiYqoqsq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318813D5642;
-	Wed, 20 May 2026 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA14F3D412C;
+	Wed, 20 May 2026 16:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294404; cv=none; b=FnSdAd2DwyzW2cLSSzTEEEfOyTcDt6gTvYMEpZI3hAJhQYtSA++6YDeihKewd/gZG3Yaj0apdqhJJMX4q+HRhzVcjua9ow3zQKrvwkvU/RSYGwZ6gQbTT4HvaWAgQPFKTjIvMqkkQxoyk4RAKSSMLn4mUfmH9cUtEWmgkfBRDuk=
+	t=1779294407; cv=none; b=sUT1BsnbPmD6/B7ibiVyBe7ucPgPOZ9C4eb5bIu5UkKgb/pk8SQhfpT/axVQHQPvbN3gM/QzX/ctvlEYpWO5Zu87Q+qG/FN3Lxa1gB2grjVFcKMUW0u4PPhxYosvuK/A6vUMdhoPtymBiJe2bM3B5UIgRf51h/6VIJ6aX8DvwZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294404; c=relaxed/simple;
-	bh=IM6Z6JnZeilOSU7sVEtFS76oaBe7+SQPOdNDc8R9QPo=;
+	s=arc-20240116; t=1779294407; c=relaxed/simple;
+	bh=Z5m1Jk9wZQNg//FhTjaQxouN/fNIv64f7ZTednXqEdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjMtkWuIpVPw4YsCiNYJp1BITgqh6/R9E7+C919CoaO4zMr9NUgtHcLgU3zmgjpdDVpLpgz3c3blvtBRr7y+ZCDUalXjWvWY/LL3yMmtfMK0BVyB4xjdCpFikB1VRq+l652wAeTN6wVbVX5bi5WyY2zlZcuXO36HiIVHoCZvy/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUeiOUIJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA851F000E9;
-	Wed, 20 May 2026 16:26:42 +0000 (UTC)
+	 MIME-Version; b=H8AVJ4cV5mUOU9SovwtWTS1zZvLdc8q1ZANXQUH9/iJr/jk5IdJUbSH+It6IFGfweTzulCbbX7x9NP5sI7h0x7EO8xK431d6+55jY1GQqnW/bM9xi/XYfVVaoVeAprRdX8I0ud1Dq8AsOybQ90jF90yUoUNYUIYkWlKDBq5thYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiYqoqsq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1D11F000E9;
+	Wed, 20 May 2026 16:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294402;
-	bh=rLJ3GBOzdVYvwNqE03SDW1EF5lPyMwVSpXxJva0wwdI=;
+	s=korg; t=1779294405;
+	bh=GWBnown5Uet4boFWKTeIAFvCI0j5l4qUqZ3usOBHMFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dUeiOUIJ6cK8xN4Jsiy6E1HT/qNWfS2hUpKh8U0zqZ+PO/szJ1nBAoPEGcUH3cLHf
-	 Huy67oXybk36ODGk7B8ldBvbowNSmlHqiCpuqXHcSL1Ee1PhoAnF56B+WQb+6tccgt
-	 K4fcOaIpINPcnhcmhFtU5UTAY7s3iOqoiQFRx0XA=
+	b=YiYqoqsq3Wrcaim3U8BZmO+gjXtg832D+zuxs9OMVqe7JFSTIhTFCDVMs/r90PxEu
+	 e/qxojQAx7qD34d0VYiVhKV843P+2XuuHZXdDjO1wzZAhZnbNMEF8Y9cetsr5ykDFX
+	 qw/4i419H9NBALVxPYxvsNyVQS0lDhY12e0j6hlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0026/1146] OPP: Move break out of scoped_guard in dev_pm_opp_xlate_required_opp()
-Date: Wed, 20 May 2026 18:04:36 +0200
-Message-ID: <20260520162148.976843916@linuxfoundation.org>
+Subject: [PATCH 7.0 0027/1146] ACPI: x86: cmos_rtc: Clean up address space handler driver
+Date: Wed, 20 May 2026 18:04:37 +0200
+Message-ID: <20260520162148.998302194@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -74,14 +73,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250047-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250048-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,7 +89,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 328D8592131
+X-Rspamd-Queue-Id: ED414592139
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,41 +97,143 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 3d2398f44a2d48fb1c575a6e0bc6b38f3e689e22 ]
+[ Upstream commit ba0b236736dde4059bdcb8e99beaa50d6e5b6e7e ]
 
-The commit ff9c512041f2 ("OPP: Use mutex locking guards")
-unintentionally made the for loop run longer than required.
+Make multiple changes that do not alter functionality to the CMOS RTC
+ACPI address space handler driver, including the following:
 
-scoped_guard() is implemented as a for loop. The break statement now
-breaks out out the scoped_guard() and not out of the outer for loop.
-The outer loop always iterates to completion.
+ - Drop the unused .detach() callback from cmos_rtc_handler.
 
-Fix it.
+ - Rename acpi_cmos_rtc_attach_handler() to acpi_cmos_rtc_attach().
 
-Fixes: ff9c512041f2 ("OPP: Use mutex locking guards")
-Reported-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+ - Rearrange acpi_cmos_rtc_space_handler() to reduce the number of
+   redundant checks and make white space follow the coding style.
+
+ - Adjust an error message in acpi_install_cmos_rtc_space_handler()
+   and make the white space follow the coding style.
+
+ - Rearrange acpi_remove_cmos_rtc_space_handler() and adjust an error
+   message in it.
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5094429.31r3eYUQgx@rafael.j.wysocki
+Stable-dep-of: 6cee29ad9d7e ("ACPI: x86: cmos_rtc: Improve coordination with ACPI TAD driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/cmos_rtc.c | 61 +++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 866641666e410..da3f5eba43419 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2742,8 +2742,8 @@ struct dev_pm_opp *dev_pm_opp_xlate_required_opp(struct opp_table *src_table,
- 					break;
- 				}
- 			}
--			break;
- 		}
-+		break;
+diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
+index 51643ff6fe5fc..977234da9fc11 100644
+--- a/drivers/acpi/x86/cmos_rtc.c
++++ b/drivers/acpi/x86/cmos_rtc.c
+@@ -24,31 +24,35 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
+ 	{}
+ };
+ 
+-static acpi_status
+-acpi_cmos_rtc_space_handler(u32 function, acpi_physical_address address,
+-		      u32 bits, u64 *value64,
+-		      void *handler_context, void *region_context)
++static acpi_status acpi_cmos_rtc_space_handler(u32 function,
++					       acpi_physical_address address,
++					       u32 bits, u64 *value64,
++					       void *handler_context,
++					       void *region_context)
+ {
+-	int i;
++	unsigned int i, bytes = DIV_ROUND_UP(bits, 8);
+ 	u8 *value = (u8 *)value64;
+ 
+ 	if (address > 0xff || !value64)
+ 		return AE_BAD_PARAMETER;
+ 
+-	if (function != ACPI_WRITE && function != ACPI_READ)
+-		return AE_BAD_PARAMETER;
++	guard(spinlock_irq)(&rtc_lock);
++
++	if (function == ACPI_WRITE) {
++		for (i = 0; i < bytes; i++, address++, value++)
++			CMOS_WRITE(*value, address);
+ 
+-	spin_lock_irq(&rtc_lock);
++		return AE_OK;
++	}
+ 
+-	for (i = 0; i < DIV_ROUND_UP(bits, 8); ++i, ++address, ++value)
+-		if (function == ACPI_READ)
++	if (function == ACPI_READ) {
++		for (i = 0; i < bytes; i++, address++, value++)
+ 			*value = CMOS_READ(address);
+-		else
+-			CMOS_WRITE(*value, address);
+ 
+-	spin_unlock_irq(&rtc_lock);
++		return AE_OK;
++	}
+ 
+-	return AE_OK;
++	return AE_BAD_PARAMETER;
+ }
+ 
+ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+@@ -56,11 +60,11 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+ 	acpi_status status;
+ 
+ 	status = acpi_install_address_space_handler(handle,
+-			ACPI_ADR_SPACE_CMOS,
+-			&acpi_cmos_rtc_space_handler,
+-			NULL, NULL);
++						    ACPI_ADR_SPACE_CMOS,
++						    acpi_cmos_rtc_space_handler,
++						    NULL, NULL);
+ 	if (ACPI_FAILURE(status)) {
+-		pr_err("Error installing CMOS-RTC region handler\n");
++		pr_err("Failed to install CMOS-RTC address space handler\n");
+ 		return -ENODEV;
  	}
  
- 	if (IS_ERR(dest_opp)) {
+@@ -70,26 +74,25 @@ EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
+ 
+ void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
+ {
+-	if (ACPI_FAILURE(acpi_remove_address_space_handler(handle,
+-			ACPI_ADR_SPACE_CMOS, &acpi_cmos_rtc_space_handler)))
+-		pr_err("Error removing CMOS-RTC region handler\n");
++	acpi_status status;
++
++	status = acpi_remove_address_space_handler(handle,
++						   ACPI_ADR_SPACE_CMOS,
++						   acpi_cmos_rtc_space_handler);
++	if (ACPI_FAILURE(status))
++		pr_err("Failed to remove CMOS-RTC address space handler\n");
+ }
+ EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
+ 
+-static int acpi_cmos_rtc_attach_handler(struct acpi_device *adev, const struct acpi_device_id *id)
++static int acpi_cmos_rtc_attach(struct acpi_device *adev,
++				const struct acpi_device_id *id)
+ {
+ 	return acpi_install_cmos_rtc_space_handler(adev->handle);
+ }
+ 
+-static void acpi_cmos_rtc_detach_handler(struct acpi_device *adev)
+-{
+-	acpi_remove_cmos_rtc_space_handler(adev->handle);
+-}
+-
+ static struct acpi_scan_handler cmos_rtc_handler = {
+ 	.ids = acpi_cmos_rtc_ids,
+-	.attach = acpi_cmos_rtc_attach_handler,
+-	.detach = acpi_cmos_rtc_detach_handler,
++	.attach = acpi_cmos_rtc_attach,
+ };
+ 
+ void __init acpi_cmos_rtc_init(void)
 -- 
 2.53.0
 
