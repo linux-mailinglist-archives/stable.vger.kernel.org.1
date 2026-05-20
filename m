@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDr7AnUADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:57 +0200
+	id CAc9LDT2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478C3597046
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D0E595004
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A81D638EF4DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD5D4306F232
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3744F3F39F5;
-	Wed, 20 May 2026 18:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC2335AC17;
+	Wed, 20 May 2026 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9Y5gASV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wl0bbnqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0539C3F54D4;
-	Wed, 20 May 2026 18:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7FE29D26E;
+	Wed, 20 May 2026 17:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300088; cv=none; b=F/WYSqW5KuueGfHCxdyxmOocqXyKTqoZoMbjgH1TaKyRdq4zRP4qMI+1dJSJB2konEOdXGi2r36QmfBpLmPVquQP/Iox6iOSnSimdDT/P0iMaTunn+lHSl3RWJZDVritDbCAJWTkCgdm7yWzjmU1TJhW01VuIpRbAYsy4SBdGwU=
+	t=1779298332; cv=none; b=syASlkUdXk1AiTPRKTNIk6PDGkMp1Ch0iXG/B7EB2/+Np1EI23Uf/KbINxDfXZOLzC0KpAzQvsYJk9guLLM+ZU/g6rXnC0DYLpvUW0dEAtYbEttglGqNkq8oB9Jbzyt4rQ0t9UcjBnR+lgWfWVyWIoSDwXmjZMTwdFslzw8brIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300088; c=relaxed/simple;
-	bh=jJgpDioneoFMRsE1VlPkAoWJabE+GxR9p2aXnN0/QjY=;
+	s=arc-20240116; t=1779298332; c=relaxed/simple;
+	bh=5xrOiT6lHWB/qOmr12NtIfMGka2F14fA8haLCLLOwVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CA6gJEVCcrxw8/opAGvJtJVd9U2/2RNpKTfvRRn0sF6BUAEezun1AHpdssP3vmWCPRmSHeLU0rvFZJ5g4OhDcoSL/Rjp3WrZ+X1Wf/ITK+voyh3L45loD8v/5n80Ngp3jBlOSie1zW3LO/9frMiR+8883dEO5GHB/HnVwsJJW2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9Y5gASV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8280D1F00893;
-	Wed, 20 May 2026 18:01:24 +0000 (UTC)
+	 MIME-Version; b=Xn5qcGVILunvIVSbmHgO25oOWdsbueGlBN4f5phC2gwld+Ys1n+npTZ1OtkEqv09vtj+IE/CHmUNZrQ4Uv3ll71CVeC0u7Hs+IYsWj1K+oVVH/bsTLPna/m+Dus13sKNrW7/osuBAbrm+1IFQ04l0e5FeHtMX7nlm+QWGUPrGPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wl0bbnqF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B6C1F000E9;
+	Wed, 20 May 2026 17:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300085;
-	bh=7x0B1bMA6XdD3omTjjCMLbNmmUAjBi9OxYUcsb3cVb0=;
+	s=korg; t=1779298331;
+	bh=/v7IGro+IEegt6Kwx9NxCQ45gMigExFOgEv2CtWOEaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S9Y5gASVHpxY64eZMNPNS6QWjq7nf8FIHklzy2C2dXNWOSvWpdOyHiW5zJBZ12LcT
-	 JgngTfiPAjS8tgS9JZH/j0So20JJwjsbOuNC7xmMX/cyZPipE5CoPna05s+zSqDuQA
-	 B3SPI/AkyoUVfNRw+ROT0Cg7+JM8QMoyS/qpmJrU=
+	b=wl0bbnqFzt++chO1PGjOghc1/2bfTEwVI/10cPCNQGH7U+Pj2Vgit0mGqjAa3h//O
+	 y05yU+I6fl63n46BMYVQ0OnjxidYJKqgV10lr2gZ95ZzuPQFWGiPa7omQ1p5uQhw2y
+	 CTU1nLTLKVrH8K+ppYISc/stqqYSSuw9XDIxFkIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/666] wifi: mt76: mt7921: Reset ampdu_state state in case of failure in mt76_connac2_tx_check_aggr()
+Subject: [PATCH 6.18 370/957] arm64: dts: qcom: sm6125-ginkgo: Fix missing msm-id subtype
 Date: Wed, 20 May 2026 18:14:13 +0200
-Message-ID: <20260520162112.151064079@linuxfoundation.org>
+Message-ID: <20260520162142.552907794@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +66,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252212-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251573-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 478C3597046
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 60D0E595004
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit 53ffffeb9624ffab6d9a3b1da8635a23f1172b5e ]
+[ Upstream commit 2c3b8260d1a0d9a388f2d30e3bbe50d93edfa2aa ]
 
-Reset ampdu_state if ieee80211_start_tx_ba_session() fails in
-mt76_connac2_tx_check_aggr(), otherwise the driver may incorrectly
-assume aggregation is active and skip future BA setup attempts.
+qcom,msm-id property must consist of two numbers, where the second
+number is the subtype, as reported by dtbs_check:
 
-Fixes: 163f4d22c118 ("mt76: mt7921: add MAC support")
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20251216005930.9412-1-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  sm6125-xiaomi-ginkgo.dtb: / (xiaomi,ginkgo): qcom,msm-id:0: [394] is too short
+
+Xiaomi vendor DTS for Trinket IDP and QRD boards uses value of 0x10000,
+so put it here as well.
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251229142806.241088-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 535e5741bc9a ("arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove board-id")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 268f414f0a023..05f2ff8e012b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -1135,8 +1135,10 @@ void mt76_connac2_tx_check_aggr(struct ieee80211_sta *sta, __le32 *txwi)
- 		return;
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+index 68a237215bd1f..6b68e391cf3ea 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+@@ -19,7 +19,7 @@ / {
+ 	chassis-type = "handset";
  
- 	wcid = (struct mt76_wcid *)sta->drv_priv;
--	if (!test_and_set_bit(tid, &wcid->ampdu_state))
--		ieee80211_start_tx_ba_session(sta, tid, 0);
-+	if (!test_and_set_bit(tid, &wcid->ampdu_state)) {
-+		if (ieee80211_start_tx_ba_session(sta, tid, 0))
-+			clear_bit(tid, &wcid->ampdu_state);
-+	}
- }
- EXPORT_SYMBOL_GPL(mt76_connac2_tx_check_aggr);
+ 	/* required for bootloader to select correct board */
+-	qcom,msm-id = <QCOM_ID_SM6125>;
++	qcom,msm-id = <QCOM_ID_SM6125 0x10000>;
+ 	qcom,board-id = <22 0>;
  
+ 	chosen {
 -- 
 2.53.0
 
