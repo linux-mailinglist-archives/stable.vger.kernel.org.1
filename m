@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOFALl3oDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:09 +0200
+	id OA6eEZkNDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-250185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D9592BF0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B9E59884C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C7F1B31FFC4A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC8333357E02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A870139B975;
-	Wed, 20 May 2026 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14BE3A3E73;
+	Wed, 20 May 2026 16:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywyB02eM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5DQS5j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEFA36F40C;
-	Wed, 20 May 2026 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D653A16B6;
+	Wed, 20 May 2026 16:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294762; cv=none; b=qDKLUyIgc3ogHTadj5NNVRlMvLY7gKplxO7gxTH9emHlfe4mpHBX7O5fPuxMTYZQvZvyiJ6m0sGrbl14maU/y5LnuhUnAEfwE1ghPoYZP4rVSrq/8qGxMyB2V4CZLr/Rht1jWgoYunnqB6RJWWr4zmSYDnAARPUZaXYKGxHqijs=
+	t=1779294767; cv=none; b=YlTbVTDEkd3e2iOZehmtv8S+QM2vus610ODrdRjQkXwSvJHShZAo/YNiRGFOL9oOAfjd+AmcJ5mHRKtWPnv/7v9hUVao/tHEWaG4TennXhNunakvGdaoLCkFFxnLzJuERqG0k3b1KGHUB2z+NMlvzPfr4ZiYeEiHh+PDzXOE4Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294762; c=relaxed/simple;
-	bh=q8tMPjJDYaZhi2B9h2MMVEDG633mmYCKjgo2QlxpOBM=;
+	s=arc-20240116; t=1779294767; c=relaxed/simple;
+	bh=sTJW6nKT0xJuXVcHknsDW7P1jcS+HZ5vPspJ7YMfFBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXY0KBVb5nz7ZhEAk/BmLjkslhXMFoiiuFxnBa3/KMm1Bc3Ho+zIzGdCKhlYdDEwNMCH9lrpH9Y9EfcFmLUUeBOYVesl7ebWvWg7HTamUJ8JJmRBcCixi5KRRYUjLoD+X9tyUnRU2GXj8JGNm/axwdwvQ+oS/BJe71hm+46nSCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywyB02eM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A741F000E9;
-	Wed, 20 May 2026 16:32:40 +0000 (UTC)
+	 MIME-Version; b=iLUQYM3KMaaPN5dnw9qWKycGXWtQ5yBehKRrb4c+xcbjwSoqrX0EVtgN9bI16O6p8kx/8MO0kitOi+NEp5G8UFM+pA8jNLNBQ6y4BUSHuGacgYmeDgXVSr/BDeUkv8JtXmaSjZDUxRjZ1AgseO4jDQbkw+e0+cAKKIrfY3GCj48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5DQS5j+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D0F1F000E9;
+	Wed, 20 May 2026 16:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294761;
-	bh=n3QY+Ii7GbmC/k5dj4pzWYwTi61flhF6iTx51eMR8CU=;
+	s=korg; t=1779294766;
+	bh=MoIzknNqsCAkNnxDlEiwTBElyihHMmA6Gw+9MKCMIe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ywyB02eMwIcG6LqO43AZPe4bVU2mLwhXYWNVPyF9v1dFbjYIMOqlMFzKrFv459KoT
-	 j62Ph070RMe6RckoOcUobiq1HkbPYGTFF8rI5B/4QZTyAZJzi/8GOhDjnV4ivWqA20
-	 JEI5cCyIwvwc1E2x+HWs1e2mqBsD0snE2I3NmNFQ=
+	b=z5DQS5j+KJu9qBN0k5NsJzgqjTHiOWixzjBAZY8XYTwes20hFKSr5Jib0PUhoUnoX
+	 gPyWA6ltcOLQ9jobVzwH+USSQ6BUNRQ7FjPR47Vwb6oqtunNvLs+2t9/J4Fkk+vQAx
+	 EnKL6soQIbkeqiVkyNcfH4yupErX0BQHWzidcFbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Joe Damato <joe@dama.to>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0161/1146] net: plumb drop reasons to __dev_queue_xmit()
-Date: Wed, 20 May 2026 18:06:51 +0200
-Message-ID: <20260520162151.938922737@linuxfoundation.org>
+Subject: [PATCH 7.0 0162/1146] net: qdisc_pkt_len_segs_init() cleanup
+Date: Wed, 20 May 2026 18:06:52 +0200
+Message-ID: <20260520162151.961307887@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250183-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250185-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dama.to:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 007D9592BF0
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,dama.to:email]
+X-Rspamd-Queue-Id: 93B9E59884C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,144 +103,112 @@ X-Rspamd-Server: lfdr
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 045f977dd4ebdd3ad8e96cf684917adfc5805adb ]
+[ Upstream commit 30e02ec3b4b6bd429a4824f125eb843a291dcccf ]
 
-Add drop reasons to __dev_queue_xmit():
+Reduce indentation level by returning early if the transport header
+was not set.
 
-- SKB_DROP_REASON_DEV_READY : device is not UP.
+Add an unlikely() clause as this is not the common case.
 
-- SKB_DROP_REASON_RECURSION_LIMIT : recursion limit on virtual device is hit.
-
-Also add an unlikely() for the SKB_DROP_REASON_DEV_READY case,
-and reduce indentation level.
+No functional change.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260312201824.203093-3-edumazet@google.com
+Link: https://patch.msgid.link/20260403221540.3297753-2-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 7fb4c1967011 ("net: pull headers in qdisc_pkt_len_segs_init()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 83 ++++++++++++++++++++++++++------------------------
- 1 file changed, 43 insertions(+), 40 deletions(-)
+ net/core/dev.c | 62 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
 diff --git a/net/core/dev.c b/net/core/dev.c
-index 831129f2a69b5..0f45825bbed2f 100644
+index 0f45825bbed2f..44a712f777b79 100644
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -4761,9 +4761,10 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+@@ -4106,6 +4106,7 @@ EXPORT_SYMBOL_GPL(validate_xmit_skb_list);
+ static void qdisc_pkt_len_segs_init(struct sk_buff *skb)
  {
- 	struct net_device *dev = skb->dev;
- 	struct netdev_queue *txq = NULL;
--	struct Qdisc *q;
--	int rc = -ENOMEM;
-+	enum skb_drop_reason reason;
-+	int cpu, rc = -ENOMEM;
- 	bool again = false;
-+	struct Qdisc *q;
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
++	unsigned int hdr_len;
+ 	u16 gso_segs;
  
- 	skb_reset_mac_header(skb);
- 	skb_assert_len(skb);
-@@ -4832,59 +4833,61 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 	 * Check this and shot the lock. It is not prone from deadlocks.
- 	 *Either shot noqueue qdisc, it is even simpler 8)
+ 	qdisc_skb_cb(skb)->pkt_len = skb->len;
+@@ -4119,44 +4120,43 @@ static void qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ 	/* To get more precise estimation of bytes sent on wire,
+ 	 * we add to pkt_len the headers size of all segments
  	 */
--	if (dev->flags & IFF_UP) {
--		int cpu = smp_processor_id(); /* ok because BHs are off */
-+	if (unlikely(!(dev->flags & IFF_UP))) {
-+		reason = SKB_DROP_REASON_DEV_READY;
-+		goto drop;
+-	if (skb_transport_header_was_set(skb)) {
+-		unsigned int hdr_len;
++	if (unlikely(!skb_transport_header_was_set(skb)))
++		return;
+ 
+-		/* mac layer + network layer */
+-		if (!skb->encapsulation)
+-			hdr_len = skb_transport_offset(skb);
+-		else
+-			hdr_len = skb_inner_transport_offset(skb);
++	/* mac layer + network layer */
++	if (!skb->encapsulation)
++		hdr_len = skb_transport_offset(skb);
++	else
++		hdr_len = skb_inner_transport_offset(skb);
+ 
+-		/* + transport layer */
+-		if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
+-			const struct tcphdr *th;
+-			struct tcphdr _tcphdr;
++	/* + transport layer */
++	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6))) {
++		const struct tcphdr *th;
++		struct tcphdr _tcphdr;
+ 
+-			th = skb_header_pointer(skb, hdr_len,
+-						sizeof(_tcphdr), &_tcphdr);
+-			if (likely(th))
+-				hdr_len += __tcp_hdrlen(th);
+-		} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
+-			struct udphdr _udphdr;
++		th = skb_header_pointer(skb, hdr_len,
++					sizeof(_tcphdr), &_tcphdr);
++		if (likely(th))
++			hdr_len += __tcp_hdrlen(th);
++	} else if (shinfo->gso_type & SKB_GSO_UDP_L4) {
++		struct udphdr _udphdr;
+ 
+-			if (skb_header_pointer(skb, hdr_len,
+-					       sizeof(_udphdr), &_udphdr))
+-				hdr_len += sizeof(struct udphdr);
+-		}
++		if (skb_header_pointer(skb, hdr_len,
++				       sizeof(_udphdr), &_udphdr))
++			hdr_len += sizeof(struct udphdr);
 +	}
  
--		if (!netif_tx_owned(txq, cpu)) {
--			bool is_list = false;
-+	cpu = smp_processor_id(); /* ok because BHs are off */
+-		if (unlikely(shinfo->gso_type & SKB_GSO_DODGY)) {
+-			int payload = skb->len - hdr_len;
++	if (unlikely(shinfo->gso_type & SKB_GSO_DODGY)) {
++		int payload = skb->len - hdr_len;
  
--			if (dev_xmit_recursion())
--				goto recursion_alert;
-+	if (likely(!netif_tx_owned(txq, cpu))) {
-+		bool is_list = false;
- 
--			skb = validate_xmit_skb(skb, dev, &again);
--			if (!skb)
--				goto out;
-+		if (dev_xmit_recursion())
-+			goto recursion_alert;
- 
--			HARD_TX_LOCK(dev, txq, cpu);
-+		skb = validate_xmit_skb(skb, dev, &again);
-+		if (!skb)
-+			goto out;
- 
--			if (!netif_xmit_stopped(txq)) {
--				is_list = !!skb->next;
-+		HARD_TX_LOCK(dev, txq, cpu);
- 
--				dev_xmit_recursion_inc();
--				skb = dev_hard_start_xmit(skb, dev, txq, &rc);
--				dev_xmit_recursion_dec();
-+		if (!netif_xmit_stopped(txq)) {
-+			is_list = !!skb->next;
- 
--				/* GSO segments a single SKB into
--				 * a list of frames. TCP expects error
--				 * to mean none of the data was sent.
--				 */
--				if (is_list)
--					rc = NETDEV_TX_OK;
--			}
--			HARD_TX_UNLOCK(dev, txq);
--			if (!skb) /* xmit completed */
--				goto out;
-+			dev_xmit_recursion_inc();
-+			skb = dev_hard_start_xmit(skb, dev, txq, &rc);
-+			dev_xmit_recursion_dec();
- 
--			net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
--					     dev->name);
--			/* NETDEV_TX_BUSY or queue was stopped */
--			if (!is_list)
--				rc = -ENETDOWN;
--		} else {
--			/* Recursion is detected! It is possible,
--			 * unfortunately
-+			/* GSO segments a single SKB into a list of frames.
-+			 * TCP expects error to mean none of the data was sent.
- 			 */
--recursion_alert:
--			net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
--					     dev->name);
--			rc = -ENETDOWN;
-+			if (is_list)
-+				rc = NETDEV_TX_OK;
- 		}
-+		HARD_TX_UNLOCK(dev, txq);
-+		if (!skb) /* xmit completed */
-+			goto out;
-+
-+		net_crit_ratelimited("Virtual device %s asks to queue packet!\n",
-+				     dev->name);
-+		/* NETDEV_TX_BUSY or queue was stopped */
-+		if (!is_list)
-+			rc = -ENETDOWN;
-+	} else {
-+		/* Recursion is detected! It is possible unfortunately. */
-+recursion_alert:
-+		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-+				     dev->name);
-+		rc = -ENETDOWN;
+-			/* Malicious packet. */
+-			if (payload <= 0)
+-				return;
+-			gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
+-			shinfo->gso_segs = gso_segs;
+-			qdisc_skb_cb(skb)->pkt_segs = gso_segs;
+-		}
+-		qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
++		/* Malicious packet. */
++		if (payload <= 0)
++			return;
++		gso_segs = DIV_ROUND_UP(payload, shinfo->gso_size);
++		shinfo->gso_segs = gso_segs;
++		qdisc_skb_cb(skb)->pkt_segs = gso_segs;
  	}
++	qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
+ }
  
-+	reason = SKB_DROP_REASON_RECURSION_LIMIT;
-+drop:
- 	rcu_read_unlock_bh();
- 
- 	dev_core_stats_tx_dropped_inc(dev);
--	kfree_skb_list(skb);
-+	kfree_skb_list_reason(skb, reason);
- 	return rc;
- out:
- 	rcu_read_unlock_bh();
+ static int dev_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *q,
 -- 
 2.53.0
 
