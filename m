@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHY2H24EDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:54 +0200
+	id EBTbHpwHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD681597838
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B0D597F01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A377F39EBBBE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7986729479C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EAA3FA5D5;
-	Wed, 20 May 2026 18:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7C242983F;
+	Wed, 20 May 2026 18:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDvQ7mka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2iM7tBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777F8371048;
-	Wed, 20 May 2026 18:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1675D400E0E;
+	Wed, 20 May 2026 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301637; cv=none; b=N+QE1TjPsaKslLeKah48kSM3AD1TBI9bB8JRaXhhf/ykcreG65avO1uSgdISVZyzF7r3lauOlrmEE6RxEwJr3SjymVZF/Dz46bPe28OAlkIzfxPwfWbNaXG6enoK/CxIGaqijGuCP/H7Bfd0rg3pnLhutMjgtsY9DcCzKwtqukA=
+	t=1779302842; cv=none; b=BVJGUvjhAFBIdnZSUaG8axf94d1NtL0JhY2eE6gYiFrWP9nweJ0ETFoGIuN7GWCeJ8Wh7yr0z0e7lK9wZc2VHQ19PWHcqv6i7xM4q6wtrGA7CTLMWcHmbakOWLXZPkDRSGmQF2Uj3L7Yf7u84vK8g7V99x7rpxSnt++KVaNnX/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301637; c=relaxed/simple;
-	bh=jqpLElEc1/QSFT01qyOcl0qEdgBllX7Jhk2WqUCHp7g=;
+	s=arc-20240116; t=1779302842; c=relaxed/simple;
+	bh=zxy0wanKzRcTktfoaTDKdqdeNWW8PFF7D2QEKMdkYjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYZTtAgLrGXsQwf3qGFkhniSh/XUWJ6xlA46AVa1RZqnhBrcwDb81cesFjx/0Q0Oww7zVgO6xilSbIOwt87055vFTRwmYkc65yYCQmQNOd36u9RUDqBpMoY6T045g+boMzek3X8cYftmuwWLxf6FUW7YnR16axCe+FzzrRkzCiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDvQ7mka; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46331F000E9;
-	Wed, 20 May 2026 18:27:15 +0000 (UTC)
+	 MIME-Version; b=DUISGrgsERAikjFUl7nWLHR7l5Er7iPLj7hjpKn7+2lei5yD4+aYb4NZnZCrPXZN8rb7eNOqkYbrWQWMBbOjjdZI1GBasbRzzB5iwTGCUACSGV5c3EdNzPYBrWxMYp79Frw0ic3cb0+FxxQAlk+tOhYc6/CxTKIc9r7S436Z9WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2iM7tBu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B9B1F000E9;
+	Wed, 20 May 2026 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301636;
-	bh=RPStHpe4x/yHulS2LpKBE+JRFd8UEnQqLlD2oytvHRE=;
+	s=korg; t=1779302840;
+	bh=0+PLjhvBE+VW0R6h2JhoAkAdTgLhDu3bNuVmaRt2CsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KDvQ7mka7a8brelXkUm/UaXqY9KbZYZRat/FB2yU2vlTF9YsWQjmeChtBGKlcxbG/
-	 i1VPDmjkp84nZ7ACAOWyW0kf9+x4U2fhXHNcpmzWT+3xwbk77PLXuKIqbP7BTK1npB
-	 GXdt/hO2jZnNOru8hVx6w/rJhcRsGLZC90CbdVdw=
+	b=v2iM7tBuKtsn23PReS2gpHgZqMBvNLfAep1fb0dSS/zh24mO73HdB/7/Eiw8XvMtr
+	 CGmMtUzDFUqAqfq47z1P2qSiTQUPjE+IzuAFLL0MLklUkOBMxld8zsVtxjGKwHX8GJ
+	 gQ1IHpkREqhZTjKT9HUuv3K+E3jYTnvJCtOvPw6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 630/666] ceph: fix a buffer leak in __ceph_setxattr()
-Date: Wed, 20 May 2026 18:24:01 +0200
-Message-ID: <20260520162124.930972193@linuxfoundation.org>
+	Oldherl Oh <me@oldherl.one>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 419/508] ALSA: hda/conexant: fix some typos
+Date: Wed, 20 May 2026 18:24:02 +0200
+Message-ID: <20260520162107.685598785@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +68,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252806-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253271-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DD681597838
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oldherl.one:email]
+X-Rspamd-Queue-Id: D6B0D597F01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Oldherl Oh <me@oldherl.one>
 
-commit 5d3cc36b4e77a27ce7b686b7c59c7072bcb3fa8e upstream.
+[ Upstream commit 73253f2fd1d0a44708735c842e37163712e3f03b ]
 
-The old_blob in __ceph_setxattr() can store
-ci->i_xattrs.prealloc_blob value during the retry.
-However, it is never called the ceph_buffer_put()
-for the old_blob object. This patch fixes the issue of
-the buffer leak.
+Fix some typos in patch_conexant.c
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oldherl Oh <me@oldherl.one>
+Link: https://patch.msgid.link/20240930084132.3373750-1-me@oldherl.one
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/xattr.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_conexant.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/ceph/xattr.c
-+++ b/fs/ceph/xattr.c
-@@ -1296,6 +1296,7 @@ retry:
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 355b26583eb4e..08e2c836fd07e 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -166,18 +166,18 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
  
- do_sync:
- 	spin_unlock(&ci->i_ceph_lock);
-+	ceph_buffer_put(old_blob);
- do_sync_unlocked:
- 	if (lock_snap_rwsem)
- 		up_read(&mdsc->snap_rwsem);
+ static void cx_fixup_headset_recog(struct hda_codec *codec)
+ {
+-	unsigned int mic_persent;
++	unsigned int mic_present;
+ 
+ 	/* fix some headset type recognize fail issue, such as EDIFIER headset */
+-	/* set micbiasd output current comparator threshold from 66% to 55%. */
++	/* set micbias output current comparator threshold from 66% to 55%. */
+ 	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
+-	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
++	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias register
+ 	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
+ 	 */
+ 	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
+ 	/* fix reboot headset type recognize fail issue */
+-	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
+-	if (mic_persent & AC_PINSENSE_PRESENCE)
++	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++	if (mic_present & AC_PINSENSE_PRESENCE)
+ 		/* enable headset mic VREF */
+ 		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
+ 	else
+@@ -247,9 +247,9 @@ static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_
+ {
+ 	unsigned int mic_present;
+ 
+-	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
+-	 * the node 19 can only be config to microphone or disabled.
+-	 * Check hp&mic tag to process headset pulgin&plugout.
++	/* In cx8070 and sn6140, the node 16 can only be configured to headphone or disabled,
++	 * the node 19 can only be configured to microphone or disabled.
++	 * Check hp&mic tag to process headset plugin & plugout.
+ 	 */
+ 	mic_present = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
+ 	if (!(mic_present & AC_PINSENSE_PRESENCE)) /* mic plugout */
+-- 
+2.53.0
+
 
 
 
