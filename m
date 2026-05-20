@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-250148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Is6BYDuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:20 +0200
+	id sGEMIyLoDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F305939AA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D59592B75
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF4BA33339DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6796531F4A1E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5993BE64B;
-	Wed, 20 May 2026 16:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1F33A783F;
+	Wed, 20 May 2026 16:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnU64FGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht7350k5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29A5371D13;
-	Wed, 20 May 2026 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D06E3A3E60;
+	Wed, 20 May 2026 16:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294670; cv=none; b=qfSDf3XexzYdae2j6mzpjjzlWNOW71nNIWAWEgb/L6uU7ZtURxBx7COCTW7xRSlROOc+p6mYvPb1ZKV5icCgZiYrk+5+lnoNCOVyEGWcKiumlBzQnHdpFlCFIkx56BsZFjVk+FqxaKDCib3JjnGlm3bsz9UIDWYMCBK0gEW2mPQ=
+	t=1779294672; cv=none; b=V2vqm3maQLXvqfCfPMAc5zPKzJXZIq6f/t7qCDDd0B6hpB+RJBgWtklolAPq7ZIUveI6yOCoQVTUg6DCcE0y6rys/CrAFu2uh9GB41fPIxV6p3XI2WOj3JwBq5Rsix8Cn5OfI2dv5fMzfj9oxC6YUSqMKRQdwLsguLFm8BQGg6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294670; c=relaxed/simple;
-	bh=2XADbOG0u6AixjVkgsT0ii1YR9wpAR2I1w6ptVOwjpE=;
+	s=arc-20240116; t=1779294672; c=relaxed/simple;
+	bh=70KCVLVoAxsKAFZqTsfcdsKY5WZrwjjlcNs6YWzGlI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O92tid1JVduEDfOQBcUoHpRqAQn/AZgu1ef+kZxSzAk7K7osYu7LiFjRxMxvSPyoARkAIWTtS7szDoBzqRZRHuQlEShemk1DTEttlAsiODUzIue59o9sj9FhqkqBeV2XS7/EbS/nnrEqDUg+N05jIl6DKsVrLlH2D5XrtliauUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnU64FGf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C161F000E9;
-	Wed, 20 May 2026 16:31:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=No9D4RSway4CQwAhdQGfD8sEMu6fCVN2hQX4NFYcDDdKbl9n9+k1VmR29kDZJ0Sx3ZS/GEgPqGR8L+AGX7FgYeghDp3y4T5wH+w0bhOFAvmXn68BKHHYeF7LErvdJJWRY2mutT/vpZ40gygjNazwbPMvy+bnCNc4ApsBuzDVEuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht7350k5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEDB1F000E9;
+	Wed, 20 May 2026 16:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294668;
-	bh=+ZmyFt+XdLAFo7e8QjUoZbNfkWfL/ddAItXBcrqhYV8=;
+	s=korg; t=1779294671;
+	bh=Ms1Kv+p2kLXgMA8U6MjFBDams9f7oaxFkNJ366heUe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bnU64FGfbz4A/Mvjsc4yW9gqb+lTFfUb/CYoucT7ZHxI7//vZwklaRN4i9UAlzesN
-	 EcvGu90m0WvopqYbeO24k4joRV5k7zfSeR3fXkcSTDUPyBbBIMskf7PMW5lJwH1HYT
-	 Od6xvuf3YynDtmFzYXBA8IOl5u1S0yRh20PhGTgM=
+	b=Ht7350k5BglJjfQHQu9sBikLWeOMbzNEn25PdqFSa7167NkcUC3Y3B5TGn0FwOYHb
+	 tL3Z0+nxcSQ5EI0Wbf+pkvpbzXUq6Hug1paf2axJuMmdQkXkK+QiVWAER9nGOKk0Ai
+	 zyrpfdpuWp1tdfL9VuLBsdLbedSbNVQJisy5cYhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	David Laight <david.laight.linux@gmail.com>,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0087/1146] selftests/nolibc: fix test_file_stream() on musl libc
-Date: Wed, 20 May 2026 18:05:37 +0200
-Message-ID: <20260520162150.320365417@linuxfoundation.org>
+Subject: [PATCH 7.0 0088/1146] selftests/nolibc: Fix build with host headers and libc
+Date: Wed, 20 May 2026 18:05:38 +0200
+Message-ID: <20260520162150.344673243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -64,33 +65,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250149-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250148-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,weissschuh.net,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 65F305939AA
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,weissschuh.net:email]
+X-Rspamd-Queue-Id: 93D59592B75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,50 +101,58 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: David Laight <david.laight.linux@gmail.com>
 
-[ Upstream commit 8ba600aa577f73cc551747fdf121afc7d04afcea ]
+[ Upstream commit 27532c645e61da541173d43fbe03d234f68232f9 ]
 
-fwrite() modifying errno is non-standard.
+Many systems don't have strlcpy() or strlcat() and readdir_r() is
+deprecated. This makes the tests fail to build with the host headers.
+Disable the 'directories' test and define strlcpy(), strlcat() and
+readdir_r() using #defines so that the code compiles.
 
-Only validate this behavior on those libc implementations which
-implement it.
-
-Fixes: a5f00be9b3b0 ("tools/nolibc: Add a simple test for writing to a FILE and reading it back")
+Fixes: 6fe8360b16acb ("selftests/nolibc: also test libc-test through regular selftest framework")
+Signed-off-by: David Laight <david.laight.linux@gmail.com>
+Link: https://patch.msgid.link/20260223101735.2922-4-david.laight.linux@gmail.com
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 1b9d3b2e2491c..1aca8468eac4b 100644
+index 1aca8468eac4b..801b2ad188537 100644
 --- a/tools/testing/selftests/nolibc/nolibc-test.c
 +++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -74,6 +74,14 @@ static const int is_nolibc =
+@@ -82,6 +82,20 @@ static const int is_glibc =
  #endif
  ;
  
-+static const int is_glibc =
-+#ifdef __GLIBC__
-+	1
-+#else
-+	0
++#if !defined(NOLIBC)
++/* Some disabled tests may not compile. */
++
++/* strlcat() and strlcpy() may not be in the system headers. */
++#undef strlcat
++#undef strlcpy
++#define strlcat(d, s, l) 0
++#define strlcpy(d, s, l) 0
++
++/* readdir_r() is likely to be marked deprecated */
++#undef readdir_r
++#define readdir_r(dir, dirent, result) ((errno = EINVAL), -1)
 +#endif
-+;
 +
  /* definition of a series of tests */
  struct test {
  	const char *name;              /* test name */
-@@ -866,7 +874,7 @@ int test_file_stream(void)
- 
- 	errno = 0;
- 	r = fwrite("foo", 1, 3, f);
--	if (r != 0 || errno != EBADF) {
-+	if (r != 0 || ((is_nolibc || is_glibc) && errno != EBADF)) {
- 		fclose(f);
- 		return -1;
- 	}
+@@ -1416,7 +1430,7 @@ int run_syscall(int min, int max)
+ 		CASE_TEST(fork);              EXPECT_SYSZR(1, test_fork(FORK_STANDARD)); break;
+ 		CASE_TEST(getdents64_root);   EXPECT_SYSNE(1, test_getdents64("/"), -1); break;
+ 		CASE_TEST(getdents64_null);   EXPECT_SYSER(1, test_getdents64("/dev/null"), -1, ENOTDIR); break;
+-		CASE_TEST(directories);       EXPECT_SYSZR(proc, test_dirent()); break;
++		CASE_TEST(directories);       EXPECT_SYSZR(is_nolibc && proc, test_dirent()); break;
+ 		CASE_TEST(getrandom);         EXPECT_SYSZR(1, test_getrandom()); break;
+ 		CASE_TEST(gettimeofday_tv);   EXPECT_SYSZR(1, gettimeofday(&tv, NULL)); break;
+ 		CASE_TEST(gettimeofday_tv_tz);EXPECT_SYSZR(1, gettimeofday(&tv, &tz)); break;
 -- 
 2.53.0
 
