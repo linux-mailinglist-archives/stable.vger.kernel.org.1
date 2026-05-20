@@ -1,214 +1,371 @@
-Return-Path: <stable+bounces-253241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHjdMucFDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-253241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:11 +0200
+	id IBHPNsEJDmru5gUAu9opvQ
+	(envelope-from <stable+bounces-253365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A32597B58
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB02598306
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 243D832BBED2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5A0139FEA60
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C61421F12;
-	Wed, 20 May 2026 18:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B11B342CB3;
+	Wed, 20 May 2026 18:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ctTuXHwj"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="oiifBTtB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SRl2o1FL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f226.google.com (mail-vk1-f226.google.com [209.85.221.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44731409617
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 18:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B1318ED6;
+	Wed, 20 May 2026 18:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302766; cv=none; b=d1/hq4hS1JtmVqr/v98OCIh3GUAvlLnAJvUXI/XI/GYlMC0vgdQBvnCer3VDc05K5V9KiWB1jyjpaSnGIgIsnUu99gHl8yc7C3Stoe41zNOVdgqN9n2z/Xy6trqqYp9p6JrXNP4d/eanrvY6fz/eI5mpQhFEl2CdpUxknZGWDUY=
+	t=1779303242; cv=none; b=oJefeaIT2PSjxV8YtgM/cu0hPTJe53Kc3pmbvVIdI3lnwKGucytdfQeX/ZT/FfaozJ1c9UyLUx99KxMy3PO+gB50e8kiJHl2Fd47+oTWeSM3971AhJoLHnGrb7TZundyedl4GXaPtWLnK+7h0HZOp7atiVEO+zSS+lEvaFLEu3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302766; c=relaxed/simple;
-	bh=IEgOhX5mSlGgMwF6CJs9QGBb5c//pY837CoFBbgWLjI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D1/0jD7e95ND60i/RudziUIoaRmEqp6ImpbnvMUMNcMB8SA0WkJHn8lybCKmz805Q92OmntvuMnANk0c7KnEbIfOQMyxkFzuBNQqLaI6QWLOIbBOGTG43Cdi4iwO3g+hKa0y5KZKj7ZAP9qbbYoWOTy4bHeIgQ137dNLjAHW7Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ctTuXHwj; arc=none smtp.client-ip=209.85.221.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-vk1-f226.google.com with SMTP id 71dfb90a1353d-5751a9020faso3971464e0c.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 11:46:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779302762; x=1779907562;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yz8WNPTLivvf8aO0NCQc1Y4S+bsvggq3/xlwaBZWzOA=;
-        b=QKQdEw8yhF8iC77ROP9ruWZvvmjyLY0G5CJiip870B18GROYedPJMTG5ZV3HX9odBX
-         Ogb4ZwLCpx+vs3CS86FJve7di/YxLiczmz/Nh4bz/AGI/9rluHRvO0x0ikQWvHxK4JPA
-         2aSMPH8QKFmcC17SuDLvNG+N874dF1HbNugAUarUym5EeVuYV0Vb8IgpUPMsGgAOM/WQ
-         2SOLbEcj6ZLQD+OfL1C8RQubLhuSjPV4hkNQjo+GEgMJ2BbJz2Zxt/vmiBA8Hnyla3Bs
-         dLPW1/T6fyEARGRsl9jDJfesYXziS+Fr6KY+jqevNOKbHlr9AqX8GPcBrBXhK6EMWbyU
-         pA4w==
-X-Forwarded-Encrypted: i=1; AFNElJ/KWCcPQdUcudM5JQ6bnzGbQi/mqIsoXDQuffxdDNpx7rgtZE3gTz11LKek7VztbecSS5hCvmA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdJew1p6auGJg3fV6QsUR1hoynUiCSKUx0DBgVeQgffIcKvYMx
-	j3VjF6ebYCo4X+YqWcchYbLQAeMDQyW1Jhf/pAHIVwWu32RGxE62i4WHupBbb2bsKt9kGkgXlCF
-	16jOkBCpnGUa9ouyHlytIESWgSNxp7T1rXeaHnvTp7TOo34UzvZ+226o+BWbZqzfYKep0y7q9oa
-	bqAcIBsp+nByxJ0U+4onPhWXmdMHmfEyO+x9d2pcX4eZL9zXaZ9eX4bPzenPC+OSOkIWkvHPaWt
-	xozjvthZjAyeSBp
-X-Gm-Gg: Acq92OE1PGJ5lgaCJ/6hhV2eu+HPZK0m0TsH+z7E66qyTmJgHQYoPobbM0hW2b1/JES
-	JbApqnCgp79y9o4DxIG2HMl3lfRxH+sViA3zJSrdIQIADNGE9Y9q0Wb9aoLk1oqzRuwPTZTfQfr
-	phQnE7NN1x08YCGhqwI5o06BpsFu9fNkawQdhyEjBzaEzjyWmU9e3BL5kHh07IxZ9HkY1fQ1GeJ
-	EWT07pKKus0SGvuTfJmLTLeSUtjcNFXlY8eQF+eD/sbZVP2qP+5uFC0zzN2k+bkv4HKAyDPcdQ7
-	a6+qOaexkTsBn59TGOaTkxJDy6IZbfvAd6lUnuk2qZVH83Z0YJmYFhO4GYY6KtOgMfjLwQmNpQX
-	JL2faj/TFcG6chW0IgdvvkBnO6SCNUWAL2Y9RNLrHcC8UrauLDCiPsY0Ax/JY1HKzI5PpHbf6y3
-	Nvda+cW3CPwKepxs6JWHkIk2ZNObcVkb03usbi9ZFPQY2xZybh0fSKssZ9QUaqpw==
-X-Received: by 2002:a05:6122:d02:b0:56d:2ca7:fbc3 with SMTP id 71dfb90a1353d-5760be86bffmr13887927e0c.5.1779302762456;
-        Wed, 20 May 2026 11:46:02 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-24.dlp.protect.broadcom.com. [144.49.247.24])
-        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-95fc2f17d28sm792087241.5.2026.05.20.11.46.02
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 20 May 2026 11:46:02 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2ee1da7a13fso6411974eec.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 11:46:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1779302761; x=1779907561; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yz8WNPTLivvf8aO0NCQc1Y4S+bsvggq3/xlwaBZWzOA=;
-        b=ctTuXHwjiEwLHDYK0cmw9W7MsHzoHq4SxYuF5718RCg8h53xzdyt/KVbgW6a1kQcx6
-         qGnfUo8n7YKn+WfJU2qFuQO4hc6sOoRfuNhG3mCJ6zX37xqMDW66iouGNWQSyxv10UQW
-         9kBkPvCxjAYEoHl4REQvFEhY7EwVxv7taDxxM=
-X-Forwarded-Encrypted: i=1; AFNElJ8ZLLH9o/ssIFdSsqK2gQIigcks+uhXrnDebUfHuTnkexjKfZZz8vB5mQGnmjlNZJjXt1EoTJw=@vger.kernel.org
-X-Received: by 2002:a05:7300:5b88:b0:300:255:22cf with SMTP id 5a478bee46e88-30398652e7emr12183207eec.28.1779302761067;
-        Wed, 20 May 2026 11:46:01 -0700 (PDT)
-X-Received: by 2002:a05:7300:5b88:b0:300:255:22cf with SMTP id 5a478bee46e88-30398652e7emr12183176eec.28.1779302760431;
-        Wed, 20 May 2026 11:46:00 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304052f79ecsm6188546eec.11.2026.05.20.11.45.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 11:45:59 -0700 (PDT)
-Message-ID: <59df32fc-59eb-429e-aca1-2c5a64c988fc@broadcom.com>
-Date: Wed, 20 May 2026 11:45:57 -0700
+	s=arc-20240116; t=1779303242; c=relaxed/simple;
+	bh=O7bk/p5xxJij8SY/tXxCYR60LXo7CFl6+XP/lhcyShE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zxn06V46QFT1JH6PMk3Taj2d999t+6w1De0YOYdixzt/pftH1ggakcaNRl3xiUMUGGdyzaa0Ci9B1GIczVoe4HVauTXQXlD4r5VrtsyCjtMDZjUid3PcLvcHUjNW8IsIQR4HG6S+DrozGCRu0N71o+HFk42xWCoFo67vCbmry7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=oiifBTtB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SRl2o1FL; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 316E37A0069;
+	Wed, 20 May 2026 14:53:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 20 May 2026 14:53:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779303237;
+	 x=1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=
+	oiifBTtBkGW7NnJEX0WN68jTtE/nE/um9QvvAzm8jeUdD2pBMyIquGroBygksJwq
+	QrjxEGZtyuhk5VDdqOTdIga61UDFgHkwX0mkXzEa8hT1u9RgFnIStCSIqKQ5M2Qy
+	yQe6dKfpaDdVyNSZpZPLPMgNumzTFY7ZbY+9eeHH5d1UXB3+hvEzs/bZys771G9F
+	mB9tBkrgsA8N+d2A3ZwWy5HIMiwHglZYUXxh1oYgILAeICiLggtO5D/rypqpsRLR
+	+JycVcdu4bddDZ2uABjlBfnIWdTmLurOSc+1E92s3+c4nHZ63VlEXk/kAsnEQZc/
+	0Gma50A5roiVaULnvaUngg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779303237; x=
+	1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=S
+	Rl2o1FL0kn9l3fMsK3iRhx2xs5hWwjpmzK54/2vjfiZng0LItxws1U2HHLcBwLr8
+	6diDIAEQQ7Cp5UMzFg86pO2Em2Hx6Q8XcXyArBhfqIqcasXreWw6xlkk8Xuju8r9
+	oAKRpXeUUw5JTXgRE+yfFuTFdODWpZFBRQs9iHNkQmjq1BPU6Q7elgZmdyFzykpk
+	E8/46seEcntYJU+IJ5YYstNNN2xNC3MiPu4UoEQtf3NpaXjf9u7rXBti27d91RJ3
+	76iZnsOZVyOQoIc4IWTnrCZ+qZasR7c91uCYnuNOSJ/H3IOK8uA0C8laW0BFPKYR
+	cLkwDNLLc7F+BFjW/lnnA==
+X-ME-Sender: <xms:RQMOavLdZoTjLHGDXoeXZcgrFwhKuKja18ySo8L2yv1431uJovkeug>
+    <xme:RQMOajmi7VOD4XlWr8iP4YX4u4_NaL4yR4SimDr6OlQGGYEvmHwrCCGMu-BvPMwLX
+    Hd0_Ifbu7d4ds7PTGYUzQBoA2axfe5DfOl36Ux0JeutEHRL_zOX>
+X-ME-Received: <xmr:RQMOaoZEgP_qJyGQnTL6l5Wg8ObXJI6u8ojCSokQnnlkylwVPKvdvWRUohA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehgedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheprhgrnhgrnhhtrgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehvihhp
+    ihhnshhhsehgohhoghhlvgdrtghomhdprhgtphhtthhopehjrhhhihhlkhgvsehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
+    horhhg
+X-ME-Proxy: <xmx:RQMOav93gd7vOiTgTCyw6pWA2WsOdz7_V9OpG2V5vEIRztYB-3nh_A>
+    <xmx:RQMOanZqqUPU5nrQ5nykVOqGbymUvo3IIjU1cPjQ8zi9cL054rsHnA>
+    <xmx:RQMOapdZBa7GTewQhGya1zgrq2cPQRWBxZpchDgr1RV8Yvd_fuBTMg>
+    <xmx:RQMOakmnFszqFGOUyb_ESL836ZLS9qPyG2HchI7z9Sa88caL367_DQ>
+    <xmx:RQMOanlMmmEB_ijbtg-nWDcqpuS0_M7T3s8rSz6zoE4wStHjuW7Ov6rH>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 May 2026 14:53:56 -0400 (EDT)
+Date: Wed, 20 May 2026 12:53:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jason Gunthorpe
+ <jgg@ziepe.ca>, alex@shazbot.org
+Subject: Re: [PATCH v2] vfio/pci: Use a private flag to prevent power state
+ change with VFs
+Message-ID: <20260520125354.2e028b46@shazbot.org>
+In-Reply-To: <20260514173449.3282188-1-rananta@google.com>
+References: <20260514173449.3282188-1-rananta@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: bcmgenet: keep RBUF EEE/PM disabled
-To: Nicolai Buchwitz <nb@tipi-net.de>, opendmb@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-Cc: justin.chen@broadcom.com, phil@raspberrypi.com,
- bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260520184320.652053-1-nb@tipi-net.de>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
- xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
- M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
- JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
- PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
- KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
- AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
- IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
- ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
- bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
- Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
- tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
- TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
- zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
- WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
- IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
- U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
- 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
- pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
- MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
- IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
- gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
- obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
- N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
- CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
- C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
- wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
- EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
- fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
- MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
- 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
- 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20260520184320.652053-1-nb@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm2,messagingengine.com:s=fm3];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253241-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[tipi-net.de,gmail.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,broadcom.com:email,broadcom.com:mid,broadcom.com:dkim];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florian.fainelli@broadcom.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
+	TAGGED_FROM(0.00)[bounces-253365-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[broadcom.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 71A32597B58
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,messagingengine.com:dkim,ziepe.ca:email]
+X-Rspamd-Queue-Id: 5CB02598306
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 11:43, Nicolai Buchwitz wrote:
-> Setting RBUF_EEE_EN | RBUF_PM_EN in RBUF_ENERGY_CTRL breaks the RX
-> path on GENET hardware once MAC EEE becomes active. RX traffic stops
-> flowing while the link stays up and the usual descriptor/RX error
-> counters remain quiet. In that state the MAC still accepts frames
-> (rbuf_ovflow_cnt keeps climbing) but RBUF no longer forwards them to
-> DMA, so rx_packets is no longer incremented at the netdev level. On
-> some boards the corruption ends up as a paging fault in
-> skb_release_data via bcmgenet_rx_poll on an LPI exit.
+On Thu, 14 May 2026 17:34:49 +0000
+Raghavendra Rao Ananta <rananta@google.com> wrote:
+
+> The current implementation uses pci_num_vf() while holding the
+> memory_lock to prevent changing the power state of a PF when
+> VFs are enabled. This creates a lockdep circular dependency
+> warning because memory_lock is held during device probing.
 > 
-> Reproduced on Pi 4B (BCM2711 + BCM54213PE) and confirmed by Florian
-> Fainelli on an internal Broadcom 4908-family board with the same crash
-> signature. RBUF_PM_EN is not publicly documented.
+> [  286.997167] ======================================================
+> [  287.003363] WARNING: possible circular locking dependency detected
+> [  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
+> [  287.015074] ------------------------------------------------------
+> [  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
+> [  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
+> vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.036530]
+> [  287.036530] but task is already holding lock:
+> [  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
+> vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.051879]
+> [  287.051879] which lock already depends on the new lock.
+> [  287.051879]
+> [  287.060070]
+> [  287.060070] the existing dependency chain (in reverse order) is:
+> [  287.067568]
+> [  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
+> [  287.073941]        __mutex_lock+0x92/0xb80
+> [  287.078058]        vfio_assign_device_set+0x66/0x1b0
+> [  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
+> [  287.088638]        vfio_pci_probe+0xd2/0x100
+> [  287.092933]        local_pci_probe_callback+0x4d/0xa0
+> [  287.098001]        process_scheduled_works+0x2ca/0x680
+> [  287.103158]        worker_thread+0x1e8/0x2f0
+> [  287.107452]        kthread+0x10c/0x140
+> [  287.111230]        ret_from_fork+0x18e/0x360
+> [  287.115519]        ret_from_fork_asm+0x1a/0x30
+> [  287.119983]
+> [  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
+> [  287.127219]        __flush_work+0x345/0x490
+> [  287.131429]        pci_device_probe+0x2e3/0x490
+> [  287.135979]        really_probe+0x1f9/0x4e0
+> [  287.140180]        __driver_probe_device+0x77/0x100
+> [  287.145079]        driver_probe_device+0x1e/0x110
+> [  287.149803]        __device_attach_driver+0xe3/0x170
+> [  287.154789]        bus_for_each_drv+0x125/0x150
+> [  287.159346]        __device_attach+0xca/0x1a0
+> [  287.163720]        device_initial_probe+0x34/0x50
+> [  287.168445]        pci_bus_add_device+0x6e/0x90
+> [  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
+> [  287.177719]        sriov_add_vfs+0x2c/0x60
+> [  287.181838]        sriov_enable+0x306/0x4a0
+> [  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
+> [  287.191715]        sriov_numvfs_store+0xd9/0x1c0
+> [  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
+> [  287.201338]        vfs_write+0x2be/0x3b0
+> [  287.205286]        ksys_write+0x73/0x100
+> [  287.209233]        do_syscall_64+0x14d/0x750
+> [  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.219120]
+> [  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
+> [  287.225491]        __lock_acquire+0x14c6/0x2800
+> [  287.230048]        lock_acquire+0xd3/0x2f0
+> [  287.234168]        down_write+0x3a/0xc0
+> [  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.243436]        __rpm_callback+0x8c/0x310
+> [  287.247730]        rpm_resume+0x529/0x6f0
+> [  287.251765]        __pm_runtime_resume+0x68/0x90
+> [  287.256402]        vfio_pci_core_enable+0x44/0x310
+> [  287.261216]        vfio_pci_open_device+0x1c/0x80
+> [  287.265947]        vfio_df_open+0x10f/0x150
+> [  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.275476]        __se_sys_ioctl+0x71/0xc0
+> [  287.279679]        do_syscall_64+0x14d/0x750
+> [  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.289559]
+> [  287.289559] other info that might help us debug this:
+> [  287.289559]
+> [  287.297582] Chain exists of:
+> [  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
+> --> &new_dev_set->lock  
+> [  287.297582]
+> [  287.310023]  Possible unsafe locking scenario:
+> [  287.310023]
+> [  287.315961]        CPU0                    CPU1
+> [  287.320510]        ----                    ----
+> [  287.325059]   lock(&new_dev_set->lock);
+> [  287.328917]
+> lock((work_completion)(&arg.work));
+> [  287.336153]                                lock(&new_dev_set->lock);
+> [  287.342523]   lock(&vdev->memory_lock);
+> [  287.346382]
+> [  287.346382]  *** DEADLOCK ***
+> [  287.346382]
+> [  287.352315] 2 locks held by vfio_pci_sriov_/18636:
+> [  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
+> [  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.376976]
+> [  287.376976] stack backtrace:
+> [  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
+> Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
+> [  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
+> [  287.381356] Call Trace:
+> [  287.381357]  <TASK>
+> [  287.381358]  dump_stack_lvl+0x54/0x70
+> [  287.381361]  print_circular_bug+0x2e1/0x300
+> [  287.381363]  check_noncircular+0xf9/0x120
+> [  287.381364]  ? __lock_acquire+0x5b4/0x2800
+> [  287.381366]  __lock_acquire+0x14c6/0x2800
+> [  287.381368]  ? pci_mmcfg_read+0x4f/0x220
+> [  287.381370]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381371]  ? lock_acquire+0xd3/0x2f0
+> [  287.381373]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381374]  ? lock_release+0xef/0x360
+> [  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381377]  lock_acquire+0xd3/0x2f0
+> [  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381379]  ? lock_is_held_type+0x76/0x100
+> [  287.381382]  down_write+0x3a/0xc0
+> [  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381385]  __rpm_callback+0x8c/0x310
+> [  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
+> [  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381390]  rpm_resume+0x529/0x6f0
+> [  287.381392]  ? lock_is_held_type+0x76/0x100
+> [  287.381394]  __pm_runtime_resume+0x68/0x90
+> [  287.381396]  vfio_pci_core_enable+0x44/0x310
+> [  287.381398]  vfio_pci_open_device+0x1c/0x80
+> [  287.381399]  vfio_df_open+0x10f/0x150
+> [  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.381402]  __se_sys_ioctl+0x71/0xc0
+> [  287.381404]  do_syscall_64+0x14d/0x750
+> [  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.381406]  ? trace_irq_disable+0x25/0xd0
+> [  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 > 
-> This shows up more often now that phy_support_eee() enables EEE by
-> default, but it also affects older kernels as soon as TX LPI is
-> turned on via ethtool, so it is not specific to recent changes.
+> Introduce a private flag 'sriov_active' in the vfio_pci_core_device
+> struct. This  allows the driver to track the SR-IOV power state requirement
+> without  relying on pci_num_vf() while holding the memory_lock. The lock is
+> now  only held to set the flag and ensure the device is in D0, after which
+> pci_enable_sriov() can be called without the lock.
 > 
-> Always clear RBUF_EEE_EN | RBUF_PM_EN in bcmgenet_eee_enable_set so
-> the bits stay off across resets. UMAC and TBUF setup is left alone so
-> TX-side EEE keeps working.
-> 
-> Link: https://github.com/raspberrypi/linux/issues/7304
-> Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+> Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 17 ++++++++++++++---
+>  include/linux/vfio_pci_core.h    |  1 +
+>  2 files changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f8d093aacf8a..2fb95f54a1e26 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -271,8 +271,11 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
+>  	int ret;
+>  
+>  	/* Prevent changing power state for PFs with VFs enabled */
+> -	if (pci_num_vf(pdev) && state > PCI_D0)
+> -		return -EBUSY;
+> +	if (state > PCI_D0) {
+> +		lockdep_assert_held_write(&vdev->memory_lock);
+> +		if (vdev->sriov_active)
+> +			return -EBUSY;
+> +	}
+>  
+>  	if (vdev->needs_pm_restore) {
+>  		if (pdev->current_state < PCI_D3hot && state >= PCI_D3hot) {
+> @@ -2292,8 +2295,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  
+>  		down_write(&vdev->memory_lock);
+>  		vfio_pci_set_power_state(vdev, PCI_D0);
+> -		ret = pci_enable_sriov(pdev, nr_virtfn);
+> +		vdev->sriov_active = true;
+>  		up_write(&vdev->memory_lock);
+> +		ret = pci_enable_sriov(pdev, nr_virtfn);
+>  		if (ret) {
+>  			pm_runtime_put(&pdev->dev);
+>  			goto out_del;
+> @@ -2307,6 +2311,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  	}
+>  
+>  out_del:
+> +	/*
+> +	 * Avoid taking the memory_lock intentionally. A race with a power
+> +	 * state transition would at most result in an -EBUSY, leaving the
+> +	 * device in PCI_D0.
+> +	 */
+> +	vdev->sriov_active = false;
+> +
+>  	mutex_lock(&vfio_pci_sriov_pfs_mutex);
+>  	list_del_init(&vdev->sriov_pfs_item);
+>  out_unlock:
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 2ebba746c18f7..f1451ee4744ac 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+>  	bool			needs_pm_restore:1;
+>  	bool			pm_intx_masked:1;
+>  	bool			pm_runtime_engaged:1;
+> +	bool			sriov_active:1;
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+We should drop the bitfield use.  I still need to respin my patches to
+cleanup bitfield races in general, but this looks like a runtime
+updated bitfield without any explicit locking convention with other
+flags in the same storage unit, so should therefore be its own bool.
 
-Thank you Nicolai!
--- 
-Florian
+If we agree, I can do the s/:1// change on commit.  Thanks,
+
+Alex
+
+
+>  	struct pci_saved_state	*pci_saved_state;
+>  	struct pci_saved_state	*pm_save;
+>  	int			ioeventfds_nr;
+> 
+> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+
 
