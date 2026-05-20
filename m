@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJNgEpfvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:59 +0200
+	id YBCOH0L8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8447593D20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C643596045
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 753BA30078A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8279F3112045
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C043E3D7D67;
-	Wed, 20 May 2026 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DC13F4DC0;
+	Wed, 20 May 2026 18:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XonxZdMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlDgruBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35133F54C7;
-	Wed, 20 May 2026 16:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B346236D4E1;
+	Wed, 20 May 2026 18:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296368; cv=none; b=YVxy5l/g720Ay9WxemAXAy1ZhJ6gCfGz2NXPHcQB4aUHcdzX0WmuWfmKbU28q1gUKPkUUcWv/Ed+kAycG/V6qWSs/YazKkmI64hT3DSfMVglYhrvhaENHyKbW6jX3xnZzs3/IkvMxKNRbToqIHRADyrPJkQdNTAxoZMigNK8WhA=
+	t=1779300576; cv=none; b=kMWjI3X3rSQ5NtdgiTIGJyZ3uFccnDiGnULl8TCB+rrtiJYbD5M97GbEnky2r03XgvmmSIP5se5NO0lBJ2pQTYhuwgwpXIhgg7vSQYp5/tAz8RD/6sfWpz7YEu4lphy/3PSp9vxRjx/myZbylro44UU9UbIDjw296/YeWqZ5CYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296368; c=relaxed/simple;
-	bh=3ywPlawiaeKkKEpi+cAMwrPf22hqBwvy+keQW1KBlm8=;
+	s=arc-20240116; t=1779300576; c=relaxed/simple;
+	bh=/Ec0KN85S43NJ/TPXwP5Lb4unDVxkE4/HwoGumWqRhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSowxNbl5ufqBPBw98aGA3tsozkuD7tM3lT/KQ19NuupePBgnhlM6NUEYkogb552rum603a+mo3r6thIFkbA1+ldi9xPdpIhruNDHks1DmX+nVwXDJiuTGjznq1MBBhkpY63lPHdARVsMhpBFlKS7BrhcXN441a81iQdD+XgsGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XonxZdMg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56FF1F000E9;
-	Wed, 20 May 2026 16:59:25 +0000 (UTC)
+	 MIME-Version; b=AQSyH1dcbiXrAcfNpoiicjG9YG5vIoBTb/MAaN0ttoSpDsycRCGfJmBh85Of1aCbnlujTE8YzUr50WRbkBke0OnswI3T4yYRhpgv1og5V+WbcinIxKMEpWadibIWY2/mvelCTJSDArugzCphRHWrY2qtwHBTMuddJeDaFOQiE5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlDgruBN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7541F000E9;
+	Wed, 20 May 2026 18:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296366;
-	bh=XEPDYlpNjIu9OQj51r6oTCv6g8Zju3JV7eWihnA6OkY=;
+	s=korg; t=1779300575;
+	bh=pKmQwl/9z9GFDXmCGQkatvMNdQ6w24+l9VUB5ZMCF/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XonxZdMgQzIzUAhvqJOoKBBLB1QMxRMOxPG5yIsGqwv0liU7OS9GMOdxexnrt+GyD
-	 o1QLaDLsaYs7K9/yhv1GDWa95TXSB1bIfGa7Q2OX5VY7YaAQmY5OK5DoAuBqzYx36D
-	 QTYZYksnUmHSPgwfcBX5NL1YhIWSyNnfp9w/u/AU=
+	b=OlDgruBNQcW3XHmxNB305iS51kDWM4Z5zDUzcANGDgYRgEadT+KPpYSHhKw9xZ+KC
+	 TyPzvzACrnqaG5l4xd+w0no6vUx4Va1n2Rwyt5h1hSVpSAIZJgXAYiMnY9vBlwXTt5
+	 +18p8w3t1nhRbAEnMTt2UjuDtiWFSUBRPpy1SR+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0771/1146] nexthop: fix IPv6 route referencing IPv4 nexthop
+Subject: [PATCH 6.12 210/666] iommu/amd: Do not detach devices in domain free path
 Date: Wed, 20 May 2026 18:17:01 +0200
-Message-ID: <20260520162205.666322541@linuxfoundation.org>
+Message-ID: <20260520162115.756002484@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250811-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252400-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,76 +91,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: D8447593D20
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:email,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4C643596045
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 29c95185ba32b621fbc3800fb86e7dc3edf5c2be ]
+[ Upstream commit 07bbd660dbd6ff03907d9ddbdfe9deabbd18ac4d ]
 
-syzbot reported a panic [1] [2].
+All devices attached to a protection domain must be freed before
+calling domain free. Hence do not try to free devices in domain
+free path. Continue to throw warning if pdom->dev_list is not empty
+so that any potential issues can be fixed.
 
-When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
-of all groups containing this nexthop is not updated. This is because
-nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
-but the reverse direction (AF_INET6 to AF_INET) is missed.
-
-This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
-IPv6 routes to be attached to groups that effectively contain only AF_INET
-members. Subsequent route lookups then call nexthop_fib6_nh() which
-returns NULL for the AF_INET member, leading to a NULL pointer
-dereference.
-
-Fix by calling nh_group_v4_update whenever the family changes, not just
-AF_INET to AF_INET6.
-
-Reproducer:
-	# AF_INET6 blackhole
-	ip -6 nexthop add id 1 blackhole
-	# group with has_v4=false
-	ip nexthop add id 100 group 1
-	# replace with AF_INET (no -6), has_v4 stays false
-	ip nexthop replace id 1 blackhole
-	# pass stale has_v4 check
-	ip -6 route add 2001:db8::/64 nhid 100
-	# panic
-	ping -6 2001:db8::1
-
-[1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
-[2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
-Fixes: 7bf4796dd099 ("nexthops: add support for replace")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260413114522.147784-1-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Joerg Roedel <jroedel@suse.de>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241030063556.6104-7-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c | 26 +-------------------------
+ 1 file changed, 1 insertion(+), 25 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 2c9036c719b68..11a763cbc8482 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2466,10 +2466,10 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 			goto err_notify;
- 	}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index d9b296e007cc7..799e1a1adfc32 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2316,21 +2316,6 @@ static struct iommu_group *amd_iommu_device_group(struct device *dev)
+  *
+  *****************************************************************************/
  
--	/* When replacing an IPv4 nexthop with an IPv6 nexthop, potentially
-+	/* When replacing a nexthop with one of a different family, potentially
- 	 * update IPv4 indication in all the groups using the nexthop.
- 	 */
--	if (oldi->family == AF_INET && newi->family == AF_INET6) {
-+	if (oldi->family != newi->family) {
- 		list_for_each_entry(nhge, &old->grp_list, nh_list) {
- 			struct nexthop *nhp = nhge->nh_parent;
- 			struct nh_group *nhg;
+-static void cleanup_domain(struct protection_domain *domain)
+-{
+-	struct iommu_dev_data *entry;
+-
+-	lockdep_assert_held(&domain->lock);
+-
+-	while (!list_empty(&domain->dev_list)) {
+-		entry = list_first_entry(&domain->dev_list,
+-					 struct iommu_dev_data, list);
+-		BUG_ON(!entry->domain);
+-		do_detach(entry);
+-	}
+-	WARN_ON(!list_empty(&domain->dev_list));
+-}
+-
+ void protection_domain_free(struct protection_domain *domain)
+ {
+ 	WARN_ON(!list_empty(&domain->dev_list));
+@@ -2498,16 +2483,7 @@ amd_iommu_domain_alloc_user(struct device *dev, u32 flags,
+ 
+ void amd_iommu_domain_free(struct iommu_domain *dom)
+ {
+-	struct protection_domain *domain;
+-	unsigned long flags;
+-
+-	domain = to_pdomain(dom);
+-
+-	spin_lock_irqsave(&domain->lock, flags);
+-
+-	cleanup_domain(domain);
+-
+-	spin_unlock_irqrestore(&domain->lock, flags);
++	struct protection_domain *domain = to_pdomain(dom);
+ 
+ 	protection_domain_free(domain);
+ }
 -- 
 2.53.0
 
