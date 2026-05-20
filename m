@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGnvKf8DDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:03 +0200
+	id +LFcId4XDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44527597726
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10AC5997C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 95F2F317B4A5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85BC8319B0E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468BA408011;
-	Wed, 20 May 2026 18:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4606328DC4;
+	Wed, 20 May 2026 17:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WX17cinB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUeU6+nh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97A840800E;
-	Wed, 20 May 2026 18:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8F33D5642;
+	Wed, 20 May 2026 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302621; cv=none; b=KjuuSRJcxKc7qx4x3G36bV1F5b2Orbc6Ja86aqaXgShWCms8ED5bwTMy+yfTmkge3L9mJAq6Tn7jpyMZZ8gXSFvEW2vQbmtsQN1K+654c2klyzk5XqvfCBQq2DqA7MdZ0HJDwiUz8nGL+5bIbCTH1CeDtuKNijazCuaZ0JBOMDk=
+	t=1779297253; cv=none; b=av9HWm+aKeqEB7k1PkePli2gRJyzLjMp7KOGYJ6Ozj68NDY2XGAINDTi97lFW12fQhrFP2C973a9OjOUsfn6Ix9AISo3u0dSg33t3qgey543/8e8rPF1jJutCRclCZkec5b4WsxgghttpoGpErwttxwbwcxlTGsmAXnH9nLQvXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302621; c=relaxed/simple;
-	bh=ZIBf7aMk94p9lwKdiaEFi9sp01G0ogjMeF7a7+2JC2E=;
+	s=arc-20240116; t=1779297253; c=relaxed/simple;
+	bh=OZ8EJhXynZFduoznESVaUdm9XTIOYtzcDT5gFeqsZ4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/6dKgiJoTVQbsICeFY2/QO2PSXhoxXWMUhYf1/Jw/HhlR6JVcjN+5Y/FUF2kJSzZfT1IxMQuuD9H/Z4fGSEqt6a4SLzh18K4Ms9XQMCBJO9VKPQpGXRtd4ocQfBuiBGgUeAA5tBwbNn2Jw2HxG31WxoVMKYQ50teSOC7rqvRq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WX17cinB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4D11F000E9;
-	Wed, 20 May 2026 18:43:39 +0000 (UTC)
+	 MIME-Version; b=ZxsppTN6R2xb5dNFa14OoWrjqJnMEH7k3/Sk2ilLYaPgOWOqQY7w5kkwj/2T+TuWC/tcGJ+4puPTunAJiyqxTuJEEFMJ5+XSmdH3OfqXeROBzkzfzR7GkbL/hYNV9FbHWuWsNCeo4GiFPRgVpS3vvdBIezEq0ca0mni/ubFWRJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUeU6+nh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8D21F000E9;
+	Wed, 20 May 2026 17:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302619;
-	bh=T1Rj+ATtah/wQiVsre1RQlbpeJxPNoXdvW/dohvNe3I=;
+	s=korg; t=1779297251;
+	bh=67vgx+gec97GFNHwjVog4DRw+DCGUZNJaXpFXn4sMFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WX17cinBXYH0o5uVJmZsBiPKuercNYwvlFO6JOPwsGKVURke2l6D6gAvB5CwavNhd
-	 DG2C2ujwJ/ZgRBFkJyou4LitSuKHbMVUWPrPUdGTUXKTzs/ouTdE6uUVhYf7r/qRVf
-	 GlOtyH6S5pXUTWkO3eeCdhyOUwlO6PI7cX3ELq3k=
+	b=cUeU6+nhPIHDscNHYVyMioTJ5BRZWRtkYlKQdg8QZH6BsvyZI220gLLBtYgUTE+lJ
+	 3WOs7EpkUJxzUq7BKvZ0kwvIObyeSiczXVjWkevcUexaDFbEWNor+7ej+Q3VKEyBYL
+	 C3tp/19fsOIvnsnblCgbvebjc4e++JWZc6c2P0BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 335/508] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 7.0 1108/1146] nfsd: update mtime/ctime on COPY in presence of delegated attributes
 Date: Wed, 20 May 2026 18:22:38 +0200
-Message-ID: <20260520162105.891839966@linuxfoundation.org>
+Message-ID: <20260520162213.320869970@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +65,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253183-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251159-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 44527597726
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: E10AC5997C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
+commit 4183cf383b6faec17a0882b84cd2d901dba62b16 upstream.
 
-The nf_osf_ttl() function accessed skb->dev to perform a local interface
-address lookup without verifying that the device pointer was valid.
+When delegated attributes are given on open, the file is opened with
+NOCMTIME and modifying operations do not update mtime/ctime as to not get
+out-of-sync with the client's delegated view. However, for COPY operation,
+the server should update its view of mtime/ctime and reflect that in any
+GETATTR queries.
 
-Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
-loop to match the packet source address against local interface
-addresses. It assumed that packets from the same subnet should not see a
-decrement on the initial TTL. A packet might appear it is from the same
-subnet but it actually isn't especially in modern environments with
-containers and virtual switching.
-
-Remove the device dereference and interface loop. Replace the logic with
-a switch statement that evaluates the TTL according to the ttl_check.
-
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e5e9b24ab8fa ("nfsd: freeze c/mtime updates with outstanding WRITE_ATTRS delegation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ fs/nfsd/nfs4proc.c |   11 ++++++++++-
+ fs/nfsd/xdr4.h     |    1 +
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 2207bda442d54..6d3dfbeb398cb 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
- static inline int nf_osf_ttl(const struct sk_buff *skb,
- 			     int ttl_check, unsigned char f_ttl)
- {
--	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
- 	const struct iphdr *ip = ip_hdr(skb);
--	const struct in_ifaddr *ifa;
--	int ret = 0;
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2121,8 +2121,10 @@ do_callback:
  
--	if (ttl_check == NF_OSF_TTL_TRUE)
-+	switch (ttl_check) {
-+	case NF_OSF_TTL_TRUE:
- 		return ip->ttl == f_ttl;
--	if (ttl_check == NF_OSF_TTL_NOCHECK)
--		return 1;
--	else if (ip->ttl <= f_ttl)
-+		break;
-+	case NF_OSF_TTL_NOCHECK:
- 		return 1;
--
--	in_dev_for_each_ifa_rcu(ifa, in_dev) {
--		if (inet_ifa_match(ip->saddr, ifa)) {
--			ret = (ip->ttl == f_ttl);
--			break;
--		}
-+	case NF_OSF_TTL_LESS:
-+	default:
-+		return ip->ttl <= f_ttl;
- 	}
--
--	return ret;
+ 	set_bit(NFSD4_COPY_F_COMPLETED, &copy->cp_flags);
+ 	trace_nfsd_copy_async_done(copy);
+-	nfsd4_send_cb_offload(copy);
+ 	atomic_dec(&copy->cp_nn->pending_async_copies);
++	if (copy->cp_res.wr_bytes_written > 0 && copy->attr_update)
++		nfsd_update_cmtime_attr(copy->nf_dst->nf_file, 0);
++	nfsd4_send_cb_offload(copy);
+ 	return 0;
  }
  
- struct nf_osf_hdr_ctx {
--- 
-2.53.0
-
+@@ -2182,6 +2184,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 		memcpy(&result->cb_stateid, &copy->cp_stateid.cs_stid,
+ 			sizeof(result->cb_stateid));
+ 		dup_copy_fields(copy, async_copy);
++		if ((READ_ONCE(copy->nf_dst->nf_file->f_mode) &
++			       FMODE_NOCMTIME) != 0)
++			async_copy->attr_update = true;
+ 		memcpy(async_copy->cp_cb_offload.co_referring_sessionid.data,
+ 		       cstate->session->se_sessionid.data,
+ 		       NFS4_MAX_SESSIONID_LEN);
+@@ -2200,6 +2205,10 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 	} else {
+ 		status = nfsd4_do_copy(copy, copy->nf_src->nf_file,
+ 				       copy->nf_dst->nf_file, true);
++		if ((READ_ONCE(copy->nf_dst->nf_file->f_mode) &
++			       FMODE_NOCMTIME) != 0 &&
++				copy->cp_res.wr_bytes_written > 0)
++			nfsd_update_cmtime_attr(copy->nf_dst->nf_file, 0);
+ 	}
+ out:
+ 	trace_nfsd_copy_done(copy, status);
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -752,6 +752,7 @@ struct nfsd4_copy {
+ 
+ 	struct nfsd_file        *nf_src;
+ 	struct nfsd_file        *nf_dst;
++	bool			attr_update;
+ 
+ 	copy_stateid_t		cp_stateid;
+ 
 
 
 
