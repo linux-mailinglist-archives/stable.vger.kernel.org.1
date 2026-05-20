@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAktFbnsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:45 +0200
+	id wJPLMG8qDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-253067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C607B59343D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A4B59B319
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 365A630B7C8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9264037F44CE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E9E3F2115;
-	Wed, 20 May 2026 17:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788573FD14E;
+	Wed, 20 May 2026 18:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPw174cL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LcqVXNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2313D6CB7;
-	Wed, 20 May 2026 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8BD3D1CA0;
+	Wed, 20 May 2026 18:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296961; cv=none; b=bwht48ZDdAajLsDlh2Ov4mNP6lAFzeCDqWUo3jNRKSRwfRrvcKffXKT7ZvtUTgtnh2JkTD9o5C7lwU+sRzz/e/d0V9z6yTha04gc/IsFmr7PWmLCZO3+jttZVuieTz21Jwt+KUiPAeUlHhCeORQPZ8NykNTAKjrUFjzd3jogAhw=
+	t=1779302318; cv=none; b=WSu9RgFcrOVgGOQhig2zp6CCk8hMyMcMRyYoUt+9JBxXeQB1vEtBwkMR8ibVDq/wox3Hfa/bwrZQ+lM5y0z3NLEzc2eQDicuQkkXHJVnc7gd9IWuReYuvef2ZAOa7msWZ6vReb0YNjzeD/0vXMit6+K1Tq3sBIiDrTUDZYq847w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296961; c=relaxed/simple;
-	bh=iK+4RYet7qYOEvsUCxQjFd+TFqvlAGIyzAikKn+k1Qs=;
+	s=arc-20240116; t=1779302318; c=relaxed/simple;
+	bh=pHGg7B7bWI70UhByP8S32iZVCisvzHv0+15hmP5o5l4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvYi7gZuLzPkRLqootobebI8i+s3KiPaszw7NQMzZIjjmK+1NHSkLxSt7Ud4TTRqE3yVrGHtfJ7DUuR0bGJWPipRrYrELq01ANkeMmq/BOhjb2POF9h11HsYHwOpstiEtJe3ujrpi8bqPe8GITx2wiHdmQni+zbnMJ1u7Z1rgfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPw174cL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B3E1F000E9;
-	Wed, 20 May 2026 17:09:18 +0000 (UTC)
+	 MIME-Version; b=QX2i9sOHNrc3+UpWtkQQjYDohZd3wUfYgu4w7VGmJi4aM+HV3GkkgeHzGeVmHA8bqlDUHkan0v4bDQmclJ6zUriaBudrTy2SnhLcB72CBUr4rzbcCkSvPGfT8Dbr+4kIlevpPHdP62u6Vzj5aG3CoB9y85RuGCLYhY+ys7caNks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LcqVXNL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA6B1F00893;
+	Wed, 20 May 2026 18:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296959;
-	bh=FmHE8E991tUBtQeEyd0oFY74k+o52IVuvF+wemacYRM=;
+	s=korg; t=1779302316;
+	bh=SGYqWc9N+ja8wZT+ZkNvaUV25zZB9ubhCdxUtdH5Zpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EPw174cLq/krSt/vLLvkXOkWLQy9gP0JSlt1psf49c2G1Xhiq4Wol5JUUbr8QYyte
-	 LAX2ExLEXjyxptoNib6bg86yC+5dRpYx5LTSdT53iMeGdTCFfSr/nOWg3KNdGLknFa
-	 A71giwKD5UCT8NpSM8YC5p8HfYPOdFWYxmVu6yjI=
+	b=1LcqVXNLwLKZWd72bUz3So46cBVmNLFwVkdeKduRw3BA/5Nrsidz/RXhDX2vqnYuA
+	 ziFu+5H3/gmZFogAH14YGDCrtGfLeKlrcMI4yV6WiTIjVy9kPQS5+WBAkA4DXLaMzn
+	 +WiJXFkv7kfHMXA4dHpq2CbCAtuFKXzuSNnXB/fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Benato <denis.benato@linux.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0995/1146] netconsole: avoid clobbering userdatum value on truncated write
+Subject: [PATCH 6.6 222/508] HID: asus: make asus_resume adhere to linux kernel coding standards
 Date: Wed, 20 May 2026 18:20:45 +0200
-Message-ID: <20260520162210.748446750@linuxfoundation.org>
+Message-ID: <20260520162103.449463639@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253067-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251046-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C607B59343D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 21A4B59B319
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Denis Benato <denis.benato@linux.dev>
 
-[ Upstream commit e6dd94252b0fa7b4fcc00577c6898432c5d97a08 ]
+[ Upstream commit 51d33b42b8ae23da92819d28439fdd5636c45186 ]
 
-userdatum_value_store() bounds count by MAX_EXTRADATA_VALUE_LEN (200)
-and then copies straight into udm->value, which is itself 200 bytes:
+Linux kernel coding standars requires functions opening brackets to be in
+a newline: move the opening bracket of asus_resume in its own line.
 
-	if (count > MAX_EXTRADATA_VALUE_LEN)
-		return -EMSGSIZE;
-	...
-	ret = strscpy(udm->value, buf, sizeof(udm->value));
-	if (ret < 0)
-		goto out_unlock;
-
-If userspace writes exactly MAX_EXTRADATA_VALUE_LEN bytes with no NUL
-within them, strscpy() copies 199 bytes plus a NUL into udm->value and
-returns -E2BIG. The function jumps to out_unlock and reports the error
-to userspace, but udm->value has already been overwritten with the
-truncated string and update_userdata() is skipped, so the corruption
-is not yet visible on the wire.
-
-The next successful write to any userdatum entry under the same target
-calls update_userdata(), which packs udm->value into the active
-netconsole payload. From that point on, every netconsole message
-carries the silently truncated value, and userspace has no indication
-that a previous, error-returning write left state behind.
-
-Tighten the entry check from "count > MAX_EXTRADATA_VALUE_LEN" to
-"count >= MAX_EXTRADATA_VALUE_LEN". With count strictly less than
-sizeof(udm->value), strscpy() can no longer return -E2BIG here, so
-the corrupting truncation path is removed entirely.
-
-Fixes: 8a6d5fec6c7f ("net: netconsole: add a userdata config_group member to netconsole_target")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-2-59965f29d9cc@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 546edbd26cff ("HID: hid-asus: reset the backlight brightness level on resume")
+Signed-off-by: Denis Benato <denis.benato@linux.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/hid/hid-asus.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 76d7fbf9e1883..595e09bd1ccfc 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1076,15 +1076,13 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	struct userdata *ud;
- 	ssize_t ret;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 544b74eda284a..e4ea87cdb05fd 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -990,7 +990,8 @@ static int asus_start_multitouch(struct hid_device *hdev)
+ 	return 0;
+ }
  
--	if (count > MAX_EXTRADATA_VALUE_LEN)
-+	if (count >= MAX_EXTRADATA_VALUE_LEN)
- 		return -EMSGSIZE;
+-static int __maybe_unused asus_resume(struct hid_device *hdev) {
++static int __maybe_unused asus_resume(struct hid_device *hdev)
++{
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
+ 	int ret = 0;
  
- 	mutex_lock(&netconsole_subsys.su_mutex);
- 	dynamic_netconsole_mutex_lock();
--
--	ret = strscpy(udm->value, buf, sizeof(udm->value));
--	if (ret < 0)
--		goto out_unlock;
-+	/* count is bounded above, so strscpy() cannot truncate here */
-+	strscpy(udm->value, buf, sizeof(udm->value));
- 	trim_newline(udm->value, sizeof(udm->value));
- 
- 	ud = to_userdata(item->ci_parent);
 -- 
 2.53.0
 
