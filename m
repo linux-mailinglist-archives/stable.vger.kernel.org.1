@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MisC979DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:54 +0200
+	id kK1NBszsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-251059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4F2596682
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851C7593453
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 685C135F326A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DE0A3162FA5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846AD3F39C9;
-	Wed, 20 May 2026 17:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F76A3DD528;
+	Wed, 20 May 2026 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf+ZZBMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJwVCUD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDFE2F363F;
-	Wed, 20 May 2026 17:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C78735F619;
+	Wed, 20 May 2026 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299454; cv=none; b=BitSxTMBJkG0Qtx82oxGJwYai4uNKVwLZHv2d9+vdvgi3odeyLhUwDzbf2c8sj39KTx1L1xYUodi6G3YB9FMkgXGaaMtLyynYLX2FsGYNaAwszkqU+FBLXsxPD6osVT4AMLIcatZoAMwtA1fMMkA9sTvDN4U6DlKsvpkJ7qiTT4=
+	t=1779296995; cv=none; b=mhN75F1VBU1V4r5MXY4pus2XjRYvWJ73MvpwQBin9CtCfj8NUSREmvWKpv/UtMzCWAEHIOFzlSmHqtP9ynsS2FwXxbBjkgsv112qJXnbBNmmChP0vLWFa0I7ccTTnRS+W6e8tdezGN/zTn6tYfKopl8zfjYcH4JQC6m+xxjluGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299454; c=relaxed/simple;
-	bh=68X+PEO5aWpI2TiQGsxLMyxA+WRENrZw588JGgqGxuA=;
+	s=arc-20240116; t=1779296995; c=relaxed/simple;
+	bh=OTUw56Tsn84dixGxlXTHr4zarcgaXQCoaG1wgBXrEjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrPebm6ji6ts9bkPhIKEQukzjzNMpd5Ojx4ENWPqjbfbTMOPDtuDHWHaayGOqjg3xbLtzP2vpZglWRm/lRwT/JVPQwnHr92Q/5leFCFDn8J2fnnhCP466/gGQr8Qn+HGP67ROdC0wloet2mfnHyimO4qkZZiCyf7lOWcmOLron0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf+ZZBMi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DF01F000E9;
-	Wed, 20 May 2026 17:50:52 +0000 (UTC)
+	 MIME-Version; b=XZ1aN5xCrvWXAsp1FwRaA5jxVc3C+N/Pp8mJ9yBJtOpHdpte4tRISC8b6QUWiXDJg5YB72NQJdPAIG6GhD00M8b90vzevb20MxtOxq7BYJD9FCBLzymAxMT1LVFhvpA7zR1r7Yh4iQA8awtu5+lwbHCJkmKSuEDBtoyURMNVD00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJwVCUD3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DE91F000E9;
+	Wed, 20 May 2026 17:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299453;
-	bh=RDhMdNnHU/QPGUqVH8XSJGP1mv1Nllq/+hb1/zDbmX4=;
+	s=korg; t=1779296993;
+	bh=jJgVeuC9LkdSzWtiVkPzlOf1Aq7iaLlw8tvFZxVmxgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bf+ZZBMiVdduNnj31GIZJGYYeJA8ivqggY7X69D2qSNubm8s4VuFd/5yZ4Ft6CYje
-	 0OKwZL6x5DJdDT3dqeM0mUCcBCylVeYzb963CV3OcSlY+/tOta6rKYmHPwshYofMyr
-	 5AypEEzAehTn/OAPoFBkjfAIUvQOTElJJHwu/LG8=
+	b=gJwVCUD3786B2jGzugGqaa/3yHXzTzIZBHSHToGi9gqJWuyJ2+LknoVzfeFUHrsmK
+	 jt3fivMVfg7i/yC+yprFL8Mm6XsFXr6z8h2qjz8OVS+WTX1EL9CMQVm57gqMrTgaI7
+	 r7HH1GFAZeXV4q5V87wZVVUSjhNwjtmnSEcLow5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Zhan Jun <zhanjun@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 778/957] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
+Subject: [PATCH 7.0 1011/1146] drm/xe: Fix potential NULL deref in xe_exec_queue_tlb_inval_last_fence_put_unlocked
 Date: Wed, 20 May 2026 18:21:01 +0200
-Message-ID: <20260520162151.432663437@linuxfoundation.org>
+Message-ID: <20260520162211.114572172@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251989-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251059-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lunn.ch:email,syzkaller.appspot.com:url,uniontech.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 7F4F2596682
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 851C7593453
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhan Jun <zhanjun@uniontech.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
+[ Upstream commit f8c4151d50b12923b67819ebf03c1c6782c984c1 ]
 
-syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-when accessing skb->len for tx statistics after usb_submit_urb() has
-been called:
+xe_exec_queue_tlb_inval_last_fence_put_unlocked() uses q->vm->xe as the
+first argument to xe_assert(). This function is called unconditionally
+from xe_exec_queue_destroy() for all queues, including kernel queues
+that have q->vm == NULL (e.g., queues created during GT init in
+xe_gt_record_default_lrcs() with vm=NULL).
 
-  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
-    drivers/net/usb/rtl8150.c:712
-  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+While current compilers optimize away the q->vm->xe dereference (even
+in CONFIG_DRM_XE_DEBUG=y builds, the compiler pushes the dereference
+into the WARN branch that is only taken when the assert condition is
+false), the code is semantically incorrect and constitutes undefined
+behavior in the C abstract machine for the NULL pointer case.
 
-The URB completion handler write_bulk_callback() frees the skb via
-dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-in softirq context before usb_submit_urb() returns in the submitter,
-so by the time the submitter reads skb->len the skb has already been
-queued to the per-CPU completion_queue and freed by net_tx_action():
+Use gt_to_xe(q->gt) instead, which is always valid for any exec queue.
+This is consistent with how xe_exec_queue_destroy() itself obtains the
+xe_device pointer in its own xe_assert at the top of the function.
 
-  CPU A (xmit)                      CPU B (USB completion softirq)
-  ------------                      ------------------------------
-  dev->tx_skb = skb;
-  usb_submit_urb()      --+
-                          |-------> write_bulk_callback()
-                          |           dev_kfree_skb_irq(dev->tx_skb)
-                          |         net_tx_action()
-                          |           napi_skb_cache_put()   <-- free
-  netdev->stats.tx_bytes  |
-    += skb->len;          <-- UAF read
-
-Fix it by caching skb->len before submitting the URB and using the
-cached value when updating the tx_bytes counter.
-
-The pre-existing tx_bytes semantics are preserved: the counter tracks
-the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
-padded "count" value that is handed to the device.  Changing that
-would be a user-visible accounting change and is out of scope for
-this UAF fix.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
-Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b2d7ec41f2a3 ("drm/xe: Attach last fence to TLB invalidation job queues")
+Assisted-by: Claude:claude-opus-4.6
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260409003449.3405767-1-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 96078a1c68bf97f17fd1d08c3f58f5c5cc9ccd65)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index e40b0669d9f4b..8700ae392b10a 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -685,6 +685,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 					    struct net_device *netdev)
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index 8ecdf949f9e4c..3a60a2fb9cf96 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -1574,7 +1574,7 @@ void xe_exec_queue_tlb_inval_last_fence_put(struct xe_exec_queue *q,
+ void xe_exec_queue_tlb_inval_last_fence_put_unlocked(struct xe_exec_queue *q,
+ 						     unsigned int type)
  {
- 	rtl8150_t *dev = netdev_priv(netdev);
-+	unsigned int skb_len;
- 	int count, res;
+-	xe_assert(q->vm->xe, type == XE_EXEC_QUEUE_TLB_INVAL_MEDIA_GT ||
++	xe_assert(gt_to_xe(q->gt), type == XE_EXEC_QUEUE_TLB_INVAL_MEDIA_GT ||
+ 		  type == XE_EXEC_QUEUE_TLB_INVAL_PRIMARY_GT);
  
- 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-@@ -696,6 +697,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
-+	skb_len = skb->len;
-+
- 	netif_stop_queue(netdev);
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
-@@ -711,7 +714,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		}
- 	} else {
- 		netdev->stats.tx_packets++;
--		netdev->stats.tx_bytes += skb->len;
-+		netdev->stats.tx_bytes += skb_len;
- 		netif_trans_update(netdev);
- 	}
- 
+ 	dma_fence_put(q->tlb_inval[type].last_fence);
 -- 
 2.53.0
 
