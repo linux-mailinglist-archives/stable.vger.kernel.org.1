@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SK78OYn5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:25 +0200
+	id 8LfoI0z/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E505958CE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2A3596C67
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83BAD35BAC81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A2D230684CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A003D8129;
-	Wed, 20 May 2026 17:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4047B333441;
+	Wed, 20 May 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15tzA3T4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueMzsgW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AC22D7386;
-	Wed, 20 May 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B5B368968;
+	Wed, 20 May 2026 18:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296494; cv=none; b=p0uw+otKBaTk415nGfZ3A+k1pPZ697NwsszeWSZ59+XIBLWOtV1dctNI/zquuo7lZr9cgkjYJWv/Qr33WoOGfNqxCSqdHmg+/RTYetmcQbeKskUVQhbx1LHYqJducCnEf2lq5wZwr4ZcxGCjNeaHQ3hDXWCRHl+uPJwpRyLyPc8=
+	t=1779301852; cv=none; b=Y3tE4TknG8zq3xyEWT+5qUV0wOJY0fXgx4Y9FjczP2XXz66oe1V4lqpBiZmZOY7HkqcJLHWMQeB8Nzbul1Icdm7d0XO0I2nequM7Ek+JyiHV8TYciwSr4YnVSvm2S4h8FQiT3kUSuw68MMqSOLyHifmwZoVrkiGne0MsTZNfeJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296494; c=relaxed/simple;
-	bh=A0EORgsluRUog8yFNl/b3RrsrzkPswhZKNwTPNS1KdU=;
+	s=arc-20240116; t=1779301852; c=relaxed/simple;
+	bh=imIF4KvWdfrtrKhXVU/nIQAHst6QVBen5xZxNBxfgAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hswAKY95ypvR+9nV/tiQKH0urUJi0upvYxtnG9q1S1+NbZHDbhHH0fU49C7RbrYIuF9G5UfqaKKrcQ+2DVmsPAeZh6cR6+cvwL+nBsH1zM+p5KfiCYt4uHt89Dip/J/UdJV7m5Sbi9TbMBUEDsuc0HBOqd3OV2TxdbzudUQH8Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15tzA3T4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3B31F00897;
-	Wed, 20 May 2026 17:01:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MxCo22hx34kDB9KxJKX+AFi1i9Ax5p99quKR4P5/aQGytxy6zyzHUlZZRP8pr/KgfJE9TcqLDxinReY4wYcBKAkvacMNqQvv45DSLc8ELVNa/Rd0+Psfz9IRF9nSKYcf2OeGbuOxe5ejajPFR4RfXpCfw95PVCvMbT+Owe//dlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueMzsgW9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3888A1F000E9;
+	Wed, 20 May 2026 18:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296492;
-	bh=npRxlEUFKTEiAQ0LwZCx4tmM24hkname1GrdxDlufvk=;
+	s=korg; t=1779301850;
+	bh=bORZs9XMVGgSQZm0brjy03iNE0B1D/EbC3FUnOTKYxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=15tzA3T4LiV6FXi0xwF4U787vAYITLiLz3KZnEqOvVjHj3PdpCb8swEwDtWhfPb0b
-	 Hs4eBBGr+7NTZD1qq/In1rLzJunIbPtPe6Mv8moj2LnYbsVMf75OLogUapzqy6hyKL
-	 e/LRCXSYzeBwhonBbPiJJil90vA0Wn583fLezOuQ=
+	b=ueMzsgW9U0zFDIa1+yblMDfa02EgGbvIy54Y3X1FT/ctAthGqvyqMXpipXliVktid
+	 eWZfoh1l1QqvS0fJqXKpy3OmU510eA8zqJk0kMeUdmzptAif/nzhZfzXL/g6ir5Jiz
+	 xZFRZ2lLFUP6Vs7ftDrq1Ik9WFToHhNUYDGMBBSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Amit Machhiwal <amachhiw@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0818/1146] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
+Subject: [PATCH 6.6 045/508] selftests/powerpc: Suppress -Wmaybe-uninitialized with GCC 15
 Date: Wed, 20 May 2026 18:17:48 +0200
-Message-ID: <20260520162206.739881038@linuxfoundation.org>
+Message-ID: <20260520162059.570524368@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +65,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252888-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250859-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,suse.de:email]
-X-Rspamd-Queue-Id: 16E505958CE
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,gnu.org:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0F2A3596C67
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
+[ Upstream commit 6e65886fceb23605eff952d6b1975737b4c4b154 ]
 
-The nf_osf_ttl() function accessed skb->dev to perform a local interface
-address lookup without verifying that the device pointer was valid.
+GCC 15 reports the below false positive '-Wmaybe-uninitialized' warning
+in vphn_unpack_associativity() when building the powerpc selftests.
 
-Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
-loop to match the packet source address against local interface
-addresses. It assumed that packets from the same subnet should not see a
-decrement on the initial TTL. A packet might appear it is from the same
-subnet but it actually isn't especially in modern environments with
-containers and virtual switching.
+  # make -C tools/testing/selftests TARGETS="powerpc"
+  [...]
+    CC       test-vphn
+  In file included from test-vphn.c:3:
+  In function ‘vphn_unpack_associativity’,
+      inlined from ‘test_one’ at test-vphn.c:371:2,
+      inlined from ‘test_vphn’ at test-vphn.c:399:9:
+  test-vphn.c:10:33: error: ‘be_packed’ may be used uninitialized [-Werror=maybe-uninitialized]
+     10 | #define be16_to_cpup(x)         bswap_16(*x)
+        |                                 ^~~~~~~~
+  vphn.c:42:27: note: in expansion of macro ‘be16_to_cpup’
+     42 |                 u16 new = be16_to_cpup(field++);
+        |                           ^~~~~~~~~~~~
+  In file included from test-vphn.c:19:
+  vphn.c: In function ‘test_vphn’:
+  vphn.c:27:16: note: ‘be_packed’ declared here
+     27 |         __be64 be_packed[VPHN_REGISTER_COUNT];
+        |                ^~~~~~~~~
+  cc1: all warnings being treated as errors
 
-Remove the device dereference and interface loop. Replace the logic with
-a switch statement that evaluates the TTL according to the ttl_check.
+When vphn_unpack_associativity() is called from hcall_vphn() in kernel
+the error is not seen while building vphn.c during kernel compilation.
+This is because the top level Makefile includes '-fno-strict-aliasing'
+flag always.
 
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The issue here is that GCC 15 emits '-Wmaybe-uninitialized' due to type
+punning between __be64[] and __b16* when accessing the buffer via
+be16_to_cpup(). The underlying object is fully initialized but GCC 15
+fails to track the aliasing due to the strict aliasing violation here.
+Please refer [1] and [2]. This results in a false positive warning which
+is promoted to an error under '-Werror'. This problem is not seen when
+the compilation is performed with GCC 13 and 14. An issue [1] has also
+been created on GCC bugzilla.
+
+The selftest compiles fine with '-fno-strict-aliasing'. Since this GCC
+flag is used to compile vphn.c in kernel too, the same flag should be
+used to build vphn tests when compiling vphn.c in the selftest as well.
+
+Fix this by including '-fno-strict-aliasing' during vphn.c compilation
+in the selftest. This keeps the build working while limiting the scope
+of the suppression to building vphn tests.
+
+[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=124427
+[2] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99768
+
+Fixes: 58dae82843f5 ("selftests/powerpc: Add test for VPHN")
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260313165426.43259-1-amachhiw@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ tools/testing/selftests/powerpc/vphn/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 3e0ccb6d9dc7e..426b85fca8f75 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
- static inline int nf_osf_ttl(const struct sk_buff *skb,
- 			     int ttl_check, unsigned char f_ttl)
- {
--	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
- 	const struct iphdr *ip = ip_hdr(skb);
--	const struct in_ifaddr *ifa;
--	int ret = 0;
+diff --git a/tools/testing/selftests/powerpc/vphn/Makefile b/tools/testing/selftests/powerpc/vphn/Makefile
+index ddc09a20b80fb..873bc6b3739a6 100644
+--- a/tools/testing/selftests/powerpc/vphn/Makefile
++++ b/tools/testing/selftests/powerpc/vphn/Makefile
+@@ -4,7 +4,7 @@ TEST_GEN_PROGS := test-vphn
+ top_srcdir = ../../../../..
+ include ../../lib.mk
  
--	if (ttl_check == NF_OSF_TTL_TRUE)
-+	switch (ttl_check) {
-+	case NF_OSF_TTL_TRUE:
- 		return ip->ttl == f_ttl;
--	if (ttl_check == NF_OSF_TTL_NOCHECK)
--		return 1;
--	else if (ip->ttl <= f_ttl)
-+		break;
-+	case NF_OSF_TTL_NOCHECK:
- 		return 1;
--
--	in_dev_for_each_ifa_rcu(ifa, in_dev) {
--		if (inet_ifa_match(ip->saddr, ifa)) {
--			ret = (ip->ttl == f_ttl);
--			break;
--		}
-+	case NF_OSF_TTL_LESS:
-+	default:
-+		return ip->ttl <= f_ttl;
- 	}
--
--	return ret;
- }
+-CFLAGS += -m64 -I$(CURDIR)
++CFLAGS += -m64 -I$(CURDIR) -fno-strict-aliasing
  
- struct nf_osf_hdr_ctx {
+ $(TEST_GEN_PROGS): ../harness.c
+ 
 -- 
 2.53.0
 
