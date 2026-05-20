@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCl1Ntv4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-250816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:31 +0200
+	id 0AfQB04GDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CB95956BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFC5597C5B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E7EF35C2C7A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 693FB30FF53A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917B43E92B5;
-	Wed, 20 May 2026 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A1C3F6C5F;
+	Wed, 20 May 2026 18:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ax/72dJi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMfHM5Js"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97B63AE6E6;
-	Wed, 20 May 2026 16:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5A43DC4DA;
+	Wed, 20 May 2026 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296381; cv=none; b=UZlVL0Xv8GoVO+iWSDk2vt+gJLXPZUQ9+n9jQsFta1kza/J+wUZzY2elpxvK02Mw85qY6BIkqtRZ5E3wh8vPrIDZf0Ow7ma9Sf7Esx4GOK7t/KLuLpSKSMu5EWlFZUyXgDy8dxK9RNqwy7TyYZq2FWh5KLCSJaFLZAe45OgGYc0=
+	t=1779300649; cv=none; b=gZ85NmH9qDpU+W7jR1QRcO49bTS67VUkIji5jFmmW9t4b4L+sBuaIHnf/NDROhifx/G+BIkN9je41ePpdT/1A+q7KEI0y2ax6RlO7qq4oBedtEBgnzMl161kSyR6BAxplutCMH/Zdesjn7EY4GeevtNtMZBY9RbTAqsRFrYPgSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296381; c=relaxed/simple;
-	bh=Lm3HIleCLI08b4JH5bdEIOdCUiPvrmlgz6gxgIvHYeE=;
+	s=arc-20240116; t=1779300649; c=relaxed/simple;
+	bh=ZQIQY6z54/hH+RqEac5bVkV+nqXnjUYvRpX5w75/jdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JK8bEx4AL9niqhqa1Sh1C32RYNomizsNVKoHZQQ+iAPS4pJStve7UjB2StjHxPO75gQ6Fk6vTpvlMDMjJfo8iqeWbixGKQ2U/z1Oafh0ocfbiFMCXrUcA0EnWxO7U/5VS0rx9UdTLVtHtHlSEvm8KbiYrFmUUyjZ312PpWv9Gv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ax/72dJi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F011F00893;
-	Wed, 20 May 2026 16:59:38 +0000 (UTC)
+	 MIME-Version; b=ToX49LLdsg0+LuK2biuCL+hyAS09aF9iwWZhlAaHe5RzwBvtSZoGnxGYuWuk8e6uNmJeXihjFD/K4cf4uS3i1ZpzSCNHD/JGPmECN8Hr8YFoQAhBIQQeImaezjmhOXwYlXAdhyjFQISYQ6zzSTuWAqNSkQMQbvsinI8IXAKNNtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMfHM5Js; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2D91F000E9;
+	Wed, 20 May 2026 18:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296379;
-	bh=AHTA9DX+mkqgBzb1pKbEpoguMLjuHXkDWCTcAFsAavM=;
+	s=korg; t=1779300648;
+	bh=1YR9uz0Y29F2+JlT8IY/IUq7SX4Gu59jcvfbHb4e26Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ax/72dJiq1/9EYyu1Y3rWMT8iDrWJjQKIS1yKBMysgIjRZL92FDlR7clPk2WTc2uX
-	 k1B6yn2cV60/XBVAb8DFkQ9rHqcRjdvhvn6S+r/bjtmOlmxKKHdxURepn2YYg70VZD
-	 tmfeF/N7NUew6vG/VYOugrp+UjKD6ahQf5WnXMtg=
+	b=XMfHM5JswjGZFw2dFATgcalGFeOXJAanj6hQcSiaoUK5MtIxPyACzqcgkLjYVAsSJ
+	 PjDYBC1O+79a1FE5NDgppU6G/FLba8vcMMOZmCZ8L63pJlrbtxaUSrEDZTNiyNP7F+
+	 wUfJGiNIt1WxiKR/EYYkTGbHnD86KZTpHbGXn4mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0775/1146] net: enetc: correct the command BD ring consumer index
+Subject: [PATCH 6.12 214/666] iommu/amd: Introduce helper function to update 256-bit DTE
 Date: Wed, 20 May 2026 18:17:05 +0200
-Message-ID: <20260520162205.754910257@linuxfoundation.org>
+Message-ID: <20260520162115.845659816@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,121 +70,263 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252429-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,amd.com,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250816-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 76CB95956BF
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 2AFC5597C5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
 
-[ Upstream commit 759a32900b6f3db3d0f34a3b61123742723b50b4 ]
+[ Upstream commit 8b3f78733814b180089a400743b6f19d118aec62 ]
 
-The command BD ring cousumer index register has the consumer index as
-the lower 10 bits, and the bit 31 is SBE, which indicates whether a
-system bus error occurred during execution of the CBD command. So if a
-system bus error occurs, reading the register will get the SBE bit set.
+The current implementation does not follow 128-bit write requirement
+to update DTE as specified in the AMD I/O Virtualization Techonology
+(IOMMU) Specification.
 
-However, the current implementation directly uses the register value as
-the consumer index without masking it. Therefore, if a system bus error
-occurs, an incorrect consumer index will be obtained, causing errors in
-the processing of the command BD ring. Thus, we need to mask out the
-other bits to obtain the correct consumer index.
+Therefore, modify the struct dev_table_entry to contain union of u128 data
+array, and introduce a helper functions update_dte256() to update DTE using
+two 128-bit cmpxchg operations to update 256-bit DTE with the modified
+structure, and take into account the DTE[V, GV] bits when programming
+the DTE to ensure proper order of DTE programming and flushing.
 
-In addition, this patch adds a check for the SBE bit after the polling
-loop and returns an error if the bit is set.
+In addition, introduce a per-DTE spin_lock struct dev_data.dte_lock to
+provide synchronization when updating the DTE to prevent cmpxchg128
+failure.
 
-Fixes: 4701073c3deb ("net: enetc: add initial netc-lib driver to support NTMP")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20260415060833.2303846-2-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Suggested-by: Uros Bizjak <ubizjak@gmail.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20241118054937.5203-5-suravee.suthikulpanit@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/ntmp.c         | 13 ++++++++++---
- drivers/net/ethernet/freescale/enetc/ntmp_private.h |  2 ++
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/iommu/amd/amd_iommu_types.h |  10 ++-
+ drivers/iommu/amd/iommu.c           | 123 ++++++++++++++++++++++++++++
+ 2 files changed, 132 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-index 0c1d343253bfb..b188eb2d40c0d 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-@@ -55,7 +55,7 @@ int ntmp_init_cbdr(struct netc_cbdr *cbdr, struct device *dev,
- 	spin_lock_init(&cbdr->ring_lock);
+diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
+index eadb4379cb4a1..7f13b314abbce 100644
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -426,9 +426,13 @@
+ #define DTE_GCR3_SHIFT_C	43
  
- 	cbdr->next_to_use = netc_read(cbdr->regs.pir);
--	cbdr->next_to_clean = netc_read(cbdr->regs.cir);
-+	cbdr->next_to_clean = netc_read(cbdr->regs.cir) & NETC_CBDRCIR_INDEX;
+ #define DTE_GPT_LEVEL_SHIFT	54
++#define DTE_GPT_LEVEL_MASK	GENMASK_ULL(55, 54)
  
- 	/* Step 1: Configure the base address of the Control BD Ring */
- 	netc_write(cbdr->regs.bar0, lower_32_bits(cbdr->dma_base_align));
-@@ -98,7 +98,7 @@ static void ntmp_clean_cbdr(struct netc_cbdr *cbdr)
- 	int i;
+ #define GCR3_VALID		0x01ULL
  
- 	i = cbdr->next_to_clean;
--	while (netc_read(cbdr->regs.cir) != i) {
-+	while ((netc_read(cbdr->regs.cir) & NETC_CBDRCIR_INDEX) != i) {
- 		cbd = ntmp_get_cbd(cbdr, i);
- 		memset(cbd, 0, sizeof(*cbd));
- 		i = (i + 1) % cbdr->bd_num;
-@@ -135,12 +135,19 @@ static int netc_xmit_ntmp_cmd(struct ntmp_user *user, union netc_cbd *cbd)
- 	cbdr->next_to_use = i;
- 	netc_write(cbdr->regs.pir, i);
++/* DTE[128:179] | DTE[184:191] */
++#define DTE_DATA2_INTR_MASK	~GENMASK_ULL(55, 52)
++
+ #define IOMMU_PAGE_MASK (((1ULL << 52) - 1) & ~0xfffULL)
+ #define IOMMU_PTE_PRESENT(pte) ((pte) & IOMMU_PTE_PR)
+ #define IOMMU_PTE_DIRTY(pte) ((pte) & IOMMU_PTE_HD)
+@@ -839,6 +843,7 @@ struct devid_map {
+ struct iommu_dev_data {
+ 	/*Protect against attach/detach races */
+ 	struct mutex mutex;
++	spinlock_t dte_lock;              /* DTE lock for 256-bit access */
  
--	err = read_poll_timeout_atomic(netc_read, val, val == i,
-+	err = read_poll_timeout_atomic(netc_read, val,
-+				       (val & NETC_CBDRCIR_INDEX) == i,
- 				       NETC_CBDR_DELAY_US, NETC_CBDR_TIMEOUT,
- 				       true, cbdr->regs.cir);
- 	if (unlikely(err))
- 		goto cbdr_unlock;
+ 	struct list_head list;		  /* For domain->dev_list */
+ 	struct llist_node dev_data_list;  /* For global dev_data_list */
+@@ -889,7 +894,10 @@ extern struct amd_iommu *amd_iommus[MAX_IOMMUS];
+  * Structure defining one entry in the device table
+  */
+ struct dev_table_entry {
+-	u64 data[4];
++	union {
++		u64 data[4];
++		u128 data128[2];
++	};
+ };
  
-+	if (unlikely(val & NETC_CBDRCIR_SBE)) {
-+		dev_err(user->dev, "Command BD system bus error\n");
-+		err = -EIO;
-+		goto cbdr_unlock;
+ /*
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 2a2b9e3e3be7e..e5c6cf57439c9 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -77,12 +77,125 @@ static void detach_device(struct device *dev);
+ static void set_dte_entry(struct amd_iommu *iommu,
+ 			  struct iommu_dev_data *dev_data);
+ 
++static void iommu_flush_dte_sync(struct amd_iommu *iommu, u16 devid);
++
+ /****************************************************************************
+  *
+  * Helper functions
+  *
+  ****************************************************************************/
+ 
++static __always_inline void amd_iommu_atomic128_set(__int128 *ptr, __int128 val)
++{
++	/*
++	 * Note:
++	 * We use arch_cmpxchg128_local() because:
++	 * - Need cmpxchg16b instruction mainly for 128-bit store to DTE
++	 *   (not necessary for cmpxchg since this function is already
++	 *   protected by a spin_lock for this DTE).
++	 * - Neither need LOCK_PREFIX nor try loop because of the spin_lock.
++	 */
++	arch_cmpxchg128_local(ptr, *ptr, val);
++}
++
++static void write_dte_upper128(struct dev_table_entry *ptr, struct dev_table_entry *new)
++{
++	struct dev_table_entry old;
++
++	old.data128[1] = ptr->data128[1];
++	/*
++	 * Preserve DTE_DATA2_INTR_MASK. This needs to be
++	 * done here since it requires to be inside
++	 * spin_lock(&dev_data->dte_lock) context.
++	 */
++	new->data[2] &= ~DTE_DATA2_INTR_MASK;
++	new->data[2] |= old.data[2] & DTE_DATA2_INTR_MASK;
++
++	amd_iommu_atomic128_set(&ptr->data128[1], new->data128[1]);
++}
++
++static void write_dte_lower128(struct dev_table_entry *ptr, struct dev_table_entry *new)
++{
++	amd_iommu_atomic128_set(&ptr->data128[0], new->data128[0]);
++}
++
++/*
++ * Note:
++ * IOMMU reads the entire Device Table entry in a single 256-bit transaction
++ * but the driver is programming DTE using 2 128-bit cmpxchg. So, the driver
++ * need to ensure the following:
++ *   - DTE[V|GV] bit is being written last when setting.
++ *   - DTE[V|GV] bit is being written first when clearing.
++ *
++ * This function is used only by code, which updates DMA translation part of the DTE.
++ * So, only consider control bits related to DMA when updating the entry.
++ */
++static void update_dte256(struct amd_iommu *iommu, struct iommu_dev_data *dev_data,
++			  struct dev_table_entry *new)
++{
++	unsigned long flags;
++	struct dev_table_entry *dev_table = get_dev_table(iommu);
++	struct dev_table_entry *ptr = &dev_table[dev_data->devid];
++
++	spin_lock_irqsave(&dev_data->dte_lock, flags);
++
++	if (!(ptr->data[0] & DTE_FLAG_V)) {
++		/* Existing DTE is not valid. */
++		write_dte_upper128(ptr, new);
++		write_dte_lower128(ptr, new);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++	} else if (!(new->data[0] & DTE_FLAG_V)) {
++		/* Existing DTE is valid. New DTE is not valid.  */
++		write_dte_lower128(ptr, new);
++		write_dte_upper128(ptr, new);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++	} else if (!FIELD_GET(DTE_FLAG_GV, ptr->data[0])) {
++		/*
++		 * Both DTEs are valid.
++		 * Existing DTE has no guest page table.
++		 */
++		write_dte_upper128(ptr, new);
++		write_dte_lower128(ptr, new);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++	} else if (!FIELD_GET(DTE_FLAG_GV, new->data[0])) {
++		/*
++		 * Both DTEs are valid.
++		 * Existing DTE has guest page table,
++		 * new DTE has no guest page table,
++		 */
++		write_dte_lower128(ptr, new);
++		write_dte_upper128(ptr, new);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++	} else if (FIELD_GET(DTE_GPT_LEVEL_MASK, ptr->data[2]) !=
++		   FIELD_GET(DTE_GPT_LEVEL_MASK, new->data[2])) {
++		/*
++		 * Both DTEs are valid and have guest page table,
++		 * but have different number of levels. So, we need
++		 * to upadte both upper and lower 128-bit value, which
++		 * require disabling and flushing.
++		 */
++		struct dev_table_entry clear = {};
++
++		/* First disable DTE */
++		write_dte_lower128(ptr, &clear);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++
++		/* Then update DTE */
++		write_dte_upper128(ptr, new);
++		write_dte_lower128(ptr, new);
++		iommu_flush_dte_sync(iommu, dev_data->devid);
++	} else {
++		/*
++		 * Both DTEs are valid and have guest page table,
++		 * and same number of levels. We just need to only
++		 * update the lower 128-bit. So no need to disable DTE.
++		 */
++		write_dte_lower128(ptr, new);
 +	}
 +
- 	dma_rmb();
- 	/* Get the writeback command BD, because the caller may need
- 	 * to check some other fields of the response header.
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-index 34394e40fddd4..3459cc45b6103 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-@@ -12,6 +12,8 @@
++	spin_unlock_irqrestore(&dev_data->dte_lock, flags);
++}
++
+ static inline bool pdom_is_v2_pgtbl_mode(struct protection_domain *pdom)
+ {
+ 	return (pdom && (pdom->pd_mode == PD_MODE_V2));
+@@ -226,6 +339,7 @@ static struct iommu_dev_data *alloc_dev_data(struct amd_iommu *iommu, u16 devid)
+ 		return NULL;
  
- #define NTMP_EID_REQ_LEN	8
- #define NETC_CBDR_BD_NUM	256
-+#define NETC_CBDRCIR_INDEX	GENMASK(9, 0)
-+#define NETC_CBDRCIR_SBE	BIT(31)
+ 	mutex_init(&dev_data->mutex);
++	spin_lock_init(&dev_data->dte_lock);
+ 	dev_data->devid = devid;
+ 	ratelimit_default_init(&dev_data->rs);
  
- union netc_cbd {
- 	struct {
+@@ -1312,6 +1426,15 @@ static int iommu_flush_dte(struct amd_iommu *iommu, u16 devid)
+ 	return iommu_queue_command(iommu, &cmd);
+ }
+ 
++static void iommu_flush_dte_sync(struct amd_iommu *iommu, u16 devid)
++{
++	int ret;
++
++	ret = iommu_flush_dte(iommu, devid);
++	if (!ret)
++		iommu_completion_wait(iommu);
++}
++
+ static void amd_iommu_flush_dte_all(struct amd_iommu *iommu)
+ {
+ 	u32 devid;
 -- 
 2.53.0
 
