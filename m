@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AMgBPrwDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:54 +0200
+	id MHRbHiL1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2255940B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE7A594D8E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42E7B3049AA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AAD53045478
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDBF3D75DA;
-	Wed, 20 May 2026 17:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942483F2117;
+	Wed, 20 May 2026 17:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEReHb3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6ghXL9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2040336494B;
-	Wed, 20 May 2026 17:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF1136405A;
+	Wed, 20 May 2026 17:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296797; cv=none; b=tBVAYVVOar887nNkBBdz08MZze8pXNabwJJ7F8Jhe93Ucr0cuFfgBYIfSXNpKtPi6ZkdwrQWsmqGfq4afR2go8wP17y+T+dcj7W4anoap3rREsE8bsawHCcewMicwoU5rb0J5xXd/FDcZw4+ybeSq/rFInoY/Lazi1esBLrD1go=
+	t=1779299213; cv=none; b=YKh1XtpFPtGRjiudIajASLPsQdlEYhxZrP2XXm8MGRNen9IT5b0m6qDxQSwED96jkla5R3nMZLg5UAm/iCdBwFU8gBonqXPhgw//sR6nXWFbVA8986SK8WZgZchSEXrMM40OeprKMmRU2gj5G6RAUxXzF36efRQii6leVlWDoRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296797; c=relaxed/simple;
-	bh=6YcistEXAHR46oZzqWCTBn0ss+wpmaP3HLCLW+lCa7c=;
+	s=arc-20240116; t=1779299213; c=relaxed/simple;
+	bh=Z09duGp0V9fVWTGenNCMbY6jyj6wQM0uvH0v6w6ndDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2nMkrnWPlTGrAUo9oq7DDHcicXQgyumASKBFX7uYe70Ia/O23OMf+pWuIw9R4Q0w/jmhcKKuTg9syXqMsK1EoIUyndoUVsEBnHZXcj70Z5c3LkB+YXCCKqYykHnrwVUq9b0wHx2pM0YYYcMP6MH3O9F0rUoxWXkzivXiERPJ1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEReHb3X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C1A1F000E9;
-	Wed, 20 May 2026 17:06:35 +0000 (UTC)
+	 MIME-Version; b=gaxlH6xAU71CTIf0qbnXs2+4P1FCR7mWOzPx3+hStxrj710fEvw7O+YztM1Sj6qa+mqKn3rnU0lwTtfXD16jQMoF43GFvtAmi4gBE5j/2SNCiAos8u5yz4qidvba4EZhlBYAj2l2Q0ylQw2F/F4n0rYNou1G+HMs3mK3TA4hOeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6ghXL9q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429431F000E9;
+	Wed, 20 May 2026 17:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296796;
-	bh=AAdIsMpcBibQP93e7+U586zClDSvBGYYbEN3RZVFwIo=;
+	s=korg; t=1779299211;
+	bh=yHt4HP6b/LATTl8SsX9wNH8oMKuhe8mx126iTtfQmSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GEReHb3Xi+c163xX3swR8c8wJPbnNwQfpxIB07SdUSfbhJRDYuZzt3w96Xg+OcpzQ
-	 3ukemJBbszBCz46teDR4vUuctPUMNpLwKs/yfizWacj9q5nWSR5IIpBQoUlGRWG0mD
-	 CqJMOHOkUMR8O+W/DopxGX5r3A1VPtcM5kq2q9vU=
+	b=d6ghXL9qDbkt9eIyfnL0UvKrke4eBMnAAZmH5YF0p+b/B5jCl5cECkJ+xUxYtlZRV
+	 GFLG71Th7L90LXzLd9wePtxjKTP6Vpcrsf/TkPrshHE26jD4cWoVvGgswo4jTNV7Ee
+	 ejR06kg+RIrE1nN1m+loEHcc4oAoRGoT442DoVOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0935/1146] net: airoha: stop net_device TX queue before updating CPU index
-Date: Wed, 20 May 2026 18:19:45 +0200
-Message-ID: <20260520162209.394838315@linuxfoundation.org>
+Subject: [PATCH 6.18 703/957] net: mana: Move hardware counter stats from per-port to per-VF context
+Date: Wed, 20 May 2026 18:19:46 +0200
+Message-ID: <20260520162149.785185495@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +69,373 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251913-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250983-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CC2255940B8
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2CE7A594D8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 3854de7b38be742cf7558476956d12414cb274f2 ]
+[ Upstream commit e275d9091c01b3b46f3ec534ce4ac77cffc9e3ae ]
 
-Currently, airoha_eth driver updates the CPU index register prior of
-verifying whether the number of free descriptors has fallen below the
-threshold.
-Move net_device TX queue length check before updating the TX CPU index
-in order to update TX CPU index even if there are more packets to be
-transmitted but the net_device TX queue is going to be stopped
-accounting the inflight packets.
+Move hardware counter (HC) statistics from mana_port_context to
+mana_context to enable sharing stats across multiple network ports
+on the same MANA VF. Previously, each network port queried
+hardware counters independently using MANA_QUERY_GF_STAT command
+(GF = Generic Function stats from GDMA hardware), resulting in
+redundant queries when multiple ports existed on the same device.
 
-Fixes: 1d304174106c ("net: airoha: Implement BQL support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org
+Isolate hardware counter stats by introducing mana_ethtool_hc_stats
+in mana_context and update the code to ensure all stats are properly
+reported via ethtool -S <interface>, maintaining consistency with
+previous behavior.
+
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1763120599-6331-2-git-send-email-ernis@linux.microsoft.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7fdaf069bd0 ("net: mana: Don't overwrite port probe error with add_adev result")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 67 ++++++++-------
+ .../ethernet/microsoft/mana/mana_ethtool.c    | 85 ++++++++++---------
+ include/net/mana/mana.h                       | 14 +--
+ 3 files changed, 90 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index a73c224d65755..4b804ca927819 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2092,17 +2092,16 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index d90be4142e257..2e5efc03cacec 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2836,11 +2836,12 @@ int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
+ 	return 0;
+ }
  
- 	skb_tx_timestamp(skb);
- 	netdev_tx_sent_queue(txq, skb->len);
-+	if (q->ndesc - q->queued < q->free_thr) {
-+		netif_tx_stop_queue(txq);
-+		q->txq_stopped = true;
-+	}
+-void mana_query_gf_stats(struct mana_port_context *apc)
++void mana_query_gf_stats(struct mana_context *ac)
+ {
++	struct gdma_context *gc = ac->gdma_dev->gdma_context;
+ 	struct mana_query_gf_stat_resp resp = {};
+ 	struct mana_query_gf_stat_req req = {};
+-	struct net_device *ndev = apc->ndev;
++	struct device *dev = gc->dev;
+ 	int err;
  
- 	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
- 		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
- 				TX_RING_CPU_IDX_MASK,
- 				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
+ 	mana_gd_init_req_hdr(&req.hdr, MANA_QUERY_GF_STAT,
+@@ -2874,52 +2875,52 @@ void mana_query_gf_stats(struct mana_port_context *apc)
+ 			STATISTICS_FLAGS_HC_TX_BCAST_BYTES |
+ 			STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR;
  
--	if (q->ndesc - q->queued < q->free_thr) {
--		netif_tx_stop_queue(txq);
--		q->txq_stopped = true;
--	}
+-	err = mana_send_request(apc->ac, &req, sizeof(req), &resp,
++	err = mana_send_request(ac, &req, sizeof(req), &resp,
+ 				sizeof(resp));
+ 	if (err) {
+-		netdev_err(ndev, "Failed to query GF stats: %d\n", err);
++		dev_err(dev, "Failed to query GF stats: %d\n", err);
+ 		return;
+ 	}
+ 	err = mana_verify_resp_hdr(&resp.hdr, MANA_QUERY_GF_STAT,
+ 				   sizeof(resp));
+ 	if (err || resp.hdr.status) {
+-		netdev_err(ndev, "Failed to query GF stats: %d, 0x%x\n", err,
+-			   resp.hdr.status);
++		dev_err(dev, "Failed to query GF stats: %d, 0x%x\n", err,
++			resp.hdr.status);
+ 		return;
+ 	}
+ 
+-	apc->eth_stats.hc_rx_discards_no_wqe = resp.rx_discards_nowqe;
+-	apc->eth_stats.hc_rx_err_vport_disabled = resp.rx_err_vport_disabled;
+-	apc->eth_stats.hc_rx_bytes = resp.hc_rx_bytes;
+-	apc->eth_stats.hc_rx_ucast_pkts = resp.hc_rx_ucast_pkts;
+-	apc->eth_stats.hc_rx_ucast_bytes = resp.hc_rx_ucast_bytes;
+-	apc->eth_stats.hc_rx_bcast_pkts = resp.hc_rx_bcast_pkts;
+-	apc->eth_stats.hc_rx_bcast_bytes = resp.hc_rx_bcast_bytes;
+-	apc->eth_stats.hc_rx_mcast_pkts = resp.hc_rx_mcast_pkts;
+-	apc->eth_stats.hc_rx_mcast_bytes = resp.hc_rx_mcast_bytes;
+-	apc->eth_stats.hc_tx_err_gf_disabled = resp.tx_err_gf_disabled;
+-	apc->eth_stats.hc_tx_err_vport_disabled = resp.tx_err_vport_disabled;
+-	apc->eth_stats.hc_tx_err_inval_vportoffset_pkt =
++	ac->hc_stats.hc_rx_discards_no_wqe = resp.rx_discards_nowqe;
++	ac->hc_stats.hc_rx_err_vport_disabled = resp.rx_err_vport_disabled;
++	ac->hc_stats.hc_rx_bytes = resp.hc_rx_bytes;
++	ac->hc_stats.hc_rx_ucast_pkts = resp.hc_rx_ucast_pkts;
++	ac->hc_stats.hc_rx_ucast_bytes = resp.hc_rx_ucast_bytes;
++	ac->hc_stats.hc_rx_bcast_pkts = resp.hc_rx_bcast_pkts;
++	ac->hc_stats.hc_rx_bcast_bytes = resp.hc_rx_bcast_bytes;
++	ac->hc_stats.hc_rx_mcast_pkts = resp.hc_rx_mcast_pkts;
++	ac->hc_stats.hc_rx_mcast_bytes = resp.hc_rx_mcast_bytes;
++	ac->hc_stats.hc_tx_err_gf_disabled = resp.tx_err_gf_disabled;
++	ac->hc_stats.hc_tx_err_vport_disabled = resp.tx_err_vport_disabled;
++	ac->hc_stats.hc_tx_err_inval_vportoffset_pkt =
+ 					     resp.tx_err_inval_vport_offset_pkt;
+-	apc->eth_stats.hc_tx_err_vlan_enforcement =
++	ac->hc_stats.hc_tx_err_vlan_enforcement =
+ 					     resp.tx_err_vlan_enforcement;
+-	apc->eth_stats.hc_tx_err_eth_type_enforcement =
++	ac->hc_stats.hc_tx_err_eth_type_enforcement =
+ 					     resp.tx_err_ethtype_enforcement;
+-	apc->eth_stats.hc_tx_err_sa_enforcement = resp.tx_err_SA_enforcement;
+-	apc->eth_stats.hc_tx_err_sqpdid_enforcement =
++	ac->hc_stats.hc_tx_err_sa_enforcement = resp.tx_err_SA_enforcement;
++	ac->hc_stats.hc_tx_err_sqpdid_enforcement =
+ 					     resp.tx_err_SQPDID_enforcement;
+-	apc->eth_stats.hc_tx_err_cqpdid_enforcement =
++	ac->hc_stats.hc_tx_err_cqpdid_enforcement =
+ 					     resp.tx_err_CQPDID_enforcement;
+-	apc->eth_stats.hc_tx_err_mtu_violation = resp.tx_err_mtu_violation;
+-	apc->eth_stats.hc_tx_err_inval_oob = resp.tx_err_inval_oob;
+-	apc->eth_stats.hc_tx_bytes = resp.hc_tx_bytes;
+-	apc->eth_stats.hc_tx_ucast_pkts = resp.hc_tx_ucast_pkts;
+-	apc->eth_stats.hc_tx_ucast_bytes = resp.hc_tx_ucast_bytes;
+-	apc->eth_stats.hc_tx_bcast_pkts = resp.hc_tx_bcast_pkts;
+-	apc->eth_stats.hc_tx_bcast_bytes = resp.hc_tx_bcast_bytes;
+-	apc->eth_stats.hc_tx_mcast_pkts = resp.hc_tx_mcast_pkts;
+-	apc->eth_stats.hc_tx_mcast_bytes = resp.hc_tx_mcast_bytes;
+-	apc->eth_stats.hc_tx_err_gdma = resp.tx_err_gdma;
++	ac->hc_stats.hc_tx_err_mtu_violation = resp.tx_err_mtu_violation;
++	ac->hc_stats.hc_tx_err_inval_oob = resp.tx_err_inval_oob;
++	ac->hc_stats.hc_tx_bytes = resp.hc_tx_bytes;
++	ac->hc_stats.hc_tx_ucast_pkts = resp.hc_tx_ucast_pkts;
++	ac->hc_stats.hc_tx_ucast_bytes = resp.hc_tx_ucast_bytes;
++	ac->hc_stats.hc_tx_bcast_pkts = resp.hc_tx_bcast_pkts;
++	ac->hc_stats.hc_tx_bcast_bytes = resp.hc_tx_bcast_bytes;
++	ac->hc_stats.hc_tx_mcast_pkts = resp.hc_tx_mcast_pkts;
++	ac->hc_stats.hc_tx_mcast_bytes = resp.hc_tx_mcast_bytes;
++	ac->hc_stats.hc_tx_err_gdma = resp.tx_err_gdma;
+ }
+ 
+ void mana_query_phy_stats(struct mana_port_context *apc)
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+index a1afa75a94631..3dfd96146424e 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+@@ -15,66 +15,69 @@ struct mana_stats_desc {
+ static const struct mana_stats_desc mana_eth_stats[] = {
+ 	{"stop_queue", offsetof(struct mana_ethtool_stats, stop_queue)},
+ 	{"wake_queue", offsetof(struct mana_ethtool_stats, wake_queue)},
+-	{"hc_rx_discards_no_wqe", offsetof(struct mana_ethtool_stats,
++	{"tx_cq_err", offsetof(struct mana_ethtool_stats, tx_cqe_err)},
++	{"tx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
++					tx_cqe_unknown_type)},
++	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
++					rx_coalesced_err)},
++	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
++					rx_cqe_unknown_type)},
++};
++
++static const struct mana_stats_desc mana_hc_stats[] = {
++	{"hc_rx_discards_no_wqe", offsetof(struct mana_ethtool_hc_stats,
+ 					   hc_rx_discards_no_wqe)},
+-	{"hc_rx_err_vport_disabled", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_err_vport_disabled", offsetof(struct mana_ethtool_hc_stats,
+ 					      hc_rx_err_vport_disabled)},
+-	{"hc_rx_bytes", offsetof(struct mana_ethtool_stats, hc_rx_bytes)},
+-	{"hc_rx_ucast_pkts", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_bytes", offsetof(struct mana_ethtool_hc_stats, hc_rx_bytes)},
++	{"hc_rx_ucast_pkts", offsetof(struct mana_ethtool_hc_stats,
+ 				      hc_rx_ucast_pkts)},
+-	{"hc_rx_ucast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_ucast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 				       hc_rx_ucast_bytes)},
+-	{"hc_rx_bcast_pkts", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_bcast_pkts", offsetof(struct mana_ethtool_hc_stats,
+ 				      hc_rx_bcast_pkts)},
+-	{"hc_rx_bcast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_bcast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 				       hc_rx_bcast_bytes)},
+-	{"hc_rx_mcast_pkts", offsetof(struct mana_ethtool_stats,
+-			hc_rx_mcast_pkts)},
+-	{"hc_rx_mcast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_rx_mcast_pkts", offsetof(struct mana_ethtool_hc_stats,
++				      hc_rx_mcast_pkts)},
++	{"hc_rx_mcast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 				       hc_rx_mcast_bytes)},
+-	{"hc_tx_err_gf_disabled", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_err_gf_disabled", offsetof(struct mana_ethtool_hc_stats,
+ 					   hc_tx_err_gf_disabled)},
+-	{"hc_tx_err_vport_disabled", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_err_vport_disabled", offsetof(struct mana_ethtool_hc_stats,
+ 					      hc_tx_err_vport_disabled)},
+ 	{"hc_tx_err_inval_vportoffset_pkt",
+-	 offsetof(struct mana_ethtool_stats,
++	 offsetof(struct mana_ethtool_hc_stats,
+ 		  hc_tx_err_inval_vportoffset_pkt)},
+-	{"hc_tx_err_vlan_enforcement", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_err_vlan_enforcement", offsetof(struct mana_ethtool_hc_stats,
+ 						hc_tx_err_vlan_enforcement)},
+ 	{"hc_tx_err_eth_type_enforcement",
+-	 offsetof(struct mana_ethtool_stats, hc_tx_err_eth_type_enforcement)},
+-	{"hc_tx_err_sa_enforcement", offsetof(struct mana_ethtool_stats,
++	 offsetof(struct mana_ethtool_hc_stats, hc_tx_err_eth_type_enforcement)},
++	{"hc_tx_err_sa_enforcement", offsetof(struct mana_ethtool_hc_stats,
+ 					      hc_tx_err_sa_enforcement)},
+ 	{"hc_tx_err_sqpdid_enforcement",
+-	 offsetof(struct mana_ethtool_stats, hc_tx_err_sqpdid_enforcement)},
++	 offsetof(struct mana_ethtool_hc_stats, hc_tx_err_sqpdid_enforcement)},
+ 	{"hc_tx_err_cqpdid_enforcement",
+-	 offsetof(struct mana_ethtool_stats, hc_tx_err_cqpdid_enforcement)},
+-	{"hc_tx_err_mtu_violation", offsetof(struct mana_ethtool_stats,
++	 offsetof(struct mana_ethtool_hc_stats, hc_tx_err_cqpdid_enforcement)},
++	{"hc_tx_err_mtu_violation", offsetof(struct mana_ethtool_hc_stats,
+ 					     hc_tx_err_mtu_violation)},
+-	{"hc_tx_err_inval_oob", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_err_inval_oob", offsetof(struct mana_ethtool_hc_stats,
+ 					 hc_tx_err_inval_oob)},
+-	{"hc_tx_err_gdma", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_err_gdma", offsetof(struct mana_ethtool_hc_stats,
+ 				    hc_tx_err_gdma)},
+-	{"hc_tx_bytes", offsetof(struct mana_ethtool_stats, hc_tx_bytes)},
+-	{"hc_tx_ucast_pkts", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_bytes", offsetof(struct mana_ethtool_hc_stats, hc_tx_bytes)},
++	{"hc_tx_ucast_pkts", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_ucast_pkts)},
+-	{"hc_tx_ucast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_ucast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_ucast_bytes)},
+-	{"hc_tx_bcast_pkts", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_bcast_pkts", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_bcast_pkts)},
+-	{"hc_tx_bcast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_bcast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_bcast_bytes)},
+-	{"hc_tx_mcast_pkts", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_mcast_pkts", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_mcast_pkts)},
+-	{"hc_tx_mcast_bytes", offsetof(struct mana_ethtool_stats,
++	{"hc_tx_mcast_bytes", offsetof(struct mana_ethtool_hc_stats,
+ 					hc_tx_mcast_bytes)},
+-	{"tx_cq_err", offsetof(struct mana_ethtool_stats, tx_cqe_err)},
+-	{"tx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+-					tx_cqe_unknown_type)},
+-	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
+-					rx_coalesced_err)},
+-	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+-					rx_cqe_unknown_type)},
+ };
+ 
+ static const struct mana_stats_desc mana_phy_stats[] = {
+@@ -138,7 +141,7 @@ static int mana_get_sset_count(struct net_device *ndev, int stringset)
+ 	if (stringset != ETH_SS_STATS)
+ 		return -EINVAL;
+ 
+-	return ARRAY_SIZE(mana_eth_stats) + ARRAY_SIZE(mana_phy_stats) +
++	return ARRAY_SIZE(mana_eth_stats) + ARRAY_SIZE(mana_phy_stats) + ARRAY_SIZE(mana_hc_stats) +
+ 			num_queues * (MANA_STATS_RX_COUNT + MANA_STATS_TX_COUNT);
+ }
+ 
+@@ -150,10 +153,12 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
+ 
+ 	if (stringset != ETH_SS_STATS)
+ 		return;
 -
- 	spin_unlock_bh(&q->lock);
+ 	for (i = 0; i < ARRAY_SIZE(mana_eth_stats); i++)
+ 		ethtool_puts(&data, mana_eth_stats[i].name);
  
- 	return NETDEV_TX_OK;
++	for (i = 0; i < ARRAY_SIZE(mana_hc_stats); i++)
++		ethtool_puts(&data, mana_hc_stats[i].name);
++
+ 	for (i = 0; i < ARRAY_SIZE(mana_phy_stats); i++)
+ 		ethtool_puts(&data, mana_phy_stats[i].name);
+ 
+@@ -186,6 +191,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
+ 	struct mana_port_context *apc = netdev_priv(ndev);
+ 	unsigned int num_queues = apc->num_queues;
+ 	void *eth_stats = &apc->eth_stats;
++	void *hc_stats = &apc->ac->hc_stats;
+ 	void *phy_stats = &apc->phy_stats;
+ 	struct mana_stats_rx *rx_stats;
+ 	struct mana_stats_tx *tx_stats;
+@@ -208,7 +214,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
+ 	if (!apc->port_is_up)
+ 		return;
+ 	/* we call mana function to update stats from GDMA */
+-	mana_query_gf_stats(apc);
++	mana_query_gf_stats(apc->ac);
+ 
+ 	/* We call this mana function to get the phy stats from GDMA and includes
+ 	 * aggregate tx/rx drop counters, Per-TC(Traffic Channel) tx/rx and pause
+@@ -219,6 +225,9 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
+ 	for (q = 0; q < ARRAY_SIZE(mana_eth_stats); q++)
+ 		data[i++] = *(u64 *)(eth_stats + mana_eth_stats[q].offset);
+ 
++	for (q = 0; q < ARRAY_SIZE(mana_hc_stats); q++)
++		data[i++] = *(u64 *)(hc_stats + mana_hc_stats[q].offset);
++
+ 	for (q = 0; q < ARRAY_SIZE(mana_phy_stats); q++)
+ 		data[i++] = *(u64 *)(phy_stats + mana_phy_stats[q].offset);
+ 
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index f9f264385405c..265f2d90027d6 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -375,6 +375,13 @@ struct mana_tx_qp {
+ struct mana_ethtool_stats {
+ 	u64 stop_queue;
+ 	u64 wake_queue;
++	u64 tx_cqe_err;
++	u64 tx_cqe_unknown_type;
++	u64 rx_coalesced_err;
++	u64 rx_cqe_unknown_type;
++};
++
++struct mana_ethtool_hc_stats {
+ 	u64 hc_rx_discards_no_wqe;
+ 	u64 hc_rx_err_vport_disabled;
+ 	u64 hc_rx_bytes;
+@@ -402,10 +409,6 @@ struct mana_ethtool_stats {
+ 	u64 hc_tx_mcast_pkts;
+ 	u64 hc_tx_mcast_bytes;
+ 	u64 hc_tx_err_gdma;
+-	u64 tx_cqe_err;
+-	u64 tx_cqe_unknown_type;
+-	u64 rx_coalesced_err;
+-	u64 rx_cqe_unknown_type;
+ };
+ 
+ struct mana_ethtool_phy_stats {
+@@ -473,6 +476,7 @@ struct mana_context {
+ 	u16 num_ports;
+ 	u8 bm_hostmode;
+ 
++	struct mana_ethtool_hc_stats hc_stats;
+ 	struct mana_eq *eqs;
+ 	struct dentry *mana_eqs_debugfs;
+ 
+@@ -578,7 +582,7 @@ u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
+ struct bpf_prog *mana_xdp_get(struct mana_port_context *apc);
+ void mana_chn_setxdp(struct mana_port_context *apc, struct bpf_prog *prog);
+ int mana_bpf(struct net_device *ndev, struct netdev_bpf *bpf);
+-void mana_query_gf_stats(struct mana_port_context *apc);
++void mana_query_gf_stats(struct mana_context *ac);
+ int mana_query_link_cfg(struct mana_port_context *apc);
+ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
+ 		      int enable_clamping);
 -- 
 2.53.0
 
