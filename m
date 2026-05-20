@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAHtOpL5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:34 +0200
+	id OPevIJgnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC315958D6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1DF59AE6E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2FBB83129C60
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8162F3677957
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6B43F44CD;
-	Wed, 20 May 2026 17:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D119C3F4DD6;
+	Wed, 20 May 2026 18:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsamIue1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUQ8ee80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8483F58D6;
-	Wed, 20 May 2026 17:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BDF3D88FC;
+	Wed, 20 May 2026 18:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299583; cv=none; b=MH7/HMEtpzU4L6hThhqgSXYJJVzAfFcATPxxchwqXgWbnywsZgJs8pU92NRgYpjIPxahF+p6YlQGgeF6Tn+mnMsglCMcwUugzTzpPLvD2bFYBdum1iX/kdFhkgtv+mzNx3+c3lXAei3tjSrsY4OAigNLREqcZGs0xNzkquF3gPU=
+	t=1779301289; cv=none; b=nuGz52yNcKhQRiMLY31eHFBn0XUyU56GvMvGyzklyqaqyiyP/FiF3qHc0LxfqaeuE5NAwcmCVHzjFLhiPRumhLoxUlx56lxCVr0JO7Yn4tIRmx7hGGp/3zZhBp600CscfQaTjK6KtEM+8ghT5YTgdNbSQWZkq3EeQHGfwTgHXhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299583; c=relaxed/simple;
-	bh=t76zTtSlyT5AuTZi+KZl4p0DlQVfti1xQRoJC6OYAkA=;
+	s=arc-20240116; t=1779301289; c=relaxed/simple;
+	bh=YEExgy2NyETneLlhCCyAJFX13OkJ8ycFq2l7Fco7gdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvZAllFZ47BVQLp1Zdw8Sa3EYeFTD7AhE8uXq5WKyM9BhcDLbwDfZZQ/3vnU4iMxHhh+XaVmIDEc33kw2FFnhpLh6eAf081H1C5E2+kxm9lV9JGrCd12R1sWlizvnlgF82tW9Ud1gzQVmol4r86DGeODxvZ/ibe9dD1NerO8Ogc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsamIue1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A433A1F00893;
-	Wed, 20 May 2026 17:53:01 +0000 (UTC)
+	 MIME-Version; b=ZCpv93o2/62e56ezBe8UVo/m34F7Lfhll6JV2+o3gteJguxd8EAuDvwClsoZtzeO8BhNeisIuCZW3sO8dYJMJQIt5xOO3FAOrfeigqeUY7pqchoY9wJQjuVWTmRkhpZAtmLqS6uGXkYLzLCSDkMIlYz9SqjDQet9/lo21C0KQTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUQ8ee80; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087871F000E9;
+	Wed, 20 May 2026 18:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299582;
-	bh=VdtuFvi+Z+5yYKN9HDbMwvHofcEteo0H8wZllkMNjMw=;
+	s=korg; t=1779301288;
+	bh=DZfSutgE++7rXgmQAIPoAvVkKDmNpdL+6w3503E2UNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LsamIue1XCXctEBUKLLDjEdwAuCmCA0jdSSO13IKJcNFSCZdPGi/o8XUTxjE0+iEb
-	 SRZnO542+m7AmEXvjgy42ekrdwIVOUWWMwdclqNnATAR0qst1REhwPULn8Z4OrxKYL
-	 rJIHS5eWgOfbBqHkC6XwQ+7ejcBSiJffswCuKNkg=
+	b=LUQ8ee80XhwTJ3izHz9r/kGL7xOiK/j5wM6o8xQ1UGK0uKLYRfaiwpawqGalRuOSg
+	 zPzccLYNAivVVEa5/Yw2OUJ2r1y4fnbCUuGYOvefe/rc005/hsTXHiKbm05+La9Nlg
+	 4IzSYWPPvHvpM5KLLl6JCsXMndXEUbWuTs0RVwz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
+	Kohei Enju <kohei@enjuk.jp>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 826/957] ALSA: hda/tas2781: Fix incorrect bit update for non-book-zero or book 0 pages >1
+Subject: [PATCH 6.12 498/666] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
 Date: Wed, 20 May 2026 18:21:49 +0200
-Message-ID: <20260520162152.481303952@linuxfoundation.org>
+Message-ID: <20260520162122.054391219@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +66,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252038-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252673-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 0FC315958D6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: CE1DF59AE6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit e052a1f7199260eda4d6ca08a59c3b98738f8491 ]
+[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
 
-In TAS2781 SPI mode, when accessing non-book-zero or page numbers greater
-than 1 in book 0, an additional byte must be read. The first byte in such
-cases is a dummy byte and should be ignored.
+syzbot reported "sleeping function called from invalid context" in
+vhost_net_busy_poll().
 
-Fixes: 9fa6a693ad8d ("ALSA: hda/tas2781: Remove tas2781_spi_fwlib.c and leverage SND_SOC_TAS2781_FMWLIB")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20260429054206.429-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Commit 030881372460 ("vhost_net: basic polling support") introduced a
+busy-poll loop and preempt_{disable,enable}() around it, where each
+iteration calls a sleepable function inside the loop.
+
+The purpose of disabling preemption was to keep local_clock()-based
+timeout accounting on a single CPU, rather than as a requirement of
+busy-poll itself:
+
+https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+
+>From this perspective, migrate_disable() is sufficient here, so replace
+preempt_disable() with migrate_disable(), avoiding sleepable accesses
+from a preempt-disabled context.
+
+Fixes: 030881372460 ("vhost_net: basic polling support")
+Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/vhost/net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-index 488e35dac9524..a64f2c899d50c 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-@@ -135,10 +135,18 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
- 	int ret, val;
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index aff4ec7835628..3ad1a6f4ef965 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -549,7 +549,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
+ 				     tvq->busyloop_timeout;
  
- 	/*
--	 * In our TAS2781 SPI mode, read/write was masked in last bit of
--	 * address, it cause regmap_update_bits() not work as expected.
-+	 * In TAS2781 SPI mode, when accessing non-book-zero or page numbers
-+	 * greater than 1 in book 0, an additional byte must be read. The
-+	 * first byte in such cases is a dummy byte and should be ignored.
- 	 */
--	ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
-+	if ((TASDEVICE_BOOK_ID(reg) > 0) || (TASDEVICE_PAGE_ID(reg) > 1)) {
-+		unsigned char buf[2];
-+
-+		ret = tasdevice_dev_bulk_read(tas_priv, chn, reg, buf, 2);
-+		val = buf[1];
-+	} else {
-+		ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
-+	}
- 	if (ret < 0) {
- 		dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
- 		return ret;
+-	preempt_disable();
++	migrate_disable();
+ 	endtime = busy_clock() + busyloop_timeout;
+ 
+ 	while (vhost_can_busy_poll(endtime)) {
+@@ -566,7 +566,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 		cpu_relax();
+ 	}
+ 
+-	preempt_enable();
++	migrate_enable();
+ 
+ 	if (poll_rx || sock_has_rx_data(sock))
+ 		vhost_net_busy_poll_try_queue(net, vq);
 -- 
 2.53.0
 
