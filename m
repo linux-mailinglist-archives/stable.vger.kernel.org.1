@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-252888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LfoI0z/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:00 +0200
+	id wB4eHKcUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2A3596C67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF3C5992B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A2D230684CB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B3F333239063
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4047B333441;
-	Wed, 20 May 2026 18:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C92B3DC4DA;
+	Wed, 20 May 2026 18:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueMzsgW9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUielqBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B5B368968;
-	Wed, 20 May 2026 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A173C140F;
+	Wed, 20 May 2026 18:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301852; cv=none; b=Y3tE4TknG8zq3xyEWT+5qUV0wOJY0fXgx4Y9FjczP2XXz66oe1V4lqpBiZmZOY7HkqcJLHWMQeB8Nzbul1Icdm7d0XO0I2nequM7Ek+JyiHV8TYciwSr4YnVSvm2S4h8FQiT3kUSuw68MMqSOLyHifmwZoVrkiGne0MsTZNfeJk=
+	t=1779300767; cv=none; b=P7FGpMx6ru99CseKBi08lt35H7TRbWfpFuMxr1XB/hbgrFCJnUG6rwAnjXEPDvceokt6SDfsDjF0JJ6EKihjWT6iQhkhsAd4aBLqBH1aEzl1NNEoP2m4Dy9Z7oV/4qk4Bu6CwytT1HSCDb/kmhObelmkTws/9lXct5+sxKoMLro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301852; c=relaxed/simple;
-	bh=imIF4KvWdfrtrKhXVU/nIQAHst6QVBen5xZxNBxfgAA=;
+	s=arc-20240116; t=1779300767; c=relaxed/simple;
+	bh=iKTXhv2RbXIIM7EHPlDXkAyjBOU84XTlxy0xwOHAGH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MxCo22hx34kDB9KxJKX+AFi1i9Ax5p99quKR4P5/aQGytxy6zyzHUlZZRP8pr/KgfJE9TcqLDxinReY4wYcBKAkvacMNqQvv45DSLc8ELVNa/Rd0+Psfz9IRF9nSKYcf2OeGbuOxe5ejajPFR4RfXpCfw95PVCvMbT+Owe//dlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueMzsgW9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3888A1F000E9;
-	Wed, 20 May 2026 18:30:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KrMYFIpQSGJed6P58kNDKLk99gzBX8il2115dgdppOKL8eMJ8cLOMticYVrpcBl8E8bvXaPLREKWamA7OCv+4uslBzAlXhRwXHGuFNmwQm07YxZOoFcJiqUC5Ccw/a++z/EJB7IFBhYHJvjlylWRaw7eUBsE8eX+/rFBo/Y86tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUielqBj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323B51F000E9;
+	Wed, 20 May 2026 18:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301850;
-	bh=bORZs9XMVGgSQZm0brjy03iNE0B1D/EbC3FUnOTKYxc=;
+	s=korg; t=1779300764;
+	bh=vheijri/ivcjzxsUX0HEC+nuI0jLD1XJBciipucq2no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ueMzsgW9U0zFDIa1+yblMDfa02EgGbvIy54Y3X1FT/ctAthGqvyqMXpipXliVktid
-	 eWZfoh1l1QqvS0fJqXKpy3OmU510eA8zqJk0kMeUdmzptAif/nzhZfzXL/g6ir5Jiz
-	 xZFRZ2lLFUP6Vs7ftDrq1Ik9WFToHhNUYDGMBBSk=
+	b=LUielqBjJVOwiiIIcY7xzRFLeJCMNwhcK0Zks0quosrkL8wCwuf5vsKTZrLfCADaG
+	 pJ2UkXvKSsTgMD5cH0Hvd4osj/21JQdSMroWO91H5REuiJkpaDCJiAnVvYoZ6JnFPX
+	 vXIitZdHq13TxRqfHyYzQG4duFXwZmkNdedogtzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/508] selftests/powerpc: Suppress -Wmaybe-uninitialized with GCC 15
+Subject: [PATCH 6.12 257/666] ktest: Run POST_KTEST hooks on failure and cancellation
 Date: Wed, 20 May 2026 18:17:48 +0200
-Message-ID: <20260520162059.570524368@linuxfoundation.org>
+Message-ID: <20260520162116.785921440@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,113 +74,132 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252888-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-252473-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,gnu.org:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0F2A3596C67
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,suse.de:email,eaglescrag.net:email]
+X-Rspamd-Queue-Id: 6DF3C5992B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 6e65886fceb23605eff952d6b1975737b4c4b154 ]
+[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
 
-GCC 15 reports the below false positive '-Wmaybe-uninitialized' warning
-in vphn_unpack_associativity() when building the powerpc selftests.
+PRE_KTEST can be useful for setting up the environment and POST_KTEST to
+tear it down, however POST_KTEST only runs on the normal end-of-run path.
+It is skipped when ktest exits through dodie() or cancel_test(). Final
+cleanup hooks are skipped.
 
-  # make -C tools/testing/selftests TARGETS="powerpc"
-  [...]
-    CC       test-vphn
-  In file included from test-vphn.c:3:
-  In function ‘vphn_unpack_associativity’,
-      inlined from ‘test_one’ at test-vphn.c:371:2,
-      inlined from ‘test_vphn’ at test-vphn.c:399:9:
-  test-vphn.c:10:33: error: ‘be_packed’ may be used uninitialized [-Werror=maybe-uninitialized]
-     10 | #define be16_to_cpup(x)         bswap_16(*x)
-        |                                 ^~~~~~~~
-  vphn.c:42:27: note: in expansion of macro ‘be16_to_cpup’
-     42 |                 u16 new = be16_to_cpup(field++);
-        |                           ^~~~~~~~~~~~
-  In file included from test-vphn.c:19:
-  vphn.c: In function ‘test_vphn’:
-  vphn.c:27:16: note: ‘be_packed’ declared here
-     27 |         __be64 be_packed[VPHN_REGISTER_COUNT];
-        |                ^~~~~~~~~
-  cc1: all warnings being treated as errors
+Factor the final hook execution into run_post_ktest(), call it from the
+normal exit path and from the early exit paths, and guard it so the hook
+runs at most once.
 
-When vphn_unpack_associativity() is called from hcall_vphn() in kernel
-the error is not seen while building vphn.c during kernel compilation.
-This is because the top level Makefile includes '-fno-strict-aliasing'
-flag always.
-
-The issue here is that GCC 15 emits '-Wmaybe-uninitialized' due to type
-punning between __be64[] and __b16* when accessing the buffer via
-be16_to_cpup(). The underlying object is fully initialized but GCC 15
-fails to track the aliasing due to the strict aliasing violation here.
-Please refer [1] and [2]. This results in a false positive warning which
-is promoted to an error under '-Werror'. This problem is not seen when
-the compilation is performed with GCC 13 and 14. An issue [1] has also
-been created on GCC bugzilla.
-
-The selftest compiles fine with '-fno-strict-aliasing'. Since this GCC
-flag is used to compile vphn.c in kernel too, the same flag should be
-used to build vphn tests when compiling vphn.c in the selftest as well.
-
-Fix this by including '-fno-strict-aliasing' during vphn.c compilation
-in the selftest. This keeps the build working while limiting the scope
-of the suppression to building vphn tests.
-
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=124427
-[2] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99768
-
-Fixes: 58dae82843f5 ("selftests/powerpc: Add test for VPHN")
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260313165426.43259-1-amachhiw@linux.ibm.com
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
+Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/vphn/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/vphn/Makefile b/tools/testing/selftests/powerpc/vphn/Makefile
-index ddc09a20b80fb..873bc6b3739a6 100644
---- a/tools/testing/selftests/powerpc/vphn/Makefile
-+++ b/tools/testing/selftests/powerpc/vphn/Makefile
-@@ -4,7 +4,7 @@ TEST_GEN_PROGS := test-vphn
- top_srcdir = ../../../../..
- include ../../lib.mk
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 777ab6790d5db..c61adcfa837af 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -98,6 +98,7 @@ my $test_type;
+ my $build_type;
+ my $build_options;
+ my $final_post_ktest;
++my $post_ktest_done = 0;
+ my $pre_ktest;
+ my $post_ktest;
+ my $pre_test;
+@@ -1550,6 +1551,24 @@ sub get_test_name() {
+     return $name;
+ }
  
--CFLAGS += -m64 -I$(CURDIR)
-+CFLAGS += -m64 -I$(CURDIR) -fno-strict-aliasing
++sub run_post_ktest {
++    my $cmd;
++
++    return if ($post_ktest_done);
++
++    if (defined($final_post_ktest)) {
++	$cmd = $final_post_ktest;
++    } elsif (defined($post_ktest)) {
++	$cmd = $post_ktest;
++    } else {
++	return;
++    }
++
++    my $cp_post_ktest = eval_kernel_version($cmd);
++    run_command $cp_post_ktest;
++    $post_ktest_done = 1;
++}
++
+ sub dodie {
+     # avoid recursion
+     return if ($in_die);
+@@ -1609,6 +1628,7 @@ sub dodie {
+     if (defined($post_test)) {
+ 	run_command $post_test;
+     }
++    run_post_ktest;
  
- $(TEST_GEN_PROGS): ../harness.c
+     die @_, "\n";
+ }
+@@ -4244,6 +4264,7 @@ sub cancel_test {
+ 	send_email("KTEST: Your [$name] test was cancelled",
+ 	    "Your test started at $script_start_time was cancelled: sig int");
+     }
++    run_post_ktest;
+     die "\nCaught Sig Int, test interrupted: $!\n"
+ }
  
+@@ -4554,11 +4575,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
+     success $i;
+ }
+ 
+-if (defined($final_post_ktest)) {
+-
+-    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
+-    run_command $cp_final_post_ktest;
+-}
++run_post_ktest;
+ 
+ if ($opt{"POWEROFF_ON_SUCCESS"}) {
+     halt;
 -- 
 2.53.0
 
