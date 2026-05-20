@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFb8NxD5DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-252016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:24 +0200
+	id wHr3GP/8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E36C59575D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1960959630D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 95F6C314BDED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D69331163F3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAD3F39C9;
-	Wed, 20 May 2026 17:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEE03E5ECF;
+	Wed, 20 May 2026 18:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpDCDSSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMRYsxAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469C33F20F9;
-	Wed, 20 May 2026 17:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4B43FA5EB;
+	Wed, 20 May 2026 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299525; cv=none; b=nPoCRxcN0bNUZ3WRkxfM6+F+DEwjMgAd5sEkqrL7Tnfo98mamIar2XrHf2SCmMNW8jtk/8EAVaZTbis1lPxK9IHGyRt7BmKnc/1LrrhaYZmrscpylOVEF/ey1kmOcXH45P5G/XY62Iy9stt5syC5bTjxsFqgm6+pa3LKxxE+OnY=
+	t=1779301308; cv=none; b=XWxooZx+LYWjDJua0iiKv1rSf6yAAtN00oYp/MiIkbb5WryztwxdKe3+peHvaShc9x1QfqAi5xqkHbq2+pJvq6yo8vRmNPN/6FhnIKPIB7k3oZpfTovnuwdskOGoIuTgle0c+2WY2stZwmDy5rCZBcRPw0TdJvB/a0G2J90ZQ1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299525; c=relaxed/simple;
-	bh=7P58it20zphk2h1NS90XJobpWCiQu+8njAwiBqs40X0=;
+	s=arc-20240116; t=1779301308; c=relaxed/simple;
+	bh=XRZ47ZNDmfrAVMwKaG0EYLW+Drs7mTAOK5Y5K6S3bQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rrLhXQEj99aZ4dUsNyZtjcqRvRZwQxMGBkV/X+qFLG3JJsMw2u+w1x5/zOefYDkzF3How+15YuJlV/+LWZdvy2+7jweoWLwEnunY9tXKtd8sPNmAOfMctLZr4voAp4HcH3HLLJp1NyvL7Ew/y/6ZV7889MoiuzeQWMNQ/qxt3EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpDCDSSh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D661F000E9;
-	Wed, 20 May 2026 17:52:03 +0000 (UTC)
+	 MIME-Version; b=dhAFWKwEQdh3+8GTDerSlu+v2KCYalFuN+kF47S2ohQaV/HbrrxMKMcjRqVif1L7h45q3K3zfAr6SfPFQReQqmELOwsn0qsxEzLK823jes/UTphGMc2jajg9hgEedN37UndsVdpj6EL6D4rv7uDTwlW6R99ZclF2kkvjET8AdSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMRYsxAz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810171F00893;
+	Wed, 20 May 2026 18:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299524;
-	bh=6uTc5/xS1JjyDiorFC7kC8NVztT5clKUrtDZFu5qh20=;
+	s=korg; t=1779301307;
+	bh=Tm4C2CgsWH3qoahLoJPJeuDmcitVQdmMkbAbLXre1XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DpDCDSShoDO5KUOBCJHUh+y/4l+ydfhQ7lqX9WcYoFmBXjTEVKa08zz6vGeBiZpPn
-	 UnSRhOe+5kWREyTVj/WOC3hp/jpfabl07XRKc0m5nlwBj55d6NkJaKylFA8gImK24L
-	 Az1JxMITM6/hnaFrJUACaByzON3JmwFml2suT+G4=
+	b=tMRYsxAzXdThUVmVSoJNtigT8jUFMXWAVEnl4+LkK0jdbl1BX3mYaLyOZYvT0dSI+
+	 1rGszyzdE+tHteOn/hm04vLXhYPDWgmhgleHeG8dfN9tgxpVGcppBAk1Vfm/PK7Jg/
+	 uwrHqRCQT799WTnpI0bQSFbsoWnmfp74e1Q+sqew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 806/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v2.0 ring
+Subject: [PATCH 6.12 478/666] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
 Date: Wed, 20 May 2026 18:21:29 +0200
-Message-ID: <20260520162152.047762400@linuxfoundation.org>
+Message-ID: <20260520162121.627937158@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252016-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-252680-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9E36C59575D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1960959630D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit e5f612dc91650561fe2b5b76dd6d2898ec9ad480 ]
+[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+When per-session tree_conn_ida was converted from a dynamically
+allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
+removed from ksmbd_session_destroy() but no matching ida_destroy()
+was added.  The session is therefore freed with the IDA's backing
+xarray still intact.
 
-Fixes: 6ac27241106b ("drm/amdgpu: add JPEG v2.0 function supports")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 96179da0c6b059eb31706a0abe8dd6381c533143)
+The kernel IDA API expects ida_init() and ida_destroy() to be paired
+over an object's lifetime, so add the missing cleanup before the
+enclosing session is freed.
+
+Also move ida_init() to right after the session is allocated so that
+it is always paired with the destroy call even on the early error
+paths of __session_create() (ksmbd_init_file_table() or
+__init_smb2_session() failures), both of which jump to the error
+label and invoke ksmbd_session_destroy() on a partially initialised
+session.
+
+No leak has been observed in testing; this is a pairing fix to match
+the IDA lifetime rules, not a response to a reproduced regression.
+
+Fixes: d40012a83f87 ("cifsd: declare ida statically")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/mgmt/user_session.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-index 27c76bd424cfb..1e214b493402c 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-@@ -802,6 +802,7 @@ static const struct amd_ip_funcs jpeg_v2_0_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v2_0_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v2_0_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v2_0_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v2_0_dec_ring_set_wptr,
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 352cf9e47ebeb..faba7a502c0b7 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -171,6 +171,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	free_channel_list(sess);
+ 	kfree(sess->Preauth_HashValue);
+ 	ksmbd_release_id(&session_ida, sess->id);
++	ida_destroy(&sess->tree_conn_ida);
+ 	kfree(sess);
+ }
+ 
+@@ -445,6 +446,8 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (!sess)
+ 		return NULL;
+ 
++	ida_init(&sess->tree_conn_ida);
++
+ 	if (ksmbd_init_file_table(&sess->file_table))
+ 		goto error;
+ 
+@@ -464,8 +467,6 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (ret)
+ 		goto error;
+ 
+-	ida_init(&sess->tree_conn_ida);
+-
+ 	down_write(&sessions_table_lock);
+ 	hash_add(sessions_table, &sess->hlist, sess->id);
+ 	up_write(&sessions_table_lock);
 -- 
 2.53.0
 
