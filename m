@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-251191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HAqDB4YDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:54 +0200
+	id gJKQOYL+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853F9599822
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785CA59691F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F074324B587
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D52F30F750E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BC93A3833;
-	Wed, 20 May 2026 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF38B340A57;
+	Wed, 20 May 2026 18:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgnUC/Ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkZtCUOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D18347512;
-	Wed, 20 May 2026 17:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B6433BBCF;
+	Wed, 20 May 2026 18:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297337; cv=none; b=AhnqBGqqu5fItU4rE0UTcPLpVLGzHk85cm5BOEXAWWYRjDozuhF0jpDFCN3YyOYO5DbELfpgYocD8iQl/GCFl63hIJrqx0Pk/Li9CUV6wWR3hvg8CqCmuCOnFTnsL+HilEOTuEhlET/k2PEkOMoJcNEPn54smpFkZJaLMTxBZCg=
+	t=1779301592; cv=none; b=Fks6t2oEFM9dVBFb0byKS4NMtbqMVDL1v2ipv1qvZChn+yl8yRXh1RnsFtpkOv3Bo585HehZznjzd00/mVUJFrT+wdWS8s6PW1lz3+Nq86+uAi6mV3KQA4qXCKRr3lS5YlV7YCquJZJkR9xqZpM5ktlDr/hwj3Q90jDyL8igSGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297337; c=relaxed/simple;
-	bh=X4/WeDS7VSO7ZvjK0M0/b24Ud0ISeBJHCf3zKevNdXU=;
+	s=arc-20240116; t=1779301592; c=relaxed/simple;
+	bh=th4BmuqVS4VNqkxhK3FOx9I5/BfLl0MwXihVTj9JRW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a9rPkCYOD5bP6oJFp+NITU1Iwmg4iAwsYTwS2AIWnzNQKT5eQeDEDr2g5GQinCvyqIS0uXhQ9+m/LnbIpvT/qI/YpC1gF1Bgx9B4kAn+rDShsrm9cbN+JA8738ly/q+jqkuQ70ITCsFDnhDfqOvVS6ma+eY5XGtuL5ypk9xseFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgnUC/Ld; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E08E1F00893;
-	Wed, 20 May 2026 17:15:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qW4/7ys6L1cUxC7MJET59OdJyaXxFqU8/PH1YAFnJfEjCK9TWq6rmCnxzPfLwWMaPQmztMjpBo1kEchZF/+S4Rj2QW38825nu4xEQj01uEx99yoWntBW7oUOGdvQXiVvJ/WkBjOjT85pDRBi/6KJ6OoAW8KjKFh1XvQznIbQziY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkZtCUOJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BD61F000E9;
+	Wed, 20 May 2026 18:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297336;
-	bh=2gjZmZCviHuawBNnpoS7CFujlo9II6+xEUM9DY+wGyU=;
+	s=korg; t=1779301591;
+	bh=KXH4la87VMBwhQGoKuxy15n0CNO2MRXFapDHmLMcWJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NgnUC/LdPEnfJFiYR/SEI+bTM10IRj7f90WoNexvXMJmtAWbFJP3YL+V8D+ga69wq
-	 +7MhyghpWi8Clunff1QW5kwus27RLn50c877UhytR+2Q1FMPQqAqS0vRN7g1gRGRF5
-	 oUwN8mKiONEAVAhmipHvAWT+KwJpA3+T3QfPR3K0=
+	b=IkZtCUOJHakXi6f+qIFSihMO9sLOgwxJQxbyR1zqksK3iUh93XMEeq7rWquxOKpZH
+	 sZeOJWIKtvSlmkG/GUWuockKQjukfH2A+3Eu/lK+fQ5KYR8R+FjIbrEliBwWwiGq/C
+	 GL9OsNDViW06nKj268PrQ8I6s8n0uig8MpRQTwvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Vock <friedrich.vock@gmx.de>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Tejun Heo <tj@kernel.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Christian Koenig <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Maarten Lankhorst <dev@lankhrost.se>
-Subject: [PATCH 7.0 1133/1146] drm/ttm: Convert -EAGAIN from dmem_cgroup_try_charge to -ENOSPC
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 572/666] net/sched: sch_cake: annotate data-races in cake_dump_stats() (V)
 Date: Wed, 20 May 2026 18:23:03 +0200
-Message-ID: <20260520162213.891807759@linuxfoundation.org>
+Message-ID: <20260520162123.667260780@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,98 +69,91 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251191-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,lankhorst.se,kernel.org,amd.com,lists.freedesktop.org,linux.intel.com,lankhrost.se];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252788-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lists.freedesktop.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 853F9599822
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,toke.dk:email]
+X-Rspamd-Queue-Id: 785CA59691F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 591711b32681a04b57d00c2a404658f8419a081c upstream.
+[ Upstream commit a6c95b833dc17e84d16a8ac0f40fd0931616a52d ]
 
-dmem_cgroup_try_charge() returns -EAGAIN when the cgroup limit is
-hit and the charge fails. TTM has no concept of -EAGAIN from resource
-allocation; -ENOSPC is the canonical error meaning "no space, try
-eviction". Convert at the source in ttm_resource_alloc() so no caller
-needs to handle an unexpected error code, and clean up the now-redundant
--EAGAIN check in ttm_bo_alloc_resource().
+cake_dump_stats() runs without qdisc spinlock being held.
 
-Without this, -EAGAIN escaping ttm_resource_alloc() during an eviction
-walk causes the walk to terminate early instead of continuing to the
-next candidate.
+In this final patch, I add READ_ONCE()/WRITE_ONCE() annotations
+for cparams.target and cparams.interval.
 
-Cc: Friedrich Vock <friedrich.vock@gmx.de>
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.14+
-Fixes: 2b624a2c1865 ("drm/ttm: Handle cgroup based eviction in TTM")
-Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Maarten Lankhorst <dev@lankhrost.se>
-Link: https://patch.msgid.link/20260508160920.230339-1-thomas.hellstrom@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
+Link: https://patch.msgid.link/20260427083606.459355-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo.c       |    2 +-
- drivers/gpu/drm/ttm/ttm_resource.c |    5 ++++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ net/sched/sch_cake.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo.c
-@@ -740,7 +740,7 @@ static int ttm_bo_alloc_resource(struct
- 		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
- 		ret = ttm_resource_alloc(bo, place, res, force_space ? &limit_pool : NULL);
- 		if (ret) {
--			if (ret != -ENOSPC && ret != -EAGAIN) {
-+			if (ret != -ENOSPC) {
- 				dmem_cgroup_pool_state_put(limit_pool);
- 				return ret;
- 			}
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -398,8 +398,11 @@ int ttm_resource_alloc(struct ttm_buffer
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index ee8d662db747c..ba1a5c15e6cab 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -2297,10 +2297,11 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
  
- 	if (man->cg) {
- 		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool, ret_limit_pool);
--		if (ret)
-+		if (ret) {
-+			if (ret == -EAGAIN)
-+				ret = -ENOSPC;
- 			return ret;
-+		}
- 	}
+ 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
  
- 	ret = man->func->alloc(man, bo, place, res_ptr);
+-	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
+-	b->cparams.interval = max(rtt_est_ns +
+-				     b->cparams.target - target_ns,
+-				     b->cparams.target * 2);
++	WRITE_ONCE(b->cparams.target,
++		   max((byte_target_ns * 3) / 2, target_ns));
++	WRITE_ONCE(b->cparams.interval,
++		   max(rtt_est_ns + b->cparams.target - target_ns,
++		       b->cparams.target * 2));
+ 	b->cparams.mtu_time = byte_target_ns;
+ 	b->cparams.p_inc = 1 << 24; /* 1/256 */
+ 	b->cparams.p_dec = 1 << 20; /* 1/4096 */
+@@ -2930,9 +2931,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		PUT_TSTAT_U32(BACKLOG_BYTES, b->tin_backlog);
+ 
+ 		PUT_TSTAT_U32(TARGET_US,
+-			      ktime_to_us(ns_to_ktime(b->cparams.target)));
++			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.target))));
+ 		PUT_TSTAT_U32(INTERVAL_US,
+-			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
++			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.interval))));
+ 
+ 		PUT_TSTAT_U32(SENT_PACKETS, b->packets);
+ 		PUT_TSTAT_U32(DROPPED_PACKETS, b->tin_dropped);
+-- 
+2.53.0
+
 
 
 
