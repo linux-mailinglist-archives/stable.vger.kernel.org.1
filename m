@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-250652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLoTKiv1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-250652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:47 +0200
+	id 0OBfOuMADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D11594DDA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BD9597191
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C446337B61FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21B61390B5F6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18774372EDE;
-	Wed, 20 May 2026 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E973C3F86F4;
+	Wed, 20 May 2026 18:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0///RvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEB7V4lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FF23164C3;
-	Wed, 20 May 2026 16:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5BD3F789B;
+	Wed, 20 May 2026 18:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295967; cv=none; b=W8WnVCt17ezUBhL1CXhR2snc2eq7uqtqmygZhf9x7ak8AIFw18PXGhy9slczAS+W+oC0ceZJgI/utXjlSng9UXeHY5c4rDy28GXWgKEqIB+8z7QRdJqvOZAi8QKZxFNBaGAt7Ao4ZM9C7GnNfF+mpUuySwWxEocF1UT/QFjaZy0=
+	t=1779300138; cv=none; b=jBY6I4CYRRIiY8evIaf+XJe3tzMGigfs4YhQbbPHiHrXIl+sbnPWad1J0D6WDYtJawhXt21fbEaWVb1yLVlvFsbkiocl34eiftXcW3Syt+0ITVfN1PLyyKLaq/rurrJ9q/h3D2j9ZTMLLDoVV3TMeZhknBLa89OEFrbkZCGEcBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295967; c=relaxed/simple;
-	bh=fdfTdRsPaXVW3izBwBkg2ekwAd0p/5RSQtCH8vQmqW4=;
+	s=arc-20240116; t=1779300138; c=relaxed/simple;
+	bh=VBEbJEoTJnmgcDH6QO9MegBWpMBErNpfzdgOUBJXoKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJpzQ909b/pzTw039bMDYqxH+qv5JjfNnOnUsS1h2dUJKWY4seEdve1QBj5jK9eTd2LrftL0TV1LVidUQlRxtm6mXusK9drMJvdwdIeKUD8hMzApQ0+IyJE0gYFrVS6IbYm4OW2WOnZZRCUh89PeDueov1mjp+uJnvxeiqFba6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0///RvU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1771F000E9;
-	Wed, 20 May 2026 16:52:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VLbebPrU2C1gZU2KOrJlDZ9y/mIzFJD6ntE4ZBvX4BQ9F5mgZVlBx9ZMheo5r6ckX/zkITme0JqjD6RMRtycBGMHv+Ch91wjhhLGK2nz/DafhLXM0KksxAK3gNyaduIz1+eb+JBlu//2BKtWLJsXfRiZoLSeCe0DkjibFICk3KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEB7V4lc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCA01F000E9;
+	Wed, 20 May 2026 18:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295965;
-	bh=ye4rkb6hjL+aWyMcm7i1iTSr4ezxxMxqtoLcauahVCg=;
+	s=korg; t=1779300137;
+	bh=aMhZSIY0fNFj37z7qlJd89tg7wshOtUg6gQW+2ebxFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N0///RvUULS8tjeg2tVgveF4uwQitOECBv6LpzV1NFiA8SoyGMxVnsIkr+lZCLNck
-	 CCnNwTdCikkaynuz8VocQ+51GYzcd4MJL3ByqIYW6+BoUg69CtySak5z25iHTXyTQ0
-	 MOHdTWYlErXHQjwbPdMLvA9lvL2JJSCAGvrCg/Hw=
+	b=sEB7V4lc49H3fd50wGE67Cgsr9fiWjpCwICqTyT1b/B9Vnzp5PuVlnSLC10nCjic3
+	 vGcsKgIXloLnArr6X/anogt+vnzF14z2iRFcMkMEQeSL7UQXu2e5wbNimi0LMW7e1p
+	 tClkYbt4N3Z+FX1oYDcPPnGEM8PN4QAAAqUytNyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0621/1146] bpf, arm32: Reject BPF-to-BPF calls and callbacks in the JIT
+Subject: [PATCH 6.12 060/666] powerpc/crash: fix backup region offset update to elfcorehdr
 Date: Wed, 20 May 2026 18:14:31 +0200
-Message-ID: <20260520162202.238323234@linuxfoundation.org>
+Message-ID: <20260520162112.534640142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,130 +65,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250652-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252232-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email,iogearbox.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 39D11594DDA
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 59BD9597191
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit e1d486445af3c392628532229f7ce5f5cf7891b6 ]
+[ Upstream commit 789335cacdf37da93bb7c70322dff8c7e82881df ]
 
-The ARM32 BPF JIT does not support BPF-to-BPF function calls
-(BPF_PSEUDO_CALL) or callbacks (BPF_PSEUDO_FUNC), but it does
-not reject them either.
+update_backup_region_phdr() in file_load_64.c iterates over all the
+program headers in the kdump kernel’s elfcorehdr and updates the
+p_offset of the program header whose physical address starts at 0.
 
-When a program with subprograms is loaded (e.g. libxdp's XDP
-dispatcher uses __noinline__ subprograms, or any program using
-callbacks like bpf_loop or bpf_for_each_map_elem), the verifier
-invokes bpf_jit_subprogs() which calls bpf_int_jit_compile()
-for each subprogram.
+However, the loop logic is incorrect because the program header pointer
+is not updated during iteration. Since elfcorehdr typically contains
+PT_NOTE entries first, the PT_LOAD program header with physical address
+0 is never reached. As a result, its p_offset is not updated to point to
+the backup region.
 
-For BPF_PSEUDO_CALL, since ARM32 does not reject it, the JIT
-silently emits code using the wrong address computation:
+Because of this behavior, the capture kernel exports the first 64 KB of
+the crashed kernel’s memory at offset 0, even though that memory
+actually lives in the backup region. When a crash happens, purgatory
+copies the first 64 KB of the crashed kernel’s memory into the backup
+region so the capture kernel can safely use it.
 
-    func = __bpf_call_base + imm
+This has not caused problems so far because the first 64 KB is usually
+identical in both the crashed and capture kernels. However, this is
+just an assumption and is not guaranteed to always hold true.
 
-where imm is a pc-relative subprogram offset, producing a bogus
-function pointer.
+Fix update_backup_region_phdr() to correctly update the p_offset of the
+program header with a starting physical address of 0 by correcting the
+logic used to iterate over the program headers.
 
-For BPF_PSEUDO_FUNC, the ldimm64 handler ignores src_reg and
-loads the immediate as a normal 64-bit value without error.
-
-In both cases, build_body() reports success and a JIT image is
-allocated. ARM32 lacks the jit_data/extra_pass mechanism needed
-for the second JIT pass in bpf_jit_subprogs(). On the second
-pass, bpf_int_jit_compile() performs a full fresh compilation,
-allocating a new JIT binary and overwriting prog->bpf_func. The
-first allocation is never freed. bpf_jit_subprogs() then detects
-the function pointer changed and aborts with -ENOTSUPP, but the
-original JIT binary has already been leaked. Each program
-load/unload cycle leaks one JIT binary allocation, as reported
-by kmemleak:
-
-    unreferenced object 0xbf0a1000 (size 4096):
-      backtrace:
-        bpf_jit_binary_alloc+0x64/0xfc
-        bpf_int_jit_compile+0x14c/0x348
-        bpf_jit_subprogs+0x4fc/0xa60
-
-Fix this by rejecting both BPF_PSEUDO_CALL in the BPF_CALL
-handler and BPF_PSEUDO_FUNC in the BPF_LD_IMM64 handler, falling
-through to the existing 'notyet' path. This causes build_body()
-to fail before any JIT binary is allocated, so
-bpf_int_jit_compile() returns the original program unjitted.
-bpf_jit_subprogs() then sees !prog->jited and cleanly falls
-back to the interpreter with no leak.
-
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-Reported-by: Jonas Rebmann <jre@pengutronix.de>
-Closes: https://lore.kernel.org/bpf/b63e9174-7a3d-4e22-8294-16df07a4af89@pengutronix.de
-Tested-by: Jonas Rebmann <jre@pengutronix.de>
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Link: https://lore.kernel.org/r/20260417143353.838911-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
+Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260312083051.1935737-2-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/net/bpf_jit_32.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/kexec/file_load_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index deeb8f292454b..a900aa9738855 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1852,6 +1852,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 	{
- 		u64 val = (u32)imm | (u64)insn[1].imm << 32;
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 248a0f00a291f..cb09916b4056b 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -574,7 +574,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
+ 	unsigned int i;
  
-+		if (insn->src_reg == BPF_PSEUDO_FUNC)
-+			goto notyet;
-+
- 		emit_a32_mov_i64(dst, val, ctx);
- 
- 		return 1;
-@@ -2055,6 +2058,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 		const s8 *r5 = bpf2a32[BPF_REG_5];
- 		const u32 func = (u32)__bpf_call_base + (u32)imm;
- 
-+		if (insn->src_reg == BPF_PSEUDO_CALL)
-+			goto notyet;
-+
- 		emit_a32_mov_r64(true, r0, r1, ctx);
- 		emit_a32_mov_r64(true, r1, r2, ctx);
- 		emit_push_r64(r5, ctx);
+ 	phdr = (Elf64_Phdr *)(ehdr + 1);
+-	for (i = 0; i < ehdr->e_phnum; i++) {
++	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
+ 		if (phdr->p_paddr == BACKUP_SRC_START) {
+ 			phdr->p_offset = image->arch.backup_start;
+ 			kexec_dprintk("Backup region offset updated to 0x%lx\n",
 -- 
 2.53.0
 
