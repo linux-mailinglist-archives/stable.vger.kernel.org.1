@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHYKHRcvDmpo7wUAu9opvQ
-	(envelope-from <stable+bounces-253236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:55 +0200
+	id 8KCLBs75DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FAF859B975
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFD359597D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 913AE3980027
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8B0A314A3A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1117E3EAC82;
-	Wed, 20 May 2026 18:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0C83FB07A;
+	Wed, 20 May 2026 17:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oGwkl0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdlNdMTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9576346E55;
-	Wed, 20 May 2026 18:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A15F3F39D7;
+	Wed, 20 May 2026 17:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302752; cv=none; b=n69QVgHeRlXPissI9HIeolxm1DYg+LQbIGKk+E5kdoaEYfDy3Hoa5qODjye1CyXWBOLMzVo4dHCHUYW+GTbHzicCPTbr+U7UFIlPXE8ih4f/KW8r9BJpN45v7b2aM401PyGLNo9ne/LCRiAlak7BdhalCLyIEG9S3jjYY1upx5s=
+	t=1779299895; cv=none; b=PywRMb5VXnHKoxt4wQKj6DKIYq3nbPUQWK6PuMhOk2wsAWq6eYoXA7kQzTxmQsTrCtnTH1CXiC7f+zrxEBzWszIJOBim6V5CQFP093iSsuiT3/wBO1yXGtc47HMtEbAXJqCwqAyh1Kl4J6LhuyLDCUkBf4Qt72pEY9spsZCx5yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302752; c=relaxed/simple;
-	bh=NX9wElKHL3AY8IzBto0qqDA+BA3eS7C/HZ/HdDPmhLU=;
+	s=arc-20240116; t=1779299895; c=relaxed/simple;
+	bh=FlGeZ0B6xicd+19aJ4dtVrD4Etmu84IZsYmd9lt4Jb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtysAhWRabxtIeII1ei19HZz79EcY3gmu7VjaNWgWh/cqIseQ7mO9ovW3flcQJbWKxeeMkmyRNYUtrwM/iyoUvwGfZG5CIgQqQvDZxEP/MAH/bLm4ike9Z6Tu2pTkjr12SCj6DluV/LD5tBYo3xyj0J9JiH4tYFLKVOhO7wh/hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oGwkl0O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1511F000E9;
-	Wed, 20 May 2026 18:45:50 +0000 (UTC)
+	 MIME-Version; b=BTFw5N7egpHm0umm+Dotw3MW0oiI71OnaQf/SX/h/iPI+tifSq11dSGCjX/bC1iqUVZbqwmNz5rIT1MrxwcX0cOZsbqiRNYDGmp6EfgQkKH2WOqeP74lbPS4P+Y3ZN5pop3BKmk2yFErC7mScnhzQ9yqgTlxaK2JEFKIPpWidrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdlNdMTn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA631F000E9;
+	Wed, 20 May 2026 17:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302751;
-	bh=aupZADaAfIfvxHS/1eGEp3ACCl3qPFICus6y7ePw4Z0=;
+	s=korg; t=1779299891;
+	bh=+uacOUMqOAL7ZcJAzWakX7lCQG1rR09fG4xRc2e8C6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1oGwkl0Oa1zOHmJkeftc3tCB9vS9FAvJNa3AxNj2b0RAqHC/uK7Sgrc1PruIu2zpm
-	 DPLuLqCqh5aT+Mo6WWe8nh3RzvF7KB7JKWhs8/1Z8d7v1SRQCvSpH1pIXZYzAbUK5H
-	 sckZmcT/KV+gNgZkhxYkABF7MHMi9YTNeMGq5+ig=
+	b=xdlNdMTnyPefBcxqX8tu2PK3Zztq4GbSnB++Qa8Uhxvtd+SvbOPlD97HeA+sNDAX+
+	 9YzYNZkNOMu0R7W4q7kfjQio2co8lEaFUy6G2bhncnj7wy8kqDKNaxK1a94ScLynCJ
+	 98W2Ys0vjEOmDi4r/DAFcIVrWcuADEqsN9WaKsWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 384/508] net/sched: netem: validate slot configuration
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Songsong Zhang <U2FsdGVkX1@gmail.com>
+Subject: [PATCH 6.18 924/957] riscv: misaligned: Make enabling delegation depend on NONPORTABLE
 Date: Wed, 20 May 2026 18:23:27 +0200
-Message-ID: <20260520162106.941084968@linuxfoundation.org>
+Message-ID: <20260520162154.619467251@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,119 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253236-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,microchip.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-252139-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,networkplumber.org:email]
-X-Rspamd-Queue-Id: 0FAF859B975
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,iscas.ac.cn:email,microchip.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ADFD359597D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
+commit b69bcb13ed7024a84d6cd8ad330f1e32782fcf28 upstream.
 
-Reject slot configurations that have no defensible meaning:
+The unaligned access emulation code in Linux has various deficiencies.
+For example, it doesn't emulate vector instructions [1] [2], and doesn't
+emulate KVM guest accesses. Therefore, requesting misaligned exception
+delegation with SBI FWFT actually regresses vector instructions' and KVM
+guests' behavior.
 
-  - negative min_delay or max_delay
-  - min_delay greater than max_delay
-  - negative dist_delay or dist_jitter
-  - negative max_packets or max_bytes
+Until Linux can handle it properly, guard these sbi_fwft_set() calls
+behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends on
+NONPORTABLE. Those who are sure that this wouldn't be a problem can
+enable this option, perhaps getting better performance.
 
-Negative or out-of-order delays underflow in get_slot_next(),
-producing garbage intervals. Negative limits trip the per-slot
-accounting (packets_left/bytes_left <= 0) on the first packet of
-every slot, defeating the rate-limiting half of the slot feature.
+The rest of the existing code proceeds as before, except as if
+SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
+address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
+implementation is also not touched, but it is disabled if the firmware
+emulates unaligned accesses.
 
-Note that dist_jitter has been silently coerced to its absolute
-value by get_slot() since the feature was introduced; rejecting
-negatives here converts that silent coercion into -EINVAL. The
-abs() can be removed in a follow-up.
-
-Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception from SBI")
+Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
+Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224f529c@iscas.ac.cn/ [1]
+Link: https://lore.kernel.org/linux-riscv/b3cfcdac-0337-4db0-a611-258f2868855f@iscas.ac.cn/ [2]
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260401-riscv-misaligned-dont-delegate-v2-1-5014a288c097@iscas.ac.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/riscv/Kconfig                   |   22 ++++++++++++++++++++++
+ arch/riscv/kernel/traps_misaligned.c |    2 +-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index e778eb1d1a510..1bb399cf40328 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -825,6 +825,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
- }
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -925,6 +925,28 @@ config RISCV_VECTOR_MISALIGNED
+ 	help
+ 	  Enable detecting support for vector misaligned loads and stores.
  
-+static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
-+{
-+	const struct tc_netem_slot *c = nla_data(attr);
++config RISCV_SBI_FWFT_DELEGATE_MISALIGNED
++	bool "Request firmware delegation of unaligned access exceptions"
++	depends on RISCV_SBI
++	depends on NONPORTABLE
++	help
++	  Use SBI FWFT to request delegation of load address misaligned and
++	  store address misaligned exceptions, if possible, and prefer Linux
++	  kernel emulation of these accesses to firmware emulation.
 +
-+	if (c->min_delay < 0 || c->max_delay < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
-+		return -EINVAL;
-+	}
-+	if (c->min_delay > c->max_delay) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
-+		return -EINVAL;
-+	}
-+	if (c->dist_delay < 0 || c->dist_jitter < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
-+		return -EINVAL;
-+	}
-+	if (c->max_packets < 0 || c->max_bytes < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
++	  Unfortunately, Linux's emulation is still incomplete. Namely, it
++	  currently does not handle vector instructions and KVM guest accesses.
++	  On platforms where these accesses would have been handled by firmware,
++	  enabling this causes unexpected kernel oopses, userspaces crashes and
++	  KVM guest crashes. If you are sure that these are not a problem for
++	  your platform, you can say Y here, which may improve performance.
 +
- static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
++	  Saying N here will not worsen emulation support for unaligned accesses
++	  even in the case where the firmware also has incomplete support. It
++	  simply keeps the firmware's emulation enabled.
++
++	  If you don't know what to do here, say N.
++
+ choice
+ 	prompt "Unaligned Accesses Support"
+ 	default RISCV_PROBE_UNALIGNED_ACCESS
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -584,7 +584,7 @@ static int cpu_online_check_unaligned_ac
+ 
+ static bool misaligned_traps_delegated;
+ 
+-#ifdef CONFIG_RISCV_SBI
++#if defined(CONFIG_RISCV_SBI_FWFT_DELEGATE_MISALIGNED)
+ 
+ static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
  {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1038,6 +1061,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
- 
-+	if (tb[TCA_NETEM_SLOT]) {
-+		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
--- 
-2.53.0
-
 
 
 
