@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBTJAKYADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:46 +0200
+	id gDkIJXn7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43B25970D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB19595D7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E532C3120957
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:35:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 947C2310F76B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22C93F660B;
-	Wed, 20 May 2026 18:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FDF262A6;
+	Wed, 20 May 2026 18:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnDtXFe7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5UJRG/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500903FD133;
-	Wed, 20 May 2026 18:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9D23A6B99;
+	Wed, 20 May 2026 18:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302118; cv=none; b=uXRE9gUJtOZJd8yqbl1KnCDhzs4rW9xP3qXfuJHegPQzXyfmKLnqWQTBYmtz1wZRAMj2omAlhruTBKZzTYnCfYiDl+IRiBATTD4L+CW+PANfj4tkHFhorn8LsPFvGdVH1c2VGldzRxFXLE/BZ7Wf5XcHjj+9wyH5xp+qWlLRIrw=
+	t=1779300915; cv=none; b=MkWVYXPo9JE9mEApe+vCOcd8uQB9p4UtbJv1Q0reIiEiF01xKOBrZaTofTlzorV6YCg7WoWK5+/WaxTCJXAf/FB3bmkC+43jnVgUhE+wQDBRFJhEVK6EYLZSO342lGwbqyPHkO2dskSKqlikT6sG3MghI5AUpkMtjIAAy4R9wzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302118; c=relaxed/simple;
-	bh=jOgAhx7xslOnHyPLRWt2p4q3igtE++FmYPcqp9SIg3A=;
+	s=arc-20240116; t=1779300915; c=relaxed/simple;
+	bh=HjQQiqqP5x2XjDRv5o7S3XqrJi0waYE15ECvqm0vy1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGsxe7plcHh8Qul53OKQM8eIhnXgQQF1Cv7yorpT0wku5F7xycASYWtA3d1426pFhoq/eYKDCBYHpoqruATJkE1re5FPDyqN8tQ4+2kWj7dixS9Qxnb3qtYD7RuUP+nrWWalahOLfd5W703PRQG9uFYP1NcZZF1wlLK7RxXqypg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnDtXFe7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50641F000E9;
-	Wed, 20 May 2026 18:35:16 +0000 (UTC)
+	 MIME-Version; b=CK2O+y+hawKJ8ecPwzob/HAaVGbidapRP3wYxLyCKOfPMBkNU/3zRo0oSWbofgYQ4S9IC9B6gMusLxjWCQ2sadYAk4wyl6YkffYwYa5D6pIGTvmrI0S8RMpxH4WTKdokI06X1diXu9+AtX+Ojg1H9tVnQH/hc0KOefzSM5Cxh4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5UJRG/W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FEB1F000E9;
+	Wed, 20 May 2026 18:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302117;
-	bh=VITW8Vlqhha5wGs9397RY3VUpZ8fd9qLgNipljRMaek=;
+	s=korg; t=1779300914;
+	bh=DfkO83tLFaLu+y2Sy6Rm6d9+GY+xj1Z2jjwRaWbzy5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CnDtXFe7TV+nTVsD+dULirnIqMXTZCFjTKNPTcmt8CtJ0QoyMYEWvUdF+CAfi3Z+n
-	 h6imTWPzF+YHaMqt6Fka7zrVg0dfgcT3ecosidTl0mCSxQivbI9+s/QVdasHnLnOby
-	 WGeXJmJcyBtdN85f/zcm9kLshCfwSeEyurYTaMwc=
+	b=E5UJRG/WvVfMqS3USB0MaufPjPOtEiqrwIFAX1q8a4wVpj9s0hZKimOw01Vt73o7G
+	 XrSD62UukrwdunUSEni9xDgAbeybPkVKPXObLt6NbYjNcjTrZ0sXO3t0mTxmFDMxFi
+	 2JDo1l186DC+l3yYUZ+CTDCh9HZrDvM06F78fdMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jonas Rebmann <jre@pengutronix.de>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/508] ASoC: fsl_easrc: Change the type for iec958 channel status controls
+Subject: [PATCH 6.12 357/666] bpf, arm32: Reject BPF-to-BPF calls and callbacks in the JIT
 Date: Wed, 20 May 2026 18:19:28 +0200
-Message-ID: <20260520162101.772628700@linuxfoundation.org>
+Message-ID: <20260520162118.972640331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,221 +69,127 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252991-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252530-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A43B25970D9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[etsalapatis.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iogearbox.net:email]
+X-Rspamd-Queue-Id: 3BB19595D7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 47f28a5bd154a95d5aa563dde02a801bd32ddb81 ]
+[ Upstream commit e1d486445af3c392628532229f7ce5f5cf7891b6 ]
 
-Use the type SNDRV_CTL_ELEM_TYPE_IEC958 for iec958 channel status
-controls, the original type will cause mixer-test to iterate all 32bit
-values, which costs a lot of time. And using IEC958 type can reduce the
-control numbers.
+The ARM32 BPF JIT does not support BPF-to-BPF function calls
+(BPF_PSEUDO_CALL) or callbacks (BPF_PSEUDO_FUNC), but it does
+not reject them either.
 
-Also enable pm runtime before updating registers to make the regmap cache
-data align with the value in hardware.
+When a program with subprograms is loaded (e.g. libxdp's XDP
+dispatcher uses __noinline__ subprograms, or any program using
+callbacks like bpf_loop or bpf_for_each_map_elem), the verifier
+invokes bpf_jit_subprogs() which calls bpf_int_jit_compile()
+for each subprogram.
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-12-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For BPF_PSEUDO_CALL, since ARM32 does not reject it, the JIT
+silently emits code using the wrong address computation:
+
+    func = __bpf_call_base + imm
+
+where imm is a pc-relative subprogram offset, producing a bogus
+function pointer.
+
+For BPF_PSEUDO_FUNC, the ldimm64 handler ignores src_reg and
+loads the immediate as a normal 64-bit value without error.
+
+In both cases, build_body() reports success and a JIT image is
+allocated. ARM32 lacks the jit_data/extra_pass mechanism needed
+for the second JIT pass in bpf_jit_subprogs(). On the second
+pass, bpf_int_jit_compile() performs a full fresh compilation,
+allocating a new JIT binary and overwriting prog->bpf_func. The
+first allocation is never freed. bpf_jit_subprogs() then detects
+the function pointer changed and aborts with -ENOTSUPP, but the
+original JIT binary has already been leaked. Each program
+load/unload cycle leaks one JIT binary allocation, as reported
+by kmemleak:
+
+    unreferenced object 0xbf0a1000 (size 4096):
+      backtrace:
+        bpf_jit_binary_alloc+0x64/0xfc
+        bpf_int_jit_compile+0x14c/0x348
+        bpf_jit_subprogs+0x4fc/0xa60
+
+Fix this by rejecting both BPF_PSEUDO_CALL in the BPF_CALL
+handler and BPF_PSEUDO_FUNC in the BPF_LD_IMM64 handler, falling
+through to the existing 'notyet' path. This causes build_body()
+to fail before any JIT binary is allocated, so
+bpf_int_jit_compile() returns the original program unjitted.
+bpf_jit_subprogs() then sees !prog->jited and cleanly falls
+back to the interpreter with no leak.
+
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
+Reported-by: Jonas Rebmann <jre@pengutronix.de>
+Closes: https://lore.kernel.org/bpf/b63e9174-7a3d-4e22-8294-16df07a4af89@pengutronix.de
+Tested-by: Jonas Rebmann <jre@pengutronix.de>
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Link: https://lore.kernel.org/r/20260417143353.838911-1-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 118 +++++++++++++++++++++++++++-----------
- 1 file changed, 84 insertions(+), 34 deletions(-)
+ arch/arm/net/bpf_jit_32.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index c33cad8f07a3f..16aa0063aa65c 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -78,17 +78,47 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
+diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
+index deeb8f292454b..a900aa9738855 100644
+--- a/arch/arm/net/bpf_jit_32.c
++++ b/arch/arm/net/bpf_jit_32.c
+@@ -1852,6 +1852,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
+ 	{
+ 		u64 val = (u32)imm | (u64)insn[1].imm << 32;
  
-+static int fsl_easrc_iec958_info(struct snd_kcontrol *kcontrol,
-+				 struct snd_ctl_elem_info *uinfo)
-+{
-+	uinfo->type = SNDRV_CTL_ELEM_TYPE_IEC958;
-+	uinfo->count = 1;
-+	return 0;
-+}
++		if (insn->src_reg == BPF_PSEUDO_FUNC)
++			goto notyet;
 +
- static int fsl_easrc_get_reg(struct snd_kcontrol *kcontrol,
- 			     struct snd_ctl_elem_value *ucontrol)
- {
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
--	unsigned int regval;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	int ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS0(mc->regbase), &regval[0]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS1(mc->regbase), &regval[1]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS2(mc->regbase), &regval[2]);
-+	if (ret)
-+		return ret;
+ 		emit_a32_mov_i64(dst, val, ctx);
  
--	regval = snd_soc_component_read(component, mc->regbase);
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS3(mc->regbase), &regval[3]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS4(mc->regbase), &regval[4]);
-+	if (ret)
-+		return ret;
+ 		return 1;
+@@ -2055,6 +2058,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
+ 		const s8 *r5 = bpf2a32[BPF_REG_5];
+ 		const u32 func = (u32)__bpf_call_base + (u32)imm;
  
--	ucontrol->value.integer.value[0] = regval;
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS5(mc->regbase), &regval[5]);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
- }
-@@ -100,22 +130,62 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
- 	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
--	unsigned int regval = ucontrol->value.integer.value[0];
--	bool changed;
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	bool changed, changed_all = false;
- 	int ret;
- 
--	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
--				       GENMASK(31, 0), regval, &changed);
--	if (ret != 0)
-+	ret = pm_runtime_resume_and_get(component->dev);
-+	if (ret)
- 		return ret;
- 
--	return changed;
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS0(mc->regbase),
-+				       GENMASK(31, 0), regval[0], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
++		if (insn->src_reg == BPF_PSEUDO_CALL)
++			goto notyet;
 +
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS1(mc->regbase),
-+				       GENMASK(31, 0), regval[1], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS2(mc->regbase),
-+				       GENMASK(31, 0), regval[2], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS3(mc->regbase),
-+				       GENMASK(31, 0), regval[3], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS4(mc->regbase),
-+				       GENMASK(31, 0), regval[4], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS5(mc->regbase),
-+				       GENMASK(31, 0), regval[5], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+err:
-+	pm_runtime_put_autosuspend(component->dev);
-+
-+	if (ret != 0)
-+		return ret;
-+	else
-+		return changed_all;
- }
- 
- #define SOC_SINGLE_REG_RW(xname, xreg) \
- {	.iface = SNDRV_CTL_ELEM_IFACE_PCM, .name = (xname), \
- 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE, \
--	.info = snd_soc_info_xr_sx, .get = fsl_easrc_get_reg, \
-+	.info = fsl_easrc_iec958_info, .get = fsl_easrc_get_reg, \
- 	.put = fsl_easrc_set_reg, \
- 	.private_value = (unsigned long)&(struct soc_mreg_control) \
- 		{ .regbase = xreg, .regcount = 1, .nbits = 32, \
-@@ -146,30 +216,10 @@ static const struct snd_kcontrol_new fsl_easrc_snd_controls[] = {
- 	SOC_SINGLE_VAL_RW("Context 2 IEC958 Bits Per Sample", 2),
- 	SOC_SINGLE_VAL_RW("Context 3 IEC958 Bits Per Sample", 3),
- 
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS0", REG_EASRC_CS0(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS0", REG_EASRC_CS0(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS0", REG_EASRC_CS0(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS0", REG_EASRC_CS0(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS1", REG_EASRC_CS1(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS1", REG_EASRC_CS1(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS1", REG_EASRC_CS1(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS1", REG_EASRC_CS1(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS2", REG_EASRC_CS2(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS2", REG_EASRC_CS2(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS2", REG_EASRC_CS2(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS2", REG_EASRC_CS2(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS3", REG_EASRC_CS3(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS3", REG_EASRC_CS3(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS3", REG_EASRC_CS3(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS3", REG_EASRC_CS3(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS4", REG_EASRC_CS4(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS4", REG_EASRC_CS4(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS4", REG_EASRC_CS4(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS4", REG_EASRC_CS4(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS5", REG_EASRC_CS5(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS5", REG_EASRC_CS5(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS5", REG_EASRC_CS5(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS5", REG_EASRC_CS5(3)),
-+	SOC_SINGLE_REG_RW("Context 0 IEC958 CS", 0),
-+	SOC_SINGLE_REG_RW("Context 1 IEC958 CS", 1),
-+	SOC_SINGLE_REG_RW("Context 2 IEC958 CS", 2),
-+	SOC_SINGLE_REG_RW("Context 3 IEC958 CS", 3),
- };
- 
- /*
+ 		emit_a32_mov_r64(true, r0, r1, ctx);
+ 		emit_a32_mov_r64(true, r1, r2, ctx);
+ 		emit_push_r64(r5, ctx);
 -- 
 2.53.0
 
