@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-251387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPQzKvf7DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:47 +0200
+	id SJuXObjyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0231595EED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DCD594633
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 670B431AEC93
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 602753770A26
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C9B3F23A4;
-	Wed, 20 May 2026 17:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7033D412C;
+	Wed, 20 May 2026 16:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fw9bKHnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUrXniMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CF63F2115;
-	Wed, 20 May 2026 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A7C3D524A;
+	Wed, 20 May 2026 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297847; cv=none; b=HHRJMBPQfl2S80HehY5S6iXACEeNdwHv8PlYakmaNP0bm9H7FaRPdbbybRVKLPQ8/1jt2M0m5bZYG7xU2yU5b2JJt8RlCBrYsyahj4GqlWzx3wxhX0zXvNkSavDXFKR9/2t562o0TZfFkgWLgiCZs50s8dhxN/USr3fhbIDO3w4=
+	t=1779295446; cv=none; b=J5R7fWqBQ+lLI6be/9mi03L8l4vVPuxozgn8uNojIUtgkcIuFrgvInyhP77KopV32Nmchl7QXaILcVRrJ5IDZ9b5s0Ll6cC2HHxyUpHx/wm0T8w5g8pRXI9rKqkdIPBg+csL9maUjZA+S4QFn+Zkm+uE3gJMtfFuSKv3x5sQQ7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297847; c=relaxed/simple;
-	bh=Jqs6j9PQobd+8z8RtsE1LxBSLvRZkKuOxGJpnWTbiiE=;
+	s=arc-20240116; t=1779295446; c=relaxed/simple;
+	bh=DHBzWyoX24rqQ8gMDLM90dFtS8hq0jg3xKNRgUdLvG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el5my1XRIvMojQzLmEB/WP7G74OTI3nxMoCC1bL9pYDU+eSnehV4RrLvXOWLhjku4paWmFBMhfZauLD0hVI06qwhy3/czUCUMwuxVhcMQbCZGMnzqVElGlz9AnJbxau3JdWhTgucec7Vu1NBFKDutUMuSzFxDi5ejfAaHga9rFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fw9bKHnr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4281F000E9;
-	Wed, 20 May 2026 17:24:05 +0000 (UTC)
+	 MIME-Version; b=hQQWoPxGYEVed9lsgJgBGbu96nq0dX+Jw57WVOq+J6hV0n9clnB244HvNSFXm5DlwCK6neiQrB6mX6nCuHG8P5HhgOvogYb2ngUjelFBheG883pf0nvV/OX49K5f5fNfOepglslMwKOJxv2GHnXzRZEqdOVduwqRRct2EhMikSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUrXniMb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA64F1F000E9;
+	Wed, 20 May 2026 16:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297846;
-	bh=oyFLgoZiQdUXyH9xWnPNfJ12fvXQosmPGOUpUinCQpI=;
+	s=korg; t=1779295445;
+	bh=tOuKVPlZ7AMWO8DVdaH21ppqQ618W6PvQMuC9YTcOuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fw9bKHnr7BZuXoTuG2fk+rUN/Sq3Zy1wZ5y5STK/quZKvcZjePy0xzCmga6u5yKkX
-	 XVlxYxJgLZZCTiWxeNB47d6UuSlZTVLcA3SXvG3czL3XWv43Iyk2N5qJ7AgGxW0v1l
-	 TkeLYUQRJ+pG1412c7jA49OPAo4FDzeTwPGnmuB8=
+	b=pUrXniMbHGCJLkdW5wCLuBWch2zYD7koPAuuLpIWZK9b0ivUmnRjVJMimRy2AVzqJ
+	 Y00LOHDHUaaLqtgKMwF6lPTrPYnka1UqdNfd2ol4LH7sJdBiu12voWne3zSIInC+A7
+	 XLU2UauvBMn6fZJl1YRzchv5RUH5FLrBAHAOjblk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@invisiblethingslab.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 187/957] drm/virtio: Allow importing prime buffers when 3D is enabled
-Date: Wed, 20 May 2026 18:11:10 +0200
-Message-ID: <20260520162138.607952386@linuxfoundation.org>
+Subject: [PATCH 7.0 0421/1146] PCI: tegra194: Disable direct speed change for Endpoint mode
+Date: Wed, 20 May 2026 18:11:11 +0200
+Message-ID: <20260520162157.721966711@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250451-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251387-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,collabora.com:email,invisiblethingslab.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B0231595EED
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D4DCD594633
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@invisiblethingslab.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit df4dc947c46bb9f80038f52c6e38cb2d40c10e50 ]
+[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
 
-This functionality was added for using a KMS-only virtgpu with a physical
-(or SR-IOV) headless GPU in passthrough, but it should not be restricted
-to KMS-only mode. It can be used with cross-domain to pass guest memfds
-to the host compositor with zero copies (using udmabuf on both sides).
+Pre-silicon simulation showed the controller operating in Endpoint mode
+initiating link speed change after completing Secondary Bus Reset. Ideally,
+the Root Port or the Switch Downstream Port should initiate the link speed
+change post SBR, not the Endpoint.
 
-Drop the check for the absence of virgl_3d to allow for more use cases.
+So, as per the hardware team recommendation, disable direct speed change
+for the Endpoint mode to prevent it from initiating speed change after the
+physical layer link is up at Gen1, leaving speed change ownership with the
+host.
 
-Fixes: ca77f27a2665 ("drm/virtio: Import prime buffers from other devices as guest blobs")
-Signed-off-by: Val Packett <val@invisiblethingslab.com>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patch.msgid.link/20251210154755.1119861-2-val@invisiblethingslab.com
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_prime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_prime.c b/drivers/gpu/drm/virtio/virtgpu_prime.c
-index ce49282198cbf..2fedd5d3bd62c 100644
---- a/drivers/gpu/drm/virtio/virtgpu_prime.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_prime.c
-@@ -312,7 +312,7 @@ struct drm_gem_object *virtgpu_gem_prime_import(struct drm_device *dev,
- 		}
- 	}
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 71b80edd10c8c..4d8bfd3e34ece 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1805,6 +1805,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
  
--	if (!vgdev->has_resource_blob || vgdev->has_virgl_3d)
-+	if (!vgdev->has_resource_blob)
- 		return drm_gem_prime_import(dev, buf);
+ 	reset_control_deassert(pcie->core_rst);
  
- 	bo = kzalloc(sizeof(*bo), GFP_KERNEL);
++	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++	val &= ~PORT_LOGIC_SPEED_CHANGE;
++	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
++
+ 	if (pcie->update_fc_fixup) {
+ 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
+ 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
 -- 
 2.53.0
 
