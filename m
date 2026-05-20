@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAtLDT0dDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:45 +0200
+	id qFnQI9MhDmru6QUAu9opvQ
+	(envelope-from <stable+bounces-252077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FF459A092
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB50859A6BC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE2D4339374F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6072B38A099E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E12407CCF;
-	Wed, 20 May 2026 18:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1633F39C9;
+	Wed, 20 May 2026 17:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaigRYjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHbHX1rE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CC6407CE5;
-	Wed, 20 May 2026 18:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF65A29B8D0;
+	Wed, 20 May 2026 17:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302594; cv=none; b=k5EBc4cipKat6Q4JEPrq7YmxF8loYKU9Qfhmw56n5RID8oYzvzvMBMoTqdtwbNu8w2yvu4IfekTSv6LPfAwHsxWfRV8oZF/byxrBdmzzM6WKBoqpo9QkmlPIcej6mdtB98ZEaS5Fv8zX7QclUUDh9tHhnC2+uOteGqUokIf8G2g=
+	t=1779299686; cv=none; b=FMFD77xwXvjy4oFVh9Zblm9i9jpt2P0aSY6K+Hcwtzfq1r7+tatyZNEVXeRHH3soTemuzIJzO1y9+s3HryeFlNwN8/d0l2OWtKU/DT37AQpzNd+AHPCA39sWPSCmPgd9idQUJAMkH/c8XD7ow34Ib5UiwiAffDC7GHPla8CqVlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302594; c=relaxed/simple;
-	bh=wjvxNcsEiIhO1FlfYf+MQKGmlNNwYbXaPooikdjjOhc=;
+	s=arc-20240116; t=1779299686; c=relaxed/simple;
+	bh=U6nuTh943wv3rPJdYuIbDH6zcre1rCcvNKTe4jMkv4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/wGGAd7Sp8JB7gh/ZcySutwe09Z9W5wjj45UmRQxoUTt+1fAbJfufyDsOKVLjXUoiC2fv+Wx6ntUx3ioD4XBXYF70FodIbSzfxFAsX4N37stAUeFhYd+Yn/y/Ad/PMD97QgjH4x936zITNW/KofonlKZDy2No/vdd4dBSE34hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaigRYjD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C21F000E9;
-	Wed, 20 May 2026 18:43:12 +0000 (UTC)
+	 MIME-Version; b=NLjHR601tUqyT05ihpNjpM5pA89fx0I79w6vpk6+1Z3Y6CzPzFYpeJsF6ZZfAYAPadjVjvXB7PBqSsjI09fDVr+leZ3rG0GpvKB5xg10qPUJTd3HmHXtAhcMF+6fnCNPZ0kfyD3tIA//wyEvOP5mqu0tFffk7YJG1Vo/wH1Xr44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHbHX1rE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9EF1F000E9;
+	Wed, 20 May 2026 17:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302593;
-	bh=Eux4KWiEA77LkCtvt90kC8oVnxXvM7PKZIIDbCYPXdM=;
+	s=korg; t=1779299684;
+	bh=mJB/089myfVlYur9I1VA2YfQyi1nZB5bRnCamA5Jmqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TaigRYjDZuXbHRxjNgmAfRyx3UsOPac7sLoOa+f7wWOV28sGSjwFv7eHdieDCieO9
-	 KY7N9p/RkRjBC0kxuau33VgNsIIV027PksM9voUhQXYpFSMcjW71n6wctiw7p3Z+7P
-	 vD6oOlhTdOE7V5eX4cXWmbbGpZwRCUYDHk69hYiY=
+	b=lHbHX1rEZc5jPlZGfoObVd0DBBBXT427KdmDXAkL5n6Y+xxGsBsHJ84nJYEStmGdb
+	 RZh4gQfN5Vufc5iF4Ef9xjvm0z+LZQlMYyVLNE9NR+6Nmc0ozg0M/G6HTCdz4LO/g8
+	 BCMFUAn/5jvwXcp1Wh7e6yJ4bjIsFbxXteYDWhYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/508] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
+Subject: [PATCH 6.18 866/957] fuse: fix race when disposing stale dentries
 Date: Wed, 20 May 2026 18:22:29 +0200
-Message-ID: <20260520162105.698089107@linuxfoundation.org>
+Message-ID: <20260520162153.347426483@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +65,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252077-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253173-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 40FF459A092
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: EB50859A6BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
+[ Upstream commit cb8d2bdcb8241b66ca4ac4868f20e12cd6881ebc ]
 
-sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
-buffer is large enough for the peer AUTH chunk list with
+In fuse_dentry_tree_work() just before d_dispose_if_unused() the dentry
+could get evicted, resulting in UAF.
 
-    if (len < num_chunks)
-            return -EINVAL;
+Move unlocking dentry_hash[i].lock to after the dispose.  To do this,
+fuse_dentry_tree_del_node() needs to be moved from fuse_dentry_prune() to
+fuse_dentry_release() to prevent an ABBA deadlock.
 
-but then writes num_chunks bytes to p->gauth_chunks, which lives
-at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
-inside optval.  The check is missing the sizeof(struct
-sctp_authchunks) = 8-byte header.  When the caller supplies
-len == num_chunks (for any num_chunks > 0) the test passes but
-copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
-past the declared buffer.
+The lock ordering becomes:
 
-The sibling function sctp_getsockopt_local_auth_chunks() at the
-next line already has the correct check:
+ -> dentry_bucket.lock
+    -> dentry.d_lock
 
-    if (len < sizeof(struct sctp_authchunks) + num_chunks)
-            return -EINVAL;
-
-Align the peer variant with its sibling.
-
-Reproducer confirms on v7.0-13-generic: an unprivileged userspace
-caller that opens a loopback SCTP association with AUTH enabled,
-queries num_chunks with a short optval, then issues the real
-getsockopt with len == num_chunks and sentinel bytes painted past
-the buffer observes those sentinel bytes overwritten with the
-peer's AUTH chunk type.  The bytes written are under the peer's
-control but land in the caller's own userspace; this is not a
-kernel memory corruption, but it is a kernel-side contract
-violation that can silently corrupt adjacent userspace data.
-
-Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Closes: https://lore.kernel.org/all/20251206014242.GO1712166@ZenIV/
+Fixes: ab84ad597386 ("fuse: new work queue to periodically invalidate expired dentries")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260114145344.468856-2-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 1e2c1af1beb3 ("fuse: make sure dentry is evicted if stale")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/dir.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index b3c19210667fb..98586bcf83ceb 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -6997,7 +6997,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index 98b174bd802f0..b7a6a5b6bbc8a 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -172,8 +172,8 @@ static void fuse_dentry_tree_work(struct work_struct *work)
+ 			if (time_after64(get_jiffies_64(), fd->time)) {
+ 				rb_erase(&fd->node, &dentry_hash[i].tree);
+ 				RB_CLEAR_NODE(&fd->node);
+-				spin_unlock(&dentry_hash[i].lock);
+ 				d_dispose_if_unused(fd->dentry, &dispose);
++				spin_unlock(&dentry_hash[i].lock);
+ 				cond_resched();
+ 				spin_lock(&dentry_hash[i].lock);
+ 			} else
+@@ -464,18 +464,12 @@ static int fuse_dentry_init(struct dentry *dentry)
+ 	return 0;
+ }
  
- 	/* See if the user provided enough room for all the data */
- 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
--	if (len < num_chunks)
-+	if (len < sizeof(struct sctp_authchunks) + num_chunks)
- 		return -EINVAL;
+-static void fuse_dentry_prune(struct dentry *dentry)
++static void fuse_dentry_release(struct dentry *dentry)
+ {
+ 	struct fuse_dentry *fd = dentry->d_fsdata;
  
- 	if (copy_to_user(to, ch->chunks, num_chunks))
+ 	if (!RB_EMPTY_NODE(&fd->node))
+ 		fuse_dentry_tree_del_node(dentry);
+-}
+-
+-static void fuse_dentry_release(struct dentry *dentry)
+-{
+-	struct fuse_dentry *fd = dentry->d_fsdata;
+-
+ 	kfree_rcu(fd, rcu);
+ }
+ 
+@@ -512,7 +506,6 @@ const struct dentry_operations fuse_dentry_operations = {
+ 	.d_revalidate	= fuse_dentry_revalidate,
+ 	.d_delete	= fuse_dentry_delete,
+ 	.d_init		= fuse_dentry_init,
+-	.d_prune	= fuse_dentry_prune,
+ 	.d_release	= fuse_dentry_release,
+ 	.d_automount	= fuse_dentry_automount,
+ };
 -- 
 2.53.0
 
