@@ -1,241 +1,214 @@
-Return-Path: <stable+bounces-249803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MiyGPSODWoIzQUAu9opvQ
-	(envelope-from <stable+bounces-249803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:37:40 +0200
+	id MG5/LY6PDWoIzQUAu9opvQ
+	(envelope-from <stable+bounces-249804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:40:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E0A58BDA5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:37:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CBC58BE21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F40813076F02
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:33:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5BEB8304AC20
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD68E3D7D8F;
-	Wed, 20 May 2026 10:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8E73AF641;
+	Wed, 20 May 2026 10:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s81m1jYs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ILgFKeaZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214EA3D810B
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 10:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779273223; cv=pass; b=ukQ13BoOepQrLZTP1JLnvnhYkw/SSikqXOZg7+lNEpBQviENQF+3Ab81al5dLi2W1QpKLIkkmJWc7S0LXVDkbdcYyVXSeThHyo1dweKlagXMnBcMFItsWDYkuJdBnHjKxgtpEgM9kA9oTz1k1iv8dVYoawM0lAE0Fiw44O4kljs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779273223; c=relaxed/simple;
-	bh=I3nCSO8EnQlbzVzYsHNKe6zQ9gVE/7aRqrfkKO0oNLY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JBQB60zIonWWIkppR5abfCp0K2V1RaBq1cmY0ekq13B/oj2qFVzwlWGFkKYH8jeJZwFU2p3J7yrMbi3TbJx11wiVokknTbKJ3IBH5dkUrMDAeSOYzPVW0A5oFKVui8Ff83qgPEc9GW4g9RARNfdBWpvpIrwwH28UfaGJ9RlWzAE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s81m1jYs; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6763cc8775cso11377610a12.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 03:33:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779273217; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Hbqgq+5NoFxUkD1HZFBSkMnVq3GN8NBFbbicwUrnC0q/RAMc08XHShsLTruAWcFAl5
-         eqXaRzoQNtJ5NrADuSyE67XBI/Ty+wJlvlTPahH2VvmzXKyihJPEps6OL2f1BK7N5lnn
-         FzJkwE7gLTb3rhKvCihJQq4Y47a6SQ8XDmY2OavUnT3waclT8rcYlJ7pm4j3PEBnxWao
-         nOLiTJKPS7jXakYFrKcHPJnMEyRXiGl4FwUnvqCVTY5CwVF9vMMP3WlLiSun6vMFK4bc
-         olY+bAMfsxTCGCbXkr5BAQQKfxbmQpKhN7d6uyA7CUjEvE/gtmB7odeHO2sjjXuomxT+
-         a8uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CuNkcUrfA5La6Ov2pSAQWUelqrEhmV3emRmHUdz7AgI=;
-        fh=CTTM8CTXpOychGx15i40DY+zbaA0vDAxNpgNiSC4nWo=;
-        b=U/CKlLiHKNNLjD4UCsg9171C5byW9s/Q0OsYqPvT0nQSM0bZ1XrDgGJbCBegHdC6eL
-         zM0nZeXjQ94/tuTkZ+BeT9QiNwZoWuaraWVr+u7Af5dBiWOjtXNTH2ipyNzC1qjkpDf2
-         bWYjOCFerIWnPYcOQSNjoUGrq7UBR7IIl9aVpqIWqUXdn91rvigKYUDwY33MyFv6g0gB
-         wZ5PXIOjB9UCqoggMjhqAaK9UMjTNhBX63FWsD2KoQbUgARJdZEo81ajfty3p1C6e9Ra
-         QFjGKGN/Qd9fxQ3twqK9Io95QZll17cDWKJzA5TIyp1lp9EoZYpyPUrNcDAY+3Xc3euC
-         a9bQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779273217; x=1779878017; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CuNkcUrfA5La6Ov2pSAQWUelqrEhmV3emRmHUdz7AgI=;
-        b=s81m1jYsA5EyNwOGcooePs7jzXuKz7Mfl4nK6berxNdmoFTLHb6tlPU+i6ds4juqkV
-         rjHMMYsdufThTgfjAmiouitPBJLACnRTBATPRxyHIlfx91PJ/zd/BELKAQdN06V9L0eo
-         KQn0b55DvY2kYLGsXvd5vC9+9VSL5sd3txPLc3h8F26HQrgNsbmc9GdeIceheYkA33P1
-         Sn6swOvWZ+EDVKzF6xEwd5/iFavvx2sdVjeLeWISLBSYRDaHwh3S3mFAQjBf7yJI9np8
-         9tqBZ1kZDj3E+CeS6gbrZojZlhwEoRWizEhoyJ6llq3Ta30Nkk72EzhBdKFiForwD7jL
-         6GnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779273217; x=1779878017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CuNkcUrfA5La6Ov2pSAQWUelqrEhmV3emRmHUdz7AgI=;
-        b=IHLMpUNSSHiJSuZKVNgUG2BtoFCMQyi5PLaOgk+oa2M/0Qki0yalsMZnp0odDhKpGT
-         faoSRxEWiOZmbszHeI+ppMb5WkRNST2SnSglUQQky80SlOpmgZp6Gc/b3cB3sQLfua5f
-         yPxYBPPqUKNALxKaxpCL4eXCS7PYjQOOjeeXeNMkF0MEGOoNb5eU+tRo4M5lH516RefI
-         Yc+zWvnHmT1YKlH4kywMZnfCqVOoQyyFGKoRjMfo+uj08huxkTFEomV4aiGTkKucHdZ0
-         heDOSd8djIZ5b6ewBSgNrpmNgLOZGkyI7+FBZGXP+HbLEcGk4yC+gU4nzOFUg6PRlxBt
-         9eGA==
-X-Forwarded-Encrypted: i=1; AFNElJ9JqNSNovYJ3WXQtmHn4+D9ciwVnTp8rM2x4Jlwi+GHVq3DSlnPR9B8kk5W1S6ckPZwo/YA8as=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWa7J/dYNpZS0ZAoIcxQRd5jFZFPcEvL55WxKqh3z+zi00t0lz
-	2Z2bmBOhT++ob7UlpNhDonGd8eAisC1r6cY8k6thdDaFtTVdGgkdHxyo+RnFcrbPtoFV5GPhBSw
-	ZIXApMSMacRjVrpQjVObOE7Jmi2dEqtI=
-X-Gm-Gg: Acq92OFGDWVbV7Xg3XB6xIfympJLDzNQCpTvNtMW54MbyXghQh7gV5b6/mrk/mDJC69
-	ZBlSxcEOhWwjIx2ORp59wWLWPH7vrjHFYJnKLo4TyEr6kEDtoO9MpbWlNDnl96Nkx9DSwJpHEnB
-	dbQVs6+XBVGKDyLO9jfFcewjAPzqWy3NPWF5BAQzeUdkC3X/XVcxEj7wAh0hJ6zsWt/+8EAgcjA
-	soseCvPp7Ot7V8F47qIBZqSzzX8BGG85G0LI2PEvZckeio2aqWl/0GJQv2OiroYU7lsKM9Gfu2k
-	sOTFH8ECbWm8g4ObmduDsRtB72Qt6/E+DBaC98nU
-X-Received: by 2002:a17:906:4fc4:b0:bcf:6ba7:4bf8 with SMTP id
- a640c23a62f3a-bd4f34bd118mr1396926266b.26.1779273217009; Wed, 20 May 2026
- 03:33:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2637B2E92B3;
+	Wed, 20 May 2026 10:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779273454; cv=none; b=TEgYgnjjy0I5VkVSa03mhDnu3hHSiZ1KglRtF2oLhKUyuPP1gmq5ia+ZN6ULRCyJJhUAGWF1+8D3oWf4R/W6Qp005JMI1ipU3tPYL8CiABxUM5fOBt0ybACxkaZ77gyifEZm8WRINx1uaMshIzeZjO2YdT+cqsVBkjrFEG4iGJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779273454; c=relaxed/simple;
+	bh=uWZpbSqdF0Glgyt4dchwz+eQwccfAQiF4/g/zF76HAM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Lp/Ee0XddfkFyKSdtRgazmPy134ssxWKkszFzaAFc/EGfO1ceuCcktJcsNFY1HrWwNckUb5H1srj5HBkLbj7I6BcHuxWv2wmd2XNtcsmxgZAJ5J7ytQdfu88XhTOTlX2ajjrNJvKWK3hwSL3S4sScQzmvE76csvyaHgqDVMCxuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ILgFKeaZ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779273453; x=1810809453;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=uWZpbSqdF0Glgyt4dchwz+eQwccfAQiF4/g/zF76HAM=;
+  b=ILgFKeaZIZcxm36pt46CsO+Pqofv74oBnW1Qf5i6RE/Cadjph/4HkGjM
+   GLzewtMU1xtynJcmY+aTEM1aCmogyF07A1NgV88DSm44EfjqDgOeDi2nt
+   zVe5ny49tO36wbjFbdoxYdbkKw6Sc5QWtb3q5D0kIPc1OxyV+aRMHNqml
+   WVXeFAOWiJUxKRx9r3OTTno38SIzrD/NAVHlLxt/Kg+5aojJXl04jv7TI
+   e0rrhUzsGKeUxuw1JnvWGE4QtQXES1xsWrkznyZ/4vPTNStS8Mb9GdUsu
+   r5gIloKCaO0uSGRh4zDrSm1+G7bqHB364blQXsQhSlQAJSSCwKinnGioX
+   w==;
+X-CSE-ConnectionGUID: LYXWaAl0S4ub3fJErMiLAg==
+X-CSE-MsgGUID: BgNbQlqWQD+4T3no2cvyyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91561576"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="91561576"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 03:37:33 -0700
+X-CSE-ConnectionGUID: jdQd7bv5TPupaulGhBhWbA==
+X-CSE-MsgGUID: ILG0gVETSJmUKPvVbSHfdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="235695239"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.181])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 03:37:30 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 20 May 2026 13:37:26 +0300 (EEST)
+To: ZhaoJinming <zhaojinming@uniontech.com>
+cc: srinivas.pandruvada@linux.intel.com, Hans de Goede <hansg@kernel.org>, 
+    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] platform/x86/intel/tpmi: use cleanup helpers in
+ mem_write()
+In-Reply-To: <20260520054122.1630021-2-zhaojinming@uniontech.com>
+Message-ID: <9de7a91f-2dfa-7a99-9580-378c7a044bce@linux.intel.com>
+References: <b1006ce4-f596-b2aa-421a-518fe3cfe1f0@linux.intel.com> <20260520054122.1630021-1-zhaojinming@uniontech.com> <20260520054122.1630021-2-zhaojinming@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519151008.1399226-1-qkrwngud825@gmail.com> <e9a08bed-3d5f-4606-8d17-80a16a4c82f1@kernel.org>
-In-Reply-To: <e9a08bed-3d5f-4606-8d17-80a16a4c82f1@kernel.org>
-From: Juhyung Park <qkrwngud825@gmail.com>
-Date: Wed, 20 May 2026 19:33:24 +0900
-X-Gm-Features: AVHnY4IeL4rkcfGD6vJpoWHJPVsVY0mlOdz31w-7ieRtyfoF4Q7rZALT5Z8EpPQ
-Message-ID: <CAD14+f316+wMZNm_sJF6ULRDUD9EbkdecdDwhGQKcsu70Bdp0w@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dan Williams <djbw@kernel.org>, Dave Jiang <dave.jiang@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, linux-cxl@vger.kernel.org, 
-	nvdimm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-249804-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249803-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qkrwngud825@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B7E0A58BDA5
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.intel.com:mid,intel.com:dkim,uniontech.com:email]
+X-Rspamd-Queue-Id: 77CBC58BE21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Neat. Any sign of it getting merged?
+On Wed, 20 May 2026, ZhaoJinming wrote:
 
-Thanks.
+> In mem_write(), the temporary array returned by parse_int_array_user() must be released on all error paths. Convert the array variable to use cleanup.h scope-based cleanup so it is freed automatically on return.
 
+Not only on "error paths" but also when no error occurs.
 
-On Wed, May 20, 2026 at 2:24=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 5/19/26 17:10, Juhyung Park wrote:
-> > free_pagetable() is called via free_hugepage_table() with
-> > get_order(PMD_SIZE) =3D 9 to free the 2 MB vmemmap PMD leaves that back
-> > struct page arrays on x86_64. After commit bf9e4e30f353 ("x86/mm: use
-> > pagetable_free()"), it goes through pagetable_free() instead of
-> > __free_pages(), and pagetable_free() ultimately calls
-> > __free_pages(page, compound_order()) which ignores the explicit order
-> > argument and infers it from the page's compound metadata.
-> >
-> > The vmemmap PMD chunks are allocated by vmemmap_alloc_block() using
-> > alloc_pages_node() without __GFP_COMP, so PG_head is not set and
-> > compound_order() returns 0. Only the first of 512 pages of each PMD
-> > chunk is returned to the buddy allocator on hot-remove; the remaining
-> > 511 pages stay allocated and become unreachable. Generalized: roughly
-> > 16 MB leaked per GB of hot-removed memory per cycle.
-> >
-> > The leak affects every memory hot-remove path on x86_64 when
-> > memmap_on_memory=3DN (the default), including dax_kmem, virtio-mem,
-> > balloon drivers, ACPI memory hotplug, and direct sysfs offline+remove.
-> > memmap_on_memory=3DY avoids it because free_hugepage_table() then takes
-> > the altmap branch and does not call free_pagetable().
-> >
-> > Reproduced with CXL memory toggled through DAX in a loop:
-> >
-> >   daxctl reconfigure-device --mode=3Dsystem-ram dax0.0 --force
-> >   daxctl reconfigure-device --mode=3Ddevdax    dax0.0 --force
-> >
-> > Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-> > Cc: stable@vger.kernel.org
-> > Cc: Lu Baolu <baolu.lu@linux.intel.com>
-> > Cc: Jason Gunthorpe <jgg@nvidia.com>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > Cc: Oscar Salvador <osalvador@suse.de>
-> > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> > Cc: Andy Lutomirski <luto@kernel.org>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Thomas Gleixner <tglx@kernel.org>
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Borislav Petkov <bp@alien8.de>
-> > Cc: Dan Williams <djbw@kernel.org>
-> > Cc: Dave Jiang <dave.jiang@intel.com>
-> > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > Cc: linux-cxl@vger.kernel.org
-> > Cc: nvdimm@lists.linux.dev
-> > Assisted-by: Claude:claude-opus-4-7
-> > Signed-off-by: Juhyung Park <qkrwngud825@gmail.com>
-> > ---
-> >  arch/x86/mm/init_64.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > index df2261fa4f98..a2301bddb647 100644
-> > --- a/arch/x86/mm/init_64.c
-> > +++ b/arch/x86/mm/init_64.c
-> > @@ -1024,7 +1024,12 @@ static void __meminit free_pagetable(struct page=
- *page, int order)
-> >               free_reserved_pages(page, nr_pages);
-> >  #endif
-> >       } else {
-> > -             pagetable_free(page_ptdesc(page));
-> > +             /*
-> > +              * Use __free_pages() to honor @order: vmemmap PMD leaves
-> > +              * freed here are not compound pages, so pagetable_free()
-> > +              * would lose leak 511 of 512 pages per 2 MB chunk.
-> > +              */
-> > +             __free_pages(page, order);
-> >       }
-> >  }
-> >
->
-> I sent a proper fix for this already:
->
-> https://lore.kernel.org/all/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org=
-/
->
-> --
-> Cheers,
->
-> David
+> This also moves the array declaration next to parse_int_array_user() as required by cleanup.h usage guidelines.
+
+Please fold any text paragraphs so they don't exceed 72 characters per 
+row.
+
+> Fixes: 8e0a2fc68ec3 ("platform/x86/intel/tpmi: Use 32 bit aligned address for debugfs mem write")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+> ---
+>  drivers/platform/x86/intel/vsec_tpmi.c | 26 +++++++++-----------------
+>  1 file changed, 9 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
+> index 16fd7aa41f20..e7bc3474c7aa 100644
+> --- a/drivers/platform/x86/intel/vsec_tpmi.c
+> +++ b/drivers/platform/x86/intel/vsec_tpmi.c
+> @@ -51,6 +51,7 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/debugfs.h>
+>  #include <linux/delay.h>
+> +#include <linux/cleanup.h>
+>  #include <linux/intel_tpmi.h>
+>  #include <linux/intel_vsec.h>
+>  #include <linux/io.h>
+> @@ -473,7 +474,7 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+>  	struct seq_file *m = file->private_data;
+>  	struct intel_tpmi_pm_feature *pfs = m->private;
+>  	u32 addr, value, punit, size;
+> -	u32 num_elems, *array;
+> +	u32 num_elems;
+>  	void __iomem *mem;
+>  	int ret;
+>  
+> @@ -481,15 +482,14 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+>  	if (!size)
+>  		return -EIO;
+>  
+> +	u32 *array __free(kfree) = NULL;
+>  	ret = parse_int_array_user(userbuf, len, (int **)&array);
+>  	if (ret < 0)
+>  		return ret;
+>  
+>  	num_elems = *array;
+> -	if (num_elems != 3) {
+> -		ret = -EINVAL;
+> -		goto exit_write;
+> -	}
+> +	if (num_elems != 3)
+> +		return -EINVAL;
+>  
+>  	punit = array[1];
+>  	addr = array[2];
+> @@ -498,15 +498,11 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+>  	if (!IS_ALIGNED(addr, sizeof(u32)))
+>  		return -EINVAL;
+>  
+> -	if (punit >= pfs->pfs_header.num_entries) {
+> -		ret = -EINVAL;
+> -		goto exit_write;
+> -	}
+> +	if (punit >= pfs->pfs_header.num_entries)
+> +		return -EINVAL;
+>  
+> -	if (addr >= size) {
+> -		ret = -EINVAL;
+> -		goto exit_write;
+> -	}
+> +	if (addr >= size)
+> +		return -EINVAL;
+>  
+>  	mutex_lock(&tpmi_dev_lock);
+>  
+> @@ -522,12 +518,8 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
+>  
+>  	ret = len;
+>  
+> -unlock_mem_write:
+
+The last goto is only removed in the second patch so this will cause a 
+build failure mid-series which would be a problem when using git bisect.
+
+Other than that, this change looked okay.
+
+>  	mutex_unlock(&tpmi_dev_lock);
+>  
+> -exit_write:
+> -	kfree(array);
+> -
+>  	return ret;
+>  }
+>  
+> 
+
+-- 
+ i.
+
 
