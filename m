@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOuaJjr4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:50 +0200
+	id SBOkCrUODmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FAD595512
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BB2598A3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE7A6311BFED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCD7333A0099
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE533F871B;
-	Wed, 20 May 2026 17:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E764014B4;
+	Wed, 20 May 2026 18:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/hW8AJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZPh6g78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECE73F9280;
-	Wed, 20 May 2026 17:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFA9401483;
+	Wed, 20 May 2026 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299981; cv=none; b=lCIEmEEPdWyRVXj/2FXwqR108eG5YKzazwr/vbPCC1TCk+Fc3JjevkV5w7bO/loLXSdYeg6oEqJD8ZPvb55ujFX6eYpa+Pl8ZnclRMs9dqVIe8uJooiMyicutrSkYnFa0MBu5VWDOaGqTzoIbgqcUQ9uIA1jXMghHjcgWjr83SI=
+	t=1779302880; cv=none; b=c+JKZLyJ0AGDXHeGskluYTgw+S29GvxWro9LzrJBCcoTWgxEOQRlhuzbk9YzRKfQ+bzCSPvsJ5WpPvsWF7r/TddqkFb2qWPe+aawzLloMOPN92mMiIoO/cc7DTK7vDBc6GzUnohof5YX5naKxBLpP7TBmhjUn2gZKzJC8QbjdYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299981; c=relaxed/simple;
-	bh=fJrck+QPqq48zQyDp7LV9Z/wF8FPgBPIBDBJKhb7ooc=;
+	s=arc-20240116; t=1779302880; c=relaxed/simple;
+	bh=NAKLJXaclNikJUxWwSQJ6MmTIT2xLhw4PX2H22Y2uus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SG4sSMptJLfJ7XjTMcM+MhWf3QwzqeBi0oDGLSU5spTPptUrCymBlwSYN9dOdjHAQvAqgGsLhqFS20NJV7/64Al7FyJ+DBkjk1rRxRWtDcYUKy5bM8rAy8to/z+0sGHDJ/OeGkFgOYm4PPS4H1fx3yCxOs+zf+wTTDGAeFHtqk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/hW8AJY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6581C1F00893;
-	Wed, 20 May 2026 17:59:38 +0000 (UTC)
+	 MIME-Version; b=JxF19QuLrRZQkM38bTNK4Np8Ja5TriNA3CDjFtVcYTn7FWsjJfE/kdzq7KxAg9G23HBJ7pbWyOaEWX8oENTgvHU2YEh+mu37JEVK4QJa+2iAgMzqBXWDXOAXQQlM0tbm1+OLP9N+MR8qsYV6cKXULs0ZaLONQ57opVByuBqX+78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZPh6g78; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0611F000E9;
+	Wed, 20 May 2026 18:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299978;
-	bh=jbV+sR+PpAyQJbMlvHG3LmQhqb048YI3qB8Fj/QNfBc=;
+	s=korg; t=1779302877;
+	bh=AMe+69X8Zqe9jnVvz/nZ/lYr5+zwaRYyajbMlyemT/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w/hW8AJYSusfHKbAEBNC5A243JReVndmSHnyrPFYkQ8rXFAM5V6RqA40USbS5O1VL
-	 UWvXa5Jwo92BVNsPo7iMrs4ro/r7GisUlAWPCqSNvveThzZXN0B1D3LetJWyEHOxSN
-	 iu6/tVVuRrQmsTSfSncvxTX/wPF/OK3wVHYnfUyA=
+	b=cZPh6g78+ou0AqwTtEZsDl7VON17BOKAJMJ7HA9z/FpTrfnEY0b9n9Uel+UDLIjaK
+	 QiStZWJ/ruTt0xyMHeMO9Jy5ViZiQT7I5OVEMn1OeMECdUmgVCyJiikcKPoB9I0I5S
+	 56uR8PhYUVi6ihJBnJqKOSXi8B4JfXELXaTXPRf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Bischoff <sascha.bischoff@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 6.18 932/957] irqchip/gic-v5: Allocate ITS parent LPIs as a range
+	Paul Geurts <paul.geurts@prodrive-technologies.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 392/508] NFC: trf7970a: Ignore antenna noise when checking for RF field
 Date: Wed, 20 May 2026 18:23:35 +0200
-Message-ID: <20260520162154.801050522@linuxfoundation.org>
+Message-ID: <20260520162107.108119595@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252172-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253285-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 51FAD595512
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,animalcreek.com:email,prodrive-technologies.com:email]
+X-Rspamd-Queue-Id: 42BB2598A3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Bischoff <Sascha.Bischoff@arm.com>
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
 
-commit a7c7e42654b6a8676610ee09d22901432c4851af upstream.
+[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
 
-The ITS MSI domain no longer manages LPI allocation directly. LPIs are
-allocated and freed by the parent LPI domain, which can now handle a
-full range of interrupts and unwind partial allocations internally.
+The main channel Received Signal Strength Indicator (RSSI) measurement
+is used to determine whether an RF field is present or not. RSSI != 0
+is interpreted as an RF Field is present. This does not take RF noise
+and measurement inaccuracy into account, and results in false positives
+in the field.
 
-Make the ITS domain request and release the parent IRQs as a single
-range instead of iterating over each interrupt. The ITS allocation
-path then only needs to reserve EventIDs, allocate the parent range,
-and fill in the ITS irq_data for each MSI. Since no operation in the
-per-MSI loop can fail, the partial parent-free unwind becomes
-unnecessary.
+Define a noise level and make sure the RF field is only interpreted as
+present when the RSSI is above the noise level.
 
-On teardown, reset the ITS irq_data for the range and then release the
-parent range in one call, leaving LPI teardown to the LPI domain.
-
-Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
-Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260506093634.382062-4-sascha.bischoff@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v5-its.c |   22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/nfc/trf7970a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v5-its.c
-+++ b/drivers/irqchip/irq-gic-v5-its.c
-@@ -935,6 +935,7 @@ static int gicv5_its_irq_domain_alloc(st
- 	int ret, i;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 9e1a34e23af26..6b8311f526a5e 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -311,6 +311,7 @@
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
++#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
  
- 	its_dev = info->scratchpad[0].ptr;
-+	device_id = its_dev->device_id;
- 
- 	ret = gicv5_its_alloc_eventid(its_dev, info, nr_irqs, &event_id_base);
+ #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+ #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+@@ -1253,7 +1254,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
  	if (ret)
-@@ -944,14 +945,11 @@ static int gicv5_its_irq_domain_alloc(st
- 	if (ret)
- 		goto out_eventid;
+ 		return ret;
  
--	device_id = its_dev->device_id;
-+	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, NULL);
-+	if (ret)
-+		goto out_eventid;
- 
- 	for (i = 0; i < nr_irqs; i++) {
--		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
--		if (ret) {
--			goto out_free_irqs;
--		}
--
- 		/*
- 		 * Store eventid and deviceid into the hwirq for later use.
- 		 *
-@@ -970,12 +968,6 @@ static int gicv5_its_irq_domain_alloc(st
- 
- 	return 0;
- 
--out_free_irqs:
--	while (--i >= 0) {
--		irqd = irq_domain_get_irq_data(domain, virq + i);
--		irq_domain_reset_irq_data(irqd);
--		irq_domain_free_irqs_parent(domain, virq + i, 1);
--	}
- out_eventid:
- 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
- 	return ret;
-@@ -998,14 +990,14 @@ static void gicv5_its_irq_domain_free(st
- 	bitmap_release_region(its_dev->event_map, event_id_base,
- 			      get_count_order(nr_irqs));
- 
--	/*  Hierarchically free irq data */
- 	for (i = 0; i < nr_irqs; i++) {
- 		d = irq_domain_get_irq_data(domain, virq + i);
--
- 		irq_domain_reset_irq_data(d);
--		irq_domain_free_irqs_parent(domain, virq + i, 1);
- 	}
- 
-+	/*  Hierarchically free irq data */
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+
- 	gicv5_its_syncr(its, its_dev);
- 	gicv5_irs_syncr();
- }
+-	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
++	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+ 		*is_rf_field = true;
+ 	else
+ 		*is_rf_field = false;
+-- 
+2.53.0
+
 
 
 
