@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFGeOgQWDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:56 +0200
+	id GOPuBnAXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286995994F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E25F599743
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56F2E325C95F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93F8F32A9841
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629853BED26;
-	Wed, 20 May 2026 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB92B3FC5B4;
+	Wed, 20 May 2026 18:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+mU/U3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt2gziLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2389A3403F4;
-	Wed, 20 May 2026 17:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B193332EBD;
+	Wed, 20 May 2026 18:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297361; cv=none; b=dDyEqQrEauMJwMHN23YaPFJj7Q2TFIV3c4YekQPQo/0D+Cxm1T/apr6Kb9fg+fe8UGMLwzGA1Hs8VfLmDEUjN97HPUrLE+0YcivLzAOeikAcv4SCt4WZOvQVn8c/RtQiTVM0x21BYAsM0PJqRLX0QIYFVin2dszPF/9O6XLbIj8=
+	t=1779301492; cv=none; b=rd4mNxzYc3ka9US95tdWztmMbgbek/NpoDzVvBrGaTl+L/cH4sgEhmgY8cMst+Cfd521mVlYjeoQEzIlsK7Mrd3cr4FpAFXOdGfCePpEeRfFaYXXjb66HG8tv+FCQvZZoYrIQkLUW9dJD8eK/ksmeJecpfdZGMvsabhCv6ZmCNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297361; c=relaxed/simple;
-	bh=jzD2M0qG2KjQor3Vt04rdQ6qELumCa0pVGRx1MoOSrc=;
+	s=arc-20240116; t=1779301492; c=relaxed/simple;
+	bh=7EOw0POkdQGSsPGdzWf0RQ8bpsYf3k7wyR+RhJqU0Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgmRVN0rQ+eqY3rJBdjyLV9gfkqib+dLP6RUXyzfNFAScghMFd2HzePhLBskApqdE3vJWnSwjYC3/0mixfGNbA0wdZmDPHdzoScMuqEYUaUZJLGjWH7r1XhE2qXC4FJYBoXSdmLsKpr5Rj296auNwK1u8/8LPFKzMO4VguGHLdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+mU/U3T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C4D1F000E9;
-	Wed, 20 May 2026 17:15:59 +0000 (UTC)
+	 MIME-Version; b=qJpszMcGFiMwgSBM7dK/al72YD1Afik8WNWqGyr0jh0hbwh0aJaaYdDP8RYwM1GgF5/zUHY7bOZ+zgRtstWLWko/5OiVRgJLrq95IveEGqRGMzYShHfQe17Pk4Hos2jA+SuUmq+kTWwXamFXg+bLeufO2xlRUEb+LITauFu/siY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lt2gziLy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9381F000E9;
+	Wed, 20 May 2026 18:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297359;
-	bh=OhTb8PmuAISOBYEuUTgrl0uaczXhkRc/aKJt60BQfP0=;
+	s=korg; t=1779301491;
+	bh=e78utoOU6rL0b8IYxW0edMSm0bjwcw1VH4m6o8cLgaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P+mU/U3T3QsU+TLht7zCsSmlv9mkPNkIGvri/+00CjlDPJkMMSdAJrIeZ4PHOt+LM
-	 4ZeFRTR19Io2XncQBYRSHlUt3sxS4P4heGm7MrD5mMWDdNUbv/7mhnzLP4d/UquLNn
-	 NnKzzmw/Y35l0Pux+EHCe9eLiZjiWNEHkrsv13Do=
+	b=Lt2gziLy7SO7h/gWTHwfwvVukx76pMk2K1xkdrgv9SychhC1eYnNAynRZWKVcPpad
+	 zeRD3ZRUO/tdQklnZZgwiUcASLQeaHpNSzSHA+aC7qqoRtq1yTF7vsDR3E1l5x7qwe
+	 lQCwDbdJeBl1R+0Z1ULUUhubsWkKflksSyLstbTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Horgan <ben.horgan@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 7.0 1137/1146] arm_mpam: Fix monitor instance selection when checking for hardware NRDY
+	Dan Carpenter <error27@gmail.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 576/666] ALSA: hda: cs35l56: Fix uninitialized value in cs35l56_hda_read_acpi()
 Date: Wed, 20 May 2026 18:23:07 +0200
-Message-ID: <20260520162213.986037717@linuxfoundation.org>
+Message-ID: <20260520162123.751073547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,130 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251200-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252750-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,opensource.cirrus.com,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
-X-Rspamd-Queue-Id: 286995994F4
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2E25F599743
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Horgan <ben.horgan@arm.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 1ef2a89584b7b788b2603590d886db076b2f24cc upstream.
+[ Upstream commit 90df4957a3271adf391b3432cd76a40887cf3273 ]
 
-In _mpam_ris_hw_probe_hw_nrdy() a new register value to select the first
-monitor and relevant RIS is prepared in mon_sel. However, it is written to
-the monitor value register, e.g. MSMON_CSU, rather than MSMON_CFG_MON_SEL.
+Eliminate the uninitialized 'nval' in cs35l56_hda_read_acpi() if a
+system-specific quirk overrides processing of the dev-index property.
+The value is now stored in a new 'num_amps' member of struct cs35l56_hda
+so that the quirk handler can set the value.
 
-As MSMON_CFG_MON_SEL is a 32 bit register update the type of mon_sel to
-u32.  Write mon_sel to the intended register, MSMON_CFG_MON_SEL.
+The quirk for the Lenovo Yoga Book 9i GenX  replaces the values from the
+dev-index property with hardcoded indexes. So cs35l56_hda_read_acpi() would
+then skip reading the property. But this left the 'nval' local variable
+uninitialized when it is later passed to cirrus_scodec_get_speaker_id().
 
-Fixes: 8c90dc68a5de ("arm_mpam: Probe the hardware features resctrl supports")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 40b1c2f9b299 ("ALSA: hda/cs35l56: Workaround bad dev-index on Lenovo Yoga Book 9i GenX")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/linux-sound/aenFesLAStjrVNy8@stanley.mountain/T/#u
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260428130531.169600-1-rf@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/resctrl/mpam_devices.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 12 +++++++-----
+ sound/pci/hda/cs35l56_hda.h |  1 +
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/resctrl/mpam_devices.c
-+++ b/drivers/resctrl/mpam_devices.c
-@@ -635,7 +635,7 @@ static struct mpam_msc_ris *mpam_get_or_
- static bool _mpam_ris_hw_probe_hw_nrdy(struct mpam_msc_ris *ris, u32 mon_reg)
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index c868177712866..ee5387140ae48 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -888,6 +888,7 @@ static int cs35l56_hda_system_resume(struct device *dev)
+ static int cs35l56_hda_fixup_yoga9(struct cs35l56_hda *cs35l56, int *bus_addr)
  {
- 	u32 now;
--	u64 mon_sel;
-+	u32 mon_sel;
- 	bool can_set, can_clear;
- 	struct mpam_msc *msc = ris->vmsc->msc;
+ 	/* The cirrus,dev-index property has the wrong values */
++	cs35l56->num_amps = 2;
+ 	switch (*bus_addr) {
+ 	case 0x30:
+ 		cs35l56->index = 1;
+@@ -937,7 +938,6 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
+ 	char hid_string[8];
+ 	struct acpi_device *adev;
+ 	const char *property, *sub;
+-	size_t nval;
+ 	int i, ret;
  
-@@ -644,7 +644,7 @@ static bool _mpam_ris_hw_probe_hw_nrdy(s
+ 	/*
+@@ -973,13 +973,14 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
+ 			ret = -EINVAL;
+ 			goto err;
+ 		}
+-		nval = ret;
++		cs35l56->num_amps = ret;
  
- 	mon_sel = FIELD_PREP(MSMON_CFG_MON_SEL_MON_SEL, 0) |
- 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
--	_mpam_write_monsel_reg(msc, mon_reg, mon_sel);
-+	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
+-		ret = device_property_read_u32_array(cs35l56->base.dev, property, values, nval);
++		ret = device_property_read_u32_array(cs35l56->base.dev, property, values,
++						     cs35l56->num_amps);
+ 		if (ret)
+ 			goto err;
  
- 	_mpam_write_monsel_reg(msc, mon_reg, MSMON___NRDY);
- 	now = _mpam_read_monsel_reg(msc, mon_reg);
+-		for (i = 0; i < nval; i++) {
++		for (i = 0; i < cs35l56->num_amps; i++) {
+ 			if (values[i] == id) {
+ 				cs35l56->index = i;
+ 				break;
+@@ -1002,7 +1003,8 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
+ 			 "Read ACPI _SUB failed(%ld): fallback to generic firmware\n",
+ 			 PTR_ERR(sub));
+ 	} else {
+-		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index, nval, -1);
++		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index,
++						   cs35l56->num_amps, -1);
+ 		if (ret == -ENOENT) {
+ 			cs35l56->system_name = sub;
+ 		} else if (ret >= 0) {
+diff --git a/sound/pci/hda/cs35l56_hda.h b/sound/pci/hda/cs35l56_hda.h
+index 38d94fb213a50..0074e8f5f18cb 100644
+--- a/sound/pci/hda/cs35l56_hda.h
++++ b/sound/pci/hda/cs35l56_hda.h
+@@ -25,6 +25,7 @@ struct cs35l56_hda {
+ 	struct work_struct dsp_work;
+ 
+ 	int index;
++	int num_amps;
+ 	const char *system_name;
+ 	const char *amp_name;
+ 
+-- 
+2.53.0
+
 
 
 
