@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QA1oBIwNDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:48 +0200
+	id 8IDoKD3xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1609E598823
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BFF5941F1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 09F4D31247C2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 966EC31F7B98
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A1A401A2C;
-	Wed, 20 May 2026 18:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B9D3A3E9C;
+	Wed, 20 May 2026 17:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZsWhu7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2fB6PgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D88401A3F;
-	Wed, 20 May 2026 18:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5DB372EDE;
+	Wed, 20 May 2026 17:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302424; cv=none; b=rfXF1fXEk6WOzPcnrN/ScLcgc5SEgWvjo14xbYm7pn8XFHB0a4P4CQcRgbCjM62lziXRR0noEFlqde9eyeuhxxXJExSC2Jz3MH+y1LfWN2oiHsD5Bi+zXlj93VKIl3aBtFvIbm0viRo9LnTLMLODd9DOglYnoTS9zJuzyD4+Glc=
+	t=1779296921; cv=none; b=GPfGshbKnQrr853LSasggijMebPWr5IT54hRXLCaoNUZMFRSaK1Ev3EKaj+UW8SQ9XQ6l6htJKUwDOJsD2qoc9CIEBFx78h75tE6F9RQsTAalo0rdl7LzMVJJOymVxs+H0zXznxH44SBh195xg9WK2nhCxhanHhL/6JcPqucsPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302424; c=relaxed/simple;
-	bh=OX5H4eQkiW4e/jPVHOallk4w2VJM89cV+aonD/yOQL4=;
+	s=arc-20240116; t=1779296921; c=relaxed/simple;
+	bh=mRR8o8S9ajFHXUBF+CPDoe9mMVSnp/WYf7P7d4CxMPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6JXKWlDZOn9OWakpa9C2hhkMRSG2Lh5weRK9LffTDVxncyMMIJ2K2W02c1/4jtdHHjuuarfiapT+2gVrg1m+RBO0/DOXnrTLX6Ermg70MCfmaE8GjV6XbkALFGaCuNV9mvo+5mKM/4ZHZLNDyjFn7vaYz7MCuWjA5ilpLhrRfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZsWhu7k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4D51F000E9;
-	Wed, 20 May 2026 18:40:21 +0000 (UTC)
+	 MIME-Version; b=VgEcEZV06mneMpTtdw//iYCQg8+GsPNMjqqWqKjUc1hA50El3YA94/L6NhMUWUkTKrj6km/J2JWVNHi4exKft3Wn5/l9q8+C6i3aAYg/2SDjy0VeFYC9EtxPbym5PrE9wnVH8+Iuos7sEJnzH21cNSoRV2UmPmGJJe2cc1GXryE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2fB6PgF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF0C1F00894;
+	Wed, 20 May 2026 17:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302422;
-	bh=AvTTF3jvT9jfEmo9tqjEV+zBXA5EWoBBV9ND6yI6EJc=;
+	s=korg; t=1779296919;
+	bh=pcGOw+FYt26YkCg1jmsw2HEyA1wkoA3xAOM203fBMgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FZsWhu7k4Ud5RsidQUJugSpuFFC0ANTLAZ2543l+15CPJRvlA7LTDc0+HX/fplPYk
-	 i0mbG5RM3k5ff3/vLm1H0OsESvLS4fXHTreg7odsxw+f4Hy4kEkkzuBwGJgdblAlrc
-	 yC26CglpiyP9S/5ezU2rPg6X5eKn32hmRr43GPmc=
+	b=W2fB6PgFUkBdI6QLIByromyUuAHkLKzTilIzXELx20txsCXucr5uj57Rin+/ghh2g
+	 Bz+QGmFukRhu9iTMhQyTSApy4CBpE1ya1SDEtfsLEEau7zcckrTan5puZ0cWgwzRv0
+	 Vk+nCb0LkT5ot93gIc1aQ3cN/FSSWjDwrN4Pmzks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Koskovich <akoskovich@pm.me>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/508] arm64: dts: qcom: sm8250: Add missing CPU7 3.09GHz OPP
+Subject: [PATCH 7.0 0982/1146] ASoC: cs35l56: Fix illegal writes to OTP_MEM registers
 Date: Wed, 20 May 2026 18:20:32 +0200
-Message-ID: <20260520162103.165450329@linuxfoundation.org>
+Message-ID: <20260520162210.455087659@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +68,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253107-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251030-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1609E598823
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,cirrus.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 72BFF5941F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <AKoskovich@pm.me>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit b683730e27ba4f91986c4c92f5cb7297f1e01a6d ]
+[ Upstream commit be102efb832ef7e30e4cd4c2edf22bbf64ddf35a ]
 
-This resolves the following error seen on the ASUS ROG Phone 3:
+Mark the OTP_MEM registers as volatile so that regcache_sync() will not
+attempt to write to them.
 
-cpu cpu7: Voltage update failed freq=3091200
-cpu cpu7: failed to update OPP for freq=3091200
+These registers hold a constant, and originally they were marked as
+readable non-volatile so that this value would be read into the regmap
+cache. The problem with this is regcache_sync() issues a write for any
+cached register that does not have a reg_default.
 
-Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260307-sm8250-cpu7-opp-v1-1-435f5f6628a1@pm.me
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Though these registers are constants and writing them in normal use
+cannot change OTP, it is illegal for the host to write to them.
+
+Fixes: e1830f66f6c6 ("ASoC: cs35l56: Add helper functions for amp calibration")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260428115228.158252-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/codecs/cs35l56-shared.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index c9a7d1b75c658..d8086dae6e4f8 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -659,6 +659,11 @@ cpu7_opp20: opp-2841600000 {
- 			opp-hz = /bits/ 64 <2841600000>;
- 			opp-peak-kBps = <8368000 51609600>;
- 		};
-+
-+		cpu7_opp21: opp-3091200000 {
-+			opp-hz = /bits/ 64 <3091200000>;
-+			opp-peak-kBps = <8368000 51609600>;
-+		};
- 	};
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index af87ebae98cb0..0ddf9a8d39a07 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -108,8 +108,6 @@ int cs35l56_set_patch(struct cs35l56_base *cs35l56_base)
+ EXPORT_SYMBOL_NS_GPL(cs35l56_set_patch, "SND_SOC_CS35L56_SHARED");
  
- 	firmware {
+ static const struct reg_default cs35l56_reg_defaults[] = {
+-	/* no defaults for OTP_MEM - first read populates cache */
+-
+ 	{ CS35L56_ASP1_ENABLES1,		0x00000000 },
+ 	{ CS35L56_ASP1_CONTROL1,		0x00000028 },
+ 	{ CS35L56_ASP1_CONTROL2,		0x18180200 },
+@@ -138,8 +136,6 @@ static const struct reg_default cs35l56_reg_defaults[] = {
+ };
+ 
+ static const struct reg_default cs35l63_reg_defaults[] = {
+-	/* no defaults for OTP_MEM - first read populates cache */
+-
+ 	{ CS35L56_ASP1_ENABLES1,		0x00000000 },
+ 	{ CS35L56_ASP1_CONTROL1,		0x00000028 },
+ 	{ CS35L56_ASP1_CONTROL2,		0x18180200 },
+@@ -282,6 +278,9 @@ static bool cs35l56_common_volatile_reg(unsigned int reg)
+ 	case CS35L56_GLOBAL_ENABLES:		   /* owned by firmware */
+ 	case CS35L56_BLOCK_ENABLES:		   /* owned by firmware */
+ 	case CS35L56_BLOCK_ENABLES2:		   /* owned by firmware */
++	case CS35L56_OTP_MEM_53:
++	case CS35L56_OTP_MEM_54:
++	case CS35L56_OTP_MEM_55:
+ 	case CS35L56_SYNC_GPIO1_CFG ... CS35L56_ASP2_DIO_GPIO13_CFG:
+ 	case CS35L56_UPDATE_REGS:
+ 	case CS35L56_REFCLK_INPUT:		   /* owned by firmware */
 -- 
 2.53.0
 
