@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PqbES3zDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:17 +0200
+	id IIhII+H6DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A5D59478E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C627595BEF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37A66307E8BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77A4B316A5BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A5B15E8B;
-	Wed, 20 May 2026 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E74C3F6C5F;
+	Wed, 20 May 2026 18:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mdA2AMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW94XVDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCFB3D7D66;
-	Wed, 20 May 2026 17:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584503EAC82;
+	Wed, 20 May 2026 18:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298684; cv=none; b=UpdSgLzf7KrZ5HW6WzXG0vnGltYSrxO8bDKQYwEzbR7GaVF5PjBAVCJYCpUkwbJNPNp3mP/VgP40b6tu60Gk8UH0rcDLuWJmKt1vw6KyTJKNSN3cb0+A6u30dSV5TStU3hCGe82vn0fXjQAjKepI6CDCcWVPZ+p6idZihPnQrSA=
+	t=1779300439; cv=none; b=AAM+eG7mu8UqRu6kONLmK5i6JxjHsw28bWcaDoGJVM8SLdOZ1ilrH8bAHV8s6FN70S1YcWRpNlqsQMwxTv81q9HD1MmqPtfMClkkMoRe0qWrVmyntYB5tK4YcRtT/sjXWqPE6lSaY2mQIIb6luAQ7yKs/7ReGcO/lj/c8y4a7fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298684; c=relaxed/simple;
-	bh=IuqkHH364ogtZ9aYzn0nbaWUtnPy4UvcsCWtiKCyveo=;
+	s=arc-20240116; t=1779300439; c=relaxed/simple;
+	bh=3inSXnkAT4pzwba11Y4moWJvty9HZJbO8J1Cs1LLl44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WR6IfGPxDIsJV/DTtc+8uh7s+ClGX44PCP3RLf/tNZizK1cbcVcl8GSHQCLojpLiFfoltjGGLWDNR6M8SBj13l3uJ4kwpQF2xKJqXlT7BJXedNCE9W37AVhflcGKYKtfdQHP+l+FYV+FrDB5KxJBqX2FczwA6uC+Kx7MSYNxcLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mdA2AMB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F39A1F000E9;
-	Wed, 20 May 2026 17:38:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Go3p5Rcjpvb2CXvhiQuedoyj3OmOyNd3e9wpPZjuM+bQl6ClEdRa2tkgEkPGvrKp0J4SR+fpBGGzgeHcLqbHkIisnaxlbV0bW8gEapYNtSRNOLo1xxJhUwqpS6PxPvg/L1jbaElp7zt/xuV6BvJdONUYcOBrH9ilFjI+IbaDkWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW94XVDJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2B21F000E9;
+	Wed, 20 May 2026 18:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298682;
-	bh=Hz9Q60WvfB803Zj5nyAT0Bh1hj7gH8n54ZIiHMAYiuw=;
+	s=korg; t=1779300438;
+	bh=lt0sOoz6dB5wAxJSzgKhB8RmrTEteKfWXu6qian1vak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2mdA2AMBlZPjOy4qQHh4n8/9K7hRw90i6f5DlBZIjnMAl8nmhBddOZgw/rMSN8tj7
-	 Q2R4Wpa0kwWpbMX3DTgIXr7Im+4upUKmD7oC5oX+KJiulX/kQi0ppyfmnERSQ13Ne9
-	 1Gzw5+EOhRaYjbcrac4qqeD0v3M1Q8HPezFu3Zkc=
+	b=qW94XVDJ7KljLEaPOkLwi9rJp9igrjwnw4ln5EC0WrwlEoVnoZHhOr420ss7zVswd
+	 yRzu39o1rbkAHG6QLYGC1baOzjuELsRps4kZCOkFiUjEvGzXaKJFECkrdorYr1++OT
+	 fbximdY1+kYWA+Ow9g+e2IyJLLhzQecwBtI/wZs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 504/957] perf: tools: cs-etm: Fix print issue for Coresight debug in ETE/TRBE trace
+Subject: [PATCH 6.12 176/666] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
 Date: Wed, 20 May 2026 18:16:27 +0200
-Message-ID: <20260520162145.462228043@linuxfoundation.org>
+Message-ID: <20260520162115.016711979@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,148 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251707-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252347-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: D3A5D59478E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 4C627595BEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Leach <mike.leach@arm.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 6c478e7b3eba3f387a2d6c749e3e3ee0f8ad1c53 ]
+[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
 
-Building perf with CORESIGHT=1 and the optional CSTRACE_RAW=1 enables
-additional debug printing of raw trace data when using command:-
-perf report --dump.
+When MCLK DPM is disabled for any reason, populate the MCLK
+table with the highest MCLK DPM level, so that the ASIC can
+use the highest possible memory clock to get good performance
+even when MCLK DPM is disabled.
 
-This raw trace prints the CoreSight formatted trace frames, which may be
-used to investigate suspected issues with trace quality / corruption /
-decode.
-
-These frames are not present in ETE + TRBE trace.
-This fix removes the unnecessary call to print these frames.
-
-This fix also rationalises implementation - original code had helper
-function that unnecessarily repeated initialisation calls that had
-already been made.
-
-Due to an addtional fault with the OpenCSD library, this call when ETE/TRBE
-are being decoded will cause a segfault in perf. This fix also prevents
-that problem for perf using older (<= 1.8.0 version) OpenCSD libraries.
-
-Fixes: 68ffe3902898 ("perf tools: Add decoder mechanic to support dumping trace data")
-Reported-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Mike Leach <mike.leach@arm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../perf/util/cs-etm-decoder/cs-etm-decoder.c | 51 +++++--------------
- 1 file changed, 13 insertions(+), 38 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-index b85a8837bddcd..43ac711a4e2ae 100644
---- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-+++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
-@@ -237,46 +237,24 @@ cs_etm_decoder__init_def_logger_printing(struct cs_etm_decoder_params *d_params,
- 					      (void *)decoder,
- 					      cs_etm_decoder__print_str_cb);
- 	if (ret != 0)
--		ret = -1;
--
--	return 0;
--}
-+		return -1;
- 
- #ifdef CS_LOG_RAW_FRAMES
--static void
--cs_etm_decoder__init_raw_frame_logging(struct cs_etm_decoder_params *d_params,
--				       struct cs_etm_decoder *decoder)
--{
--	/* Only log these during a --dump operation */
--	if (d_params->operation == CS_ETM_OPERATION_PRINT) {
--		/* set up a library default logger to process the
--		 *  raw frame printer we add later
--		 */
--		ocsd_def_errlog_init(OCSD_ERR_SEV_ERROR, 1);
--
--		/* no stdout / err / file output */
--		ocsd_def_errlog_config_output(C_API_MSGLOGOUT_FLG_NONE, NULL);
--
--		/* set the string CB for the default logger,
--		 * passes strings to perf print logger.
--		 */
--		ocsd_def_errlog_set_strprint_cb(decoder->dcd_tree,
--						(void *)decoder,
--						cs_etm_decoder__print_str_cb);
--
-+	/*
-+	 * Only log raw frames if --dump operation and hardware is actually
-+	 * generating formatted CoreSight trace frames
-+	 */
-+	if ((d_params->operation == CS_ETM_OPERATION_PRINT) &&
-+	    (d_params->formatted == true)) {
- 		/* use the built in library printer for the raw frames */
--		ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
--					      CS_RAW_DEBUG_FLAGS);
-+		ret = ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
-+						    CS_RAW_DEBUG_FLAGS);
-+		if (ret != 0)
-+			return -1;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index 0cb7eaaba3844..71b1dad34926e 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1322,6 +1322,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
+ 			return result;
  	}
--}
--#else
--static void
--cs_etm_decoder__init_raw_frame_logging(
--		struct cs_etm_decoder_params *d_params __maybe_unused,
--		struct cs_etm_decoder *decoder __maybe_unused)
--{
--}
- #endif
-+	return 0;
-+}
  
- static ocsd_datapath_resp_t
- cs_etm_decoder__do_soft_timestamp(struct cs_etm_queue *etmq,
-@@ -760,9 +738,6 @@ cs_etm_decoder__new(int decoders, struct cs_etm_decoder_params *d_params,
- 	if (ret != 0)
- 		goto err_free_decoder;
++	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
++		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
++		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
++			levels[i] = levels[dpm_table->mclk_table.count - 1];
++			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
++		}
++	}
++
+ 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
  
--	/* init raw frame logging if required */
--	cs_etm_decoder__init_raw_frame_logging(d_params, decoder);
--
- 	for (i = 0; i < decoders; i++) {
- 		ret = cs_etm_decoder__create_etm_decoder(d_params,
- 							 &t_params[i],
+ 	dev_id = adev->pdev->device;
 -- 
 2.53.0
 
