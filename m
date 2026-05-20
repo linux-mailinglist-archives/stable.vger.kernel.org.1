@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAEkMBbuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:34 +0200
+	id oPsOBdD8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76F659386D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F34359624A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 47CBE3168CE3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B68032025F1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE8F3A1E72;
-	Wed, 20 May 2026 16:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1573FA5D5;
+	Wed, 20 May 2026 17:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLbtylgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKZzcgcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C288372EF6;
-	Wed, 20 May 2026 16:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D470C3FB05D;
+	Wed, 20 May 2026 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295420; cv=none; b=A3fsmzykwglbR+axT8i5veocyjb6Cot+yRdwCWqZQHW7/bpOqgc91vgelHPiwNS3EOX6/KEJmpNI38OG8t6reqjl56bamV7suD18F0g2kotQIM9vWKZkXA2ojUAitug1pao+QSvJrEE2cc3/UneG8X00dTmlNzi0bTrmpz2acLw=
+	t=1779297937; cv=none; b=q2Sz+BSJKZq+yzM+waEfMg4tlHgKwdEFjX6WJDcPzGBPEfaYx2N/k6c1xk3Oy7Oa7EWoS8WtRE014x/9kT+iSzEVgRPiprXZCKeT1gmeaxC3Nv9diUGhXi7oCO4Cfi5eoT0v3nGJN3KctgGh05RIH03cWD6v6okcqvcPEy/AzgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295420; c=relaxed/simple;
-	bh=QdoN0ZCqG5pgR01/A5evmGWZwemoRMIEExYTq0/sveA=;
+	s=arc-20240116; t=1779297937; c=relaxed/simple;
+	bh=UUJmlwRZ+L9bHlNHMy/1RC+oS+S2ZXl5IHpATPkKC1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3kLveeLF0XaamMffyKtF9eDQCQblXB4gdps6nifbvKnb2icMSG77XIjDwGKJEaC0QMn9xepyVSqilMuPJ3BY54tMn6lp8Jdd+/vvEtBpJJrGdfmtHKZf12s+6fqWIKgpiF8KLERwwU00cqkIxLz81Uw5eGwII4pfW8DrHJkmM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLbtylgP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09641F00893;
-	Wed, 20 May 2026 16:43:38 +0000 (UTC)
+	 MIME-Version; b=CtylqXngpjMX2OHfEq8yVDJKg/JMEZ1FQpA/YQbx/85HhaHjcsYMu/+P1tn8MvwJrIljQhp+MTT2JiGWfzrEQ1ga9+q41YabrPUenlVll7fRlThCN8R2fg+peIIH+XgEdr0aMuENHVUK7tprXE3BwD9J7azSXLMRfFWyGkYStJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKZzcgcK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0C71F000E9;
+	Wed, 20 May 2026 17:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295419;
-	bh=LFORT/lnrQUKXOPqpav+G8Ix7QRzjuPnyDAbHbKFDFA=;
+	s=korg; t=1779297935;
+	bh=HMqr7uhtItlOb60p0XUn6zm/mH6owk/W+NEKFjN+k00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BLbtylgPUp6teMqvRi36roqpn4++07YcIVSi922mILIFBMsaTBiIZsEAiRjT/Kqkn
-	 8nEyYYpSMwAJ2oZmMjiZ0mQUiNjEHjfT3+Wx1b4JOEZsLKMGoU2M5JWwA0pmOoE21B
-	 C39CCNNMLY6hxlBTyHyAUrMH27MjIx9OYmDSeqoo=
+	b=TKZzcgcKR8vWaUbzbBygtHmYsAaRdOnRCZ9wPUsNd0JktjNeHMN+MLejUvckbb7Vr
+	 uetUweH+ljSZ2yOK/MIOKV9hpWSbBWg/KFSUoCj7HxrqaVrD6QECdo1SopvAd4ZaY0
+	 UtTl8mWBy5cIDMQzf2Tywe0dJCm8RG1PaTk3FnqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0412/1146] ASoC: amd: name back to pcm_new()/pcm_free()
+Subject: [PATCH 6.18 179/957] net: phy: qcom: at803x: Use the correct bit to disable extended next page
 Date: Wed, 20 May 2026 18:11:02 +0200
-Message-ID: <20260520162157.523494044@linuxfoundation.org>
+Message-ID: <20260520162138.435133685@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,166 +74,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251421-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250440-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,renesas.com:email]
-X-Rspamd-Queue-Id: E76F659386D
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lunn.ch:email]
+X-Rspamd-Queue-Id: 3F34359624A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit fe33a69681e343999e18893f97bb6cd99b883992 ]
+[ Upstream commit e7a62edd34b1b4bc5f979988efc2f81c075733fd ]
 
-We have been used pcm_new()/pcm_free(), but switched to
-pcm_construct()/pcm_destruct() to use extra parameters [1].
+As noted in the blamed commit, the AR8035 and other PHYs from this
+family advertise the Extended Next Page support by default, which may be
+understood by some partners as this PHY being multi-gig capable.
 
-pcm_new()/free() had been removed [2], but each drivers are still
-using such function naming. Let's name back to pcm_new()/pcm_free()
-again.
+The fix is to disable XNP advertising, which is done by setting bit 12
+of the Auto-Negotiation Advertisement Register (MII_ADVERTISE).
 
-[1] commit c64bfc906600 ("ASoC: soc-core: add new pcm_construct/pcm_destruct")
-[2] commit e9067bb50278 ("ASoC: soc-component: remove snd_pcm_ops fromcomponent driver")
+The blamed commit incorrectly uses MDIO_AN_CTRL1_XNP, which is bit 13 as per
+802.3 : 45.2.7.1 AN control register (Register 7.0)
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/878qbslddx.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 3666dc0c47c3 ("ASoC: amd: ps: fix the pcm device numbering for acp pdm dmic")
+BIT 12 in MII_ADVERTISE is wrapped by ADVERTISE_RESV, used by some
+drivers such as the aquantia one. 802.3 Clause 28 defines bit 12 as
+Extended Next Page ability, at least in recent versions of the standard.
+
+Let's add a define for it and use it in the at803x driver.
+
+Fixes: 3c51fa5d2afe ("net: phy: ar803x: disable extended next page bit")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260410171021.1277138-1-maxime.chevallier@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp-pcm-dma.c           | 2 +-
- sound/soc/amd/acp/acp-platform.c      | 2 +-
- sound/soc/amd/ps/ps-pdm-dma.c         | 2 +-
- sound/soc/amd/ps/ps-sdw-dma.c         | 2 +-
- sound/soc/amd/raven/acp3x-pcm-dma.c   | 2 +-
- sound/soc/amd/renoir/acp3x-pdm-dma.c  | 2 +-
- sound/soc/amd/vangogh/acp5x-pcm-dma.c | 2 +-
- sound/soc/amd/yc/acp6x-pdm-dma.c      | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/phy/qcom/at803x.c | 2 +-
+ include/uapi/linux/mii.h      | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/acp-pcm-dma.c b/sound/soc/amd/acp-pcm-dma.c
-index c76a4bcc96459..6ad70aa0ea837 100644
---- a/sound/soc/amd/acp-pcm-dma.c
-+++ b/sound/soc/amd/acp-pcm-dma.c
-@@ -1252,7 +1252,7 @@ static const struct snd_soc_component_driver acp_asoc_platform = {
- 	.pointer	= acp_dma_pointer,
- 	.delay		= acp_dma_delay,
- 	.prepare	= acp_dma_prepare,
--	.pcm_construct	= acp_dma_new,
-+	.pcm_new	= acp_dma_new,
- };
+diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
+index 338acd11a9b65..023c1fe0cd14b 100644
+--- a/drivers/net/phy/qcom/at803x.c
++++ b/drivers/net/phy/qcom/at803x.c
+@@ -524,7 +524,7 @@ static int at803x_config_init(struct phy_device *phydev)
+ 	 * behaviour but we still need to accommodate it. XNP is only needed
+ 	 * for 10Gbps support, so disable XNP.
+ 	 */
+-	return phy_modify(phydev, MII_ADVERTISE, MDIO_AN_CTRL1_XNP, 0);
++	return phy_modify(phydev, MII_ADVERTISE, ADVERTISE_XNP, 0);
+ }
  
- static int acp_audio_probe(struct platform_device *pdev)
-diff --git a/sound/soc/amd/acp/acp-platform.c b/sound/soc/amd/acp/acp-platform.c
-index 88613569fd64f..6b1e18b31c1c6 100644
---- a/sound/soc/amd/acp/acp-platform.c
-+++ b/sound/soc/amd/acp/acp-platform.c
-@@ -321,7 +321,7 @@ static const struct snd_soc_component_driver acp_pcm_component = {
- 	.close			= acp_dma_close,
- 	.hw_params		= acp_dma_hw_params,
- 	.pointer		= acp_dma_pointer,
--	.pcm_construct		= acp_dma_new,
-+	.pcm_new		= acp_dma_new,
- 	.legacy_dai_naming	= 1,
- };
- 
-diff --git a/sound/soc/amd/ps/ps-pdm-dma.c b/sound/soc/amd/ps/ps-pdm-dma.c
-index 7c529fc6ba997..c6cd844d458c8 100644
---- a/sound/soc/amd/ps/ps-pdm-dma.c
-+++ b/sound/soc/amd/ps/ps-pdm-dma.c
-@@ -351,7 +351,7 @@ static const struct snd_soc_component_driver acp63_pdm_component = {
- 	.close		= acp63_pdm_dma_close,
- 	.hw_params	= acp63_pdm_dma_hw_params,
- 	.pointer	= acp63_pdm_dma_pointer,
--	.pcm_construct	= acp63_pdm_dma_new,
-+	.pcm_new	= acp63_pdm_dma_new,
- };
- 
- static int acp63_pdm_audio_probe(struct platform_device *pdev)
-diff --git a/sound/soc/amd/ps/ps-sdw-dma.c b/sound/soc/amd/ps/ps-sdw-dma.c
-index 366d7c4bb07e9..f27ebbd213798 100644
---- a/sound/soc/amd/ps/ps-sdw-dma.c
-+++ b/sound/soc/amd/ps/ps-sdw-dma.c
-@@ -634,7 +634,7 @@ static const struct snd_soc_component_driver acp63_sdw_component = {
- 	.hw_params	= acp63_sdw_dma_hw_params,
- 	.trigger	= acp63_sdw_dma_trigger,
- 	.pointer	= acp63_sdw_dma_pointer,
--	.pcm_construct	= acp63_sdw_dma_new,
-+	.pcm_new	= acp63_sdw_dma_new,
- 	.use_dai_pcm_id = true,
- 
- };
-diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
-index 4529404ebd935..37ea5c572eb94 100644
---- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-+++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-@@ -363,7 +363,7 @@ static const struct snd_soc_component_driver acp3x_i2s_component = {
- 	.close		= acp3x_dma_close,
- 	.hw_params	= acp3x_dma_hw_params,
- 	.pointer	= acp3x_dma_pointer,
--	.pcm_construct	= acp3x_dma_new,
-+	.pcm_new	= acp3x_dma_new,
- };
- 
- static int acp3x_audio_probe(struct platform_device *pdev)
-diff --git a/sound/soc/amd/renoir/acp3x-pdm-dma.c b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-index e832c7c4b96fa..e60e3821703cc 100644
---- a/sound/soc/amd/renoir/acp3x-pdm-dma.c
-+++ b/sound/soc/amd/renoir/acp3x-pdm-dma.c
-@@ -376,7 +376,7 @@ static const struct snd_soc_component_driver acp_pdm_component = {
- 	.close			= acp_pdm_dma_close,
- 	.hw_params		= acp_pdm_dma_hw_params,
- 	.pointer		= acp_pdm_dma_pointer,
--	.pcm_construct		= acp_pdm_dma_new,
-+	.pcm_new		= acp_pdm_dma_new,
- 	.legacy_dai_naming	= 1,
- };
- 
-diff --git a/sound/soc/amd/vangogh/acp5x-pcm-dma.c b/sound/soc/amd/vangogh/acp5x-pcm-dma.c
-index 6ce82cd8859b8..831e30e9b0426 100644
---- a/sound/soc/amd/vangogh/acp5x-pcm-dma.c
-+++ b/sound/soc/amd/vangogh/acp5x-pcm-dma.c
-@@ -357,7 +357,7 @@ static const struct snd_soc_component_driver acp5x_i2s_component = {
- 	.close		= acp5x_dma_close,
- 	.hw_params	= acp5x_dma_hw_params,
- 	.pointer	= acp5x_dma_pointer,
--	.pcm_construct	= acp5x_dma_new,
-+	.pcm_new	= acp5x_dma_new,
- };
- 
- static int acp5x_audio_probe(struct platform_device *pdev)
-diff --git a/sound/soc/amd/yc/acp6x-pdm-dma.c b/sound/soc/amd/yc/acp6x-pdm-dma.c
-index 1c8aad8499164..710db721ffa48 100644
---- a/sound/soc/amd/yc/acp6x-pdm-dma.c
-+++ b/sound/soc/amd/yc/acp6x-pdm-dma.c
-@@ -346,7 +346,7 @@ static const struct snd_soc_component_driver acp6x_pdm_component = {
- 	.close			= acp6x_pdm_dma_close,
- 	.hw_params		= acp6x_pdm_dma_hw_params,
- 	.pointer		= acp6x_pdm_dma_pointer,
--	.pcm_construct		= acp6x_pdm_dma_new,
-+	.pcm_new		= acp6x_pdm_dma_new,
- 	.legacy_dai_naming	= 1,
- };
- 
+ static void at803x_link_change_notify(struct phy_device *phydev)
+diff --git a/include/uapi/linux/mii.h b/include/uapi/linux/mii.h
+index 39f7c44baf535..61d6edad4b94a 100644
+--- a/include/uapi/linux/mii.h
++++ b/include/uapi/linux/mii.h
+@@ -82,7 +82,8 @@
+ #define ADVERTISE_100BASE4	0x0200	/* Try for 100mbps 4k packets  */
+ #define ADVERTISE_PAUSE_CAP	0x0400	/* Try for pause               */
+ #define ADVERTISE_PAUSE_ASYM	0x0800	/* Try for asymetric pause     */
+-#define ADVERTISE_RESV		0x1000	/* Unused...                   */
++#define ADVERTISE_XNP		0x1000  /* Extended Next Page */
++#define ADVERTISE_RESV		ADVERTISE_XNP /* Used to be reserved */
+ #define ADVERTISE_RFAULT	0x2000	/* Say we can detect faults    */
+ #define ADVERTISE_LPACK		0x4000	/* Ack link partners response  */
+ #define ADVERTISE_NPAGE		0x8000	/* Next page bit               */
 -- 
 2.53.0
 
