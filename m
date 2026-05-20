@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PYvDIfxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:15 +0200
+	id 2Cv0JU4ADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182A0594281
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5066596FD6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36EDD30399FC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55B0A356FB7A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2CF3A3833;
-	Wed, 20 May 2026 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B53F7AA9;
+	Wed, 20 May 2026 18:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+DAupIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEEsDZu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1237B36D9EA;
-	Wed, 20 May 2026 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70283769E0;
+	Wed, 20 May 2026 18:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295935; cv=none; b=HRZ2hqJn5YX2PbePn22E6njmqczFqCkGf3JyKx3BvksBP4O1Znz5aPQQ1yaArk5HW+sAczRn8hKK6XNG7w2sgRoycacwVequRL9Nv5Lw5C/Cga9RNgaU9bRVAssKo4aK7/i3cLaUqHiACagiRkXyw57/DGfcTyq6DxyvoAHB7GM=
+	t=1779300064; cv=none; b=Mj+0QsErDcRhIFiahB4OUiEJhAeVSqMe6KaTf7izDQZAaBIGsRKdyS3DVl1tERVdu7TsHeooPJajprEBlDlIVpp5UcUTGYmrqKSOBJqudsgvHVnqAAoH2u90E2z46goJtY+cjOAki1j4GVW86nao7Vtg2itmiOs9PqOGGag7pxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295935; c=relaxed/simple;
-	bh=D6aQgEtLC+dGoYRLW7Ycx3nLWOBqYp5W5EajzqgCXeI=;
+	s=arc-20240116; t=1779300064; c=relaxed/simple;
+	bh=CHIHinllgzW1rle7f8oA7F1FZCPdfWsEPHlAt20zE2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEOYUY7a/U1a9IXcbt/kjsaAOwsUCd13HepmYW6vqh9XWfqgd7R7Au8e9k4rcpSrpnUCI1rlI9Plhwc6rbctXnTPZXDXisdtqwJY/t2tnwc2vX80c4cjuV9nDD6040WejznhGfNRvsSrANtyN1nmffhvgmCqkhHvwqe2L69ykNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+DAupIS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780E41F000E9;
-	Wed, 20 May 2026 16:52:13 +0000 (UTC)
+	 MIME-Version; b=irl33tu8HYZabezdsXtbvHYZh3zjSAhtE3WrRMm4BsoRSYoJ8pTLWoT5ThNUmckI/sJvReoZPtZeSbUFRF/hEhdvFiJRIy+AlnfiUips00BF6asrXQWzLcD4Qq25Wz9Rmjxngnd2aTrnOEA7emeLqeBE4+rT198Hy3ODx/CdUX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEEsDZu/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A801F000E9;
+	Wed, 20 May 2026 18:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295934;
-	bh=KLZ2UisTsf7I0oSbRIWZF+EiY2l9eP48GWBak9GiuwY=;
+	s=korg; t=1779300063;
+	bh=RZHwfq17Vf0X9DZJQgF1UNJTT5ynwD7YOfzltHQdchY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x+DAupISmwphNj9Jy/xlzhEXBTlYsbxogOHdEJvyNPQz76pYtxIXEw5/GjJep8vNx
-	 a6CriAuGuxt493zoFGNe+Ewx5sDuMkoJJQ6ocq+aZeHuQsbxjI3uKK3GEcaUiEnPB6
-	 ex8E98yX6TdxOu6ALVpMJCQaCXMUIJx/Py0utgYI=
+	b=IEEsDZu/Qk2tCEoEr6dVpTguLFEDNTtzX+Oid9zJnksfrsBgpP1wyRQQfBnML9gk/
+	 FJCPzzSYhkW7+jtXq8djPYC42yFr0obwb+eCf6RpYi0WI18ZyiXdR5Wn6mLBTlgjxU
+	 N2P1I7RuoK7IbjuRAZfImd3xxoeUZtAiG9YMu7dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cheng <icheng@nvidia.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Daan De Meyer <daan@amutable.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0568/1146] fwctl: Fix class init ordering to avoid NULL pointer dereference on device removal
+Subject: [PATCH 6.12 007/666] loop: fix partition scan race between udev and loop_reread_partitions()
 Date: Wed, 20 May 2026 18:13:38 +0200
-Message-ID: <20260520162201.039686504@linuxfoundation.org>
+Message-ID: <20260520162111.392043001@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250639-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252204-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 182A0594281
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amutable.com:email,kernel.dk:email,msgid.link:url]
+X-Rspamd-Queue-Id: A5066596FD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Cheng <icheng@nvidia.com>
+From: Daan De Meyer <daan.j.demeyer@gmail.com>
 
-[ Upstream commit a55f80233f384dc89ef3425b2e1dd0e6d44bcf29 ]
+[ Upstream commit 267ec4d7223a783f029a980f41b93c39b17996da ]
 
-CXL is linked before fwctl in drivers/Makefile. Both use `module_init, so
-`cxl_pci_driver_init()` runs first. When `cxl_pci_probe()` calls
-`fwctl_register()` and then `device_add()`, fwctl_class is not yet
-registered because fwctl_init() hasn't run, causing `class_to_subsys()` to
-return NULL and skip knode_class initialization.
+When LOOP_CONFIGURE is called with LO_FLAGS_PARTSCAN, the following
+sequence occurs:
 
-On device removal, `class_to_subsys()` returns non-NULL, and
-`device_del()` calls `klist_del()` on the uninitialized knode, triggering
-a NULL pointer dereference.
+  1. disk_force_media_change() sets GD_NEED_PART_SCAN
+  2. Uevent suppression is lifted and a KOBJ_CHANGE uevent is sent
+  3. loop_global_unlock() releases the lock
+  4. loop_reread_partitions() calls bdev_disk_changed() to scan
 
-Fixes: 858ce2f56b52 ("cxl: Add FWCTL support to CXL")
-Link: https://patch.msgid.link/r/20260409051902.40218-1-icheng@nvidia.com
-Signed-off-by: Richard Cheng <icheng@nvidia.com>
-Reviewed-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+There is a race between steps 2 and 4: when udev receives the uevent
+and opens the device before loop_reread_partitions() runs,
+blkdev_get_whole() in bdev.c sees GD_NEED_PART_SCAN set and calls
+bdev_disk_changed() for a first scan. Then loop_reread_partitions()
+does a second scan. The open_mutex serializes these two scans, but
+does not prevent both from running.
+
+The second scan in bdev_disk_changed() drops all partition devices
+from the first scan (via blk_drop_partitions()) before re-adding
+them, causing partition block devices to briefly disappear. This
+breaks any systemd unit with BindsTo= on the partition device: systemd
+observes the device going dead, fails the dependent units, and does
+not retry them when the device reappears.
+
+Fix this by removing the GD_NEED_PART_SCAN set from
+disk_force_media_change() entirely. None of the current callers need
+the lazy on-open partition scan triggered by this flag:
+
+  - floppy: sets GENHD_FL_NO_PART, so disk_has_partscan() is always
+    false and GD_NEED_PART_SCAN has no effect.
+  - loop (loop_configure, loop_change_fd): when LO_FLAGS_PARTSCAN is
+    set, loop_reread_partitions() performs an explicit scan. When not
+    set, GD_SUPPRESS_PART_SCAN prevents the lazy scan path.
+  - loop (__loop_clr_fd): calls bdev_disk_changed() explicitly if
+    LO_FLAGS_PARTSCAN is set.
+  - nbd (nbd_clear_sock_ioctl): capacity is set to zero immediately
+    after; nbd manages GD_NEED_PART_SCAN explicitly elsewhere.
+
+With GD_NEED_PART_SCAN no longer set by disk_force_media_change(),
+udev opening the loop device after the uevent no longer triggers a
+redundant scan in blkdev_get_whole(), and only the single explicit
+scan from loop_reread_partitions() runs.
+
+A regression test for this bug has been submitted to blktests:
+https://github.com/linux-blktests/blktests/pull/240.
+
+Fixes: 9f65c489b68d ("loop: raise media_change event")
+Signed-off-by: Daan De Meyer <daan@amutable.com>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Link: https://patch.msgid.link/20260331105130.1077599-1-daan@amutable.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fwctl/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/disk-events.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/fwctl/main.c b/drivers/fwctl/main.c
-index bc6378506296c..098c3824ad751 100644
---- a/drivers/fwctl/main.c
-+++ b/drivers/fwctl/main.c
-@@ -415,7 +415,7 @@ static void __exit fwctl_exit(void)
- 	unregister_chrdev_region(fwctl_dev, FWCTL_MAX_DEVICES);
+diff --git a/block/disk-events.c b/block/disk-events.c
+index 2f697224386aa..868823915bdc6 100644
+--- a/block/disk-events.c
++++ b/block/disk-events.c
+@@ -290,13 +290,14 @@ EXPORT_SYMBOL(disk_check_media_change);
+  * Should be called when the media changes for @disk.  Generates a uevent
+  * and attempts to free all dentries and inodes and invalidates all block
+  * device page cache entries in that case.
++ *
++ * Callers that need a partition re-scan should arrange for one explicitly.
+  */
+ void disk_force_media_change(struct gendisk *disk)
+ {
+ 	disk_event_uevent(disk, DISK_EVENT_MEDIA_CHANGE);
+ 	inc_diskseq(disk);
+ 	bdev_mark_dead(disk->part0, true);
+-	set_bit(GD_NEED_PART_SCAN, &disk->state);
  }
+ EXPORT_SYMBOL_GPL(disk_force_media_change);
  
--module_init(fwctl_init);
-+subsys_initcall(fwctl_init);
- module_exit(fwctl_exit);
- MODULE_DESCRIPTION("fwctl device firmware access framework");
- MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
