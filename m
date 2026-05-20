@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLUAFYH4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-251960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:01 +0200
+	id 0NgaI0D8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF085955AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353DF59603D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A9F63107142
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2643300E260
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634A03F44CB;
-	Wed, 20 May 2026 17:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B960337DE8A;
+	Wed, 20 May 2026 18:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtfabWoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYAmAmQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB763F23BF;
-	Wed, 20 May 2026 17:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCAC348C55;
+	Wed, 20 May 2026 18:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299378; cv=none; b=C7vRJ2yj1ZikV91WfOt1Wa42WYRfisayGK7qS/ypoPmayr3nEs6O1KXOhJ+TPZ64DmXpbSsrkPY0wEQoc5YmaQ07EhNQKYFGP8w7eH2Q68MGDoDWWrZLDoR7lk+2mz2cfDJX68hEW14/WatxnnLS238bgY8gwONPIEfzgdu6oBE=
+	t=1779301084; cv=none; b=FZWTBX1gItFXhJDxOjGgxfyAbLw5N59wLzv4AVfQdCl84rs6EBjU1u9Bu8FVLxmqfxSmB4XhsyRJj8M7hAzFIFdLoIEqZS64iTPcRCVcotYisp7RdiCYxjdbwyXgvJPFa4E55YXKlW0WRN8M77fWfNOLgOGZ31XHlbUlx34UYhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299378; c=relaxed/simple;
-	bh=y3fO4MaX/J861YGfNODgG5Bifw8qwvRVSmphWrViiRw=;
+	s=arc-20240116; t=1779301084; c=relaxed/simple;
+	bh=0uc1cW8K5D5J6B1wyCglxSEq/O31wWVZL4vJrJvuI8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2XdYoBzhFYh2pQnAM/1oDVJls+l5qF6uxPmlabn2VGEgI2NOJXw0hWONxTv7mLSk0liFEqTlXiCZTP9yGwUEfTqR40A84oCoscZhdXXavVJTWLII3P/QVtJ+BuJvdGigMnvN6//tVNTJW4qoLOGiK3kZFk4pLKNDo1PD20GZyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtfabWoM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4791F000E9;
-	Wed, 20 May 2026 17:49:36 +0000 (UTC)
+	 MIME-Version; b=izUuNF+jZKxLnRYTOxcIYErDg4boiybTQkkGICDPGVeCyysxCydrw7RlZpRXlZwDke6PF78HbuLnIlw/Sj/H3sA6k+NIHYMXxnwfcSohxkVTwun5nAmZto/GoG/rCUN/S30JGzNt+/cYWcF+AXsrWrEeL6eeHoT5AzSeto1/vxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYAmAmQ5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8341F000E9;
+	Wed, 20 May 2026 18:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299376;
-	bh=XDO4RfWNeqmp29jzfEeaY6fzRxchiFL+D1saMMB36j4=;
+	s=korg; t=1779301083;
+	bh=PBogiGxwl6oLDsQ/j6WyuCZd54EQD0uGblxUkkXEZYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KtfabWoMdt1TYeh/DQHAp7rtQz2HyPgBFt7CkiEhxSGOhqOxgo04gs21SsadgiEjj
-	 p4B5IzOjLO5yu6BcJD6XjzFhbQrmmTdpbx+4SHLhM6fqL93Uiu1SZvR6SOpeILH66j
-	 4nN8MYDwPkrPR63yl3/xsMOvTe36L9D/P0UcB2zE=
+	b=AYAmAmQ5cfaTg7K7DZnSx4liVVE/0ganOiFHfsevkfuv5AuSsSAEfiEQB4iMkq9qQ
+	 D4RwiCeyKEzCcVXhgdstP87hqOI8Ey2QKHmCf3oCPrcKY8Kqf0Csz3GbcmTVAFHcW3
+	 N6Y50hPjyQyHD3z/GOpOjfZh+GgQARbiHodMXOR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 747/957] nvme-pci: fix missed admin queue sq doorbell write
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Val Packett <val@packett.cool>
+Subject: [PATCH 6.12 419/666] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
 Date: Wed, 20 May 2026 18:20:30 +0200
-Message-ID: <20260520162150.762068202@linuxfoundation.org>
+Message-ID: <20260520162120.347732783@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251960-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252594-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,51 +88,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,samsung.com:email]
-X-Rspamd-Queue-Id: EFF085955AB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[packett.cool:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 353DF59603D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
+[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
 
-We can batch admin commands submitted through io_uring_cmd passthrough,
-which means bd->last may be false and skips the doorbell write to
-aggregate multiple commands per write. If a subsequent command can't be
-dispatched for whatever reason, we have to provide the blk-mq ops'
-commit_rqs callback in order to ensure we properly update the doorbell.
+The MDSS resets have so far been left undescribed. Fix that.
 
-Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
+Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 8875855e45352..2e32242bed67c 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2028,6 +2028,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
- static const struct blk_mq_ops nvme_mq_admin_ops = {
- 	.queue_rq	= nvme_queue_rq,
- 	.complete	= nvme_pci_complete_rq,
-+	.commit_rqs	= nvme_commit_rqs,
- 	.init_hctx	= nvme_admin_init_hctx,
- 	.init_request	= nvme_pci_init_request,
- 	.timeout	= nvme_timeout,
+diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+index b9b51617a335d..0705103060748 100644
+--- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
++++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+@@ -6,6 +6,7 @@
+ #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+ #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+ 
++/* Clocks */
+ #define DISP_CC_PLL0				0
+ #define DISP_CC_PLL0_OUT_EVEN			1
+ #define DISP_CC_MDSS_AHB_CLK			2
+@@ -40,7 +41,11 @@
+ #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
+ #define DISP_CC_XO_CLK				32
+ 
+-/* DISP_CC GDSCR */
++/* Resets */
++#define DISP_CC_MDSS_CORE_BCR			0
++#define DISP_CC_MDSS_RSCC_BCR			1
++
++/* GDSCs */
+ #define MDSS_GDSC				0
+ 
+ #endif
 -- 
 2.53.0
 
