@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IxIIoj+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:44 +0200
+	id QDPvJHUuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C63EF596937
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FB559B898
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75E0F3894662
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 221FF268920
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A943F23BF;
-	Wed, 20 May 2026 17:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0780D40315E;
+	Wed, 20 May 2026 18:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAV+qkxF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrZleveO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1479E3A3E60;
-	Wed, 20 May 2026 17:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6281402BBD;
+	Wed, 20 May 2026 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299599; cv=none; b=BPyRFENmi5DXdf0NeSmZAcqDsNfl3wDGvZmemUJKMIEhY4jTlx5juSjinBsaNm6Nnw06WP+vcY0DGmZznWyY0ITzxymgBc5ODv2VvWi+vDsY+yWkU2A4cQEkotQss4tSJgMU7uFREA9L9GnIYD3I+V0LwWyNsGzuYqPY8xwyJz4=
+	t=1779302507; cv=none; b=FfFWkZlj426I3gHWz8mgrUIMkUjn34bjyxZvc7bgE02GMI0OhlcR0WHSXrn0wtkrbB9mY4sS2feaSrCqIp7dJd5FB5MnVn1Ge+azb5soyc/TmwInr7WEImtdAegkrI6mQNEe8fU87LCRWx1B+4/jVgdmGdvNgamc8YXjps+08Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299599; c=relaxed/simple;
-	bh=rahn2ierDjrr9GXm9bM6wXv27BXyb5Ixoik48IuivFU=;
+	s=arc-20240116; t=1779302507; c=relaxed/simple;
+	bh=FvLoH030qSga7ohX/lENRhJ/n0m154mGvD1wOkgITtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=by5l8pnmw6pzomCSRHm9ZZ77gvrkd1d94ZQ3musWr/KkJl3GiTPBP0+YJrLhpBg593/Wmo5JpLPPS7hEs1VLfS6UcLxRqBH4rQ0UyrwhVmuD7Xq3GpfjGb+qLib8Ovj++pQ3B+ArpkC7HyLNeLD8ktyKwEWr2mN4Mz4uIHXtMgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAV+qkxF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9D71F000E9;
-	Wed, 20 May 2026 17:53:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dWzq6+bhyX9MstqEqBl8BlTFdUZrnsXkBZNWBB+8mHMu0jpe2NQGUMkehnmgs6a7LbF4ladPb2mNaR3ogvA7LK9oNUfL+VjpWdwRBum9ncgmFxl65X9iZKokgnDnyFvpEuZnM0u/FmXdMUB8CRXToti0pAPM8Ek0NaKJ9CqhcXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrZleveO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102C71F000E9;
+	Wed, 20 May 2026 18:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299598;
-	bh=bvxDva1WUkjj0jLWKJrADQ7d0xhVcqX2ModVcN1ygUk=;
+	s=korg; t=1779302506;
+	bh=6O5A2XGmqBhb+Vux+gV7gQjzl9HvV/RiPlSU0qDmtLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dAV+qkxFbaotUMVVk7Wbrxc8maBKCP0CtWM4BNqQvxc9VXVRxB8tZ6GYeuvGa1489
-	 yNdQgR1QlKnGOaoKZeFXkhmtc4wGkZEkZQA4vXmyjLVGhQu+Nm6J1lFB6tMcYnbbXR
-	 2k2LdzTmSnPlwHjybxZ6RbmmooMLaY2O1cBPE1wU=
+	b=lrZleveOOktj2O+iEVkfJLO6Fj5RWwQmoAYw6kUSi1Nasi+oS7UJJdnFHiKFVlmeE
+	 Os0WcCLLLB4FBzNLhofJ244HhkFpyQT/d/5VgPYbmw78vp0OdrL43UzHtEaeeUjiWT
+	 TnxJLj2QYYh1kVdwY2iCe9sMXOEXvePnWN4ZeZnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Brian Masney <bmasney@redhat.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 832/957] drm/xe/debugfs: Correct printing of register whitelist ranges
+Subject: [PATCH 6.6 292/508] clk: visconti: pll: initialize clk_init_data to zero
 Date: Wed, 20 May 2026 18:21:55 +0200
-Message-ID: <20260520162152.610602621@linuxfoundation.org>
+Message-ID: <20260520162104.972343249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252044-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253139-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: C63EF596937
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D4FB559B898
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 03f2499c51dffce611b065b2894406beb9f2ebe0 ]
+[ Upstream commit 1603cbb64173a0e9fa7500f2a686f4aa011c58b9 ]
 
-The register-save-restore debugfs prints whitelist entries as offset
-ranges.  E.g.,
+Sashiko reported the following:
 
-        REG[0x39319c-0x39319f]: allow read access
+> The struct clk_init_data init is declared on the stack without being
+> fully zero-initialized. While fields like name, flags, parent_names,
+> num_parents, and ops are explicitly assigned, the parent_data and
+> parent_hws fields are left containing stack garbage.
 
-for a single dword-sized register.  However the GENMASK value used to
-set the lower bits to '1' for the upper bound of the whitelist range
-incorrectly included one more bit than it should have, causing the
-whitelist ranges to sometimes appear twice as large as they really were.
-For example,
+clk_core_populate_parent_map() currently prefers the parent names over
+the parent data and hws, so this isn't a problem at the moment. If that
+ordering ever changed in the future, then this could lead to some
+unexpected crashes. Let's just go ahead and make sure that the struct
+clk_init_data is initialized to zero as a good practice.
 
-        REG[0x6210-0x6217]: allow rw access
-
-was also intended to be a single dword-sized register whitelist (with a
-range 0x6210-0x6213) but was printed incorrectly as a qword-sized range
-because one too many bits was flipped on.  Similar 'off by one' logic
-was applied when printing 4-dword register ranges and 64-dword register
-ranges as well.
-
-Correct the GENMASK logic to print these ranges in debugfs correctly.
-No impact outside of correcting the misleading debugfs output.
-
-Fixes: d855d2246ea6 ("drm/xe: Print whitelist while applying")
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://patch.msgid.link/20260408-regsr_wl_range-v1-1-e9a28c8b4264@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 1a2a722ff96749734a5585dfe7f0bea7719caa8b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: b4cbe606dc367 ("clk: visconti: Add support common clock driver and reset driver")
+Link: https://sashiko.dev/#/patchset/20260326042317.122536-1-rosenp%40gmail.com
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Benoît Monin <benoit.monin@bootlin.com>
+Reviewed-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_reg_whitelist.c | 2 +-
+ drivers/clk/visconti/pll.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_reg_whitelist.c b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-index 23f6c81d99946..21763dc51150b 100644
---- a/drivers/gpu/drm/xe/xe_reg_whitelist.c
-+++ b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-@@ -174,7 +174,7 @@ void xe_reg_whitelist_print_entry(struct drm_printer *p, unsigned int indent,
- 	}
- 
- 	range_start = reg & REG_GENMASK(25, range_bit);
--	range_end = range_start | REG_GENMASK(range_bit, 0);
-+	range_end = range_start | REG_GENMASK(range_bit - 1, 0);
- 
- 	switch (val & RING_FORCE_TO_NONPRIV_ACCESS_MASK) {
- 	case RING_FORCE_TO_NONPRIV_ACCESS_RW:
+diff --git a/drivers/clk/visconti/pll.c b/drivers/clk/visconti/pll.c
+index e9cd80e085dc3..a540936196ca3 100644
+--- a/drivers/clk/visconti/pll.c
++++ b/drivers/clk/visconti/pll.c
+@@ -244,7 +244,7 @@ static struct clk_hw *visconti_register_pll(struct visconti_pll_provider *ctx,
+ 					    const struct visconti_pll_rate_table *rate_table,
+ 					    spinlock_t *lock)
+ {
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	struct visconti_pll *pll;
+ 	struct clk_hw *pll_hw_clk;
+ 	size_t len;
 -- 
 2.53.0
 
