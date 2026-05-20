@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF18EX8VDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:43 +0200
+	id WL5AFy71DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6E75993ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B48594DF3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 63DBC30E47CB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C583630BF085
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26F83F871A;
-	Wed, 20 May 2026 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463863A543E;
+	Wed, 20 May 2026 17:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsF3INvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeOX+88G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBA83F6619;
-	Wed, 20 May 2026 18:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80D03546C8;
+	Wed, 20 May 2026 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300973; cv=none; b=MgzP8cQst6pA2kHMCGUdeHELjlWYvaHrOmGS71EG9nUVZ3LUTc8d+t+16xzgDZ+zU+3W9vcH1c8+s/7Ly3pdDI5LN8f13DGe3a4P1jQvcqHuUzzHXpfnvKNS6jUbXqSaN7lM58WOnGs2eLSXNQtYmo4uO6hOKPoNHEC0tyM7Xo0=
+	t=1779299234; cv=none; b=qybxXZn8876+gHsOnRwxzcKY2dglUM1w9+V8RdBytRdu1QDKpDL5Ce8UoCAWpeGanywSboylfALXUqVksbLM3yNnRrSRkxVEUm0aKWiGHaLLvVpdWyhuaW5yMSiQaOHyZMZwc8CENpB33rfP2JqoeCcU8XDChaOVwZQhwDbUdp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300973; c=relaxed/simple;
-	bh=4tufP1NMZrY1F5wmecGBBlAGcTvrN91QCHu+OaabPE8=;
+	s=arc-20240116; t=1779299234; c=relaxed/simple;
+	bh=bgmt3VsW8ojpOPlrI28ZWcH7oRIpFi1wRtDHZBwGE40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOJhMOuWcdcnXUTVnbl3pVSBo6OvfLd2Fm6npifwqQwvjJ7Ep8aCYKoXDiYBz0vIge7U36cXSjiBFy2//3bXapSDWckUpetFFQqp8iAYQKBwujMMsUau6BtCxDcvUTFgSCPrg840ORE3QxBQmFgmd1uHXn64R52+CrQu7MdFuW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsF3INvS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F281B1F000E9;
-	Wed, 20 May 2026 18:16:11 +0000 (UTC)
+	 MIME-Version; b=moo94mOqiSfdQDMaxws+HKqRrr/RUtF19/a8/dY7UwtguARDqNI1mLFqClQpEsxiECfKldebNd/ah82Ox70FS/0XRxotWmJ5L4+KRGw05pJGWMkAEyAyUIvZU3aYzIaNMwRFiGFIU1FOISEmGzmQwlCeONwq/c5uMPZWUqhuwSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeOX+88G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506E91F000E9;
+	Wed, 20 May 2026 17:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300972;
-	bh=3OYDoDZFyv05nHG+VDtx1Y5NHyVwKoc9492QKkLMiYA=;
+	s=korg; t=1779299232;
+	bh=rIDHduNoMQ9FxZycHhw6K8rQr1hnFcj493/rDYufk7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lsF3INvSa6rtWWHxvqeeH14z6SUpOZ7GNTJjpogr/ex2LHRd5jCeF4aCZtxGmJ12f
-	 JVa4Oda0l8WTlDXIX5CP5W7XGBgvpzbEI1E4lfoae5MKIZBbe0od0Ia8GZaVt3iUBE
-	 Yr1/Z+GNLrQMigCsBSsNd7vDIZ5LqsbLbguDmGnY=
+	b=VeOX+88GmUq2NXPQ0q0DhpuBWb+KouSrmOfw9bh+jPTW+8RPxIdYaqC7PLImz8Rpk
+	 0Z5wYH0fFxKn5vzIX9DTXypFqRJHTbE2Z6tUOu7y2zZuocHzCtXS3gXeok9yWy3N/B
+	 th057dzVKWOOdGPlcoMAPJbvq/m7pGscsTCX8Ssg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 377/666] perf cgroup: Update metric leader in evlist__expand_cgroup
-Date: Wed, 20 May 2026 18:19:48 +0200
-Message-ID: <20260520162119.421988645@linuxfoundation.org>
+Subject: [PATCH 6.18 706/957] net: mana: Handle SKB if TX SGEs exceed hardware limit
+Date: Wed, 20 May 2026 18:19:49 +0200
+Message-ID: <20260520162149.851326079@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +67,208 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252552-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251921-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4A6E75993ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 01B48594DF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Aditya Garg <gargaditya@linux.microsoft.com>
 
-[ Upstream commit c9ef786c0970991578397043f1c819229e2b7197 ]
+[ Upstream commit 934fa943b53795339486cc0026b3ab7ad39dc600 ]
 
-When the evlist is expanded the metric leader wasn't being updated. As
-the original evsel is deleted this creates a use-after-free in
-stat-shadow's prepare_metric. This was detected running the "perf stat
---bpf-counters --for-each-cgroup test" with sanitizers.
+The MANA hardware supports a maximum of 30 scatter-gather entries (SGEs)
+per TX WQE. Exceeding this limit can cause TX failures.
+Add ndo_features_check() callback to validate SKB layout before
+transmission. For GSO SKBs that would exceed the hardware SGE limit, clear
+NETIF_F_GSO_MASK to enforce software segmentation in the stack.
+Add a fallback in mana_start_xmit() to linearize non-GSO SKBs that still
+exceed the SGE limit.
 
-The change itself puts the copied evsel into the priv field (known
-unused because of evsel__clone use) and then in a second pass over the
-list updates the copied values using the priv pointer.
+Also, Add ethtool counter for SKBs linearized
 
-Fixes: d1c5a0e86a4e ("perf stat: Add --for-each-cgroup option")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Sun Jian <sun.jian.kdev@gmail.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Co-developed-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1763464269-10431-2-git-send-email-gargaditya@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 65267c9c4f28 ("net: mana: Fix EQ leak in mana_remove on NULL port")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/cgroup.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 40 ++++++++++++++++++-
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  2 +
+ include/net/mana/gdma.h                       |  8 +++-
+ include/net/mana/mana.h                       |  1 +
+ 4 files changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
-index fbcc0626f9ce2..e172bcdf7fcb1 100644
---- a/tools/perf/util/cgroup.c
-+++ b/tools/perf/util/cgroup.c
-@@ -417,7 +417,6 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
- 			  struct rblist *metric_events, bool open_cgroup)
- {
- 	struct evlist *orig_list, *tmp_list;
--	struct evsel *pos, *evsel, *leader;
- 	struct rblist orig_metric_events;
- 	struct cgroup *cgrp = NULL;
- 	struct cgroup_name *cn;
-@@ -456,6 +455,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
- 		goto out_err;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 02090edbd103f..b9cab61d0afe2 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -11,6 +11,7 @@
+ #include <linux/mm.h>
+ #include <linux/pci.h>
+ #include <linux/export.h>
++#include <linux/skbuff.h>
  
- 	list_for_each_entry(cn, &cgroup_list, list) {
-+		struct evsel *pos;
- 		char *name;
+ #include <net/checksum.h>
+ #include <net/ip6_checksum.h>
+@@ -329,6 +330,21 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	cq = &apc->tx_qp[txq_idx].tx_cq;
+ 	tx_stats = &txq->stats;
  
- 		if (!cn->used)
-@@ -471,21 +471,37 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
- 		if (cgrp == NULL)
- 			continue;
- 
--		leader = NULL;
-+		/* copy the list and set to the new cgroup. */
- 		evlist__for_each_entry(orig_list, pos) {
--			evsel = evsel__clone(/*dest=*/NULL, pos);
-+			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
-+
- 			if (evsel == NULL)
- 				goto out_err;
- 
-+			/* stash the copy during the copying. */
-+			pos->priv = evsel;
- 			cgroup__put(evsel->cgrp);
- 			evsel->cgrp = cgroup__get(cgrp);
- 
--			if (evsel__is_group_leader(pos))
--				leader = evsel;
--			evsel__set_leader(evsel, leader);
--
- 			evlist__add(tmp_list, evsel);
- 		}
-+		/* update leader information using stashed pointer to copy. */
-+		evlist__for_each_entry(orig_list, pos) {
-+			struct evsel *evsel = pos->priv;
-+
-+			if (evsel__leader(pos))
-+				evsel__set_leader(evsel, evsel__leader(pos)->priv);
-+
-+			if (pos->metric_leader)
-+				evsel->metric_leader = pos->metric_leader->priv;
-+
-+			if (pos->first_wildcard_match)
-+				evsel->first_wildcard_match = pos->first_wildcard_match->priv;
++	BUILD_BUG_ON(MAX_TX_WQE_SGL_ENTRIES != MANA_MAX_TX_WQE_SGL_ENTRIES);
++	if (MAX_SKB_FRAGS + 2 > MAX_TX_WQE_SGL_ENTRIES &&
++	    skb_shinfo(skb)->nr_frags + 2 > MAX_TX_WQE_SGL_ENTRIES) {
++		/* GSO skb with Hardware SGE limit exceeded is not expected here
++		 * as they are handled in mana_features_check() callback
++		 */
++		if (skb_linearize(skb)) {
++			netdev_warn_once(ndev, "Failed to linearize skb with nr_frags=%d and is_gso=%d\n",
++					 skb_shinfo(skb)->nr_frags,
++					 skb_is_gso(skb));
++			goto tx_drop_count;
 +		}
-+		/* the stashed copy is no longer used. */
-+		evlist__for_each_entry(orig_list, pos)
-+			pos->priv = NULL;
++		apc->eth_stats.tx_linear_pkt_cnt++;
++	}
 +
- 		/* cgroup__new() has a refcount, release it here */
- 		cgroup__put(cgrp);
- 		nr_cgroups++;
+ 	pkg.tx_oob.s_oob.vcq_num = cq->gdma_id;
+ 	pkg.tx_oob.s_oob.vsq_frame = txq->vsq_frame;
+ 
+@@ -442,8 +458,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		}
+ 	}
+ 
+-	WARN_ON_ONCE(pkg.wqe_req.num_sge > MAX_TX_WQE_SGL_ENTRIES);
+-
+ 	if (pkg.wqe_req.num_sge <= ARRAY_SIZE(pkg.sgl_array)) {
+ 		pkg.wqe_req.sgl = pkg.sgl_array;
+ 	} else {
+@@ -518,6 +532,25 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	return NETDEV_TX_OK;
+ }
+ 
++#if (MAX_SKB_FRAGS + 2 > MANA_MAX_TX_WQE_SGL_ENTRIES)
++static netdev_features_t mana_features_check(struct sk_buff *skb,
++					     struct net_device *ndev,
++					     netdev_features_t features)
++{
++	if (skb_shinfo(skb)->nr_frags + 2 > MAX_TX_WQE_SGL_ENTRIES) {
++		/* Exceeds HW SGE limit.
++		 * GSO case:
++		 *   Disable GSO so the stack will software-segment the skb
++		 *   into smaller skbs that fit the SGE budget.
++		 * Non-GSO case:
++		 *   The xmit path will attempt skb_linearize() as a fallback.
++		 */
++		features &= ~NETIF_F_GSO_MASK;
++	}
++	return features;
++}
++#endif
++
+ static void mana_get_stats64(struct net_device *ndev,
+ 			     struct rtnl_link_stats64 *st)
+ {
+@@ -890,6 +923,9 @@ static const struct net_device_ops mana_devops = {
+ 	.ndo_open		= mana_open,
+ 	.ndo_stop		= mana_close,
+ 	.ndo_select_queue	= mana_select_queue,
++#if (MAX_SKB_FRAGS + 2 > MANA_MAX_TX_WQE_SGL_ENTRIES)
++	.ndo_features_check	= mana_features_check,
++#endif
+ 	.ndo_start_xmit		= mana_start_xmit,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_get_stats64	= mana_get_stats64,
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+index 99e8112086833..0e2f4343ac67f 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+@@ -18,6 +18,8 @@ static const struct mana_stats_desc mana_eth_stats[] = {
+ 	{"tx_cq_err", offsetof(struct mana_ethtool_stats, tx_cqe_err)},
+ 	{"tx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+ 					tx_cqe_unknown_type)},
++	{"tx_linear_pkt_cnt", offsetof(struct mana_ethtool_stats,
++				       tx_linear_pkt_cnt)},
+ 	{"rx_coalesced_err", offsetof(struct mana_ethtool_stats,
+ 					rx_coalesced_err)},
+ 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 2e4f2f3175e55..a4cf307859f85 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -486,6 +486,8 @@ struct gdma_wqe {
+ #define INLINE_OOB_SMALL_SIZE 8
+ #define INLINE_OOB_LARGE_SIZE 24
+ 
++#define MANA_MAX_TX_WQE_SGL_ENTRIES 30
++
+ #define MAX_TX_WQE_SIZE 512
+ #define MAX_RX_WQE_SIZE 256
+ 
+@@ -592,6 +594,9 @@ enum {
+ #define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
+ #define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
+ 
++/* Driver supports linearizing the skb when num_sge exceeds hardware limit */
++#define GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE BIT(20)
++
+ /* Driver can send HWC periodically to query stats */
+ #define GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY BIT(21)
+ 
+@@ -605,7 +610,8 @@ enum {
+ 	 GDMA_DRV_CAP_FLAG_1_SELF_RESET_ON_EQE | \
+ 	 GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE | \
+ 	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE | \
+-	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY)
++	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY | \
++	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE)
+ 
+ #define GDMA_DRV_CAP_FLAGS2 0
+ 
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 7e946239effa9..9fadff78568ea 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -377,6 +377,7 @@ struct mana_ethtool_stats {
+ 	u64 wake_queue;
+ 	u64 tx_cqe_err;
+ 	u64 tx_cqe_unknown_type;
++	u64 tx_linear_pkt_cnt;
+ 	u64 rx_coalesced_err;
+ 	u64 rx_cqe_unknown_type;
+ };
 -- 
 2.53.0
 
