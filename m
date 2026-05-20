@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-250140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGSJMhXuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:33 +0200
+	id L4N4JS8NDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-250142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892AE59385E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025D35987B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EDD93310D89
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E32143331612
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E64D34CFCD;
-	Wed, 20 May 2026 16:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904E1372690;
+	Wed, 20 May 2026 16:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfQ+pukT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16xCZtoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8B5366566;
-	Wed, 20 May 2026 16:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D636CE19;
+	Wed, 20 May 2026 16:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294649; cv=none; b=q5SPttMf+l4Uy/5LufedCMCAT13ekpVREHg8y5Va4Vm7MWfH6nzp+4L+RR337A/O1M3HG4TE7vWNOgexQ6l+bOzEwgdqhNXZYi53YSYuhD0lEwLNHzEvcq8xOAvihgJz/eHzzlAO752yCmFZUtMPx7JL9H3m4qv6jRWhswW+e5k=
+	t=1779294654; cv=none; b=CNltXFnfmPaIWsVvDpha75YZwg+z5aSDyzEWI6HSv3TXQa4fp2o1hqD+H+QNZGd2rsfjl1nlCGfTAq09lFWUummdHGnwS/4y7Zdxae+SsLkTMwo308iTd7r4jbdC4QtJfTLiUCMfgYepHvfWLD+GZaO5jpp1v61lT4hLiIbm6Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294649; c=relaxed/simple;
-	bh=o5oMFBQY/b+V96+0PMFYoxKlNxaXPdbqOCD0vtfCfpw=;
+	s=arc-20240116; t=1779294654; c=relaxed/simple;
+	bh=PeF/5xOQZiwRNLLn49EYir2GPzyNrBnfxwtsCnjA/cA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urPmbnHSs3LfvAiyR+v4dJDDi2AKyqmOMDrWmnLkoX9fGBoxI4wEcJllkIaccGUCHBV/BX7GYf7ApjxfZ1vZNKl2w94uVhMTHo90yPg4iqWXYlNIil8LdGVVRqgQJ9XuAT3Mf0Yt5gQR222OgLjIPrPsbBf62VWkg8mbbouz4BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfQ+pukT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715771F000E9;
-	Wed, 20 May 2026 16:30:47 +0000 (UTC)
+	 MIME-Version; b=qWCw+rZPYygxgLZoq3coTavP8mrivvC/d9dR8SRm1ybte1wzHfrumpoqR7u932xuD6lEbfQ3p7uWcmY835tot3k9nRi8SQoJcafaNqGO3RweD6+rWU3Ui3Uz8S/kV58QP/KdqcVTSJjIOU/+B0xcMxmd4MXqeW9KqIxLv1DLQmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16xCZtoj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74651F00893;
+	Wed, 20 May 2026 16:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294647;
-	bh=czQX1F/RYoQy4DjbfUhd/Z86MKv7wTs2Wj5qAtg0//0=;
+	s=korg; t=1779294653;
+	bh=F9jK61HlSdKZ646UKcULJJT9II4Y2aCGagAPi0smh8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WfQ+pukTfnlVIlHpaxLftAWJIXgXktjlnkO97otNUuW6Jv1scC5OzwCQMY+xxY5XK
-	 gFtfcG5oz7u00Va7JcG6QX1TvbDhu1eJ6PLWxvxO5Pj8otpE1vXiCa8qpYvjem8/45
-	 K5am+xL/zBQtI1Yl+z0JRJJmhB55wyoo71tee26c=
+	b=16xCZtojgkIVJcSION9NuiAZ3Ir37INbDYoKV+eVfJ+7Q+1Ps25VJZt3BR9vRcZqJ
+	 gSBKKCQKdg1Teu3BULbBIue3KdbLADgvmEjwrt4YBBMfO8103jevW0KUQEI6TWdSL0
+	 kuM9MYeSmKBUsF4Mhk7UnOF/mq6q//b0No6hsKpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Colton Lewis <coltonlewis@google.com>,
-	Will Deacon <will@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0118/1146] arm64: cpufeature: Make PMUVer and PerfMon unsigned
-Date: Wed, 20 May 2026 18:06:08 +0200
-Message-ID: <20260520162151.005193141@linuxfoundation.org>
+Subject: [PATCH 7.0 0119/1146] bpf: Switch CONFIG_CFI_CLANG to CONFIG_CFI
+Date: Wed, 20 May 2026 18:06:09 +0200
+Message-ID: <20260520162151.027388906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,30 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250140-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250142-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 892AE59385E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 025D35987B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,54 +102,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit d1dcc20bcc40efe1f1c71639376c91dafa489222 ]
+[ Upstream commit 9b0cf064ea0a6bac5e1a5fb43b004fd52fbe2b3b ]
 
-On the host, this change doesn't make a difference because the fields
-are defined as FTR_EXACT. However, KVM allows userspace to set these
-fields for a guest and overrides the type to be FTR_LOWER_SAFE. And
-while KVM used to do an unsigned comparison to validate that the new
-value is lower than what the hardware provides, since the linked commit
-it uses the generic sanitization framework which does a signed
-comparison.
+This was renamed in commit 23ef9d439769 ("kcfi: Rename CONFIG_CFI_CLANG
+to CONFIG_CFI") as it is now a compiler-agnostic option. Using the wrong
+name results in the code getting compiled out. Meaning the CFI failures
+for btf_dtor_kfunc_t would still trigger.
 
-Fix it by defining these fields as unsigned. In theory, without this
-fix, userspace could set a higher PMU version than the hardware supports
-by providing any value with the top bit set.
-
-Fixes: c118cead07a7 ("KVM: arm64: Use generic sanitisation for ID_(AA64)DFR0_EL1")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Colton Lewis <coltonlewis@google.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 99fde4d06261 ("bpf, btf: Enforce destructor kfunc type with CFI")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20260312183818.2721750-1-cmllamas@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/btf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 32c2dbcc0c641..348197d9b6017 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -565,7 +565,7 @@ static const struct arm64_ftr_bits ftr_id_aa64dfr0[] = {
- 	 * We can instantiate multiple PMU instances with different levels
- 	 * of support.
- 	 */
--	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_EXACT, ID_AA64DFR0_EL1_DebugVer_SHIFT, 4, 0x6),
- 	ARM64_FTR_END,
- };
-@@ -709,7 +709,7 @@ static const struct arm64_ftr_bits ftr_id_pfr2[] = {
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 71f9143fe90f3..63d075f374591 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -9019,7 +9019,7 @@ static int btf_check_dtor_kfuncs(struct btf *btf, const struct btf_id_dtor_kfunc
+ 		if (!t || !btf_type_is_ptr(t))
+ 			return -EINVAL;
  
- static const struct arm64_ftr_bits ftr_id_dfr0[] = {
- 	/* [31:28] TraceFilt */
--	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MProfDbg_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MMapTrc_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_CopTrc_SHIFT, 4, 0),
+-		if (IS_ENABLED(CONFIG_CFI_CLANG)) {
++		if (IS_ENABLED(CONFIG_CFI)) {
+ 			/* Ensure the destructor kfunc type matches btf_dtor_kfunc_t */
+ 			t = btf_type_by_id(btf, t->type);
+ 			if (!btf_type_is_void(t))
 -- 
 2.53.0
 
