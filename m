@@ -1,127 +1,183 @@
-Return-Path: <stable+bounces-249781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO7tF0JvDWp9xQUAu9opvQ
-	(envelope-from <stable+bounces-249781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:22:26 +0200
+	id KBH1KxFyDWroxQUAu9opvQ
+	(envelope-from <stable+bounces-249782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:34:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAF3589A66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:22:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C30B589D94
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AABB3029257
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:11:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF6B53134410
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6155B3A75AF;
-	Wed, 20 May 2026 08:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA983A960A;
+	Wed, 20 May 2026 08:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KKgYZ1gv"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="Uh3wbPHC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BEE3A545A;
-	Wed, 20 May 2026 08:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264709; cv=none; b=tNfamEQxsHpLcxcPSPLlKcgORErExOC1Dm8kDNae1MfLcShVXJV39vJkBZ46K6KUnezYKFLXsuqpIB6Rnp7x94Gf7lH3xvf9dL5loOezdiQds7LJJMvAIGePVs/Rf8dkxnuz4b3nNiSKdzI0GsLbiAVN2kspn4xYopkZzpy7I7o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779264709; c=relaxed/simple;
-	bh=Fdxm3Vn1AOFhUkYyB44/D2Qh3Bnq7xCWi1/UeH17wX4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hBtBH/TzgyCWHGxPf0r99DtSZrPlE2ubZFJ4sCB3ckef9nbqk/0I2supHd9dD3J7oO0ktT/D4TGERnaZDmgdMa/OPSvqXda4uBUCzji75flZsVVh9TVDDBHVE3ar5/6B4s8Tp8i0IGLCmItsf4LNULeQq7QkMWq/P79jq4w5VEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KKgYZ1gv; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0D50AC2B9FB;
-	Wed, 20 May 2026 08:12:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 70E466070E;
-	Wed, 20 May 2026 08:11:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E2F4B107E9D89;
-	Wed, 20 May 2026 10:11:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779264699; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=DdZv3J2pCE/mvIb6zkVmZxOxqGg0ys9/r9v2yQA8PjE=;
-	b=KKgYZ1gvW6m4Xlq+HRrCKY9ejhnura8Ve//r/VOSTko+5kMC61kLF98xFjwu3TxpRt2LpU
-	vzTHB0WTQHDPml6chbEAsSrxP13i0vUZN+QAeUAwM125kIEBMmTCS2Kb+6TShkQwDFsElC
-	k5TqlwLHLDbDH+Gmyf3AKHa07k5bHviOFe8L4PlhiMGeKV3V+ledm0jR8QBIQSUiBGuYnd
-	dmWa1eFiHWaL5P88xV92AhcebXzeS5B3TV7qxGTDyEG6qGPh1x9vDkkTw+zPQ6ZyM+mXkI
-	Q+2uTaTuBfVyvtG406wl9McJF6wJsa0WcqrKv14cDTiECULWwxQWwIdbZ8gHIg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-Cc: Alexander Aring <alex.aring@gmail.com>,  Stefan Schmidt
- <stefan@datenfreihafen.org>,  Simon Horman <horms@kernel.org>,  Andrew
- Lunn <andrew+netdev@lunn.ch>,  "David S . Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  linux-wpan@vger.kernel.org,
-  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  stable@vger.kernel.org,  Shitalkumar Gandhi
- <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: Re: [PATCH wpan v2] ieee802154: ca8210: fix pointer truncation in
- kfifo on 64-bit
-In-Reply-To: <20260520050707.38055-1-shitalkumar.gandhi@cambiumnetworks.com>
-	(Shitalkumar Gandhi's message of "Wed, 20 May 2026 10:37:07 +0530")
-References: <20260520050707.38055-1-shitalkumar.gandhi@cambiumnetworks.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Wed, 20 May 2026 10:11:32 +0200
-Message-ID: <878q9esdor.fsf@bootlin.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9913A759D;
+	Wed, 20 May 2026 08:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779264820; cv=pass; b=EZjQk/tiNyqngCGL+RIBspC617y/sFAa9tr7g8EALVmLti0tXAGuszPyzRkSZ3LXxgy8iPSJF6tVsxUBafrhXOV1SPZO4v+ebn5LxyEunTDnQYHracG5WCGKO5MzVwklNOze68xlKbYguUy/6bdtY7/lZ/XFPQic21kLUrXawv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779264820; c=relaxed/simple;
+	bh=UuHZN8bLdDb35hsZfOIbiCsj2GNcJv+JahtKBFao7JM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pKNMFiuXGETu7as/d6seWnmLSeRSihnDweFiyI7tHyzCU27PrsgyENEMvCJunHW3VgfA1rlTLfUwlAekOhmyHvSNJZL8cpE0R+/XScC+Uww/kHoEJcHN/LtalLretmo1n4ExjfxFxYO7GSDi0xYq3RXJI3krvBpT5Nxrfs15bRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=Uh3wbPHC; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1779264795; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fhoFZAGE734g7YrwnK69+Fp+SlBP+e532/rwFxqqOg8FV5tdEIfaFORTiqM7n7YHad3es+GlWxlzsGHFrGKmdpYlnHvbmI07PynfxC0MmNg3KoTVLwV5hv//8Qm7A/9yCp5Bqp5lY06N0LRgOXEXr1Tm2J2d+40YejVZHso/9qc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1779264795; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1DaCzDhRImq3pbfy2r8JVXerCF/X/rQL52mfTWicG4k=; 
+	b=K3aH/+VmSSz2zNU3CCHPtj8w3HqysMSbIPKHzatggDefM46va4bIfeUqv9Yi8u7NpUttUonl5naq6Pn/swZE223u1Adj+zj2Zvh30+EWyGv6ZzG7yNetKASukVSTLQVsaovI58YmPid6/GP6ZYkLAv9PWmFKpTYTPnzTcqVhyL4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
+	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779264795;
+	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=1DaCzDhRImq3pbfy2r8JVXerCF/X/rQL52mfTWicG4k=;
+	b=Uh3wbPHCLetqao1sJ7Ww936T/0G+TEuQ9eZT1Mp+poKOwsOIjUnwdOOdRXAk4InP
+	Uaty3nP1NfXa2mETMeGvPFJJqqvNUqPmcIWGCohU4EwEQ1nDdkykQdd/R7m2KjrSQ51
+	g2CJSVyOSfXMx1O01zyUaaPNsikI0NgfwcNfxCrI=
+Received: by mx.zohomail.com with SMTPS id 1779264793673372.72174741381184;
+	Wed, 20 May 2026 01:13:13 -0700 (PDT)
+Message-ID: <f37bdc63-3575-49e5-aa5b-7b93428b293d@collabora.com>
+Date: Wed, 20 May 2026 11:12:53 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
+ updates
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
+ kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ simona@ffwll.ch, sumit.semwal@linaro.org
+Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org,
+ syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260519082247.34470-1-kartikey406@gmail.com>
+ <2e23513c-9d59-4891-acfe-9f1fbcbce778@amd.com>
+ <f6bcef23-5510-4aad-bf6a-4e1ecfc8d474@collabora.com>
+ <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249781-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,datenfreihafen.org,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,vger.kernel.org,cambiumnetworks.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249782-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[amd.com,gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: AFAF3589A66
+X-Rspamd-Queue-Id: 5C30B589D94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On 5/20/26 10:05, Christian König wrote:
+> On 5/20/26 08:50, Dmitry Osipenko wrote:
+>> On 5/19/26 11:27, Christian König wrote:
+>>> On 5/19/26 10:22, Deepanshu Kartikey wrote:
+>>>> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
+>>>> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
+>>>> ignore its return value. The function can fail with -EINTR from
+>>>> dma_resv_lock_interruptible() (signal during lock wait) or with
+>>>> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
+>>>> leaving the resv lock not held. The queue path then walks the object
+>>>> array and calls dma_resv_add_fence(), which requires the lock held;
+>>>> with lockdep enabled this trips dma_resv_assert_held():
+>>>>
+>>>>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
+>>>>   Call Trace:
+>>>>    virtio_gpu_array_add_fence
+>>>>    virtio_gpu_queue_ctrl_sgs
+>>>>    virtio_gpu_queue_fenced_ctrl_buffer
+>>>>    virtio_gpu_cursor_plane_update
+>>>>    drm_atomic_helper_commit_planes
+>>>>    drm_atomic_helper_commit_tail
+>>>>    commit_tail
+>>>>    drm_atomic_helper_commit
+>>>>    drm_atomic_commit
+>>>>    drm_atomic_helper_update_plane
+>>>>    __setplane_atomic
+>>>>    drm_mode_cursor_universal
+>>>>    drm_mode_cursor_common
+>>>>    drm_mode_cursor_ioctl
+>>>>    drm_ioctl
+>>>>    __x64_sys_ioctl
+>>>>
+>>>> Beyond the WARN, mutating the dma_resv fence list without the lock
+>>>> races with concurrent readers/writers and can corrupt the list.
+>>>
+>>> Well why are you trying to add a fence on an atomic mode set in the first place?
+>>>
+>>> That is usually an illegal operation here.
+>> That is pre-existing in the driver. It performs draw operation and in
+>> some cases waits for the completion during atomic. Whether all that
+>> syncing is correct is hard to say immediately as some of it may be
+>> historical edge cases.
+> 
+> I'm not not so deeply in the atomic mode setting stuff but it strongly sounds like that this is seriously broken.
+> 
+> The background is that the atomic mode set framework allows an output dma_fence which is signaled when the commit is finished.
+> 
+> So when you allocate a fence slot and add a new fence to finish the atomic commit it is trivially possible that this cycles back and waits for the atomic commit to finish. In other words you have a deadlock.
+> 
+> You probably need specially crafted userspace with the right timing to trigger that, but such issues are usually a rather big no-no and need to be fixed in the long term.
+> 
+> Try to add dma_fence_begin_signaling() and dma_fence_end_signaling() annotation and enable lockdep, the tool should be able to point out if and what exactly goes wrong.
+> 
+> The usual fix is to prepare everything before commit_tail is called (alloc memory, create, reserve slot, add dma_fence etc....) and then just send out the prepared commands later on.
 
-> @@ -2540,8 +2540,10 @@ static ssize_t ca8210_test_int_user_read(
->  			!kfifo_is_empty(&priv->test.up_fifo)
->  		);
->  	}
-> +	unsigned int copied;
+We tried with moving resv alloc to prepare_fb() in a previous patch
+version, it resulted in a non-trivial deadlocks. The goal of this patch
+is to fix immediate problem with a minimal code change.
 
-Why is this declaration in the middle of the code? It should be at the
-top,no?
+What you're saying is correct, but it may require a rather big
+refactoring of the code. In general, everything works okay today, so not
+really an urgent problem.
 
-Thanks,
-Miqu=C3=A8l
+-- 
+Best regards,
+Dmitry
 
