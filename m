@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-252532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME/VI/T9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:16 +0200
+	id CJSyH+TtDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361CA5966CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B5B593793
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6638830F2D62
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9310630A4FB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CB23FB7D2;
-	Wed, 20 May 2026 18:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF653F888B;
+	Wed, 20 May 2026 17:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDJxZ3J5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqmJFXMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089F0340A57;
-	Wed, 20 May 2026 18:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015083EF0D7;
+	Wed, 20 May 2026 17:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300923; cv=none; b=kicdeCtzUfak3O6E2699nrzjGeTgmlpva3l3GSlgW+HvAgdlFwlYO8Y8bMxR9xSdc9AdAJ5vXqS6swb3b4HRZVJm4FTlhJbch4RApiCPIfryKX1eJcbgYSaLjpkYvtr01rYUlgi303zpif3Bn5KEvXzklEGdEbTn8zOI95R48yg=
+	t=1779296755; cv=none; b=oq30NPHbt73DtgVJn8FiozIn4oFlhCGSCfWQ8G5YOsQYLpLYW1fE7PbAZhVziLpmlQasyc0CniruuPx0u9pmEVm46kc+OyMM2eGDJUmVCYP7/eXEHriTDhbILpgAFs9xCOxyv5s0LxxNbmJYjHMcedNwsxmgYdmp8hPKAnHj/tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300923; c=relaxed/simple;
-	bh=tACoNhoxh490wtkZX7TeKMdNEVmmC+Hg1UG4mHXg3eQ=;
+	s=arc-20240116; t=1779296755; c=relaxed/simple;
+	bh=OcnQVvU1VO97j1GJrWI4GVw33aB0M/RlKqiMErGyWPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEc1TZEF4cQMoynAq9QnJd6hFAjWZ32/HP3Hx4ou0mhWD3SP+wTS7bIfByv3VNcCcNWFO6vicNwiHPplv2v52v5Vvx+OYobw+l9I/Ir0UpW8iXzrMR46BsBDcA0FBiEGIuuTV+daVdGr/1jR9V7Y92hOAUYPgMq0o5o3OdTWEqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDJxZ3J5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2193E1F000E9;
-	Wed, 20 May 2026 18:15:18 +0000 (UTC)
+	 MIME-Version; b=NXetEbmXBmOejCTtISv4X/l4jF9F+oWGOGpLn/SY/gf6KsugUz49kJr+349xYj+wX+AOxKhPm6aw/fXWXXnTQPLp9LvXfzC/gwM6GzPxtkHoMzkviTWN7lmnltSv0y+i2/TuxgpcmIHDZPvrn/b/oxdfGHKz/jXQe5f6v8bZX4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqmJFXMA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666651F000E9;
+	Wed, 20 May 2026 17:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300919;
-	bh=yGhb12rgnV9ACdMr3Aw8EnYcHPLjBidECQb25olq61Y=;
+	s=korg; t=1779296753;
+	bh=QTrkxB0d9Mdk3MOyXFHshrDaCE5Y733or0XEidar04Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CDJxZ3J5orOglOvre/l58KKUnbfL71CLI1GlVqMpj8NlNWWXQBVgr3U1lNuro+Z/C
-	 NOXl5rDzcChF+fIvGb/1/uS7AgMaja/yej7bev3J4p+7T7p2Ff+tpyklr8p97WZxqO
-	 mzwKS080S8dqbRbAgCh/8nX9VltwjrVXDnO6wPaU=
+	b=MqmJFXMA/aod2TNXh9qkoU0x38+O4/lBlko0E7B5LfrCjMKEaQdOphQPabZgtMrk/
+	 dr1eY82YYh1KLCsoiz+UijvYZIN7YRHAJlJpXmWaV+oGrshGEmzD2wxAgnQ7FahtbM
+	 PH7C6JJllxixq6hFv8UymavUNCmnj4qrgFywz/K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 359/666] pinctrl: cy8c95x0: remove duplicate error message
+Subject: [PATCH 7.0 0920/1146] mtd: spinand: Add support for packed read data ODTR commands
 Date: Wed, 20 May 2026 18:19:30 +0200
-Message-ID: <20260520162119.017771021@linuxfoundation.org>
+Message-ID: <20260520162209.061376483@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252532-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250966-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,83 +86,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 361CA5966CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 26B5B593793
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
+[ Upstream commit 5e25407b68f460142539536e31fa20338db6146f ]
 
-The pin control core is covered to report any error via message.
-The devm_request_threaded_irq() already prints an error message.
-Remove the duplicates.
+Some devices stuff address bits in the double byte opcode (in place of
+the repeated byte) in order to be able to increase the size of the
+devices, without adding extra address bytes.
 
-While at it, drop the info message as the same information about
-an IRQ in use can be retrieved differently.
+Create a flag to identify those devices. When the flag is set, use the
+"packed" variant for the read data operation.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: 8d655748aba1 ("mtd: spinand: winbond: Set the packed page read flag to W35N02/04JW")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/mtd/nand/spi/core.c | 24 +++++++++++++++++++++---
+ include/linux/mtd/spinand.h |  7 +++++++
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 7a6a1434ae7f4..adbfea8ca5fd6 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1345,6 +1345,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 8aa3753aaaa1d..0b076790bd9df 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -100,6 +100,17 @@ spinand_fill_page_read_op(struct spinand_device *spinand, u64 addr)
+ 	return op;
+ }
+ 
++static struct spi_mem_op
++spinand_fill_page_read_packed_op(struct spinand_device *spinand, u64 addr)
++{
++	struct spi_mem_op op = spinand->op_templates->page_read;
++
++	op.cmd.opcode |= addr >> 16;
++	op.addr.val = addr & 0xFFFF;
++
++	return op;
++}
++
+ struct spi_mem_op
+ spinand_fill_prog_exec_op(struct spinand_device *spinand, u64 addr)
  {
- 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
- 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
-+	struct device *dev = chip->dev;
- 	int ret;
+@@ -453,7 +464,10 @@ static int spinand_load_page_op(struct spinand_device *spinand,
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
+-	struct spi_mem_op op = SPINAND_OP(spinand, page_read, row);
++	bool packed = spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ;
++	struct spi_mem_op op = packed ?
++		SPINAND_OP(spinand, page_read_packed, row) :
++		SPINAND_OP(spinand, page_read, row);
  
- 	mutex_init(&chip->irq_lock);
-@@ -1371,17 +1372,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- 	girq->handler = handle_simple_irq;
- 	girq->threaded = true;
- 
--	ret = devm_request_threaded_irq(chip->dev, irq,
--					NULL, cy8c95x0_irq_handler,
--					IRQF_ONESHOT | IRQF_SHARED,
--					dev_name(chip->dev), chip);
--	if (ret) {
--		dev_err(chip->dev, "failed to request irq %d\n", irq);
--		return ret;
--	}
--	dev_info(chip->dev, "Registered threaded IRQ\n");
--
--	return 0;
-+	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
-+					 IRQF_ONESHOT | IRQF_SHARED,
-+					 dev_name(chip->dev), chip);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
  }
+@@ -1489,9 +1503,13 @@ static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
+ 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->blk_erase))
+ 		return -EOPNOTSUPP;
  
- static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
-@@ -1397,11 +1390,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
- 	pd->owner = THIS_MODULE;
+-	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
+-	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read))
++	if (spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ)
++		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(0);
++	else
++		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
++	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read)) {
+ 		return -EOPNOTSUPP;
++	}
  
- 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
--	if (IS_ERR(chip->pctldev))
--		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
--			"can't register controller\n");
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(chip->pctldev);
- }
+ 	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_8D_8D_0_OP(0);
+ 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->prog_exec))
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 6a024cf1c53ac..f2f80103649d5 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -290,6 +290,12 @@
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_NO_DATA)
  
- static int cy8c95x0_detect(struct i2c_client *client,
++#define SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(addr)			\
++	SPI_MEM_OP(SPI_MEM_DTR_OP_PACKED_CMD(0x13, addr >> 16, 8),	\
++		   SPI_MEM_DTR_OP_ADDR(2, addr & 0xffff, 8),		\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
+ #define SPINAND_PAGE_READ_FROM_CACHE_8D_8D_8D_OP(addr, ndummy, buf, len, freq) \
+ 	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x9d, 8),			\
+ 		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
+@@ -482,6 +488,7 @@ struct spinand_ecc_info {
+ #define SPINAND_HAS_PROG_PLANE_SELECT_BIT		BIT(2)
+ #define SPINAND_HAS_READ_PLANE_SELECT_BIT		BIT(3)
+ #define SPINAND_NO_RAW_ACCESS				BIT(4)
++#define SPINAND_ODTR_PACKED_PAGE_READ			BIT(5)
+ 
+ /**
+  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
 -- 
 2.53.0
 
