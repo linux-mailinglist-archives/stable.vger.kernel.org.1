@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIPjGgjuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:20 +0200
+	id qC9yHzX2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2222059382F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3A8595017
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0391A3091E6D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DE8613055AF9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEB43D6CB7;
-	Wed, 20 May 2026 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA913F4DC0;
+	Wed, 20 May 2026 17:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6B1TgYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RF7wMFkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF37B3F2115;
-	Wed, 20 May 2026 17:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646C33F20FA;
+	Wed, 20 May 2026 17:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296888; cv=none; b=hPmEXkc8UIVywSFP4+a0fQyiwXyAo2tfcv2wi4Yr5njU1/r8PIekJccDh4/yvBi8iunlhAwe44ADEZot3L1oPTUyoTSmSjzZ64DpgNDNvxXllcMlRJz7642M0J2W2Q1gabc/HvkvYDh9sSq0wk48jg0NwGgiY6E054DDW6EK/jk=
+	t=1779299349; cv=none; b=kvKo7zpLcErU4q62GqOl4oF7FEt5k6kWyhKAXbDObjIPYYpyLUOlWmu2ucdcfRSKTELuU41s8kheJ1zBrTBRwyDbbA1rEkxPBAZEsIv/pOu+nmtCOhZhFSaK7vO74pOptSb4yQtPNrT7W6gIAtbYiMJv/9vVytZSle1PaaOGNnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296888; c=relaxed/simple;
-	bh=8Ekt6G39F3J5F8RbgI6t5+Fmf4nBxEbG3pYgonOTeoI=;
+	s=arc-20240116; t=1779299349; c=relaxed/simple;
+	bh=/egC5AV5pQm8I84vuP4J3+fBvIfseKy/ezeX5BLtZ3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Si0I5UxwaJO8DlZjPUi/v7SLdccuziAZb0Ek9CBNb8BRLF2DOk9fNIKQdd0rTOx4GsdG04cwzcNF7NTDmbA7Owc5KLBs3XmugzB6M6W/urrREnUqZ6CgwE2RzWteu59FACziw98oNYvzGeTDEZA18AzdKmPp666vuKSyoMrNP2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6B1TgYG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A8B1F000E9;
-	Wed, 20 May 2026 17:08:04 +0000 (UTC)
+	 MIME-Version; b=A6HCzZvoV6gNuY/3ZGEuK+o9/Qf3Qf47uybVxl8PY6xj6YiTEoB6Gjafr84FYs+A4CStKBfeGaWTzrr0+bcCLmLidTORZmD4E4HFYCiYQf8y6yYxLd0GFN7pZH1FSHC90ddkWm1CHEMCXYxUw1u5J1RiAMoV2LFeMlXUzed4VPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RF7wMFkA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705F31F00893;
+	Wed, 20 May 2026 17:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296885;
-	bh=ZlsMXYpYLX3Q7TbFaSnVGcj1W5pWscBYZ2d3YAagV0o=;
+	s=korg; t=1779299347;
+	bh=4E3xp3EXro9SqvsT4piSMn2t5pSMWUUoLMSJ4WFn578=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u6B1TgYGAOap9FxKLX1hISvI8VxUf0OyZI3fwTl9RM8TXAXWXDJ7ZkWv5vQKbHSxJ
-	 0Izs6tKak6px/Y/xQW+iGZHg7rVP4KaAg+n4UyxsioaOZwRx7ppVX1EEkOIPR9nmXO
-	 TFtezk3e9OIK5t0BhV9BLEI3xCWB2wf7nfJ55wWM=
+	b=RF7wMFkAEEY6sTfFqjt+xUo0I835pDdNWV+HyR56bCk+EILBSyVj+AJBs036b9+Ll
+	 d/VqxfX8nlLGPad/mh/ZgsdaBX/1IswsFUau9+dKWgQMOgQ95bbhAUUdYpuV9XJBJJ
+	 Rn/9sUv9x2nB9jDJWFiASwR2FFtT9Nrvgq6dJqXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0970/1146] drm/amdgpu/vcn: set no_user_fence for VCN v5.0.1 enc ring
+Subject: [PATCH 6.18 737/957] mailbox: mailbox-test: dont free the reused channel
 Date: Wed, 20 May 2026 18:20:20 +0200
-Message-ID: <20260520162210.182272162@linuxfoundation.org>
+Message-ID: <20260520162150.543575526@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251017-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251948-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2222059382F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 4F3A8595017
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 8f4954722eab88e10c4ea0c0d3b1269c31421d3a ]
+[ Upstream commit 88ebadbf0deefdaccdab868b44ff70a0a257f473 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+The RX channel can be aliased to the TX channel if it has a different
+MMIO. This special case needs to be handled when freeing the channels
+otherwise a double-free occurs.
 
-Fixes: 346492f30ce3 ("drm/amdgpu: Add VCN_5_0_1 support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e16be95a2c3ee712b142cb27d2dca0b461181359)
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mailbox/mailbox-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index c28c6aff17aaa..54fbf8d73ca67 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -1419,6 +1419,7 @@ static const struct amdgpu_ring_funcs vcn_v5_0_1_unified_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.get_rptr = vcn_v5_0_1_unified_ring_get_rptr,
- 	.get_wptr = vcn_v5_0_1_unified_ring_get_wptr,
- 	.set_wptr = vcn_v5_0_1_unified_ring_set_wptr,
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 197cad7b3d401..210f6077f475c 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -422,7 +422,7 @@ static int mbox_test_probe(struct platform_device *pdev)
+ err_free_chans:
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
+ 	return ret;
+ }
+@@ -435,7 +435,7 @@ static void mbox_test_remove(struct platform_device *pdev)
+ 
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
+ }
+ 
 -- 
 2.53.0
 
