@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CD3iD9kYDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-251268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:26:01 +0200
+	id 4Mx4NE0PDmrc5wUAu9opvQ
+	(envelope-from <stable+bounces-250370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:45:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7C159991A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:26:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5C8598B3F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28CC933E7146
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C78C0331E9C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F10366075;
-	Wed, 20 May 2026 17:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EAF346FA1;
+	Wed, 20 May 2026 16:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB2lszr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFsopgd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5719635AC18;
-	Wed, 20 May 2026 17:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D53134041C;
+	Wed, 20 May 2026 16:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297541; cv=none; b=KGWgP5bDpnYPuhyXcGXEX4zepgx6vvskY0JL0CqCIcm7NWSpeYmveUlq7Qo+NAO3v+B/B+VfOlwe4dkeBEw0wYNsGXReN3Ksl9puViBnw/j/3qcAnex9lmFQPKOQkoiUmKYQeWvg3duLYsLIprvhOY+VDK73VmZ2CwwlkHzjn+I=
+	t=1779295236; cv=none; b=Dlw96F5+2dLVcLKstieuxGaOO4pnGLabK6dbIYynkYE7OSZknd85bSg6CWV3buzwlKy4jC6FpJZiTey2+yXXe/tkZs1KBMWM/cAtaPBc6pmcLBnxswO4dJec+067tNQVKFgcDRnICAcLZiHBOLzAvfA+DpGOPmWYzmNKwMwFwz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297541; c=relaxed/simple;
-	bh=XzSLkbovYVDJooLQFancuZlk0bVPM1TfbQONOFEnV1w=;
+	s=arc-20240116; t=1779295236; c=relaxed/simple;
+	bh=Q3i36q1kgRsG7cJLuy9/nu9RQSWCpO9t7BkX9jixEFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8ojjrtmUk7gP3JNfpd4Nq7JC9ty730QOQbquyrlTw4uVRNG4sEVgCGouC7dor86Khj4ydXuDIvgUkWBXl+Av8QcRFqOP7geZE9ipyluNbXTIN/NFfy6AS1jYzXATOiNI+Jh90VxlHHYcYrO21TjX4Lx7Joo6soGFuzD5ClO8G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB2lszr6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2BE1F000E9;
-	Wed, 20 May 2026 17:18:59 +0000 (UTC)
+	 MIME-Version; b=NSzUSzcPp/dy1EYOzhA253YqPowj5nsTtw0Xe2Yv30QW1sof6QCJUWPTU86yOhEzwEDvOeIeVri1zioE1hbULtmEyrWbJdupCvfM50XYH14lEaRT0RDnVB+/vvalnN6BPKXZnCHz4Sf3mPIZk4jftlJvVMWnvE2Y2CGXQ3FrkXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFsopgd9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813141F000E9;
+	Wed, 20 May 2026 16:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297540;
-	bh=cATB/uBEBpr33/OnWEsl529eQNUM0ZbbTqTPqddaR9U=;
+	s=korg; t=1779295235;
+	bh=5nmiPH7L1md3w0OrDWAVa3Z0CAhFvWAVVfvdYxJ9uyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MB2lszr6AjySZs+PWJWyd27a1RPEsdC1X5sme5UoXVd3yEReX+1G6NfgHlVW0Lo2N
-	 pzDnnxcxDjyI/XovpJ2+9nnschZ3AHD6iUtYEohz90N0KW/Ye+gDP7Zn2aspsXIDaA
-	 mbrcOdygPidAyL3La3yjYJR3XQSk+KaVLh8wma9o=
+	b=NFsopgd9d+bXJczTR2VwVelg9hYZqsl1c0hPNLbpP5G+CqFRCuA7X1UiJWnzXHfln
+	 0Ek7gaGaB50LDET2zAcgsON+tPXorEApVYSB34mNE2HCkycPgf53/8lvuP6nq4QcIN
+	 ND0f6/5TqQyPhaZgpqWdU/MrkaJVtC8wSso8m0jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heitor Alves de Siqueira <halves@igalia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 069/957] wifi: libertas: use USB anchors for tracking in-flight URBs
+Subject: [PATCH 7.0 0302/1146] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
 Date: Wed, 20 May 2026 18:09:12 +0200
-Message-ID: <20260520162136.061104495@linuxfoundation.org>
+Message-ID: <20260520162155.043530322@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,170 +67,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251268-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-250370-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,igalia.com:email]
-X-Rspamd-Queue-Id: 9B7C159991A
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,gmx.de:email,huawei.com:email]
+X-Rspamd-Queue-Id: 4D5C8598B3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heitor Alves de Siqueira <halves@igalia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a57f35fc19add4dfe33703af575a2c19c2cef9c7 ]
+[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
 
-The libertas driver currently handles URB lifecycles manually, which
-makes it non-trivial to check if specific URBs are pending or not. Add
-anchors for TX/RX URBs, and use those to track in-flight requests.
+Clang is not happy about set but unused variable:
 
-Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
-Link: https://patch.msgid.link/20260313-libertas-usb-anchors-v1-1-915afbe988d7@igalia.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 7c5c2b661bdb ("wifi: libertas: don't kill URBs in interrupt context")
+drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
+   412 |         unsigned int mnp;
+       |                      ^
+1 error generated.
+
+Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
+and set but not used variable") the 'mnp' became unused, but eliminating
+that code might have side-effects. The question here is what should we do
+with 'mnp'? The easiest way out is just mark it with __maybe_unused which
+will shut the compiler up and won't change any possible IO flow. So does
+this change.
+
+A dive into the history of the driver:
+
+The problem was revealed when the #if 0 guarded code along with unused
+pixel_vco variable was removed. That code was introduced in the original
+commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
+in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
+G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
+from older DAC1064 handling. Modify PLL setting when both CRTCs use same
+pixel clocks.").
+
+NOTE: The two commits mentioned above pre-date Git era and available in
+history.git repository for archaeological purposes.
+
+Even without that guard the modern compilers may see that the pixel_vco
+wasn't ever used and seems a leftover after some debug or review made
+25 years ago.
+
+The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
+to have any side effects either than some unneeded CPU processing during
+runtime. I agree that's unlikely that timeout (or heating up the CPU) has
+any effect on the HW (GPU/display) functionality.
+
+Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/marvell/libertas/if_usb.c    | 27 ++++++++++++-------
- .../net/wireless/marvell/libertas/if_usb.h    |  3 +++
- 2 files changed, 20 insertions(+), 10 deletions(-)
+ drivers/video/fbdev/matrox/g450_pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/if_usb.c b/drivers/net/wireless/marvell/libertas/if_usb.c
-index 924ab93b7b671..60bfff523b918 100644
---- a/drivers/net/wireless/marvell/libertas/if_usb.c
-+++ b/drivers/net/wireless/marvell/libertas/if_usb.c
-@@ -114,8 +114,8 @@ static void if_usb_write_bulk_callback(struct urb *urb)
- static void if_usb_free(struct if_usb_card *cardp)
- {
- 	/* Unlink tx & rx urb */
--	usb_kill_urb(cardp->tx_urb);
--	usb_kill_urb(cardp->rx_urb);
-+	usb_kill_anchored_urbs(&cardp->tx_submitted);
-+	usb_kill_anchored_urbs(&cardp->rx_submitted);
+diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
+index e2c1478aa47f9..6a08f78cd1acb 100644
+--- a/drivers/video/fbdev/matrox/g450_pll.c
++++ b/drivers/video/fbdev/matrox/g450_pll.c
+@@ -409,7 +409,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
+ 		case M_VIDEO_PLL:
+ 			{
+ 				u_int8_t tmp;
+-				unsigned int mnp;
++				unsigned int mnp __maybe_unused;
+ 				unsigned long flags;
  
- 	usb_free_urb(cardp->tx_urb);
- 	cardp->tx_urb = NULL;
-@@ -221,6 +221,9 @@ static int if_usb_probe(struct usb_interface *intf,
- 		     udev->descriptor.bDeviceSubClass,
- 		     udev->descriptor.bDeviceProtocol);
- 
-+	init_usb_anchor(&cardp->rx_submitted);
-+	init_usb_anchor(&cardp->tx_submitted);
-+
- 	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
- 		endpoint = &iface_desc->endpoint[i].desc;
- 		if (usb_endpoint_is_bulk_in(endpoint)) {
-@@ -426,7 +429,7 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload, uint16_t nb
- 		goto tx_ret;
- 	}
- 
--	usb_kill_urb(cardp->tx_urb);
-+	usb_kill_anchored_urbs(&cardp->tx_submitted);
- 
- 	usb_fill_bulk_urb(cardp->tx_urb, cardp->udev,
- 			  usb_sndbulkpipe(cardp->udev,
-@@ -435,8 +438,10 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload, uint16_t nb
- 
- 	cardp->tx_urb->transfer_flags |= URB_ZERO_PACKET;
- 
-+	usb_anchor_urb(cardp->tx_urb, &cardp->tx_submitted);
- 	if ((ret = usb_submit_urb(cardp->tx_urb, GFP_ATOMIC))) {
- 		lbs_deb_usbd(&cardp->udev->dev, "usb_submit_urb failed: %d\n", ret);
-+		usb_unanchor_urb(cardp->tx_urb);
- 	} else {
- 		lbs_deb_usb2(&cardp->udev->dev, "usb_submit_urb success\n");
- 		ret = 0;
-@@ -467,8 +472,10 @@ static int __if_usb_submit_rx_urb(struct if_usb_card *cardp,
- 			  cardp);
- 
- 	lbs_deb_usb2(&cardp->udev->dev, "Pointer for rx_urb %p\n", cardp->rx_urb);
-+	usb_anchor_urb(cardp->rx_urb, &cardp->rx_submitted);
- 	if ((ret = usb_submit_urb(cardp->rx_urb, GFP_ATOMIC))) {
- 		lbs_deb_usbd(&cardp->udev->dev, "Submit Rx URB failed: %d\n", ret);
-+		usb_unanchor_urb(cardp->rx_urb);
- 		kfree_skb(skb);
- 		cardp->rx_skb = NULL;
- 		ret = -1;
-@@ -838,8 +845,8 @@ static void if_usb_prog_firmware(struct lbs_private *priv, int ret,
- 	}
- 
- 	/* Cancel any pending usb business */
--	usb_kill_urb(cardp->rx_urb);
--	usb_kill_urb(cardp->tx_urb);
-+	usb_kill_anchored_urbs(&cardp->rx_submitted);
-+	usb_kill_anchored_urbs(&cardp->tx_submitted);
- 
- 	cardp->fwlastblksent = 0;
- 	cardp->fwdnldover = 0;
-@@ -869,8 +876,8 @@ static void if_usb_prog_firmware(struct lbs_private *priv, int ret,
- 	if (cardp->bootcmdresp == BOOT_CMD_RESP_NOT_SUPPORTED) {
- 		/* Return to normal operation */
- 		ret = -EOPNOTSUPP;
--		usb_kill_urb(cardp->rx_urb);
--		usb_kill_urb(cardp->tx_urb);
-+		usb_kill_anchored_urbs(&cardp->rx_submitted);
-+		usb_kill_anchored_urbs(&cardp->tx_submitted);
- 		if (if_usb_submit_rx_urb(cardp) < 0)
- 			ret = -EIO;
- 		goto done;
-@@ -900,7 +907,7 @@ static void if_usb_prog_firmware(struct lbs_private *priv, int ret,
- 	wait_event_interruptible(cardp->fw_wq, cardp->surprise_removed || cardp->fwdnldover);
- 
- 	timer_delete_sync(&cardp->fw_timeout);
--	usb_kill_urb(cardp->rx_urb);
-+	usb_kill_anchored_urbs(&cardp->rx_submitted);
- 
- 	if (!cardp->fwdnldover) {
- 		pr_info("failed to load fw, resetting device!\n");
-@@ -960,8 +967,8 @@ static int if_usb_suspend(struct usb_interface *intf, pm_message_t message)
- 		goto out;
- 
- 	/* Unlink tx & rx urb */
--	usb_kill_urb(cardp->tx_urb);
--	usb_kill_urb(cardp->rx_urb);
-+	usb_kill_anchored_urbs(&cardp->tx_submitted);
-+	usb_kill_anchored_urbs(&cardp->rx_submitted);
- 
-  out:
- 	return ret;
-diff --git a/drivers/net/wireless/marvell/libertas/if_usb.h b/drivers/net/wireless/marvell/libertas/if_usb.h
-index 7d0daeb33c3f7..a0cd36197c2b0 100644
---- a/drivers/net/wireless/marvell/libertas/if_usb.h
-+++ b/drivers/net/wireless/marvell/libertas/if_usb.h
-@@ -48,6 +48,9 @@ struct if_usb_card {
- 	struct urb *rx_urb, *tx_urb;
- 	struct lbs_private *priv;
- 
-+	struct usb_anchor rx_submitted;
-+	struct usb_anchor tx_submitted;
-+
- 	struct sk_buff *rx_skb;
- 
- 	uint8_t ep_in;
+ 				matroxfb_DAC_lock_irqsave(flags);
 -- 
 2.53.0
 
