@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIS6C3rzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:34 +0200
+	id 2PjiCgL1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D34E594867
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D84594D15
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA8833027FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D6BB3228F4A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA6131F9BE;
-	Wed, 20 May 2026 16:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560523F1AB8;
+	Wed, 20 May 2026 17:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOZVLAzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exeNZAyW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3F241760;
-	Wed, 20 May 2026 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C43DA7C6;
+	Wed, 20 May 2026 17:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295564; cv=none; b=nUpQezyhRKNCPBlP15HMl7mJRJazl+LWIqApgXe4BPftsvC0vpYqKDOKd2nUXNNBFFw9mavcZQp69OmbodI04J9Ng/ugUBRkjkOrCFIC0QbxxoZapzupKiNXi//kfoNziYii9Ybm80DUiX8wdX5RKvfAbpBUp6F6ji0BFXg2O4k=
+	t=1779297971; cv=none; b=tllj0avYPIbNlNzLDuJ6XKkGxX6TEXMp+Pm3SIuyDhuRcCBIhMZ3XsbBql4kD/E5m5gGx+TxPMyTxFxaIDMbKnG8/Nk6tk+c4nrMBa6BTJHJgYL9go0/rjkVZxSo3pyU6qC34dsb5mowkTbSpkQOGnlWdlkksS6ikEmpEPdZqK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295564; c=relaxed/simple;
-	bh=KTEcuigUZZjEqpNalF24QmqYqsaNCb1Hn8hykG0Y4to=;
+	s=arc-20240116; t=1779297971; c=relaxed/simple;
+	bh=JTBCx2ncvTabH1fAAMUTjyGG+Iu37dchteCSX9/M43s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bWMcDy3tTZNs/h6DuYhZrz/Y3j8y8QOncDwMP+AB7b3B293Lo6MoTRSzEb7oBTnlFMkayFLCnh1YaIq5eZaAtkOzMkEYheIQi7RowhQbX7hvBy2u8gz+QNaFhs5m+clOXnfLiXrrUfzgPsRmWDJ+7KlZL2bg59675l/B2p6/njs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOZVLAzF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0783A1F000E9;
-	Wed, 20 May 2026 16:46:02 +0000 (UTC)
+	 MIME-Version; b=q5AjneYlMbaq4KEuZQ2yTW/5nwb9dp//PXQMll3eC89/9OkPMU1MaXpFEmTSkTcXQyh5gRtHgpLQMEoQHKxj0aWt1k25+aIViqCx6GUH1IVRUD1hVFPicqfciJOlxTD0kWZVyVitQE7jVxw4vBgPn23QS+o9YTwV8PSuO4Nl0JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exeNZAyW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780AC1F000E9;
+	Wed, 20 May 2026 17:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295563;
-	bh=IGBkfbPTi/ZIMGliNn6uqcw0S/5DZSYtwTnWs5GTwBw=;
+	s=korg; t=1779297970;
+	bh=iY6TAiYwCxAcy11BiCZ+7LdPmtWEf1mK0BbMTTCLDx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QOZVLAzFFSl30WP2PgyCOddnQyf3y1XBXLTmYzM1mjCOdAk76bc2Y1WxIjFLQlUEQ
-	 O3EIxRoc4pZeGWdmndzuNLe4oldpJiVWbSD4e7L83lGx5mE10O/BOpc1TAzrMD/J1s
-	 EBqZXFQU4sYhZjm98iMiev2gxR/chS9K80T9fewo=
+	b=exeNZAyWPY4m7PAP1BeuTeve/ujm1UziDpOq7DLz4skvzVkmWh91fQhFJC4eMLwPV
+	 JOMzu7Pt1ckd9JOrYlndqVc8sBDwy2tjGpJYCddzBeyO05YIXMRp5+QZb6qce/q/ZL
+	 fasUx0G1xzBs9thVNrvzjVtAYbqrGFWkHW7GzJUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	David Lechner <dlechner@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0466/1146] arm64: dts: mediatek: mt8365: Describe infracfg-nao as a pure syscon
-Date: Wed, 20 May 2026 18:11:56 +0200
-Message-ID: <20260520162158.740655596@linuxfoundation.org>
+Subject: [PATCH 6.18 234/957] PCI: dwc: rcar-gen4: Change EPC BAR alignment to 4K as per the documentation
+Date: Wed, 20 May 2026 18:11:57 +0200
+Message-ID: <20260520162139.614548795@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +65,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250497-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251434-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,1020e000:email,0.155.183.72:email]
-X-Rspamd-Queue-Id: 7D34E594867
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,valinux.co.jp:email]
+X-Rspamd-Queue-Id: C2D84594D15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit 0651c24658360706c30588cec0a12c05edb03e9a ]
+[ Upstream commit 13f55a7ca773c731a1e645934c1ae48577f48785 ]
 
-The infracfg-nao register space at 0x1020e000 has different registers
-than the infracfg space at 0x10001000, and most importantly, doesn't
-contain any clock controls. Therefore it shouldn't use the same
-compatible used for the mt8365 infracfg clocks driver:
-mediatek,mt8365-infracfg. Since it currently does, probe errors are
-reported in the kernel logs:
+R-Car S4 Series (R8A779F[4-7]*) EP controller uses a 4K minimum iATU region
+size (CX_ATU_MIN_REGION_SIZE = 4K) as per R19UH0161EJ0130 Rev.1.30. Also,
+the controller itself can only be configured in the range 4 KB to 64 KB, so
+the current 1 MB alignment requirement is incorrect.
 
-  [    0.245959] Failed to register clk ifr_pmic_tmr: -EEXIST
-  [    0.245998] clk-mt8365 1020e000.infracfg: probe with driver clk-mt8365 failed with error -17
+Hence, change the alignment to the min size 4K as per the documentation.
 
-This register space is used only as a syscon for bus control by the
-power domain controller, so in order to properly describe it and fix the
-errors, set its compatible to a distinct compatible used exclusively as
-a syscon, drop the clock-cells, and while at it rename the node to
-'syscon' following the naming convention.
+This also fixes needless unusability of BAR4 on this platform when the
+target address is fixed, such as for doorbell targets.
 
-Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: e311b3834dfa ("PCI: rcar-gen4: Add endpoint mode support")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20260305151050.1834007-1-den@valinux.co.jp
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8365.dtsi | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index a5ca3cda6ef30..2e782558fb776 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -536,10 +536,9 @@ iommu: iommu@10205000 {
- 			#iommu-cells = <1>;
- 		};
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index 80778917d2ddd..7e171526b1ded 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -425,7 +425,7 @@ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256 },
+ 	.bar[BAR_5] = { .type = BAR_RESERVED, },
+-	.align = SZ_1M,
++	.align = SZ_4K,
+ };
  
--		infracfg_nao: infracfg@1020e000 {
--			compatible = "mediatek,mt8365-infracfg", "syscon";
-+		infracfg_nao: syscon@1020e000 {
-+			compatible = "mediatek,mt8365-infracfg-nao", "syscon";
- 			reg = <0 0x1020e000 0 0x1000>;
--			#clock-cells = <1>;
- 		};
- 
- 		rng: rng@1020f000 {
+ static const struct pci_epc_features*
 -- 
 2.53.0
 
