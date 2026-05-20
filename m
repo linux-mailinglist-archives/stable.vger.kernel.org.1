@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPKaEKHoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:17 +0200
+	id gJA9Oer6DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4FB592C84
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7BC595C0C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D54E2307E12C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82F56332D77E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AF9363C6F;
-	Wed, 20 May 2026 16:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFAE3D88FC;
+	Wed, 20 May 2026 17:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPASWzb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDy7xtSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB0C3546D0;
-	Wed, 20 May 2026 16:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C84A3D6673;
+	Wed, 20 May 2026 17:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295459; cv=none; b=h2QDclNlx/fAPwMXK23DGymzUx0npXTuGL2acphpDjvC+YuN8xgtNg1gpmRGY7TfAtGLA4ya0s1LhqntgTD1aNbAvmoZVPWP1Y7K4ABmcwSQbBLpWB1s9oYgOCjm4YOWOiE5jYosdn4qU6VVO/mvRWTgtCnLEjlhF4oN1WDPpLM=
+	t=1779297863; cv=none; b=PkAmKCxZhbtknpLxtTDIw8U1x1aIpDNYfhSDAIZQvRntXNDIne7ATNBP3emuy8teE8wAebmhWupPHEQmK28U9ISNcOxAKOb2ptilOJ5XN4tI1C1AFZMz5OLC1afVX4w0IGLcyE7aoGoYj/kMdSo8E4+XuVqDLKWesGL2BpAMgWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295459; c=relaxed/simple;
-	bh=gRIUo5pg212Jc199vx3i0d4ltsKjBjOtJWlB5cQn6Dg=;
+	s=arc-20240116; t=1779297863; c=relaxed/simple;
+	bh=aOiBogHvFIbzUp4AyUwI49cR2lR5c+Kjpzn792H36Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRTimJsmhIlIqVXX3ZT9IYB7uRlrTqwwtQZfcs1UkWffho3MXvirCLsYLCJGwnO/jSk6XKa7PkKZ+zdPe69vh8adgQCB16jQYMjiaf9LbbZ3oy6Tjt9W4C/5bVSlL8V3IL6bgeP3FH2ne+s9+rnVp5gBImlJ8l4Vub1K4EEqH74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPASWzb3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E82E1F000E9;
-	Wed, 20 May 2026 16:44:17 +0000 (UTC)
+	 MIME-Version; b=B8TyzaT76tOhDLyf1s/Xnyl+fNYIt4Nk2JbNevBgFLRZfd41xaNk8uZF9UfNuJXUT3j8BRkoKOtpK9mJsTsdM/s8ENfozHuN4rCh8j1jXYUKNWs6Yxv3d1cM1Ak8c9pBU5gAxkRIg/NnmqEu2nO3HrIUJFWiZP7z+jWrTPEBaBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDy7xtSv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92461F000E9;
+	Wed, 20 May 2026 17:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295458;
-	bh=S000xFagXmAT/zVgsX7To2bM2zFmUs30sEZTBr3IAPM=;
+	s=korg; t=1779297862;
+	bh=G929Gli6PmyvPBhHhKL8gXkU/TkXPrmyTWic3QoMGG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WPASWzb3eVp22YHX9B3xURHeEx+XMZOz5HaoIt+6I/PDTT50fnXMZd/FY5rrYzfjA
-	 7rspyIE97QX1MjlLcQXwMoIXNlb1b7jvbstpbg/4l1DRWCqEGRy9+b7wrkLyjqjvJo
-	 U+o4dvHfh2cb77Ls7pBtn4k+R47p1NUHJVr9XyCM=
+	b=wDy7xtSv8gUV/2pZLp7ofn9U7a8d9gFhYQfjgaFS1LhRlWm4W6MoYU4F5y7HlUr53
+	 6rGs/cStvhufMww/UXLD+MCw/vqXq5I1OBDvn0DoBg3qRooh0C0TyWwyImz2vXyGTN
+	 PDBjQG/jLPPYmNUIZFweADprAghNACRXPrKXZKaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0425/1146] PCI: tegra194: Use DWC IP core version
+Subject: [PATCH 6.18 192/957] drm/sun4i: backend: fix error pointer dereference
 Date: Wed, 20 May 2026 18:11:15 +0200
-Message-ID: <20260520162157.810524052@linuxfoundation.org>
+Message-ID: <20260520162138.714018624@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251393-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250456-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: DD4FB592C84
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 4F7BC595C0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit ea60ca067f0f098043610c96a915d162113c1aac ]
+[ Upstream commit 06277983eca4a31d3c2114fa33d99a6e82484b11 ]
 
-Tegra194 PCIe driver used custom version numbers to detect Tegra194 and
-Tegra234 IPs. With version detect logic added, version check results in
-mismatch warnings:
+The function drm_atomic_get_plane_state() can return an error pointer
+and is not checked for it. Add error pointer check.
 
-  tegra194-pcie 14100000.pcie: Versions don't match (0000562a != 3536322a)
+Detected by Smatch:
+drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
+'plane_state' dereferencing possible ERR_PTR()
 
-Use HW version numbers which match to PORT_LOGIC.PCIE_VERSION_OFF in
-Tegra194 driver to avoid these kernel warnings.
-
-Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-12-mmaddireddy@nvidia.com
+Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.h | 2 ++
- drivers/pci/controller/dwc/pcie-tegra194.c   | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index b12c5334552c7..3e69ef60165b0 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -34,8 +34,10 @@
- #define DW_PCIE_VER_470A		0x3437302a
- #define DW_PCIE_VER_480A		0x3438302a
- #define DW_PCIE_VER_490A		0x3439302a
-+#define DW_PCIE_VER_500A		0x3530302a
- #define DW_PCIE_VER_520A		0x3532302a
- #define DW_PCIE_VER_540A		0x3534302a
-+#define DW_PCIE_VER_562A		0x3536322a
- 
- #define __dw_pcie_ver_cmp(_pci, _ver, _op) \
- 	((_pci)->version _op DW_PCIE_VER_ ## _ver)
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 3527a4e82bac8..688da5a73d02e 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -35,8 +35,8 @@
- #include <soc/tegra/bpmp-abi.h>
- #include "../../pci.h"
- 
--#define TEGRA194_DWC_IP_VER			0x490A
--#define TEGRA234_DWC_IP_VER			0x562A
-+#define TEGRA194_DWC_IP_VER			DW_PCIE_VER_500A
-+#define TEGRA234_DWC_IP_VER			DW_PCIE_VER_562A
- 
- #define APPL_PINMUX				0x0
- #define APPL_PINMUX_PEX_RST			BIT(0)
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index 2dded3b828df0..0484cc27c97ae 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -490,6 +490,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
+ 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
+ 		struct drm_plane_state *plane_state =
+ 			drm_atomic_get_plane_state(state, plane);
++		if (IS_ERR(plane_state))
++			return PTR_ERR(plane_state);
++
+ 		struct sun4i_layer_state *layer_state =
+ 			state_to_sun4i_layer_state(plane_state);
+ 		struct drm_framebuffer *fb = plane_state->fb;
 -- 
 2.53.0
 
