@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFQIDnX7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:37 +0200
+	id aFmOAPvxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B16595D74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7F15943B8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BE3493080BC5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8F493758DD3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE013BE165;
-	Wed, 20 May 2026 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0AA34887C;
+	Wed, 20 May 2026 16:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuhE/SM1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOsXp6Bq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E01036A376;
-	Wed, 20 May 2026 17:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913E339B969;
+	Wed, 20 May 2026 16:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297771; cv=none; b=As4xnqvTmO+SD5Bv5+cNb0lxObpyB6gZaf6yrGumkXyEqOajPCazCNnB+56IQhVdDzDGc19TcRw7xn27YTQm2TG9HNosKs8xW+eySvZlAlhXdT6vz/ghMHa/NedE8VW8+Fop2lszBllkgQQvtlkgXPq6WvovDxlAl/rpc3yh/Gk=
+	t=1779295291; cv=none; b=G8+Py2u2OZWqDJ0tsMDrAZiVrjgZRQDGpoRIrHGQLLej4yprEyKHEO6LMY/k4okB/NiVvotQGR92ASa409r4oxyPwhHEzOU7Y5qHkhxSNTE42AQjLmRxyDAtxY4QwtkHJrDTyFnk6uQTThVVTziBR7p/d4sg9Sn7R9KHp9cgIcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297771; c=relaxed/simple;
-	bh=OOp+Z3URAoTKcDJiU3WXbFnpkY5MfaP6j7GDGuxtvo0=;
+	s=arc-20240116; t=1779295291; c=relaxed/simple;
+	bh=pSFCrCEL3ngAxo7YKBBf6VdBZbkLx4DMaHxo1/k5hRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKLaJSp7V61lEjiFjBdh+m02yKOoJWKRkQv6vGnA9gw7HygFD1t1zsW+qahb2nkcghT9Z0ALq4LyroSVt4ce5or7b4EZqKyIaYA2bULfTPvsjZ/p31oeSfOlEWmFEMQ+GY7t/tNx536i0KhJlj/Q33LXf9AZPzIndIjQ++zrIRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuhE/SM1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B21F000E9;
-	Wed, 20 May 2026 17:22:49 +0000 (UTC)
+	 MIME-Version; b=uNPQBOdhA1Z+4TM1VHTWkFzCdVvvcKSFNLH179SqGhvb0PYvkWJbFX93pG5HJnZkpAG6hLoZXS6JZkFC0dv679V0vHdRKu2MN3Lrg6zvr4ij8PR8CyNowzJB62Tskji2veNV6a5zCU/M0eyoa3MBeqXC3FSVE6zkrjkNzq6S8/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOsXp6Bq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F421D1F000E9;
+	Wed, 20 May 2026 16:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297769;
-	bh=+0/ueQUHhpE/n8yYT9+CdnCczkAh31EhYn2/ncYyH+Y=;
+	s=korg; t=1779295290;
+	bh=w8gsoZFt31jUb+5+rfyRqyub8G4/Dl3BicJHsXI5LCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HuhE/SM18NIJNktPP8tsqFejwjYXqLewQERnkepdX3EPiJVSUkZ91eEq8aRCc6hky
-	 Dn8d4gjgmXt1U6NlKWbcxyJ2LfkHsDqhjDv7s/ci3/I8Cjf6GyYvdogCi6Fxl6gqMM
-	 qAp1vd4jZJZA5eLQJh0yt7FYtdDAPeQdSVp7IvBE=
+	b=sOsXp6BqQJACkYKialFuuCmrU0+Ued1OGx3QgPCyRyroC5MYvkyIt25+5lTEdRdEH
+	 SSmGh1KwUZ1mTQMO3bteqLUU9VVXxp2lm3ixPII9k12h4/Ij2I2aQPnSdNHilu30Bb
+	 a7XI1iKWRR1pJpDWHubZYrlFCDMCtzS8psnELTGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 130/957] bpf: Support negative offsets, BPF_SUB, and alu32 for linked register tracking
+Subject: [PATCH 7.0 0363/1146] drm/msm/a6xx: Fix gpu init from secure world
 Date: Wed, 20 May 2026 18:10:13 +0200
-Message-ID: <20260520162137.374873895@linuxfoundation.org>
+Message-ID: <20260520162156.416436982@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,199 +68,293 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-251358-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-250391-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 52B16595D74
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AE7F15943B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 7a433e519364c3c19643e5c857f4fbfaebec441c ]
+[ Upstream commit bb9b1d6e945ea90459bda1aac7e2aa7179119887 ]
 
-Previously, the verifier only tracked positive constant deltas between
-linked registers using BPF_ADD. This limitation meant patterns like:
+A7XX_GEN2 and newer GPUs requires initialization of few configurations
+related to features/power from secure world. The SCM call to do this
+should be triggered after GDSC and clocks are enabled. So, keep this
+sequence to a6xx_gmu_resume instead of the probe.
 
-  r1 = r0;
-  r1 += -4;
-  if r1 s>= 0 goto l0_%=;   // r1 >= 0 implies r0 >= 4
-  // verifier couldn't propagate bounds back to r0
-  if r0 != 0 goto l0_%=;
-	r0 /= 0; // Verifier thinks this is reachable
-  l0_%=:
+Also, simplify the error handling in a6xx_gmu_resume() using 'goto'
+labels.
 
-Similar limitation exists for 32-bit registers.
-
-With this change, the verifier can now track negative deltas in reg->off
-enabling bound propagation for the above pattern.
-
-For alu32, we make sure the destination register has the upper 32 bits
-as 0s before creating the link. BPF_ADD_CONST is split into
-BPF_ADD_CONST64 and BPF_ADD_CONST32, the latter is used in case of alu32
-and sync_linked_regs uses this to zext the result if known_reg has this
-flag.
-
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260204151741.2678118-2-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: d7f14173c0d5 ("bpf: Fix linked reg delta tracking when src_reg == dst_reg")
+Fixes: 14b27d5df3ea ("drm/msm/a7xx: Initialize a750 "software fuse"")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714664/
+Message-ID: <20260327-a8xx-gpu-batch2-v2-6-2b53c38d2101@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_verifier.h                  |  6 ++-
- kernel/bpf/verifier.c                         | 50 +++++++++++++++----
- .../selftests/bpf/progs/verifier_bounds.c     |  2 +-
- 3 files changed, 45 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 93 ++++++++++++++++++++++-----
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.h |  2 +
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 59 -----------------
+ 3 files changed, 80 insertions(+), 74 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 4c497e839526a..4867b0e8b5d9d 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -147,8 +147,12 @@ struct bpf_reg_state {
- 	 * registers. Example:
- 	 * r1 = r2;    both will have r1->id == r2->id == N
- 	 * r1 += 10;   r1->id == N | BPF_ADD_CONST and r1->off == 10
-+	 * r3 = r2;    both will have r3->id == r2->id == N
-+	 * w3 += 10;   r3->id == N | BPF_ADD_CONST32 and r3->off == 10
- 	 */
--#define BPF_ADD_CONST (1U << 31)
-+#define BPF_ADD_CONST64 (1U << 31)
-+#define BPF_ADD_CONST32 (1U << 30)
-+#define BPF_ADD_CONST (BPF_ADD_CONST64 | BPF_ADD_CONST32)
- 	u32 id;
- 	/* PTR_TO_SOCKET and PTR_TO_TCP_SOCK could be a ptr returned
- 	 * from a pointer-cast helper, bpf_sk_fullsock() and
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 0d1ec2b5d469a..6cf8b13db301b 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15787,6 +15787,13 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
- 		verbose(env, "verifier internal error: no src_reg\n");
- 		return -EFAULT;
- 	}
-+	/*
-+	 * For alu32 linked register tracking, we need to check dst_reg's
-+	 * umax_value before the ALU operation. After adjust_scalar_min_max_vals(),
-+	 * alu32 ops will have zero-extended the result, making umax_value <= U32_MAX.
-+	 */
-+	u64 dst_umax = dst_reg->umax_value;
-+
- 	err = adjust_scalar_min_max_vals(env, insn, dst_reg, *src_reg);
- 	if (err)
- 		return err;
-@@ -15796,26 +15803,44 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
- 	 * r1 += 0x1
- 	 * if r2 < 1000 goto ...
- 	 * use r1 in memory access
--	 * So for 64-bit alu remember constant delta between r2 and r1 and
--	 * update r1 after 'if' condition.
-+	 * So remember constant delta between r2 and r1 and update r1 after
-+	 * 'if' condition.
- 	 */
- 	if (env->bpf_capable &&
--	    BPF_OP(insn->code) == BPF_ADD && !alu32 &&
--	    dst_reg->id && is_reg_const(src_reg, false)) {
--		u64 val = reg_const_value(src_reg, false);
-+	    (BPF_OP(insn->code) == BPF_ADD || BPF_OP(insn->code) == BPF_SUB) &&
-+	    dst_reg->id && is_reg_const(src_reg, alu32)) {
-+		u64 val = reg_const_value(src_reg, alu32);
-+		s32 off;
-+
-+		if (!alu32 && ((s64)val < S32_MIN || (s64)val > S32_MAX))
-+			goto clear_id;
-+
-+		if (alu32 && (dst_umax > U32_MAX))
-+			goto clear_id;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index b41dbca1ebc63..1b44b9e21ad86 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -3,6 +3,7 @@
  
--		if ((dst_reg->id & BPF_ADD_CONST) ||
--		    /* prevent overflow in sync_linked_regs() later */
--		    val > (u32)S32_MAX) {
-+		off = (s32)val;
+ #include <linux/bitfield.h>
+ #include <linux/clk.h>
++#include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/interconnect.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+@@ -1191,6 +1192,65 @@ static void a6xx_gmu_set_initial_bw(struct msm_gpu *gpu, struct a6xx_gmu *gmu)
+ 	dev_pm_opp_put(gpu_opp);
+ }
+ 
++static int a6xx_gmu_secure_init(struct a6xx_gpu *a6xx_gpu)
++{
++	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
++	struct msm_gpu *gpu = &adreno_gpu->base;
++	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
++	u32 fuse_val;
++	int ret;
 +
-+		if (BPF_OP(insn->code) == BPF_SUB) {
-+			/* Negating S32_MIN would overflow */
-+			if (off == S32_MIN)
-+				goto clear_id;
-+			off = -off;
++	if (test_bit(GMU_STATUS_SECURE_INIT, &gmu->status))
++		return 0;
++
++	if (adreno_is_a750(adreno_gpu) || adreno_is_a8xx(adreno_gpu)) {
++		/*
++		 * Assume that if qcom scm isn't available, that whatever
++		 * replacement allows writing the fuse register ourselves.
++		 * Users of alternative firmware need to make sure this
++		 * register is writeable or indicate that it's not somehow.
++		 * Print a warning because if you mess this up you're about to
++		 * crash horribly.
++		 */
++		if (!qcom_scm_is_available()) {
++			dev_warn_once(gpu->dev->dev,
++				"SCM is not available, poking fuse register\n");
++			a6xx_llc_write(a6xx_gpu, REG_A7XX_CX_MISC_SW_FUSE_VALUE,
++				A7XX_CX_MISC_SW_FUSE_VALUE_RAYTRACING |
++				A7XX_CX_MISC_SW_FUSE_VALUE_FASTBLEND |
++				A7XX_CX_MISC_SW_FUSE_VALUE_LPAC);
++			adreno_gpu->has_ray_tracing = true;
++			goto done;
 +		}
 +
-+		if (dst_reg->id & BPF_ADD_CONST) {
- 			/*
- 			 * If the register already went through rX += val
- 			 * we cannot accumulate another val into rx->off.
- 			 */
-+clear_id:
- 			dst_reg->off = 0;
- 			dst_reg->id = 0;
- 		} else {
--			dst_reg->id |= BPF_ADD_CONST;
--			dst_reg->off = val;
-+			if (alu32)
-+				dst_reg->id |= BPF_ADD_CONST32;
-+			else
-+				dst_reg->id |= BPF_ADD_CONST64;
-+			dst_reg->off = off;
- 		}
- 	} else {
- 		/*
-@@ -16888,7 +16913,7 @@ static void sync_linked_regs(struct bpf_verifier_state *vstate, struct bpf_reg_s
- 			u32 saved_id = reg->id;
- 
- 			fake_reg.type = SCALAR_VALUE;
--			__mark_reg_known(&fake_reg, (s32)reg->off - (s32)known_reg->off);
-+			__mark_reg_known(&fake_reg, (s64)reg->off - (s64)known_reg->off);
- 
- 			/* reg = known_reg; reg += delta */
- 			copy_register_state(reg, known_reg);
-@@ -16903,6 +16928,9 @@ static void sync_linked_regs(struct bpf_verifier_state *vstate, struct bpf_reg_s
- 			scalar32_min_max_add(reg, &fake_reg);
- 			scalar_min_max_add(reg, &fake_reg);
- 			reg->var_off = tnum_add(reg->var_off, fake_reg.var_off);
-+			if (known_reg->id & BPF_ADD_CONST32)
-+				zext_32_to_64(reg);
-+			reg_bounds_sync(reg);
- 		}
- 	}
- }
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds.c b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-index e772ae430915f..ea5db79da40ef 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -1477,7 +1477,7 @@ __naked void sub64_full_overflow(void)
- SEC("socket")
- __description("64-bit subtraction, partial overflow, result in unbounded reg")
- __success __log_level(2)
--__msg("3: (1f) r3 -= r2 {{.*}} R3=scalar()")
-+__msg("3: (1f) r3 -= r2 {{.*}} R3=scalar(id=1-1)")
- __retval(0)
- __naked void sub64_partial_overflow(void)
++		ret = qcom_scm_gpu_init_regs(QCOM_SCM_GPU_ALWAYS_EN_REQ |
++					     QCOM_SCM_GPU_TSENSE_EN_REQ);
++		if (ret) {
++			dev_warn_once(gpu->dev->dev,
++				"SCM call failed\n");
++			return ret;
++		}
++
++		/*
++		 * On A7XX_GEN3 and newer, raytracing may be disabled by the
++		 * firmware, find out whether that's the case. The scm call
++		 * above sets the fuse register.
++		 */
++		fuse_val = a6xx_llc_read(a6xx_gpu,
++					 REG_A7XX_CX_MISC_SW_FUSE_VALUE);
++		adreno_gpu->has_ray_tracing =
++			!!(fuse_val & A7XX_CX_MISC_SW_FUSE_VALUE_RAYTRACING);
++	} else if (adreno_is_a740(adreno_gpu)) {
++		/* Raytracing is always enabled on a740 */
++		adreno_gpu->has_ray_tracing = true;
++	}
++
++done:
++	set_bit(GMU_STATUS_SECURE_INIT, &gmu->status);
++	return 0;
++}
++
++
+ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
  {
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+@@ -1219,11 +1279,12 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
+ 	clk_set_rate(gmu->hub_clk, adreno_is_a740_family(adreno_gpu) ?
+ 		     200000000 : 150000000);
+ 	ret = clk_bulk_prepare_enable(gmu->nr_clocks, gmu->clocks);
+-	if (ret) {
+-		pm_runtime_put(gmu->gxpd);
+-		pm_runtime_put(gmu->dev);
+-		return ret;
+-	}
++	if (ret)
++		goto rpm_put;
++
++	ret = a6xx_gmu_secure_init(a6xx_gpu);
++	if (ret)
++		goto disable_clk;
+ 
+ 	/* Read the slice info on A8x GPUs */
+ 	a8xx_gpu_get_slice_info(gpu);
+@@ -1253,11 +1314,11 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
+ 
+ 	ret = a6xx_gmu_fw_start(gmu, status);
+ 	if (ret)
+-		goto out;
++		goto disable_irq;
+ 
+ 	ret = a6xx_hfi_start(gmu, status);
+ 	if (ret)
+-		goto out;
++		goto disable_irq;
+ 
+ 	/*
+ 	 * Turn on the GMU firmware fault interrupt after we know the boot
+@@ -1270,14 +1331,16 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
+ 	/* Set the GPU to the current freq */
+ 	a6xx_gmu_set_initial_freq(gpu, gmu);
+ 
+-out:
+-	/* On failure, shut down the GMU to leave it in a good state */
+-	if (ret) {
+-		disable_irq(gmu->gmu_irq);
+-		a6xx_rpmh_stop(gmu);
+-		pm_runtime_put(gmu->gxpd);
+-		pm_runtime_put(gmu->dev);
+-	}
++	return 0;
++
++disable_irq:
++	disable_irq(gmu->gmu_irq);
++	a6xx_rpmh_stop(gmu);
++disable_clk:
++	clk_bulk_disable_unprepare(gmu->nr_clocks, gmu->clocks);
++rpm_put:
++	pm_runtime_put(gmu->gxpd);
++	pm_runtime_put(gmu->dev);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+index 9f09daf45ab2b..0cd8ae1b4f5c8 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+@@ -130,6 +130,8 @@ struct a6xx_gmu {
+ #define GMU_STATUS_PDC_SLEEP	1
+ /* To track Perfcounter OOB set status */
+ #define GMU_STATUS_OOB_PERF_SET 2
++/* To track whether secure world init was done */
++#define GMU_STATUS_SECURE_INIT	3
+ 	unsigned long status;
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 9327ecf94386e..0e8a48ca816dd 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -10,7 +10,6 @@
+ 
+ #include <linux/bitfield.h>
+ #include <linux/devfreq.h>
+-#include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/pm_domain.h>
+ #include <linux/soc/qcom/llcc-qcom.h>
+ 
+@@ -2160,56 +2159,6 @@ static void a6xx_llc_slices_init(struct platform_device *pdev,
+ 		a6xx_gpu->llc_mmio = ERR_PTR(-EINVAL);
+ }
+ 
+-static int a7xx_cx_mem_init(struct a6xx_gpu *a6xx_gpu)
+-{
+-	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+-	struct msm_gpu *gpu = &adreno_gpu->base;
+-	u32 fuse_val;
+-	int ret;
+-
+-	if (adreno_is_a750(adreno_gpu) || adreno_is_a8xx(adreno_gpu)) {
+-		/*
+-		 * Assume that if qcom scm isn't available, that whatever
+-		 * replacement allows writing the fuse register ourselves.
+-		 * Users of alternative firmware need to make sure this
+-		 * register is writeable or indicate that it's not somehow.
+-		 * Print a warning because if you mess this up you're about to
+-		 * crash horribly.
+-		 */
+-		if (!qcom_scm_is_available()) {
+-			dev_warn_once(gpu->dev->dev,
+-				"SCM is not available, poking fuse register\n");
+-			a6xx_llc_write(a6xx_gpu, REG_A7XX_CX_MISC_SW_FUSE_VALUE,
+-				A7XX_CX_MISC_SW_FUSE_VALUE_RAYTRACING |
+-				A7XX_CX_MISC_SW_FUSE_VALUE_FASTBLEND |
+-				A7XX_CX_MISC_SW_FUSE_VALUE_LPAC);
+-			adreno_gpu->has_ray_tracing = true;
+-			return 0;
+-		}
+-
+-		ret = qcom_scm_gpu_init_regs(QCOM_SCM_GPU_ALWAYS_EN_REQ |
+-					     QCOM_SCM_GPU_TSENSE_EN_REQ);
+-		if (ret)
+-			return ret;
+-
+-		/*
+-		 * On A7XX_GEN3 and newer, raytracing may be disabled by the
+-		 * firmware, find out whether that's the case. The scm call
+-		 * above sets the fuse register.
+-		 */
+-		fuse_val = a6xx_llc_read(a6xx_gpu,
+-					 REG_A7XX_CX_MISC_SW_FUSE_VALUE);
+-		adreno_gpu->has_ray_tracing =
+-			!!(fuse_val & A7XX_CX_MISC_SW_FUSE_VALUE_RAYTRACING);
+-	} else if (adreno_is_a740(adreno_gpu)) {
+-		/* Raytracing is always enabled on a740 */
+-		adreno_gpu->has_ray_tracing = true;
+-	}
+-
+-	return 0;
+-}
+-
+-
+ #define GBIF_CLIENT_HALT_MASK		BIT(0)
+ #define GBIF_ARB_HALT_MASK		BIT(1)
+ #define VBIF_XIN_HALT_CTRL0_MASK	GENMASK(3, 0)
+@@ -2706,14 +2655,6 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	if (adreno_is_a7xx(adreno_gpu) || adreno_is_a8xx(adreno_gpu)) {
+-		ret = a7xx_cx_mem_init(a6xx_gpu);
+-		if (ret) {
+-			a6xx_destroy(&(a6xx_gpu->base.base));
+-			return ERR_PTR(ret);
+-		}
+-	}
+-
+ 	adreno_gpu->uche_trap_base = 0x1fffffffff000ull;
+ 
+ 	msm_mmu_set_fault_handler(to_msm_vm(gpu->vm)->mmu, gpu,
 -- 
 2.53.0
 
