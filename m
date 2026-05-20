@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LVzMugADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:52 +0200
+	id qJonLGHxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE635971A6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACBE594227
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B30C1313160C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5A373125F51
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9BA318ED6;
-	Wed, 20 May 2026 18:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DFA3ED3A4;
+	Wed, 20 May 2026 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Luqum3MZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3mSA9vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A20BDF59;
-	Wed, 20 May 2026 18:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AE83A3833;
+	Wed, 20 May 2026 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302210; cv=none; b=hpdEkDReJK1xPd3ya70a2RObJMtN8b1lxnI+3lW7Ijlgxr2jrAnDVvG1h3cwnsns/LlkBaMkAfTHv6FSHDNZRpF/Ag4sbHyJxG13gAuI+hmQzasSH0OkFdoP+E6rNgJyCvjN6LytlLOm9mRwCgJvRpB0cx0gqaPXjAAzKyJwlb0=
+	t=1779296984; cv=none; b=dYBQmGcSmyQlc7WMS8XDt5ymzwJ8HSQPZ6vrTHwyup9VsnHY7lrEb1KWRgcGaQGSGpWpXPwvyHZJfrjh/Nm1vo8LZltKMuC3+4O1Qyp1fF9YF8iBWMFuPUEkFz/4NoCrQH+B9G67nQ1AZCTipEWK5vp7cw38gzWWssdq6ijmyJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302210; c=relaxed/simple;
-	bh=GpCPAcmh910j24wPtlii6rhXJmkWERVZyVzypgoyO6A=;
+	s=arc-20240116; t=1779296984; c=relaxed/simple;
+	bh=ftrYZQw5lxFjLPr4gQLH007cN9AqCTD7Tn7HFKz5tXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pBmSlJnVVwsHbrQeCZ2Xa8ltHzUSLz/X9+uDiU4T9hcMOoU/KpCJUYn2otwxR0Gu9gnwTBkrDZMpLNz9fZ8fHrtMJwO7so3Gceo584XoEHcQjpme5kPk2nwEU32H/6kQ1qbd7psI20++rVxireq5RemLGjFYlyKrIxpvxwcyyEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Luqum3MZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C531F000E9;
-	Wed, 20 May 2026 18:36:48 +0000 (UTC)
+	 MIME-Version; b=kgnxF3kwjc1Bng8/tAU/QepzF90sWo4f3lODRPTNxX+OytIWhkvieGvrIwzNa1FZNF2nmJeTa2R7ayS9WULm+D1ZiwFBa2TKCo1ls11Lac0YWaaZ0yEKD5VETbAp/QCtBbpNZKWnGsLRz6YVmm7Xpiccsz8XGY4TsTAA4Pt2rdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3mSA9vv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2B01F000E9;
+	Wed, 20 May 2026 17:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302209;
-	bh=m99B2bfr7hNdt4Jq2M1ePOBBAg6ULUwXGKrv/AfXwiM=;
+	s=korg; t=1779296983;
+	bh=pps2oWuNiHi39Wdw89TcUsMyaV+DTaxbf1OCXmsqQHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Luqum3MZj/OQ0J3DYIJx5TOQQqeeI+Jo2QU+XaN1eT/FU9FzXg02/Is5/Kk2McTVH
-	 tr7EFfGqPkW1ysxGjyZ98Pj1yc4EnE4g/Vb68GNDlqO8A6ttWU7P0f9d8nxxmKjAO7
-	 DDcMld99TsW1SN4EPfn26HuM0Rem1tAOIsvKKACg=
+	b=c3mSA9vvZcHNwIpO4lQQreqNMApgqCfgDB80/+zQ7TxzhuiSvanM/Tb2KCAh9RaF6
+	 QQEFwzw5w4zd095gG/Vsd46zrDxLh/7vH6/OmgfJxOD7faQlnEY//b+1aCHSfd0bw+
+	 vhq7raMiyK3ttvOvDLkkxuhb1YWaBygegTUI+Jbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"William A. Kennington III" <william@wkennington.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/508] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
+Subject: [PATCH 7.0 0954/1146] net: mctp i2c: check length before marking flow active
 Date: Wed, 20 May 2026 18:20:04 +0200
-Message-ID: <20260520162102.560466964@linuxfoundation.org>
+Message-ID: <20260520162209.825211229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253026-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_PROHIBIT(0.00)[0.155.164.36:email,0.155.187.48:email];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251055-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,devicetree.org:url,milecki.pl:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
-X-Rspamd-Queue-Id: 4AE635971A6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2ACBE594227
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: William A. Kennington III <william@wkennington.com>
 
-[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
+[ Upstream commit 4ca07b9239bd0478ae586632a2ed72be37ed8407 ]
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
-        'mediatek,mt8173-efuse' was expected
-        'mediatek,efuse' was expected
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+Currently, mctp_i2c_get_tx_flow_state() is called before the packet length
+sanity check. This function marks a new flow as active in the MCTP core.
 
-Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+If the sanity check fails, mctp_i2c_xmit() returns early without calling
+mctp_i2c_lock_nest(). This results in a mismatched locking state: the
+flow is active, but the I2C bus lock was never acquired for it.
+
+When the flow is later released, mctp_i2c_release_flow() will see the
+active state and queue an unlock marker. The TX thread will then
+decrement midev->i2c_lock_count from 0, causing it to underflow to -1.
+
+This underflow permanently breaks the driver's locking logic, allowing
+future transmissions to occur without holding the I2C bus lock, leading
+to bus collisions and potential hardware hangs.
+
+Move the mctp_i2c_get_tx_flow_state() call to after the length sanity
+check to ensure we only transition the flow state if we are actually
+going to proceed with the transmission and locking.
+
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Signed-off-by: William A. Kennington III <william@wkennington.com>
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260423074741.201460-1-william@wkennington.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mctp/mctp-i2c.c | 4 ++--
+ net/sched/cls_flower.c      | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-index 9c5a52ce9351a..748f9b3668975 100644
---- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-@@ -328,7 +328,7 @@ sysirq: interrupt-controller@10200100 {
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 15fe4d1163c1c..ee2913758e54e 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -496,8 +496,6 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
+ 	u8 *pecp;
+ 	int rc;
  
- 	efuse: efuse@10206000 {
- 		compatible = "mediatek,mt7623-efuse",
--			     "mediatek,mt8173-efuse";
-+			     "mediatek,efuse";
- 		reg = <0 0x10206000 0 0x1000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+-	fs = mctp_i2c_get_tx_flow_state(midev, skb);
+-
+ 	hdr = (void *)skb_mac_header(skb);
+ 	/* Sanity check that packet contents matches skb length,
+ 	 * and can't exceed MCTP_I2C_BUFSZ
+@@ -509,6 +507,8 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
+ 		return;
+ 	}
+ 
++	fs = mctp_i2c_get_tx_flow_state(midev, skb);
++
+ 	if (skb_tailroom(skb) >= 1) {
+ 		/* Linear case with space, we can just append the PEC */
+ 		skb_put(skb, 1);
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 26070c892305d..dd6727691cff5 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -560,6 +560,7 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct cls_fl_head *head = fl_head_dereference(tp);
++	struct fl_flow_mask *mask;
+ 
+ 	*last = false;
+ 
+@@ -576,11 +577,12 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 	list_del_rcu(&f->list);
+ 	spin_unlock(&tp->lock);
+ 
+-	*last = fl_mask_put(head, f->mask);
++	mask = f->mask;
+ 	if (!tc_skip_hw(f->flags))
+ 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
+ 	tcf_unbind_filter(tp, &f->res);
+ 	__fl_put(f);
++	*last = fl_mask_put(head, mask);
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
