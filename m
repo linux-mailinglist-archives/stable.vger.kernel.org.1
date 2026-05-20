@@ -1,181 +1,154 @@
-Return-Path: <stable+bounces-249898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249901-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFjsErKhDWou0gUAu9opvQ
-	(envelope-from <stable+bounces-249898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:57:38 +0200
+	id wNW0MgGlDWqh0wUAu9opvQ
+	(envelope-from <stable+bounces-249901-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:11:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E484558D191
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:57:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B751558D613
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A1CA2303B265
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:52:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C22AE30C0B87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D54E3DB325;
-	Wed, 20 May 2026 11:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="w73AAFVO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DF73E0C46;
+	Wed, 20 May 2026 12:03:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from va-2-39.ptr.blmpb.com (va-2-39.ptr.blmpb.com [209.127.231.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B313DA5B6
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 11:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.39
+Received: from ursule.remlab.net (vps-a2bccee9.vps.ovh.net [51.75.19.47])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B133DFC81;
+	Wed, 20 May 2026 12:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.75.19.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779277948; cv=none; b=U2Aje+ePnFT85zvJf+6CTxqlbzPTm7y+bvdt5WANOUF14sTZZyngfKJHgXval5FDPn+0RdRWfO0hPykXZiWZtQo7QZnw80bWNUh1G9ZmPe9+Cakak0ra7Y/sQcuEcyHODSWj3IH2lFGxrV3Wvh2mWTs6OJomcle9CcC/I7n4IrI=
+	t=1779278613; cv=none; b=OfLTUmJHi4GjvnUwmb0cFgkTn9XnKXjQV8ML8Siuf5N6X7D7dPxqpYAMZdKBPuIzvE9A20lKoCJxShoc5dcxbQxMG5D8k2OUKevKphjtiRlmaDa9audZh040yCeACAsBrJR1qpzSn9Z0+hao1eXgOiD8oCIfvGi5TOb4bBjg8oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779277948; c=relaxed/simple;
-	bh=el2S41k3GjeBKjh+RQ5L4OpI+yWKBeBtdSZabeCtW8Y=;
-	h=Message-Id:References:To:Subject:From:Date:Mime-Version:
-	 Content-Type:In-Reply-To:Cc; b=rkpfJm8vnDoiYS3+1m8a1JkFTgM1dNZICaZeW5R+9Y669jAtfySvlA4sOITbkmZyGIVSGuCPoQDOgcZ28HRlAofP449dNUELM5FH2cOYuV64nM4tAhGi3+MIUlQHpnZD1tObVcSuFGTzboARWZBgvGuKeKpbrI4GSnksprr3pDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=w73AAFVO; arc=none smtp.client-ip=209.127.231.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fnnas.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1779277926;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=3rje/RVr9F/WYxVvH0rv+/8EnZZIxtzmuyeWBNC/yD0=;
- b=w73AAFVO083UzbIM748ihwcB0h7oo7bG42j36QYWhTal2xYRkzCNkj31yVsuXug9wIlGVn
- fFd7O4HydFwO7uPQBTfsAHKMESUE/kMIOGDBZODcdGSWA5WkAX5wt01wrivrJbZA0TsqAE
- 74MCfgqaVG0JskFvS5nO6PZZjAcz4gofG8wlVXmJyAkWJ0n3Rzd1TsmcqGU2kHt4+Gc8Tp
- LH7e8duo8QCsLXLmo5utqwPRr4KBuIxWVxnWdGx2n/+LzADZJNxNRyunQvdYqaWtyRE0i4
- Mh1XUG9lMd+kzzBaj3LLKEm0PKxRlcrBm0IasqAS7rR0qnoFHXrbWEC8DWvcqQ==
-X-Original-From: Yu Kuai <yukuai@fygo.com>
-Content-Language: en-US
-Message-Id: <6224b47c-9a7e-4bbf-90ce-4b98691ceaa3@fygo.com>
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+26a0da064+a445ef+vger.kernel.org+yukuai@fnnas.com>
-References: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com> <beca1657-0180-4f9b-8de1-ca7776c9614a@fnnas.com> <CAHYQsXRN6uof4yyDR6qGteQ=wZTt86VUx7km6k=LbNAQ3wxGiQ@mail.gmail.com> <282278bc-7d71-4049-89f4-a9f3968504dd@fnnas.com> <CAHYQsXQhTn905RGCrw-qeb--VHsRGR2KEWm5X0ZJEW+krTJaNA@mail.gmail.com>
-Received: from [192.168.1.104] ([39.182.0.188]) by smtp.feishu.cn with ESMTPS; Wed, 20 May 2026 19:52:03 +0800
-To: "Yuhao Jiang" <danisjiang@gmail.com>, <yukuai@fnnas.com>
-Subject: Re: [PATCH] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
-From: "Yu Kuai" <yukuai@fnnas.com>
-Date: Wed, 20 May 2026 19:52:01 +0800
+	s=arc-20240116; t=1779278613; c=relaxed/simple;
+	bh=GCzSfJkkUYiRuQC4PVO+LOVhzE7ba9iIZBYzDzMUzY4=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=sJN/bu+4EEuv8lfeOKXeK0+QWp9sjt5hzwoqGlyEbWGRMJr7EgI5XZRcP/d6t6ss/R9keZQXr/iXbs/v06LyEFBzVQEy0qO6glDt5Gvm4iONmWUuBEelBbUetq0C3I91K5Hj9wxbS4k2a1NTk7sURlFCPWkeihe2SWv4fii7iRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net; spf=pass smtp.mailfrom=remlab.net; arc=none smtp.client-ip=51.75.19.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=remlab.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=remlab.net
+Received: from ursule.remlab.net (localhost [IPv6:::1])
+	by ursule.remlab.net (Postfix) with ESMTP id BE5FAC0140;
+	Wed, 20 May 2026 14:53:31 +0300 (EEST)
+Received: from ehlo.thunderbird.net ([2001:14bb:cd:39b0::67a5:201])
+	by ursule.remlab.net with ESMTPSA
+	id VY98G7ugDWrBEgIAwZXkwQ
+	(envelope-from <remi@remlab.net>); Wed, 20 May 2026 14:53:31 +0300
+Date: Wed, 20 May 2026 14:53:31 +0300
+From: =?ISO-8859-1?Q?R=E9mi_Denis-Courmont?= <remi@remlab.net>
+To: Zijing Yin <yzjaurora@gmail.com>, Remi Denis-Courmont <courmisch@gmail.com>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net=5D_phonet/pep=3A_disable_?=
+ =?US-ASCII?Q?BH_around_forwarded_sk=5Freceive=5Fskb=28=29?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260519172635.86304-1-yzjaurora@gmail.com>
+References: <20260519172635.86304-1-yzjaurora@gmail.com>
+Message-ID: <4172DA29-330F-42FE-91FE-C247D67F852A@remlab.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <CAHYQsXQhTn905RGCrw-qeb--VHsRGR2KEWm5X0ZJEW+krTJaNA@mail.gmail.com>
-Reply-To: yukuai@fygo.com
-Cc: "Junrui Luo" <moonafterrain@outlook.com>, "Song Liu" <song@kernel.org>, 
-	"Li Nan" <linan122@huawei.com>, "NeilBrown" <neil@brown.name>, 
-	"Jonathan Brassow" <jbrassow@redhat.com>, <linux-raid@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.26 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[fnnas.com];
-	FREEMAIL_TO(0.00)[gmail.com,fnnas.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249898-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[outlook.com,kernel.org,huawei.com,brown.name,redhat.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yukuai@fnnas.com,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	HAS_REPLYTO(0.00)[yukuai@fygo.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,fnnas-com.20200927.dkim.feishu.cn:dkim,outlook.com:email,fnnas.com:email,fygo.com:mid,fygo.com:replyto]
-X-Rspamd-Queue-Id: E484558D191
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249901-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[remlab.net];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[remi@remlab.net,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,remlab.net:mid,remlab.net:email]
+X-Rspamd-Queue-Id: B751558D613
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
 
-=E5=9C=A8 2026/4/28 16:37, Yuhao Jiang =E5=86=99=E9=81=93:
-> Hi Kuai,
->
-> Looks like different maintainers have different rules. :(
-> Can you send me the patchwork resource?
 
-Usually just a link to lore url is enough.
+Le 19 mai 2026 20:26:33 GMT+03:00, Zijing Yin <yzjaurora@gmail=2Ecom> a =
+=C3=A9crit=C2=A0:
+>The networking receive path is usually run from softirq context, but
+>protocols that take the socket lock may have packets stored in the
+>backlog and processed later from process context=2E In that case
+>release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
+>and then calls sk->sk_backlog_rcv() with bottom halves enabled=2E
+>
+>Typical sk_backlog_rcv handlers process the socket whose backlog is
+>being drained, so the BH state at entry is irrelevant for the slocks
+>they touch=2E pep_do_rcv() is different: when the inbound skb targets an
+>existing PEP pipe, it forwards the skb to a different *child* socket
+>via sk_receive_skb()=2E That helper takes the child slock with
+>bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
+>is already off=2E The same child slock therefore ends up acquired with
+>BH on (process path) and with BH off (softirq path):
+>
+>  process context                   softirq context
+>  ---------------                   ---------------
+>  release_sock(listener)            __netif_receive_skb()
+>   __release_sock()                  phonet_rcv()
+>    spin_unlock_bh()                  __sk_receive_skb(listener)
+>    [BH now ENABLED]                  [BH already disabled]
+>    sk_backlog_rcv:                   sk_backlog_rcv:
+>     pep_do_rcv()                      pep_do_rcv()
+>      sk_receive_skb(child)             sk_receive_skb(child)
+>       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
+>       =3D> SOFTIRQ-ON-W                   =3D> IN-SOFTIRQ-W
+>
+>Lockdep flags this as inconsistent lock state, and it can become a real
+>self-deadlock if a softirq on the same CPU tries to receive to the same
+>child socket while its slock is held in the BH-enabled path:
+>
+>  WARNING: inconsistent lock state
+>  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage=2E
+>   (slock-AF_PHONET/1){+=2E?=2E}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
+>    __sk_receive_skb              net/core/sock=2Ec:563
+>    sk_receive_skb                include/net/sock=2Eh:2022 [inline]
+>    pep_do_rcv                    net/phonet/pep=2Ec:675
+>    sk_backlog_rcv                include/net/sock=2Eh:1190
+>    __release_sock                net/core/sock=2Ec:3216
+>    release_sock                  net/core/sock=2Ec:3815
+>    pep_sock_accept               net/phonet/pep=2Ec:879
+>
+>Wrap the forwarded sk_receive_skb() in local_bh_disable() /
+>local_bh_enable() so the child slock is always acquired with BH off=2E
+>local_bh_disable() nests safely on the softirq path=2E
+>
+>Discovered via in-house syzkaller fuzzing; the same root cause also
+>on the linux-6=2E1=2Ey syzbot dashboard as extid 44f0626dd6284f02663c=2E
+>Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
+>https://pastebin=2Ecom/A3t8xzCR
+>
+>Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+>Link: https://syzkaller=2Eappspot=2Ecom/bug?extid=3D44f0626dd6284f02663c
+>Cc: stable@vger=2Ekernel=2Eorg
+>Signed-off-by: Zijing Yin <yzjaurora@gmail=2Ecom>
 
->
-> Thanks.
->
-> On Tue, Apr 28, 2026 at 4:32=E2=80=AFPM Yu Kuai <yukuai@fnnas.com> wrote:
->> Hi,
->>
->> =E5=9C=A8 2026/4/19 13:59, Yuhao Jiang =E5=86=99=E9=81=93:
->>> Hi Kuai,
->>>
->>> This report was reported by me, so Junrui added me as Reported-by.
->> This is fine, however, please do not add downstream reported-by tag.
->> If you want to add the reported-by tag, please report the problem to
->> patchwork first. :)
->>
->>> Thanks,
->>>
->>> On Sun, Apr 19, 2026 at 12:43=E2=80=AFAM Yu Kuai <yukuai@fnnas.com> wro=
-te:
->>>
->>>      Hi,
->>>
->>>      =E5=9C=A8 2026/4/16 11:39, Junrui Luo =E5=86=99=E9=81=93:
->>>      > setup_geo() extracts near_copies (nc) and far_copies (fc) from t=
-he
->>>      > user-provided layout parameter without checking for zero. When f=
-c=3D0
->>>      > with the "improved" far set layout selected, 'geo->far_set_size =
-=3D
->>>      > disks / fc' triggers a divide-by-zero.
->>>      >
->>>      > Validate nc and fc immediately after extraction, returning -1 if
->>>      > either is zero.
->>>      >
->>>      > Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far'
->>>      and 'offset' algorithms (part 1)")
->>>      > Reported-by: Yuhao Jiang<danisjiang@gmail.com>
->>>
->>>      So again I can't find a report, and Reported-by usually should be
->>>      followed
->>>      by a Closes link to the original report.
->>>
->>>      Applied with Reported-by tag removed.
->>>
->>>      > Cc:stable@vger.kernel.org <mailto:Cc%3Astable@vger.kernel.org>
->>>      > Signed-off-by: Junrui Luo<moonafterrain@outlook.com>
->>>      > ---
->>>      >   drivers/md/raid10.c | 2 ++
->>>      >   1 file changed, 2 insertions(+)
->>>
->>>      --
->>>      Thansk,
->>>      Kuai
->>>
->>>
->>>
->>> --
->>> Yuhao Jiang
->> --
->> Thansk,
->> Kuai
->
->
---=20
-Thansk,
-Kuai
+Acked-by: R=C3=A9mi Denis-Courmont <remi@remlab=2Enet>
 
