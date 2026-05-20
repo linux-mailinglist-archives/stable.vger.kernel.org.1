@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEloOokvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:49 +0200
+	id oAc2E3P3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682B159BA41
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0195952FC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1DD139A7EE8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4BDC130DA3E3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C768401A3E;
-	Wed, 20 May 2026 18:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7888A3FCB2D;
+	Wed, 20 May 2026 17:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqBsPL7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjROmw87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7763FBB7D;
-	Wed, 20 May 2026 18:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04693FC5B0;
+	Wed, 20 May 2026 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302892; cv=none; b=Aj5RN70dWbOZC13qeX37HGuKF0Ygbx94soNMBTNPaJnbRL+OsUCUNSFYA23AgC2JwUXMjfJ8WexiUH0bwVXd3h968MaiQVhw5QH9A6LzdQbku/qa5jYqlTbBHfsbj/VS55DK9HwOh1H8GPW89Q4Dv1e3zShSrwJMuBi9SHc4Ho4=
+	t=1779299902; cv=none; b=ng+q4w7w0RtGKuFf2zcRmgs7vSXRsVy4EuiAmrCQJUJTj5IuMET6AyqZ9W4Zlv9JwvqcDOsRHNioDd9A4YdC49hBHgWWuf/snXOh3RaVRBdtJ+vSI+iLq7/uI58Nsjxedjsvu+XMOscQz461tXJU+w4Lxb9X+OFXJx10U37aqR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302892; c=relaxed/simple;
-	bh=40vTKno4oj4kg1bWnjNJKtUyjYmWlDDrkof2AOeU+O8=;
+	s=arc-20240116; t=1779299902; c=relaxed/simple;
+	bh=IFtHrhnCvC79CLalt2KI0EsD745hdapG8/ZNTMFUy8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGeT4LSXiXyk3nqUweUoL6yFLjX1uXDzgo56wLeQAUjZY2tIrQ53MsWl6z6vcwzVplXU9tM9HiRz3Lu2/DmwdEbiLNJui3e5DSN1cDDie8qagrhtLGotLM13UV7HDH5AmE6HRYBLAlfhTncsPsOidBzkJRaZ+3/IHZOHyXGTByY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqBsPL7K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600701F000E9;
-	Wed, 20 May 2026 18:48:10 +0000 (UTC)
+	 MIME-Version; b=FPMHYoea+5fEFWGB3GOlKzJQB9lPHaW/7h6PNIogL1Gmz7y9HdpO3GLkwT7zAcY6w+TeLsB0Za+JYfU8ktFM4UC2lPnwzY0l5372kVSYv78NS7Dw8o2BnDM7CczeT/GQ4wks7HuUncFZdBluUDpWazYcU9ZK+cVv4olqz+Z+sFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjROmw87; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE481F00893;
+	Wed, 20 May 2026 17:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302890;
-	bh=OJnIUW/NyVKa9XfoWzvU0l2Spr0Ghf9KEntrXecYFfk=;
+	s=korg; t=1779299899;
+	bh=7hH5K8HniR7i4OotLo2HQ8vPsSDKSvshnYVupYQf+ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SqBsPL7KpUyxo3BqTGWx+cFAQuovVVUWiAv/hZfUuQmrWdQIpHmBezLEkQmq/LKSd
-	 EKv0VRMSSpI2GTX4Wc8wWYkiY4+iSZBUe+L67wJoi9LnHuKzmCs+tZDYKMaw+g31fZ
-	 OSiCTcaMbW76q2bMeefKH6rj7DR4osi2GiU2vjk0=
+	b=hjROmw8784CYQcCjSfgVwOaBbapOBcaFltCRcrHfzBNyeNkz+yA7Pddo1qa9wVmDs
+	 BYtdhknYxsiRK7VLIcf7KxhrTfj12ZY8sZabl27tctAzp9NwG2+UiAuCjqW1IOGvGR
+	 nEzVE6cHahSCcZFBpjt79/n72A46jN+ouTduD29E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 387/508] net/sched: sch_choke: annotate data-races in choke_dump_stats()
+	Scott Mayhew <smayhew@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.18 927/957] nfsd: fix file change detection in CB_GETATTR
 Date: Wed, 20 May 2026 18:23:30 +0200
-Message-ID: <20260520162107.003574000@linuxfoundation.org>
+Message-ID: <20260520162154.689865718@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +67,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253290-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252142-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email]
-X-Rspamd-Queue-Id: 682B159BA41
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
+X-Rspamd-Queue-Id: DB0195952FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit d3aeb889dcbd78e95f500d383799a23d949796e0 ]
+commit 304d81a2fbf2b454def4debcb38ea173911b72cd upstream.
 
-choke_dump_stats() only runs with RTNL held.
-It reads fields that can be changed in qdisc fast path.
-Add READ_ONCE()/WRITE_ONCE() annotations.
+RFC 8881, section 10.4.3 doesn't say anything about caching the file
+size in the delegation record, nor does it say anything about comparing
+a cached file size with the size reported by the client in the
+CB_GETATTR reply for the purpose of determining if the client holds
+modified data for the file.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260423062839.2524324-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What section 10.4.3 of RFC 8881 does say is that the server should
+compare the *current* file size with the size reported by the client
+holding the delegation in the CB_GETATTR reply, and if they differ to
+treat it as a modification regardless of the change attribute retrieved
+via the CB_GETATTR.
+
+Doing otherwise would cause the server to believe the client holding the
+delegation has a modified version of the file, even if the client
+flushed the modifications to the server prior to the CB_GETATTR.  This
+would have the added side effect of subsequent CB_GETATTRs causing
+updates to the mtime, ctime, and change attribute even if the client
+holding the delegation makes no further updates to the file.
+
+Modify nfsd4_deleg_getattr_conflict() to obtain the current file size
+via i_size_read().  Retain the ncf_cur_fsize field, since it's a
+convenient way to return the file size back to nfsd4_encode_fattr4(),
+but don't use it for the purpose of detecting file changes.  Remove the
+unnecessary initialization of ncf_cur_fsize in nfs4_open_delegation().
+
+Also, if we recall the delegation (because the client didn't respond to
+the CB_GETATTR), then skip the logic that checks the nfs4_cb_fattr
+fields.
+
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_choke.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ fs/nfsd/nfs4state.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
-index a919591422085..b27da148ca744 100644
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -229,7 +229,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 		/* Draw a packet at random from queue and compare flow */
- 		if (choke_match_random(q, skb, &idx)) {
--			q->stats.matched++;
-+			WRITE_ONCE(q->stats.matched, q->stats.matched + 1);
- 			choke_drop_by_idx(sch, idx, to_free);
- 			goto congestion_drop;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6350,7 +6350,6 @@ nfs4_open_delegation(struct svc_rqst *rq
  		}
-@@ -241,11 +241,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			qdisc_qstats_overlimit(sch);
- 			if (use_harddrop(q) || !use_ecn(q) ||
- 			    !INET_ECN_set_ce(skb)) {
--				q->stats.forced_drop++;
-+				WRITE_ONCE(q->stats.forced_drop,
-+					   q->stats.forced_drop + 1);
- 				goto congestion_drop;
- 			}
- 
--			q->stats.forced_mark++;
-+			WRITE_ONCE(q->stats.forced_mark,
-+				   q->stats.forced_mark + 1);
- 		} else if (++q->vars.qcount) {
- 			if (red_mark_probability(p, &q->vars, q->vars.qavg)) {
- 				q->vars.qcount = 0;
-@@ -253,11 +255,13 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 				qdisc_qstats_overlimit(sch);
- 				if (!use_ecn(q) || !INET_ECN_set_ce(skb)) {
--					q->stats.prob_drop++;
-+					WRITE_ONCE(q->stats.prob_drop,
-+					           q->stats.prob_drop + 1);
- 					goto congestion_drop;
- 				}
- 
--				q->stats.prob_mark++;
-+				WRITE_ONCE(q->stats.prob_mark,
-+					   q->stats.prob_mark + 1);
- 			}
- 		} else
- 			q->vars.qR = red_random(p);
-@@ -272,7 +276,7 @@ static int choke_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return NET_XMIT_SUCCESS;
+ 		open->op_delegate_type = deleg_ts ? OPEN_DELEGATE_WRITE_ATTRS_DELEG :
+ 						    OPEN_DELEGATE_WRITE;
+-		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+ 		dp->dl_cb_fattr.ncf_initial_cinfo = nfsd4_change_attribute(&stat);
+ 		dp->dl_atime = stat.atime;
+ 		dp->dl_ctime = stat.ctime;
+@@ -9396,11 +9395,15 @@ nfsd4_deleg_getattr_conflict(struct svc_
+ 		if (status != nfserr_jukebox ||
+ 		    !nfsd_wait_for_delegreturn(rqstp, inode))
+ 			goto out_status;
++		status = nfs_ok;
++		goto out_status;
++	}
++	if (!ncf->ncf_file_modified) {
++		if (ncf->ncf_initial_cinfo != ncf->ncf_cb_change)
++			ncf->ncf_file_modified = true;
++		else if (i_size_read(inode) != ncf->ncf_cb_fsize)
++			ncf->ncf_file_modified = true;
  	}
+-	if (!ncf->ncf_file_modified &&
+-	    (ncf->ncf_initial_cinfo != ncf->ncf_cb_change ||
+-	     ncf->ncf_cur_fsize != ncf->ncf_cb_fsize))
+-		ncf->ncf_file_modified = true;
+ 	if (ncf->ncf_file_modified) {
+ 		int err;
  
--	q->stats.pdrop++;
-+	WRITE_ONCE(q->stats.pdrop, q->stats.pdrop + 1);
- 	return qdisc_drop(skb, sch, to_free);
- 
- congestion_drop:
-@@ -460,10 +464,12 @@ static int choke_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct choke_sched_data *q = qdisc_priv(sch);
- 	struct tc_choke_xstats st = {
--		.early	= q->stats.prob_drop + q->stats.forced_drop,
--		.marked	= q->stats.prob_mark + q->stats.forced_mark,
--		.pdrop	= q->stats.pdrop,
--		.matched = q->stats.matched,
-+		.early	= READ_ONCE(q->stats.prob_drop) +
-+			  READ_ONCE(q->stats.forced_drop),
-+		.marked	= READ_ONCE(q->stats.prob_mark) +
-+			  READ_ONCE(q->stats.forced_mark),
-+		.pdrop	= READ_ONCE(q->stats.pdrop),
-+		.matched = READ_ONCE(q->stats.matched),
- 	};
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
--- 
-2.53.0
-
 
 
 
