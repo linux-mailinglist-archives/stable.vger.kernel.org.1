@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-253109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPdVGJANDmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:52 +0200
+	id uHa7C4gWDmpb6AUAu9opvQ
+	(envelope-from <stable+bounces-252669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5C3598838
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A37F5995EA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23D7F3389DED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D2D6312FDAD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4B34014B4;
-	Wed, 20 May 2026 18:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654A73F4DD6;
+	Wed, 20 May 2026 18:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUF4FfGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkarNqMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7285401A3F;
-	Wed, 20 May 2026 18:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FA329B78D;
+	Wed, 20 May 2026 18:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302429; cv=none; b=NGs7gOFJcIfbLTpxuo2ZNFr0ZX5FcIRXpZNHoBr6okle2gMdCkSNlGEKfL4xvaRFQ8Q0wwrsa9l3FSGmidRR41vtMvz3t5Ai1Sd6hfe3GfTvwgY6/aw4DIUec1Hktz6YQzBBjVOrH8qz6od3YLNQwY7I+J079T9qDTHbDF2fJYU=
+	t=1779301279; cv=none; b=nZVqgoGRvyu+ndjRQg7cAaFQkdusbq0srg/Uy5ZDO6HvfjngbODQBkinT5TMcwR6aWM5HCkK0+zch4Ef/TqQ8dy7s4vl0MxKW7dgab7GVwXKtSRSn03iKqa26qdFYcXb1i8FXTaVjg7b1NbybRSZvVPNeKeS90jP9kHDdmm4u1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302429; c=relaxed/simple;
-	bh=lvvw6oZnMpnR8J30w8UfW8G+du6FUjiH2OPPI3Kc6RM=;
+	s=arc-20240116; t=1779301279; c=relaxed/simple;
+	bh=Cx2rvfT4MzdniqkS5EVIRjhfrvAtLMUOk3hB8WpAQM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQDhk3NYVUPrHaYVT4MJqvY9QAcyGMsGEI8s1rYUH7Iyan61Sbxqti8TdW8ZT2UwnVpZHCzUJwD7FlhoSen/hthI5zXc6b85/UPqHmv5B151A7Sx0OnX9gVsJih++G8Dgoe9ucgdnCkFvALcyODhjR01XtrNHagR9ZhzzUt/fLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUF4FfGx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2380A1F000E9;
-	Wed, 20 May 2026 18:40:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b/7b24/BwfXejthMiNVa814cbMyWttxpwdoICtYy4hLxa2Iv7/bTCj1hkIn91ICkJ2+hqf74iWTax6fLHJL4SQeBJUUqYzwpsGiuGWXNcrvWLAC8AZACeGOLxyy9DEVFWsaN3axoU9iN71mA7a6JOOhv4TVOoVtjJCg7X0BBcQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkarNqMY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE4D1F000E9;
+	Wed, 20 May 2026 18:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302427;
-	bh=blmrmFwsQAJAOznWUjY+PALkorwW3Ybz7rNEdG6LRC8=;
+	s=korg; t=1779301278;
+	bh=89RyYzin8e4Kn8s9n+xzqRwCdRtNvXBrBwqx1UO6K7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JUF4FfGxtFUhk7sw95SeEaeAl+D2emCDjADFpkDs3ctQStN6vOFOHcyL64a0e0oZA
-	 kyxC3y4arQtqwN0n5xLaxX8/UV8akwFNPvgULgW+EFCitolhVrXTuiTV391FjCg/Wa
-	 14nZOUxJpVUGws/7OUW74UxPwlwrGjVvHYJC61kc=
+	b=hkarNqMYVjwSvP5QCcStklnSmDEPp/FnjOpv/LkupOq2rQij6Qt5aDFYOn0Xp5hDN
+	 bJqRG0kmkZvmqAm8nSAPfqdL/xnTs8kNb3763ZMq5WjyOlg4XEPXNeVFvZmOMoYV1E
+	 HXZC+2gl6FHemQ+YANO5WXI9fyLc2kJwFQfMjkzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Sangyun Kim <sangyun.kim@snu.ac.kr>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/508] tty: hvc_iucv: fix off-by-one in number of supported devices
-Date: Wed, 20 May 2026 18:21:27 +0200
-Message-ID: <20260520162104.365759971@linuxfoundation.org>
+Subject: [PATCH 6.12 477/666] pwm: atmel-tcb: Cache clock rates and mark chip as atomic
+Date: Wed, 20 May 2026 18:21:28 +0200
+Message-ID: <20260520162121.606896948@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253109-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252669-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8E5C3598838
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2A37F5995EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sangyun Kim <sangyun.kim@snu.ac.kr>
 
-[ Upstream commit f2a880e802ad12d1e38039d1334fb1475d0f5241 ]
+[ Upstream commit 68637b68afcc3cb4d56aca14a3a1d1b47b879369 ]
 
-MAX_HVC_IUCV_LINES == HVC_ALLOC_TTY_ADAPTERS == 8.
-This is the number of entries in:
-  static struct hvc_iucv_private *hvc_iucv_table[MAX_HVC_IUCV_LINES];
+atmel_tcb_pwm_apply() holds tcbpwmc->lock as a spinlock via
+guard(spinlock)() and then calls atmel_tcb_pwm_config(), which calls
+clk_get_rate() twice. clk_get_rate() acquires clk_prepare_lock (a
+mutex), so this is a sleep-in-atomic-context violation.
 
-Sometimes hvc_iucv_table[] is limited by:
-(a)	if (num > hvc_iucv_devices) // for error detection
-or
-(b)	for (i = 0; i < hvc_iucv_devices; i++) // in 2 places
-(so these 2 don't agree; second one appears to be correct to me.)
+On CONFIG_DEBUG_ATOMIC_SLEEP kernels every pwm_apply_state() that
+enables or reconfigures the PWM triggers a "BUG: sleeping function
+called from invalid context" warning.
 
-hvc_iucv_devices can be 0..8. This is a counter.
-(c)	if (hvc_iucv_devices > MAX_HVC_IUCV_LINES)
+Acquire exclusive control over the clock rates with
+clk_rate_exclusive_get() at probe time and cache the rates in struct
+atmel_tcb_pwm_chip, then read the cached rates from
+atmel_tcb_pwm_config(). This keeps the spinlock-based mutual exclusion
+introduced in commit 37f7707077f5 ("pwm: atmel-tcb: Fix race condition
+and convert to guards") and removes the sleeping calls from the atomic
+section.
 
-If hvc_iucv_devices == 8, (a) allows the code to access hvc_iucv_table[8].
-Oops.
+With no sleeping calls left in .apply() and the regmap-mmio bus already
+running with fast_io=true, also mark the chip as atomic so consumers
+can use pwm_apply_atomic() from atomic context.
 
-Fixes: 44a01d5ba8a4 ("[S390] s390/hvc_console: z/VM IUCV hypervisor console support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260130072939.1535869-1-rdunlap@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 37f7707077f5 ("pwm: atmel-tcb: Fix race condition and convert to guards")
+Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+Link: https://patch.msgid.link/20260419080838.3192357-1-sangyun.kim@snu.ac.kr
+[ukleinek: Ensure .clk is enabled before calling clk_get_rate on it.]
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_iucv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-atmel-tcb.c | 38 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
-index 543f35ddf523c..26953f0daa9fc 100644
---- a/drivers/tty/hvc/hvc_iucv.c
-+++ b/drivers/tty/hvc/hvc_iucv.c
-@@ -130,7 +130,7 @@ static struct iucv_handler hvc_iucv_handler = {
-  */
- static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
- {
--	if (num > hvc_iucv_devices)
-+	if (num >= hvc_iucv_devices)
- 		return NULL;
- 	return hvc_iucv_table[num];
- }
+diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
+index 5ee4254d1e487..9554deb413ab3 100644
+--- a/drivers/pwm/pwm-atmel-tcb.c
++++ b/drivers/pwm/pwm-atmel-tcb.c
+@@ -50,6 +50,8 @@ struct atmel_tcb_pwm_chip {
+ 	spinlock_t lock;
+ 	u8 channel;
+ 	u8 width;
++	unsigned long rate;
++	unsigned long slow_rate;
+ 	struct regmap *regmap;
+ 	struct clk *clk;
+ 	struct clk *gclk;
+@@ -266,7 +268,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	int slowclk = 0;
+ 	unsigned period;
+ 	unsigned duty;
+-	unsigned rate = clk_get_rate(tcbpwmc->clk);
++	unsigned long rate = tcbpwmc->rate;
+ 	unsigned long long min;
+ 	unsigned long long max;
+ 
+@@ -294,7 +296,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	 */
+ 	if (i == ARRAY_SIZE(atmel_tcb_divisors)) {
+ 		i = slowclk;
+-		rate = clk_get_rate(tcbpwmc->slow_clk);
++		rate = tcbpwmc->slow_rate;
+ 		min = div_u64(NSEC_PER_SEC, rate);
+ 		max = min << tcbpwmc->width;
+ 
+@@ -431,24 +433,49 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	chip->ops = &atmel_tcb_pwm_ops;
++	chip->atomic = true;
+ 	tcbpwmc->channel = channel;
+ 	tcbpwmc->width = config->counter_width;
+ 
+-	err = clk_prepare_enable(tcbpwmc->slow_clk);
++	err = clk_prepare_enable(tcbpwmc->clk);
+ 	if (err)
+ 		goto err_gclk;
+ 
++	err = clk_prepare_enable(tcbpwmc->slow_clk);
++	if (err)
++		goto err_disable_clk;;
++
++	err = clk_rate_exclusive_get(tcbpwmc->clk);
++	if (err)
++		goto err_disable_slow_clk;
++
++	err = clk_rate_exclusive_get(tcbpwmc->slow_clk);
++	if (err)
++		goto err_clk_unlock;
++
++	tcbpwmc->rate = clk_get_rate(tcbpwmc->clk);
++	tcbpwmc->slow_rate = clk_get_rate(tcbpwmc->slow_clk);
++
+ 	spin_lock_init(&tcbpwmc->lock);
+ 
+ 	err = pwmchip_add(chip);
+ 	if (err < 0)
+-		goto err_disable_clk;
++		goto err_slow_clk_unlock;
+ 
+ 	platform_set_drvdata(pdev, chip);
+ 
+ 	return 0;
+ 
++err_slow_clk_unlock:
++	clk_rate_exclusive_put(tcbpwmc->slow_clk);
++
++err_clk_unlock:
++	clk_rate_exclusive_put(tcbpwmc->clk);
++
+ err_disable_clk:
++	clk_disable_unprepare(tcbpwmc->clk);
++
++err_disable_slow_clk:
+ 	clk_disable_unprepare(tcbpwmc->slow_clk);
+ 
+ err_gclk:
+@@ -470,6 +497,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
+ 
+ 	pwmchip_remove(chip);
+ 
++	clk_rate_exclusive_put(tcbpwmc->slow_clk);
++	clk_rate_exclusive_put(tcbpwmc->clk);
++	clk_disable_unprepare(tcbpwmc->clk);
+ 	clk_disable_unprepare(tcbpwmc->slow_clk);
+ 	clk_put(tcbpwmc->gclk);
+ 	clk_put(tcbpwmc->clk);
 -- 
 2.53.0
 
