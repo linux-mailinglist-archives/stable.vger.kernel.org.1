@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-250287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIqcHDLwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:34 +0200
+	id wKB4OsjkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7A6593E68
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF7759258B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D822531DD82E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E35D307A1F4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25AA3D47D3;
-	Wed, 20 May 2026 16:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD79363C74;
+	Wed, 20 May 2026 16:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMgbo2Ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lk4uwm3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E536C0CA;
-	Wed, 20 May 2026 16:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2143C0A12;
+	Wed, 20 May 2026 16:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295017; cv=none; b=GFBOWizPNVMs2ZhBxqYx5OMyBYz/kUT7DQIETsaeHpRNd4KbLk6zgd4rpMikTodjEnipBxOQ4Xn7c/wJFmV6nFkhz9WSxgmdhqdhidMN93JWKvaFQSRxkMF33yY9TVe8kELFYvAo00iHoFoGVHh4PNqIXl8xpY3xRQbrNUgaoUU=
+	t=1779294909; cv=none; b=cIaIkirOcGNiJWg9jj2j5Tw6zqkaJZn6DgeKagkN0+Jv0UetgKC+2rtHmY7TgFJRHVzeWLs2wcI3aRkABB63bin/DA9+mkpejUfbES39XjIoBph04XmoNjT5MEisYgj9s4T1Fkn6bGbYnMWtjeypTtK6cwTlfwAVE6SpDtdMOfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295017; c=relaxed/simple;
-	bh=daqZTh+gb0snWRsLXGuDSRB5yBaWxzChorco8M4lYi0=;
+	s=arc-20240116; t=1779294909; c=relaxed/simple;
+	bh=SAy0dAuHxS7Tel98PdubaZA7donBuEtp8KRilD+Sw18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr+tkElxH22JChTBlvhlWjFWMNFGY+hTSAkAIbaFQnB3rPq0Ew3bW13CJlK83uQfCi8Vurde49GWQtc9MQfri9akI4hlZe+LVOxekV7Jbxoxnh5lkE8wN3Ks1AaRBMeve+8KCFWepIUUkOq2pY4vHmD7rjMTteByUmOzqKg4Moo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMgbo2Ba; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A5F1F000E9;
-	Wed, 20 May 2026 16:36:55 +0000 (UTC)
+	 MIME-Version; b=kJ16aoxEqj4q3VvttAk+KzmybPH+x0pl23unasfFlR/oGXtL8ajC12wrn0ee8L4iMSa87bGd0hl+JcxYeCRAG/sXI4bjYxeFZ2jV/oYvECpHwhmGTE6dcImGWtotWI5F8T1shlEO+evl19p3Wnj9oCdefNIPveBx+yy5V923pOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lk4uwm3A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DDE1F000E9;
+	Wed, 20 May 2026 16:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295016;
-	bh=uW1hdYnYo+fcdcLdxAFRotq0Fr7jHaSp0Ba1LlRiiM8=;
+	s=korg; t=1779294908;
+	bh=h/5xFrFXzCQNRo9k3AqbhwZD5oEyshdhaZOy0MivmbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iMgbo2BaTtJyH/Gi/Js7/YX8Bx5M38Ov91SXke8W4QKKawjkTKI4F5gSkJ/If1knl
-	 5QThBefZtCXHUbh0ehK1y8tIOGXDRiYDTQpGF5UsFaNActQ+6wSFnMXw1UF3D3IsKE
-	 EOwhYENrAJiixAmWgaaIICNKz020PxHZMlabJZr8=
+	b=lk4uwm3AO72kHkXeOiFQixV2CfRSixlZIgqREgUUumoLoLddKLVW5Q0kf/PrqsdJQ
+	 GU75Z4a4q5daAudU+GrK4ad17PZlkqkma9DGzCt0eKFMMi3phRN0bagoNyVAugf0xX
+	 JWYdZTcFP+CUJHiA6dwf2HMlJ0i2U89lusDDrQrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0218/1146] tcp: Dont set treq->req_usec_ts in cookie_tcp_reqsk_init().
-Date: Wed, 20 May 2026 18:07:48 +0200
-Message-ID: <20260520162153.191402558@linuxfoundation.org>
+Subject: [PATCH 7.0 0219/1146] sctp: fix missing encap_port propagation for GSO fragments
+Date: Wed, 20 May 2026 18:07:49 +0200
+Message-ID: <20260520162153.214086405@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -64,34 +65,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250287-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250245-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 3A7A6593E68
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6DF7759258B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,52 +102,42 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit c058bbf05b1197c33df7204842665bd8bc70b3a8 ]
+[ Upstream commit bf6f95ae3b8b2638c0e1d6d802d50983ce5d0f45 ]
 
-Commit de5626b95e13 ("tcp: Factorise cookie-independent fields
-initialisation in cookie_v[46]_check().") miscategorised
-tcp_rsk(req)->req_usec_ts init to cookie_tcp_reqsk_init(),
-which is used by both BPF/non-BPF SYN cookie reqsk.
+encap_port in SCTP_INPUT_CB(skb) is used by sctp_vtag_verify() for
+SCTP-over-UDP processing. In the GSO case, it is only set on the head
+skb, while fragment skbs leave it 0.
 
-Rather, it should have been moved to cookie_tcp_reqsk_alloc() by
-commit 8e7bab6b9652 ("tcp: Factorise cookie-dependent fields
-initialisation in cookie_v[46]_check()") so that only non-BPF SYN
-cookie sets tcp_rsk(req)->req_usec_ts to false.
+This results in fragment skbs seeing encap_port == 0, breaking
+SCTP-over-UDP connections.
 
-Let's move the initialisation to cookie_tcp_reqsk_alloc() to
-respect bpf_tcp_req_attrs.usec_ts_ok.
+Fix it by propagating encap_port from the head skb cb when initializing
+fragment skbs in sctp_inq_pop().
 
-Fixes: e472f88891ab ("bpf: tcp: Support arbitrary SYN Cookie.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260410235328.1773449-1-kuniyu@google.com
+Fixes: 046c052b475e ("sctp: enable udp tunneling socks")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/ea65ed61b3598d8b4940f0170b9aa1762307e6c3.1776017631.git.lucien.xin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/syncookies.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/inqueue.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-index fc3affd9c8014..b5f0a65c67864 100644
---- a/net/ipv4/syncookies.c
-+++ b/net/ipv4/syncookies.c
-@@ -286,7 +286,6 @@ static int cookie_tcp_reqsk_init(struct sock *sk, struct sk_buff *skb,
- 	treq->rcv_isn = ntohl(th->seq) - 1;
- 	treq->snt_isn = ntohl(th->ack_seq) - 1;
- 	treq->syn_tos = TCP_SKB_CB(skb)->ip_dsfield;
--	treq->req_usec_ts = false;
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index f5a7d5a387555..a024c08432471 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -201,6 +201,7 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
  
- #if IS_ENABLED(CONFIG_MPTCP)
- 	treq->is_mptcp = sk_is_mptcp(sk);
-@@ -349,6 +348,7 @@ struct request_sock *cookie_tcp_reqsk_alloc(const struct request_sock_ops *ops,
- 	ireq->wscale_ok = tcp_opt->wscale_ok;
- 	ireq->ecn_ok = !!(tcp_opt->rcv_tsecr & TS_OPT_ECN);
+ 			cb->chunk = head_cb->chunk;
+ 			cb->af = head_cb->af;
++			cb->encap_port = head_cb->encap_port;
+ 		}
+ 	}
  
-+	treq->req_usec_ts = false;
- 	treq->ts_off = tsoff;
- 
- 	return req;
 -- 
 2.53.0
 
