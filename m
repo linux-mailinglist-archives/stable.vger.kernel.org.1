@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOREHDn5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:05 +0200
+	id 6OLXEVXyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBA95957CE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F18594515
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E8C1315E754
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 125843168688
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D043F39C9;
-	Wed, 20 May 2026 17:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005EE3E95A4;
+	Wed, 20 May 2026 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhLLJ1EZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDl54tOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764653F20F9;
-	Wed, 20 May 2026 17:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FE837754D;
+	Wed, 20 May 2026 17:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299559; cv=none; b=kpAPiWc0s2DscUqiexPReNuOYa7Qaz02SfWufpxYyzuUzrM486f41nIYzw4cKjMpvNOcCaL8V2clzInTFkl/DW2T7/kb8++T40GpCP0c+gFUse4F5bDNYevVw2Dd/DarJDGM1QIgyUAhLkq5HkyUJlM8zB3aEzUr4P7gTTmcXdM=
+	t=1779297213; cv=none; b=VXq2bnRLRnH+/SwRvgJZwQ7yjX+OsdC8LybRQp0fsa3GJmrZUYBYriKQuzVoxF2IMM8esll8d4izlWOiBqG0IcosRbM1DN2d+IQE4wU0+/2RfUkxDiYu8qet/jW7iCeymNjMg1hB2SiKZ9TUJomE7qEXEgcc+C5KWTC0K3km9gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299559; c=relaxed/simple;
-	bh=MWuqsZ5We2Epoi2PltyvHnpZw4XEWj6OXbBDTrM1eCw=;
+	s=arc-20240116; t=1779297213; c=relaxed/simple;
+	bh=YVo4Wsr68sWao8PuxzpHb4nJde0OTLb3ETDC+rBmpBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3xtrcCzygAPpsqm/ICB0uIJN4/GNeukb3MSsCTI00ELJVIjb732vmPvAZhwUS/NHg8C/lXf7HTB2KNuxj5ZoIZrW0ybkq8vztvcx3YQAknXhujz4iqHerON6TgtSuOqX0gTHQa88DKJl5Rwr9jPD+rcehdSel53UDnFL5JftJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhLLJ1EZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5BF1F000E9;
-	Wed, 20 May 2026 17:52:37 +0000 (UTC)
+	 MIME-Version; b=lCCw1QhKSMhBo8jyRc1hy+nCx5JPb66pT5HQlfBOGdArUN1jKnAvrWf/qHOpcfkORwZPuztDpTblP7Yc5h0RxfhdZRYCUvTMmO0DnAklhQOYqBrqsT+kEdm0ixk0HkUZY0GW+tQqnQ+C0W1A16qLPCfRLmHlpLCBC49YqLkrG7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDl54tOk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C7E1F000E9;
+	Wed, 20 May 2026 17:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299558;
-	bh=DrlFLZt/H6hQ0Z/6VXvnzbQepaLOELyK4Uxkc0uSiWc=;
+	s=korg; t=1779297212;
+	bh=DhDlChK3csQO/bGIe+5YQIq7wxXW/tuOe0n8XLShSKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mhLLJ1EZE7QSsx0doJpfGUGlDnHlFdyv+21VicXQ4pXGPY84GG8oNKDshAZ4ArOzR
-	 V5ZtGLGlBmQdJ8CjB45lGBGq27U6Tn/EaZVdk/QkKc5Qnr9BJxcfrkeEwQQDa6twMZ
-	 TjygkM9K6gBkvHjzlmRuGy+A69Tu+MRZMeVjV0+k=
+	b=QDl54tOk/hc+FL7aYR4yHRUnDmpLVa/oEgs/jpHJc0Coakq1wKYP/XBIl9ghdy4xW
+	 QmZfdUWsSFWS/BdzjF0y6EvhjunKLzfafGooTYmLEvoC0vIq+rhD6xd1bBPaFz+Pw9
+	 MlBxk+C+p7KOQDm9SpFHcmZQyykTKKxMN83P4dX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 818/957] netfilter: skip recording stale or retransmitted INIT
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Waiman Long <longman@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 7.0 1051/1146] cgroup/cpuset: Reserve DL bandwidth only for root-domain moves
 Date: Wed, 20 May 2026 18:21:41 +0200
-Message-ID: <20260520162152.306879780@linuxfoundation.org>
+Message-ID: <20260520162212.020924615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +65,203 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252029-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251144-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 3FBA95957CE
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05F18594515
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-[ Upstream commit 576a5d2bad4814c881a829576b1261b9b8159d2b ]
+commit 5dd74441cbf42c22e874450eb6a6bbb19390a216 upstream.
 
-An INIT whose init_tag matches the peer's vtag does not provide new state
-information. It indicates either:
+cpuset_can_attach() currently adds the bandwidth of all migrating
+SCHED_DEADLINE tasks to sum_migrate_dl_bw. If the source and destination
+cpuset effective CPU masks do not overlap, the whole sum is then
+reserved in the destination root domain.
 
-- a stale INIT (after INIT-ACK has already been seen on the same side), or
-- a retransmitted INIT (after INIT has already been recorded on the same
-  side).
+set_cpus_allowed_dl(), however, subtracts bandwidth from the source
+root domain only when the affinity change really moves the task between
+root domains. A DL task can move between cpusets that are still in the
+same root domain, so including that task in sum_migrate_dl_bw can reserve
+destination bandwidth without a matching source-side subtraction.
 
-In both cases, the INIT must not update ct->proto.sctp.init[] state, since
-it does not advance the handshake tracking and may otherwise corrupt
-INIT/INIT-ACK validation logic.
+Share the root-domain move test with set_cpus_allowed_dl(). Keep
+nr_migrate_dl_tasks counting all migrating deadline tasks for cpuset DL
+task accounting, but add to sum_migrate_dl_bw only for tasks that need a
+root-domain bandwidth move. Keep using the destination cpuset effective
+CPU mask and leave the broader can_attach()/attach() transaction model
+unchanged.
 
-Allow INIT processing only when the conntrack entry is newly created
-(SCTP_CONNTRACK_NONE), or when the init_tag differs from the stored peer
-vtag.
-
-Note it skips the check for the ct with old_state SCTP_CONNTRACK_NONE in
-nf_conntrack_sctp_packet(), as it is just created in sctp_new() where it
-set ct->proto.sctp.vtag[IP_CT_DIR_REPLY] = ih->init_tag.
-
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/ee56c3e416452b2a40589a2a85245ac2ad5e9f4b.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Tested-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ include/linux/sched/deadline.h  |    9 +++++++++
+ kernel/cgroup/cpuset-internal.h |    1 +
+ kernel/cgroup/cpuset.c          |   33 ++++++++++++++++++---------------
+ kernel/sched/deadline.c         |   13 ++++++++++---
+ 4 files changed, 38 insertions(+), 18 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 645d2c43ebf7a..7e10fa65cbdd3 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -466,9 +466,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
- 			if (!ih)
- 				goto out_unlock;
+--- a/include/linux/sched/deadline.h
++++ b/include/linux/sched/deadline.h
+@@ -33,6 +33,15 @@ struct root_domain;
+ extern void dl_add_task_root_domain(struct task_struct *p);
+ extern void dl_clear_root_domain(struct root_domain *rd);
+ extern void dl_clear_root_domain_cpu(int cpu);
++/*
++ * Return whether moving DL task @p to @new_mask requires moving DL
++ * bandwidth accounting between root domains. This helper is specific to
++ * DL bandwidth move accounting semantics and is shared by
++ * cpuset_can_attach() and set_cpus_allowed_dl() so both paths use the
++ * same source root-domain test.
++ */
++extern bool dl_task_needs_bw_move(struct task_struct *p,
++				  const struct cpumask *new_mask);
  
--			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
--				ct->proto.sctp.init[!dir] = 0;
--			ct->proto.sctp.init[dir] = 1;
-+			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
-+			if (old_state == SCTP_CONNTRACK_NONE ||
-+			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
-+				if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
-+					ct->proto.sctp.init[!dir] = 0;
-+				ct->proto.sctp.init[dir] = 1;
-+			}
+ extern u64 dl_cookie;
+ extern bool dl_bw_visited(int cpu, u64 cookie);
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -167,6 +167,7 @@ struct cpuset {
+ 	 */
+ 	int nr_deadline_tasks;
+ 	int nr_migrate_dl_tasks;
++	/* DL bandwidth that needs destination reservation for this attach. */
+ 	u64 sum_migrate_dl_bw;
+ 	/*
+ 	 * CPU used for temporary DL bandwidth allocation during attach;
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2993,7 +2993,7 @@ static int cpuset_can_attach(struct cgro
+ 	struct cpuset *cs, *oldcs;
+ 	struct task_struct *task;
+ 	bool setsched_check;
+-	int ret;
++	int cpu, ret;
  
- 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
- 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
--- 
-2.53.0
-
+ 	/* used later by cpuset_attach() */
+ 	cpuset_attach_old_cs = task_cs(cgroup_taskset_first(tset, &css));
+@@ -3038,28 +3038,31 @@ static int cpuset_can_attach(struct cgro
+ 		}
+ 
+ 		if (dl_task(task)) {
++			/*
++			 * Count all migrating DL tasks for cpuset task accounting.
++			 * Only tasks that need a root-domain bandwidth move
++			 * contribute to sum_migrate_dl_bw.
++			 */
+ 			cs->nr_migrate_dl_tasks++;
+-			cs->sum_migrate_dl_bw += task->dl.dl_bw;
++			if (dl_task_needs_bw_move(task, cs->effective_cpus))
++				cs->sum_migrate_dl_bw += task->dl.dl_bw;
+ 		}
+ 	}
+ 
+-	if (!cs->nr_migrate_dl_tasks)
++	if (!cs->sum_migrate_dl_bw)
+ 		goto out_success;
+ 
+-	if (!cpumask_intersects(oldcs->effective_cpus, cs->effective_cpus)) {
+-		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
+-
+-		if (unlikely(cpu >= nr_cpu_ids)) {
+-			ret = -EINVAL;
+-			goto out_unlock;
+-		}
++	cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
++	if (unlikely(cpu >= nr_cpu_ids)) {
++		ret = -EINVAL;
++		goto out_unlock;
++	}
+ 
+-		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+-		if (ret)
+-			goto out_unlock;
++	ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
++	if (ret)
++		goto out_unlock;
+ 
+-		cs->dl_bw_cpu = cpu;
+-	}
++	cs->dl_bw_cpu = cpu;
+ 
+ out_success:
+ 	/*
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -3106,20 +3106,18 @@ static void task_woken_dl(struct rq *rq,
+ static void set_cpus_allowed_dl(struct task_struct *p,
+ 				struct affinity_context *ctx)
+ {
+-	struct root_domain *src_rd;
+ 	struct rq *rq;
+ 
+ 	WARN_ON_ONCE(!dl_task(p));
+ 
+ 	rq = task_rq(p);
+-	src_rd = rq->rd;
+ 	/*
+ 	 * Migrating a SCHED_DEADLINE task between exclusive
+ 	 * cpusets (different root_domains) entails a bandwidth
+ 	 * update. We already made space for us in the destination
+ 	 * domain (see cpuset_can_attach()).
+ 	 */
+-	if (!cpumask_intersects(src_rd->span, ctx->new_mask)) {
++	if (dl_task_needs_bw_move(p, ctx->new_mask)) {
+ 		struct dl_bw *src_dl_b;
+ 
+ 		src_dl_b = dl_bw_of(cpu_of(rq));
+@@ -3136,6 +3134,15 @@ static void set_cpus_allowed_dl(struct t
+ 	set_cpus_allowed_common(p, ctx);
+ }
+ 
++bool dl_task_needs_bw_move(struct task_struct *p,
++			   const struct cpumask *new_mask)
++{
++	if (!dl_task(p))
++		return false;
++
++	return !cpumask_intersects(task_rq(p)->rd->span, new_mask);
++}
++
+ /* Assumes rq->lock is held */
+ static void rq_online_dl(struct rq *rq)
+ {
 
 
 
