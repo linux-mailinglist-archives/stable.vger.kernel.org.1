@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-251286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPbwIoj8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:12 +0200
+	id 8FLwIc/mDWqx4gUAu9opvQ
+	(envelope-from <stable+bounces-250307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3669596147
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E914592914
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA160304B228
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3213430B3C2F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576FD3A6EE0;
-	Wed, 20 May 2026 17:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5393546D9;
+	Wed, 20 May 2026 16:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARk+s0Ys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7PF92YV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A4635AC18;
-	Wed, 20 May 2026 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CA2370D7C;
+	Wed, 20 May 2026 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297589; cv=none; b=Fumvj0BrEgeAqnvh/79Dzq5tEtUOopMSx7EDsiBl3o1CcEZQjAwja3yz1Mnje5XxW1KSa8IDScO+YTNCB/xEQuHA7ixBw8eDZVJaFowpN18Mbzl6nMDr5xWv0EBuPXxXIy2R0S7Q99iy+2pruMmFFT0ad9r4Ei3c75zjk4taO6M=
+	t=1779295071; cv=none; b=mLwZPfEMtxl1wESkM3+3qQgDIV/u6sEfnqH81c8B3JT7gnv21Zc1o00NC1fg5GO7ublQ5efaH/0vSIWKtf8g9Ljzr/I2iDonLM+T2WCk/6DhLbm93YlTdRGuO2w0v+bWkAmZdS78kzb6ztuHW51JR84kBCtz6e2nTe/iGfoDdL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297589; c=relaxed/simple;
-	bh=bsr/NH7rgpLPs3TtnMHFQPagfKME4KAmTy3V5wpJc2c=;
+	s=arc-20240116; t=1779295071; c=relaxed/simple;
+	bh=o0ipVyILlH+UG8hWuZ41CLWD9IF0F2caL9HNxRobyfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+L3V5ZeYwjqYJ2UavBCFanK+EMPpN3/1mk+yVQFXJ2btKTJe98RvIbAWKqfcN/fO9VXGxbNue8W9VVrqNTSbMNZPYy//sx7i7XcKHRlCAaafNgFQAKVIYnfDLZjD2F8xCXsPGM5CSSgfysBIsy+MFy+UTW/ngsgZO6XfKcrCJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARk+s0Ys; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319461F000E9;
-	Wed, 20 May 2026 17:19:47 +0000 (UTC)
+	 MIME-Version; b=NhGFBH7GRFisLORCcW5EB8YFxbBB4vEDcZNmMGYaPttx+63Wcqs9xxR38FAOnTrENmJBNxB33ziJiaKd/56YoieMHcty/yhE5/sf4Sq+jso/GshdVbzX3kdho0HIuVjkGQBk9T14PRfOLKtuI/KTL7xA4K1guBrEhCGQlghKd+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7PF92YV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895021F00894;
+	Wed, 20 May 2026 16:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297587;
-	bh=VSVtDNZdw1aoC9Gk6avhUoPde6frFXUyscZg45SBeIA=;
+	s=korg; t=1779295069;
+	bh=Ot8IeVGZYPFLTMV6frGqYUj9ixwxX6xTtV5GlTh+arA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ARk+s0YsDRZkfniEZ/XMshGbZP9WYCcG4OwAIisz8aDMmwFf8p9lEfRX3dig3KYVF
-	 B9aoWoOUiCWhaJLHff8/IhtYgrB2AuxO7GngC0iuq8B7r8aoTlfmwjNaf75xsTBmNJ
-	 CWuJA3BvFefoZpw3a5brOVox8SpMpw08AMT+PYdY=
+	b=Z7PF92YVWR6TkVmuPANYTaebWAf/++GsceLp6QExGRrCSmCjKjUxvvsspND16hyiv
+	 9ALWtnpzwgitUX3US5ufasJQUETlzTXQe9RQ+XGaiD54SclrtCWZLQUx9VCIJrpImv
+	 o6+mNHc52xhgYRQUPRcYa2XT9CUjPaqQLFEawvsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 046/957] sched/topology: Fix sched_domain_span()
+Subject: [PATCH 7.0 0279/1146] media: synopsys: VIDEO_DW_MIPI_CSI2RX should depend on ARCH_ROCKCHIP
 Date: Wed, 20 May 2026 18:08:49 +0200
-Message-ID: <20260520162135.557884097@linuxfoundation.org>
+Message-ID: <20260520162154.530792896@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +67,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250307-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251286-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,amd.com:email,gnu.org:url]
-X-Rspamd-Queue-Id: B3669596147
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,collabora.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 2E914592914
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit e379dce8af11d8d6040b4348316a499bfd174bfb ]
+[ Upstream commit 942435a62d67035394340cfcbaa534145d638bf0 ]
 
-Commit 8e8e23dea43e ("sched/topology: Compute sd_weight considering
-cpuset partitions") ends up relying on the fact that structure
-initialization should not touch the flexible array.
+The Synopsys DesignWare MIPI CSI-2 Receiver is currently only supported
+on Rockchip RK3568 SoCs.  Hence add a dependency on ARCH_ROCKCHIP, to
+prevent asking the user about this driver when configuring a kernel
+without Rockchip platform support.
 
-However, the official GCC specification for "Arrays of Length Zero"
-[*] says:
+The dependency can be relaxed later, when adding support for appropriate
+SoCs from other vendors (if any).
 
-  Although the size of a zero-length array is zero, an array member of
-  this kind may increase the size of the enclosing type as a result of
-  tail padding.
-
-Additionally, structure initialization will zero tail padding. With
-the end result that since offsetof(*type, member) < sizeof(*type),
-array initialization will clobber the flex array.
-
-Luckily, the way flexible array sizes are calculated is:
-
-  sizeof(*type) + count * sizeof(*type->member)
-
-This means we have the complete size of the flex array *outside* of
-sizeof(*type), so use that instead of relying on the broken flex array
-definition.
-
-[*] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-
-Fixes: 8e8e23dea43e ("sched/topology: Compute sd_weight considering cpuset partitions")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Debugged-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Chen Yu <yu.c.chen@intel.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260323093627.GY3738010@noisy.programming.kicks-ass.net
+Fixes: 355a110040665e43 ("media: synopsys: add driver for the designware mipi csi-2 receiver")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Michael Riesch <michael.riesch@collabora.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/topology.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/media/platform/synopsys/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 45c0022b91ced..6f8a4ae860da8 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -141,18 +141,30 @@ struct sched_domain {
+diff --git a/drivers/media/platform/synopsys/Kconfig b/drivers/media/platform/synopsys/Kconfig
+index bf2ac092fbb39..b109de2c8111c 100644
+--- a/drivers/media/platform/synopsys/Kconfig
++++ b/drivers/media/platform/synopsys/Kconfig
+@@ -4,6 +4,7 @@ source "drivers/media/platform/synopsys/hdmirx/Kconfig"
  
- 	unsigned int span_weight;
- 	/*
--	 * Span of all CPUs in this domain.
-+	 * See sched_domain_span(), on why flex arrays are broken.
- 	 *
--	 * NOTE: this field is variable length. (Allocated dynamically
--	 * by attaching extra space to the end of the structure,
--	 * depending on how many CPUs the kernel has booted up with)
--	 */
- 	unsigned long span[];
-+	 */
- };
- 
- static inline struct cpumask *sched_domain_span(struct sched_domain *sd)
- {
--	return to_cpumask(sd->span);
-+	/*
-+	 * Turns out that C flexible arrays are fundamentally broken since it
-+	 * is allowed for offsetof(*sd, span) < sizeof(*sd), this means that
-+	 * structure initialzation *sd = { ... }; which writes every byte
-+	 * inside sizeof(*type), will over-write the start of the flexible
-+	 * array.
-+	 *
-+	 * Luckily, the way we allocate sched_domain is by:
-+	 *
-+	 *   sizeof(*sd) + cpumask_size()
-+	 *
-+	 * this means that we have sufficient space for the whole flex array
-+	 * *outside* of sizeof(*sd). So use that, and avoid using sd->span.
-+	 */
-+	unsigned long *bitmap = (void *)sd + sizeof(*sd);
-+	return to_cpumask(bitmap);
- }
- 
- extern void partition_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
+ config VIDEO_DW_MIPI_CSI2RX
+ 	tristate "Synopsys DesignWare MIPI CSI-2 Receiver"
++	depends on ARCH_ROCKCHIP || COMPILE_TEST
+ 	depends on VIDEO_DEV
+ 	depends on V4L_PLATFORM_DRIVERS
+ 	depends on PM && COMMON_CLK
 -- 
 2.53.0
 
