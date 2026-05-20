@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GP6J8UTDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-252387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:21 +0200
+	id iCviLWfzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-250776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC129599149
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDA1594825
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DBAC3159812
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94C8831FA5D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00113DC4DA;
-	Wed, 20 May 2026 18:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277B39C00B;
+	Wed, 20 May 2026 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3qfNMwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTd2mNhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A7B4F5E0;
-	Wed, 20 May 2026 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5BD3D3D1C;
+	Wed, 20 May 2026 16:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300542; cv=none; b=b83MgzLcNynxKH075CLZERA8Q1ezJr+tE1ReKvfxQ8fu85pNDaZEVKqQFVg9vchyUwww/20UTstdEASG5GZMKMmoXpr7kWJAJI4FyxtxfrziToRyNYPxe+cMpJYzWu/DDWRS+VMcPzO+UxwzOBzsRkP6MDIDlq6ZhfE9uZN4NK4=
+	t=1779296285; cv=none; b=tXRP7PetUiHxhm39+ZFj0VpeZR9/ZaeTTYE0LDwfHQsjuUgj6uWdFKVmAQ3MnrPvJRCAKtBEPOeXzyXR3wjbncL1bimql2ZPzAS3MIZcZETRFfo2Cp+O0KzSwAr2kFxNxO3qZrxTFajI+Pi2fUgw9mx+0lrgH1/kBIk9e+r+fU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300542; c=relaxed/simple;
-	bh=AqLSt0IJ0ftwTmu4ag0ZLIa6wRG1BpLrF7gVbGabYvY=;
+	s=arc-20240116; t=1779296285; c=relaxed/simple;
+	bh=m/S/nh0+H8rb0T1/SYCmqg1jAH7g2v7Wp4F7Ga3mYFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeGORe4rRYx7eYIG819ayYyUCqoAO0RntuIiI/OTp2Ut3n+5G9dCl6zXphJehOCjv9tmJB/YMavd+pQsJqGbXR2SzXYWiVwwMpUDmdFiitGLPbGxY9BspSoEVfRurncruQVuOUUSWakHQRq3A/kZ4+5JKLnBShfplhG3C0a48jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3qfNMwp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC8A1F000E9;
-	Wed, 20 May 2026 18:09:00 +0000 (UTC)
+	 MIME-Version; b=rsbelnLdevDCViqs/jCwzilXg2ucCAbzcmCY3Bp25ii1DNohuCGQbk6cWYRyUqjqnhUIeP9j775/MUbDqRsnFEiLu6HkO9LD+VCmTzofuxEMheHE+OWvydZ+eqgNd4WoqMT1xU/zdgVFaS8oHRRiOU1KsTIjaT1ydJL3bBvYT48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTd2mNhb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23DE1F00893;
+	Wed, 20 May 2026 16:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300541;
-	bh=XModA0aWiYGauiodQw2SYnvaqb9UpzgwEVxK2/7ZqRQ=;
+	s=korg; t=1779296284;
+	bh=BAs5+q3IIiLECBNjp6r+F+JvFBIOmHYx3LwzHN1ekK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V3qfNMwpHHFwJfjVndh+G/wiYxkWDPhGpWjNCxZnPNslC9CH3jsug8ksxx4PiXf5K
-	 aNmhzr2eFvKJ/kR8x1qoVPxHAeOWCq2BhxhQMRIJtKN1eUtEevxczbo95kHtXOYWAC
-	 ZevY3xTY43WytiO+RhDsOZ4/qmeafbf1ZDNnaefI=
+	b=QTd2mNhbRJvsG1jDl9nqQ8Zpsm1Uju7X+d1e6WuoRIUoOj/8OnPHIRKmdazjFH2AV
+	 PS8ev8IJk5jM7EAYO7p+4n2Bie6mpJC+5FRrZGVRCjb55wlOjADCBGegYeOpdAsv9S
+	 iO0MXfVlGWpQRW0CtpVn3/9cRVzgR69a2g38rczI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Don Brace <don.brace@microchip.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/666] drm/panel: sharp-ls043t1le01: make use of prepare_prev_first
-Date: Wed, 20 May 2026 18:16:23 +0200
-Message-ID: <20260520162114.931650086@linuxfoundation.org>
+Subject: [PATCH 7.0 0734/1146] scsi: hpsa: Enlarge controller and IRQ name buffers
+Date: Wed, 20 May 2026 18:16:24 +0200
+Message-ID: <20260520162204.817782518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,63 +74,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252387-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250776-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: AC129599149
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,microchip.com:email]
+X-Rspamd-Queue-Id: DCDA1594825
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit c222177d7c7e1b2e0433d9e47ec2da7015345d50 ]
+[ Upstream commit 8e8cb6f39930e836144f51cdb6d409c9e4cb71fe ]
 
-The DSI link must be powered up to let panel driver to talk to the panel
-during prepare() callback execution. Set the prepare_prev_first flag to
-guarantee this.
+hpsa formats the controller name into h->devname[8] and derives
+interrupt names from it in h->intrname[][16]. Once host_no reaches four
+digits, "hpsa%d" no longer fits in devname, and the derived IRQ names
+can then overrun the interrupt-name buffers as well.
 
-Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260323-panel-fix-v1-1-9f12b09161e8@oss.qualcomm.com
+The previous fix switched these builders to bounded formatting, but that
+would truncate user-visible controller and IRQ names. Keep the existing
+names intact instead by enlarging the fixed buffers to cover the current
+formatted strings.
+
+Fixes: 2946e82bdd76 ("hpsa: use scsi host_no as hpsa controller number")
+Fixes: 8b47004a5512 ("hpsa: add interrupt number to /proc/interrupts interrupt name")
+Acked-by: Don Brace <don.brace@microchip.com>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260401120552.78541-1-pengpeng@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/hpsa.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
-index 729cbb0d8403f..bc3e13b5a1f76 100644
---- a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
-+++ b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
-@@ -212,6 +212,7 @@ static int sharp_nt_panel_add(struct sharp_nt_panel *sharp_nt)
- 
- 	drm_panel_init(&sharp_nt->base, &sharp_nt->dsi->dev,
- 		       &sharp_nt_panel_funcs, DRM_MODE_CONNECTOR_DSI);
-+	sharp_nt->base.prepare_prev_first = true;
- 
- 	ret = drm_panel_of_backlight(&sharp_nt->base);
- 	if (ret)
+diff --git a/drivers/scsi/hpsa.h b/drivers/scsi/hpsa.h
+index 99b0750850b2b..f6bfe75dd696d 100644
+--- a/drivers/scsi/hpsa.h
++++ b/drivers/scsi/hpsa.h
+@@ -164,7 +164,7 @@ struct bmic_controller_parameters {
+ struct ctlr_info {
+ 	unsigned int *reply_map;
+ 	int	ctlr;
+-	char	devname[8];
++	char	devname[16];
+ 	char    *product_name;
+ 	struct pci_dev *pdev;
+ 	u32	board_id;
+@@ -255,7 +255,7 @@ struct ctlr_info {
+ 	int remove_in_progress;
+ 	/* Address of h->q[x] is passed to intr handler to know which queue */
+ 	u8 q[MAX_REPLY_QUEUES];
+-	char intrname[MAX_REPLY_QUEUES][16];	/* "hpsa0-msix00" names */
++	char intrname[MAX_REPLY_QUEUES][32];	/* controller and IRQ names */
+ 	u32 TMFSupportFlags; /* cache what task mgmt funcs are supported. */
+ #define HPSATMF_BITS_SUPPORTED  (1 << 0)
+ #define HPSATMF_PHYS_LUN_RESET  (1 << 1)
 -- 
 2.53.0
 
