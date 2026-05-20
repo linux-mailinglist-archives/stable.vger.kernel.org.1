@@ -1,143 +1,173 @@
-Return-Path: <stable+bounces-249900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JOwMsulDWqh0wUAu9opvQ
-	(envelope-from <stable+bounces-249900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:15:07 +0200
+	id gGe0DuKpDWox1QUAu9opvQ
+	(envelope-from <stable+bounces-249902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:32:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3476D58D6F9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:15:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C929D58DB69
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79BBA320077B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:03:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15D99300E2BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4413DC4D8;
-	Wed, 20 May 2026 12:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B803DD857;
+	Wed, 20 May 2026 12:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y37+2ryR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n6KoLBmI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB8B3D811E;
-	Wed, 20 May 2026 12:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741803DBD74;
+	Wed, 20 May 2026 12:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779278575; cv=none; b=J+nea4lSCPqSoIDS2VI0dRy9poB3wBS4tWu8xNJLRd9MzuEhgE+tAL+4lgH1lYPzHRWirxI1HnS6+wv5ZWlrD9mIoBz2f1T++KlBYA8L0Jv2rxU5n8P7BLa712yRN0Puy3n/FDKXj4WwFBnxal13Cg4Ovs1APYmFWGsFgGyRHGs=
+	t=1779280336; cv=none; b=fCVWIbdaG5BRGJDFQu0yRpm1sYeFRbRCXTXL0XXy2+O2qq1Y/NUTkJxUCm2Ag/VxcGXaVFTlfEcj+HKQknvtnwdmJrs3ILa5wxnaHvaKGgD8BJ4MBK3CaRIjxx3Np9VH0sq39xX9juU0IHsOzdFOu8/3r0qiahJbaAVTjdNgA38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779278575; c=relaxed/simple;
-	bh=xpHE4K9WtVkacoOO1Mfn1VZJBwFr9bGGeGC217kLoKA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=l8eAHHHfic3dvGLyG50ymk+6JUITgw3O05f5w9e7pGkh3e3zdbAnIlgU9dbLuHt+vRv9a0LAydVbrCtFfMBgidzAmNkoCn8GwVLu+OX0Dfvqgl6yNipn47h4ZJRhgo4X3qD1npKY/U969OFoRhqQ78Mmtn75Hfufpah5xwl+LvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y37+2ryR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7621F000E9;
-	Wed, 20 May 2026 12:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779278573;
-	bh=bMx2TxPTAaNa5RY3MkqWbs2tXzjOIrKSnt4/rIEz46g=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Y37+2ryRHrzK/9nGUKHfD8Dv1oY4O+yrRimzOnMWtPqPZctp3yB8jbidCbbaqMLux
-	 oFGy+vA+IszzWnIYAQUHb6IdJzhWzpFKHGSmPAGye59amjjmCLFOf7WNbUGtoJZEsE
-	 S/tXZWFk4ICCoTRAcABceRNe7kyghr48T+fkuM21fRBnal/Vqad3P7D4sPhgi+ieBm
-	 NEiiDphqQ9InYYqzN2sXxx8uzRRjwmZH2bdsLZ2iPwRQRtzWyOT7vE+vbvIvtEtMgx
-	 KB8SwA8Vk9af+R/fzuk4SCOHP3oUOH9epIlIAV+e6EPOH+Gye6ODpsIM+sUM9wCyw6
-	 IvvZfiYgbiKLw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-kernel@vger.kernel.org, Li Jian <lazycat-xiao@foxmail.com>
-Cc: lgirdwood@gmail.com, loongarch@vger.kernel.org, zhoubinbin@loongson.cn, 
- jeffbai@aosc.io, stable@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, Zhang Yi <zhangyi@everest-semi.com>, 
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
- Charles Keepax <ckeepax@opensource.cirrus.com>, linux-sound@vger.kernel.org, 
- Huacai Chen <chenhuacai@kernel.org>
-In-Reply-To: <tencent_93212098B8302E17913CEFCD29E77E07B407@qq.com>
-References: <tencent_93212098B8302E17913CEFCD29E77E07B407@qq.com>
-Subject: Re: (subset) [PATCH v2] ASoC: ES8389: convert to
- devm_clk_get_optional() to get clock
-Message-Id: <177927855635.56665.112760725243399672.b4-ty@b4>
-Date: Wed, 20 May 2026 13:02:36 +0100
+	s=arc-20240116; t=1779280336; c=relaxed/simple;
+	bh=j45hF3TbE2ckhDdgGSpYmjgf0nuwDYmtOhNC8EqphcM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I876i6m2y7K9IVO5zdAJ6+BwQew8/myj4Y/2L+yn7LNmbwh0FZTTIoQqw6v7axUXeKptBIo+7uOl+SoLHkbXfVT3pOcb/1G66vp6gmkfLz3gkoNOkTWx2ZxF61yh/7ql9wY2ghliqxqf4ceSIxOJ7RVUeazqxYH0kwlvQND2u4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n6KoLBmI; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779280336; x=1810816336;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=j45hF3TbE2ckhDdgGSpYmjgf0nuwDYmtOhNC8EqphcM=;
+  b=n6KoLBmI2kLufrQvNzEQy94+MNhBIHTfEOi/nWwxfUjiZggmmUkYqL2l
+   tuX0nE/fWU2r0EX+OLvWyZpy3Xg71EMZUAwkc7MPaShguDRr59Kgi0dml
+   pTkPva6ylwrC2Rqd4UEp3uuo590DK9dbXn4sh5E+JHhIk5typjo1MNlst
+   ADdCw32dAndUmYSAP4Vk57PD87AgCrMesop9nz/puFIDDeWpfxDZA8Qv4
+   mX64FKIJyItOS8XjZHKAGW0/fXk+J2bOgFX+eyd7B5I5of+kmfvHecrVa
+   EAjXM+uxlR7YF4JbRPby1wi4aJ4Sr7/Yf1DbGtHPg5vTY2FM6HtQuIlww
+   g==;
+X-CSE-ConnectionGUID: C2fnL1BAS3KFDcooVFCtZw==
+X-CSE-MsgGUID: 3Pe6fd94SjC6gxpN7pNBvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="90473643"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="90473643"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 05:32:15 -0700
+X-CSE-ConnectionGUID: 0Zh5g+8WRj6cEGzm1a7rmg==
+X-CSE-MsgGUID: 6Itc0urkSuiT5PRuscATiQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="235902473"
+Received: from silpixa00401812.ir.intel.com ([10.20.226.90])
+  by fmviesa010.fm.intel.com with ESMTP; 20 May 2026 05:32:13 -0700
+From: Ahsan Atta <ahsan.atta@intel.com>
+To: herbert@gondor.apana.org.au
+Cc: linux-crypto@vger.kernel.org,
+	qat-linux@intel.com,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	stable@vger.kernel.org,
+	Maksim Lukoshkov <maksim.lukoshkov@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Subject: [PATCH] crypto: qat - fix restarting state leak on allocation failure
+Date: Wed, 20 May 2026 13:33:00 +0100
+Message-ID: <20260520123300.210290-1-ahsan.atta@intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1009; i=broonie@kernel.org;
- h=from:subject:message-id; bh=xpHE4K9WtVkacoOO1Mfn1VZJBwFr9bGGeGC217kLoKA=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqDaLqyoWaQHbF7A4WJvnPbP9aByv1fK+ApyRWA
- chFH710S9SJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCag2i6gAKCRAk1otyXVSH
- 0LWlB/4gRi0z3NCLbR/T2GCSpmObtDddyqe3tT+/ZFCA/+TFthy7x20zlAPFm/E3sFmfPcK7FL9
- IkeRnCGA2H3ae1/ZY/vV2ipEfVkZRPmXqSXz2oonwblCMYejIOyrI/Wjzv79zW8Ns4uxSsSiOuy
- ruHYlKwVTbPAtOy+5sbVOvdMJbgYMHG08xJwx6SdZ0R6tQQFcDXYpLAZTwrw1HaCx4P7xkfsh2R
- /92S7wj52qK2NtkLxJJCYsMtDE96oCKiAsVTnnUNwnoTVZP8DCX7FaCYlRt6VEjFtOJsNZR++l0
- nN4WtF0AKAlayJnA6fcUmUAuAbXvFwDF6Vz4kW6Fg3YHnQAK
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249902-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,foxmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249900-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,loongson.cn,aosc.io,perex.cz,suse.com,everest-semi.com,renesas.com,opensource.cirrus.com,kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ahsan.atta@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3476D58D6F9
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: C929D58DB69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 13 May 2026 12:52:17 +0800, Li Jian wrote:
-> ASoC: ES8389: convert to devm_clk_get_optional() to get clock
+In adf_dev_aer_schedule_reset(), ADF_STATUS_RESTARTING is set before
+allocating reset_data. If the allocation fails, the function returns
+-ENOMEM without queuing reset work, so nothing ever clears the bit.
+This leaves the device permanently stuck in the restarting state,
+causing all subsequent reset attempts to be silently skipped.
 
-Applied to
+Fix this by using test_and_set_bit() to atomically claim the
+RESTARTING state, preventing duplicate reset scheduling races under
+concurrent fatal error reporting. If the subsequent allocation fails,
+clear the bit to restore clean state so future reset attempts can
+proceed.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
+Cc: stable@vger.kernel.org
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
+Co-developed-by: Maksim Lukoshkov <maksim.lukoshkov@intel.com>
+Signed-off-by: Maksim Lukoshkov <maksim.lukoshkov@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+---
+ drivers/crypto/intel/qat/qat_common/adf_aer.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Thanks!
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+index af028488e660..3fc7d13e882c 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+@@ -207,13 +207,14 @@ static int adf_dev_aer_schedule_reset(struct adf_accel_dev *accel_dev,
+ 	struct adf_reset_dev_data *reset_data;
+ 
+ 	if (!adf_dev_started(accel_dev) ||
+-	    test_bit(ADF_STATUS_RESTARTING, &accel_dev->status))
++	    test_and_set_bit(ADF_STATUS_RESTARTING, &accel_dev->status))
+ 		return 0;
+ 
+-	set_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
+ 	reset_data = kzalloc_obj(*reset_data);
+-	if (!reset_data)
++	if (!reset_data) {
++		clear_bit(ADF_STATUS_RESTARTING, &accel_dev->status);
+ 		return -ENOMEM;
++	}
+ 	reset_data->accel_dev = accel_dev;
+ 	init_completion(&reset_data->compl);
+ 	reset_data->mode = mode;
+-- 
+2.50.1
+
+--------------------------------------------------------------
+Intel Research and Development Ireland Limited
+Registered in Ireland
+Registered Office: Collinstown Industrial Park, Leixlip, County Kildare
+Registered Number: 308263
 
 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+This e-mail and any attachments may contain confidential material for the sole
+use of the intended recipient(s). Any review or distribution by others is
+strictly prohibited. If you are not the intended recipient, please contact the
+sender and delete all copies.
 
 
