@@ -1,60 +1,71 @@
-Return-Path: <stable+bounces-251899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aObFJ7j8DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:00 +0200
+	id wMlRLjkaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8065961EE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FF7599B92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16DFA3603445
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33973302D326
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E101F3B0AD6;
-	Wed, 20 May 2026 17:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACA230DEAC;
+	Wed, 20 May 2026 18:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v01C2PXc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T28sN17t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93883546C8;
-	Wed, 20 May 2026 17:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0021F369D7A;
+	Wed, 20 May 2026 18:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299178; cv=none; b=tctcgKvj66Cm9Fyfzt4BM9/lnOsLrLo1etjAbPElTylIDiJ8dUoZfCqmDxjattNMmBDR0mUE84zLOfM0XFzz/lFTnpn0sAbEZjRXI3J/GEzBNx/o7rvleZ4VKi4PH6+cV7wdN3iZ83NRv3yiy2me4TmqufzVTO5UtG5361bBByA=
+	t=1779302137; cv=none; b=YRtH6H/1LCevRwf5hureSIG1JjVVqP5fDJ/wNMSH2nbK6A6QsuOxZ25+D4OtEfksKh0ZbQVFzo4TVC3pioh+6jediRWdLWyQGK6WMdSUSwNNfg/3aku4kzLRB5QbSiPydMKzmKKQhfd7pxE/rx31TDOIMJZeXXOMcJLHH+4e4Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299178; c=relaxed/simple;
-	bh=zIawil63On3d5YS4qVpuyVnSFEHb2VGH//mjpB62ueU=;
+	s=arc-20240116; t=1779302137; c=relaxed/simple;
+	bh=+r0LMdrFoXAHXD1lDrmWn4Tfr9V3lvOlEHO7D71pzlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVoScN9gyCuCtgm37tUrrPk8q2rsndcCl+18EfCbJmtmnMETWCL9wnF9MeU2FshRP0zlzsxsUHMrsJooqXEFWgoFSrWvxca209EoySsXWdWAZu8srwD/gvu+MqgtenHq9dNIu6JstAxYcL88aA2cwGKS7Qhin5k5HxgLCU8oJx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v01C2PXc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2FF1F000E9;
-	Wed, 20 May 2026 17:46:16 +0000 (UTC)
+	 MIME-Version; b=FOh74xX8Otx8vKYp0yyH9xaPWzdV9ia3KAQMh2QhJm/U4R9AuIBFyZlcUIYqUO+wAo5zixbcjh8b8HFsffP+DpjE4jmveZ8cGTWKH8a6wj9/uEm+j68GKocYtTW9RFVQLT+G7PVh1DZhJcPPXtn/rshlaNL/3j37M9dLtctaVQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T28sN17t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064E91F000E9;
+	Wed, 20 May 2026 18:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299177;
-	bh=0pVoIVrNZwfWn91wgMT0RHq2tEJd5ybfk+DKlYQSq7c=;
+	s=korg; t=1779302135;
+	bh=dXz+XFeo9CtiZjTqjyrK/VtIQc94qPcU7ApjT4oPG8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v01C2PXc/0fqk2wMGjfkzXiRm2V8IM42jfFCy41WqhYVneIXUR1FQ4V7P90FQ7YZ8
-	 UcK+D6rZvX3I6C3gSPPylFgNxMIk8enlZQTETb6vBKELIb3MgIflfJbSqPc49KtHtu
-	 AaEhvhFAdY0rSZOwVLIamzmiYamhpd907e4sRqLQ=
+	b=T28sN17t8neUv2fY6UyXr1ukXd7AmTJlrUPazF0vkBlBn64QXTTDlmDYwFYgUF+11
+	 jIZ/rJWsncPNsUrXXU50pH4Ei7K7TdhaAQPItB+ogjqwePhds27PpK89Mfc6awjFui
+	 m0uXDzPsmyoAlEpxlXR1WDVlwVP7TSWQIaTPJXJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	AnishMulay <anishm7030@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Sayali Patil <sayalip@linux.ibm.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 691/957] net: airoha: ppe: Dynamically allocate foe_check_time array in airoha_ppe struct
+Subject: [PATCH 6.6 151/508] selftests/mm: skip migration tests if NUMA is unavailable
 Date: Wed, 20 May 2026 18:19:34 +0200
-Message-ID: <20260520162149.524845619@linuxfoundation.org>
+Message-ID: <20260520162101.907711173@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +78,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251899-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-252998-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,arm.com,linux.ibm.com,oracle.com,suse.com,google.com,linux-foundation.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 3D8065961EE
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email,suse.com:email,oracle.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: E0FF7599B92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: AnishMulay <anishm7030@gmail.com>
 
-[ Upstream commit 6d5b601d52a27aafff555b480e538507901c672c ]
+[ Upstream commit 54218f10dfbe88c8e41c744fd45a756cde60b8c4 ]
 
-This is a preliminary patch to properly enable PPE support for AN7583
-SoC.
+Currently, the migration test asserts that numa_available() returns 0.  On
+systems where NUMA is not available (returning -1), such as certain ARM64
+configurations or single-node systems, this assertion fails and crashes
+the test.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-2-f28319666667@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3309965fe44c ("net: airoha: Add missing bits in airoha_qdma_cleanup_tx_queue()")
+Update the test to check the return value of numa_available().  If it is
+less than 0, skip the test gracefully instead of failing.
+
+This aligns the behavior with other MM selftests (like rmap) that skip
+when NUMA support is missing.
+
+Link: https://lkml.kernel.org/r/20260218163941.13499-1-anishm7030@gmail.com
+Fixes: 0c2d08728470 ("mm: add selftests for migration entries")
+Signed-off-by: AnishMulay <anishm7030@gmail.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Tested-by: Sayali Patil <sayalip@linux.ibm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
- drivers/net/ethernet/airoha/airoha_ppe.c | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/migration.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 054fe86d67bd1..9929c44d84702 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -548,7 +548,7 @@ struct airoha_ppe {
- 	struct rhashtable l2_flows;
+diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
+index 6908569ef4065..877ee32d04c82 100644
+--- a/tools/testing/selftests/mm/migration.c
++++ b/tools/testing/selftests/mm/migration.c
+@@ -33,7 +33,8 @@ FIXTURE_SETUP(migration)
+ {
+ 	int n;
  
- 	struct hlist_head *foe_flow;
--	u16 foe_check_time[PPE_NUM_ENTRIES];
-+	u16 *foe_check_time;
- 
- 	struct airoha_foe_stats *foe_stats;
- 	dma_addr_t foe_stats_dma;
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index e9994c794c703..072cc2dd50dda 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1538,6 +1538,11 @@ int airoha_ppe_init(struct airoha_eth *eth)
- 			return -ENOMEM;
- 	}
- 
-+	ppe->foe_check_time = devm_kzalloc(eth->dev, PPE_NUM_ENTRIES,
-+					   GFP_KERNEL);
-+	if (!ppe->foe_check_time)
-+		return -ENOMEM;
-+
- 	err = rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
- 	if (err)
- 		return err;
+-	ASSERT_EQ(numa_available(), 0);
++	if (numa_available() < 0)
++		SKIP(return, "NUMA not available");
+ 	self->nthreads = numa_num_task_cpus() - 1;
+ 	self->n1 = -1;
+ 	self->n2 = -1;
 -- 
 2.53.0
 
