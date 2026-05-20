@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JiwLKntDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:45 +0200
+	id MAj8GzorDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659715936D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D211859B40B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7AB5A31A8365
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C375537A8114
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341183F23C2;
-	Wed, 20 May 2026 17:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F34333CEA2;
+	Wed, 20 May 2026 18:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lt2Ohklh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjprFnfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41D73F23D5;
-	Wed, 20 May 2026 17:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E834717A2FC;
+	Wed, 20 May 2026 18:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296679; cv=none; b=PSGrlRQH10MwVlAFVwd99s6k96d+PWinVmAX0Jt7+BWOnkCsZgkCuK4CbtCv9GpS6wqBjLyif4ZeysoQB1toBca6umNM9J/WKhjWaRENSGd5968N8fivsfkOXWuP1I1+wXgs/k+B4XXr0V2vAk1n94XxihwWmQoe+Wf1XJxVxNM=
+	t=1779302050; cv=none; b=rDYqq4hIJ/XVX1w6hjRLDY0YLB1itCq/gIR3iItPMpKA9Trm2Jw1LtTNO7w8nJTgHmLrWkO0Nw5N0SibvyXieD43wMX9yopoI2res3by00cQlc2m7MQ1KPhja8day50HtmkFcXVGabkpfZ+gw5WXcYDJjS60INlHBYRPv0E1wGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296679; c=relaxed/simple;
-	bh=EOJVdwzkDvjKXbcfeAubGkfJ8fkF49+YRndy3gN4Py0=;
+	s=arc-20240116; t=1779302050; c=relaxed/simple;
+	bh=O/ivgddiUHIOXGnAPS9g8oIvKijQLtpFCN5XOwoBpVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ql97W9jVn9iCUmkoo4UweuwQ8RdKcQDsTWIdJn0aGSJn6nop9wF3MZBSuSb3Y4kZgB2LFYSzv3ABHyCCpVdnzt+kB/HtaJteqO8YFdemqWo4r5zJBCRPOChyu7tx3/SWaaq9Fpye83k+wTrq+asSsbGNZRx2gXVypGc5+uCBZZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lt2Ohklh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165C51F000E9;
-	Wed, 20 May 2026 17:04:36 +0000 (UTC)
+	 MIME-Version; b=iE/UTYKFqVuqmrI5TV+NelMFJ+DUxjSPnn1U1e7XiLBrVdjHXC7Zu3+I+o/gltFTL57FZWcCvyakV7KWfhPJX458ZBlbQ9vGFKrfZKjO8rxXAt7zAGisl5lr1znJC4lf/Rsz+OL+jYfNin1iQ9KVgu105YUm8Q0zj2+JGZ0buxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjprFnfv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2D21F000E9;
+	Wed, 20 May 2026 18:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296677;
-	bh=sZ41VgyUhzw8Wg3/gzPO4jq9H79PEtZttW/nTwan6XI=;
+	s=korg; t=1779302048;
+	bh=YfQDO8AXuhnryrGdmoaAHzUJ/rD724KV9a/PAd/BFTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lt2Ohklhy8L4I30Eia2paKkraTV15/XK5rwX87digvr1J/ldiJ6eGjOFyTL1y03od
-	 XmV+M3v8EYz6kouxtdOr0zg1sM6HG7y+EWKT9CdFWcaE8PdKkqUUln4V1qELOHoQtI
-	 nuWIbOJpI8xWNoy5xO93FQ7csP2r64mHFFn7D/j4=
+	b=zjprFnfvmukCAkG0o0yb36gYXAEfV3HkhT0R32MxtTFPT74hk+aXLKp2KW9GacD1L
+	 Oa8qGWXw4W4xAjHe3DP3NgbFNugtW8sHj8h4Hr8woiNHWeH7D7GU1+y0EpnklHY9ao
+	 3XIdrngQ1tiLML4UfimrJfR53I+Wgn8e4NJjkWjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
+	kernel test robot <lkp@intel.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0890/1146] btrfs: fix bytes_may_use leak in do_remap_reloc_trans()
+Subject: [PATCH 6.6 117/508] drm/msm/dsi: add the missing parameter description
 Date: Wed, 20 May 2026 18:19:00 +0200
-Message-ID: <20260520162208.378544455@linuxfoundation.org>
+Message-ID: <20260520162101.163817677@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252964-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,oss.qualcomm.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250937-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,harmstone.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bur.io:email]
-X-Rspamd-Queue-Id: 659715936D5
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D211859B40B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 9b8824533d75fb199a3fb0f6147ffcca64b5caf8 ]
+[ Upstream commit 958adefc4c0fddee3b12269da5dd7cb49bac953f ]
 
-If the call to btrfs_reserve_extent() in do_remap_reloc_trans() returns
-a smaller extent than we asked for, currently we're not undoing the
-bytes_may_use change that we made. Fix this by calling
-btrfs_space_info_update_bytes_may_use() again for the difference.
+Add a description for is_bonded_dsi in dsi_adjust_pclk_for_compression
+to match the existing kernel-doc comment.
 
-Fixes: fd6594b1446c ("btrfs: replace identity remaps with actual remaps when doing relocations")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603080314.XeqyRZ7A-lkp@intel.com/
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/710112/
+Link: https://lore.kernel.org/r/20260309100254.877801-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 6e260ccbf50ac..a6965abbab719 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -5014,6 +5014,12 @@ static int do_remap_reloc_trans(struct btrfs_fs_info *fs_info,
- 		return ret;
- 	}
- 
-+	if (ins.offset < remap_length) {
-+		spin_lock(&sinfo->lock);
-+		btrfs_space_info_update_bytes_may_use(sinfo, ins.offset - remap_length);
-+		spin_unlock(&sinfo->lock);
-+	}
-+
- 	made_reservation = true;
- 
- 	new_addr = ins.objectid;
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 6077331deba97..771ac34561037 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -533,6 +533,7 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
+  * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
+  * @mode: The selected mode for the DSI output
+  * @dsc: DRM DSC configuration for this DSI output
++ * @is_bonded_dsi: True if two DSI controllers are bonded
+  *
+  * Adjust the pclk rate by calculating a new hdisplay proportional to
+  * the compression ratio such that:
 -- 
 2.53.0
 
