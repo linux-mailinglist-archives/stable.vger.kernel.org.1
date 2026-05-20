@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGZQF5UFDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:49 +0200
+	id CBHdGC73DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4D0597A88
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C368A59528C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 484B0329CF67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4550338032B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E773FA5D5;
-	Wed, 20 May 2026 18:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371B13DCD9A;
+	Wed, 20 May 2026 16:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztKekO35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTqMrhXw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840A53E95A4;
-	Wed, 20 May 2026 18:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E437333B969;
+	Wed, 20 May 2026 16:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300357; cv=none; b=pr5EskFCsN6FSTDiZEwDt6rTVGDmuNO9pof4/9j7oBJWEKoncBrxeAhyl+cOt1ybyg6G45epodQ2RU89mgqNc5hBC/JZDHZs+cDEmSbtxo0I5IGAEkA2Qz11zKFh8x2ZA1VYroigX24XTSW/oK1eL7ugq1mi8vGRXE3CcB3nN/Y=
+	t=1779296188; cv=none; b=R6dRcNuNjDjMK5elGZFPPh3mEl14C/oehtyJfs7b/PDanCMV0B3tZic0Sssd4wEMjr2k1AujnwwdyKn7yRmmmKtnWooGFZXZpaYqPMCxYkYg+cTmkHl/C0ohjCF/5/xTbq8o5B8U2i75QSGW0NNSRziEZ9m+6JV1L6TfWsFmIMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300357; c=relaxed/simple;
-	bh=5udiYBXncFjABXYCZVgmUvGGLL0aW4+2PCApLR5dfxI=;
+	s=arc-20240116; t=1779296188; c=relaxed/simple;
+	bh=A6fL56Uh0ej5mnPSsPutWk9mot17KgHfLoAD5KE2Q9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TN0rl98qVFYo7bXOti1JAhnPg5SwdouP41g/H4OyUpws2QLdwWFStQjkSKSElsZ2Op6DlFgZvCi3p+8fQD4/QsRpBGATpgbUvh2NGrEBJpE2oqEJEMDktOZr+xh9NRcJCf8AUf3RkWtu322RKxCAw+3O5Mlab5377oTgOyB49jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztKekO35; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E721F000E9;
-	Wed, 20 May 2026 18:05:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WwkHuZdP/CG6sqOK3V+vI8nMUilTcV2v4/GimVLQgq8bCHvMSYwSsZZuQS8AfoXspjUsMuXe3ygW0ZMNGblb1DYGdpDj2UjC7wwtf+ssFd8MM9vo9oKNtiKgu2xfVd4i28zabEgcRLmfgvPYrFKfypwDWemFXe+AWo9TeUfhG3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTqMrhXw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FAA1F000E9;
+	Wed, 20 May 2026 16:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300356;
-	bh=P7Eydm1hbAysFXQMZ6xKhqL5T5jLokGHSoY+V0+wSFo=;
+	s=korg; t=1779296186;
+	bh=V3uXDt3a9/SNDcfk2D8zc9fyMHsBuKh80hOUCulQZ6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ztKekO35K9Bd5loFTH9NVe6TnHORpzRNDh8h9N6JEkC43drM69foiW5mrupfBJjRD
-	 0raZjthCKNXqlmOYUv9W73xF5BuYeexzldmYV5buuzY7Xit5pmB3Q6fIuJ2aGNc9X4
-	 XoPtBQ+WofBxufkYLq57cpj2yYjC6vqv/9hIfc7c=
+	b=JTqMrhXwbVrxJOGTiYreXGyv1wyeq2FeHGxjcLlC2pQQPS/yZOekcCaMw480ayssy
+	 LNyUQEhLP+A4Ka4dZgI3sb91OprqT1ncbAsa5H+HUrw0/6ALpcMC6fqcrylGXBBT4f
+	 8uPIGWDC2EkuaIUgNNQSFOq9eTWXjrEUrNFreqZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/666] spi: fsl-qspi: Use reinit_completion() for repeated operations
+Subject: [PATCH 7.0 0705/1146] clk: qcom: dispcc-glymur: Fix DSI byte clock rate setting
 Date: Wed, 20 May 2026 18:15:55 +0200
-Message-ID: <20260520162114.329962309@linuxfoundation.org>
+Message-ID: <20260520162204.144002712@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-250738-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252316-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 9A4D0597A88
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: C368A59528C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 981b080a79724738882b0af1c5bb7ade30d94f24 ]
+[ Upstream commit 98ea9eda030587601db56425efcd32263d853591 ]
 
-The driver currently calls init_completion() during every spi_mem_op.
-Tchnically it may work, but it's not the recommended pattern.
+The clock tree for byte_clk_src is as follows:
 
-According to the kernel documentation: Calling init_completion() on
-the same completion object twice is most likely a bug as it
-re-initializes the queue to an empty queue and enqueued tasks could
-get "lost" - use reinit_completion() in that case, but be aware of
-other races.
+   ┌──────byte0_clk_src─────┐
+   │                        │
+byte0_clk            byte0_div_clk_src
+                            │
+                     byte0_intf_clk
 
-So moves the initial initialization to probe function and uses
-reinit_completion() for subsequent operations.
+If both of its direct children have CLK_SET_RATE_PARENT with different
+requests, byte0_clk_src (and its parent) will be reconfigured. In this
+case, byte0_intf should strictly follow the rate of byte0_clk (with
+some adjustments based on PHY mode).
 
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20260304-spi-nxp-v2-3-cd7d7726a27e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Remove CLK_SET_RATE_PARENT from byte0_div_clk_src to avoid this issue.
+
+Fixes: b4d15211c408 ("clk: qcom: dispcc-glymur: Add support for Display Clock Controller")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260304-topic-dsi_byte_fixup-v1-1-b79b29f83176@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-glymur.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 21e357966d2a2..cb2e5413dd32b 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -606,7 +606,7 @@ static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op *op)
- 	void __iomem *base = q->iobase;
- 	int err = 0;
- 
--	init_completion(&q->c);
-+	reinit_completion(&q->c);
- 
- 	/*
- 	 * Always start the sequence at the same index since we update
-@@ -924,6 +924,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		goto err_disable_clk;
- 
-+	init_completion(&q->c);
- 	ret = devm_request_irq(dev, ret,
- 			fsl_qspi_irq_handler, 0, pdev->name, q);
- 	if (ret) {
+diff --git a/drivers/clk/qcom/dispcc-glymur.c b/drivers/clk/qcom/dispcc-glymur.c
+index f352165bf56fc..bef74f58405ba 100644
+--- a/drivers/clk/qcom/dispcc-glymur.c
++++ b/drivers/clk/qcom/dispcc-glymur.c
+@@ -747,7 +747,6 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
+ 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -762,7 +761,6 @@ static struct clk_regmap_div disp_cc_mdss_byte1_div_clk_src = {
+ 			&disp_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
