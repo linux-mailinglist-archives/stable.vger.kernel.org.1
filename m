@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IhFFxMdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:03 +0200
+	id cOAbKr8TDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D300F59A056
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 270F859913B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7886E3726501
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC82233EA1DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFAA30BF68;
-	Wed, 20 May 2026 17:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FED3DA7C6;
+	Wed, 20 May 2026 16:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltj/YfSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0xZrhAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57F33EBF35;
-	Wed, 20 May 2026 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D8833B969;
+	Wed, 20 May 2026 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298560; cv=none; b=dyCsU16BAieokwWm1otQNIil2GWp/+zateSHMuVVk65hb4FmNbaOZreTPH33XREITlTJlIXMOMwfB8ZfOtqyWlC7CBCMJGJlaN55oCkvVtiZR6U6esmZ/QqtARofz4C/FKJiDVaWgkTKD96z4lcCZ/ZUa+nFRsKkPEKX4NSTKUs=
+	t=1779296169; cv=none; b=M2SDjOHXQYc8fDICBFjcO+P0g0ZP2snTxndovIS8PIdBGas57CZHu0Log2m5KY4Qi/RzFUH47sTmboY2anK6bPAvqg2kd9ect3a3wO4D1L9yKFBtDW/nYsKnuLg23PtIF6l/SttQ9vqVGvSzIj1+pPUN5RgGB/kAR/i0xC37bpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298560; c=relaxed/simple;
-	bh=Xc4x2KaitfWWEqt6ZceJCtzXCQeIoLu5FsgH2du64cg=;
+	s=arc-20240116; t=1779296169; c=relaxed/simple;
+	bh=5CZxis/n+MuCB4SRHMr/Ndqz7ziaC5DdzMCBjZOHKZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yj3YDKgGleEDEk5hODX79wZbOnE1mxwPyRy8epMvDHgEEBRzzfboj4QEuLCgCFsv5/EH5Iz0nmg7IMdTCTO6boV2JIozKy5Z1bgpuv347TRx95XC5mkyoSEeaUEVTV/ezkMXaj5t0B1k6twk1jp2BBQHacrzu4eUn5pbKsP78Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltj/YfSO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC7B1F00894;
-	Wed, 20 May 2026 17:35:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s7rY4yHAVjnWNrp+72+sSWjI3T9OUAbepoz5fOwUconUyhKsR6DyQ09ZCuk6QTKwEgsdsOYfFmsFU2hWEA5dzuxpy8pdKPJQTdOtAtBTl5TRbe2G1YQshuSRkhe7bBfYmRk2tt/mgnpbj9vHoUEVshOpuL0x7dlI+Yi6VMg4yaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0xZrhAC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4441F000E9;
+	Wed, 20 May 2026 16:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298556;
-	bh=YPHqGuw5SdGCfzAIimFViIPhg3H1BsfFvG2CVKFwAlQ=;
+	s=korg; t=1779296168;
+	bh=TnBkEGfF2NfizyettGVNKjNGhqNEpsYitKk3ZbH0te4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ltj/YfSOrRNwKF85Wl74OukWFqaJwiOmVhaegk2u+2Rs8gEDBEzAUxodNPfDA54UJ
-	 YbB1zPdmhIxaFIgGKpMHRzc1xj7PhDN9/sErHzTZfVrUI63q0EE8Wu8y0Nj/r7uGQq
-	 FuF2PYhz1rFbTbvH5WChfRvK+ce9G3lenGb/aIMM=
+	b=L0xZrhACH7zlVp6LrcowiyeYUoP+IU8inr4bs5hyeJXuxM732Gn5BG06kVpS4sLw7
+	 GzI95pOeqnaZWUHFGHnKkg29jGYsRQJioMHGTcZH0WrI4abPLfmSpeLaIMQdtQSNzR
+	 o3sRUFSsIRrmFRVU3pJ009o6JeK530WGdShORbjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Emre Cecanpunar <emreleno@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 457/957] stop_machine: Fix the documentation for a NULL cpus argument
+Subject: [PATCH 7.0 0690/1146] platform/x86: hp-wmi: add locking for concurrent hwmon access
 Date: Wed, 20 May 2026 18:15:40 +0200
-Message-ID: <20260520162144.433558162@linuxfoundation.org>
+Message-ID: <20260520162203.804450666@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +68,131 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250731-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email]
-X-Rspamd-Queue-Id: D300F59A056
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 270F859913B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Emre Cecanpunar <emreleno@gmail.com>
 
-[ Upstream commit 48f7a50c027dd2abb9e7b8a6ecc8e531d87f2c21 ]
+[ Upstream commit 5969c55e2145368254194edbe0e64880314be69f ]
 
-A recent refactoring of the kernel-docs for stop machine changed the
-description of the cpus parameter from "NULL = any online cpu"
-to "NULL = run on each online CPU".
+hp_wmi_hwmon_priv.mode and .pwm are written by hp_wmi_hwmon_write() in
+sysfs context and read by hp_wmi_hwmon_keep_alive_handler() in a
+workqueue. A concurrent write and keep-alive expiry can observe an
+inconsistent mode/pwm pair (e.g. mode=MANUAL with a stale pwm).
 
-However the callback is only executed on a single CPU, not all of them.
-The old wording was a bit ambiguous and could have been read both ways.
+Add a mutex to hp_wmi_hwmon_priv protecting mode and pwm. Hold it in
+hp_wmi_hwmon_write() across the field update and apply call, and in
+hp_wmi_hwmon_keep_alive_handler() before calling apply.
 
-Reword the documentation to be correct again and hopefully also clearer.
+In hp_wmi_hwmon_read(), only the pwm_enable path reads priv->mode; use
+scoped_guard() there to avoid holding the lock across unrelated WMI
+calls.
 
-Fixes: fc6f89dc7078 ("stop_machine: Improve kernel-doc function-header comments")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: c203c59fb5de ("platform/x86: hp-wmi: implement fan keep-alive")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Emre Cecanpunar <emreleno@gmail.com>
+Link: https://patch.msgid.link/20260407142515.20683-6-emreleno@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/stop_machine.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/stop_machine.h b/include/linux/stop_machine.h
-index 72820503514cc..01011113d2263 100644
---- a/include/linux/stop_machine.h
-+++ b/include/linux/stop_machine.h
-@@ -99,7 +99,7 @@ static inline void print_stop_info(const char *log_lvl, struct task_struct *task
-  * stop_machine: freeze the machine on all CPUs and run this function
-  * @fn: the function to run
-  * @data: the data ptr to pass to @fn()
-- * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
-+ * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
-  *
-  * Description: This causes a thread to be scheduled on every CPU, which
-  * will run with interrupts disabled.  Each CPU specified by @cpus will
-@@ -133,7 +133,7 @@ int stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cpus);
-  * stop_machine_cpuslocked: freeze the machine on all CPUs and run this function
-  * @fn: the function to run
-  * @data: the data ptr to pass to @fn()
-- * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
-+ * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
-  *
-  * Same as above.  Avoids nested calls to cpus_read_lock().
-  *
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index dd0f86b8807fa..851056bee6146 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -458,6 +458,7 @@ enum pwm_modes {
+ };
+ 
+ struct hp_wmi_hwmon_priv {
++	struct mutex lock;	/* protects mode, pwm */
+ 	u8 min_rpm;
+ 	u8 max_rpm;
+ 	int gpu_delta;
+@@ -2427,6 +2428,7 @@ static int hp_wmi_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ {
+ 	struct hp_wmi_hwmon_priv *priv;
+ 	int rpm, ret;
++	u8 mode;
+ 
+ 	priv = dev_get_drvdata(dev);
+ 	switch (type) {
+@@ -2450,11 +2452,13 @@ static int hp_wmi_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
+ 			*val = rpm_to_pwm(rpm / 100, priv);
+ 			return 0;
+ 		}
+-		switch (priv->mode) {
++		scoped_guard(mutex, &priv->lock)
++			mode = priv->mode;
++		switch (mode) {
+ 		case PWM_MODE_MAX:
+ 		case PWM_MODE_MANUAL:
+ 		case PWM_MODE_AUTO:
+-			*val = priv->mode;
++			*val = mode;
+ 			return 0;
+ 		default:
+ 			/* shouldn't happen */
+@@ -2472,6 +2476,7 @@ static int hp_wmi_hwmon_write(struct device *dev, enum hwmon_sensor_types type,
+ 	int rpm;
+ 
+ 	priv = dev_get_drvdata(dev);
++	guard(mutex)(&priv->lock);
+ 	switch (type) {
+ 	case hwmon_pwm:
+ 		if (attr == hwmon_pwm_input) {
+@@ -2540,6 +2545,8 @@ static void hp_wmi_hwmon_keep_alive_handler(struct work_struct *work)
+ 
+ 	dwork = to_delayed_work(work);
+ 	priv = container_of(dwork, struct hp_wmi_hwmon_priv, keep_alive_dwork);
++
++	guard(mutex)(&priv->lock);
+ 	/*
+ 	 * Re-apply the current hwmon context settings.
+ 	 * NOTE: hp_wmi_apply_fan_settings will handle the re-scheduling.
+@@ -2596,6 +2603,10 @@ static int hp_wmi_hwmon_init(void)
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
++	ret = devm_mutex_init(dev, &priv->lock);
++	if (ret)
++		return ret;
++
+ 	ret = hp_wmi_setup_fan_settings(priv);
+ 	if (ret)
+ 		return ret;
 -- 
 2.53.0
 
