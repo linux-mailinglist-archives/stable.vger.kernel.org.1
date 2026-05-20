@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-252045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YI9AJTwEDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:04 +0200
+	id OHv+Od4DDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-253140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CE75977B3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC1B5976D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 98A173132C3F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DA75327EFC7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F313F54D1;
-	Wed, 20 May 2026 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9705C402BBF;
+	Wed, 20 May 2026 18:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnEUGmjL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+JPyoV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48303F39C9;
-	Wed, 20 May 2026 17:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486103FC5A1;
+	Wed, 20 May 2026 18:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299601; cv=none; b=bNPigFZeb0eL21/yNPWVFl/Qcr6y0Ajfz9gIHvdY+DSSm9VhQPLDp4QA+t3D41Be7WBBRJUlG1yUqzc0P/4jJg45nrVhBetA8tN2S5bhv2W4qVexwvAsjT+uhp9rEhcV6y4K9MVGu0MCTwrk3yEAzLfRFefb4LnI7g6jDKPP1xk=
+	t=1779302510; cv=none; b=d4BYBzvvkXQFELV9ocJ3o83CZMNgYpeZHec9JL+Jdx76EkRz4gx/k1RcUHVp10acfLBKoLIoUpfOXG9+YmCyjKaldKiRJWOepVCcQDCibT+7SVafavJW3RwaBBRh61uiP2lsuvbfsj9bKsncsUZBFPKob4F9n1XOqNpddKWi7Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299601; c=relaxed/simple;
-	bh=NKfRuvMpYOswN1eAD9Mq9Q6VwO/Vxc8JviPV+Y8boBY=;
+	s=arc-20240116; t=1779302510; c=relaxed/simple;
+	bh=9gyH/7bEbIB9/xYSh9LCgoOQAXCaO2/m9e+rqJv9yXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ln/opCuoMGxg8f3aGk2xd7MJqUFG4R9KGiHS3hz1oJ89x3sLkZ9/IN5NNRxE1bhJHsB9IzkjL2HhRDXD7y6FE8861M7WbewuEvczLPmqCmwfKT//1lTGI9OR96eANYHUm8SX/IHQ03VHT39ZiZWwyjXRdrLvqFSuUTgwQUo2tDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnEUGmjL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC961F000E9;
-	Wed, 20 May 2026 17:53:19 +0000 (UTC)
+	 MIME-Version; b=aiIdpEOlGlNO3AwOERYKQ40qkhJwnoylwmra6rip4UtQjSZIy5PTxAXxakd+k1AbqocFe/QYkUivLSpcjvVq+oxYLE2Plr+hBxiqIeekAGUirYgVecSC3WfJ53UsA8+jUV7lROjNnAQIMQ3OtP++zrT4kZ5JtWA9ZAI500y58YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+JPyoV5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1C51F000E9;
+	Wed, 20 May 2026 18:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299600;
-	bh=XxQrsrcvd2Gq4HmPnYDK4zHp2mkV1mx2HguddvbwyBU=;
+	s=korg; t=1779302509;
+	bh=Lb62wvqhEiSB9ivRyXjxFZOvpT18gaMcWiaWt5sfZMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wnEUGmjL7HhRTDNkhCb0wi5Bm8TtUYRzpmJgyH7/pGEUH6WG3IzwnpAhnyhxlkUuN
-	 PMgEXJeHokSSa3oE5/ts+FoD0EnGrUNNbErOy1FIGlTWOYfQKXbLARBSlxMp1fJGH7
-	 i7Rd/F9jrwZhGdvO2mmaccZt3eHZgNLz5jZTBI9U=
+	b=o+JPyoV54ABLJc/xcXPoMAR6oniCgNvFziBmycngBla28QpCl9d4ww1FIt058ZNg8
+	 EGhw/1hckgVjuA9nuPQ8TU+dWHfQ3asRbMlrJTCvROn8ZYKIR3lFLwWB3RqChS7Tw0
+	 8YalXUREta5+ZLkX31/bEf3QpqrV7KKh3zhTFjRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Chao Yu <chao@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 833/957] drm/xe: Fix error cleanup in xe_exec_queue_create_ioctl()
+Subject: [PATCH 6.6 293/508] f2fs: Use sysfs_emit_at() to simplify code
 Date: Wed, 20 May 2026 18:21:56 +0200
-Message-ID: <20260520162152.631070211@linuxfoundation.org>
+Message-ID: <20260520162104.995193206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +69,151 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252045-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253140-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,wanadoo.fr];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 97CE75977B3
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8FC1B5976D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f3cc22d4df3ed58439ea7e21daa54c3608e03b78 ]
+[ Upstream commit f7a678bbe5a8f22cfcef5369757cc9b95f73e027 ]
 
-Two error handling issues exist in xe_exec_queue_create_ioctl():
+This file already uses sysfs_emit(). So be consistent and also use
+sysfs_emit_at().
 
-1. When xe_hw_engine_group_add_exec_queue() fails, the error path jumps
-   to put_exec_queue which skips xe_exec_queue_kill(). If the VM is in
-   preempt fence mode, xe_vm_add_compute_exec_queue() has already added
-   the queue to the VM's compute exec queue list. Skipping the kill
-   leaves the queue on that list, leading to a dangling pointer after
-   the queue is freed.
+This slightly simplifies the code and makes it more readable.
 
-2. When xa_alloc() fails after xe_hw_engine_group_add_exec_queue() has
-   succeeded, the error path does not call
-   xe_hw_engine_group_del_exec_queue() to remove the queue from the hw
-   engine group list. The queue is then freed while still linked into
-   the hw engine group, causing a use-after-free.
-
-Fix both by:
-- Changing the xe_hw_engine_group_add_exec_queue() failure path to jump
-  to kill_exec_queue so that xe_exec_queue_kill() properly removes the
-  queue from the VM's compute list.
-- Adding a del_hw_engine_group label before kill_exec_queue for the
-  xa_alloc() failure path, which removes the queue from the hw engine
-  group before proceeding with the rest of the cleanup.
-
-Fixes: 7970cb36966c ("'drm/xe/hw_engine_group: Register hw engine group's exec queues")
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408020647.3397933-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 37c831f401746a45d510b312b0ed7a77b1e06ec8)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 5909bedbed38 ("f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/f2fs/sysfs.c | 45 +++++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 231d1fbe5eefa..0df11f054cfba 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -789,7 +789,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 		if (q->vm && q->hwe->hw_engine_group) {
- 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
- 			if (err)
--				goto put_exec_queue;
-+				goto kill_exec_queue;
- 		}
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 436bbf23f8e7c..7d377da9c2631 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -162,50 +162,50 @@ static ssize_t features_show(struct f2fs_attr *a,
+ 	int len = 0;
+ 
+ 	if (f2fs_sb_has_encrypt(sbi))
+-		len += scnprintf(buf, PAGE_SIZE - len, "%s",
++		len += sysfs_emit_at(buf, len, "%s",
+ 						"encryption");
+ 	if (f2fs_sb_has_blkzoned(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "blkzoned");
+ 	if (f2fs_sb_has_extra_attr(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "extra_attr");
+ 	if (f2fs_sb_has_project_quota(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "projquota");
+ 	if (f2fs_sb_has_inode_chksum(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "inode_checksum");
+ 	if (f2fs_sb_has_flexible_inline_xattr(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "flexible_inline_xattr");
+ 	if (f2fs_sb_has_quota_ino(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "quota_ino");
+ 	if (f2fs_sb_has_inode_crtime(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "inode_crtime");
+ 	if (f2fs_sb_has_lost_found(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "lost_found");
+ 	if (f2fs_sb_has_verity(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "verity");
+ 	if (f2fs_sb_has_sb_chksum(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "sb_checksum");
+ 	if (f2fs_sb_has_casefold(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "casefold");
+ 	if (f2fs_sb_has_readonly(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "readonly");
+ 	if (f2fs_sb_has_compression(sbi))
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++		len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "compression");
+-	len += scnprintf(buf + len, PAGE_SIZE - len, "%s%s",
++	len += sysfs_emit_at(buf, len, "%s%s",
+ 				len ? ", " : "", "pin_file");
+-	len += scnprintf(buf + len, PAGE_SIZE - len, "\n");
++	len += sysfs_emit_at(buf, len, "\n");
+ 	return len;
+ }
+ 
+@@ -322,17 +322,14 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 		int hot_count = sbi->raw_super->hot_ext_count;
+ 		int len = 0, i;
+ 
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-						"cold file extension:\n");
++		len += sysfs_emit_at(buf, len, "cold file extension:\n");
+ 		for (i = 0; i < cold_count; i++)
+-			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
+-								extlist[i]);
++			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
+ 
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-						"hot file extension:\n");
++		len += sysfs_emit_at(buf, len, "hot file extension:\n");
+ 		for (i = cold_count; i < cold_count + hot_count; i++)
+-			len += scnprintf(buf + len, PAGE_SIZE - len, "%s\n",
+-								extlist[i]);
++			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
++
+ 		return len;
  	}
  
-@@ -798,12 +798,15 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 	/* user id alloc must always be last in ioctl to prevent UAF */
- 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
- 	if (err)
--		goto kill_exec_queue;
-+		goto del_hw_engine_group;
- 
- 	args->exec_queue_id = id;
- 
- 	return 0;
- 
-+del_hw_engine_group:
-+	if (q->vm && q->hwe && q->hwe->hw_engine_group)
-+		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
- kill_exec_queue:
- 	xe_exec_queue_kill(q);
- put_exec_queue:
 -- 
 2.53.0
 
