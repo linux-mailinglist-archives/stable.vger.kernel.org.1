@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMpPDYYfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251874-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:30 +0200
+	id cJ8AGDPqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB2559A49D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D816C592ED6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 585F03791EA2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E463301AB87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BB33F1ADC;
-	Wed, 20 May 2026 17:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2843F4124;
+	Wed, 20 May 2026 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbGlzIqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiLUzYYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BE13546C8;
-	Wed, 20 May 2026 17:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B4C3F4114;
+	Wed, 20 May 2026 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299113; cv=none; b=tcJS0yCLBO8fD756O6FnXbuLv57H3aNVV/sBz3H89V/ss8ssSjBbpvMkRy22k8DX+BuPKVz7DpM5BRQMz6J+0u+JQ0xoqbU/IGM34gqKF/eB7GSnam0g6yr860/TYB4wJum5+Xk1dTJmGYvb3AI1pL8FRMWA4KMUBxP7lTTXnW8=
+	t=1779296597; cv=none; b=Xc17bEKlS1+62HEi7gMG7imftZICPCC9vJd0VQ56Bgbc53jGs/WOO1EecupQDqCRBjvQOU4eMuht8C3PXAcBsSUDY8rlZUs3zpTXPSpnZQpA0NS+2Fsbd7kJAVoF8SCtPxBm+xME9YMkrVKCxlEniuK4IcVUJOOuSg/HdEX4kgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299113; c=relaxed/simple;
-	bh=kANmcQB6nCg7BVy6Rq0S9tZi7xwlSuDSCZ2s+mQEbYM=;
+	s=arc-20240116; t=1779296597; c=relaxed/simple;
+	bh=VI//Vnt5Yfd5xlk0gCn66FUnZeYbzWNQqyAW8O5jsoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXzdil2/IWsfb35kl7zB0VDBvD8KJRi6ZwrpnUzcDLN729nwJ8nnrZ3sWLulHGUN04vvdJjbs60yoDrxP7bGEFV6JmEdjR5L6a3o2TyZKIRS+ZCeeV+3Wa+dB/sNttRqFl8LTmLC9sd4SePmOAkUBZfbUkE+jf+gJwuo5dNiCJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbGlzIqd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E431F000E9;
-	Wed, 20 May 2026 17:45:11 +0000 (UTC)
+	 MIME-Version; b=eWlJEPkfrD8pzjml59PdSRZL9nBKc1YuazWNBSXIpkC46Ja1T6pQHo5tAGthB/Vu73CaN9rTJtr+SDmHwsr6AItr4oxLlBYVmLUSzQPj/ASk03danvTQGE1mTPpkzbmg5dSYwBQCxeWnSocBNZViDVwn6yLDej+P+nxls3AMC9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiLUzYYz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7D91F000E9;
+	Wed, 20 May 2026 17:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299111;
-	bh=fKGDJHqaLHVZ8jSX+D5TBPUu3BgR4Cp9GmYauYqdtV4=;
+	s=korg; t=1779296595;
+	bh=/dcnPKswT5K/Ccxu/sXoRvqdjIViaFfQmwamXWBFXcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YbGlzIqdQZxCix4ZHZ4PFEiHrQahN53KwgnIiTl+sU4qNU29jiBefvVqpIVK2oged
-	 StkOX74hALYo2BMjerl12gTJQZ9tS2y4nAFDjRvVKpJw4OY8acnZiJ2QeZK9jfc++1
-	 gneCO7fyKlLYHRg5rvCt2IP/ptFeonOdAd7SUkts=
+	b=UiLUzYYz3K99nY5l2vR78bIfADYVpx7oaT3zdF3K5wDcJ9a6AdkzRv5CfBk0pWLbU
+	 vDecw0vRlV0SdMtiNw9l5h0/D9Nw5D0wLzzDIOaz0FC/odoYzdav7e9IsfXR7DGzeD
+	 guA7ydunZkvQATDQKY5vdryZFBfK5kSVBlZ5cm4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 625/957] net: enetc: correct the command BD ring consumer index
+Subject: [PATCH 7.0 0858/1146] tcp: send a challenge ACK on SEG.ACK > SND.NXT
 Date: Wed, 20 May 2026 18:18:28 +0200
-Message-ID: <20260520162148.084294989@linuxfoundation.org>
+Message-ID: <20260520162207.657460616@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,124 +67,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251874-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250899-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: ABB2559A49D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: D816C592ED6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 759a32900b6f3db3d0f34a3b61123742723b50b4 ]
+[ Upstream commit 42726ec644cbdde0035c3e0417fee8ed9547e120 ]
 
-The command BD ring cousumer index register has the consumer index as
-the lower 10 bits, and the bit 31 is SBE, which indicates whether a
-system bus error occurred during execution of the CBD command. So if a
-system bus error occurs, reading the register will get the SBE bit set.
+RFC 5961 Section 5.2 validates an incoming segment's ACK value
+against the range [SND.UNA - MAX.SND.WND, SND.NXT] and states:
 
-However, the current implementation directly uses the register value as
-the consumer index without masking it. Therefore, if a system bus error
-occurs, an incorrect consumer index will be obtained, causing errors in
-the processing of the command BD ring. Thus, we need to mask out the
-other bits to obtain the correct consumer index.
+  "All incoming segments whose ACK value doesn't satisfy the above
+   condition MUST be discarded and an ACK sent back."
 
-In addition, this patch adds a check for the SBE bit after the polling
-loop and returns an error if the bit is set.
+Commit 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack
+Mitigation") opted Linux into this mitigation and implements the
+challenge ACK on the lower side (SEG.ACK < SND.UNA - MAX.SND.WND),
+but the symmetric upper side (SEG.ACK > SND.NXT) still takes the
+pre-RFC-5961 path and silently returns
+SKB_DROP_REASON_TCP_ACK_UNSENT_DATA, even though RFC 793 Section 3.9
+(now RFC 9293 Section 3.10.7.4) has always required:
 
-Fixes: 4701073c3deb ("net: enetc: add initial netc-lib driver to support NTMP")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20260415060833.2303846-2-wei.fang@nxp.com
+  "If the ACK acknowledges something not yet sent (SEG.ACK > SND.NXT)
+   then send an ACK, drop the segment, and return."
+
+Complete the mitigation by sending a challenge ACK on that branch,
+reusing the existing tcp_send_challenge_ack() path which already
+enforces the per-socket RFC 5961 Section 7 rate limit via
+__tcp_oow_rate_limited().  FLAG_NO_CHALLENGE_ACK is honoured for
+symmetry with the lower-edge case.
+
+Update the existing tcp_ts_recent_invalid_ack.pkt selftest, which
+drives this exact path, to consume the new challenge ACK.
+
+Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260422123605.320000-2-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/ntmp.c         | 13 ++++++++++---
- drivers/net/ethernet/freescale/enetc/ntmp_private.h |  2 ++
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_input.c                                   | 10 +++++++---
+ .../net/packetdrill/tcp_ts_recent_invalid_ack.pkt      |  4 +++-
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-index 0c1d343253bfb..b188eb2d40c0d 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp.c
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-@@ -55,7 +55,7 @@ int ntmp_init_cbdr(struct netc_cbdr *cbdr, struct device *dev,
- 	spin_lock_init(&cbdr->ring_lock);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index c6c55c51a6409..cb4bcc5a85787 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4288,11 +4288,15 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 		goto old_ack;
+ 	}
  
- 	cbdr->next_to_use = netc_read(cbdr->regs.pir);
--	cbdr->next_to_clean = netc_read(cbdr->regs.cir);
-+	cbdr->next_to_clean = netc_read(cbdr->regs.cir) & NETC_CBDRCIR_INDEX;
- 
- 	/* Step 1: Configure the base address of the Control BD Ring */
- 	netc_write(cbdr->regs.bar0, lower_32_bits(cbdr->dma_base_align));
-@@ -98,7 +98,7 @@ static void ntmp_clean_cbdr(struct netc_cbdr *cbdr)
- 	int i;
- 
- 	i = cbdr->next_to_clean;
--	while (netc_read(cbdr->regs.cir) != i) {
-+	while ((netc_read(cbdr->regs.cir) & NETC_CBDRCIR_INDEX) != i) {
- 		cbd = ntmp_get_cbd(cbdr, i);
- 		memset(cbd, 0, sizeof(*cbd));
- 		i = (i + 1) % cbdr->bd_num;
-@@ -135,12 +135,19 @@ static int netc_xmit_ntmp_cmd(struct ntmp_user *user, union netc_cbd *cbd)
- 	cbdr->next_to_use = i;
- 	netc_write(cbdr->regs.pir, i);
- 
--	err = read_poll_timeout_atomic(netc_read, val, val == i,
-+	err = read_poll_timeout_atomic(netc_read, val,
-+				       (val & NETC_CBDRCIR_INDEX) == i,
- 				       NETC_CBDR_DELAY_US, NETC_CBDR_TIMEOUT,
- 				       true, cbdr->regs.cir);
- 	if (unlikely(err))
- 		goto cbdr_unlock;
- 
-+	if (unlikely(val & NETC_CBDRCIR_SBE)) {
-+		dev_err(user->dev, "Command BD system bus error\n");
-+		err = -EIO;
-+		goto cbdr_unlock;
+-	/* If the ack includes data we haven't sent yet, discard
+-	 * this segment (RFC793 Section 3.9).
++	/* If the ack includes data we haven't sent yet, drop the
++	 * segment.  RFC 793 Section 3.9 and RFC 5961 Section 5.2
++	 * require us to send an ACK back in that case.
+ 	 */
+-	if (after(ack, tp->snd_nxt))
++	if (after(ack, tp->snd_nxt)) {
++		if (!(flag & FLAG_NO_CHALLENGE_ACK))
++			tcp_send_challenge_ack(sk, false);
+ 		return -SKB_DROP_REASON_TCP_ACK_UNSENT_DATA;
 +	}
-+
- 	dma_rmb();
- 	/* Get the writeback command BD, because the caller may need
- 	 * to check some other fields of the response header.
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-index 34394e40fddd4..3459cc45b6103 100644
---- a/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-@@ -12,6 +12,8 @@
  
- #define NTMP_EID_REQ_LEN	8
- #define NETC_CBDR_BD_NUM	256
-+#define NETC_CBDRCIR_INDEX	GENMASK(9, 0)
-+#define NETC_CBDRCIR_SBE	BIT(31)
+ 	if (after(ack, prior_snd_una)) {
+ 		flag |= FLAG_SND_UNA_ADVANCED;
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt b/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
+index 174ce9a1bfc07..ee6baf7c36cfa 100644
+--- a/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
++++ b/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
+@@ -19,7 +19,9 @@
  
- union netc_cbd {
- 	struct {
+ // bad packet with high tsval (its ACK sequence is above our sndnxt)
+    +0 < F. 1:1(0) ack 9999 win 20000 <nop,nop,TS val 200000 ecr 100>
+-
++// Challenge ACK for SEG.ACK > SND.NXT (RFC 5961 5.2 / RFC 793 3.9).
++// ecr=200 (not 200000) proves ts_recent was not updated from the bad packet.
++   +0 > . 1:1(0) ack 1 <nop,nop,TS val 200 ecr 200>
+ 
+    +0 < . 1:1001(1000) ack 1 win 20000 <nop,nop,TS val 201 ecr 100>
+    +0 > . 1:1(0) ack 1001 <nop,nop,TS val 200 ecr 201>
 -- 
 2.53.0
 
