@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFF+KPokDmpM6gUAu9opvQ
-	(envelope-from <stable+bounces-252386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:46 +0200
+	id 4IdAIOz4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-250823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3063B59AAE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050CD5956EA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C1BB382A715
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B7B331ECFAE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF643DC4DA;
-	Wed, 20 May 2026 18:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5A53EF0D7;
+	Wed, 20 May 2026 17:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gn4HuepO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIHahUD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF883D75AB;
-	Wed, 20 May 2026 18:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD9236BCDE;
+	Wed, 20 May 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300539; cv=none; b=F44kw+cxcHRuHRD0bUpTFaGF4pDTG+hcTQRghIyovt1eVYmzQTHRGAcPtbGnmyQA1exTdqEFPBjEBGUdk47k4u74vEfzZ37k1XYXNIIfL3DJiwu2ECdVmMt1kK7ZZr9V78pyVnqEjibaHpawH5mRLodFV6sZYC3uxXM385bplfI=
+	t=1779296400; cv=none; b=BLRqs8RdCG6ff1aEPyyGZqQQLvA54WAEHqLirTCqgSpo00rWt9Wk9TT/YJe/TUf2iZDHy4Xa7q086Z/8fNdSVis0d2icymLWtkwNynHasRJgKbbp34THtk5pWQx52K9XqYS2se7N8K0LUDnMh8eNHd94Az/oMn1lDRR4l1rV9Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300539; c=relaxed/simple;
-	bh=SrshqF2KWPZFXafJ0dSIvQnOLNUh0kO8KYQxKvr0JQc=;
+	s=arc-20240116; t=1779296400; c=relaxed/simple;
+	bh=Yigtt9JdrUq60V3h+KK7kmG3E2Ax7JWcBptuGuSZjys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KytSEiGqznTeka3gFuQZAyzETaID/8nIYyq4z+fCUAB+omW3vawFfkt6xEF9dztxR+YfFwwqdGcAPtBtwowB3q/WJYAoYUyKed/v4VZRaE9rVqsoBVLJLbHo6zKlNqyrH5bl3BsOUYReUCfHcv++FQM7wsi2kMsjM8ergsPke7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gn4HuepO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9DB1F000E9;
-	Wed, 20 May 2026 18:08:57 +0000 (UTC)
+	 MIME-Version; b=qgacZDD3IZrK6hjz29JXklw+4IeRIYsmVeL+d+BO1rJhmx05TQcy9hXzy84nUa5UJ1MXBsG0mhFN++cCYOuCPm+hxk5xX4LzNdoxbwZcy7Bk3ZtrMpSLunf17KaTirds1Tcar8rUjwpaI/lNbgpogB2/2ORlXPnBy2y8oA/m6+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIHahUD1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8011F00893;
+	Wed, 20 May 2026 16:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300538;
-	bh=pZyKIRoJNDHYQ+H7Yv058AK42DG8dLrmz8d/3axQ5Gw=;
+	s=korg; t=1779296397;
+	bh=6oWROzS3x235q1OWZ6+9tgMdc0Gdflu4mvgTWWY5Bdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gn4HuepOyJZOmRMIRATL3tGpS1lPa6RzLPd+498B+Wq6SonzLKN+hM5qRA78NTdRV
-	 ynru16sc9k+02jTNdSAEZFyBhEEQRM1XPEJ+SdC1dFz1xMD/ue4AqjpLOQVpvS+2mc
-	 jNc8br81jnN70HHJBAxl/m0jwLjQTYzkB0ir/DZA=
+	b=mIHahUD1I6SDzeBNOVE+hP1W6bPzA0DXHEp1txljmcqcLsgOx+9hrZ00KkUCVF4yv
+	 6odPC3QHztZ9qI/BP4fUxGAL1sX0/pBOYcEaQufphUae1jF8icmB+yXBrmP1uGFjq4
+	 QIaCw3fZhE4OD9xqCpGSLkJxX1uYHZMBYYvnGthM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Alexander Koskovich <akoskovich@pm.me>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/666] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
-Date: Wed, 20 May 2026 18:16:22 +0200
-Message-ID: <20260520162114.910030046@linuxfoundation.org>
+Subject: [PATCH 7.0 0733/1146] f2fs: fix to preserve previous reserve_{blocks,node} value when remount
+Date: Wed, 20 May 2026 18:16:23 +0200
+Message-ID: <20260520162204.793163024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,87 +74,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252386-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250823-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pm.me:email]
-X-Rspamd-Queue-Id: 3063B59AAE6
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
+X-Rspamd-Queue-Id: 050CD5956EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <akoskovich@pm.me>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
+[ Upstream commit 01968164d94762db2f703647c5acfa28613844f1 ]
 
-The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
-("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
-always correct just the name was wrong.
+The following steps will change previous value of reserve_{blocks,node},
+this dones not match the original intention.
 
-Rename and reorder to maintain version sorting.
+1.mount -t f2fs -o reserve_root=8192 imgfile test_mount/
+F2FS-fs (loop56): Mounted with checkpoint version = 1b69f8c7
+mount info:
+/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=8192,reserve_node=0,resuid=0,resgid=0,xxx)
 
-Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Patchwork: https://patchwork.freedesktop.org/patch/713717/
-Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+2.mount -t f2fs -o remount,reserve_root=4096 /data/test_mount
+F2FS-fs (loop56): Preserve previous reserve_root=8192
+check mount info: reserve_root change to 4096
+/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=4096,reserve_node=0,resuid=0,resgid=0,xxx)
+
+Prior to commit d18535132523 ("f2fs: separate the options parsing and options checking"),
+the value of reserve_{blocks,node} was only set during the first mount, along with
+the corresponding mount option F2FS_MOUNT_RESERVE_{ROOT,NODE} . If the mount option
+F2FS_MOUNT_RESERVE_{ROOT,NODE} was found to have been set during the mount/remount,
+the previously value of reserve_{blocks,node} would also be preserved, as shown in
+the code below.
+             if (test_opt(sbi, RESERVE_ROOT)) {
+                   f2fs_info(sbi, "Preserve previous reserve_root=%u",
+                          F2FS_OPTION(sbi).root_reserved_blocks);
+             } else {
+                   F2FS_OPTION(sbi).root_reserved_blocks = arg;
+                   set_opt(sbi, RESERVE_ROOT);
+             }
+But commit d18535132523 ("f2fs: separate the options parsing and options checking")
+only preserved the previous mount option; it did not preserve the previous value of
+reserve_{blocks,node}. Since value of reserve_{blocks,node} value is assigned
+or not depends on ctx->spec_mask, ctx->spec_mask should be alos handled in
+f2fs_check_opt_consistency.
+
+This patch will clear the corresponding ctx->spec_mask bits in f2fs_check_opt_consistency
+to preserve the previously values of reserve_{blocks,node} if it already have a value.
+
+Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/f2fs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index 10ba7d153d1cf..8bf3266d13831 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -278,10 +278,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
- 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
-+		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
- 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
--	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
--		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
- 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index 4c9b4b37681b0..2c9ed626f7909 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -19,8 +19,8 @@
- #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
- #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
- #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
-+#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
--#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
- #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
- #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
- #define MSM_DSI_6G_VER_MINOR_V2_4_0	0x20040000
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 255db40c49ed9..f44e962b1ee7d 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1515,6 +1515,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
+ 			F2FS_OPTION(sbi).root_reserved_blocks);
+ 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
+ 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
++		ctx->spec_mask &= ~F2FS_SPEC_reserve_root;
+ 	}
+ 	if (test_opt(sbi, RESERVE_NODE) &&
+ 			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
+@@ -1523,6 +1524,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
+ 			F2FS_OPTION(sbi).root_reserved_nodes);
+ 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
+ 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
++		ctx->spec_mask &= ~F2FS_SPEC_reserve_node;
+ 	}
+ 
+ 	err = f2fs_check_test_dummy_encryption(fc, sb);
 -- 
 2.53.0
 
