@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-252060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHOvCF4EDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:38 +0200
+	id 2Ey8I3wDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-252724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5705977F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D41597632
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 348B830DF5A6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CBA539C9A83
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DA53F23BF;
-	Wed, 20 May 2026 17:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8213FC5DA;
+	Wed, 20 May 2026 18:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjLWr3H9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FN/L7G26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333A43F0A83;
-	Wed, 20 May 2026 17:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE7E3FC5B0;
+	Wed, 20 May 2026 18:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299641; cv=none; b=Dsm1T/HYHkFyRp2Uj4VHvdOfh1npcpjqaqTwFmqtaHQv2MeqlGNZPBAgwYTgWWbhKgZ8A0sSsRAPDJB4qU/YVNwAlAIXgod7K3Hu69N5GwLSmQQhGLhQTMJ50hyqNc43gfMPnsQrUReXVnigOXZNGDPTC8l9sWtp+Mp4n031qzs=
+	t=1779301424; cv=none; b=XDTSw681ud7ByXVvB7LgpSLRHA+e2banad8p5P40BCaQeq5HqmT7ySs7UO2TXKN0tsmG303PZJYoc76BIqkpyaErUzHyqs3O5AfIbq9n6qJltFTF45UsXhDn9M6YNO6YOYbAnhuYxb98Qx9TNPXiPHPHk9GWz2uksGAQI5ksR30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299641; c=relaxed/simple;
-	bh=yP/XEz9ecwlfmrcV49803PMwyAg5osuCv1qLc8sPyZA=;
+	s=arc-20240116; t=1779301424; c=relaxed/simple;
+	bh=/hX7KRO6HFjuX+wJnGHUV5mViDCxvOibXniCTw5mRC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EvuGUFBFKYkrQI40KC2GOzYrGpJgIoxuKw21btn157XN0cAUuInRv98XTot3egU78tvRZgoSM74jwqrfm3v823lwADGVxgp/llgsp2mJb7DKgW1ZcVPOcsrG2tcANp42nU1beSPeZFKEGxSB4uNMdp5hh7FTexnpj3nOeG9I4Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjLWr3H9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDE71F000E9;
-	Wed, 20 May 2026 17:53:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oFFfmWAwpoXJ7NTFdiyFoDLpRaupgrWipvo8I3Yh/1qkQH23T/kfIllLptbncvc+CkksLVmGq8xfYZ/VUt+mK3Fns95doydF37/79Vf5aZSxneAhqBohflUDsR8unCVIIqNN/uxSqUHC9l0xofVTVv5PzvaFYyIlC30IIb+BtfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FN/L7G26; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6871C1F000E9;
+	Wed, 20 May 2026 18:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299640;
-	bh=WilhthEtvYuyhCY2xznTlv8pjMAibqXl/X3mu8MKkTc=;
+	s=korg; t=1779301422;
+	bh=TiuJqxeMHcRk+N33h69uNJ6Oyf5qj2WPc12+Iiq5MVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qjLWr3H9iHx/IdLotq38bAvn/pqwA9K7UGIdVWp8iPNflc2mWxNMGsmgfHh/4SYzf
-	 OmqzLesSkpN8y/Xx2N3Dgs+/P1M4JGwVLDk+FCY+o2scd4P5ncF9g8OUKNyrRIKOjf
-	 rlLwTYQpWK2y5twG+/E41D98r4HSjOeUWEQ9shXc=
+	b=FN/L7G26UNvL6gaBYrEp38p+eU8B5pDrdP/zt1TbFX/VGJ/dXaiqftSH921tEDz4+
+	 NmL51jOcoOOHNRA+KMGLvjxDOjMJ/IEe3S4hm6oTQvJ1qg/quTZD8pnnG7hceWQ+ZA
+	 dxtwaY+EphD3K48Ipvi0Vnmx7gC3BplU98L+e4CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 850/957] dpll: Allow associating dpll pin with a firmware node
+Subject: [PATCH 6.12 522/666] drm/amdgpu/gfx6: Support harvested SI chips with disabled TCCs (v2)
 Date: Wed, 20 May 2026 18:22:13 +0200
-Message-ID: <20260520162153.000252364@linuxfoundation.org>
+Message-ID: <20260520162122.578439367@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,208 +64,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252724-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252060-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A5705977F5
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bugs.freedesktop.org:url]
+X-Rspamd-Queue-Id: E7D41597632
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit d0f4771e2befbe8de3a16a564c6bbd1d5502cec3 ]
+[ Upstream commit fe2b84f9228e2a0903221a4d0d8c350b018e9c0c ]
 
-Extend the DPLL core to support associating a DPLL pin with a firmware
-node. This association is required to allow other subsystems (such as
-network drivers) to locate and request specific DPLL pins defined in
-the Device Tree or ACPI.
+This commit fixes amdgpu to work on the Radeon HD 7870 XT
+which has never worked with the Linux open source drivers before.
 
-* Add a .fwnode field to the struct dpll_pin
-* Introduce dpll_pin_fwnode_set() helper to allow the provider driver
-  to associate a pin with a fwnode after the pin has been allocated
-* Introduce fwnode_dpll_pin_find() helper to allow consumers to search
-  for a registered DPLL pin using its associated fwnode handle
-* Ensure the fwnode reference is properly released in dpll_pin_put()
+Some boards have "harvested" chips, meaning that some parts of
+the chip are disabled and fused, and it's sold for cheaper and
+under a different marketing name.
+On a harvested chip, any of the following can be disabled:
+- CUs (Compute Units)
+- RBs (Render Backend, aka. ROP)
+- Memory channels (ie. the chip has a lower bandwidth)
+- TCCs (ie. less L2 cache)
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Link: https://patch.msgid.link/20260203174002.705176-2-ivecera@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
+Handle chips with harvested TCCs by patching the registers
+that configure how TCCs are mapped.
+
+If some TCCs are disabled, we need to make sure that
+the disabled TCCs are not used, and the remaining TCCs
+are used optimally.
+
+TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
+TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
+
+Note that the TCC configuration is highly relevant to performance.
+Suboptimal configuration (eg. CHAN_STEER=0) can significantly
+reduce gaming performance.
+
+For optimal performance:
+- Rely on the CHAN_STEER from the golden registers table,
+  only skip disabled TCCs but keep the mapping order.
+- Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
+  which performs better than using the same TCC twice.
+
+v2:
+- Also consider CGTS_USER_TCC_DISABLE for disabled TCCs.
+
+Link: https://bugs.freedesktop.org/show_bug.cgi?id=60879
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2664
+Fixes: 2cd46ad22383 ("drm/amdgpu: add graphic pipeline implementation for si v8")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 00218d15528fab9f6b31241fe5904eea4fcaa30d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_core.c | 49 ++++++++++++++++++++++++++++++++++++++++
- drivers/dpll/dpll_core.h |  2 ++
- include/linux/dpll.h     | 11 +++++++++
- 3 files changed, 62 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 66 +++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 8879a72351561..f04ed7195cadd 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -10,6 +10,7 @@
- 
- #include <linux/device.h>
- #include <linux/err.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- 
-@@ -595,12 +596,60 @@ void dpll_pin_put(struct dpll_pin *pin)
- 		xa_destroy(&pin->parent_refs);
- 		xa_destroy(&pin->ref_sync_pins);
- 		dpll_pin_prop_free(&pin->prop);
-+		fwnode_handle_put(pin->fwnode);
- 		kfree_rcu(pin, rcu);
- 	}
- 	mutex_unlock(&dpll_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index cc9f9b10b435b..90c426ee877b6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -1553,6 +1553,71 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
+ 	mutex_unlock(&adev->grbm_idx_mutex);
  }
- EXPORT_SYMBOL_GPL(dpll_pin_put);
  
 +/**
-+ * dpll_pin_fwnode_set - set dpll pin firmware node reference
-+ * @pin: pointer to a dpll pin
-+ * @fwnode: firmware node handle
++ * gfx_v6_0_setup_tcc() - setup which TCCs are used
 + *
-+ * Set firmware node handle for the given dpll pin.
++ * @adev: amdgpu_device pointer
++ *
++ * Verify whether the current GPU has any TCCs disabled,
++ * which can happen when the GPU is harvested and some
++ * memory channels are disabled, reducing the memory bus width.
++ * For example, on the Radeon HD 7870 XT (Tahiti LE).
++ *
++ * If some TCCs are disabled, we need to make sure that
++ * the disabled TCCs are not used, and the remaining TCCs
++ * are used optimally.
++ *
++ * TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
++ * TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
++ *
++ * For optimal performance:
++ * - Rely on the CHAN_STEER from the golden registers table,
++ *   only skip disabled TCCs but keep the mapping order.
++ * - Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
++ *   which performs better than using the same TCC twice.
 + */
-+void dpll_pin_fwnode_set(struct dpll_pin *pin, struct fwnode_handle *fwnode)
++static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
 +{
-+	mutex_lock(&dpll_lock);
-+	fwnode_handle_put(pin->fwnode); /* Drop fwnode previously set */
-+	pin->fwnode = fwnode_handle_get(fwnode);
-+	mutex_unlock(&dpll_lock);
-+}
-+EXPORT_SYMBOL_GPL(dpll_pin_fwnode_set);
++	u32 i, tcc, tcp_addr_config, num_active_tcc = 0;
++	u64 chan_steer, patched_chan_steer = 0;
++	const u32 num_max_tcc = adev->gfx.config.max_texture_channel_caches;
++	const u32 dis_tcc_mask =
++		amdgpu_gfx_create_bitmask(num_max_tcc) &
++		(REG_GET_FIELD(RREG32(mmCGTS_TCC_DISABLE),
++			       CGTS_TCC_DISABLE, TCC_DISABLE) |
++		 REG_GET_FIELD(RREG32(mmCGTS_USER_TCC_DISABLE),
++			       CGTS_USER_TCC_DISABLE, TCC_DISABLE));
 +
-+/**
-+ * fwnode_dpll_pin_find - find dpll pin by firmware node reference
-+ * @fwnode: reference to firmware node
-+ *
-+ * Get existing object of a pin that is associated with given firmware node
-+ * reference.
-+ *
-+ * Context: Acquires a lock (dpll_lock)
-+ * Return:
-+ * * valid dpll_pin pointer on success
-+ * * NULL when no such pin exists
-+ */
-+struct dpll_pin *fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
-+{
-+	struct dpll_pin *pin, *ret = NULL;
-+	unsigned long index;
++	/* When no TCC is disabled, the golden registers table already has optimal TCC setup */
++	if (!dis_tcc_mask)
++		return;
 +
-+	mutex_lock(&dpll_lock);
-+	xa_for_each(&dpll_pin_xa, index, pin) {
-+		if (pin->fwnode == fwnode) {
-+			ret = pin;
-+			refcount_inc(&ret->refcount);
-+			break;
++	/* Each 4-bit nibble contains the index of a TCC used by all TCPs */
++	chan_steer = RREG32(mmTCP_CHAN_STEER_LO) | ((u64)RREG32(mmTCP_CHAN_STEER_HI) << 32ull);
++
++	/* Patch the TCP to TCC mapping to skip disabled TCCs */
++	for (i = 0; i < num_max_tcc; ++i) {
++		tcc = (chan_steer >> (u64)(4 * i)) & 0xf;
++
++		if (!((1 << tcc) & dis_tcc_mask)) {
++			/* Copy enabled TCC indices to the patched register value. */
++			patched_chan_steer |= (u64)tcc << (u64)(4 * num_active_tcc);
++			++num_active_tcc;
 +		}
 +	}
-+	mutex_unlock(&dpll_lock);
 +
-+	return ret;
++	WARN_ON(num_active_tcc != num_max_tcc - hweight32(dis_tcc_mask));
++
++	/* Patch number of TCCs used by TCPs */
++	tcp_addr_config = REG_SET_FIELD(RREG32(mmTCP_ADDR_CONFIG),
++					TCP_ADDR_CONFIG, NUM_TCC_BANKS,
++					num_active_tcc - 1);
++
++	WREG32(mmTCP_ADDR_CONFIG, tcp_addr_config);
++	WREG32(mmTCP_CHAN_STEER_HI, upper_32_bits(patched_chan_steer));
++	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
 +}
-+EXPORT_SYMBOL_GPL(fwnode_dpll_pin_find);
 +
- static int
- __dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
- 		    const struct dpll_pin_ops *ops, void *priv, void *cookie)
-diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
-index 8ce969bbeb64e..d3e17ff0ecef0 100644
---- a/drivers/dpll/dpll_core.h
-+++ b/drivers/dpll/dpll_core.h
-@@ -42,6 +42,7 @@ struct dpll_device {
-  * @pin_idx:		index of a pin given by dev driver
-  * @clock_id:		clock_id of creator
-  * @module:		module of creator
-+ * @fwnode:		optional reference to firmware node
-  * @dpll_refs:		hold referencees to dplls pin was registered with
-  * @parent_refs:	hold references to parent pins pin was registered with
-  * @ref_sync_pins:	hold references to pins for Reference SYNC feature
-@@ -54,6 +55,7 @@ struct dpll_pin {
- 	u32 pin_idx;
- 	u64 clock_id;
- 	struct module *module;
-+	struct fwnode_handle *fwnode;
- 	struct xarray dpll_refs;
- 	struct xarray parent_refs;
- 	struct xarray ref_sync_pins;
-diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-index 562f520b23c27..f0c31a111c304 100644
---- a/include/linux/dpll.h
-+++ b/include/linux/dpll.h
-@@ -16,6 +16,7 @@
- struct dpll_device;
- struct dpll_pin;
- struct dpll_pin_esync;
-+struct fwnode_handle;
- 
- struct dpll_device_ops {
- 	int (*mode_get)(const struct dpll_device *dpll, void *dpll_priv,
-@@ -173,6 +174,8 @@ void dpll_netdev_pin_clear(struct net_device *dev);
- size_t dpll_netdev_pin_handle_size(const struct net_device *dev);
- int dpll_netdev_add_pin_handle(struct sk_buff *msg,
- 			       const struct net_device *dev);
-+
-+struct dpll_pin *fwnode_dpll_pin_find(struct fwnode_handle *fwnode);
- #else
- static inline void
- dpll_netdev_pin_set(struct net_device *dev, struct dpll_pin *dpll_pin) { }
-@@ -188,6 +191,12 @@ dpll_netdev_add_pin_handle(struct sk_buff *msg, const struct net_device *dev)
+ static void gfx_v6_0_config_init(struct amdgpu_device *adev)
  {
- 	return 0;
- }
-+
-+static inline struct dpll_pin *
-+fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
-+{
-+	return NULL;
-+}
- #endif
+ 	adev->gfx.config.double_offchip_lds_buf = 0;
+@@ -1711,6 +1776,7 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
+ 	gfx_v6_0_tiling_mode_table_init(adev);
  
- struct dpll_device *
-@@ -213,6 +222,8 @@ void dpll_pin_unregister(struct dpll_device *dpll, struct dpll_pin *pin,
+ 	gfx_v6_0_setup_rb(adev);
++	gfx_v6_0_setup_tcc(adev);
  
- void dpll_pin_put(struct dpll_pin *pin);
- 
-+void dpll_pin_fwnode_set(struct dpll_pin *pin, struct fwnode_handle *fwnode);
-+
- int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
- 			     const struct dpll_pin_ops *ops, void *priv);
+ 	gfx_v6_0_setup_spi(adev);
  
 -- 
 2.53.0
