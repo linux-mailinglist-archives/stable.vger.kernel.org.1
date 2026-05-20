@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KG7kDDr7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:38 +0200
+	id 8H+MJnryDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-251575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB43595CFC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA0159459F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61DCF30CB872
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED833310696A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9524C3F6619;
-	Wed, 20 May 2026 18:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1512436405A;
+	Wed, 20 May 2026 17:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9mSQjzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWwLcco7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143C83E95A4;
-	Wed, 20 May 2026 18:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56EC28DC4;
+	Wed, 20 May 2026 17:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300090; cv=none; b=R6BW6u/vkzrWW9OsxvELKzRsljFZtN3ZEuzawuQnCoOdef0rKC+Qkq8DIegMLkLZFub+ixcaHowrLTHPKZMLhtBgeBOKwPmWz8UpByjHJnZ/uyUy0PXcxWkD5yvGiOM6Ybj9ANQyweCySFAtqr78WY33fFmOhq1qZzXFCh4s6Dk=
+	t=1779298337; cv=none; b=rRL9Q2o8tJuSxwIXhC9ENnZVBKOOsDAw+OOhT4pHzygKqEFRUjiYcm1ap6JzfYPxu4FLrB3QeFq93zWRW0NaJbLvR82RGh3ZZW87JmaIjfh0s2pH7XvfCRXQHS/5avcvXMH32tEEXi5KnJLgMAUbB3deV64qzK1kbgyEevAF5R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300090; c=relaxed/simple;
-	bh=QJfb90qmd4TR5evsvZm6BjdU523Y+9kIiVq+f16o4HY=;
+	s=arc-20240116; t=1779298337; c=relaxed/simple;
+	bh=WJtLto4CH92jx8gZ5RzNiH3aYs47o5StY6ikzAPLCvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uxr8NDStFx3gkGqBohpNvbiqL5nm7hIbg6nU/0NjaPAMn0IP1RPvusBTxuVSQrG8/gAdcVpP5nbhB0ASOZBVM60aExEsrIFdlz/AssnmRzPL2ZgtiZ0ewbFM3ev/aN1Pa6sNiaJYV0P06ege+EhaGFSx/zpkADUZZxqkjpPFOsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9mSQjzD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273A71F000E9;
-	Wed, 20 May 2026 18:01:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rzlM/eRpWPAqXdNegTug+lWFOeBhmI8SO35NOZuz2eMO9w5BNeWrbDirgL40HpcvqaiVSk7D1yLLFwUaslDqkeKmFnzhY/eNLJN9w+KTb7F6FOx+SfGzJEQb+lvbA7iPw+tAs0WZgZxRLf/f60OFMwGPq/6avhQn1OOIbekmO8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWwLcco7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A1E1F000E9;
+	Wed, 20 May 2026 17:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300087;
-	bh=Iv/lFLNbm+jhGpP1j81wnghSxTPfXoikBpPdrlfIQPA=;
+	s=korg; t=1779298336;
+	bh=AK5jXa/fLmfthXgdhK2A+pUC/FFP2XaHlwjWi6RRhZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a9mSQjzDgZtzE3usc24vHf+lVvXmH4gGX82Twtsd1unrCY3ZMS9lmi9aV8lPiXLzy
-	 BBi4mIvhwj+ymx4Nc3FuQasQ76vtR9IOWEHuGefBenCtmV73FrRcPACPqlZhRS6hhZ
-	 JdpLQaFNGotONO4Q8RuuEnRGuVqNR32IDGWaCcH4=
+	b=VWwLcco7cHzTULE0lEtRenbMlZDlzKF/m/IAf8VjPHcSLbA6oTkReX8BKXvY1ibP1
+	 9uUA+1XfmNi4l07UkfbPfdIZ+GWCvgYQ3gI6DOBfCHPyZjjg8Od6j0UD66uMycJe/w
+	 P8pvn21jnyME7gVHWiSwaBp2q2V5yKXVYDQOBCWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/666] wifi: mt76: mt7925: Fix incorrect MLO mode in firmware control
-Date: Wed, 20 May 2026 18:14:14 +0200
-Message-ID: <20260520162112.173206885@linuxfoundation.org>
+Subject: [PATCH 6.18 372/957] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct reserved memory ranges
+Date: Wed, 20 May 2026 18:14:15 +0200
+Message-ID: <20260520162142.596325992@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +64,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252213-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mediatek.com:email,nbd.name:email]
-X-Rspamd-Queue-Id: BFB43595CFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1AA0159459F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 1695f662329faa07c860c73453c097823852df28 ]
+[ Upstream commit 242801cc24e865cb525ef7d826ce6ebeffcad606 ]
 
-The selection of MLO mode should depend on the capabilities of the STA
-rather than those of the peer AP to avoid compatibility issues with
-certain APs, such as Xiaomi BE5000 WiFi7 router.
+The device was crashing on high memory load because the reserved memory
+ranges was wrongly defined. Correct the ranges for avoid the crashes.
+Change the ramoops memory range to match with the values from the recovery
+to be able to get the results from the device.
 
-Fixes: 69acd6d910b0c ("wifi: mt76: mt7925: add mt7925_change_vif_links")
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Link: https://patch.msgid.link/20251211123836.4169436-1-leon.yen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20260126-xiaomi-willow-v3-2-aad7b106c311@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c   | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    | 9 ++++++---
- drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h | 4 ++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ .../boot/dts/qcom/sm6125-xiaomi-ginkgo.dts    | 41 +++++++++++++------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 59d4357819eda..5fc95c8623647 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -535,7 +535,7 @@ static int mt7925_set_mlo_roc(struct mt792x_phy *phy,
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+index bf03226a6f854..d5e5abdb3b2ff 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+@@ -13,6 +13,12 @@
+ #include "sm6125.dtsi"
+ #include "pm6125.dtsi"
  
- 	phy->roc_grant = false;
- 
--	err = mt7925_mcu_set_mlo_roc(mconf, sel_links, 5, ++phy->roc_token_id);
-+	err = mt7925_mcu_set_mlo_roc(phy, mconf, sel_links, 5, ++phy->roc_token_id);
- 	if (err < 0) {
- 		clear_bit(MT76_STATE_ROC, &phy->mt76->state);
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 0e7ea02574de0..1f113a618515e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1245,8 +1245,8 @@ int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
- }
- 
--int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
--			   int duration, u8 token_id)
-+int mt7925_mcu_set_mlo_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
-+			   u16 sel_links, int duration, u8 token_id)
- {
- 	struct mt792x_vif *mvif = mconf->vif;
- 	struct ieee80211_vif *vif = container_of((void *)mvif,
-@@ -1281,6 +1281,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 			.roc[1].len = cpu_to_le16(sizeof(struct roc_acquire_tlv))
++/delete-node/ &adsp_pil_mem;
++/delete-node/ &cont_splash_mem;
++/delete-node/ &gpu_mem;
++/delete-node/ &ipa_fw_mem;
++/delete-node/ &ipa_gsi_mem;
++
+ / {
+ 	model = "Xiaomi Redmi Note 8";
+ 	compatible = "xiaomi,ginkgo", "qcom,sm6125";
+@@ -36,28 +42,39 @@ framebuffer0: framebuffer@5c000000 {
  	};
  
-+	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+
- 	if (!mconf || hweight16(vif->valid_links) < 2 ||
- 	    hweight16(sel_links) != 2)
- 		return -EPERM;
-@@ -1303,7 +1305,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 		is_AG_band |= links[i].chan->band == NL80211_BAND_2GHZ;
- 	}
+ 	reserved-memory {
+-		debug_mem: debug@ffb00000 {
+-			reg = <0x0 0xffb00000 0x0 0xc0000>;
++		adsp_pil_mem: adsp_pil_mem@55300000 {
++			reg = <0x0 0x55300000 0x0 0x2200000>;
+ 			no-map;
+ 		};
  
--	if (vif->cfg.eml_cap & IEEE80211_EML_CAP_EMLSR_SUPP)
-+	if (!(wiphy->iftype_ext_capab[0].mld_capa_and_ops &
-+	      IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS))
- 		type = is_AG_band ? MT7925_ROC_REQ_MLSR_AG :
- 				    MT7925_ROC_REQ_MLSR_AA;
- 	else
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index 27680ad28b600..bc8d38782a81a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -324,8 +324,8 @@ int mt7925_set_tx_sar_pwr(struct ieee80211_hw *hw,
- int mt7925_mcu_regval(struct mt792x_dev *dev, u32 regidx, u32 *val, bool set);
- int mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		       enum environment_cap env_cap);
--int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
--			   int duration, u8 token_id);
-+int mt7925_mcu_set_mlo_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
-+			   u16 sel_links, int duration, u8 token_id);
- int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 		       struct ieee80211_channel *chan, int duration,
- 		       enum mt7925_roc_req type, u8 token_id);
+-		last_log_mem: lastlog@ffbc0000 {
+-			reg = <0x0 0xffbc0000 0x0 0x80000>;
++		ipa_fw_mem: ipa_fw_mem@57500000 {
++			reg = <0x0 0x57500000 0x0 0x10000>;
+ 			no-map;
+ 		};
+ 
+-		pstore_mem: ramoops@ffc00000 {
+-			compatible = "ramoops";
+-			reg = <0x0 0xffc40000 0x0 0xc0000>;
+-			record-size = <0x1000>;
+-			console-size = <0x40000>;
+-			pmsg-size = <0x20000>;
++		ipa_gsi_mem: ipa_gsi_mem@57510000 {
++			reg = <0x0 0x57510000 0x0 0x5000>;
++			no-map;
+ 		};
+ 
+-		cmdline_mem: memory@ffd00000 {
+-			reg = <0x0 0xffd40000 0x0 0x1000>;
++		gpu_mem: gpu_mem@57515000 {
++			reg = <0x0 0x57515000 0x0 0x2000>;
+ 			no-map;
+ 		};
++
++		framebuffer@5c000000 {
++			reg = <0x0 0x5c000000 0x0 (2340 * 1080 * 4)>;
++			no-map;
++		};
++
++		/* Matching with recovery values to be able to get the results. */
++		ramoops@61600000 {
++			compatible = "ramoops";
++			reg = <0x0 0x61600000 0x0 0x400000>;
++			record-size = <0x80000>;
++			pmsg-size = <0x200000>;
++			console-size = <0x100000>;
++		};
+ 	};
+ 
+ 	extcon_usb: extcon-usb {
 -- 
 2.53.0
 
