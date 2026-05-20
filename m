@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-253037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFX+DgQBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:20 +0200
+	id kC+EKlH+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED9C597221
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E198596830
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A46C2313E2F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 206EC318E26F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812203CB2F8;
-	Wed, 20 May 2026 18:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A433F1ACA;
+	Wed, 20 May 2026 18:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXYgjKHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp4sGF50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40264318ED6;
-	Wed, 20 May 2026 18:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF973348C55;
+	Wed, 20 May 2026 18:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302239; cv=none; b=PIQTLIEdRUtKVXfObJO4e5Dgm2DCVvc+qXvH9SvxkDNmwQ8+CG1ytIZNxMebSHBi+VW4+6Hlgb+ShGg/HY0yVALQ2LCjmuSeGGtJ7f1OpiYybaNncvpmafCDdGM31vvNCyr1knm/0ZuzNzeP0Pv5f8wM1S9iq8xZMKkoRE+THHI=
+	t=1779301037; cv=none; b=b1UZ+veuQaBm9b0exqEZ0KxMvCgVoTtZqWlWlJr69GDZPjtNloX+iQEqkiETGSv4QotNEgSuaG8n7OhkMQzU5Zllua5fayoLLMCpAs8yAmxUqdm37/dDR6LFK7F5ZtfwpCgfmL+LHwtkG84Zm/FfrWj4FV9Yqktap1L/QpvrFMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302239; c=relaxed/simple;
-	bh=se84nEmj9GmMjhcCBN8Md7wbwMnah6goi51Ek0nA8xo=;
+	s=arc-20240116; t=1779301037; c=relaxed/simple;
+	bh=NuLtJy/MC5Glv1EFesiISLiv3h/Z9OzJ2aKJl2WGNG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSKjeK4QsI4iGsicd2/Ed/KoL9oltb+oe0IeAgVjJAA9q83BUqLSE3gCVYlvfjXcOyjpLpYriRw1SQoSWjLOw3WjRezHkvj5fXVeFp06RTBS4D4hg5I6MWoMSsJUjob7InG4trOyZD7nzourHGV0eta7731SUZOvygejSs+DOFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXYgjKHv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E241F000E9;
-	Wed, 20 May 2026 18:37:17 +0000 (UTC)
+	 MIME-Version; b=e90Blhyjz2pORN+bOLd8gBagIHOJr1/ZeZuAPFe4+KPdbQJQv6ud3KLkHnCIV7joLM98P+XfiUw40zeVWum0qp1BOzz6IHHCvrmlJfZFS4tRwHaZnMWJ/nANL+C2h2r9ztN0cHZvdwMNbNctKGbEHcvhd3CzCl+YeNbKrn2gGNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp4sGF50; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577D91F000E9;
+	Wed, 20 May 2026 18:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302238;
-	bh=2nCCUCOsIowl/EcHumg75Q0XOYMjykuuzDiTfyva7Fo=;
+	s=korg; t=1779301035;
+	bh=r08N7Fu92awSl74kOUxmGiq6T+gnlBstHPDCPL9cEaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TXYgjKHv8nvzNo26dnLDESJ40aSXqmhONK2Ms4mXQx4NOKin0QfmopNqacguWBWSV
-	 EjEZFjrDdrJufRPZLJnPI2klnYrDAnHtUK9gDnBzvQbqRC9HbA+r72N05IXwmXAXuM
-	 Co0DBsbtFELwbttZVt1yAdqzLjsUDqKPpruCWjW0=
+	b=yp4sGF50I0AGxK6SvckYk1PFV3LevdT3+w+wKmUN2gzAQ9UCpmKkkGShnv5y/h1Vf
+	 QhZAvRTHrz4AvA3n7Yk+QeqgpLLw4x4YBd2cn7RA0J5QntA+YXuPUl1H8DhgMQpI5v
+	 BzsrBXY+pyBAeXik9GEK3Tfw5TOhzlifptvV1nOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	White Lewis <liu224806@gmail.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/508] soc: qcom: ocmem: make the core clock optional
+Subject: [PATCH 6.12 403/666] clk: qcom: dispcc-sc8280xp: remove CLK_SET_RATE_PARENT from byte_div_clk_src dividers
 Date: Wed, 20 May 2026 18:20:14 +0200
-Message-ID: <20260520162102.773271640@linuxfoundation.org>
+Message-ID: <20260520162119.994817874@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +71,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253037-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252576-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EED9C597221
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8E198596830
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: White Lewis <liu224806@gmail.com>
 
-[ Upstream commit e8a61c51417c679d1a599fb36695e9d3b8d95514 ]
+[ Upstream commit 0b151a6307205eb867250985a910a88787cbf12e ]
 
-OCMEM's core clock (aka RPM bus 2 clock) is being handled internally by
-the interconnect driver. Corresponding clock has been dropped from the
-SMD RPM clock driver. The users of the ocmem will vote on the ocmemnoc
-interconnect paths, making sure that ocmem is on. Make the clock
-optional, keeping it for compatibility with older DT.
+The four byte_div_clk_src dividers (disp{0,1}_cc_mdss_byte{0,1}_div_clk_src)
+had CLK_SET_RATE_PARENT set. When the DSI driver calls clk_set_rate() on
+byte_intf_clk, the rate-change propagates through the divider up to the
+parent PLL (byte_clk_src), halving the byte clock rate.
 
-Fixes: d6edc31f3a68 ("clk: qcom: smd-rpm: Separate out interconnect bus clocks")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+A simiar issue had been also encountered on SM8750.
+b8501febdc51 ("clk: qcom: dispcc-sm8750: Drop incorrect CLK_SET_RATE_PARENT on byte intf parent").
+
+Likewise, remove CLK_SET_RATE_PARENT from all four byte divider clocks
+so that clk_set_rate() on the divider adjusts only the divider ratio,
+leaving the parent PLL untouched.
+
+Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
+Signed-off-by: White Lewis <liu224806@gmail.com>
+[pengyu: reword]
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260323-ocmem-v1-1-ad9bcae44763@oss.qualcomm.com
+Link: https://lore.kernel.org/r/20260303115550.9279-1-mitltlatltl@gmail.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index 1511d19643d41..c5fc6db9870a2 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -313,7 +313,7 @@ static int ocmem_dev_probe(struct platform_device *pdev)
- 	ocmem->dev = dev;
- 	ocmem->config = device_get_match_data(dev);
- 
--	ocmem->core_clk = devm_clk_get(dev, "core");
-+	ocmem->core_clk = devm_clk_get_optional(dev, "core");
- 	if (IS_ERR(ocmem->core_clk))
- 		return dev_err_probe(dev, PTR_ERR(ocmem->core_clk),
- 				     "Unable to get core clock\n");
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index f1ca9ae0b33f4..c23cbb983d29e 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -1161,7 +1161,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte0_div_clk_src = {
+ 			&disp0_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1176,7 +1175,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte0_div_clk_src = {
+ 			&disp1_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1191,7 +1189,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte1_div_clk_src = {
+ 			&disp0_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1206,7 +1203,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte1_div_clk_src = {
+ 			&disp1_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
