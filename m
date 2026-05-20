@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-252836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EG8MKj+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252836-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:16 +0200
+	id SKVIOCMjDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:09:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE4C5969D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504D459A816
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56C753109997
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4273B33D79CE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E0D3EF0D7;
-	Wed, 20 May 2026 18:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6B23D75A0;
+	Wed, 20 May 2026 17:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9iPPSW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7jY2T82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CD73F39EE;
-	Wed, 20 May 2026 18:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DDF3F1AD9;
+	Wed, 20 May 2026 17:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301716; cv=none; b=aREKm+v92X6XULddlxXSgv83Xr87JDRNDk9vpRuhjrvYUAeHUYAngQucAtC5Kul0d3dKRlVhzozTKkuA1o3pT1JBzBGjlKX08kUPIiDGtTNRAmZe6hPUuULe2M8DusB7vkdpv5qNGvKkv/tod+oBhW3k2AqQIteCiuoPqLA5LDc=
+	t=1779299990; cv=none; b=hB92JGHaDkFgqgWW5+VGUec0t37f6xVEipeb6Sb4Ku8p2zk+kcAVoTsnyKNM/oD7p1fYVR8q7e1u7tCCB6TIS+ho9vvxcSja54mu0v7aO66h16ThXSpVxuQwSdZXSy5/Vrk69YT6rJhSVizcZ4o5B3XRQZCvldCkibjxBzUffLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301716; c=relaxed/simple;
-	bh=TPkLz3f4w1iZNlNG4C4A/qx9t1S5+CE468q/QUNZu8E=;
+	s=arc-20240116; t=1779299990; c=relaxed/simple;
+	bh=1R10FNG2UcPpI5EKzFEBCXbt2poj7R7jy6v86Sngeio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5Ref0v4FswA8WlJJrMGSAn0gY/xQXgBY0a4Fbb5B6hjl5ZLyX8Fe8Jm4t1SiNdm2Ke0X2JG+aN90ykwK51YLfzRaBGEH1yLlrS5L4NIZWZEW7U5QQlykHNfjFHhEeu4vUhYzQr6ZqrlJ5Sh3L6YsWX0htAs5zESAt5+mZd4aHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9iPPSW5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BD41F000E9;
-	Wed, 20 May 2026 18:28:34 +0000 (UTC)
+	 MIME-Version; b=iJjb96obbpbmKxMx3cODqUwW9jZ7pjgdGpcIfHwuOqlybuXMyDqKFXvpVRHXeg6sd7tNnt4wgyCDE3kM0KKlFyYhpOdYatqGhJI9oReTfNgd2UnknmwkHrCL4mCP+I3Jd7PUp3DZuL7x6GI+XJGlErc9VT9B2lKXPjWzbfGIGN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7jY2T82; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF7C1F00893;
+	Wed, 20 May 2026 17:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301715;
-	bh=ytHbiwkHixxoClUuYrpOey8KbTW7u3q7XfCs4g1XhPo=;
+	s=korg; t=1779299989;
+	bh=e798+27n5Iho2VuWM18WG7O8UsXPnv/XujqklrWqb7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E9iPPSW58co273jTaDL0eKblr2KOAkpeKPVSJ0iqzlxK4q/3veZjKkeuIzClvSdIn
-	 GAXtNTmZcRfgZjeq1jTbqj8ZOv0gw6MgJ+AQG4rNJyhm2WiHx3k/vVvKQVvdS4NI6z
-	 FhU9CMDQUSY1nrlOofEsHz1s7tQjpgkvdMa84oXI=
+	b=u7jY2T82DmCDwG1BLBi5X1jFf05xIP0PLaxZWPlhiPECSYf1P6HH73r1laW6WqKlW
+	 53vQptCBzUxR/X5OH/+R6xyhtYbYlLt6SXSQVH29+33ans4m07B8NIEYEw4ZH02Q0h
+	 PTKLr7nEQHY2LsO3dhD98nvHm/dHZFKavxNeqN2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 608/666] netpoll: pass buffer size to egress_dev() to avoid MAC truncation
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 936/957] libceph: handle rbtree insertion error in decode_choose_args()
 Date: Wed, 20 May 2026 18:23:39 +0200
-Message-ID: <20260520162124.447892384@linuxfoundation.org>
+Message-ID: <20260520162154.890638059@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,168 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252836-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252176-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6EE4C5969D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 504D459A816
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 76b93a8107574006b25495664304ea9237494d70 ]
+commit d289478cfc0bcf81c7914200d6abdcb78bd04ded upstream.
 
-egress_dev() formats np->dev_mac via snprintf() but receives buf as
-a bare char *, so it cannot derive the buffer size from the pointer. The
-size argument was hardcoded to MAC_ADDR_STR_LEN (3 * ETH_ALEN - 1 = 17),
-which is silly wrong in two ways:
+A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
+contains a CRUSH map. The received CRUSH map may optionally contain
+choose_args that get decoded in decode_choose_args(). In this function,
+num_choose_arg_maps is read from the message, and a corresponding number
+of crush_choose_arg_maps gets decoded afterwards. Each
+crush_choose_arg_map has a choose_args_index, which serves as the key
+when inserting it into the choose_args rbtree of the decoded crush_map.
+If a (potentially corrupted) message contains two crush_choose_arg_maps
+with the same index, the assertion in insert_choose_arg_map() triggers a
+kernel BUG when trying to insert the second crush_choose_arg_map.
 
- 1) misleading kernel log output on the MAC-selected target path
-    (np->dev_name[0] == '\0'); for example "aa:bb:cc:dd:ee:ff doesn't
-    exist, aborting" was logged as "aa:bb:cc:dd:ee:f doesn't exist,
-    aborting".
+This patch fixes the issue by switching to the non-asserting rbtree
+insertion function and rejecting the message if the insertion fails.
 
- 2) the second argument of snprintf is the size of the buffer, not the
-    size of what you want to write.
+[ idryomov: changelog ]
 
-Add a bufsz parameter to egress_dev() and pass sizeof(buf) from each
-caller, matching the standard snprintf() idiom and removing the
-hardcoded size from the helper.
-
-Every caller already declares "char buf[MAC_ADDR_STR_LEN + 1]" so the
-formatted MAC continues to fit.
-
-Tested by booting with
-  netconsole=6665@/aa:bb:cc:dd:ee:ff,6666@10.0.0.1/00:11:22:33:44:55
-on a kernel without a matching device. Pre-fix dmesg shows
-"aa:bb:cc:dd:ee:f doesn't exist, aborting"; post-fix shows the full
-"aa:bb:cc:dd:ee:ff doesn't exist, aborting".
-
-Fixes: f8a10bed32f5 ("netconsole: allow selection of egress interface via MAC address")
 Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260501-netpoll_snprintf_fix-v1-1-84b0566e6597@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ net/ceph/osdmap.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 59cb4d4d28e10..c48a47601c2f3 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -695,14 +695,16 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
- /*
-  * Returns a pointer to a string representation of the identifier used
-  * to select the egress interface for the given netpoll instance. buf
-- * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
-+ * is used to format np->dev_mac when np->dev_name is empty; bufsz must
-+ * be at least MAC_ADDR_STR_LEN + 1 to fit the formatted MAC address
-+ * and its NUL terminator.
-  */
--static char *egress_dev(struct netpoll *np, char *buf)
-+static char *egress_dev(struct netpoll *np, char *buf, size_t bufsz)
- {
- 	if (np->dev_name[0])
- 		return np->dev_name;
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -395,7 +395,10 @@ static int decode_choose_args(void **p,
+ 				goto e_inval;
+ 		}
  
--	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
-+	snprintf(buf, bufsz, "%pM", np->dev_mac);
- 	return buf;
- }
- 
-@@ -732,7 +734,7 @@ static int netpoll_take_ipv6(struct netpoll *np, struct net_device *ndev)
- 
- 	if (!IS_ENABLED(CONFIG_IPV6)) {
- 		np_err(np, "IPv6 is not supported %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EINVAL;
+-		insert_choose_arg_map(&c->choose_args, arg_map);
++		if (!__insert_choose_arg_map(&c->choose_args, arg_map)) {
++			ret = -EEXIST;
++			goto fail;
++		}
  	}
  
-@@ -754,7 +756,7 @@ static int netpoll_take_ipv6(struct netpoll *np, struct net_device *ndev)
- 	}
- 	if (err) {
- 		np_err(np, "no IPv6 address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return err;
- 	}
- 
-@@ -774,14 +776,14 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
- 	in_dev = __in_dev_get_rtnl(ndev);
- 	if (!in_dev) {
- 		np_err(np, "no IP address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EDESTADDRREQ;
- 	}
- 
- 	ifa = rtnl_dereference(in_dev->ifa_list);
- 	if (!ifa) {
- 		np_err(np, "no IP address for %s, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		return -EDESTADDRREQ;
- 	}
- 
-@@ -823,7 +825,8 @@ int netpoll_setup(struct netpoll *np)
- 		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
- 
- 	if (!ndev) {
--		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
-+		np_err(np, "%s doesn't exist, aborting\n",
-+		       egress_dev(np, buf, sizeof(buf)));
- 		err = -ENODEV;
- 		goto unlock;
- 	}
-@@ -831,14 +834,14 @@ int netpoll_setup(struct netpoll *np)
- 
- 	if (netdev_master_upper_dev_get(ndev)) {
- 		np_err(np, "%s is a slave device, aborting\n",
--		       egress_dev(np, buf));
-+		       egress_dev(np, buf, sizeof(buf)));
- 		err = -EBUSY;
- 		goto put;
- 	}
- 
- 	if (!netif_running(ndev)) {
- 		np_info(np, "device %s not up yet, forcing it\n",
--			egress_dev(np, buf));
-+			egress_dev(np, buf, sizeof(buf)));
- 
- 		err = dev_open(ndev, NULL);
- 		if (err) {
--- 
-2.53.0
-
+ 	return 0;
 
 
 
