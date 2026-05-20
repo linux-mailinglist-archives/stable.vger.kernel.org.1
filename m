@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHKDGRL9DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:30 +0200
+	id 2EvKOaP0DWos5AUAu9opvQ
+	(envelope-from <stable+bounces-251873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1C2596350
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829F2594BED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE5463154004
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1546F301300B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7064B3F8707;
-	Wed, 20 May 2026 18:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B641A3F2115;
+	Wed, 20 May 2026 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhUu1TAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvGv04ff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225483EAC82;
-	Wed, 20 May 2026 18:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615F12BD5B9;
+	Wed, 20 May 2026 17:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300763; cv=none; b=siTb4Xgb1Y+d8R0Fc/VRPPmrAOVQcBGpRvPT8e6/ktnN3+OtaUYfTwfBBBQhMNpxhzGLgrT8S3tH7d7pzYmrsD7SSW+bJFbpPTtGoCbzHCUHpENSAVys1JAZwvu0geoCbPQIHoS3sxQNnDS+AClOI7TcjoMWUwbe/6jCNFMPYr0=
+	t=1779299110; cv=none; b=KY6Cvi1v/to1H4jZWiEANgBP/B+QV495tElP5luchHlcY6CpjbTB+5HITtPFZatmEAMM+EUwqXl/jOlU9JHtDQ4GEZv96L/n3rd/F6UIvtT/HAS6YMgsFPzzZZLaii7Z8O2AI2AekEpLgUtlA+NNGM0DAhjXojbSq631TK5QJp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300763; c=relaxed/simple;
-	bh=YhzbbzjKFQRsZTz+1f+N+lUtW/U9egSRUmiuSuXGLTU=;
+	s=arc-20240116; t=1779299110; c=relaxed/simple;
+	bh=8K66T0PXzYmD5gWT9lHDtK9rDv8nirpXiAArZlAtIco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpYDDGaYG7j7X1k8yepga9fJAiLFzRDPDxdjFn7VIdBnvjzmkmdzntZFnBTcymf2/sbTEl4kCxBzxrjmEQRXmEVqRmLIQQD1HghA8rg7L3PYRiXBpTSVDsQM8zfW5T0Fq7hppp349LwEFVM3RacrksI0m2q3DbZBXHuGZS79Dow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhUu1TAj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876D71F000E9;
-	Wed, 20 May 2026 18:12:41 +0000 (UTC)
+	 MIME-Version; b=Nff+Se8cQEaHVfPJPGrXK6J0RZpAQK9BWCjSFpwLv/wJ1DjbGRev9Wu/GPO67cJjQzQVlGsie+8XptpUIVxqarrxnrIHw64wnfB/pUNlVBFOHVpJE2VjpHvaworV0Wp1tmoSylf7kMKCB0+IRLk01rJaFDxQJyXM4LA2CO+W/B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvGv04ff; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AA71F000E9;
+	Wed, 20 May 2026 17:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300762;
-	bh=okqqcE03TVnzo7OZXAaqCg17irl7yDekz40Zf0kUIsY=;
+	s=korg; t=1779299109;
+	bh=39kPdvTN+/2QAbpC62sj2GxxJdbglc3F7SNN+jtEx+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IhUu1TAjRwjk1JtlnWn6+mhvXD8YYht6jSTRlfqlms2UQ/4JwoMAhi2uHoI4viryu
-	 igoY1BX6RtvnZUIZNejOE8cQTfkI49LzHKE3I3TqEqQ39trOTM3bUjrUNZem2ReiGz
-	 vayAkErt2L9vGHz49JiiyJZZ3J2DVgzdQrCT4Ku8=
+	b=EvGv04ff1/1N2MEfu45Ahd9ub5/+yilm8v2eq8WB0uTx2Ukbskuor4bJs8DLRs28j
+	 rsRBQkXWjHoVu+GNFteR/VQRLTWxawM9ZeJburd3AzV5KvhmoYgRGzQiSa32Y10/eF
+	 iUVQvhp4pg0PR+gvcxOpvPqjXgQ0P33rliq/5Zdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nora Schiffer <nora.schiffer@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 296/666] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix UART1 RTS/CTS muxing
+Subject: [PATCH 6.18 624/957] net: dsa: remove redundant netdev_lock_ops() from conduit ethtool ops
 Date: Wed, 20 May 2026 18:18:27 +0200
-Message-ID: <20260520162117.630787196@linuxfoundation.org>
+Message-ID: <20260520162148.062461498@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252472-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251873-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,56 +86,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email,tq-group.com:email]
-X-Rspamd-Queue-Id: 2D1C2596350
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bootlin.com:email,fomichev.me:email]
+X-Rspamd-Queue-Id: 829F2594BED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
 
-[ Upstream commit b8d785a9f360abcd6a6f8f10a2adf222f8494d66 ]
+[ Upstream commit 0f99e0c3e19badaf3fdced0d3feba623e59eed41 ]
 
-UART1 operates in DCE mode, but the RTS/CTS pins were incorrectly
-configured using the DTE pinmux setting.
+DSA replaces the conduit (master) device's ethtool_ops with its own
+wrappers that aggregate stats from both the conduit and DSA switch
+ports. Taking the lock again inside the DSA wrappers causes a deadlock.
 
-Correct the pinmux to match DCE mode. Switching the RTS and CTS signals
-is fine for this board, as UART1 is routed to a pin header. Existing
-functionality is unaffected, as RTS/CTS could never have worked with
-the incorrect pinmux.
+Stumbled upon this when booting qemu with fbnic and CONFIG_NET_DSA_LOOP=y
+(which looks like some kind of testing device that auto-populates the ports
+of eth0). `ethtool -i` is enough to deadlock. This means we have basically zero
+coverage for DSA stuff with real ops locked devs.
 
-Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
-Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Remove the redundant netdev_lock_ops()/netdev_unlock_ops() calls from
+the DSA conduit ethtool wrappers.
+
+Fixes: 2bcf4772e45a ("net: ethtool: try to protect all callback with netdev instance lock")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260414231035.1917035-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/dsa/conduit.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-index a122f2ed5f531..06c865c3a8cf8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-@@ -833,8 +833,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
- 			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
--			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
--			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
-+			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
-+			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
- 	};
+diff --git a/net/dsa/conduit.c b/net/dsa/conduit.c
+index a1b044467bd6f..8398d72d7e4d3 100644
+--- a/net/dsa/conduit.c
++++ b/net/dsa/conduit.c
+@@ -27,9 +27,7 @@ static int dsa_conduit_get_regs_len(struct net_device *dev)
+ 	int len;
  
- 	pinctrl_uart1_gpio: uart1gpiogrp {
+ 	if (ops && ops->get_regs_len) {
+-		netdev_lock_ops(dev);
+ 		len = ops->get_regs_len(dev);
+-		netdev_unlock_ops(dev);
+ 		if (len < 0)
+ 			return len;
+ 		ret += len;
+@@ -60,15 +58,11 @@ static void dsa_conduit_get_regs(struct net_device *dev,
+ 	int len;
+ 
+ 	if (ops && ops->get_regs_len && ops->get_regs) {
+-		netdev_lock_ops(dev);
+ 		len = ops->get_regs_len(dev);
+-		if (len < 0) {
+-			netdev_unlock_ops(dev);
++		if (len < 0)
+ 			return;
+-		}
+ 		regs->len = len;
+ 		ops->get_regs(dev, regs, data);
+-		netdev_unlock_ops(dev);
+ 		data += regs->len;
+ 	}
+ 
+@@ -115,10 +109,8 @@ static void dsa_conduit_get_ethtool_stats(struct net_device *dev,
+ 	int count, mcount = 0;
+ 
+ 	if (ops && ops->get_sset_count && ops->get_ethtool_stats) {
+-		netdev_lock_ops(dev);
+ 		mcount = ops->get_sset_count(dev, ETH_SS_STATS);
+ 		ops->get_ethtool_stats(dev, stats, data);
+-		netdev_unlock_ops(dev);
+ 	}
+ 
+ 	list_for_each_entry(dp, &dst->ports, list) {
+@@ -149,10 +141,8 @@ static void dsa_conduit_get_ethtool_phy_stats(struct net_device *dev,
+ 		if (count >= 0)
+ 			phy_ethtool_get_stats(dev->phydev, stats, data);
+ 	} else if (ops && ops->get_sset_count && ops->get_ethtool_phy_stats) {
+-		netdev_lock_ops(dev);
+ 		count = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
+ 		ops->get_ethtool_phy_stats(dev, stats, data);
+-		netdev_unlock_ops(dev);
+ 	}
+ 
+ 	if (count < 0)
+@@ -176,13 +166,11 @@ static int dsa_conduit_get_sset_count(struct net_device *dev, int sset)
+ 	struct dsa_switch_tree *dst = cpu_dp->dst;
+ 	int count = 0;
+ 
+-	netdev_lock_ops(dev);
+ 	if (sset == ETH_SS_PHY_STATS && dev->phydev &&
+ 	    (!ops || !ops->get_ethtool_phy_stats))
+ 		count = phy_ethtool_get_sset_count(dev->phydev);
+ 	else if (ops && ops->get_sset_count)
+ 		count = ops->get_sset_count(dev, sset);
+-	netdev_unlock_ops(dev);
+ 
+ 	if (count < 0)
+ 		count = 0;
+@@ -239,7 +227,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+ 	struct dsa_switch_tree *dst = cpu_dp->dst;
+ 	int count, mcount = 0;
+ 
+-	netdev_lock_ops(dev);
+ 	if (stringset == ETH_SS_PHY_STATS && dev->phydev &&
+ 	    !ops->get_ethtool_phy_stats) {
+ 		mcount = phy_ethtool_get_sset_count(dev->phydev);
+@@ -253,7 +240,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+ 			mcount = 0;
+ 		ops->get_strings(dev, stringset, data);
+ 	}
+-	netdev_unlock_ops(dev);
+ 
+ 	list_for_each_entry(dp, &dst->ports, list) {
+ 		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
 -- 
 2.53.0
 
