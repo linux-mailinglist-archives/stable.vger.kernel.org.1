@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBlXEu/uDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:11 +0200
+	id EOhHFV/8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB38593B2D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDD85960AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DBEA3101F45
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:12:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 067673053B3B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36743DC4DA;
-	Wed, 20 May 2026 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1D73E5ECF;
+	Wed, 20 May 2026 18:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2BxXpDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRpfGOhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814513F65EA;
-	Wed, 20 May 2026 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E886429B78D;
+	Wed, 20 May 2026 18:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297089; cv=none; b=gAnLnuslUX7L42eh9fq252oyLv/N0gdWZacqrkR3+sjbxw6jMRRH07ICaaSBeiKzNzzflsTw6/Oo3ge4NfJKRMC7Y17cy54ACHEsfNW5P5KB9Tnh48CPtjkyF/BjmE1G0oddMDVP6frwY9xAVKNuOgYXkYU2RD57S9W2IjC2Xig=
+	t=1779301145; cv=none; b=n1EmNXVD7HJK64psTQFv0LsvwSjAllUd1iC5y0YytKsyu5BuZtZEO6T6eMEjEATzhfnyKfNCJKgJxOmHDiBz/AxN0zFpAYrNskbc2pdUKXyaov6LYYUoJcbdEF7cuqpCZxWt5i0dy8vqIuGAeztCL9RVQ5eRTBilsigoRggwO8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297089; c=relaxed/simple;
-	bh=6m8O58bwcUrCAT2XQTDSn4KC0ubj2FEXJ/aQXoIR3Ng=;
+	s=arc-20240116; t=1779301145; c=relaxed/simple;
+	bh=d232ufAf8t3RrWUPgVBglohy3PbUBQt3bp65ld975oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jnj/K58Ne34zyIoFadX9eS6+A8dlyLLUdWdEO70/d373aqZyKsxVtRNYDTm/TvzlHWQw36qPGcIqrWbOwFNmwKeCAavjJb+JtI3Eh863TJJvufhGV+ZIeYmrfF/sa2sxitbW2/Xfvojvqbuug5Xb5SnaQAQfgqP8yS+7X69nk/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2BxXpDd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E643F1F000E9;
-	Wed, 20 May 2026 17:11:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eDoUi06DRDfq7xBPhbukQ7qIGCz+hr1OlWtZJtVkzQHr136O4W1SrO4JfrwlG0D+Pgv6gwJ0gRUlkaIV71J2b7g2zcASJs19Th2nUJrKz614/lF9N7pK3FZ4RzUYd+FCTWBuWF3W7Gw70lYm6UttTD3riWQK/8Pc6GBwniNYYeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRpfGOhG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A49E1F000E9;
+	Wed, 20 May 2026 18:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297088;
-	bh=hbMJBYFKaK7FNoIPrmNN/n/Swsnu1FKC49Ro0sD1GR0=;
+	s=korg; t=1779301143;
+	bh=yf6dKVe6Sucr9MymKkUeYDivLrcrMa8eMkV5nmDsfqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M2BxXpDdgaUhnvELg4wBC5QwGuh4Fa/r1ojuweFxv2P/lm0VVrvKoEcZaqMKo2yRr
-	 FohAHiyvu0ZzCo7A1aI3/FMD5hfmBWx45yN3QSsK5F9AXvBSRnzLXzAjYAZtnj9z/5
-	 uQf0uC8Jpxgdn4hc6W/u/LcXscfIgnjxYMuVJ8Es=
+	b=jRpfGOhG/U7vsQVOfaaigL/W2NDmVHAkWkg4aS8Kb2VptnUY1Zh1MXqyoemt7cJX3
+	 orHzzsdqcGFlmW0YHnJ5KxXuAnXVCfbwa5YfFtg14LRTYoIuQVDT0fzuujvGfJ5zmH
+	 ezos/4yU2P5c/NiDS1lSC/WrYPunG0Op7BAgodZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dudu Lu <phx0fer@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1005/1146] drm/amd/display: Allow constructing DCE8 link encoder without DDC
+Subject: [PATCH 6.12 444/666] net/sched: act_mirred: fix wrong device for mac_header_xmit check in tcf_blockcast_redir
 Date: Wed, 20 May 2026 18:20:55 +0200
-Message-ID: <20260520162210.978013092@linuxfoundation.org>
+Message-ID: <20260520162120.894792140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251097-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252617-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: AEB38593B2D
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EFDD85960AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit 60af4605ef35ecb7ad649a8534b83a2f7c69576d ]
+[ Upstream commit 4510d140524ca7d6e772db962e013f26f09a63b1 ]
 
-When the DDC channel ID is set to CHANNEL_ID_UNKNOWN,
-pass NULL to the AUX regs array.
+In tcf_blockcast_redir(), when iterating block ports to redirect
+packets to multiple devices, the mac_header_xmit flag is queried
+from the wrong device. The loop sends to dev_prev but queries
+dev_is_mac_header_xmit(dev) — which is the NEXT device in the
+iteration, not the one being sent to.
 
-This is necessary to support embedded connectors without DDC.
+This causes tcf_mirred_to_dev() to make incorrect decisions about
+whether to push or pull the MAC header. When the block contains
+mixed device types (e.g., an ethernet veth and a tunnel device),
+intermediate devices get the wrong mac_header_xmit flag, leading to
+skb header corruption. In the worst case, skb_push_rcsum with an
+incorrect mac_len can exhaust headroom and panic.
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 155baf3038c1af50b602723022ed869b38e86a99)
+The last device in the loop is handled correctly (line 365-366 uses
+dev_is_mac_header_xmit(dev_prev)), confirming this is a copy-paste
+oversight for the intermediate devices.
+
+Fix by using dev_prev instead of dev for the mac_header_xmit query,
+consistent with the device actually being sent to.
+
+Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260413084927.71353-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-index 89927727a0d9e..42d0bd656f793 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce80/dce80_resource.c
-@@ -759,7 +759,8 @@ static struct link_encoder *dce80_link_encoder_create(
- 				      enc_init_data,
- 				      &link_enc_feature,
- 				      &link_enc_regs[link_regs_id],
--				      &link_enc_aux_regs[enc_init_data->channel - 1],
-+				      enc_init_data->channel == CHANNEL_ID_UNKNOWN ?
-+				      NULL : &link_enc_aux_regs[enc_init_data->channel - 1],
- 				      enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
- 				      NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 5b38143659249..b1b0049d7a0e9 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -348,7 +348,7 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
+ 			goto assign_prev;
+ 
+ 		tcf_mirred_to_dev(skb, m, dev_prev,
+-				  dev_is_mac_header_xmit(dev),
++				  dev_is_mac_header_xmit(dev_prev),
+ 				  mirred_eaction, retval);
+ assign_prev:
+ 		dev_prev = dev;
 -- 
 2.53.0
 
