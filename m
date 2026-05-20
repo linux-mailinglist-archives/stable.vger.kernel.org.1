@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BvsC7AFDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:16 +0200
+	id kI55Aw/xDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEA3597AB5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D14959413D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1A8C931C8E7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A8F831E444D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1785A3FBEDA;
-	Wed, 20 May 2026 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8BF3BED26;
+	Wed, 20 May 2026 16:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AquBb0rQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkP9VCXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2312D3E832A;
-	Wed, 20 May 2026 18:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB1037D101;
+	Wed, 20 May 2026 16:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300389; cv=none; b=VF7vuDuNHso7FO+vfcllrYugVyF6pj1Cr+c9eF5WqYlsUgXOG2g06VT0h2LleVcQoYR80LuvOzByclYuWSaTt4uIdUy92lmfxqZLLowzPC0QV+e5S1pVeO8rTrwpwJEB+JO8dl7VwZFtUMYo0RQLTLspknZHd1qkFJc9XQVnhG8=
+	t=1779296219; cv=none; b=ngUn/pF+1YRFGBY7UIdQZ9HVe+MIcS1qxI3Or7OUL6qqmYGI7kvkRNRBayLg4l5nralet5fe7RAHNk6rxA7lS0ZlE/Mg5QxlDDYVXuHMlz3+jy08m3rUGiCwzdPJOHW3dtmIgoAV5K9+r2gHg2lqHr4QrVXqU0MtCMerwkb870Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300389; c=relaxed/simple;
-	bh=0NaQaeS81CPTgn/iUvcDy2DMK5KRq/Y2kgX6sksMwEk=;
+	s=arc-20240116; t=1779296219; c=relaxed/simple;
+	bh=gkfvhC2t51mhgL80+5pkWSduSvSNR7OfIGlPPpde+kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIrbMz9Jge/xasX0ENsoJ0tIlI69yBV6gnCUbMynkY/1NtqMKWjPYxzJ4ruN0ZBSWZyp6NaDnhleOE8Syq9iqTkIK2r28dCsBykUXI/SPauNDpbU+sunwtN6MNvhftfiMN5VHycUQUQNmu1NVfGvfYCxceD2ylP/FBFBBMd2uZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AquBb0rQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883071F000E9;
-	Wed, 20 May 2026 18:06:27 +0000 (UTC)
+	 MIME-Version; b=mGpA7yf3y3ixw9jJcPsPtrtROq8bServaUVVPa+MJGmEyroQ6BKdDUiuoVuvIK+3C4nRwW4GNinSU3t+8aqXIZQS83ui6W47T35T7nItg3BeV59t9JvOuwGI3fLtkM68EQ+a9aICabEu8EeGq/ij5W9gY1nim82MMJpSu9281C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkP9VCXD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04CA1F000E9;
+	Wed, 20 May 2026 16:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300388;
-	bh=oyhaa42CnEsn4RFp0ia4FeQL5KY0wxUGsRJSxuhATds=;
+	s=korg; t=1779296218;
+	bh=4HQG+/MS1w05WEEnfV0MpWA4fOCGjRfiy210tD8XqUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AquBb0rQWpbYIziPnkkPv4lGZ29KqzsaxegcCKxBt12aY9lIWiQk2GJTS55isbej/
-	 7ft8TX+gn9tIk0E091fqzr8MCN96WpivnLmIoJJhU+KIy78/H5Ls+LvpPcmrVduYnF
-	 XZM5McoxWuxbFsfJULjq0s2W31jx0pJjaut/5EM0=
+	b=LkP9VCXDsgOY0jfPXFNrCHfdgfhoIUaXFZH+/QFhbtmsEM8duLJPkgU7+/CHb+Fe4
+	 7hostivRvHmnRVy3NewXvYv/mJqb5BMDLyyMrMfrZTeyLtzNzWkVxK7qjRG1M6pSsY
+	 kJkcgPn0co5X2yO6Xy8Z8zE/VEDswWukYv7l0PAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/666] crypto: tegra - Reserve keyslots to allocate dynamically
+Subject: [PATCH 7.0 0716/1146] clk: qcom: gcc-sc8180x: Use retention for USB power domains
 Date: Wed, 20 May 2026 18:16:06 +0200
-Message-ID: <20260520162114.569577549@linuxfoundation.org>
+Message-ID: <20260520162204.390734726@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,532 +68,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252328-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250750-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 0FEA3597AB5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,packett.cool:email]
+X-Rspamd-Queue-Id: 0D14959413D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit b157e7a228aee9b48c2de05129476b822aa7956d ]
+[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
 
-The HW supports only storing 15 keys at a time. This limits the number
-of tfms that can work without failutes. Reserve keyslots to solve this
-and use the reserved ones during the encryption/decryption operation.
-This allow users to have the capability of hardware protected keys
-and faster operations if there are limited number of tfms while not
-halting the operation if there are more tfms.
+The USB subsystem does not expect to lose its state on suspend:
 
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 2aeec9af775f ("crypto: tegra - Disable softirqs before finalizing request")
+    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
+    usb usb1: root hub lost power or was reset
+
+(The reinitialization usually succeeds, but it does slow down resume.)
+
+To maintain state during suspend, the relevant GDSCs need to stay in
+retention mode, like they do on other similar SoCs. Change the mode to
+PWRSTS_RET_ON to fix.
+
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c | 139 +++++++++++++++++++++++-----
- drivers/crypto/tegra/tegra-se-key.c |  19 +++-
- drivers/crypto/tegra/tegra-se.h     |  28 ++++++
- 3 files changed, 164 insertions(+), 22 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index fbb39436e6d54..9210cceb4b7b2 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -28,6 +28,9 @@ struct tegra_aes_ctx {
- 	u32 ivsize;
- 	u32 key1_id;
- 	u32 key2_id;
-+	u32 keylen;
-+	u8 key1[AES_MAX_KEY_SIZE];
-+	u8 key2[AES_MAX_KEY_SIZE];
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 55dabf6259b29..b116a9c0b2d94 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4172,7 +4172,7 @@ static struct gdsc usb30_sec_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_sec_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
  };
  
- struct tegra_aes_reqctx {
-@@ -43,8 +46,9 @@ struct tegra_aead_ctx {
- 	struct tegra_se *se;
- 	unsigned int authsize;
- 	u32 alg;
--	u32 keylen;
- 	u32 key_id;
-+	u32 keylen;
-+	u8 key[AES_MAX_KEY_SIZE];
+@@ -4190,7 +4190,7 @@ static struct gdsc usb30_prim_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
  };
  
- struct tegra_aead_reqctx {
-@@ -56,8 +60,8 @@ struct tegra_aead_reqctx {
- 	unsigned int cryptlen;
- 	unsigned int authsize;
- 	bool encrypt;
--	u32 config;
- 	u32 crypto_config;
-+	u32 config;
- 	u32 key_id;
- 	u32 iv[4];
- 	u8 authdata[16];
-@@ -67,6 +71,8 @@ struct tegra_cmac_ctx {
- 	struct tegra_se *se;
- 	unsigned int alg;
- 	u32 key_id;
-+	u32 keylen;
-+	u8 key[AES_MAX_KEY_SIZE];
- 	struct crypto_shash *fallback_tfm;
+@@ -4262,7 +4262,7 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_mp_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
  };
  
-@@ -260,11 +266,13 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 	struct tegra_aes_ctx *ctx = crypto_skcipher_ctx(crypto_skcipher_reqtfm(req));
- 	struct tegra_aes_reqctx *rctx = skcipher_request_ctx(req);
- 	struct tegra_se *se = ctx->se;
--	unsigned int cmdlen;
-+	unsigned int cmdlen, key1_id, key2_id;
- 	int ret;
- 
- 	rctx->iv = (ctx->alg == SE_ALG_ECB) ? NULL : (u32 *)req->iv;
- 	rctx->len = req->cryptlen;
-+	key1_id = ctx->key1_id;
-+	key2_id = ctx->key2_id;
- 
- 	/* Pad input to AES Block size */
- 	if (ctx->alg != SE_ALG_XTS) {
-@@ -282,6 +290,29 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 
- 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->src, 0, req->cryptlen, 0);
- 
-+	rctx->config = tegra234_aes_cfg(ctx->alg, rctx->encrypt);
-+	rctx->crypto_config = tegra234_aes_crypto_cfg(ctx->alg, rctx->encrypt);
-+
-+	if (!key1_id) {
-+		ret = tegra_key_submit_reserved_aes(ctx->se, ctx->key1,
-+						    ctx->keylen, ctx->alg, &key1_id);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	rctx->crypto_config |= SE_AES_KEY_INDEX(key1_id);
-+
-+	if (ctx->alg == SE_ALG_XTS) {
-+		if (!key2_id) {
-+			ret = tegra_key_submit_reserved_xts(ctx->se, ctx->key2,
-+							    ctx->keylen, ctx->alg, &key2_id);
-+			if (ret)
-+				goto out;
-+		}
-+
-+		rctx->crypto_config |= SE_AES_KEY2_INDEX(key2_id);
-+	}
-+
- 	/* Prepare the command and submit for execution */
- 	cmdlen = tegra_aes_prep_cmd(ctx, rctx);
- 	ret = tegra_se_host1x_submit(se, se->cmdbuf, cmdlen);
-@@ -290,10 +321,17 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 	tegra_aes_update_iv(req, ctx);
- 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->dst, 0, req->cryptlen, 1);
- 
-+out:
- 	/* Free the buffer */
- 	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
- 			  rctx->datbuf.buf, rctx->datbuf.addr);
- 
-+	if (tegra_key_is_reserved(key1_id))
-+		tegra_key_invalidate_reserved(ctx->se, key1_id, ctx->alg);
-+
-+	if (tegra_key_is_reserved(key2_id))
-+		tegra_key_invalidate_reserved(ctx->se, key2_id, ctx->alg);
-+
- out_finalize:
- 	crypto_finalize_skcipher_request(se->engine, req, ret);
- 
-@@ -316,6 +354,7 @@ static int tegra_aes_cra_init(struct crypto_skcipher *tfm)
- 	ctx->se = se_alg->se_dev;
- 	ctx->key1_id = 0;
- 	ctx->key2_id = 0;
-+	ctx->keylen = 0;
- 
- 	algname = crypto_tfm_alg_name(&tfm->base);
- 	ret = se_algname_to_algid(algname);
-@@ -344,13 +383,20 @@ static int tegra_aes_setkey(struct crypto_skcipher *tfm,
- 			    const u8 *key, u32 keylen)
- {
- 	struct tegra_aes_ctx *ctx = crypto_skcipher_ctx(tfm);
-+	int ret;
- 
- 	if (aes_check_keylen(keylen)) {
- 		dev_dbg(ctx->se->dev, "invalid key length (%d)\n", keylen);
- 		return -EINVAL;
- 	}
- 
--	return tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key1_id);
-+	ret = tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key1_id);
-+	if (ret) {
-+		ctx->keylen = keylen;
-+		memcpy(ctx->key1, key, keylen);
-+	}
-+
-+	return 0;
- }
- 
- static int tegra_xts_setkey(struct crypto_skcipher *tfm,
-@@ -368,11 +414,17 @@ static int tegra_xts_setkey(struct crypto_skcipher *tfm,
- 
- 	ret = tegra_key_submit(ctx->se, key, len,
- 			       ctx->alg, &ctx->key1_id);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		ctx->keylen = len;
-+		memcpy(ctx->key1, key, len);
-+	}
- 
--	return tegra_key_submit(ctx->se, key + len, len,
-+	ret = tegra_key_submit(ctx->se, key + len, len,
- 			       ctx->alg, &ctx->key2_id);
-+	if (ret) {
-+		ctx->keylen = len;
-+		memcpy(ctx->key2, key + len, len);
-+	}
- 
- 	return 0;
- }
-@@ -447,12 +499,6 @@ static int tegra_aes_crypt(struct skcipher_request *req, bool encrypt)
- 		return 0;
- 
- 	rctx->encrypt = encrypt;
--	rctx->config = tegra234_aes_cfg(ctx->alg, encrypt);
--	rctx->crypto_config = tegra234_aes_crypto_cfg(ctx->alg, encrypt);
--	rctx->crypto_config |= SE_AES_KEY_INDEX(ctx->key1_id);
--
--	if (ctx->key2_id)
--		rctx->crypto_config |= SE_AES_KEY2_INDEX(ctx->key2_id);
- 
- 	return crypto_transfer_skcipher_request_to_engine(ctx->se->engine, req);
- }
-@@ -719,7 +765,7 @@ static int tegra_gcm_do_gmac(struct tegra_aead_ctx *ctx, struct tegra_aead_reqct
- 
- 	rctx->config = tegra234_aes_cfg(SE_ALG_GMAC, rctx->encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(SE_ALG_GMAC, rctx->encrypt) |
--			      SE_AES_KEY_INDEX(ctx->key_id);
-+			      SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	cmdlen = tegra_gmac_prep_cmd(ctx, rctx);
- 
-@@ -736,7 +782,7 @@ static int tegra_gcm_do_crypt(struct tegra_aead_ctx *ctx, struct tegra_aead_reqc
- 
- 	rctx->config = tegra234_aes_cfg(SE_ALG_GCM, rctx->encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(SE_ALG_GCM, rctx->encrypt) |
--			      SE_AES_KEY_INDEX(ctx->key_id);
-+			      SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_gcm_crypt_prep_cmd(ctx, rctx);
-@@ -759,7 +805,7 @@ static int tegra_gcm_do_final(struct tegra_aead_ctx *ctx, struct tegra_aead_reqc
- 
- 	rctx->config = tegra234_aes_cfg(SE_ALG_GCM_FINAL, rctx->encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(SE_ALG_GCM_FINAL, rctx->encrypt) |
--			      SE_AES_KEY_INDEX(ctx->key_id);
-+			      SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_gcm_prep_final_cmd(se, cpuvaddr, rctx);
-@@ -890,7 +936,7 @@ static int tegra_ccm_do_cbcmac(struct tegra_aead_ctx *ctx, struct tegra_aead_req
- 	rctx->config = tegra234_aes_cfg(SE_ALG_CBC_MAC, rctx->encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(SE_ALG_CBC_MAC,
- 						      rctx->encrypt) |
--						      SE_AES_KEY_INDEX(ctx->key_id);
-+						      SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	/* Prepare command and submit */
- 	cmdlen = tegra_cbcmac_prep_cmd(ctx, rctx);
-@@ -1077,7 +1123,7 @@ static int tegra_ccm_do_ctr(struct tegra_aead_ctx *ctx, struct tegra_aead_reqctx
- 
- 	rctx->config = tegra234_aes_cfg(SE_ALG_CTR, rctx->encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(SE_ALG_CTR, rctx->encrypt) |
--			      SE_AES_KEY_INDEX(ctx->key_id);
-+			      SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	/* Copy authdata in the top of buffer for encryption/decryption */
- 	if (rctx->encrypt)
-@@ -1158,6 +1204,8 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 	if (ret)
- 		goto out_finalize;
- 
-+	rctx->key_id = ctx->key_id;
-+
- 	/* Allocate buffers required */
- 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
- 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
-@@ -1173,6 +1221,13 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 		goto out_free_inbuf;
- 	}
- 
-+	if (!ctx->key_id) {
-+		ret = tegra_key_submit_reserved_aes(ctx->se, ctx->key,
-+						    ctx->keylen, ctx->alg, &rctx->key_id);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	if (rctx->encrypt) {
- 		/* CBC MAC Operation */
- 		ret = tegra_ccm_compute_auth(ctx, rctx);
-@@ -1203,6 +1258,9 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
- 			  rctx->inbuf.buf, rctx->inbuf.addr);
- 
-+	if (tegra_key_is_reserved(rctx->key_id))
-+		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
-+
- out_finalize:
- 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
- 
-@@ -1230,6 +1288,8 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 	memcpy(rctx->iv, req->iv, GCM_AES_IV_SIZE);
- 	rctx->iv[3] = (1 << 24);
- 
-+	rctx->key_id = ctx->key_id;
-+
- 	/* Allocate buffers required */
- 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
- 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
-@@ -1247,6 +1307,13 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 		goto out_free_inbuf;
- 	}
- 
-+	if (!ctx->key_id) {
-+		ret = tegra_key_submit_reserved_aes(ctx->se, ctx->key,
-+						    ctx->keylen, ctx->alg, &rctx->key_id);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	/* If there is associated data perform GMAC operation */
- 	if (rctx->assoclen) {
- 		ret = tegra_gcm_do_gmac(ctx, rctx);
-@@ -1277,6 +1344,9 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
- 			  rctx->inbuf.buf, rctx->inbuf.addr);
- 
-+	if (tegra_key_is_reserved(rctx->key_id))
-+		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
-+
- out_finalize:
- 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
- 
-@@ -1299,6 +1369,7 @@ static int tegra_aead_cra_init(struct crypto_aead *tfm)
- 
- 	ctx->se = se_alg->se_dev;
- 	ctx->key_id = 0;
-+	ctx->keylen = 0;
- 
- 	ret = se_algname_to_algid(algname);
- 	if (ret < 0) {
-@@ -1380,13 +1451,20 @@ static int tegra_aead_setkey(struct crypto_aead *tfm,
- 			     const u8 *key, u32 keylen)
- {
- 	struct tegra_aead_ctx *ctx = crypto_aead_ctx(tfm);
-+	int ret;
- 
- 	if (aes_check_keylen(keylen)) {
- 		dev_dbg(ctx->se->dev, "invalid key length (%d)\n", keylen);
- 		return -EINVAL;
- 	}
- 
--	return tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key_id);
-+	ret = tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key_id);
-+	if (ret) {
-+		ctx->keylen = keylen;
-+		memcpy(ctx->key, key, keylen);
-+	}
-+
-+	return 0;
- }
- 
- static unsigned int tegra_cmac_prep_cmd(struct tegra_cmac_ctx *ctx,
-@@ -1471,6 +1549,7 @@ static int tegra_cmac_do_init(struct ahash_request *req)
- 	rctx->total_len = 0;
- 	rctx->datbuf.size = 0;
- 	rctx->residue.size = 0;
-+	rctx->key_id = ctx->key_id;
- 	rctx->task |= SHA_FIRST;
- 	rctx->blk_size = crypto_ahash_blocksize(tfm);
- 
-@@ -1515,7 +1594,7 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 	rctx->datbuf.size = (req->nbytes + rctx->residue.size) - nresidue;
- 	rctx->total_len += rctx->datbuf.size;
- 	rctx->config = tegra234_aes_cfg(SE_ALG_CMAC, 0);
--	rctx->crypto_config = SE_AES_KEY_INDEX(ctx->key_id);
-+	rctx->crypto_config = SE_AES_KEY_INDEX(rctx->key_id);
- 
- 	/*
- 	 * Keep one block and residue bytes in residue and
-@@ -1641,6 +1720,13 @@ static int tegra_cmac_do_one_req(struct crypto_engine *engine, void *areq)
- 		rctx->task &= ~SHA_INIT;
- 	}
- 
-+	if (!ctx->key_id) {
-+		ret = tegra_key_submit_reserved_aes(ctx->se, ctx->key,
-+						    ctx->keylen, ctx->alg, &rctx->key_id);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	if (rctx->task & SHA_UPDATE) {
- 		ret = tegra_cmac_do_update(req);
- 		if (ret)
-@@ -1657,6 +1743,9 @@ static int tegra_cmac_do_one_req(struct crypto_engine *engine, void *areq)
- 		rctx->task &= ~SHA_FINAL;
- 	}
- out:
-+	if (tegra_key_is_reserved(rctx->key_id))
-+		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
-+
- 	crypto_finalize_hash_request(se->engine, req, ret);
- 
- 	return 0;
-@@ -1697,6 +1786,7 @@ static int tegra_cmac_cra_init(struct crypto_tfm *tfm)
- 
- 	ctx->se = se_alg->se_dev;
- 	ctx->key_id = 0;
-+	ctx->keylen = 0;
- 
- 	ret = se_algname_to_algid(algname);
- 	if (ret < 0) {
-@@ -1725,6 +1815,7 @@ static int tegra_cmac_setkey(struct crypto_ahash *tfm, const u8 *key,
- 			     unsigned int keylen)
- {
- 	struct tegra_cmac_ctx *ctx = crypto_ahash_ctx(tfm);
-+	int ret;
- 
- 	if (aes_check_keylen(keylen)) {
- 		dev_dbg(ctx->se->dev, "invalid key length (%d)\n", keylen);
-@@ -1734,7 +1825,13 @@ static int tegra_cmac_setkey(struct crypto_ahash *tfm, const u8 *key,
- 	if (ctx->fallback_tfm)
- 		crypto_shash_setkey(ctx->fallback_tfm, key, keylen);
- 
--	return tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key_id);
-+	ret = tegra_key_submit(ctx->se, key, keylen, ctx->alg, &ctx->key_id);
-+	if (ret) {
-+		ctx->keylen = keylen;
-+		memcpy(ctx->key, key, keylen);
-+	}
-+
-+	return 0;
- }
- 
- static int tegra_cmac_init(struct ahash_request *req)
-diff --git a/drivers/crypto/tegra/tegra-se-key.c b/drivers/crypto/tegra/tegra-se-key.c
-index 276b261fb6df1..956fa9b4e9b1a 100644
---- a/drivers/crypto/tegra/tegra-se-key.c
-+++ b/drivers/crypto/tegra/tegra-se-key.c
-@@ -141,6 +141,23 @@ void tegra_key_invalidate(struct tegra_se *se, u32 keyid, u32 alg)
- 	tegra_keyslot_free(keyid);
- }
- 
-+void tegra_key_invalidate_reserved(struct tegra_se *se, u32 keyid, u32 alg)
-+{
-+	u8 zkey[AES_MAX_KEY_SIZE] = {0};
-+
-+	if (!keyid)
-+		return;
-+
-+	/* Overwrite the key with 0s */
-+	tegra_key_insert(se, zkey, AES_MAX_KEY_SIZE, keyid, alg);
-+}
-+
-+inline int tegra_key_submit_reserved(struct tegra_se *se, const u8 *key,
-+				     u32 keylen, u32 alg, u32 *keyid)
-+{
-+	return tegra_key_insert(se, key, keylen, *keyid, alg);
-+}
-+
- int tegra_key_submit(struct tegra_se *se, const u8 *key, u32 keylen, u32 alg, u32 *keyid)
- {
- 	int ret;
-@@ -149,7 +166,7 @@ int tegra_key_submit(struct tegra_se *se, const u8 *key, u32 keylen, u32 alg, u3
- 	if (!tegra_key_in_kslt(*keyid)) {
- 		*keyid = tegra_keyslot_alloc();
- 		if (!(*keyid)) {
--			dev_err(se->dev, "failed to allocate key slot\n");
-+			dev_dbg(se->dev, "failed to allocate key slot\n");
- 			return -ENOMEM;
- 		}
- 	}
-diff --git a/drivers/crypto/tegra/tegra-se.h b/drivers/crypto/tegra/tegra-se.h
-index e1ec37bfb80a8..85674703a9603 100644
---- a/drivers/crypto/tegra/tegra-se.h
-+++ b/drivers/crypto/tegra/tegra-se.h
-@@ -341,6 +341,9 @@
- #define SE_MAX_KEYSLOT				15
- #define SE_MAX_MEM_ALLOC			SZ_4M
- 
-+#define TEGRA_AES_RESERVED_KSLT			14
-+#define TEGRA_XTS_RESERVED_KSLT			15
-+
- #define SHA_FIRST	BIT(0)
- #define SHA_INIT	BIT(1)
- #define SHA_UPDATE	BIT(2)
-@@ -501,9 +504,34 @@ void tegra_deinit_aes(struct tegra_se *se);
- void tegra_deinit_hash(struct tegra_se *se);
- int tegra_key_submit(struct tegra_se *se, const u8 *key,
- 		     u32 keylen, u32 alg, u32 *keyid);
-+
-+int tegra_key_submit_reserved(struct tegra_se *se, const u8 *key,
-+			      u32 keylen, u32 alg, u32 *keyid);
-+
- void tegra_key_invalidate(struct tegra_se *se, u32 keyid, u32 alg);
-+void tegra_key_invalidate_reserved(struct tegra_se *se, u32 keyid, u32 alg);
- int tegra_se_host1x_submit(struct tegra_se *se, struct tegra_se_cmdbuf *cmdbuf, u32 size);
- 
-+static inline int tegra_key_submit_reserved_aes(struct tegra_se *se, const u8 *key,
-+						u32 keylen, u32 alg, u32 *keyid)
-+{
-+	*keyid = TEGRA_AES_RESERVED_KSLT;
-+	return tegra_key_submit_reserved(se, key, keylen, alg, keyid);
-+}
-+
-+static inline int tegra_key_submit_reserved_xts(struct tegra_se *se, const u8 *key,
-+						u32 keylen, u32 alg, u32 *keyid)
-+{
-+	*keyid = TEGRA_XTS_RESERVED_KSLT;
-+	return tegra_key_submit_reserved(se, key, keylen, alg, keyid);
-+}
-+
-+static inline bool tegra_key_is_reserved(u32 keyid)
-+{
-+	return ((keyid == TEGRA_AES_RESERVED_KSLT) ||
-+		(keyid == TEGRA_XTS_RESERVED_KSLT));
-+}
-+
- /* HOST1x OPCODES */
- static inline u32 host1x_opcode_setpayload(unsigned int payload)
- {
 -- 
 2.53.0
 
