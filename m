@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-252984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGMHO98ZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:23 +0200
+	id QGjBBLAADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03187599B38
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2435970E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 91E75321A1B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:35:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1DC1306F1F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C0217A2FC;
-	Wed, 20 May 2026 18:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45B23F8704;
+	Wed, 20 May 2026 18:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiWbdC+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kH9iFtch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78097318ED6;
-	Wed, 20 May 2026 18:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768B833DEE5;
+	Wed, 20 May 2026 18:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302102; cv=none; b=s3qzeCLsH2+NitH7kYH9AIf2s8YiN8mr4nEN1Dlp9MrOtSEccx4GYBJ+ytVcKJL09OhiWN7aPlC1rmmd0lGmiyZj0vhXkdOlZ5sGnb8jWPULlSPYRsHeOc/5xcexFIRx/DUIwz4Y6G/NPc0qbByVALNGUJHTnA5bllWLl6ZQXp4=
+	t=1779302131; cv=none; b=Bj47h/2DnEUJdMFFx3sse1190VMmv7akHcW9AATnMIKEo9kjQHnIbx01mURpWmZalQBVACiIlC1orcud/R98lF2TkyafKaSXWffjBbApyGV/w48clU+CNk0E5aB2snRLlxY8gOF4nyYAv8D8DkWaLCEbrASCin/ff1aCfjtHPqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302102; c=relaxed/simple;
-	bh=v6U7TN7LVqlrVJHkBbPEXDlgeGjS81h3V2bw0QNRGm8=;
+	s=arc-20240116; t=1779302131; c=relaxed/simple;
+	bh=lETV/XTXNdyAVX4PSj8SwhM2ADhh6TZdPPpYIwfmAh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U3yEjV3XIPrLUFwzcQj+l8OfHhaJrbbj0aewBPcHGkRPnS+XA8GgnR/yPVWSxv+OSJNjFUmi60E4uVCWpxzEHLHa32IrrOy87r5wDcMbnGQssUJYvBD3VLLNx3OEQxQAafle7Kph2BOvj8V8gQvgeXlwBFn5FzhIaFZnNtlxwQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiWbdC+F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBD51F00893;
-	Wed, 20 May 2026 18:35:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pStRuF+SwVFZtCEUNuvJVONddoNeA3jsnVIMv9DcuFI9j95yU0fTkoQUhql71ixSSd1k9T8tGe3RlHcrtZ69rHqjxFBvlGYV2NRMWrO2em01y5G9oRDuXLa2Jxjdb6QxTx00e8hD1pYCn5G0E+IdRLIRESpg8l/9wLjgjohsS6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kH9iFtch; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9841F000E9;
+	Wed, 20 May 2026 18:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302101;
-	bh=0qr2vDB4tgxIjm+eEOFf7dbZTHU0IPMBPKKDzzd1ss4=;
+	s=korg; t=1779302130;
+	bh=4oRQvpwzQcFaOjrgUo7+oXROQfvi7jQFOm8sdyaee6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MiWbdC+FThrsU7Hy09JKVCrx4odswa86D12Gi11Jpw4fl0Rzzy5tq58BSjeTzHnHS
-	 qqwjFItFF+3dRAcR/Jc7pTavfI1HA59uV8xo1w9KSRBg3ampDcu9MkeWTAzvHkfoLR
-	 fNEk8p5daNfACXwREgSE1in261/k1bFkAQOcCjms=
+	b=kH9iFtchjIvu6g8a1NVb346hlmEYstG2c+98Ga0uJQgrGrcgRqG2AET/ImvrCsIBO
+	 CNWnvMw8na8Sijmrtpm3iYpycPxzwziVv+0oqcoLv1Kh+yY0Qy1iq6YakLWBcO3jsX
+	 S2pCLDiDjV3rxxBqhB5Qm/WyGqlTt1LKcBHx7NyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/508] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
-Date: Wed, 20 May 2026 18:19:05 +0200
-Message-ID: <20260520162101.272519944@linuxfoundation.org>
+Subject: [PATCH 6.6 123/508] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
+Date: Wed, 20 May 2026 18:19:06 +0200
+Message-ID: <20260520162101.293974345@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -70,12 +70,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252984-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252996-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,9 +92,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 03187599B38
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CA2435970E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,40 +104,60 @@ X-Rspamd-Server: lfdr
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
+[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
 
-When MCLK DPM is disabled for any reason, populate the MCLK
-table with the highest MCLK DPM level, so that the ASIC can
-use the highest possible memory clock to get good performance
-even when MCLK DPM is disabled.
+There are two known cases where MCLK DPM can causes issues:
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Radeon R9 M380 found in iMac computers from 2015.
+The SMU in this GPU just hangs as soon as we send it the
+PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
+disabled, and even when we only populate one MCLK DPM level.
+Apply workaround to all devices with the same subsystem ID.
+
+Radeon R7 260X due to old memory controller microcode.
+We only flash the MC ucode when it isn't set up by the VBIOS,
+therefore there is no way to make sure that it has the correct
+ucode version.
+
+I verified that this patch fixes the SMU hang on the R9 M380
+which would previously fail to boot. This also fixes the UVD
+initialization error on that GPU which happened because the
+SMU couldn't ungate the UVD after it hung.
+
+Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 23f991dd065f3..fa9ab4144d308 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1322,6 +1322,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
- 			return result;
- 	}
- 
-+	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
-+		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
-+		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
-+			levels[i] = levels[dpm_table->mclk_table.count - 1];
-+			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+index 2b5ac21fee399..1d6e30269d567 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+@@ -104,6 +104,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
+ 					 PP_GFXOFF_MASK);
+ 		hwmgr->pp_table_version = PP_TABLE_V0;
+ 		hwmgr->od_enabled = false;
++		switch (hwmgr->chip_id) {
++		case CHIP_BONAIRE:
++			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
++			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
++			 */
++			if (adev->pdev->subsystem_vendor == 0x106B ||
++			    adev->pdev->device == 0x6658) {
++				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
++				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
++				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
++			}
++			break;
++		default:
++			break;
 +		}
-+	}
-+
- 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
- 
- 	dev_id = adev->pdev->device;
+ 		smu7_init_function_pointers(hwmgr);
+ 		break;
+ 	case AMDGPU_FAMILY_CZ:
 -- 
 2.53.0
 
