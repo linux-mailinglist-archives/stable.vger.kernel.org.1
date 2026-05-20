@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIK2HLr8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:02 +0200
+	id 4IDfHvr4DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA57596202
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B372595707
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83C6230D92B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C1B11313BBE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF143F23C5;
-	Wed, 20 May 2026 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7723F23CC;
+	Wed, 20 May 2026 17:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCr0+/N9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTtRrNZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4DB348C55;
-	Wed, 20 May 2026 18:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39663F1AD9;
+	Wed, 20 May 2026 17:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301203; cv=none; b=XAtZRVodZ8MgAdGphZOb+D75Q99zw/Bzs52zYyiePkxCFxcHholJKqtHyugeJzOxHauENxEwFQAE0iN5KIzRH5vZAe1hVT0MM2pdaB43xBNxRHveldSf2Tryf4QPNXo6PdaaltNsCR3kXbGrJHOKJvtSBEEFAg2d4Wj0ny6sz9k=
+	t=1779299499; cv=none; b=QZPMINvtzhR6mTzWxK6YJRPwpUSr123YWR0mby9swfd/jCHU6ISc/YKFTuwhZd4ljIGoGpoiZuLds4BG/NYSWmLBkeCzWXI4fIqF0/5C73US+PfIWYoV129Auplp7rgv0NQy0Dz34IMDsWzXWSFnnAAqCBEjU+il1t844j1yJoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301203; c=relaxed/simple;
-	bh=a4dbalcccb4/zcNOE40liYkw5o7DVh0tkkkCQxcHigw=;
+	s=arc-20240116; t=1779299499; c=relaxed/simple;
+	bh=TIRj1GifDqPGPNtWQT3DbuWrZ+zzbaB2LqYVv8cgrGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/6zzWuoBO1Bbw79qe5HoGhMKQfMWkAcaKeJ26c7Onp1RDf+P56gSjWxn967lbGtIbXMcwEoi/PKIIUK/uKfFDSQifxtEgo8NXlDmQ6Be/aaLveXrpO40gWn3z3cnRZszuWRLN1OR8jXfl3O5aLz2PscWwi15as9AWMG5Mg8bBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCr0+/N9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF6F1F00893;
-	Wed, 20 May 2026 18:20:01 +0000 (UTC)
+	 MIME-Version; b=jMxtZvi4BWt/ncMQ9dAS81VkrnkxupvYvj0/At7euefpOCqyf8ov96UDDDPuLPZIx5N49j81T4iJFdjf8ge+BLas62JK0OH1NtDv2/PUkAK9YTHDx5NWWw5w4xiymAxpGnkHDClr5Ewt2m7gobBBT/827s12RrtGiA06ip9CK54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTtRrNZ8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CF61F000E9;
+	Wed, 20 May 2026 17:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301201;
-	bh=1YfgPOtU/G81kobgUbHB/ieZilVkJSwVZsalXTkyPYw=;
+	s=korg; t=1779299497;
+	bh=ygzInL6wOqXBZFQQl5oXWSEs65cTNxnHAOb0QMQJ6fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sCr0+/N9Tt+IUu3RTz3Gm21E0wImYkCwstlbPYOWECVhTsTK8sK6H2rIKJS2hofAa
-	 1zKHk1DA2+XW1zRKyIlWqDexanLSpJhYt15XuMy/Tv0b+PjM1z4ToL5iOOjoe9N9ig
-	 ZWMOGWi9bjJqsVJPyll8cEf/naX3mKSXNlMcmDL4=
+	b=pTtRrNZ8qw97fKuIgMmDbgTQjIDdRY2q6S1oe7llu2pn5QL8W+crSLJZcboEUY8zv
+	 p808PVOHF2TR/xcmZM+ZCHu7RVe3mBzPAgpAhIBp7kzLgfhgz8mMJLHta1yxblJ+Di
+	 An1+sJODMzFldFSCTh1bbxqA2UfIY5WiwedPLPdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Su Yue <glass.su@suse.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 464/666] pppoe: drop PFC frames
-Date: Wed, 20 May 2026 18:21:15 +0200
-Message-ID: <20260520162121.326230494@linuxfoundation.org>
+Subject: [PATCH 6.18 793/957] md: factor bitmap creation away from sysfs handling
+Date: Wed, 20 May 2026 18:21:16 +0200
+Message-ID: <20260520162151.761963310@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,141 +68,205 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252639-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252006-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EAA57596202
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2B372595707
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit cc1ff87bce1ccd38410ab10960f576dcd17db679 ]
+[ Upstream commit 8776d342cf8fa0b98ca5e6fb2d956966fb5ca364 ]
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the current PPPoE driver assumes an
-uncompressed (2-byte) protocol field. However, the generic PPP layer
-function ppp_input() is not aware of the negotiation result, and still
-accepts PFC frames.
+Factor bitmap creation and destruction into helpers that do not touch
+bitmap sysfs registration.
 
-If a peer with a broken implementation or an attacker sends a frame with
-a compressed (1-byte) protocol field, the subsequent PPP payload is
-shifted by one byte. This causes the network header to be 4-byte
-misaligned, which may trigger unaligned access exceptions on some
-architectures.
+This prepares the bitmap sysfs rework so callers such as the sysfs
+bitmap location path can create or destroy a bitmap backend without
+coupling that to sysfs group lifetime management.
 
-To reduce the attack surface, drop PPPoE PFC frames. Introduce
-ppp_skb_is_compressed_proto() helper function to be used in both
-ppp_generic.c and pppoe.c to avoid open-coding.
-
-Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260415022456.141758-2-qingfang.deng@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Su Yue <glass.su@suse.com>
+Link: https://lore.kernel.org/r/20260425024615.1696892-2-yukuai@fnnas.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c |  2 +-
- drivers/net/ppp/pppoe.c       |  8 +++++++-
- include/linux/ppp_defs.h      | 16 ++++++++++++++++
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/md/md.c | 78 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 49 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index e08ce91bc19a9..c70994c6a265e 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -2245,7 +2245,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
-  */
- static void __ppp_decompress_proto(struct sk_buff *skb)
- {
--	if (skb->data[0] & 0x01)
-+	if (ppp_skb_is_compressed_proto(skb))
- 		*(u8 *)skb_push(skb, 1) = 0x00;
- }
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 4520c485c0c06..3061370e959b3 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -686,7 +686,25 @@ static void active_io_release(struct percpu_ref *ref)
  
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 2ea4f4890d23b..937cf9b17f9ae 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -425,7 +425,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb_mac_header_len(skb) < ETH_HLEN)
- 		goto drop;
+ static void no_op(struct percpu_ref *r) {}
  
--	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
-+	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
- 		goto drop;
- 
- 	ph = pppoe_hdr(skb);
-@@ -435,6 +435,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb->len < len)
- 		goto drop;
- 
-+	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
-+	 * Drop PFC frames.
-+	 */
-+	if (ppp_skb_is_compressed_proto(skb))
-+		goto drop;
-+
- 	if (pskb_trim_rcsum(skb, len))
- 		goto drop;
- 
-diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
-index b7e57fdbd4139..b1d1f46d7d3be 100644
---- a/include/linux/ppp_defs.h
-+++ b/include/linux/ppp_defs.h
-@@ -8,6 +8,7 @@
- #define _PPP_DEFS_H_
- 
- #include <linux/crc-ccitt.h>
-+#include <linux/skbuff.h>
- #include <uapi/linux/ppp_defs.h>
- 
- #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
-@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
- 	return !!((proto & 0x0101) == 0x0001);
- }
- 
-+/**
-+ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
-+ * @skb: skb to check
-+ *
-+ * Check if the PPP protocol field is compressed (the least significant
-+ * bit of the most significant octet is 1). skb->data must point to the PPP
-+ * protocol header.
-+ *
-+ * Return: Whether the PPP protocol field is compressed.
-+ */
-+static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
+-static bool mddev_set_bitmap_ops(struct mddev *mddev)
++static void md_bitmap_sysfs_add(struct mddev *mddev)
 +{
-+	return unlikely(skb->data[0] & 0x01);
++	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
++		pr_warn("md: cannot register extra bitmap attributes for %s\n",
++			mdname(mddev));
++	else
++		/*
++		 * Inform user with KOBJ_CHANGE about new bitmap
++		 * attributes.
++		 */
++		kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
 +}
 +
- #endif /* _PPP_DEFS_H_ */
++static void md_bitmap_sysfs_del(struct mddev *mddev)
++{
++	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
++}
++
++static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
+ {
+ 	struct bitmap_operations *old = mddev->bitmap_ops;
+ 	struct md_submodule_head *head;
+@@ -710,18 +728,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
+ 
+ 	mddev->bitmap_ops = (void *)head;
+ 	xa_unlock(&md_submodule);
+-
+-	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group) {
+-		if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
+-			pr_warn("md: cannot register extra bitmap attributes for %s\n",
+-				mdname(mddev));
+-		else
+-			/*
+-			 * Inform user with KOBJ_CHANGE about new bitmap
+-			 * attributes.
+-			 */
+-			kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
+-	}
+ 	return true;
+ 
+ err:
+@@ -729,15 +735,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
+ 	return false;
+ }
+ 
+-static void mddev_clear_bitmap_ops(struct mddev *mddev)
+-{
+-	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
+-	    mddev->bitmap_ops->group)
+-		sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
+-
+-	mddev->bitmap_ops = NULL;
+-}
+-
+ int mddev_init(struct mddev *mddev)
+ {
+ 	int err = 0;
+@@ -6404,7 +6401,7 @@ static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
+ 	return id;
+ }
+ 
+-static int md_bitmap_create(struct mddev *mddev)
++static int md_bitmap_create_nosysfs(struct mddev *mddev)
+ {
+ 	enum md_submodule_id orig_id = mddev->bitmap_id;
+ 	enum md_submodule_id sb_id;
+@@ -6413,7 +6410,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	if (mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
+ 
+-	if (!mddev_set_bitmap_ops(mddev))
++	if (!mddev_set_bitmap_ops_nosysfs(mddev))
+ 		return -ENOENT;
+ 
+ 	err = mddev->bitmap_ops->create(mddev);
+@@ -6425,7 +6422,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	 * doesn't match, and mdadm is not the latest version to set
+ 	 * bitmap_type, set bitmap_ops based on the disk version.
+ 	 */
+-	mddev_clear_bitmap_ops(mddev);
++	mddev->bitmap_ops = NULL;
+ 
+ 	sb_id = md_bitmap_get_id_from_sb(mddev);
+ 	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
+@@ -6435,27 +6432,50 @@ static int md_bitmap_create(struct mddev *mddev)
+ 		mdname(mddev), orig_id, sb_id);
+ 
+ 	mddev->bitmap_id = sb_id;
+-	if (!mddev_set_bitmap_ops(mddev)) {
++	if (!mddev_set_bitmap_ops_nosysfs(mddev)) {
+ 		mddev->bitmap_id = orig_id;
+ 		return -ENOENT;
+ 	}
+ 
+ 	err = mddev->bitmap_ops->create(mddev);
+ 	if (err) {
+-		mddev_clear_bitmap_ops(mddev);
++		mddev->bitmap_ops = NULL;
+ 		mddev->bitmap_id = orig_id;
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static void md_bitmap_destroy(struct mddev *mddev)
++static int md_bitmap_create(struct mddev *mddev)
++{
++	int err;
++
++	err = md_bitmap_create_nosysfs(mddev);
++	if (err)
++		return err;
++
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
++		md_bitmap_sysfs_add(mddev);
++
++	return 0;
++}
++
++static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
+ {
+ 	if (!md_bitmap_registered(mddev))
+ 		return;
+ 
+ 	mddev->bitmap_ops->destroy(mddev);
+-	mddev_clear_bitmap_ops(mddev);
++	mddev->bitmap_ops = NULL;
++}
++
++static void md_bitmap_destroy(struct mddev *mddev)
++{
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
++	    mddev->bitmap_ops->group)
++		md_bitmap_sysfs_del(mddev);
++
++	md_bitmap_destroy_nosysfs(mddev);
+ }
+ 
+ int md_run(struct mddev *mddev)
 -- 
 2.53.0
 
