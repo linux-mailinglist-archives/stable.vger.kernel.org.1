@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGKQGtv2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:59 +0200
+	id qL95BWj8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875B35951B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87505960D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9BF2D3126774
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 565A6305E071
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795F36494B;
-	Wed, 20 May 2026 17:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CD03F9287;
+	Wed, 20 May 2026 18:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEFWFocb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRCtjCXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54F364E89;
-	Wed, 20 May 2026 17:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A88A348C55;
+	Wed, 20 May 2026 18:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296992; cv=none; b=C2j8684oljcHfEvt9oEUmAqIpOP6XFVJf8nwQXMKEvA/fBEWDOBl+zJBSwHs11zCSkWdIZkbChY7F/nFaDnuvCNzQGFR3zXPTVaFQKeFZxu9PZmKMDPgz11acoQkTfocrTcEoZJXXv4a2WNwWvNrdO+3O8ddvKrCn7QcwjwiurM=
+	t=1779301158; cv=none; b=WENNXE69Q3FmATbBFcpCT/ELL5v+gXrR7gLj/5wYm6y5yEtysofSDm2OCNHEI2M5SUjAlTSw+djbYUNGqrfjyXbYrFnwm88aVG0NfEcIBHoKBl2x4I2twm/08P1puAgylF1hMpxpXRbm9S9xBibdyvi0VEwtq96Z5PxFYGNaUsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296992; c=relaxed/simple;
-	bh=62+fWg09E777s9B7Auoszdx+zgeZdXhBuPDmEKLn2uI=;
+	s=arc-20240116; t=1779301158; c=relaxed/simple;
+	bh=pIMZ4j4pdc1zYrsXvn2vHs0Ob+ZYCgfrToiLBHGI9vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIxCt0A65xW2SdQslQM6hNGMIn8PrykYd59U3JcLBNQ7K8kNG+ISdyq2t2vGA8hmZyYHfCjRHsAy613ks8JXfAfoglAitLtk/nLFiRM1KXxUBRGxVB0uj1NH821vAgXidPtpFi4HdWS8Vc405tqtpz+t0szG3yTx/VdMu4WgdkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEFWFocb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BBA1F000E9;
-	Wed, 20 May 2026 17:09:50 +0000 (UTC)
+	 MIME-Version; b=g/zWzX2IPt+PJC0oEvoYRA1eGTAsxUXdqTiV/qiNWo5S7FlNJGvB6lyUeJiVcfCunpG2dBURVKY5r6vqKWvPKXsK9mkRsSCOSpHx4iwL30ShL3uNvNDPoC15TdGukBBrWnO2TbpEl7pdg2Fb+Tp9wpzWzvvoqgeO72Bgq3+VtSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRCtjCXc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED901F000E9;
+	Wed, 20 May 2026 18:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296991;
-	bh=yZES8JXowZHG4MMcm9smGC2/5Z5BFsPVLoS1xYWgVwo=;
+	s=korg; t=1779301157;
+	bh=oqZhHYzSgNM40pbhlbznbKY7V0EoK7htHV4Gis9EdE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sEFWFocbjUjC1WtssQZKJ7SFg9+wXJx8y+EoLAsm4UynK+//4VwsyBgIhXHbcEFph
-	 q6ZVSnIUKnlYVvr1tFFzCW0n6TcwBbh5R1LRZnul47uC8X8OypXqSUR3CO7IhWg8cd
-	 pIRa4e6Jdz1T7y/dHiFVYdr4NbQMA1Sfu7Ne0MOU=
+	b=eRCtjCXc8MMIhvAWfQitbQEV2bsooo/8QFvs4sfNXxhAlA6oPVighqS1M7wePGm2l
+	 R9unduxsqWb6mG65AD0/wOvFKralOqx5e5VIuUD2etH/gle7tyF9CUmjQGEC1z5ocL
+	 0NX/8cj/VU5e38YBhJQiarw7sDdSG+phE88yBw8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1010/1146] drm/xe/debugfs: Correct printing of register whitelist ranges
+Subject: [PATCH 6.12 449/666] tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans
 Date: Wed, 20 May 2026 18:21:00 +0200
-Message-ID: <20260520162211.091034232@linuxfoundation.org>
+Message-ID: <20260520162121.003240495@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +68,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251058-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252622-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 875B35951B5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A87505960D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 03f2499c51dffce611b065b2894406beb9f2ebe0 ]
+[ Upstream commit 21e92a38cfd891538598ba8f805e0165a820d532 ]
 
-The register-save-restore debugfs prints whitelist entries as offset
-ranges.  E.g.,
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-        REG[0x39319c-0x39319f]: allow read access
-
-for a single dword-sized register.  However the GENMASK value used to
-set the lower bits to '1' for the upper bound of the whitelist range
-incorrectly included one more bit than it should have, causing the
-whitelist ranges to sometimes appear twice as large as they really were.
-For example,
-
-        REG[0x6210-0x6217]: allow rw access
-
-was also intended to be a single dword-sized register whitelist (with a
-range 0x6210-0x6213) but was printed incorrectly as a qword-sized range
-because one too many bits was flipped on.  Similar 'off by one' logic
-was applied when printing 4-dword register ranges and 64-dword register
-ranges as well.
-
-Correct the GENMASK logic to print these ranges in debugfs correctly.
-No impact outside of correcting the misleading debugfs output.
-
-Fixes: d855d2246ea6 ("drm/xe: Print whitelist while applying")
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://patch.msgid.link/20260408-regsr_wl_range-v1-1-e9a28c8b4264@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 1a2a722ff96749734a5585dfe7f0bea7719caa8b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 7e98102f4897 ("tcp: record pkts sent and retransmistted")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_reg_whitelist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 8 +++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_reg_whitelist.c b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-index 1d36c09681aaa..fc4b6f835d4b3 100644
---- a/drivers/gpu/drm/xe/xe_reg_whitelist.c
-+++ b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-@@ -218,7 +218,7 @@ void xe_reg_whitelist_print_entry(struct drm_printer *p, unsigned int indent,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 9c5fc44647831..382c2895ec311 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4276,9 +4276,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u64_64bit(stats, TCP_NLA_SNDBUF_LIMITED,
+ 			  info.tcpi_sndbuf_limited, TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_DATA_SEGS_OUT,
+-			  tp->data_segs_out, TCP_NLA_PAD);
++			  READ_ONCE(tp->data_segs_out), TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_TOTAL_RETRANS,
+-			  tp->total_retrans, TCP_NLA_PAD);
++			  READ_ONCE(tp->total_retrans), TCP_NLA_PAD);
+ 
+ 	rate = READ_ONCE(sk->sk_pacing_rate);
+ 	rate64 = (rate != ~0UL) ? rate : ~0ULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 5e37dc45639db..dbe39ad886821 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1446,7 +1446,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 
+ 	if (skb->len != tcp_header_size) {
+ 		tcp_event_data_sent(tp, sk);
+-		tp->data_segs_out += tcp_skb_pcount(skb);
++		WRITE_ONCE(tp->data_segs_out,
++			   tp->data_segs_out + tcp_skb_pcount(skb));
+ 		tp->bytes_sent += skb->len - tcp_header_size;
  	}
  
- 	range_start = reg & REG_GENMASK(25, range_bit);
--	range_end = range_start | REG_GENMASK(range_bit, 0);
-+	range_end = range_start | REG_GENMASK(range_bit - 1, 0);
+@@ -3411,7 +3412,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	TCP_ADD_STATS(sock_net(sk), TCP_MIB_RETRANSSEGS, segs);
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+-	tp->total_retrans += segs;
++	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+ 	tp->bytes_retrans += skb->len;
  
- 	switch (val & RING_FORCE_TO_NONPRIV_ACCESS_MASK) {
- 	case RING_FORCE_TO_NONPRIV_ACCESS_RW:
+ 	/* make sure skb->data is aligned on arches that require it
+@@ -4433,7 +4434,8 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
+ 			 * However in this case, we are dealing with a passive fastopen
+ 			 * socket thus we can change total_retrans value.
+ 			 */
+-			tcp_sk_rw(sk)->total_retrans++;
++			WRITE_ONCE(tcp_sk_rw(sk)->total_retrans,
++				   tcp_sk_rw(sk)->total_retrans + 1);
+ 		}
+ 		trace_tcp_retransmit_synack(sk, req);
+ 	}
 -- 
 2.53.0
 
