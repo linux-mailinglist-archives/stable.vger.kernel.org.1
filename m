@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDq5BC/qDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:55 +0200
+	id ME8uKkcrDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9565592EC8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171BE59B433
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C511A30594CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB85137ACDEA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F07F3F1AA4;
-	Wed, 20 May 2026 17:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2DE30DEAC;
+	Wed, 20 May 2026 18:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBEg9DZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dwi9lvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676DE3F23D1;
-	Wed, 20 May 2026 17:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F933CEA2;
+	Wed, 20 May 2026 18:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296596; cv=none; b=lMZjw3E3pX4cLmnmYbb3WxwAEJIAGqvuh1WYzPpB3SAErOlnrpprqW9TzJqPN59CsACa43HpFxsJw1tcwff6YC+UmPZTjDZh0PUJ7PPL2B4qf9KVsHFyl2GATA2DZ2lwffWsgY5r6Nhk8pfmXz2+5YnY8zoq2/7CcofW8SxxEB8=
+	t=1779302065; cv=none; b=jUQDjdM9e7xLnSePr47pUxRlp2IgYbWad+Hu/nsEKIVTXNBzINmuYGFv0UZRz+CK3mNN60uf3hsJrdk2J0uSvaTWpL2sSAC/xUU/8IHzFrCbpcjGLOQEmvoNNRzrSDHUhRRBLHI9vuA02kDPZiRa5n4mW18rzidB2pVfaJqY94M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296596; c=relaxed/simple;
-	bh=sS5tYcefoZLJxDDBAXEDtAZvDbiVwex9C4rV4kB6LII=;
+	s=arc-20240116; t=1779302065; c=relaxed/simple;
+	bh=qWDndJ3JWCQ3NNxpdSML5boZVcxGxpPgPVCjQ/guFCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtUapZpZjRWfCEGGyfPhFd/h80b8WvijZMpNorDe0uTF/iZ5yIqeF5PGHGfcIa20itvlLEF3ynzcAUTJBilraWsBt0Nz7hY8Ez+fhirTKNiU7yjAb82E4gQtiN/AyiGve4A6CvRBRvkFqjTMV+AUSi3K1LC3xKry3qI8EyCsybU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBEg9DZg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76EE1F00893;
-	Wed, 20 May 2026 17:03:12 +0000 (UTC)
+	 MIME-Version; b=UqEzOLGLh3VSlG8J4Q65jZjfgs35WtAQnm1peloYOgwkhwgdVSkmge2MyAIZVuDo+ePYKXj7gxtGJjM+0JtNr42Msymplu9fG6cnhzfQDcD0j9MuxcJNZWFcuRJguStEvyB47CA17zblywSUR+Ce6GQETVtwVDFxcGEsqGnYFrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dwi9lvr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF6F1F000E9;
+	Wed, 20 May 2026 18:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296593;
-	bh=rDFeibUu75/AIG6Hvt6kPSTo/Wd+l0ZiYSJ5i4lkoV8=;
+	s=korg; t=1779302064;
+	bh=uqK248Qia1+7joSGd2edTRD6RGAi60ctcHp/k+55gkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BBEg9DZg7R66Sm5A19sV9DiunY0z9XfBCtSxsOgAYKOk7fb781Xga7pj3WvtYYsE4
-	 Lf8R85UbehSj8fy2sKgp3JFG9i41t10a8cHE+aXILkg+6ZLMD8TnpGpHktH9L5dsdr
-	 ZFa8Z9t4QQ55yLJYpfbS36EJj50AtkkhbHPpCdlU=
+	b=2dwi9lvrT8tRZrD0M7VmYodWKmjwdhQi+78eKHvjQUmcyzbzv+G2WMMf28rKMU8td
+	 5j2+bhpm2heP95Anaurgy1wc+7yRACoRUm3pxSCZgyjoBF/G1O+EhKvdMIZCR7Kg1N
+	 aruAYbVidPJIa95LRwrkt+GMdmJ5BYhOpsUOyxXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0857/1146] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
+Subject: [PATCH 6.6 084/508] net: phy: qcom: at803x: Use the correct bit to disable extended next page
 Date: Wed, 20 May 2026 18:18:27 +0200
-Message-ID: <20260520162207.633868755@linuxfoundation.org>
+Message-ID: <20260520162100.429797706@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,136 +69,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250898-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252970-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bell-sw.com:email]
-X-Rspamd-Queue-Id: A9565592EC8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 171BE59B433
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
+[ Upstream commit e7a62edd34b1b4bc5f979988efc2f81c075733fd ]
 
-There is a mismatch between the passed arguments and the actual
-nfp_encode_basic_qdr() function parameter names:
+As noted in the blamed commit, the AR8035 and other PHYs from this
+family advertise the Extended Next Page support by default, which may be
+understood by some partners as this PHY being multi-gig capable.
 
-  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
-                                  int mode, bool addr40, int isld1,
-                                  int isld0)
-  {
-      ...
+The fix is to disable XNP advertising, which is done by setting bit 12
+of the Auto-Negotiation Advertisement Register (MII_ADVERTISE).
 
-But "dest_island" and "cpp_tgt" are swapped at every call-site.
-For example:
+The blamed commit incorrectly uses MDIO_AN_CTRL1_XNP, which is bit 13 as per
+802.3 : 45.2.7.1 AN control register (Register 7.0)
 
-  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-                              mode, addr40, isld1, isld0);
+BIT 12 in MII_ADVERTISE is wrapped by ADVERTISE_RESV, used by some
+drivers such as the aquantia one. 802.3 Clause 28 defines bit 12 as
+Extended Next Page ability, at least in recent versions of the standard.
 
-As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
-type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
-as the destination island ID, which can accidentally match or be outside
-the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
+Let's add a define for it and use it in the at803x driver.
 
-Since code already worked for years, also add extra pr_warn() to error
-paths in nfp_encode_basic_qdr() to help identify any potential address
-verification failures.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
+Fixes: 3c51fa5d2afe ("net: phy: ar803x: disable extended next page bit")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260410171021.1277138-1-maxime.chevallier@bootlin.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/phy/qcom/at803x.c | 2 +-
+ include/uapi/linux/mii.h      | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-index 79470f198a62a..9cf19446657c6 100644
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
+diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
+index ef203b0807e58..0b01b6ff0a4b5 100644
+--- a/drivers/net/phy/qcom/at803x.c
++++ b/drivers/net/phy/qcom/at803x.c
+@@ -1064,7 +1064,7 @@ static int at803x_config_init(struct phy_device *phydev)
+ 	 * behaviour but we still need to accommodate it. XNP is only needed
+ 	 * for 10Gbps support, so disable XNP.
+ 	 */
+-	return phy_modify(phydev, MII_ADVERTISE, MDIO_AN_CTRL1_XNP, 0);
++	return phy_modify(phydev, MII_ADVERTISE, ADVERTISE_XNP, 0);
+ }
  
- 	/* Full Island ID and channel bits overlap? */
- 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
--	if (ret)
-+	if (ret) {
-+		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
- 		return ret;
-+	}
- 
- 	/* The current address won't go where expected? */
--	if (dest_island != -1 && dest_island != v)
-+	if (dest_island != -1 && dest_island != v) {
-+		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
-+			__func__, dest_island, v);
- 		return -EINVAL;
-+	}
- 
- 	/* If dest_island was -1, we don't care where it goes. */
- 	return 0;
-@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * the address but we can verify if the existing
- 			 * contents will point to a valid island.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		iid_lsb = addr40 ? 34 : 26;
-@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 		return 0;
- 	case 1:
- 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		idx_lsb = addr40 ? 39 : 31;
-@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * be set before hand and with them select an island.
- 			 * So we need to confirm that it's at least plausible.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		/* Make sure we compare against isldN values
-@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * iid<1> = addr<30> = channel<0>
- 			 * channel<1> = addr<31> = Index
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		isld[0] &= ~3;
+ static int at803x_ack_interrupt(struct phy_device *phydev)
+diff --git a/include/uapi/linux/mii.h b/include/uapi/linux/mii.h
+index 39f7c44baf535..61d6edad4b94a 100644
+--- a/include/uapi/linux/mii.h
++++ b/include/uapi/linux/mii.h
+@@ -82,7 +82,8 @@
+ #define ADVERTISE_100BASE4	0x0200	/* Try for 100mbps 4k packets  */
+ #define ADVERTISE_PAUSE_CAP	0x0400	/* Try for pause               */
+ #define ADVERTISE_PAUSE_ASYM	0x0800	/* Try for asymetric pause     */
+-#define ADVERTISE_RESV		0x1000	/* Unused...                   */
++#define ADVERTISE_XNP		0x1000  /* Extended Next Page */
++#define ADVERTISE_RESV		ADVERTISE_XNP /* Used to be reserved */
+ #define ADVERTISE_RFAULT	0x2000	/* Say we can detect faults    */
+ #define ADVERTISE_LPACK		0x4000	/* Ack link partners response  */
+ #define ADVERTISE_NPAGE		0x8000	/* Next page bit               */
 -- 
 2.53.0
 
