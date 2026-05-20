@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Kj5BufvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250860-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:19 +0200
+	id IEX3IP0dDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8BD593DB4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7BC59A1E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C84A13197BF7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 439B435013AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F83D8918;
-	Wed, 20 May 2026 17:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C4C3EF0DA;
+	Wed, 20 May 2026 17:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSMsEePL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW1gZZAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CD42D7386;
-	Wed, 20 May 2026 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E5A3D7D66;
+	Wed, 20 May 2026 17:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296496; cv=none; b=T2f8sK36G/Pwnqm1lnnaApAdtPdEG6K4QfMXwifCYZYs4/PlEF9bj1wvQZGYSOSyD9shGzSZTEKCpXU8AR2HPifTdCCj/8Q6YoJ7LH4kY3rYX94gfC2ig30WqbKrUX9wbjr5PT5SAgEhly1YVVl1hO6lR0t6Dro2ii98J8Dl1Eg=
+	t=1779298897; cv=none; b=TJk1+Ra4VKvComqkwdcYQoBJveqL7ZlhFpGhcKU9gYe0n41XFdzw6MYBm67rVladrVn466FTPcgJs/trqyNszw4uqe63YgviQcB56DYl7LfG71ZzztStIo22cR/SdFsW2kDwMhjRh8cv4Kt3llMrUOMRPRAOEbtyh5/fXEl+KkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296496; c=relaxed/simple;
-	bh=7IcxnzKp/rC8T7mGRtXOy/17LcCqmv24EVKavi6Jj18=;
+	s=arc-20240116; t=1779298897; c=relaxed/simple;
+	bh=BXQm9VYNsVH7ZOEbEKfsgIo4leVJF6M9cwp2iEgMHcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipqTVy6FT0Y4fkLOtmwLvMf0aVQwxa7UmxLMznjSe+kEukeA00snEtD6fzoAjEfC5IuVQt4eG7jh2yctCDxoMB91d6FDCUlI81m+6u6BidBFu2d5hpRUaMsssAD0PNPu/Yn2i6oA4DVLm9rj9Tl5ZVfxO3mPI3LAgLjzJCfOyxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSMsEePL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2EE1F00893;
-	Wed, 20 May 2026 17:01:34 +0000 (UTC)
+	 MIME-Version; b=FGxC7xe4jq0JjlLYzJge1hFx7GuKXjmhgA63h/XRWUIdjEs5kZDM+ApbZ2ziwQzOx1KPn92lqyw+jGu33kcytLEdp19csaAXmc1+CEbDXFYCGSnsQGQiUkFXqigZSsazkJYF+cYdoSrVf/YmCWUZgzhx1SNB71Jj7jijbxS4Wh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW1gZZAT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801101F000E9;
+	Wed, 20 May 2026 17:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296495;
-	bh=A5ZpKAmquhfWrTOo8I42kqcYeoWKBP+EbqhOzqIUr7U=;
+	s=korg; t=1779298896;
+	bh=n2rqVQazb6eyMrfdUL0PVayZsDOc1HrYUPi0uZ5kv9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iSMsEePL3bXV306cOJ0tcgYDemjYq0LC0EhQXm2w8fGkKTRAqq1wbjL+i/k/a89p/
-	 RwcntjkAlnSrnC0Brok9sjGAHOKXhkHcb/tpd6IXIZ7ApIc+5vnun2vOPPA7HH8lyQ
-	 8j/34CZRhiBUfPXGDw0pPo9Uk8M9H9X7md1vHnGE=
+	b=NW1gZZATnLTU4888HgvmrwbI1uY8xPNuTLNu1MhoKqLZiEWMirTjk/UVUl/Lohsgx
+	 T9neLNmUQfeFMY1s4vrlb2TPy4RRJNBKQvRJEYFF5ULIGGPGQGsPTTgx9cUXXJnJKv
+	 MxPRhpAi2hKg7s2RojSUPGFo2BkmAf54UJsSUlp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0819/1146] slip: reject VJ receive packets on instances with no rstate array
+Subject: [PATCH 6.18 586/957] f2fs: fix to preserve previous reserve_{blocks,node} value when remount
 Date: Wed, 20 May 2026 18:17:49 +0200
-Message-ID: <20260520162206.764942525@linuxfoundation.org>
+Message-ID: <20260520162147.240230355@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,128 +69,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-250860-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251790-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: DA8BD593DB4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,unisoc.com:email]
+X-Rspamd-Queue-Id: DC7BC59A1E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit e76607442d5b73e1ba6768f501ef815bb58c2c0e ]
+[ Upstream commit 01968164d94762db2f703647c5acfa28613844f1 ]
 
-slhc_init() accepts rslots == 0 as a valid configuration, with the
-documented meaning of 'no receive compression'. In that case the
-allocation loop in slhc_init() is skipped, so comp->rstate stays
-NULL and comp->rslot_limit stays 0 (from the kzalloc of struct
-slcompress).
+The following steps will change previous value of reserve_{blocks,node},
+this dones not match the original intention.
 
-The receive helpers do not defend against that configuration.
-slhc_uncompress() dereferences comp->rstate[x] when the VJ header
-carries an explicit connection ID, and slhc_remember() later assigns
-cs = &comp->rstate[...] after only comparing the packet's slot number
-to comp->rslot_limit. Because rslot_limit is 0, slot 0 passes the
-range check, and the code dereferences a NULL rstate.
+1.mount -t f2fs -o reserve_root=8192 imgfile test_mount/
+F2FS-fs (loop56): Mounted with checkpoint version = 1b69f8c7
+mount info:
+/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=8192,reserve_node=0,resuid=0,resgid=0,xxx)
 
-The configuration is reachable in-tree through PPP. PPPIOCSMAXCID
-stores its argument in a signed int, and (val >> 16) uses arithmetic
-shift. Passing 0xffff0000 therefore sign-extends to -1, so val2 + 1
-is 0 and ppp_generic.c ends up calling slhc_init(0, 1). Because
-/dev/ppp open is gated by ns_capable(CAP_NET_ADMIN), the whole path
-is reachable from an unprivileged user namespace. Once the malformed
-VJ state is installed, any inbound VJ-compressed or VJ-uncompressed
-frame that selects slot 0 crashes the kernel in softirq context:
+2.mount -t f2fs -o remount,reserve_root=4096 /data/test_mount
+F2FS-fs (loop56): Preserve previous reserve_root=8192
+check mount info: reserve_root change to 4096
+/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=4096,reserve_node=0,resuid=0,resgid=0,xxx)
 
- Oops: general protection fault, probably for non-canonical
-       address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:slhc_uncompress (drivers/net/slip/slhc.c:519)
- Call Trace:
-  <TASK>
-  ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2466)
-  ppp_input (drivers/net/ppp/ppp_generic.c:2359)
-  ppp_async_process (drivers/net/ppp/ppp_async.c:492)
-  tasklet_action_common (kernel/softirq.c:926)
-  handle_softirqs (kernel/softirq.c:623)
-  run_ksoftirqd (kernel/softirq.c:1055)
-  smpboot_thread_fn (kernel/smpboot.c:160)
-  kthread (kernel/kthread.c:436)
-  ret_from_fork (arch/x86/kernel/process.c:164)
-  </TASK>
+Prior to commit d18535132523 ("f2fs: separate the options parsing and options checking"),
+the value of reserve_{blocks,node} was only set during the first mount, along with
+the corresponding mount option F2FS_MOUNT_RESERVE_{ROOT,NODE} . If the mount option
+F2FS_MOUNT_RESERVE_{ROOT,NODE} was found to have been set during the mount/remount,
+the previously value of reserve_{blocks,node} would also be preserved, as shown in
+the code below.
+             if (test_opt(sbi, RESERVE_ROOT)) {
+                   f2fs_info(sbi, "Preserve previous reserve_root=%u",
+                          F2FS_OPTION(sbi).root_reserved_blocks);
+             } else {
+                   F2FS_OPTION(sbi).root_reserved_blocks = arg;
+                   set_opt(sbi, RESERVE_ROOT);
+             }
+But commit d18535132523 ("f2fs: separate the options parsing and options checking")
+only preserved the previous mount option; it did not preserve the previous value of
+reserve_{blocks,node}. Since value of reserve_{blocks,node} value is assigned
+or not depends on ctx->spec_mask, ctx->spec_mask should be alos handled in
+f2fs_check_opt_consistency.
 
-Reject the receive side on such instances instead of touching rstate.
-slhc_uncompress() falls through to its existing 'bad' label, which
-bumps sls_i_error and enters the toss state. slhc_remember() mirrors
-that with an explicit sls_i_error increment followed by slhc_toss();
-the sls_i_runt counter is not used here because a missing rstate is
-an internal configuration state, not a runt packet.
+This patch will clear the corresponding ctx->spec_mask bits in f2fs_check_opt_consistency
+to preserve the previously values of reserve_{blocks,node} if it already have a value.
 
-The transmit path is unaffected: the only in-tree caller that picks
-rslots from userspace (ppp_generic.c) still supplies tslots >= 1, and
-slip.c always calls slhc_init(16, 16), so comp->tstate remains valid
-and slhc_compress() continues to work.
-
-Fixes: 4ab42d78e37a ("ppp, slip: Validate VJ compression slot parameters completely")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260415204130.258866-2-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/slip/slhc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/f2fs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index e3c785da3eef3..e18a4213d10ce 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -506,6 +506,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 		comp->sls_i_error++;
- 		return 0;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 8790d9d4348a1..7e04ae8f32f0e 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1467,6 +1467,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
+ 			F2FS_OPTION(sbi).root_reserved_blocks);
+ 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
+ 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
++		ctx->spec_mask &= ~F2FS_SPEC_reserve_root;
  	}
-+	if (!comp->rstate)
-+		goto bad;
- 	changes = *cp++;
- 	if(changes & NEW_C){
- 		/* Make sure the state index is in range, then grab the state.
-@@ -649,6 +651,10 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
- 	struct cstate *cs;
- 	unsigned int ihl;
+ 	if (test_opt(sbi, RESERVE_NODE) &&
+ 			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
+@@ -1475,6 +1476,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
+ 			F2FS_OPTION(sbi).root_reserved_nodes);
+ 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
+ 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
++		ctx->spec_mask &= ~F2FS_SPEC_reserve_node;
+ 	}
  
-+	if (!comp->rstate) {
-+		comp->sls_i_error++;
-+		return slhc_toss(comp);
-+	}
- 	/* The packet is shorter than a legal IP header.
- 	 * Also make sure isize is positive.
- 	 */
+ 	err = f2fs_check_test_dummy_encryption(fc, sb);
 -- 
 2.53.0
 
