@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCMzDLjzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:36 +0200
+	id W/yuITT4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-250794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9829359493E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A425954ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B197309B69A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B3B932565B8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD683EDACC;
-	Wed, 20 May 2026 17:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766673CAE61;
+	Wed, 20 May 2026 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3M0h1pp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7hh5dGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56BA3D7D66;
-	Wed, 20 May 2026 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E20F3E9C3D;
+	Wed, 20 May 2026 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298741; cv=none; b=JhnyPsEU3pnNG2QOGXpyJUyVC54B7ogyTKrJIuFrCGN+hgbESKOj7CPaI4vPMN4tNGGTO6vUjgAswcJL1qUPlSH0/SjgiqSid6J6ebrz7K5kXeh89FQi4wd/D4E6FAx9FcE4NhUM5zgENwryASKwzA5bGy4l2enN+4IsB31xf5k=
+	t=1779296330; cv=none; b=F5jW0G8E+Y++OP1hbA7LVgkr5KJB0i7cZDA1h5OPRfRo8PjtxKmbwLSlXYMEko5ZdfM/9mv+dBWQxiR/NJ753sgtPlbyRoJsLMK5hkuKj4rsJl1wBbo2x5RNP5DV7KSnVBmb6hjveOQHNy8b81yWb7NQhzcgS7G3eD1P4uDhcNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298741; c=relaxed/simple;
-	bh=f1KFYi06XsidkpZUD9+EY4QEDRh27EnTgnWiX3k7N0E=;
+	s=arc-20240116; t=1779296330; c=relaxed/simple;
+	bh=AliJf50iBzTetwTBM5jyUM6FGXAUWxFTGZgC4JWOIj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=je+s4dSV5KHWJtRlK/PjwR84qa/aXGgAIKlJQPQLBq4BUHb6PbXk+oa47nE+GeyVTW6qUKhbqeJzr0449INi3VhDKWyzGm4TjmHjdbT5qdXfdtEo+qDnOggGrECc8Cq02oIAbVqvmrajUYnvE608OQgaqXp9t75yRI0sFlInF7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3M0h1pp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C3E1F000E9;
-	Wed, 20 May 2026 17:39:00 +0000 (UTC)
+	 MIME-Version; b=SxP7srsp+cymxvVZzI4VEE/M2dQFXVZs+uVa4dwy1cBjIpEW4D/DSkAAXVq0Gp76n8pb+lHMK9htByPOD7aNazzpVHi2mDhtLeDDX/BKYsVeLnJM+XQm+rw4ie2r6J8zxJF4yc6WtbXLlz5IDU/6TPk0yOincSq9JwrEQgZC+/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7hh5dGu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A361F1F000E9;
+	Wed, 20 May 2026 16:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298740;
-	bh=SmZQ+lVTXQNr7m1DWDjUJzL92ufMa5CDg4BVjT674bY=;
+	s=korg; t=1779296329;
+	bh=dpTZ1CY3/FfJUUrK07OcIDDTG4/2c7kSm/TrREszzQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t3M0h1ppIVYHzkwiDF6Pn0mcrsnj91cfeSkgb01vnci51SYUGJAbXwo5B7Omt0J/I
-	 9/SD/HY/yk6ZtVnVRW6ZwOken/ujgCH/RPgmSyvroCXarhzhWp9IFJ+Q/yqZLEFcUi
-	 lHP/ox9KD6JURxrKtoCoyPMGcAzPn2J3/xfkWC9g=
+	b=X7hh5dGu5sP4Pf4AWMyrAicpewHC5Fmu/XZ+fHxBAlaX2Zo/ySKc76lH2qZ5jyo3k
+	 Se7NEWUmaUIze7lHunn+hcAB/LwzeznXCgEHs6N3Yy51JUamPQ4BnyMYrcoY3R96vt
+	 xuWZCV2eh+VmSPb3Fve8/rybv/CTKTPGDCMBHl4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 524/957] i3c: master: renesas: Fix memory leak in renesas_i3c_i3c_xfers()
-Date: Wed, 20 May 2026 18:16:47 +0200
-Message-ID: <20260520162145.898022517@linuxfoundation.org>
+Subject: [PATCH 7.0 0758/1146] arm64: dts: imx8mp-ultra-mach-sbc: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:16:48 +0200
+Message-ID: <20260520162205.365923079@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251730-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bp.renesas.com,nxp.com,gmail.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250794-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,renesas.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9829359493E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,i.mx:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.25:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 41A425954ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit d7665c3b4f575251e449e2656879392346ca612b ]
+[ Upstream commit daaf41ee72fb5fad936e7051a015cccae9b33937 ]
 
-The xfer structure allocated by renesas_i3c_alloc_xfer() was never freed
-in the renesas_i3c_i3c_xfers() function. Use the __free(kfree) cleanup
-attribute to automatically free the memory when the variable goes out of
-scope.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
-Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Reviewed-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260406-renesas-v3-1-4b724d7708f4@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: d1c1400bd3b8b ("arm64: dts: imx8mp: Add initial support for Ultratronik imx8mp-ultra-mach-sbc board")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/renesas-i3c.c | 4 ++--
+ arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
-index 275f7b9242886..5b1bf5a0266cc 100644
---- a/drivers/i3c/master/renesas-i3c.c
-+++ b/drivers/i3c/master/renesas-i3c.c
-@@ -8,6 +8,7 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
+index 9ecec1a418781..3e6f9c88cc200 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
+@@ -275,7 +275,7 @@ pmic@25 {
+ 		reg = <0x25>;
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <3 GPIO_ACTIVE_LOW>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
  
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/err.h>
-@@ -800,13 +801,12 @@ static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer
- 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
- 	struct renesas_i3c *i3c = to_renesas_i3c(m);
- 	struct renesas_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
--	struct renesas_i3c_xfer *xfer;
- 	int i;
+ 		/*
+ 		 * i.MX 8M Plus Data Sheet for Consumer Products
+@@ -739,7 +739,7 @@ MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x40	/* NFC_INT */
  
- 	/* Enable I3C bus. */
- 	renesas_i3c_bus_enable(m, true);
- 
--	xfer = renesas_i3c_alloc_xfer(i3c, 1);
-+	struct renesas_i3c_xfer *xfer __free(kfree) = renesas_i3c_alloc_xfer(i3c, 1);
- 	if (!xfer)
- 		return -ENOMEM;
+ 	pinctrl_pmic: pmic-grp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40	/* #PMIC_INT */
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0	/* #PMIC_INT */
+ 		>;
+ 	};
  
 -- 
 2.53.0
