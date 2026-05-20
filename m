@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OM3TMKL/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:26 +0200
+	id 8I6AMmYUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B62596D42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D75599277
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A98F30CE0FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 024933103743
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50F6357A25;
-	Wed, 20 May 2026 18:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E209C3F871A;
+	Wed, 20 May 2026 18:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtvvEelM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+HBzVXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634BC272E56;
-	Wed, 20 May 2026 18:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C393EAC82;
+	Wed, 20 May 2026 18:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301883; cv=none; b=WXN6xTj17tG+jNcfjD8Kox30ZFEV2fZkTop8ng7yt7Z15aAHLtevHk85N3Y7R6PLgIOsPylf/4gKSPM7oAM1zPIluwIAZR3yJNWvO4f/US9P8H3jeB6NQpnUNHJCyF6g+iRXx9YqnnUW2ZkSTuZxJuDqC+qWxfbuGxOF//6Tx5M=
+	t=1779300681; cv=none; b=paGGuzagmIKIWjHlHi/j4WyqV98vHVJ53NULjmmr2BCtST7diozc+Fp6Zhc1zK/lQRtQdKpQjFn3CzrsnOICMJ84lpKI8Z7ZZDbFokQL+wp+z8EyZJMJSabmODscX5VEmVMlyI1S+W2Jd8ycLuPfg3sgf0N8ZGJMW56+g7RpzQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301883; c=relaxed/simple;
-	bh=BfGPpOiDYXU8ReVHbJFipQsUwmvPMKIgicxMBHJOBow=;
+	s=arc-20240116; t=1779300681; c=relaxed/simple;
+	bh=i0vDDr68pht7/xPK2eLw/5F2+30epmPo2Byga2Kbbto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBFVy55trPXj/5m28hz7U5xW8AszWAdBtD2KzzuLbxyVpPTZt3iwnThChvhcMKBrKv3M5FYYGZ1OcXrFc606NdnS1Vh+7cVhm2SfYbI08nMwjt7rCN3ZZjpqSrwCyz9e5p8DFRRi2U8j5UzafJ15WjIyCBj1EwS8gSs8hYcqIhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtvvEelM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90321F00897;
-	Wed, 20 May 2026 18:31:21 +0000 (UTC)
+	 MIME-Version; b=H7dqzVp5PB1HZqZ4u4L9GlE30mBX+S9S5nSG2nNfX/sGX49yTahEo8PyPW458IxR7Ayut2BiUAYwmmkXSDMX8PfUWOLf33Fes/eWmJPLyh/O5Bqzjp0Z8F2JZPDafI4kuv3wsmN5WiwtxAzHtpaRVFTNRE/FBWK8BAdTCUzErOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+HBzVXC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18F01F000E9;
+	Wed, 20 May 2026 18:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301882;
-	bh=mGe63gEIOOivSKpWRhyGLFnEFmJ4e3pyVhuk0sbzoho=;
+	s=korg; t=1779300680;
+	bh=aqfJlShfrd9Kgegpsg0Gbgt3W9SuV4fX/6WVXKbUA5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UtvvEelMkfnZM0cIg/2ucsz00fc1zYySkjvRKxbcYE4QuQfjnFCvHlsWrX1Gm94Eu
-	 AR3rrTJ6jAnOXTBCPuOZFHj9raNu8lAxkD/gnWqAFYh+QO5AZSLv5k/S/09SuR6JL8
-	 jw/V3jgTUE6WYJrp33AfbAetBPbwCQF53X1zsKTc=
+	b=X+HBzVXCJeYY31YkdoU+fmJg66Nm0AnAtbt11yCFj+tvsDlwf6YjVnLS1YCm3MPE5
+	 9Q3RgNcUxhn1MqADMnzZ8Gc+PMQ1Rju7btLDSzAFqeJG6XdoNLT68p/na+oBHpg53N
+	 nepptLYqaNHwwFASW2Qy65MWsOdMuAUNjyd51Pgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/508] net: bcmgenet: add bcmgenet_has_* helpers
+Subject: [PATCH 6.12 268/666] arm64: dts: rockchip: Make Jaguar PCIe-refclk pin use pull-up config
 Date: Wed, 20 May 2026 18:17:59 +0200
-Message-ID: <20260520162059.814054706@linuxfoundation.org>
+Message-ID: <20260520162117.024962026@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,222 +70,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252900-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252441-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 69B62596D42
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cherry.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C5D75599277
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit 07c1a756a50b1180a085ab61819a388bbb906a95 ]
+[ Upstream commit f45d4356feeba1c8dac3414b688f59292ddfc9f9 ]
 
-Introduce helper functions to indicate whether the driver should
-make use of a particular feature that it supports. These helpers
-abstract the implementation of how the feature availability is
-encoded.
+The hardware PU/PD config of the pin after reset is to pull-up and on
+Jaguar this will also keep the device in reset until the driver actually
+enables the pin. So restore this boot pull-up config of the pin on Jaguar
+instead of setting it to pull-none.
 
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250306192643.2383632-3-opendmb@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5393b2b5bee2 ("net: bcmgenet: fix racing timeout handler")
+Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
+Fixes: 0ec7e1096332 ("arm64: dts: rockchip: add PCIe3 support on rk3588-jaguar")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://patch.msgid.link/20260210080303.680403-5-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 20 +++++++-------
- .../net/ethernet/broadcom/genet/bcmgenet.h    | 27 ++++++++++++++++++-
- drivers/net/ethernet/broadcom/genet/bcmmii.c  |  6 ++---
- 3 files changed, 39 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 6ba26feed4588..1046b4f8544c9 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -104,7 +104,7 @@ static inline void dmadesc_set_addr(struct bcmgenet_priv *priv,
- 	 * the platform is explicitly configured for 64-bits/LPAE.
- 	 */
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
--	if (priv->hw_params->flags & GENET_HAS_40BITS)
-+	if (bcmgenet_has_40bits(priv))
- 		bcmgenet_writel(upper_32_bits(addr), d + DMA_DESC_ADDRESS_HI);
- #endif
- }
-@@ -1653,9 +1653,9 @@ static int bcmgenet_power_down(struct bcmgenet_priv *priv,
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
+index e61c5731fb99f..46834d9ae565e 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
+@@ -424,7 +424,7 @@ led1_pin: led1-pin {
  
- 	case GENET_POWER_PASSIVE:
- 		/* Power down LED */
--		if (priv->hw_params->flags & GENET_HAS_EXT) {
-+		if (bcmgenet_has_ext(priv)) {
- 			reg = bcmgenet_ext_readl(priv, EXT_EXT_PWR_MGMT);
--			if (GENET_IS_V5(priv) && !priv->ephy_16nm)
-+			if (GENET_IS_V5(priv) && !bcmgenet_has_ephy_16nm(priv))
- 				reg |= EXT_PWR_DOWN_PHY_EN |
- 				       EXT_PWR_DOWN_PHY_RD |
- 				       EXT_PWR_DOWN_PHY_SD |
-@@ -1683,7 +1683,7 @@ static void bcmgenet_power_up(struct bcmgenet_priv *priv,
- {
- 	u32 reg;
+ 	pcie30x4 {
+ 		pcie30x4_clkreqn_m0: pcie30x4-clkreqn-m0 {
+-			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
  
--	if (!(priv->hw_params->flags & GENET_HAS_EXT))
-+	if (!bcmgenet_has_ext(priv))
- 		return;
- 
- 	reg = bcmgenet_ext_readl(priv, EXT_EXT_PWR_MGMT);
-@@ -1692,7 +1692,7 @@ static void bcmgenet_power_up(struct bcmgenet_priv *priv,
- 	case GENET_POWER_PASSIVE:
- 		reg &= ~(EXT_PWR_DOWN_DLL | EXT_PWR_DOWN_BIAS |
- 			 EXT_ENERGY_DET_MASK);
--		if (GENET_IS_V5(priv) && !priv->ephy_16nm) {
-+		if (GENET_IS_V5(priv) && !bcmgenet_has_ephy_16nm(priv)) {
- 			reg &= ~(EXT_PWR_DOWN_PHY_EN |
- 				 EXT_PWR_DOWN_PHY_RD |
- 				 EXT_PWR_DOWN_PHY_SD |
-@@ -2525,7 +2525,7 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
- 	} else if (priv->ext_phy) {
- 		int0_enable |= UMAC_IRQ_LINK_EVENT;
- 	} else if (priv->phy_interface == PHY_INTERFACE_MODE_MOCA) {
--		if (priv->hw_params->flags & GENET_HAS_MOCA_LINK_DET)
-+		if (bcmgenet_has_moca_link_det(priv))
- 			int0_enable |= UMAC_IRQ_LINK_EVENT;
- 	}
- 	bcmgenet_intrl2_0_writel(priv, int0_enable, INTRL2_CPU_MASK_CLEAR);
-@@ -2590,7 +2590,7 @@ static void init_umac(struct bcmgenet_priv *priv)
- 	}
- 
- 	/* Enable MDIO interrupts on GENET v3+ */
--	if (priv->hw_params->flags & GENET_HAS_MDIO_INTR)
-+	if (bcmgenet_has_mdio_intr(priv))
- 		int0_enable |= (UMAC_IRQ_MDIO_DONE | UMAC_IRQ_MDIO_ERROR);
- 
- 	bcmgenet_intrl2_0_writel(priv, int0_enable, INTRL2_CPU_MASK_CLEAR);
-@@ -3230,7 +3230,7 @@ static irqreturn_t bcmgenet_isr0(int irq, void *dev_id)
- 		}
- 	}
- 
--	if ((priv->hw_params->flags & GENET_HAS_MDIO_INTR) &&
-+	if (bcmgenet_has_mdio_intr(priv) &&
- 		status & (UMAC_IRQ_MDIO_DONE | UMAC_IRQ_MDIO_ERROR)) {
- 		wake_up(&priv->wq);
- 	}
-@@ -3900,7 +3900,7 @@ static void bcmgenet_set_hw_params(struct bcmgenet_priv *priv)
- 	}
- 
- #ifdef CONFIG_PHYS_ADDR_T_64BIT
--	if (!(params->flags & GENET_HAS_40BITS))
-+	if (!bcmgenet_has_40bits(priv))
- 		pr_warn("GENET does not support 40-bits PA\n");
- #endif
- 
-@@ -4079,7 +4079,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	bcmgenet_set_hw_params(priv);
- 
- 	err = -EIO;
--	if (priv->hw_params->flags & GENET_HAS_40BITS)
-+	if (bcmgenet_has_40bits(priv))
- 		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(40));
- 	if (err)
- 		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 28e2c94ef835c..ba83819210aa8 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (c) 2014-2024 Broadcom
-+ * Copyright (c) 2014-2025 Broadcom
-  */
- 
- #ifndef __BCMGENET_H__
-@@ -650,6 +650,31 @@ struct bcmgenet_priv {
- 	struct ethtool_eee eee;
- };
- 
-+static inline bool bcmgenet_has_40bits(struct bcmgenet_priv *priv)
-+{
-+	return !!(priv->hw_params->flags & GENET_HAS_40BITS);
-+}
-+
-+static inline bool bcmgenet_has_ext(struct bcmgenet_priv *priv)
-+{
-+	return !!(priv->hw_params->flags & GENET_HAS_EXT);
-+}
-+
-+static inline bool bcmgenet_has_mdio_intr(struct bcmgenet_priv *priv)
-+{
-+	return !!(priv->hw_params->flags & GENET_HAS_MDIO_INTR);
-+}
-+
-+static inline bool bcmgenet_has_moca_link_det(struct bcmgenet_priv *priv)
-+{
-+	return !!(priv->hw_params->flags & GENET_HAS_MOCA_LINK_DET);
-+}
-+
-+static inline bool bcmgenet_has_ephy_16nm(struct bcmgenet_priv *priv)
-+{
-+	return priv->ephy_16nm;
-+}
-+
- #define GENET_IO_MACRO(name, offset)					\
- static inline u32 bcmgenet_##name##_readl(struct bcmgenet_priv *priv,	\
- 					u32 off)			\
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index e7c659cd39746..e4b498d6bd914 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -2,7 +2,7 @@
- /*
-  * Broadcom GENET MDIO routines
-  *
-- * Copyright (c) 2014-2024 Broadcom
-+ * Copyright (c) 2014-2025 Broadcom
-  */
- 
- #include <linux/acpi.h>
-@@ -153,7 +153,7 @@ void bcmgenet_phy_power_set(struct net_device *dev, bool enable)
- 	u32 reg = 0;
- 
- 	/* EXT_GPHY_CTRL is only valid for GENETv4 and onward */
--	if (GENET_IS_V4(priv) || priv->ephy_16nm) {
-+	if (GENET_IS_V4(priv) || bcmgenet_has_ephy_16nm(priv)) {
- 		reg = bcmgenet_ext_readl(priv, EXT_GPHY_CTRL);
- 		if (enable) {
- 			reg &= ~EXT_CK25_DIS;
-@@ -183,7 +183,7 @@ void bcmgenet_phy_power_set(struct net_device *dev, bool enable)
- 
- static void bcmgenet_moca_phy_setup(struct bcmgenet_priv *priv)
- {
--	if (priv->hw_params->flags & GENET_HAS_MOCA_LINK_DET)
-+	if (bcmgenet_has_moca_link_det(priv))
- 		fixed_phy_set_link_update(priv->dev->phydev,
- 					  bcmgenet_fixed_phy_link_update);
- }
+ 		pcie30x4_perstn_m0: pcie30x4-perstn-m0 {
 -- 
 2.53.0
 
