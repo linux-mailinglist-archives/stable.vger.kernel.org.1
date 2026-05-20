@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-252693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCa5IB39DWoo5QUAu9opvQ
-	(envelope-from <stable+bounces-252693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:41 +0200
+	id YHZ3IEPyDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-251128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE48759636A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6435944DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDF4A308A2D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1486A302A64D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648AB3F8706;
-	Wed, 20 May 2026 18:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60C13F4DE7;
+	Wed, 20 May 2026 17:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5cUjMYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUeGmv1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D77F2D7386;
-	Wed, 20 May 2026 18:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A72F3F7ABB;
+	Wed, 20 May 2026 17:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301343; cv=none; b=q/ylJX9VUB9jgve1iCPvm9EErgM3PUtyThwYPQivV8r5nG4OqZLEAiyRZ9BRblnIekqooJpHB4Rv0qeUPsVHvwkwAGu1DsLmaKVLGKjikeEzVLgQloWeBWXsqVnrjQ/7n2AisCg8TP918/g67WtOuTvx3bMv4WS59vyfc9JUu8Y=
+	t=1779297171; cv=none; b=guyXJpQcg98naVwwPNko4cESwSWR+gg8lDsKjiQrJglMH6+EBUtBt4OvuqmudAo18+JqXPitr3O9hUh/Ac9KoWQBZ2qm9jQ5njyjEraRUfRZg+BHeI8o+DJKFoOG4PjbRgf9xQ6eSXPKRmGjXNSE1yHRZtPlEhOosjGTDTzQYek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301343; c=relaxed/simple;
-	bh=YwBfiikdox9kUNNHGJQWJAmcRUZTy1y9rdAAX7T8wVc=;
+	s=arc-20240116; t=1779297171; c=relaxed/simple;
+	bh=UmxF0jwYXJmSqJbya8jIw6YMr9l4wuywaeBWsIf7f7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bW2NbBfMr5tHf1cvMerKtadQEtbFQ/Y7HeMH1gu2diDxuYCnqJ2EJHWgatmFJOst8Z5A2Kd6F6YCKNT5VqvXD0bTxO21VEvimSqinWOSVTby/HnGYX+2tjj0N5PYSAIYjhfmUvw2DqmuZDdLQVKDK82VK8lC0OTxcGotA4lYPnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5cUjMYh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB051F000E9;
-	Wed, 20 May 2026 18:22:17 +0000 (UTC)
+	 MIME-Version; b=nqgHQsgi3RPqSoOc7V4bLZdq+d3x4BFgCdv3idfuKk7RbRWocej3yFR9T7XyUnghYJ+O0HwZIQGwg0HRSbrHwCnb72qcyFURcGEQP/v0IuQuCTCf1EKC/1RYsqQzZXKRlqev51vMKqN0XrusEMF+Prfp3Y1WIw+FeMVfPs/MWjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUeGmv1o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51FC1F000E9;
+	Wed, 20 May 2026 17:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301338;
-	bh=ZWWTV1zjmFlCyIVPWsqe/1PD8LqV55+C1dfp4OM6I2M=;
+	s=korg; t=1779297170;
+	bh=WG91hzEwJqRKaRqq+kHWrP+y3Mg4Bs77a4GcvSgB/LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f5cUjMYhbwMq34A4rF27kkvrd9cqToXeu/s4yGI0haS5ClvXSPv2CbC3OfivuaQgd
-	 sJy/DQei/IUC2IQuJZRQrWoAR8JxFRA6djyFZ4v01h39E1V9QFsNDVyDYQBsbs/Aof
-	 dQF0DKmqOrAnjMVGZcDSzzmdbm4ynVqeLhsZciks=
+	b=vUeGmv1oJYgS9knt877OIV5EaGUR80xRXxFlR7vXm3Xa6XBv1Z4/qLUCOg1j8LtVs
+	 fZOJjHY75H6DaCvPeCMBb3W1wyzBLNGcqGdQVSSHoK3XaibdGwqQECxAzKF8mxSvCV
+	 zMKCHJEKvUrGnJ3XBPrf8BLF1mYClt9IsyAdosKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Yunje Shin <ioerts@kookmin.ac.kr>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 515/666] nvmet-tcp: propagate nvmet_tcp_build_pdu_iovec() errors to its callers
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	James Lin <pinglei.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 1076/1146] drm/amd/display: Wrap DCN32 phantom-plane allocation in DC_RUN_WITH_PREEMPTION_ENABLED
 Date: Wed, 20 May 2026 18:22:06 +0200
-Message-ID: <20260520162122.423612390@linuxfoundation.org>
+Message-ID: <20260520162212.584867081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,197 +66,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252693-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251128-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,nvidia.com:email,kookmin.ac.kr:email]
-X-Rspamd-Queue-Id: EE48759636A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 3C6435944DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-[ Upstream commit ea8e356acb165cb1fd75537a52e1f66e5e76c538 ]
+commit 183182235f6d53bac62c6c39014738a54a68dfa6 upstream.
 
-Currently, when nvmet_tcp_build_pdu_iovec() detects an out-of-bounds
-PDU length or offset, it triggers nvmet_tcp_fatal_error(cmd->queue)
-and returns early. However, because the function returns void, the
-callers are entirely unaware that a fatal error has occurred and
-that the cmd->recv_msg.msg_iter was left uninitialized.
+[Why]
+dcn32_validate_bandwidth() wraps dcn32_internal_validate_bw() with
+DC_FP_START()/DC_FP_END(). In x86 non-RT, DC_FP_START takes fpregs_lock(),
+which disables local softirqs.
 
-Callers such as nvmet_tcp_handle_h2c_data_pdu() proceed to blindly
-overwrite the queue state with queue->rcv_state = NVMET_TCP_RECV_DATA
-Consequently, the socket receiving loop may attempt to read incoming
-network data into the uninitialized iterator.
+The DML1 path through dcn32_enable_phantom_plane() calls kvzalloc() to
+allocate ~335 KiB for dc_plane_state. This triggers the vmalloc path,
+which calls BUG_ON(in_interrupt()) because it's invoked within the
+FPU-enabled (softirq disabled) region, leading to a kernel crash.
 
-Fix this by shifting the error handling responsibility to the callers.
+[How]
+Wrap the dc_state_create_phantom_plane() call with the
+DC_RUN_WITH_PREEMPTION_ENABLED() macro to allow preemption during
+this memory allocation.
 
-Fixes: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Yunje Shin <ioerts@kookmin.ac.kr>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 235c67634230 ("drm/amd/display: add DCN32/321 specific files for Display Core")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/4470
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: James Lin <pinglei.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 885ccbef7b94a8b38f69c4211c679021aa27ad11)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 51 ++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 0e92198813057..6c64af6a7c07a 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -359,7 +359,7 @@ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -92,9 +92,14 @@
+ #include "dml/dcn32/dcn32_fpu.h"
  
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
+ #include "dc_state_priv.h"
++#include "dc_fpu.h"
  
--static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
-+static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
- 	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
-@@ -372,22 +372,19 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 	offset = cmd->rbytes_done;
- 	cmd->sg_idx = offset / PAGE_SIZE;
- 	sg_offset = offset % PAGE_SIZE;
--	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
--		nvmet_tcp_fatal_error(cmd->queue);
--		return;
--	}
-+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt)
-+		return -EPROTO;
+ #include "dml2_0/dml2_wrapper.h"
+ 
++#if !defined(DC_RUN_WITH_PREEMPTION_ENABLED)
++#define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
++#endif
 +
- 	sg = &cmd->req.sg[cmd->sg_idx];
- 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
+ #define DC_LOGGER_INIT(logger)
  
- 	while (length) {
--		if (!sg_remaining) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
--		if (!sg->length || sg->length <= sg_offset) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
-+		if (!sg_remaining)
-+			return -EPROTO;
-+
-+		if (!sg->length || sg->length <= sg_offset)
-+			return -EPROTO;
-+
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+ enum dcn32_clk_src_array_id {
+@@ -1684,7 +1689,8 @@ static void dcn32_enable_phantom_plane(s
+ 		if (curr_pipe->top_pipe && curr_pipe->top_pipe->plane_state == curr_pipe->plane_state)
+ 			phantom_plane = prev_phantom_plane;
+ 		else
+-			phantom_plane = dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state);
++			DC_RUN_WITH_PREEMPTION_ENABLED(phantom_plane =
++				dc_state_create_phantom_plane(dc, context, curr_pipe->plane_state));
  
- 		bvec_set_page(iov, sg_page(sg), iov_len,
-@@ -402,6 +399,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 
- 	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
- 		      nr_pages, cmd->pdu_len);
-+	return 0;
- }
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
-@@ -997,7 +995,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	return 0;
- }
- 
--static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
-+static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 		struct nvmet_tcp_cmd *cmd, struct nvmet_req *req)
- {
- 	size_t data_len = le32_to_cpu(req->cmd->common.dptr.sgl.length);
-@@ -1013,19 +1011,23 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 	if (!nvme_is_write(cmd->req.cmd) || !data_len ||
- 	    data_len > cmd->req.port->inline_data_size) {
- 		nvmet_prepare_receive_pdu(queue);
--		return;
-+		return 0;
- 	}
- 
- 	ret = nvmet_tcp_map_data(cmd);
- 	if (unlikely(ret)) {
- 		pr_err("queue %d: failed to map data\n", queue->idx);
- 		nvmet_tcp_fatal_error(queue);
--		return;
-+		return -EPROTO;
- 	}
- 
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
--	nvmet_tcp_build_pdu_iovec(cmd);
- 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
-+	ret = nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(ret))
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+
-+	return ret;
- }
- 
- static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
-@@ -1077,7 +1079,10 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		goto err_proto;
- 	}
- 	cmd->pdu_recv = 0;
--	nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(nvmet_tcp_build_pdu_iovec(cmd))) {
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+		goto err_proto;
-+	}
- 	queue->cmd = cmd;
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
- 
-@@ -1140,8 +1145,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 			req->cmd->common.opcode,
- 			le32_to_cpu(req->cmd->common.dptr.sgl.length));
- 
--		nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
--		return 0;
-+		return nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
- 	}
- 
- 	ret = nvmet_tcp_map_data(queue->cmd);
-@@ -1158,8 +1162,11 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 	if (nvmet_tcp_need_data_in(queue->cmd)) {
- 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
- 			queue->rcv_state = NVMET_TCP_RECV_DATA;
--			nvmet_tcp_build_pdu_iovec(queue->cmd);
--			return 0;
-+			ret = nvmet_tcp_build_pdu_iovec(queue->cmd);
-+			if (unlikely(ret))
-+				pr_err("queue %d: failed to build PDU iovec\n",
-+					queue->idx);
-+			return ret;
- 		}
- 		/* send back R2T */
- 		nvmet_tcp_queue_response(&queue->cmd->req);
--- 
-2.53.0
-
+ 		if (!phantom_plane)
+ 			continue;
 
 
 
