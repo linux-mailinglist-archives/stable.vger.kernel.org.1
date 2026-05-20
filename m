@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OYXMXfrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:23 +0200
+	id iF9XIHfiDWpF4gUAu9opvQ
+	(envelope-from <stable+bounces-250057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23657593125
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E6859215D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9C8834BDDA7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01CD33089381
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0E3D6673;
-	Wed, 20 May 2026 16:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFDF37269C;
+	Wed, 20 May 2026 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plU/27TT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmsHTPzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F65936F42D;
-	Wed, 20 May 2026 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A48369D4C;
+	Wed, 20 May 2026 16:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294414; cv=none; b=tHLI/zUf7MafXLtpbTZPuLyJY/P6BrBcmuDAf0hqQFzj8vSRkTo4hM29DixERktr7KGhNFgrDnu9zTA5Pmt46/kMYC29KgMhQYP3zadeQlTCWf1zdY0YqScAp3YYpwo8n31I7uc775rDlu2OngsAR9sdpb10vDGpnVEIynN4Qms=
+	t=1779294430; cv=none; b=jKibM+hLo1vO9yx9yTSkypffg8KQ8qIt97Ahm+zQR8c2q6GofirzEvz9BQCJjbVhSqGYVCT5Gtl/Ks3/9TZnjKLsuA15Wxr4WDwNP12i/VESpX2fP1WomdIb+tImwYahoWX+LLlIYEkQofXnMLnsj1URqT5lZFG76CF3Aa5BQi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294414; c=relaxed/simple;
-	bh=kmQ6nyMfA3xWoJCxoHNRfUmCiMXoVXr7JStyQ7ZyBzQ=;
+	s=arc-20240116; t=1779294430; c=relaxed/simple;
+	bh=Shqu5VMggLBhWDDAtx9pvwGE14QZC6K96gz8/dGuJ5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnVzmUWvG2OgLatGoow7EueEObbPOBrc8+rODcfNoObyNh1GvGW05xK1qEnv6/o/VyxEq7aSApJSEimyQMWD3wRUyIlhW/uB1h90eXUwk6q8UPPPS8OGya9FXEudPPL4Pv7TvjopNfzv0Xf9a52IeAWCYXxLTfANJA45Gs1cMIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plU/27TT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51921F000E9;
-	Wed, 20 May 2026 16:26:52 +0000 (UTC)
+	 MIME-Version; b=Sdr+cHi6LP7SDTE2fI7+Qr5Vyn6xYz9VKTzLOauT8NG60GfniP3tMMr5CAZVTQ9l6tGjjPWXAZijFM4gHgbehK+n4bD4zKYZzuU79aQ9GL6tqcPFEFTE8ZkfXtej9rGnlDLTOexMFXpSxsLq7YCKIypETTxJV0UKHtXFksRQp94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmsHTPzb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966011F000E9;
+	Wed, 20 May 2026 16:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294413;
-	bh=JqIO39fJH26gSfndJy0DEYA2ecpFHmFKlqZtG3kBcPo=;
+	s=korg; t=1779294429;
+	bh=qIDtpWfT6hIWzn/7+hbS12ME9rNCvHCVj6APUpT1GR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=plU/27TT9+E/luErblo53BZ7UKIkHf2hYDHfV2EisBFa1RBfveIhPkDASkjQ5G6yn
-	 QOS+RjhykX9TmqT+pl55u3NCsyz6dU/K5qEM4uMpqCFRPR7XSD9tJrXrxH2PRI5HLK
-	 gQKxOxcJCxu/ygJNvGRavQoOL2An7hhCjyrm1Dbg=
+	b=KmsHTPzbI7PuYUawqOMiINYAu6/jMuR4blHgiAlYav/gRLAZKbm2gaYH95udRfg/8
+	 bt+e+ZsgozyF8GSFhsHs6K/Mz8sNXBoZ5ksdj5jLwpK8x79lSdMfArwjb4QgUdrWXo
+	 Au5MdCIk/cT1oDhL6yPPwVE9al1K9knBLOmg5N/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hyungjung Joo <jhj140711@gmail.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0003/1146] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
-Date: Wed, 20 May 2026 18:04:13 +0200
-Message-ID: <20260520162148.472950418@linuxfoundation.org>
+Subject: [PATCH 7.0 0004/1146] fs/mbcache: cancel shrink work before destroying the cache
+Date: Wed, 20 May 2026 18:04:14 +0200
+Message-ID: <20260520162148.494689437@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,30 +69,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250051-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250057-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 23657593125
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 31E6859215D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,51 +101,45 @@ X-Rspamd-Server: lfdr
 
 From: HyungJung Joo <jhj140711@gmail.com>
 
-[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
+[ Upstream commit d227786ab1119669df4dc333a61510c52047cce4 ]
 
-omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
-but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
+mb_cache_destroy() calls shrinker_free() and then frees all cache
+entries and the cache itself, but it does not cancel the pending
+c_shrink_work work item first.
 
-Later, omfs_make_empty() uses
+If mb_cache_entry_create() schedules c_shrink_work via schedule_work()
+and the work item is still pending or running when mb_cache_destroy()
+runs, mb_cache_shrink_worker() will access the cache after its memory
+has been freed, causing a use-after-free.
 
-    sbi->s_sys_blocksize - OMFS_DIR_START
+This is only reachable by a privileged user (root or CAP_SYS_ADMIN)
+who can trigger the last put of a mounted ext2/ext4/ocfs2 filesystem.
 
-as the length argument to memset().  Since s_sys_blocksize is u32,
-a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
-an unsigned underflow there, wrapping to a value near 2^32.  That drives
-a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
-memory far beyond the backing block buffer.
+Cancel the work item with cancel_work_sync() before calling
+shrinker_free(), ensuring the worker has finished and will not be
+rescheduled before the cache is torn down.
 
-Add the corresponding lower-bound check alongside the existing upper-bound
-check in omfs_fill_super(), so that malformed images are rejected during
-superblock validation before any filesystem data is processed.
-
-Fixes: a3ab7155ea21 ("omfs: add directory routines")
+Fixes: c2f3140fe2ec ("mbcache2: limit cache size")
 Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
-Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
+Link: https://patch.msgid.link/20260317054556.1821600-1-jhj140711@gmail.com
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/omfs/inode.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/mbcache.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
-index 90ae07c69349e..834cae1e62233 100644
---- a/fs/omfs/inode.c
-+++ b/fs/omfs/inode.c
-@@ -513,6 +513,12 @@ static int omfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 		goto out_brelse_bh;
- 	}
+diff --git a/fs/mbcache.c b/fs/mbcache.c
+index 480d02d6ebf03..2a6319b4072cc 100644
+--- a/fs/mbcache.c
++++ b/fs/mbcache.c
+@@ -406,6 +406,7 @@ void mb_cache_destroy(struct mb_cache *cache)
+ {
+ 	struct mb_cache_entry *entry, *next;
  
-+	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
-+		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
-+			sbi->s_sys_blocksize);
-+		goto out_brelse_bh;
-+	}
-+
- 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
- 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
- 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
++	cancel_work_sync(&cache->c_shrink_work);
+ 	shrinker_free(cache->c_shrink);
+ 
+ 	/*
 -- 
 2.53.0
 
