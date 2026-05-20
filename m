@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOhrCjLmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:54 +0200
+	id 6E9XIL7wDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-251249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF330592838
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1671D594018
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6924230BC1BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C144315BE73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823893191D0;
-	Wed, 20 May 2026 16:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008CF35F619;
+	Wed, 20 May 2026 17:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEbByfTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoLupYrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D110636D9E7;
-	Wed, 20 May 2026 16:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A78D33F59D;
+	Wed, 20 May 2026 17:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295089; cv=none; b=RSVAZhL1LYYv/li5mWM9HRvBUePegff+7Y460Byqjb2yUfR/XCF1Wg3z8XJDz26IKJmS/8lnLMC4I055VbJNiJhUbbhkTEIjopcjTua9TeZji2Fza4eHneV2Lfwqwbdp57RRHThO1m2JO+2iFo0oEHiu4HqLwl8PyArvaSt+080=
+	t=1779297490; cv=none; b=Kvep5/4A9fJtob7Yz+l3F+PYOjToEergwJmtYzy9+MVHCg9/Iia8DWPqjjMbayipq4ldPOAzJjsYWHVhgfVUf6dfKdDK8zxrUExUv8bheVkn8DtTv/6MZulUXI5OdYngtQxZPMiEUBeIEUHtUPgAHu+nWcNHvwSWFGjMyN21SPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295089; c=relaxed/simple;
-	bh=xSYmPeu40OgATJE8bMk+WhvjI/1fSR742VSJ05frBYY=;
+	s=arc-20240116; t=1779297490; c=relaxed/simple;
+	bh=pFNr1d2muYh/n1JWfB5rboGPUHM4HEP/EsQvGd7Jc8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcigVScRx8Dl+RC8q/qksn18PoCg78ARV7bLC7QczYfwpCJBaBuzhq8hxHxZS92S6yEn8LdOYheCHaeMCyF0+sVzPNRc6CYCaPAqPc8jODUPfgbAu6iaKV8yYf0XMy+It7anrTba+BGVuXfJkXTkY39isjwmzi2ify3HQhYBeH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEbByfTt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8771F000E9;
-	Wed, 20 May 2026 16:38:06 +0000 (UTC)
+	 MIME-Version; b=oblScnYfwBy7odlyXYaVO7+A5ReeV5n4pBiaR4a7IToOD4DJKksRQtQl5hAf5EUF8n4hIFwxvdFsZbjNZju/KElVtv/L3RewrAXFt7dJ65ywcyQIMk39SkwqD3L+5p85KiwJQ+w0PfUfTwZiTLgfH+NmFpDweLD7RqN/37nYF+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoLupYrQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC841F000E9;
+	Wed, 20 May 2026 17:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295087;
-	bh=8iDQx6cGHgr7POun8H1fIsCCiQu4+wAkz5GWSqi1Mdk=;
+	s=korg; t=1779297489;
+	bh=/eg7q55jIYdLDJ99bp4l6X9xTxs5ucDScmBBKUDz5Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iEbByfTtLxDP6EqVV4ftoPsxhFR/5/yq2vPi/W+2HsGKxgfb5Ce07Yfw/U8L+9m4g
-	 MiO7eleh6g4lL96Glmi7KAsYPHMuAoM6jAh98TAWVvgh8/e8kLpa1aNrdw/+VqAyF3
-	 NrEuKKN1wFtBQupJGuN2cavcr59h/ZFHr4ESObME=
+	b=BoLupYrQyVTPGURprrlTiRZejEWRJ9GGnSGhCchponwy/IaV0GjHEyX6KC0qyl9wN
+	 Bmr8X2vokG3KQPtwfSEoIF559LQa0ikCjbP2zZVZh43ZVVTONsEjoAT1VNuDIqUSD0
+	 LavmCLJu28bhmcq17/N2S2lN8UqyFq6uSGca9GdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0285/1146] crypto: inside-secure/eip93 - register hash before authenc algorithms
+Subject: [PATCH 6.18 052/957] sched: Make class_schedulers avoid pushing current, and get rid of proxy_tag_curr()
 Date: Wed, 20 May 2026 18:08:55 +0200
-Message-ID: <20260520162154.666461599@linuxfoundation.org>
+Message-ID: <20260520162135.687777470@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +67,198 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250314-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,gondor.apana.org.au,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251249-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,wp.pl:email,apana.org.au:email]
-X-Rspamd-Queue-Id: CF330592838
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: 1671D594018
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit 5377032914b29b4643adece0ff1dfc67e36700f4 ]
+[ Upstream commit e0ca8991b2de6c9dfe6fcd8a0364951b2bd56797 ]
 
-Register hash before hmac and authenc algorithms. This will ensure
-selftests pass at startup. Previously, selftests failed on the
-crypto_alloc_ahash() function since the associated algorithm was
-not yet registered.
+With proxy-execution, the scheduler selects the donor, but for
+blocked donors, we end up running the lock owner.
 
-Fixes following error:
-...
-[   18.375811] alg: self-tests for authenc(hmac(sha1),cbc(aes)) using authenc(hmac(sha1-eip93),cbc(aes-eip93)) failed (rc=-2)
-[   18.382140] alg: self-tests for authenc(hmac(sha224),rfc3686(ctr(aes))) using authenc(hmac(sha224-eip93),rfc3686(ctr(aes-eip93))) failed (rc=-2)
-[   18.395029] alg: aead: authenc(hmac(sha256-eip93),cbc(des-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
-[   18.409734] alg: aead: authenc(hmac(md5-eip93),cbc(des3_ede-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
-...
+This caused some complexity, because the class schedulers make
+sure to remove the task they pick from their pushable task
+lists, which prevents the donor from being migrated, but there
+wasn't then anything to prevent rq->curr from being migrated
+if rq->curr != rq->donor.
 
-Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This was sort of hacked around by calling proxy_tag_curr() on
+the rq->curr task if we were running something other then the
+donor. proxy_tag_curr() did a dequeue/enqueue pair on the
+rq->curr task, allowing the class schedulers to remove it from
+their pushable list.
+
+The dequeue/enqueue pair was wasteful, and additonally K Prateek
+highlighted that we didn't properly undo things when we stopped
+proxying, leaving the lock owner off the pushable list.
+
+After some alternative approaches were considered, Peter
+suggested just having the RT/DL classes just avoid migrating
+when task_on_cpu().
+
+So rework pick_next_pushable_dl_task() and the rt
+pick_next_pushable_task() functions so that they skip over the
+first pushable task if it is on_cpu.
+
+Then just drop all of the proxy_tag_curr() logic.
+
+Fixes: be39617e38e0 ("sched: Fix proxy/current (push,pull)ability")
+Closes: https://lore.kernel.org/lkml/e735cae0-2cc9-4bae-b761-fcb082ed3e94@amd.com/
+Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260324191337.1841376-2-jstultz@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/eip93/eip93-main.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/sched/core.c     | 24 ------------------------
+ kernel/sched/deadline.c | 18 ++++++++++++++++--
+ kernel/sched/rt.c       | 15 ++++++++++++---
+ 3 files changed, 28 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
-index b7fd9795062d4..76858bb4fcc22 100644
---- a/drivers/crypto/inside-secure/eip93/eip93-main.c
-+++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
-@@ -36,6 +36,14 @@ static struct eip93_alg_template *eip93_algs[] = {
- 	&eip93_alg_cbc_aes,
- 	&eip93_alg_ctr_aes,
- 	&eip93_alg_rfc3686_aes,
-+	&eip93_alg_md5,
-+	&eip93_alg_sha1,
-+	&eip93_alg_sha224,
-+	&eip93_alg_sha256,
-+	&eip93_alg_hmac_md5,
-+	&eip93_alg_hmac_sha1,
-+	&eip93_alg_hmac_sha224,
-+	&eip93_alg_hmac_sha256,
- 	&eip93_alg_authenc_hmac_md5_cbc_des,
- 	&eip93_alg_authenc_hmac_sha1_cbc_des,
- 	&eip93_alg_authenc_hmac_sha224_cbc_des,
-@@ -52,14 +60,6 @@ static struct eip93_alg_template *eip93_algs[] = {
- 	&eip93_alg_authenc_hmac_sha1_rfc3686_aes,
- 	&eip93_alg_authenc_hmac_sha224_rfc3686_aes,
- 	&eip93_alg_authenc_hmac_sha256_rfc3686_aes,
--	&eip93_alg_md5,
--	&eip93_alg_sha1,
--	&eip93_alg_sha224,
--	&eip93_alg_sha256,
--	&eip93_alg_hmac_md5,
--	&eip93_alg_hmac_sha1,
--	&eip93_alg_hmac_sha224,
--	&eip93_alg_hmac_sha256,
- };
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 421efba7db5a1..522d4bad56ad1 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6730,23 +6730,6 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
+ }
+ #endif /* SCHED_PROXY_EXEC */
  
- inline void eip93_irq_disable(struct eip93_device *eip93, u32 mask)
+-static inline void proxy_tag_curr(struct rq *rq, struct task_struct *owner)
+-{
+-	if (!sched_proxy_exec())
+-		return;
+-	/*
+-	 * pick_next_task() calls set_next_task() on the chosen task
+-	 * at some point, which ensures it is not push/pullable.
+-	 * However, the chosen/donor task *and* the mutex owner form an
+-	 * atomic pair wrt push/pull.
+-	 *
+-	 * Make sure owner we run is not pushable. Unfortunately we can
+-	 * only deal with that by means of a dequeue/enqueue cycle. :-/
+-	 */
+-	dequeue_task(rq, owner, DEQUEUE_NOCLOCK | DEQUEUE_SAVE);
+-	enqueue_task(rq, owner, ENQUEUE_NOCLOCK | ENQUEUE_RESTORE);
+-}
+-
+ /*
+  * __schedule() is the main scheduler function.
+  *
+@@ -6896,9 +6879,6 @@ static void __sched notrace __schedule(int sched_mode)
+ 		 */
+ 		RCU_INIT_POINTER(rq->curr, next);
+ 
+-		if (!task_current_donor(rq, next))
+-			proxy_tag_curr(rq, next);
+-
+ 		/*
+ 		 * The membarrier system call requires each architecture
+ 		 * to have a full memory barrier after updating
+@@ -6933,10 +6913,6 @@ static void __sched notrace __schedule(int sched_mode)
+ 		/* Also unlocks the rq: */
+ 		rq = context_switch(rq, prev, next, &rf);
+ 	} else {
+-		/* In case next was already curr but just got blocked_donor */
+-		if (!task_current_donor(rq, next))
+-			proxy_tag_curr(rq, next);
+-
+ 		rq_unpin_lock(rq, &rf);
+ 		__balance_callbacks(rq);
+ 		raw_spin_rq_unlock_irq(rq);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index d5052f238adf7..ed96b86dec04d 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2761,12 +2761,26 @@ static int find_later_rq(struct task_struct *task)
+ 
+ static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
+ {
+-	struct task_struct *p;
++	struct task_struct *i, *p = NULL;
++	struct rb_node *next_node;
+ 
+ 	if (!has_pushable_dl_tasks(rq))
+ 		return NULL;
+ 
+-	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
++	next_node = rb_first_cached(&rq->dl.pushable_dl_tasks_root);
++	while (next_node) {
++		i = __node_2_pdl(next_node);
++		/* make sure task isn't on_cpu (possible with proxy-exec) */
++		if (!task_on_cpu(rq, i)) {
++			p = i;
++			break;
++		}
++
++		next_node = rb_next(next_node);
++	}
++
++	if (!p)
++		return NULL;
+ 
+ 	WARN_ON_ONCE(rq->cpu != task_cpu(p));
+ 	WARN_ON_ONCE(task_current(rq, p));
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index a892a01c463e5..8cead8f37aa50 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1847,13 +1847,22 @@ static int find_lowest_rq(struct task_struct *task)
+ 
+ static struct task_struct *pick_next_pushable_task(struct rq *rq)
+ {
+-	struct task_struct *p;
++	struct plist_head *head = &rq->rt.pushable_tasks;
++	struct task_struct *i, *p = NULL;
+ 
+ 	if (!has_pushable_tasks(rq))
+ 		return NULL;
+ 
+-	p = plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
++	plist_for_each_entry(i, head, pushable_tasks) {
++		/* make sure task isn't on_cpu (possible with proxy-exec) */
++		if (!task_on_cpu(rq, i)) {
++			p = i;
++			break;
++		}
++	}
++
++	if (!p)
++		return NULL;
+ 
+ 	BUG_ON(rq->cpu != task_cpu(p));
+ 	BUG_ON(task_current(rq, p));
 -- 
 2.53.0
 
