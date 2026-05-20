@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-252677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251114-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AoBHwQoDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:44 +0200
+	id QCzWFzb6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-251114-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B336259AF24
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3586595A6D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37DF133E42C8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FE01302F0F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7376B3FA5D5;
-	Wed, 20 May 2026 18:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E89D3E2AAD;
+	Wed, 20 May 2026 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+ZXv26e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zof48o0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE74348C55;
-	Wed, 20 May 2026 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7091B372EDE;
+	Wed, 20 May 2026 17:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301300; cv=none; b=J9/c+T/jhKlw3z8EyAWIhgf75uDQZQb+yuE72g0ZUfv18YE0piNQ/tDR0eLDz2Hy1uKlR0JbVPC/GUuBGFVAuCwKhVWbWl7vwGadtEm4MuhMopZFO3jnoMbMuTtj5yH7R/XZstVEF2ZE23uDVgklrAYBg25qDTw/jGRMxAY4v9k=
+	t=1779297135; cv=none; b=obUVMEjNRxtX8+OIgedTEJBF8+RPhHfgZarOX+nxlQxyUSJSqkPhjj/XZ6O6Tpb+06mssUov4at6ngZenkKaN/C8ReB5Lm+Ejaaca0NjGAl/SPBDzglwZVi5x+DpA6eLAjBaLpHbxnfpRBRJcDSFd3Azw7G+H+zYhLb8BMn4dNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301300; c=relaxed/simple;
-	bh=YoZLGIK097EQcXMZ8EgU1elDZ91r4oaOcEQUbbFcAQc=;
+	s=arc-20240116; t=1779297135; c=relaxed/simple;
+	bh=xSfKq4XCv+PUlfM+lyurIcjE7q95daex/SMH6/3OOJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj7wLXIgoB/HQwSPn6uhjjJczigy5dhJ6Rofl1/DdoDsti3FGwEDUJZ3XMZaNA1fHcN1n56vh9OHey3jmuWoYJNeQ+bgvwnsLk/0vV6dOKj8W4GDuQPrRtEc8jSr9CzomRsEbqq2PMl29qfRb6P9Cw8K9vB/+2jogoARmJKa+24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+ZXv26e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDFA1F000E9;
-	Wed, 20 May 2026 18:21:38 +0000 (UTC)
+	 MIME-Version; b=cYCdsQPPBewSy2kyA6c0+TghfE2xu3InTundcM9vv/fjiPJ51IQRJ0yLlnns6EgFc1ib+nBN5KddHRbwGTGw2yN6uSzXurMKgqQqeM2TUvwfr4DXX82RseCBsKQrCewRFy7og7p3XO6hyupDlS/7c+K7oklnyRlTHxT3EGV3Zjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zof48o0V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBB71F000E9;
+	Wed, 20 May 2026 17:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301299;
-	bh=ugwvkhVjtWVuucHOWS7bTpmXkY9udt442M5D2gZ3NrU=;
+	s=korg; t=1779297133;
+	bh=hyG1jPOhvCZ+K1JC8FtpoM3ZkylvvgiKCbM8D9+mFtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d+ZXv26e/2gayjB5snbh39ujwnNAACP0+7n7MnhvhO7LUWngaDpt6KSpWFtHgYV9F
-	 H7qeuRyXZV7WCleqMhUKq3KgrJg7H96V10uY9w+C1Jk3cO6qChc/Wf96C9z5vVO3Fs
-	 Xn2S8oZt78ITvaK/kej1TVPAhk83StSFBYeyGcW0=
+	b=zof48o0VU5kE2CFG53JjnWnUUWmuhgPFs+S/XflJKfl6Ts/ecmUD+sD9Pjm6FYnue
+	 p0+SpabIrAvmkvLTzFa8RcJOWbblERbdCxB1LXNXJ9WW0zbMFzIccAblUQMvlu/9l4
+	 y9OyIdJFNSUc+/wONJDguszejnqOkjexWOfJfp/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>,
-	Taegyu Kim <tmk5904@psu.edu>,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Mathias Stearn <mathias@mongodb.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 502/666] fbdev: offb: fix PCI device reference leak on probe failure
+Subject: [PATCH 7.0 1063/1146] rseq: Revert to historical performance killing behaviour
 Date: Wed, 20 May 2026 18:21:53 +0200
-Message-ID: <20260520162122.141270129@linuxfoundation.org>
+Message-ID: <20260520162212.289309119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,78 +75,423 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252677-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,gmx.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251114-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: B336259AF24
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mongodb.com:email]
+X-Rspamd-Queue-Id: B3586595A6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-[ Upstream commit 869b93ba04088713596e68453c1146f52f713290 ]
+commit b9eac6a9d93c952c4b7775a24d5c7a1bbf4c3c00 upstream.
 
-offb_init_nodriver() gets a referenced PCI device with pci_get_device().
-If pci_enable_device() fails, the function returns without dropping that
-reference.
+The recent RSEQ optimization work broke the TCMalloc abuse of the RSEQ ABI
+as it not longer unconditionally updates the CPU, node, mm_cid fields,
+which are documented as read only for user space. Due to the observed
+behavior of the kernel it was possible for TCMalloc to overwrite the
+cpu_id_start field for their own purposes and rely on the kernel to update
+it unconditionally after each context switch and before signal delivery.
 
-Release the PCI device reference before returning from the
-pci_enable_device() failure path.
+The RSEQ ABI only guarantees that these fields are updated when the data
+changes, i.e. the task is migrated or the MMCID of the task changes due to
+switching from or to per CPU ownership mode.
 
-Fixes: 5bda8f7b5468 ("video: fbdev: offb: Call pci_enable_device() before using the PCI VGA device")
-Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+The optimization work eliminated the unconditional updates and reduced them
+to the documented ABI guarantees, which results in a massive performance
+win for syscall, scheduling heavy work loads, which in turn breaks the
+TCMalloc expectations.
+
+There have been several options discussed to restore the TCMalloc
+functionality while preserving the optimization benefits. They all end up
+in a series of hard to maintain workarounds, which in the worst case
+introduce overhead for everyone, e.g. in the scheduler.
+
+The requirements of TCMalloc and the optimization work are diametral and
+the required work arounds are a maintainence burden. They end up as fragile
+constructs, which are blocking further optimization work and are pretty
+much guaranteed to cause more subtle issues down the road.
+
+The optimization work heavily depends on the generic entry code, which is
+not used by all architectures yet. So the rework preserved the original
+mechanism moslty unmodified to keep the support for architectures, which
+handle rseq in their own exit to user space loop. That code is currently
+optimized out by the compiler on architectures which use the generic entry
+code.
+
+This allows to revert back to the original behaviour by replacing the
+compile time constant conditions with a runtime condition where required,
+which disables the optimization and the dependend time slice extension
+feature until the run-time condition can be enabled in the RSEQ
+registration code on a per task basis again.
+
+The following changes are required to restore the original behavior, which
+makes TCMalloc work again:
+
+  1) Replace the compile time constant conditionals with runtime
+     conditionals where appropriate to prevent the compiler from optimizing
+     the legacy mode out
+
+  2) Enforce unconditional update of IDs on context switch for the
+     non-optimized v1 mode
+
+  3) Enforce update of IDs in the pre signal delivery path for the
+     non-optimized v1 mode
+
+  4) Enforce update of IDs in the membarrier(RSEQ) IPI for the
+     non-optimized v1 mode
+
+  5) Make time slice and future extensions depend on optimized v2 mode
+
+This brings back the full performance problems, but preserves the v2
+optimization code and for generic entry code using architectures also the
+TIF_RSEQ optimization which avoids a full evaluation of the exit to user
+mode loop in many cases.
+
+Fixes: 566d8015f7ee ("rseq: Avoid CPU/MM CID updates when no event pending")
+Reported-by: Mathias Stearn <mathias@mongodb.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Tested-by: Dmitry Vyukov <dvyukov@google.com>
+Closes: https://lore.kernel.org/CAHnCjA25b+nO2n5CeifknSKHssJpPrjnf+dtr7UgzRw4Zgu=oA@mail.gmail.com
+Link: https://patch.msgid.link/20260428224427.517051752%40kernel.org
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/offb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/rseq.h       | 35 ++++++++++++++++++++++-----------
+ include/linux/rseq_entry.h | 39 +++++++++++++++++++++++++++----------
+ include/linux/rseq_types.h |  9 ++++++++-
+ kernel/rseq.c              | 40 +++++++++++++++++++++++++++++++-------
+ kernel/sched/membarrier.c  | 11 ++++++++++-
+ 5 files changed, 104 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index f85428e13996b..166b2dff36f59 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -640,8 +640,13 @@ static void offb_init_nodriver(struct platform_device *parent, struct device_nod
- 			vid = be32_to_cpup(vidp);
- 			did = be32_to_cpup(didp);
- 			pdev = pci_get_device(vid, did, NULL);
--			if (!pdev || pci_enable_device(pdev))
-+			if (!pdev)
- 				return;
+diff --git a/include/linux/rseq.h b/include/linux/rseq.h
+index f446909551df0..7ef79b25e714b 100644
+--- a/include/linux/rseq.h
++++ b/include/linux/rseq.h
+@@ -9,6 +9,11 @@
+ 
+ void __rseq_handle_slowpath(struct pt_regs *regs);
+ 
++static __always_inline bool rseq_v2(struct task_struct *t)
++{
++	return IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY) && likely(t->rseq.event.has_rseq > 1);
++}
 +
-+			if (pci_enable_device(pdev)) {
-+				pci_dev_put(pdev);
-+				return;
-+			}
+ /* Invoked from resume_user_mode_work() */
+ static inline void rseq_handle_slowpath(struct pt_regs *regs)
+ {
+@@ -16,8 +21,7 @@ static inline void rseq_handle_slowpath(struct pt_regs *regs)
+ 		if (current->rseq.event.slowpath)
+ 			__rseq_handle_slowpath(regs);
+ 	} else {
+-		/* '&' is intentional to spare one conditional branch */
+-		if (current->rseq.event.sched_switch & current->rseq.event.has_rseq)
++		if (current->rseq.event.sched_switch && current->rseq.event.has_rseq)
+ 			__rseq_handle_slowpath(regs);
+ 	}
+ }
+@@ -30,9 +34,9 @@ void __rseq_signal_deliver(int sig, struct pt_regs *regs);
+  */
+ static inline void rseq_signal_deliver(struct ksignal *ksig, struct pt_regs *regs)
+ {
+-	if (IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY)) {
+-		/* '&' is intentional to spare one conditional branch */
+-		if (current->rseq.event.has_rseq & current->rseq.event.user_irq)
++	if (rseq_v2(current)) {
++		/* has_rseq is implied in rseq_v2() */
++		if (current->rseq.event.user_irq)
+ 			__rseq_signal_deliver(ksig->sig, regs);
+ 	} else {
+ 		if (current->rseq.event.has_rseq)
+@@ -50,15 +54,22 @@ static __always_inline void rseq_sched_switch_event(struct task_struct *t)
+ {
+ 	struct rseq_event *ev = &t->rseq.event;
+ 
+-	if (IS_ENABLED(CONFIG_GENERIC_IRQ_ENTRY)) {
++	/*
++	 * Only apply the user_irq optimization for RSEQ ABI V2 registrations.
++	 * Legacy users like TCMalloc rely on the original ABI V1 behaviour
++	 * which updates IDs on every context swtich.
++	 */
++	if (rseq_v2(t)) {
+ 		/*
+-		 * Avoid a boat load of conditionals by using simple logic
+-		 * to determine whether NOTIFY_RESUME needs to be raised.
++		 * Avoid a boat load of conditionals by using simple logic to
++		 * determine whether TIF_NOTIFY_RESUME or TIF_RSEQ needs to be
++		 * raised.
+ 		 *
+-		 * It's required when the CPU or MM CID has changed or
+-		 * the entry was from user space.
++		 * It's required when the CPU or MM CID has changed or the entry
++		 * was via interrupt from user space. ev->has_rseq does not have
++		 * to be evaluated here because rseq_v2() implies has_rseq.
+ 		 */
+-		bool raise = (ev->user_irq | ev->ids_changed) & ev->has_rseq;
++		bool raise = ev->user_irq | ev->ids_changed;
+ 
+ 		if (raise) {
+ 			ev->sched_switch = true;
+@@ -66,6 +77,7 @@ static __always_inline void rseq_sched_switch_event(struct task_struct *t)
  		}
- #endif
- 		/* kludge for valkyrie */
+ 	} else {
+ 		if (ev->has_rseq) {
++			t->rseq.event.ids_changed = true;
+ 			t->rseq.event.sched_switch = true;
+ 			rseq_raise_notify_resume(t);
+ 		}
+@@ -161,6 +173,7 @@ static inline unsigned int rseq_alloc_align(void)
+ }
+ 
+ #else /* CONFIG_RSEQ */
++static inline bool rseq_v2(struct task_struct *t) { return false; }
+ static inline void rseq_handle_slowpath(struct pt_regs *regs) { }
+ static inline void rseq_signal_deliver(struct ksignal *ksig, struct pt_regs *regs) { }
+ static inline void rseq_sched_switch_event(struct task_struct *t) { }
+diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
+index c6831c93cd6ee..c67a3476e9dd6 100644
+--- a/include/linux/rseq_entry.h
++++ b/include/linux/rseq_entry.h
+@@ -110,6 +110,20 @@ static __always_inline void rseq_slice_clear_grant(struct task_struct *t)
+ 	t->rseq.slice.state.granted = false;
+ }
+ 
++/*
++ * Open coded, so it can be invoked within a user access region.
++ *
++ * This clears the user space state of the time slice extensions field only when
++ * the task has registered the optimized RSEQ_ABI V2. Some legacy registrations,
++ * e.g. TCMalloc, have conflicting non-ABI fields in struct RSEQ, which would be
++ * overwritten by an unconditional write.
++ */
++#define rseq_slice_clear_user(rseq, efault)				\
++do {									\
++	if (rseq_slice_extension_enabled())				\
++		unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);	\
++} while (0)
++
+ static __always_inline bool rseq_grant_slice_extension(bool work_pending)
+ {
+ 	struct task_struct *curr = current;
+@@ -220,6 +234,7 @@ static __always_inline bool rseq_slice_extension_enabled(void) { return false; }
+ static __always_inline bool rseq_arm_slice_extension_timer(void) { return false; }
+ static __always_inline void rseq_slice_clear_grant(struct task_struct *t) { }
+ static __always_inline bool rseq_grant_slice_extension(bool work_pending) { return false; }
++#define rseq_slice_clear_user(rseq, efault) do { } while (0)
+ #endif /* !CONFIG_RSEQ_SLICE_EXTENSION */
+ 
+ bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs, unsigned long csaddr);
+@@ -507,11 +522,9 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids,
+ 		if (csaddr)
+ 			unsafe_get_user(*csaddr, &rseq->rseq_cs, efault);
+ 
+-		/* Open coded, so it's in the same user access region */
+-		if (rseq_slice_extension_enabled()) {
+-			/* Unconditionally clear it, no point in conditionals */
+-			unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
+-		}
++		/* RSEQ ABI V2 only operations */
++		if (rseq_v2(t))
++			rseq_slice_clear_user(rseq, efault);
+ 	}
+ 
+ 	rseq_slice_clear_grant(t);
+@@ -602,6 +615,14 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
+ 	 * interrupts disabled
+ 	 */
+ 	guard(pagefault)();
++	/*
++	 * This optimization is only valid when the task registered for the
++	 * optimized RSEQ_ABI_V2 variant. Some legacy users rely on the original
++	 * RSEQ implementation behaviour which unconditionally updated the IDs.
++	 * rseq_sched_switch_event() ensures that legacy registrations always
++	 * have both sched_switch and ids_changed set, which is compatible with
++	 * the historical TIF_NOTIFY_RESUME behaviour.
++	 */
+ 	if (likely(!t->rseq.event.ids_changed)) {
+ 		struct rseq __user *rseq = t->rseq.usrptr;
+ 		/*
+@@ -613,11 +634,9 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
+ 		scoped_user_rw_access(rseq, efault) {
+ 			unsafe_get_user(csaddr, &rseq->rseq_cs, efault);
+ 
+-			/* Open coded, so it's in the same user access region */
+-			if (rseq_slice_extension_enabled()) {
+-				/* Unconditionally clear it, no point in conditionals */
+-				unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
+-			}
++			/* RSEQ ABI V2 only operations */
++			if (rseq_v2(t))
++				rseq_slice_clear_user(rseq, efault);
+ 		}
+ 
+ 		rseq_slice_clear_grant(t);
+diff --git a/include/linux/rseq_types.h b/include/linux/rseq_types.h
+index 0b42045988db0..a469c1870849c 100644
+--- a/include/linux/rseq_types.h
++++ b/include/linux/rseq_types.h
+@@ -9,6 +9,12 @@
+ #ifdef CONFIG_RSEQ
+ struct rseq;
+ 
++/*
++ * rseq_event::has_rseq contains the ABI version number so preserving it
++ * in AND operations requires a mask.
++ */
++#define RSEQ_HAS_RSEQ_VERSION_MASK	0xff
++
+ /**
+  * struct rseq_event - Storage for rseq related event management
+  * @all:		Compound to initialize and clear the data efficiently
+@@ -17,7 +23,8 @@ struct rseq;
+  *			exit to user
+  * @ids_changed:	Indicator that IDs need to be updated
+  * @user_irq:		True on interrupt entry from user mode
+- * @has_rseq:		True if the task has a rseq pointer installed
++ * @has_rseq:		Greater than 0 if the task has a rseq pointer installed.
++ *			Contains the RSEQ version number
+  * @error:		Compound error code for the slow path to analyze
+  * @fatal:		User space data corrupted or invalid
+  * @slowpath:		Indicator that slow path processing via TIF_NOTIFY_RESUME
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 586f58f652c6e..aa25753ea1350 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -253,11 +253,14 @@ static bool rseq_handle_cs(struct task_struct *t, struct pt_regs *regs)
+ static void rseq_slowpath_update_usr(struct pt_regs *regs)
+ {
+ 	/*
+-	 * Preserve rseq state and user_irq state. The generic entry code
+-	 * clears user_irq on the way out, the non-generic entry
+-	 * architectures are not having user_irq.
++	 * Preserve has_rseq and user_irq state. The generic entry code clears
++	 * user_irq on the way out, the non-generic entry architectures are not
++	 * setting user_irq.
+ 	 */
+-	const struct rseq_event evt_mask = { .has_rseq = true, .user_irq = true, };
++	const struct rseq_event evt_mask = {
++		.has_rseq	= RSEQ_HAS_RSEQ_VERSION_MASK,
++		.user_irq	= true,
++	};
+ 	struct task_struct *t = current;
+ 	struct rseq_ids ids;
+ 	u32 node_id;
+@@ -330,8 +333,9 @@ void __rseq_handle_slowpath(struct pt_regs *regs)
+ void __rseq_signal_deliver(int sig, struct pt_regs *regs)
+ {
+ 	rseq_stat_inc(rseq_stats.signal);
++
+ 	/*
+-	 * Don't update IDs, they are handled on exit to user if
++	 * Don't update IDs yet, they are handled on exit to user if
+ 	 * necessary. The important thing is to abort a critical section of
+ 	 * the interrupted context as after this point the instruction
+ 	 * pointer in @regs points to the signal handler.
+@@ -344,6 +348,13 @@ void __rseq_signal_deliver(int sig, struct pt_regs *regs)
+ 		current->rseq.event.error = 0;
+ 		force_sigsegv(sig);
+ 	}
++
++	/*
++	 * In legacy mode, force the update of IDs before returning to user
++	 * space to stay compatible.
++	 */
++	if (!rseq_v2(current))
++		rseq_force_update();
+ }
+ 
+ /*
+@@ -408,6 +419,7 @@ static bool rseq_reset_ids(void)
+ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len, int, flags, u32, sig)
+ {
+ 	u32 rseqfl = 0;
++	u8 version = 1;
+ 
+ 	if (flags & RSEQ_FLAG_UNREGISTER) {
+ 		if (flags & ~RSEQ_FLAG_UNREGISTER)
+@@ -461,7 +473,11 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len, int, flags, u32
+ 	if (!access_ok(rseq, rseq_len))
+ 		return -EFAULT;
+ 
+-	if (IS_ENABLED(CONFIG_RSEQ_SLICE_EXTENSION)) {
++	/*
++	 * The version check effectivly disables time slice extensions until the
++	 * RSEQ ABI V2 registration are implemented.
++	 */
++	if (IS_ENABLED(CONFIG_RSEQ_SLICE_EXTENSION) && version > 1) {
+ 		if (rseq_slice_extension_enabled()) {
+ 			rseqfl |= RSEQ_CS_FLAG_SLICE_EXT_AVAILABLE;
+ 			if (flags & RSEQ_FLAG_SLICE_EXT_DEFAULT_ON)
+@@ -484,7 +500,15 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len, int, flags, u32
+ 		unsafe_put_user(RSEQ_CPU_ID_UNINITIALIZED, &rseq->cpu_id, efault);
+ 		unsafe_put_user(0U, &rseq->node_id, efault);
+ 		unsafe_put_user(0U, &rseq->mm_cid, efault);
+-		unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
++
++		/*
++		 * All fields past mm_cid are only valid for non-legacy v2
++		 * registrations.
++		 */
++		if (version > 1) {
++			if (IS_ENABLED(CONFIG_RSEQ_SLICE_EXTENSION))
++				unsafe_put_user(0U, &rseq->slice_ctrl.all, efault);
++		}
+ 	}
+ 
+ 	/*
+@@ -712,6 +736,8 @@ int rseq_slice_extension_prctl(unsigned long arg2, unsigned long arg3)
+ 			return -ENOTSUPP;
+ 		if (!current->rseq.usrptr)
+ 			return -ENXIO;
++		if (!rseq_v2(current))
++			return -ENOTSUPP;
+ 
+ 		/* No change? */
+ 		if (enable == !!current->rseq.slice.state.enabled)
+diff --git a/kernel/sched/membarrier.c b/kernel/sched/membarrier.c
+index 6234456037252..226a6329f3e92 100644
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -199,7 +199,16 @@ static void ipi_rseq(void *info)
+ 	 * is negligible.
+ 	 */
+ 	smp_mb();
+-	rseq_sched_switch_event(current);
++	/*
++	 * Legacy mode requires that IDs are written and the critical section is
++	 * evaluated. V2 optimized mode handles the critical section and IDs are
++	 * only updated if they change as a consequence of preemption after
++	 * return from this IPI.
++	 */
++	if (rseq_v2(current))
++		rseq_sched_switch_event(current);
++	else
++		rseq_force_update();
+ }
+ 
+ static void ipi_sync_rq_state(void *info)
 -- 
 2.53.0
 
