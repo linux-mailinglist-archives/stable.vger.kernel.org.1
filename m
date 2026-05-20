@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eK78HUbqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:18 +0200
+	id EJvgD6v/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4033592EF5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F378B596D70
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1DC293064041
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A876830B53D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7813F44CD;
-	Wed, 20 May 2026 17:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330BF370AEE;
+	Wed, 20 May 2026 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVzU65U/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q49lAErD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342D3F44D0;
-	Wed, 20 May 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0130DEAC;
+	Wed, 20 May 2026 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296605; cv=none; b=Zw4EBT/lgRTU4U6LwfTJRE0Mu/fCy3+UMk+ycAiVvRU664ZMiDkQGle2P9xcEPlWG/0JsRBI8Z+1MboGIARfe77V+FJX+ly8qBepqSew72Y9fJtELu1pB5idG90HB3J4wiTzjziPr9nYh0d5Fz15z+lydMnwu+SPL5FNb+T89Bo=
+	t=1779301873; cv=none; b=o/Mm0CJQ5YPi+TtjLbRQYhEwNc++Ikr4at95AYa2dI4VcvSijtc/wkK4sQWCW+JsgtMuzkVkWN14SxvvkE+suhyc28+973PPqxb52PxBTLYStndwu8G+hBfMSgK0ah+tYe/8xvmLTgjf/YUfgXP5fR4NQZ/95WWj5o4o/cZrsZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296605; c=relaxed/simple;
-	bh=YoZha9X8XhWC0pS4AkufhPjDCW6vI3mcQNHoiQGsUuE=;
+	s=arc-20240116; t=1779301873; c=relaxed/simple;
+	bh=88V0wQJNfzii9bs1GjvwStnfEEy2F3UwtQoHCczoiiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s3iJRfI7zzx5ImJE6vPBulrqGGsWjUeftNu4g2ciURwAkGF2QlpV7+fpUOr93VkgP3fbM4aoyGmVLpy7cJQLY7pvxA7xXJxLOwYWkxlwbJ2PF0I+/pIiBiwnjnsW764K9cYY24c3jJJZK3xEjL1SiSY7hC3ithtAVRIZp4vNnUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVzU65U/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D121F000E9;
-	Wed, 20 May 2026 17:03:23 +0000 (UTC)
+	 MIME-Version; b=sv0lJ1YKtnAGPSbO0R4oBhacgWU8AP2mWiU24Rkvd++96vskvH7o7bsksFBsT6CWOWcMJN/9/7k9VILPKSe8eu8Br6s86AjFxpO1iVph+Ruc4QGYrCfjSQopEZ8Nwjhn8hMx6m6bjHSdcZhC3m960+AycvVCxvV+5ibffMF2qWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q49lAErD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2181F00898;
+	Wed, 20 May 2026 18:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296603;
-	bh=zXXqCjRTo60HE97/8SHLZH+RjROAR32zyQHqwK5Mv1s=;
+	s=korg; t=1779301871;
+	bh=M7qaXttPXA2c8FKeu6AX/B36BfFU+gux8TpAw7zFfWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jVzU65U/1xTau+e7UaAVfd0sKcUhNEIz7Yxw8oQSfd7a95saFhY6vLN5C4R4jd5zn
-	 mPPpx5b9yvQfvDb+sqFL2ny2S6pAs5/Wr8ONXH3s5iWlKp8wwffWkZzrNjmnDw/3dV
-	 FrbNL4HRPJlbrwysM83p4F64N7KXTeL1QGh0cCNg=
+	b=q49lAErDyR3lPlx9dLOK0WfwzW5emyRcvDi+GdIyqW4w3QCEsq1WnXPnMlMBZK/d4
+	 GVls/3wI9K/K8nvfHVlwJWH1+mp0CwO6j8zGUnDOeqAsc6bPJIyIBELf9jZEV4wzQ6
+	 wQ88yvbTzVD8IW8GAVHAEeMGxhpXyIN2ae95Zkvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Haoyu Lu <hechushiguitu666@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0825/1146] pwm: atmel-tcb: Cache clock rates and mark chip as atomic
+Subject: [PATCH 6.6 052/508] ACPI: AGDI: fix missing newline in error message
 Date: Wed, 20 May 2026 18:17:55 +0200
-Message-ID: <20260520162206.902761026@linuxfoundation.org>
+Message-ID: <20260520162059.724348370@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +65,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250902-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,os.amperecomputing.com,gmail.com,huawei.com,arm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252896-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,snu.ac.kr:email]
-X-Rspamd-Queue-Id: E4033592EF5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: F378B596D70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sangyun Kim <sangyun.kim@snu.ac.kr>
+From: Haoyu Lu <hechushiguitu666@gmail.com>
 
-[ Upstream commit 68637b68afcc3cb4d56aca14a3a1d1b47b879369 ]
+[ Upstream commit b178330b67abb7293b6de28b2a49d49c83962db5 ]
 
-atmel_tcb_pwm_apply() holds tcbpwmc->lock as a spinlock via
-guard(spinlock)() and then calls atmel_tcb_pwm_config(), which calls
-clk_get_rate() twice. clk_get_rate() acquires clk_prepare_lock (a
-mutex), so this is a sleep-in-atomic-context violation.
+Add the missing trailing newline to the dev_err() message
+printed when SDEI event registration fails.
 
-On CONFIG_DEBUG_ATOMIC_SLEEP kernels every pwm_apply_state() that
-enables or reconfigures the PWM triggers a "BUG: sleeping function
-called from invalid context" warning.
+This keeps the error output as a properly terminated log line.
 
-Acquire exclusive control over the clock rates with
-clk_rate_exclusive_get() at probe time and cache the rates in struct
-atmel_tcb_pwm_chip, then read the cached rates from
-atmel_tcb_pwm_config(). This keeps the spinlock-based mutual exclusion
-introduced in commit 37f7707077f5 ("pwm: atmel-tcb: Fix race condition
-and convert to guards") and removes the sleeping calls from the atomic
-section.
-
-With no sleeping calls left in .apply() and the regmap-mmio bus already
-running with fast_io=true, also mark the chip as atomic so consumers
-can use pwm_apply_atomic() from atomic context.
-
-Fixes: 37f7707077f5 ("pwm: atmel-tcb: Fix race condition and convert to guards")
-Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Link: https://patch.msgid.link/20260419080838.3192357-1-sangyun.kim@snu.ac.kr
-[ukleinek: Ensure .clk is enabled before calling clk_get_rate on it.]
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Haoyu Lu <hechushiguitu666@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 38 +++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/acpi/arm64/agdi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index f9ff78ba122d4..3d30aeab507e0 100644
---- a/drivers/pwm/pwm-atmel-tcb.c
-+++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -50,6 +50,8 @@ struct atmel_tcb_pwm_chip {
- 	spinlock_t lock;
- 	u8 channel;
- 	u8 width;
-+	unsigned long rate;
-+	unsigned long slow_rate;
- 	struct regmap *regmap;
- 	struct clk *clk;
- 	struct clk *gclk;
-@@ -266,7 +268,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	int slowclk = 0;
- 	unsigned period;
- 	unsigned duty;
--	unsigned rate = clk_get_rate(tcbpwmc->clk);
-+	unsigned long rate = tcbpwmc->rate;
- 	unsigned long long min;
- 	unsigned long long max;
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index 8b3c7d42b41bc..419a9f6c0a827 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -32,7 +32,7 @@ static int agdi_sdei_probe(struct platform_device *pdev,
  
-@@ -294,7 +296,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	 */
- 	if (i == ARRAY_SIZE(atmel_tcb_divisors)) {
- 		i = slowclk;
--		rate = clk_get_rate(tcbpwmc->slow_clk);
-+		rate = tcbpwmc->slow_rate;
- 		min = div_u64(NSEC_PER_SEC, rate);
- 		max = min << tcbpwmc->width;
- 
-@@ -431,24 +433,49 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
++		dev_err(&pdev->dev, "Failed to register for SDEI event %d\n",
+ 			adata->sdei_event);
+ 		return err;
  	}
- 
- 	chip->ops = &atmel_tcb_pwm_ops;
-+	chip->atomic = true;
- 	tcbpwmc->channel = channel;
- 	tcbpwmc->width = config->counter_width;
- 
--	err = clk_prepare_enable(tcbpwmc->slow_clk);
-+	err = clk_prepare_enable(tcbpwmc->clk);
- 	if (err)
- 		goto err_gclk;
- 
-+	err = clk_prepare_enable(tcbpwmc->slow_clk);
-+	if (err)
-+		goto err_disable_clk;;
-+
-+	err = clk_rate_exclusive_get(tcbpwmc->clk);
-+	if (err)
-+		goto err_disable_slow_clk;
-+
-+	err = clk_rate_exclusive_get(tcbpwmc->slow_clk);
-+	if (err)
-+		goto err_clk_unlock;
-+
-+	tcbpwmc->rate = clk_get_rate(tcbpwmc->clk);
-+	tcbpwmc->slow_rate = clk_get_rate(tcbpwmc->slow_clk);
-+
- 	spin_lock_init(&tcbpwmc->lock);
- 
- 	err = pwmchip_add(chip);
- 	if (err < 0)
--		goto err_disable_clk;
-+		goto err_slow_clk_unlock;
- 
- 	platform_set_drvdata(pdev, chip);
- 
- 	return 0;
- 
-+err_slow_clk_unlock:
-+	clk_rate_exclusive_put(tcbpwmc->slow_clk);
-+
-+err_clk_unlock:
-+	clk_rate_exclusive_put(tcbpwmc->clk);
-+
- err_disable_clk:
-+	clk_disable_unprepare(tcbpwmc->clk);
-+
-+err_disable_slow_clk:
- 	clk_disable_unprepare(tcbpwmc->slow_clk);
- 
- err_gclk:
-@@ -470,6 +497,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
- 
- 	pwmchip_remove(chip);
- 
-+	clk_rate_exclusive_put(tcbpwmc->slow_clk);
-+	clk_rate_exclusive_put(tcbpwmc->clk);
-+	clk_disable_unprepare(tcbpwmc->clk);
- 	clk_disable_unprepare(tcbpwmc->slow_clk);
- 	clk_put(tcbpwmc->gclk);
- 	clk_put(tcbpwmc->clk);
 -- 
 2.53.0
 
