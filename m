@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBUtFFsGDmqy5gUAu9opvQ
-	(envelope-from <stable+bounces-253116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:07 +0200
+	id kA6GNSb5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFE0597C74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC7659579B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51836266644
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3EC133154D02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB5E40245B;
-	Wed, 20 May 2026 18:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94003F54C7;
+	Wed, 20 May 2026 17:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYH5w6A0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKY9axgV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEE540243A;
-	Wed, 20 May 2026 18:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4373F39C9;
+	Wed, 20 May 2026 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302447; cv=none; b=Yyrnsb7tNAR1rROfptP/TzbfKg5fktDi05xzu+RbqtTOODAKGhAm5ofUD1tcggQJ6nkW+KktzE+f/npFe9fwIP9XYNFEbtk5S6QcjCw6tHtd1pRHeT3gwrs7jd0efYErSmMO2LXijGNOB5+ivbGNNrw1vCX91Py0Laab6D5/V8s=
+	t=1779299538; cv=none; b=VF9rxbu47zgKFM8uCu7nCVHGokhTfiug4SldmoTNMEnVFc4KX1LFA0PLh/Hz2saiQ38bHklRiz8g6onFhujxovVNXUBUfzhpAanXyJnxgd49AZ0bntwKfwEy1EVm4U9ElKdCqCdLCtLC7i0jrF6bk83PyTGU1ziDYC/YTtzi9Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302447; c=relaxed/simple;
-	bh=yZTAW4BccOj9gChXCACCvle4451z4fdp0Pxbw5w0VDY=;
+	s=arc-20240116; t=1779299538; c=relaxed/simple;
+	bh=2398BNZn+5dj5D5+Nu9cbAiVEXNafX6RwHnriZn4p9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfII5s91GK17LE0y6OUDB7LhFLgLwWu8Uun/OxhldzV+6QWPDuFdIj/rHruRZFWquCE1fU3npyskFlwz4SLxcnJ6gJgSb6hQOry5KqfgpGjU+Jc4ytB2kpIrdQ7G2nA37E3ZPuf8icQGPQJy/ksEDRNdq/DMl+O1oZXkNnPLSAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYH5w6A0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923721F000E9;
-	Wed, 20 May 2026 18:40:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ELnA2rNMg4+XYaT2eiLX7S/Pyh52t+RVSCXmq/mzZ8MIr3xoOjihm4LKkqgbNlN3Md0lTV6vZ2fM0ZF+1SStCdBfNB0xXDtdvf58gTfTCuknlnsm98YLG5ij4zv0nFD9MbLtSMuJLlwtbvFqIxTqdpUAaMDJc+rzx6B1fwswir8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKY9axgV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22A01F000E9;
+	Wed, 20 May 2026 17:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302446;
-	bh=NPXrm9IGV7uRrXS1C44TubPD4dp7t6wKN8vN9kNUlFs=;
+	s=korg; t=1779299537;
+	bh=70fzr7MfReA1ahZdyDVyENTzGG8gRhD7js03uyhxBMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AYH5w6A0poheXxW1k+klz+negrdAip1C/gzVZ3HhbKmZTssUaaI/3hDZjRiWWrmm7
-	 j9aJWWMK3fPKGScjDynOzuHRWZ8FpZuty4//jicgL7AaG0MAQr7u6Vi9q327cCZu8h
-	 u6plK+qhvihEXJ6g7rHB03gIxT1Ak9mrDyqrRrAU=
+	b=wKY9axgVJzsEwj8zPtddJbQ2Q6koy77xgGg9sR4xtDGuz/XzRvUp8dyy+0hplui/+
+	 AWAVqa1slMAMzKr8FRxn/fQS3oHGdL71lH/qGEi9JUKELCT5zVasj1+VKWpJMygKBY
+	 1TON5CYjmF6l1KJIrRfsjkqEKBfGyl5hqrMsx6lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/508] RDMA/core: Prefer NLA_NUL_STRING
+Subject: [PATCH 6.18 811/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0.5 ring
 Date: Wed, 20 May 2026 18:21:34 +0200
-Message-ID: <20260520162104.517428717@linuxfoundation.org>
+Message-ID: <20260520162152.154841870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252021-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253116-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CEFE0597C74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: ADC7659579B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
+[ Upstream commit b65b7f3f3c18f797f81a2af7c97e2079900ad6db ]
 
-These attributes are evaluated as c-string (passed to strcmp), but
-NLA_STRING doesn't check for the presence of a \0 terminator.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
-specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
-
-As the code has been this way for long time, it seems to me that userspace
-does include the terminating nul, even tough its not enforced so far, and
-thus NLA_NUL_STRING use is the simpler solution.
-
-Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
-Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 8f98a715da8e ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_5")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f05d0a4f21fc720116d6e238f23308b199891058)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/iwpm_msg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
-index 3c9a9869212bb..feb09008eb9ca 100644
---- a/drivers/infiniband/core/iwpm_msg.c
-+++ b/drivers/infiniband/core/iwpm_msg.c
-@@ -365,9 +365,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
- /* netlink attribute policy for the received response to register pid request */
- static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
- 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
--	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
-+	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
- 					.len = IWPM_DEVNAME_SIZE - 1 },
--	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
-+	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
- 					.len = IWPM_ULIBNAME_SIZE - 1 },
- 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
- 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
-@@ -677,7 +677,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
- 
- /* netlink attribute policy for the received request for mapping info */
- static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
--	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
-+	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
- 					.len = IWPM_ULIBNAME_SIZE - 1 },
- 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
+index 54fd9c800c40a..a43582b9c876c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
+@@ -804,6 +804,7 @@ static const struct amd_ip_funcs jpeg_v4_0_5_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v4_0_5_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v4_0_5_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_5_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_5_dec_ring_set_wptr,
 -- 
 2.53.0
 
