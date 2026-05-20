@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBdMHXz5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:12 +0200
+	id +IIZKo0uDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EAE5958AA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FE459B8BC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0AFEA30D2030
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C404396D87E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7133F39C9;
-	Wed, 20 May 2026 17:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DDA404895;
+	Wed, 20 May 2026 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvOAjdZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIT/0/xo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86FE3F23BF;
-	Wed, 20 May 2026 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEE73FC5B4;
+	Wed, 20 May 2026 18:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299651; cv=none; b=e51dUHSB0MMfoPMz+trM+j97g+lxWpP9O/yLEz8hnjkdPpaheXA6TXa39OCFDxSMVMAu/K9LQ04a4hBPLm2jNN4LkIRP9ntEUA2UuyFZrD6mx+W59Z8Fs40o9kcbp8tTXeqlnmCJ3oeW3x/9oxUP0jTDadlMlKCWwTwPZ1TqSl0=
+	t=1779302563; cv=none; b=Z9c+oC8ZYvUpbiCpF6+ZxUCN2K1jHCIn18uNbVZWBbwRp03Ga9zLgjBzexUkx9HhNii77q3UIt13syG4ibYvC4Ko6f8q1Oo+uVZtxAkd6uLqKo8YvNtoz+PGubtrNpB2l1itDz7n3Xlzfo4TWyb4XBW7HzCQoNeQRKiOJYYS02A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299651; c=relaxed/simple;
-	bh=c7aXHaIeJ9Ji9Sj8Menb2kL+W3AQC/CPrQ5FB0kuH8c=;
+	s=arc-20240116; t=1779302563; c=relaxed/simple;
+	bh=pIIlioJPnDBaVPz4xGQ/zSMHZY40lZqpy7l2oRznDU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHToKGf+u0bhtoGPRpm8u/4ejZRbNleXV5GT0UBRM5OrW6/LSITU0I4AF3S+7Vvv2hCaQNiZYC7iBysb8hkIwkXYVnwdm0Ff+MnbuQMGAwtdLXhbf5XHI1r8f4SKckH5fB8lF6RZKGcsmLRqlaDJMD4KLnz2xW639FRjUY1BSms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvOAjdZl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110E41F00893;
-	Wed, 20 May 2026 17:54:09 +0000 (UTC)
+	 MIME-Version; b=PGYfLOpF4A6i0EEhLWhdozgqmp1Zqh73TstGpvgKJfFD1CoO70xk89EeUvzbMv6mCv97CyxV+AGngMMysR7UAew4xIW711lrK4LFhudcy8RuJ1r7UC6SIQAAuFrQ1S3+/TSjecC3iDbqA6jKlYrNPpKYahcQQ+CMF8XFhRatqfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIT/0/xo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC2A1F000E9;
+	Wed, 20 May 2026 18:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299650;
-	bh=IxMbR3XBFcUA1gv2hMOkfCzsCD6AWbz74bNfiWDqOtU=;
+	s=korg; t=1779302562;
+	bh=A70F5nL9h/2n0xAWkLzTanETsU56/LVUdswEyZc//Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EvOAjdZlDyR50aoskTE2r4rnH+u4+ZS3gTRdfgdSw8TpYt/biz1ik0/CttdruOhS7
-	 kv86wufba1IFe5f9m/iWCE4rPkBMIe/Ab8Jufmf7RK0YThXfJesIYpHZzaQGRhRkZ0
-	 TCPgJVD2Ru2XwQEzWbeYVWTbk+OgBVrZAaxaf72M=
+	b=ZIT/0/xoKd5lWNlGCSXS+6YoVERw8wCi83oGhl6VOY8bALd9+LLNF5ejYxnjgWlAI
+	 +PuBjiVEB7L2//a5PqTnzFml9mnLWGuPAQMopoA2bpOY2YLhqISK82BCHxWVPgZXmO
+	 rI7LKNr0qXGqhKBvyWXEZDFHNkIIAfC3L9rL8qA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 854/957] net: tls: fix strparser anchor skb leak on offload RX setup failure
-Date: Wed, 20 May 2026 18:22:17 +0200
-Message-ID: <20260520162153.086577483@linuxfoundation.org>
+Subject: [PATCH 6.6 315/508] tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans
+Date: Wed, 20 May 2026 18:22:18 +0200
+Message-ID: <20260520162105.462812822@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +66,106 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253160-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252064-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 54EAE5958AA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 38FE459B8BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 58689498ca3384851145a754dbb1d8ed1cf9fb54 ]
+[ Upstream commit 21e92a38cfd891538598ba8f805e0165a820d532 ]
 
-When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
-calls tls_sw_free_resources_rx() to clean up the SW context that was
-initialized by tls_set_sw_offload(). This function calls
-tls_sw_release_resources_rx() (which stops the strparser via
-tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
-but never frees the anchor skb that was allocated by alloc_skb(0) in
-tls_strp_init().
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Note that tls_sw_free_resources_rx() is exclusively used for this
-"failed to start offload" code path, there's no other caller.
-
-The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
-the standard strparser"), because the standard strparser doesn't try
-to pre-allocate an skb.
-
-The normal close path in tls_sk_proto_close() handles cleanup by calling
-tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
-the socket lock, because tls_strp_done() does cancel_work_sync() and
-the strparser work handler takes the socket lock.
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Fixes: 7e98102f4897 ("tcp: record pkts sent and retransmistted")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260428231559.1358502-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls.h      | 1 +
- net/tls/tls_strp.c | 6 ++++++
- net/tls/tls_sw.c   | 4 ++++
- 3 files changed, 11 insertions(+)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 8 +++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 2f86baeb71fcb..a1d8467bece33 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -188,6 +188,7 @@ int tls_strp_dev_init(void);
- void tls_strp_dev_exit(void);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 33b724dcde6ed..8187fefa52206 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3962,9 +3962,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u64_64bit(stats, TCP_NLA_SNDBUF_LIMITED,
+ 			  info.tcpi_sndbuf_limited, TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_DATA_SEGS_OUT,
+-			  tp->data_segs_out, TCP_NLA_PAD);
++			  READ_ONCE(tp->data_segs_out), TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_TOTAL_RETRANS,
+-			  tp->total_retrans, TCP_NLA_PAD);
++			  READ_ONCE(tp->total_retrans), TCP_NLA_PAD);
  
- void tls_strp_done(struct tls_strparser *strp);
-+void __tls_strp_done(struct tls_strparser *strp);
- void tls_strp_stop(struct tls_strparser *strp);
- int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
- void tls_strp_data_ready(struct tls_strparser *strp);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 98e12f0ff57e5..c72e883176273 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -624,6 +624,12 @@ void tls_strp_done(struct tls_strparser *strp)
- 	WARN_ON(!strp->stopped);
+ 	rate = READ_ONCE(sk->sk_pacing_rate);
+ 	rate64 = (rate != ~0UL) ? rate : ~0ULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index db8f2830c67bf..5e2e14df787d4 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1400,7 +1400,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
  
- 	cancel_work_sync(&strp->work);
-+	__tls_strp_done(strp);
-+}
-+
-+/* For setup error paths where the strparser was initialized but never armed. */
-+void __tls_strp_done(struct tls_strparser *strp)
-+{
- 	tls_strp_anchor_free(strp);
- }
+ 	if (skb->len != tcp_header_size) {
+ 		tcp_event_data_sent(tp, sk);
+-		tp->data_segs_out += tcp_skb_pcount(skb);
++		WRITE_ONCE(tp->data_segs_out,
++			   tp->data_segs_out + tcp_skb_pcount(skb));
+ 		tp->bytes_sent += skb->len - tcp_header_size;
+ 	}
  
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 16aaf41a8cc09..f2ea190777f0b 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2625,8 +2625,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
- void tls_sw_free_resources_rx(struct sock *sk)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
-+	struct tls_sw_context_rx *ctx;
-+
-+	ctx = tls_sw_ctx_rx(tls_ctx);
+@@ -3347,7 +3348,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	TCP_ADD_STATS(sock_net(sk), TCP_MIB_RETRANSSEGS, segs);
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+-	tp->total_retrans += segs;
++	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+ 	tp->bytes_retrans += skb->len;
  
- 	tls_sw_release_resources_rx(sk);
-+	__tls_strp_done(&ctx->strp);
- 	tls_sw_free_ctx_rx(tls_ctx);
- }
- 
+ 	/* make sure skb->data is aligned on arches that require it
+@@ -4285,7 +4286,8 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
+ 			 * However in this case, we are dealing with a passive fastopen
+ 			 * socket thus we can change total_retrans value.
+ 			 */
+-			tcp_sk_rw(sk)->total_retrans++;
++			WRITE_ONCE(tcp_sk_rw(sk)->total_retrans,
++				   tcp_sk_rw(sk)->total_retrans + 1);
+ 		}
+ 		trace_tcp_retransmit_synack(sk, req);
+ 	}
 -- 
 2.53.0
 
