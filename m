@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFkmHyv/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-251585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:27 +0200
+	id eDdIJh31DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA439596BF7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15053594D80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43A93304105E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ADE8316644B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A3C28DC4;
-	Wed, 20 May 2026 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B272701C4;
+	Wed, 20 May 2026 16:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYG30VWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9leJtVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C3029D26E;
-	Wed, 20 May 2026 17:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162FC2D0603;
+	Wed, 20 May 2026 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298363; cv=none; b=TjSgVVvKJOsKhaFgCUg929rKN2jkZzBGYybMaZZlv6nCO0EiWfmOJi8nRAlHqneHN3BzqrvHfqRS0Qu59hipxygOqJLBMRE5rI7JoxQMnDoH+sl6T2sudtG+/j5WBZBZUaA5Q0zGvo2z4OuhNyk8k+q3oQpd1GpUmTSH+kWDlRM=
+	t=1779295951; cv=none; b=LqUJvToz+/prNSSGA2dGpSog/1O0I7B/DZymEqVKhr4IYnsyBwoTWtSnMhqgFvl55if4d9JJetFyXWsPk+Yp7URypiwotpzV+R+ULsdnvY+bN88rOOtcK7coOV3E0GDHZz8BKFMdsOqbu3KtnzJqpzjvCREH/MSHnNe5pAR0osw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298363; c=relaxed/simple;
-	bh=os0DK8UNN6MmwmZXJN8YAKsTYfc61bvmfGcrucx4je0=;
+	s=arc-20240116; t=1779295951; c=relaxed/simple;
+	bh=rpK6NZZFf+UJQlOW/obboveF0owSaJWqMccI0Uk76c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIGN+DVvDf7YbRi2HqQNIgbNp9IhTzKCXId7A/frC7qDU5KadrD9Kva5V6fzfW5bkElrX5p4WvVqU1Tkph3p2Wckq3if4WpDavgG9BSYAtzLYkIvxvF50Z0G0n1N/aF2ZSeV3zfl/ho+lPWUSiWIcAHpET+YmvvbiXpQ2c8jMHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYG30VWq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FE21F000E9;
-	Wed, 20 May 2026 17:32:42 +0000 (UTC)
+	 MIME-Version; b=nAj8CVB5UjrzJQ3nmlDmm/3iAp9Zd8496aWHlnJJH7jeeIR/O6glT9sXF6aW57A3oC4n8WftXfsvGfin2cbBUwmBDEhh5ieePCVnOMkR2XEhBMQSnjNVecwcv1GQZhT4LW7hxuph1AH/4zppDDQepIkXdxYBPm6c14JsAnfMo8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9leJtVc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E341F000E9;
+	Wed, 20 May 2026 16:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298362;
-	bh=msH0wUfDuIW2OfqlktA+lp3vzqYtNWNRT61SUeabCu8=;
+	s=korg; t=1779295949;
+	bh=NgTinCjZ9rsD4cftL2sEZtH18R94cJblARuMbC4ss8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rYG30VWq6eObJonLhjL9oA2L3oN482A1DTS1joIi9pQsaFEsgiwPTBZ+BlYr+tpKR
-	 PbRZHYwdQqLzFtGdOrPyvYcu/lgLC8b/qjpC30F7ebxQCCI4jlK/6qPPQlvIvlVlam
-	 n5qRaW6PrrgcaM8haIHoZMZb06+ZCUSK2Bn/Jb1Y=
+	b=K9leJtVcdqFqopGdTYQW11LHtQhK9eCBR2eHi7A3ZzFb9TirxlNKKklhrY6wQZYRM
+	 MG4FCmbdb6ennI0g6SSsvww+LgCy/vKR3/jlHOnPqJU+UdVn2hFdlknsgodi4CxV7T
+	 +e47RQja6nxSqLhEBqoJJHyMbqdjZrtP5psirnDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Frank Li <Frank.Li@nxp.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 381/957] arm64: dts: imx8mp-kontron: Drop vmmc-supply to fix SD card on SMARC eval carrier
-Date: Wed, 20 May 2026 18:14:24 +0200
-Message-ID: <20260520162142.791049180@linuxfoundation.org>
+Subject: [PATCH 7.0 0615/1146] bpf, sockmap: Take state lock for af_unix iter
+Date: Wed, 20 May 2026 18:14:25 +0200
+Message-ID: <20260520162202.101999917@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +69,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250645-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251585-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,kontron.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: CA439596BF7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,rbox.co:email]
+X-Rspamd-Queue-Id: 15053594D80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit d2ce84eecf081056b1d18d7524de52f849281ba7 ]
+[ Upstream commit 64c2f93fc3254d3bf5de4445fb732ee5c451edb6 ]
 
-The SMARC evaluation carrier provides an SD card power switch that
-complies with the OSM standard definition. The OSM base devicetree
-already describes this correctly.
+When a BPF iterator program updates a sockmap, there is a race condition in
+unix_stream_bpf_update_proto() where the `peer` pointer can become stale[1]
+during a state transition TCP_ESTABLISHED -> TCP_CLOSE.
 
-Stop overriding the vmmc-supply in the board devicetree and rely on
-the definition from the OSM base DTS instead to fix the power supply
-configuration for the SD card.
+        CPU0 bpf                          CPU1 close
+        --------                          ----------
+// unix_stream_bpf_update_proto()
+sk_pair = unix_peer(sk)
+if (unlikely(!sk_pair))
+   return -EINVAL;
+                                     // unix_release_sock()
+                                     skpair = unix_peer(sk);
+                                     unix_peer(sk) = NULL;
+                                     sock_put(skpair)
+sock_hold(sk_pair) // UaF
 
-Fixes: 6fe1ced5ccab7 ("arm64: dts: Add support for Kontron i.MX8MP SMARC module and eval carrier")
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+More practically, this fix guarantees that the iterator program is
+consistently provided with a unix socket that remains stable during
+iterator execution.
+
+[1]:
+BUG: KASAN: slab-use-after-free in unix_stream_bpf_update_proto+0x155/0x490
+Write of size 4 at addr ffff8881178c9a00 by task test_progs/2231
+Call Trace:
+ dump_stack_lvl+0x5d/0x80
+ print_report+0x170/0x4f3
+ kasan_report+0xe4/0x1c0
+ kasan_check_range+0x125/0x200
+ unix_stream_bpf_update_proto+0x155/0x490
+ sock_map_link+0x71c/0xec0
+ sock_map_update_common+0xbc/0x600
+ sock_map_update_elem+0x19a/0x1f0
+ bpf_prog_bbbf56096cdd4f01_selective_dump_unix+0x20c/0x217
+ bpf_iter_run_prog+0x21e/0xae0
+ bpf_iter_unix_seq_show+0x1e0/0x2a0
+ bpf_seq_read+0x42c/0x10d0
+ vfs_read+0x171/0xb20
+ ksys_read+0xff/0x200
+ do_syscall_64+0xf7/0x5e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Allocated by task 2236:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_slab_alloc+0x63/0x80
+ kmem_cache_alloc_noprof+0x1d5/0x680
+ sk_prot_alloc+0x59/0x210
+ sk_alloc+0x34/0x470
+ unix_create1+0x86/0x8a0
+ unix_stream_connect+0x318/0x15b0
+ __sys_connect+0xfd/0x130
+ __x64_sys_connect+0x72/0xd0
+ do_syscall_64+0xf7/0x5e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 2236:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x70
+ __kasan_slab_free+0x47/0x70
+ kmem_cache_free+0x11c/0x590
+ __sk_destruct+0x432/0x6e0
+ unix_release_sock+0x9b3/0xf60
+ unix_release+0x8a/0xf0
+ __sock_release+0xb0/0x270
+ sock_close+0x18/0x20
+ __fput+0x36e/0xac0
+ fput_close_sync+0xe5/0x1a0
+ __x64_sys_close+0x7d/0xd0
+ do_syscall_64+0xf7/0x5e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-5-2af6fe97918e@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts     | 1 -
- 1 file changed, 1 deletion(-)
+ net/unix/af_unix.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-index 2173a36ff6917..74d620dd06b7b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-@@ -249,6 +249,5 @@ &usb3_phy1 {
- };
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index b1ec96512bf72..660c7c441e0db 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3740,6 +3740,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 		return 0;
  
- &usdhc2 {
--	vmmc-supply = <&reg_vdd_3v3>;
- 	status = "okay";
- };
+ 	lock_sock(sk);
++	unix_state_lock(sk);
+ 
+ 	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+ 		ret = SEQ_SKIP;
+@@ -3751,6 +3752,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	prog = bpf_iter_get_info(&meta, false);
+ 	ret = unix_prog_seq_show(prog, &meta, v, uid);
+ unlock:
++	unix_state_unlock(sk);
+ 	release_sock(sk);
+ 	return ret;
+ }
 -- 
 2.53.0
 
