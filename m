@@ -1,317 +1,216 @@
-Return-Path: <stable+bounces-249924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KFaOdS4DWpT2wUAu9opvQ
-	(envelope-from <stable+bounces-249924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:36:20 +0200
+	id WPY3EMG7DWpT2wUAu9opvQ
+	(envelope-from <stable+bounces-249925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:48:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938AA58EDF6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:36:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8CF58F0ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A099309D49B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:30:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F7543014FD6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37D62C234E;
-	Wed, 20 May 2026 13:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B7344DA4;
+	Wed, 20 May 2026 13:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FOpYCRup"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QcSJHfK+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9C2233D9E
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779283836; cv=none; b=c5fuhqcB7pVQl1meHjAOm1GZX+jTwG0XNv++guFubpcbTYrmqV63Bhoj8jTRAz0O64QaxvnCSqySEPVcxkIlPAIg1jHKbODerlEUJyIKiPPPw6EoOBUj9/CDyJUkIrXsLI+0tjhRQASTvXTdEvu6s/p7CJ+2azBTZJTx7JLyF+Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779283836; c=relaxed/simple;
-	bh=81dImCBjpgJ9s4r5i5sIJwiSPnwM1ab60Dzuzfby04c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I91O9kdMC3P1mRvdgLMpGcz+fscVQjYGNRgcIa9TDeKmpo5GGtIqqKY2Dkye7FXqy//zd2rOEpEJkGw3HQljr7U9CobZUQ64IIJhau9lPAki9Pdyp9m2JaZ4BHi3k3ubmpWqeAIZbI8UKFiuKSfZMTr82B899f/NHKNbjJcckp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FOpYCRup; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8c7154725easo60027506d6.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:30:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83BC369D6C
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779284916; cv=pass; b=WAt/Q9FT3veXikkBahSTHka4j5iBzzOXNb8XkWyOuRIdOcCldJMNX7iN7XwxZTIgmnkCrfAKivdD3DIdIZlRD2XsXEgjaGTKAPdNtRJ8j4lGWdRzeVk5BL4/ct7mNJ+37Fs9801HTBoTaiXTE/xySyA1COL34dxUiwzE403D5Lk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779284916; c=relaxed/simple;
+	bh=Ux4DsBH/b+Hxghz4BUeS5WLTOtBGR43EC7jTFpvlaU4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mRjL6xvxlOFyoFjzHbjKVZSsknBCC472nEpIEcAVlAK428wrKfhS43wsOf7XiVBpO9RKuhpulhzuUBZoCijq3L3LnP+aktIUwIS8CBHUZ6zY2A6GLcPBu5pDvOX6f3gdy7j/1OsfpakR3h0LF7jI1ioUvesmmTGPE+6eqeMab8Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QcSJHfK+; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d6b9bca48so74542561cf.2
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:48:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779284914; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hFxwvSyAwBxB9V3S3zl+ZRdyP6yJZKE97ivlH/j7SYVtuKJhQjkBXtaIYldGzQNc81
+         Tnjp+FqoHiDyI0tTVNyjOWMuYAQUUXMmkhkS+/0My+Z9kl4lvhbCDzOxhSldcl2EgmwG
+         kTCCrt8Ksf1m6uYyHyELEG6RqhgQUJEYSl6UFp//4yMKwYO2E1ezMrupPY4V23MATDa2
+         Dl8o7hZS6ScwE44MesPeDe71YNu4oTp9vdUsqm4ldrV0WqabtfYKQZxv24WpwcEwg6nP
+         Ipc37Fdq0Rlzo7SKFp3uXyqv3SjzDQgFl3/sWKePOJZGDjYHI/VOlzHhe15BMVCm3T/5
+         SW6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
+        fh=OUmln7uQPoMg7n+j8MbPAIjeQNqzvEHCgWtqs+OJIls=;
+        b=CzUyNAys+l+NSLxrzZkCVMzC5yghI4e4oSI94y0eLmFPMMw183xgOm/VlZQsHVQdmk
+         6PA4Z/WAn615ojznYIIiicHITOkIgZsg1JGUdv5n2YWy0d2qY1IO8lUR5o+/V60BzGzG
+         lhRqKJBCUGmgVrnIp/6/Oo0QEqIim0B4jZwKpUb+Ir5d7EXSrHUe6azZz7pLEmRZbPY2
+         /y4N5Vt/KeR82ubB3VlEqm0EsSjF38pvkQsHQQf+TyI841nMZORHCLCL0szHbMf0aXiV
+         m/E2VxxtSM88UfYsWgCHunCq11shL8Nyz7Npymz3LXHVKw3QADjimIU6LWu8evv6JSfv
+         Bn9g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779283831; x=1779888631; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1779284914; x=1779889714; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RfxhCV7FuEx6FN3Ph695dMdjOoXCIAnanxO/gTjt8nU=;
-        b=FOpYCRuprODo33/HyCjs8joQnos+gJQaUW6l4A7Ej35E9OtHm5kCkFjzHchy4Clsta
-         dYPQkWUwruc2TgKdD4VOpwFmpHm9RpelzTCb11FPS0WAKR8J7B9QMz0VnP+5dsRCBJri
-         Gew4AknisCfYMmrKEIctDlRcPz6o/K5W1vzNNq00PYg3aUd3xj49Pty9wq2OtY/h30cU
-         I1yTYGpzJnA/XzMka68sCqlYZkqE0uFYi7gxejMr38vL4RMMATou0iAphOLlZfVDoijQ
-         luWBEQQnPVa5bHr4X9xDxU4mMyEIPoBXmrKu0tGKEVc8KZV4N8gVM4Ub69YDqr09dj0c
-         WygQ==
+        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
+        b=QcSJHfK+rzABe8aOKmyPao+xrndA/F3g68EBf41o3MWqnF/hXuyGtMqfYsMc96xpAl
+         Av93s+gBb8Nw9AtUSbC2iBfOxMpG3t9JHJ1ZPkJLGYz7veu6m2sUsl/kuUo2W15Jlvgm
+         GpaVjVZ1qFOlAQd9d0rQD/cku9z87UO2wM3q6pqNENKw+vs0dlkwKp3T63lRfxM0xvBj
+         3jJARN+7HkAQk0hhhkEZDpt3xcZhur6o7lR3pT5RdK6fIDx0znwY9SuWWvmess8ogUsf
+         KgZKcbMpMU6LaxCvRYhLOq+irndB3rKZNhCW/0fRXHaUJMwtqTbnDtKCL1QkJWnHeuH+
+         dRcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779283831; x=1779888631;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1779284914; x=1779889714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RfxhCV7FuEx6FN3Ph695dMdjOoXCIAnanxO/gTjt8nU=;
-        b=LTmOiHUTF0KXzs7yghHIIsErPN+NR3qngsqymgoqj8Zt9OLGKTDdvBn2ubQ4wRfKkF
-         MxaxUYTKBSfpsZqzmOwYrON0GKlHQMhtO+2wbACoTrITaJtxKXMHVLTDaAr7t/YlmkhJ
-         dm2d2H+1k4fB6tPjAl3oHIXoe7fbuV5Vdd0r9X7J4qCFM65ly+7KD0tX8t5Hfv8Z6YFL
-         JC/oh6+9MC2mYkr+8VCB5jsC/jNWyT8eI9y8fOWiaZ367xFQfDZtASz4HL4uA247TKb4
-         rj7w1eV2PddSj0EhaWsnka9cQiDFgwzb03eeGpHvLQOARzob9zocCeE2zJMYeCsBjaqT
-         UT5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+5+KoxgRQlmXGPnX6YfOJBmlrq1PvHAzNc5YHOGvZ7FXOimrxcsRCVRBv50U6YQvLTk9buDbQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzjaKdh8lsoLfZC6gNangXZAzS3+SYrVJA2ipJ5FnjwHCLhj48
-	l8ysWaAdIERqvqHBc1jIlL9abq7cnuTYh42tbDQx6Icw1aVMxzY9Focn
-X-Gm-Gg: Acq92OFj4LxT/bPu3D39FolnV8pEpEV0kHekYwGFpliADhXTDKKbqi8D8fS+lLAE/gp
-	ACQHv4qPZyjyamGbycjVy7oq+cek7+zcPEubF6hK8CabZa3gNbGWbUNMHv1RN2kpfL/LgGUCqhB
-	nCXr24/B19fqa8TlE+TxrRZ9oupK8EJ1cIuxg2rzv4WpPy59QCiA6Z9qLKgBZ59FDZgNh/k2e7c
-	+4+4Vtlo3K7+whz/KvF61v9b9tLJLh/X1X7BDxtoxK0+YQo0+E4lHJqehScYZyU3EKJwl/h8mwP
-	m5d6lSpA/019Tr6LMTq/fQSXQkWw6m1Vg42c7+xQm4Gtgh9hblXbARY98Ht5bXX+/pHAumYYcfS
-	GVikgdg1KCEOwFjX9TiSpb581dwGOi684NLJElJOyaQYNXpp3CB/pc5sj6/tccNr+paMIxv5a/3
-	xjPMccwPSvteMK6PErozc0RToQgXohTBGmZi3KVN0IfNvsu92agglTMmK9AOjFBypfEL3KVmw3q
-	NY5E5JN4mSI1FOhQ8mt
-X-Received: by 2002:a05:6214:5548:b0:8ac:a546:7753 with SMTP id 6a1803df08f44-8ca0f601c85mr373645396d6.8.1779283831333;
-        Wed, 20 May 2026 06:30:31 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ca36190497sm121635816d6.29.2026.05.20.06.30.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 06:30:30 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	Shyam Sundar <ssundar@marvell.com>,
-	James Smart <james.smart@broadcom.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	John Meneghini <jmeneghi@redhat.com>,
-	Bryan Gurney <bgurney@redhat.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Christoph Hellwig <hch@lst.de>,
-	David Laight <david.laight.linux@gmail.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	linux-nvme@lists.infradead.org,
-	linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4] scsi: scsi_transport_fc: widen FPIN pname walker counter to u32
-Date: Wed, 20 May 2026 09:30:15 -0400
-Message-ID: <20260520133015.1018937-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260519190615.2761667-1-michael.bommarito@gmail.com>
-References: <20260519190615.2761667-1-michael.bommarito@gmail.com>
+        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
+        b=hraWlLyHel8+wkbQwTV3Ha0NquzJEamK1QleF5gUa2XHS+ZjyFdKe5U4p0WJ5LeNtX
+         j0Mc0LxdInxP0Ci+s7PWN1VqDVJJSzMbrEcD4gPArUgDDtb7DaFGggYoaey7tlpJO1vX
+         +cU+dqCRjf99H1DRXGrb6poGo9F0/HgrZwK7+A//KAiKf3DuvCf4eDmAV87QJ1rgwOx2
+         iLnP0og/G373N9q4baDjbKEiHBfcHOEV3ba+9lokzOcrhf/LXhUh1TMAuthziQfM5ROU
+         ioC7nb4B1xajr3jpgAxY9jobzyMyyi+7sHhMpJ7MbBAEz0ndBinmew4ekW6KuOJ3/ufu
+         nt9A==
+X-Forwarded-Encrypted: i=1; AFNElJ/bpY0AkweZxNx9Pjed6GE3LP6Dp9glRPfkdZjnLHBp2dQwXD1U/Fn7BIprrOWKDf/jLpAe4M8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK53+X2Qkf0+mHd3r0zhYXzXg+L7SZaHjMucOri+YMmkGVCZvn
+	F7FITObviFXssOcir1eZpp7PyglfVeQ8230Mk5EJzlXiOxX4tFW9LTNk9Sn8dWvNuo3bqnhiJiG
+	mMNG9eYpJllg5PAVYQ2jk4kqVpuKh5KD5Serd0yFT
+X-Gm-Gg: Acq92OEYITwIsYrl3ygCPuDXtNvNpf24URA4N6hR1gc+LFa3dtDnISTu8TLXHU+THlH
+	oIa9Gh+AlXNSkDVbOTqlInBVGnoII9NWizn6mc+FMKIzGwzxd2PgSD0ruOCetUhoVeS57ReHcrj
+	d3RdfyLo4n3pUuFsSKXcFIcES8DYsKqwFGgTvyPQflg8WOgGFMmbLdnPFx6KMJIea8u1i1v9q3N
+	BTQc2O2zCtddH9jbBn7Ib5AXCLinFqu2l6KeRYfHv9amWLUHnmM8nOdZ7ad+iDwGvXOipKdZond
+	nI5hxWMdNR3RWQnIkapR2Ui6No3ZPwlsfAAjzX+lKQareB8zW4lLbSeY1cG8V6ULSzwna0FT2f9
+	HJC7FGFXuBQI3PPfo6r81hZ4/j9O6eGo47ZIFl1qhOEvYYJCxLPXKuAYsctjFH2GL
+X-Received: by 2002:a05:622a:1e89:b0:509:30b0:8323 with SMTP id
+ d75a77b69052e-5165a0a4269mr339397951cf.31.1779284913096; Wed, 20 May 2026
+ 06:48:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260519172635.86304-1-yzjaurora@gmail.com> <4172DA29-330F-42FE-91FE-C247D67F852A@remlab.net>
+In-Reply-To: <4172DA29-330F-42FE-91FE-C247D67F852A@remlab.net>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 20 May 2026 06:48:20 -0700
+X-Gm-Features: AVHnY4I1HxtwYRIMQmpaAedNn2XzP1Myd4LGPNWE-JvWR-mVw8CYeoBpVMex7PQ
+Message-ID: <CANn89iLrG5axgET0_gsTKM0mM1v8aMUzGBLcPgo0icDJB2VuZw@mail.gmail.com>
+Subject: Re: [PATCH net] phonet/pep: disable BH around forwarded sk_receive_skb()
+To: =?UTF-8?Q?R=C3=A9mi_Denis=2DCourmont?= <remi@remlab.net>
+Cc: Zijing Yin <yzjaurora@gmail.com>, Remi Denis-Courmont <courmisch@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249924-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[marvell.com,oracle.com,broadcom.com,kernel.org,redhat.com,lst.de,gmail.com,vger.kernel.org,lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-249925-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 938AA58EDF6
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,remlab.net:email,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DA8CF58F0ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-An adjacent Fibre Channel fabric actor that can deliver an FPIN ELS
-frame to an lpfc or qla2xxx Linux initiator can trigger a non-return
-in the generic FC transport. This is not a local userspace or IP
-network path; the attacker must be able to inject fabric traffic, for
-example as a compromised switch or fabric controller, or as a same-zone
-N_Port on a fabric that permits source spoofing.
+On Wed, May 20, 2026 at 5:03=E2=80=AFAM R=C3=A9mi Denis-Courmont <remi@reml=
+ab.net> wrote:
+>
+>
+>
+> Le 19 mai 2026 20:26:33 GMT+03:00, Zijing Yin <yzjaurora@gmail.com> a =C3=
+=A9crit :
+> >The networking receive path is usually run from softirq context, but
+> >protocols that take the socket lock may have packets stored in the
+> >backlog and processed later from process context. In that case
+> >release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
+> >and then calls sk->sk_backlog_rcv() with bottom halves enabled.
+> >
+> >Typical sk_backlog_rcv handlers process the socket whose backlog is
+> >being drained, so the BH state at entry is irrelevant for the slocks
+> >they touch. pep_do_rcv() is different: when the inbound skb targets an
+> >existing PEP pipe, it forwards the skb to a different *child* socket
+> >via sk_receive_skb(). That helper takes the child slock with
+> >bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
+> >is already off. The same child slock therefore ends up acquired with
+> >BH on (process path) and with BH off (softirq path):
+> >
+> >  process context                   softirq context
+> >  ---------------                   ---------------
+> >  release_sock(listener)            __netif_receive_skb()
+> >   __release_sock()                  phonet_rcv()
+> >    spin_unlock_bh()                  __sk_receive_skb(listener)
+> >    [BH now ENABLED]                  [BH already disabled]
+> >    sk_backlog_rcv:                   sk_backlog_rcv:
+> >     pep_do_rcv()                      pep_do_rcv()
+> >      sk_receive_skb(child)             sk_receive_skb(child)
+> >       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
+> >       =3D> SOFTIRQ-ON-W                   =3D> IN-SOFTIRQ-W
+> >
+> >Lockdep flags this as inconsistent lock state, and it can become a real
+> >self-deadlock if a softirq on the same CPU tries to receive to the same
+> >child socket while its slock is held in the BH-enabled path:
+> >
+> >  WARNING: inconsistent lock state
+> >  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+> >   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
+> >    __sk_receive_skb              net/core/sock.c:563
+> >    sk_receive_skb                include/net/sock.h:2022 [inline]
+> >    pep_do_rcv                    net/phonet/pep.c:675
+> >    sk_backlog_rcv                include/net/sock.h:1190
+> >    __release_sock                net/core/sock.c:3216
+> >    release_sock                  net/core/sock.c:3815
+> >    pep_sock_accept               net/phonet/pep.c:879
+> >
+> >Wrap the forwarded sk_receive_skb() in local_bh_disable() /
+> >local_bh_enable() so the child slock is always acquired with BH off.
+> >local_bh_disable() nests safely on the softirq path.
+> >
+> >Discovered via in-house syzkaller fuzzing; the same root cause also
+> >on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
+> >Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
+> >https://pastebin.com/A3t8xzCR
+> >
+> >Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+> >Link: https://syzkaller.appspot.com/bug?extid=3D44f0626dd6284f02663c
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+>
+> Acked-by: R=C3=A9mi Denis-Courmont <remi@remlab.net>
 
-The Link-Integrity and Peer-Congestion FPIN walkers used a u8 loop
-counter against the 32-bit on-wire pname_count field, and did not bound
-pname_count by the descriptor body already validated by the TLV walker.
-A pname_count of 256 therefore wraps the counter and keeps the loop
-condition true indefinitely.
+Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-Factor the shared pname_list[] walk into one helper, widen the counter
-to u32, and clamp pname_count against the entries that fit in the
-descriptor body before iterating.
-
-Fixes: 3dcfe0de5a97 ("scsi: fc: Parse FPIN packets and update statistics")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
-Changes in v4:
-- Use min() rather than min_t(u32, ...) for the pname_count clamp and
-  fold away the temporary max_count variable, as David Laight suggested.
-
-Changes in v3:
-- State the fabric-adjacent threat model explicitly in the commit
-  message and clarify that this is not local userspace or IP-network
-  reachable.
-- Use min_t(u32, ...) for the pname_count clamp, as Christoph suggested.
-- Use FC_TLV_DESC_LENGTH_FROM_SZ() instead of open-coding the descriptor
-  body length calculation.
-- Factor the duplicate LI and peer-congestion pname walker into a common
-  helper while preserving the LI-only host-stat update.
-
-Changes in v2:
-- Drop the redundant cover letter shipped with v1.  A single-patch send
-  does not need one, and the v1 cover carried stale draft markers.
-
- drivers/scsi/scsi_transport_fc.c | 77 +++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 36 deletions(-)
-
-diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
-index dce95e361daf0..173ed6373f04b 100644
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -737,6 +737,37 @@ fc_cn_stats_update(u16 event_type, struct fc_fpin_stats *stats)
- 	}
- }
- 
-+static void
-+fc_fpin_pname_stats_update(struct Scsi_Host *shost,
-+			   struct fc_rport *attach_rport, u16 event_type,
-+			   u32 desc_len, u32 fixed_len, u32 pname_count,
-+			   __be64 *pname_list,
-+			   void (*stats_update)(u16 event_type,
-+						struct fc_fpin_stats *stats))
-+{
-+	u32 i;
-+	struct fc_rport *rport;
-+	u64 wwpn;
-+
-+	if (desc_len < fixed_len)
-+		pname_count = 0;
-+	else
-+		pname_count = min(pname_count, (desc_len - fixed_len) /
-+				   sizeof(pname_list[0]));
-+
-+	for (i = 0; i < pname_count; i++) {
-+		wwpn = be64_to_cpu(pname_list[i]);
-+		rport = fc_find_rport_by_wwpn(shost, wwpn);
-+		if (rport &&
-+		    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
-+		     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
-+			if (rport == attach_rport)
-+				continue;
-+			stats_update(event_type, &rport->fpin_stats);
-+		}
-+	}
-+}
-+
- /*
-  * fc_fpin_li_stats_update - routine to update Link Integrity
-  * event statistics.
-@@ -747,13 +778,11 @@ fc_cn_stats_update(u16 event_type, struct fc_fpin_stats *stats)
- static void
- fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_host_attrs *fc_host = shost_to_fc_host(shost);
- 	struct fc_fn_li_desc *li_desc = (struct fc_fn_li_desc *)tlv;
- 	u16 event_type = be16_to_cpu(li_desc->event_type);
--	u64 wwpn;
- 
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(li_desc->attached_wwpn));
-@@ -764,22 +793,11 @@ fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
- 		fc_li_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(li_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(li_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(li_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			    rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_li_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(li_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*li_desc),
-+				   be32_to_cpu(li_desc->pname_count),
-+				   li_desc->pname_list, fc_li_stats_update);
- 
- 	if (fc_host->port_name == be64_to_cpu(li_desc->attached_wwpn))
- 		fc_li_stats_update(event_type, &fc_host->fpin_stats);
-@@ -827,13 +845,11 @@ static void
- fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
- 				struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_fn_peer_congn_desc *pc_desc =
- 	    (struct fc_fn_peer_congn_desc *)tlv;
- 	u16 event_type = be16_to_cpu(pc_desc->event_type);
--	u64 wwpn;
- 
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(pc_desc->attached_wwpn));
-@@ -844,22 +860,11 @@ fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
- 		fc_cn_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(pc_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(pc_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(pc_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_cn_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(pc_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*pc_desc),
-+				   be32_to_cpu(pc_desc->pname_count),
-+				   pc_desc->pname_list, fc_cn_stats_update);
- }
- 
- /*
--- 
-2.53.0
+Thanks!
 
