@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-251958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yECeCFoDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-251958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:18 +0200
+	id QGsLAwgBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F565975E7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5D259722F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3444130B1575
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B17EE30795E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BB83F39F5;
-	Wed, 20 May 2026 17:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C5E3D1CA0;
+	Wed, 20 May 2026 18:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJAJH3OV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9eR9V84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F283F23BF;
-	Wed, 20 May 2026 17:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A37E371CEA;
+	Wed, 20 May 2026 18:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299373; cv=none; b=h5Y3aQNoyBnHCdNXlNJKDVx/ksRzvfTMw46b963LQ8J5/RoAKM7qHAlr0anqod0+GoaunERQNAqwfvP2p2A3SUxOkjWcjzy/e8V6gHL3u7XGsNnh/3L6+R8WKAPf9qFRUFxmAtkmNcLaWECJAk+F1eptwl5pqdI29VnHVPecopA=
+	t=1779302281; cv=none; b=tssq4q6Q+yQV5521zjRNsNfZZmOd6RPvJt9Tbvay7PjEYY6kqpc2mtktqTTLIrY4vBATHRYqSGNtJj4XopmMlFh84GImV4g7s6pfM8JUSNCYq6QmhMM7p+1obVsTMIebbq9FM1S2/taseA3iPUxvp3zNTHFXZL2XIltXWyaON0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299373; c=relaxed/simple;
-	bh=uGuo/tju361dEomd9P+FpXkW2Z7ddT+3OVKLe4yYmOI=;
+	s=arc-20240116; t=1779302281; c=relaxed/simple;
+	bh=4/mLik9VOA4Q4zTnqVcEdjEYv1NGcL1ix7HaiDPgUXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3SKo0QIQKujSpvUrKIqRBuJKdHxEqeek5mybat7Q3S9+ET+V8ySncm3Rs223UaKNYzrPh8NVtViCXQhal8eZEZ6FMrjI2/d+yDc1Jts50WEP6u82OQLgrwBADDT+jUtvn3iLwvViU80GSRvyyQW9IIcw4kGnVjw1s0LVMm7Dfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJAJH3OV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AD21F00893;
-	Wed, 20 May 2026 17:49:30 +0000 (UTC)
+	 MIME-Version; b=ZekDcO096lhH8LMqXPspw0YDyyeUFiLMwpffpLmfCkZWsjTLOZfSKh6+E0RcsLXsbHEZ8dd1D24jovoMyo4ZaMoFEJEdK9E8CqnjsRrt7tJsOsay1XeXkXjnRLFwPdsgEYvfoSUFuLaZ67lpGVL+iVgMqJcSerNAIMHi8B0G2Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9eR9V84; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84001F00893;
+	Wed, 20 May 2026 18:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299371;
-	bh=0aTo8JezqNi7SMsZOvbh/uEhJiL+ZDS2fW2u6JWBjsk=;
+	s=korg; t=1779302280;
+	bh=uFeJdN+qpwYHWAtSPNoiV9UOAH5/qZ5335VQiLg7uPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NJAJH3OVn8PT8ZgY0U0GuSRuzdlU9U7cWLMhh6QMCjIIU1nEZPQHym/7WogG78ZGV
-	 xo09bku50w0J/GqgnYaEMAzePrdYuWikSQMvoPKq7oDQzEZvV25IDCYx5EU7D0dQ8Z
-	 T6iGGj7vwZvfm3lrZLhKZpkOxKOXOzy+Jxpuq1U0=
+	b=w9eR9V84AT9ckIMzCSAbKI9ZpiUhcUtSD85s5DDteEfAI6dmSsROLR+wDJ9GQcl/3
+	 UdnD+kSdltDSrHZ/AB0/Co1x74Wws86r9K0ji2YDWypU9vp98FNOt+P9rChqMoDyjA
+	 H5lLt6kdRQSxhAE9as3nZqE91srg4eaTVhqQshYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 745/957] netfilter: arp_tables: fix IEEE1394 ARP payload parsing
+Subject: [PATCH 6.6 205/508] ocfs2/dlm: validate qr_numregions in dlm_match_regions()
 Date: Wed, 20 May 2026 18:20:28 +0200
-Message-ID: <20260520162150.717296241@linuxfoundation.org>
+Message-ID: <20260520162103.078044148@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,156 +76,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251958-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-253053-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 26F565975E7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BD5D259722F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 1e8e3f449b1e73b73a843257635b9c50f0cc0f0a ]
+[ Upstream commit 7ab3fbb01bc6d79091bc375e5235d360cd9b78be ]
 
-Weiming Shi says:
+Patch series "ocfs2/dlm: fix two bugs in dlm_match_regions()".
 
-"arp_packet_match() unconditionally parses the ARP payload assuming two
-hardware addresses are present (source and target). However,
-IPv4-over-IEEE1394 ARP (RFC 2734) omits the target hardware address
-field, and arp_hdr_len() already accounts for this by returning a
-shorter length for ARPHRD_IEEE1394 devices.
+In dlm_match_regions(), the qr_numregions field from a DLM_QUERY_REGION
+network message is used to drive loops over the qr_regions buffer without
+sufficient validation.  This series fixes two issues:
 
-As a result, on IEEE1394 interfaces arp_packet_match() advances past a
-nonexistent target hardware address and reads the wrong bytes for both
-the target device address comparison and the target IP address. This
-causes arptables rules to match against garbage data, leading to
-incorrect filtering decisions: packets that should be accepted may be
-dropped and vice versa.
+- Patch 1 adds a bounds check to reject messages where qr_numregions
+  exceeds O2NM_MAX_REGIONS. The o2net layer only validates message
+  byte length; it does not constrain field values, so a crafted message
+  can set qr_numregions up to 255 and trigger out-of-bounds reads past
+  the 1024-byte qr_regions buffer.
 
-The ARP stack in net/ipv4/arp.c (arp_create and arp_process) already
-handles this correctly by skipping the target hardware address for
-ARPHRD_IEEE1394. Apply the same pattern to arp_packet_match()."
+- Patch 2 fixes an off-by-one in the local-vs-remote comparison loop,
+  which uses '<=' instead of '<', reading one entry past the valid range
+  even when qr_numregions is within bounds.
 
-Mangle the original patch to always return 0 (no match) in case user
-matches on the target hardware address which is never present in
-IEEE1394.
+This patch (of 2):
 
-Note that this returns 0 (no match) for either normal and inverse match
-because matching in the target hardware address in ARPHRD_IEEE1394 has
-never been supported by arptables. This is intentional, matching on the
-target hardware address should never evaluate true for ARPHRD_IEEE1394.
+The qr_numregions field from a DLM_QUERY_REGION network message is used
+directly as loop bounds in dlm_match_regions() without checking against
+O2NM_MAX_REGIONS.  Since qr_regions is sized for at most O2NM_MAX_REGIONS
+(32) entries, a crafted message with qr_numregions > 32 causes
+out-of-bounds reads past the qr_regions buffer.
 
-Moreover, adjust arpt_mangle to drop the packet too as AI suggests:
+Add a bounds check for qr_numregions before entering the loops.
 
-In arpt_mangle, the logic assumes a standard ARP layout. Because
-IEEE1394 (FireWire) omits the target hardware address, the linear
-pointer arithmetic miscalculates the offset for the target IP address.
-This causes mangling operations to write to the wrong location, leading
-to packet corruption. To ensure safety, this patch drops packets
-(NF_DROP) when mangling is requested for these fields on IEEE1394
-devices, as the current implementation cannot correctly map the FireWire
-ARP payload.
-
-This omits both mangling target hardware and IP address. Even if IP
-address mangling should be possible in IEEE1394, this would require
-to adjust arpt_mangle offset calculation, which has never been
-supported.
-
-Based on patch from Weiming Shi <bestswngs@gmail.com>.
-
-Fixes: 6752c8db8e0c ("firewire net, ipv4 arp: Extend hardware address and remove driver-level packet inspection.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lkml.kernel.org/r/SYBPR01MB7881A334D02ACEE5E0645801AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Link: https://lkml.kernel.org/r/SYBPR01MB788166F524AD04E262E174BEAF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arp_tables.c  | 18 +++++++++++++++---
- net/ipv4/netfilter/arpt_mangle.c |  8 ++++++++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ fs/ocfs2/dlm/dlmdomain.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 1cdd9c28ab2da..97ead883e4a13 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -110,13 +110,25 @@ static inline int arp_packet_match(const struct arphdr *arphdr,
- 	arpptr += dev->addr_len;
- 	memcpy(&src_ipaddr, arpptr, sizeof(u32));
- 	arpptr += sizeof(u32);
--	tgt_devaddr = arpptr;
--	arpptr += dev->addr_len;
-+
-+	if (IS_ENABLED(CONFIG_FIREWIRE_NET) && dev->type == ARPHRD_IEEE1394) {
-+		if (unlikely(memchr_inv(arpinfo->tgt_devaddr.mask, 0,
-+					sizeof(arpinfo->tgt_devaddr.mask))))
-+			return 0;
-+
-+		tgt_devaddr = NULL;
-+	} else {
-+		tgt_devaddr = arpptr;
-+		arpptr += dev->addr_len;
-+	}
- 	memcpy(&tgt_ipaddr, arpptr, sizeof(u32));
+diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
+index 5c04dde99981c..5b6c893d9f489 100644
+--- a/fs/ocfs2/dlm/dlmdomain.c
++++ b/fs/ocfs2/dlm/dlmdomain.c
+@@ -980,6 +980,14 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
+ 		goto bail;
+ 	}
  
- 	if (NF_INVF(arpinfo, ARPT_INV_SRCDEVADDR,
- 		    arp_devaddr_compare(&arpinfo->src_devaddr, src_devaddr,
--					dev->addr_len)) ||
-+					dev->addr_len)))
-+		return 0;
++	if (qr->qr_numregions > O2NM_MAX_REGIONS) {
++		mlog(ML_ERROR, "Domain %s: Joining node %d has invalid "
++		     "number of heartbeat regions %u\n",
++		     qr->qr_domain, qr->qr_node, qr->qr_numregions);
++		status = -EINVAL;
++		goto bail;
++	}
 +
-+	if (tgt_devaddr &&
- 	    NF_INVF(arpinfo, ARPT_INV_TGTDEVADDR,
- 		    arp_devaddr_compare(&arpinfo->tgt_devaddr, tgt_devaddr,
- 					dev->addr_len)))
-diff --git a/net/ipv4/netfilter/arpt_mangle.c b/net/ipv4/netfilter/arpt_mangle.c
-index a4e07e5e9c118..f65dd339208e8 100644
---- a/net/ipv4/netfilter/arpt_mangle.c
-+++ b/net/ipv4/netfilter/arpt_mangle.c
-@@ -40,6 +40,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
- 	}
- 	arpptr += pln;
- 	if (mangle->flags & ARPT_MANGLE_TDEV) {
-+		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
-+			     skb->dev->type == ARPHRD_IEEE1394))
-+			return NF_DROP;
-+
- 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
- 		   (arpptr + hln > skb_tail_pointer(skb)))
- 			return NF_DROP;
-@@ -47,6 +51,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
- 	}
- 	arpptr += hln;
- 	if (mangle->flags & ARPT_MANGLE_TIP) {
-+		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
-+			     skb->dev->type == ARPHRD_IEEE1394))
-+			return NF_DROP;
-+
- 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
- 		   (arpptr + pln > skb_tail_pointer(skb)))
- 			return NF_DROP;
+ 	r = remote;
+ 	for (i = 0; i < qr->qr_numregions; ++i) {
+ 		mlog(0, "Region %.*s\n", O2HB_MAX_REGION_NAME_LEN, r);
 -- 
 2.53.0
 
