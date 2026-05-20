@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eE5IFOkjDmoo6gUAu9opvQ
-	(envelope-from <stable+bounces-252268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:13:13 +0200
+	id iBUhMjQTDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D78859A908
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3504F599098
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFB09358CB3F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB4C437D68FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476943F23C5;
-	Wed, 20 May 2026 18:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797893F0773;
+	Wed, 20 May 2026 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="os3gPAmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgl/Tx0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86703E832A;
-	Wed, 20 May 2026 18:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC923EFD05;
+	Wed, 20 May 2026 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300231; cv=none; b=WCxbiSAwKrNporDUYO1NnqblnrypBuzdJCpCsSzftxbnmDOFYJEL/Awe3sJR1kWfHvYv3wRpDYj5upsF/Qa9HpZ7oZNPkz+X9iKkSNQ0ge9I44Q3WTDpOBb3BWTAcE3e4jhYYQHvDU12FPcAvkNK5UvpBOyMY4Zii5n0CzF3Q5E=
+	t=1779296064; cv=none; b=sX5W8y1jfprgA7fr/9+tuWcBlK+Sz6q1lkL4Bc75SHbsumI8skh62Ra65BH9F0pH/qoRReUBrg7CI4Ji+nvmnoWlcT9h7+JYkrS3Iuy4hByTwEWuJmwxkG3hZKOASn7NDyNBw0Yw7FY9yXrbs2w0RJjLPbZSkmmZOPwg+Coq7hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300231; c=relaxed/simple;
-	bh=E8tL8bE5fWaSzIDRA/JX3T8yBjFG7etBf3PDcOHpk6I=;
+	s=arc-20240116; t=1779296064; c=relaxed/simple;
+	bh=dhEL3rfQmf7ynWk+wfisyLLUGNl8qcorjL/Rfc80ejg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jrycpc6sHAurn6KHzcgUJkGbCM0cFVvm3pmcL8FkDsgimy4K8H0HWNKkfZ6c6nXNrCvsbZfBE3tRc5C/ZjzgbYnb531fgpLgl5Pgik4TVseM3Grlix+7+M52QLLOz+wKM6aEiZTdD8wxGLCCKPIUNt5pvX6UApJ+f764z4ZK64U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=os3gPAmk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522761F000E9;
-	Wed, 20 May 2026 18:03:49 +0000 (UTC)
+	 MIME-Version; b=bzQDNkQLUaoJSRXc06HShWbOXZpo+qSfOshQt62NEMg3rV+1OsjMPq6BhGrFnx917ypJGbJRjpA/IxmBp61NxXKXRd+ulHHhsAfI/asVMYPqjstxJErmSragkiRxlYaPHGtASVyLC31HC0Mc5zsTXozkcfMS/zFw/hwYX5GRy3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgl/Tx0j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D0C1F000E9;
+	Wed, 20 May 2026 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300229;
-	bh=S+Sf5oppHUligA0mCqsvCkbAJv8xm3kSG6gxnkw3vA4=;
+	s=korg; t=1779296063;
+	bh=Ixg9ycwTXEJu3z4mKiChm9g/g1BH9UiiqiyJQ7YEkr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=os3gPAmkn9yXAmsuv5DENiBD4cKHjreAV4Re2/W4mDbYGnzu5NV4F+AGfErc5RtYw
-	 h4fJ72klugWf83Rb863nLMwogvQ2+RnxV4AWLTtl7dfVjBY3hvkhhdvnzH1LoqwoTf
-	 npLkE5NvQrcc3SUDJQr+pJxJ1ZXZ0yJEQ9MUY08k=
+	b=jgl/Tx0jtzCOnCAj7h++RuVlmNV+SK/4t22j2k9WjzHvNRzrhHL4YeazH+YCbPBx3
+	 YcqEk5ExfMWa46k+m51vFYqh2U+gdgY2eyCzxQ9rgINo2twXvDvSWBT7oFIxqot6Bx
+	 41llWfDpK2OY9wLXPytyYQDpcX4Gd16tWkP5WE+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com,
-	Greg Jumper <greg.jumper@oracle.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/666] net/rds: Restrict use of RDS/IB to the initial network namespace
-Date: Wed, 20 May 2026 18:15:07 +0200
-Message-ID: <20260520162113.304311481@linuxfoundation.org>
+Subject: [PATCH 7.0 0658/1146] i3c: master: renesas: Fix memory leak in renesas_i3c_i3c_xfers()
+Date: Wed, 20 May 2026 18:15:08 +0200
+Message-ID: <20260520162203.074248857@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,118 +69,89 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252268-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bp.renesas.com,nxp.com,gmail.com,bootlin.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250691-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,da8e060735ae02c8f3d1];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,oracle.com:email,msgid.link:url,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 9D78859A908
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,renesas.com:email]
+X-Rspamd-Queue-Id: 3504F599098
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Jumper <greg.jumper@oracle.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit ebf71dd4aff46e8e421d455db3e231ba43d2fa8a ]
+[ Upstream commit d7665c3b4f575251e449e2656879392346ca612b ]
 
-Prevent using RDS/IB in network namespaces other than the initial one.
-The existing RDS/IB code will not work properly in non-initial network
-namespaces.
+The xfer structure allocated by renesas_i3c_alloc_xfer() was never freed
+in the renesas_i3c_i3c_xfers() function. Use the __free(kfree) cleanup
+attribute to automatically free the memory when the variable goes out of
+scope.
 
-Fixes: d5a8ac28a7ff ("RDS-TCP: Make RDS-TCP work correctly when it is set up in a netns other than init_net")
-Reported-by: syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=da8e060735ae02c8f3d1
-Signed-off-by: Greg Jumper <greg.jumper@oracle.com>
-Signed-off-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260408080420.540032-3-achender@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Reviewed-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://patch.msgid.link/20260406-renesas-v3-1-4b724d7708f4@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/af_rds.c | 10 ++++++++--
- net/rds/ib.c     |  4 ++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/i3c/master/renesas-i3c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 8435a20968ef5..f0840169d5e31 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -357,7 +357,8 @@ static int rds_cong_monitor(struct rds_sock *rs, sockptr_t optval, int optlen)
- 	return ret;
- }
+diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+index d9f5b30a4b2f3..a8a9e89a9710a 100644
+--- a/drivers/i3c/master/renesas-i3c.c
++++ b/drivers/i3c/master/renesas-i3c.c
+@@ -8,6 +8,7 @@
  
--static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
-+static int rds_set_transport(struct net *net, struct rds_sock *rs,
-+			     sockptr_t optval, int optlen)
- {
- 	int t_type;
+ #include <linux/bitfield.h>
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/err.h>
+@@ -817,13 +818,12 @@ static int renesas_i3c_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_xfer *i3c_
+ 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+ 	struct renesas_i3c *i3c = to_renesas_i3c(m);
+ 	struct renesas_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
+-	struct renesas_i3c_xfer *xfer;
+ 	int i;
  
-@@ -373,6 +374,10 @@ static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
- 	if (t_type < 0 || t_type >= RDS_TRANS_COUNT)
- 		return -EINVAL;
+ 	/* Enable I3C bus. */
+ 	renesas_i3c_bus_enable(m, true);
  
-+	/* RDS/IB is restricted to the initial network namespace */
-+	if (t_type != RDS_TRANS_TCP && !net_eq(net, &init_net))
-+		return -EPROTOTYPE;
-+
- 	rs->rs_transport = rds_trans_get(t_type);
+-	xfer = renesas_i3c_alloc_xfer(i3c, 1);
++	struct renesas_i3c_xfer *xfer __free(kfree) = renesas_i3c_alloc_xfer(i3c, 1);
+ 	if (!xfer)
+ 		return -ENOMEM;
  
- 	return rs->rs_transport ? 0 : -ENOPROTOOPT;
-@@ -433,6 +438,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
- 			  sockptr_t optval, unsigned int optlen)
- {
- 	struct rds_sock *rs = rds_sk_to_rs(sock->sk);
-+	struct net *net = sock_net(sock->sk);
- 	int ret;
- 
- 	if (level != SOL_RDS) {
-@@ -461,7 +467,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 	case SO_RDS_TRANSPORT:
- 		lock_sock(sock->sk);
--		ret = rds_set_transport(rs, optval, optlen);
-+		ret = rds_set_transport(net, rs, optval, optlen);
- 		release_sock(sock->sk);
- 		break;
- 	case SO_TIMESTAMP_OLD:
-diff --git a/net/rds/ib.c b/net/rds/ib.c
-index 996f007cd516b..ce5be43c5fbac 100644
---- a/net/rds/ib.c
-+++ b/net/rds/ib.c
-@@ -494,6 +494,10 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
- {
- 	struct rds_ib_device *rds_ibdev = NULL;
- 
-+	/* RDS/IB is restricted to the initial network namespace */
-+	if (!net_eq(net, &init_net))
-+		return -EPROTOTYPE;
-+
- 	if (ipv6_addr_v4mapped(addr)) {
- 		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
- 		if (rds_ibdev) {
 -- 
 2.53.0
 
