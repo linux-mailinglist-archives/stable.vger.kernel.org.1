@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250944-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LxjI6n9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:01 +0200
+	id gNbmDXv2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250944-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0575965DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638A25950A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B3F893128AA7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 84F4630BC2C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72FE3769E0;
-	Wed, 20 May 2026 18:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F7D3EEAD6;
+	Wed, 20 May 2026 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV46ui2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7GB6j0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DD13A6B6D;
-	Wed, 20 May 2026 18:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1D43D75DA;
+	Wed, 20 May 2026 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300862; cv=none; b=Yuk+bMIEw/fT9M+7l9WZk3kcy9VdH3Hwot60JhIjfYFYrIcNEhwjP1kRDCiGFpQSsVNXK+QtRt4vSsfm65nIY8RziW3e0O8haiSd1S3t2dSC5pGPePP2W5MYFQIeOeE22+eeBnieE1cE88fsQ2jvaMSRmDESGPM3eVTypqHZv34=
+	t=1779296697; cv=none; b=KHD7WfWprPSXl15botq++Ic4ChC3nYRrfyRqZ/rFUQ5yH6w+JIbbBK5tlWu15e11zsEtfaRnHP7VIiscf9w8uKNKq/EJsCfHBk4HEPKK1ieCGnj8fkyLRdVkZ6eFBOq6kvXjUyIC4MaNwZhh/U9IIjV56YsCw+Wrz6Yh2rmk1pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300862; c=relaxed/simple;
-	bh=ljg3w/Mm8vBEVMV+uDQnbbqwe6WZU9fdwBXe/d6r1ew=;
+	s=arc-20240116; t=1779296697; c=relaxed/simple;
+	bh=a8KeOSjYQ6ViMP6q+KKg6+bvcRvdrMXMb5W0J/G5ukY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7f85ZZvvUKbc6CVoQ5X3yr4dMng7d7TpuL67z1E+ymu0MCPUHXGIPIc1ZLvD8ouMcr34vMJsk0z6z593LO/aoK9cDGRjy2h1EAnf36Cn3WjYhsP4fsS6K6p5cPubCuTWSh9E2TWxSC+7CgiaSjyGEuob5jG3PQ4i0nIoO/UNdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV46ui2F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74251F000E9;
-	Wed, 20 May 2026 18:14:20 +0000 (UTC)
+	 MIME-Version; b=Qkgj63o93YivBIMpI7/SbhYhtqAeGli2vt+MwRcNSo2fZLg+UfidVBpYAbYHf7yNic6XozptpzIGL5+Q4+WWsutZXkDQxD+b/+E/2oTrNp/1OO7QRJyM+E5kS47W/LwV9U+4ish8WJ2528hDO49x4/mdsT0NFh3BrbycC4JomJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7GB6j0i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8153A1F00894;
+	Wed, 20 May 2026 17:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300861;
-	bh=wX3AaNI1rYMdJia1m7VXf8RBTNwx5FuNYJW4+aDVkH4=;
+	s=korg; t=1779296696;
+	bh=GJutnci1SsfpKEsw9vDlzRPZdffjvCRUjww+cZCMu84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EV46ui2F747p4kizRUsyu1Yge6XUI1eLrlDV3jK8YPp/xNbF0MeabbnfRdHtrsC0g
-	 RNPEYlFUSRsri9E0ZPPJsIf8rcmicyzybSKmmTJttUHetJAY5SwkBNjvYzkkhCypcY
-	 plYEQyVpQmqSHnLVD9uXbLvn4/IRg5Y5ufEQVdLI=
+	b=Q7GB6j0idwDQkR+Ae5dZSTYSLRnLoGmmPHMCNvs5AXrPZdcYVHm1V7rJYkgn/tFwi
+	 daJysLc0JyyWH80cctEssS6tHYDH78akiqGoX3EpVCdQ9ghPZH9UdA+kVG833HbNTZ
+	 s7aZOZicPrT8Hy2pYkflQlTW+uJ9JPLiaotAomlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.12 335/666] mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 0896/1146] netfilter: nf_tables: use list_del_rcu for netlink hooks
 Date: Wed, 20 May 2026 18:19:06 +0200
-Message-ID: <20260520162118.492753236@linuxfoundation.org>
+Message-ID: <20260520162208.513290744@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +64,170 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252510-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-250944-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mailbox.org:email,linaro.org:email]
-X-Rspamd-Queue-Id: 4C0575965DE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email]
+X-Rspamd-Queue-Id: 638A25950A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 653f6def567c81f37302f9591ffd54df3e2a11eb ]
+[ Upstream commit f3224ee463f8f6f6ced7dcdf6081add4f8128527 ]
 
-SMPT contains config detection info that describes opcode, address, and
-dummy cycles to read sector map config. The dummy cycles parameter can
-be SMPT_CMD_READ_DUMMY_IS_VARIABLE and in that case nor->read_dummy
-(initialized as 0) is used. In Infineon flash chips, Read Any Register
-command with variable dummy cycle is defined in SMPT. S25Hx/S28Hx flash
-has 0 dummy cycle by default to read volatile regiters and
-nor->read_dummy can work. S25FS-S flash has 8 dummy cycles so we need a
-hook that can fix dummy cycles with actually used value.
+nft_netdev_unregister_hooks and __nft_unregister_flowtable_net_hooks need
+to use list_del_rcu(), this list can be walked by concurrent dumpers.
 
-Inroduce smpt_read_dummy() in struct spi_nor_fixups. It is called when
-the dummy cycle field in SMPT config detection is 'varialble'.
+Add a new helper and use it consistently.
 
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+Fixes: f9a43007d3f7 ("netfilter: nf_tables: double hook unregistration in netns path")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 18 ++++++++++++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 44 ++++++++++++++---------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 1516b6d0dc37a..56718f954a859 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -408,6 +408,8 @@ struct spi_nor_flash_parameter {
-  *                flash parameters when information provided by the flash_info
-  *                table is incomplete or wrong.
-  * @post_bfpt: called after the BFPT table has been parsed
-+ * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-+ *                   number of dummy cycles in read register ops.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -425,6 +427,7 @@ struct spi_nor_fixups {
- 	int (*post_bfpt)(struct spi_nor *nor,
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
-+	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	int (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 5b1117265bd28..86d869810d07a 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -695,6 +695,17 @@ static u8 spi_nor_smpt_addr_nbytes(const struct spi_nor *nor, const u32 settings
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 8c42247a176c7..090d4d688a333 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -374,6 +374,12 @@ static void nft_netdev_hook_free_rcu(struct nft_hook *hook)
+ 	call_rcu(&hook->rcu, __nft_netdev_hook_free_rcu);
+ }
+ 
++static void nft_netdev_hook_unlink_free_rcu(struct nft_hook *hook)
++{
++	list_del_rcu(&hook->list);
++	nft_netdev_hook_free_rcu(hook);
++}
++
+ static void nft_netdev_unregister_hooks(struct net *net,
+ 					struct list_head *hook_list,
+ 					bool release_netdev)
+@@ -384,10 +390,8 @@ static void nft_netdev_unregister_hooks(struct net *net,
+ 	list_for_each_entry_safe(hook, next, hook_list, list) {
+ 		list_for_each_entry(ops, &hook->ops_list, list)
+ 			nf_unregister_net_hook(net, ops);
+-		if (release_netdev) {
+-			list_del(&hook->list);
+-			nft_netdev_hook_free_rcu(hook);
+-		}
++		if (release_netdev)
++			nft_netdev_hook_unlink_free_rcu(hook);
  	}
  }
  
-+static void spi_nor_smpt_read_dummy_fixups(const struct spi_nor *nor,
-+					   u8 *read_dummy)
-+{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_read_dummy)
-+		nor->manufacturer->fixups->smpt_read_dummy(nor, read_dummy);
-+
-+	if (nor->info->fixups && nor->info->fixups->smpt_read_dummy)
-+		nor->info->fixups->smpt_read_dummy(nor, read_dummy);
-+}
-+
- /**
-  * spi_nor_smpt_read_dummy() - return the configuration detection command read
-  *			       latency, in clock cycles.
-@@ -707,8 +718,11 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- {
- 	u8 read_dummy = SMPT_CMD_READ_DUMMY(settings);
+@@ -2323,10 +2327,8 @@ void nf_tables_chain_destroy(struct nft_chain *chain)
  
--	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE)
--		return nor->read_dummy;
-+	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE) {
-+		read_dummy = nor->read_dummy;
-+		spi_nor_smpt_read_dummy_fixups(nor, &read_dummy);
-+	}
-+
- 	return read_dummy;
+ 		if (nft_base_chain_netdev(table->family, basechain->ops.hooknum)) {
+ 			list_for_each_entry_safe(hook, next,
+-						 &basechain->hook_list, list) {
+-				list_del_rcu(&hook->list);
+-				nft_netdev_hook_free_rcu(hook);
+-			}
++						 &basechain->hook_list, list)
++				nft_netdev_hook_unlink_free_rcu(hook);
+ 		}
+ 		module_put(basechain->type->owner);
+ 		if (rcu_access_pointer(basechain->stats)) {
+@@ -3026,6 +3028,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 				list_for_each_entry(ops, &h->ops_list, list)
+ 					nf_unregister_net_hook(ctx->net, ops);
+ 			}
++			/* hook.list is on stack, no need for list_del_rcu() */
+ 			list_del(&h->list);
+ 			nft_netdev_hook_free_rcu(h);
+ 		}
+@@ -8903,10 +8906,8 @@ static void __nft_unregister_flowtable_net_hooks(struct net *net,
+ 	list_for_each_entry_safe(hook, next, hook_list, list) {
+ 		list_for_each_entry(ops, &hook->ops_list, list)
+ 			nft_unregister_flowtable_ops(net, flowtable, ops);
+-		if (release_netdev) {
+-			list_del(&hook->list);
+-			nft_netdev_hook_free_rcu(hook);
+-		}
++		if (release_netdev)
++			nft_netdev_hook_unlink_free_rcu(hook);
+ 	}
  }
  
+@@ -8977,8 +8978,7 @@ static int nft_register_flowtable_net_hooks(struct net *net,
+ 
+ 			nft_unregister_flowtable_ops(net, flowtable, ops);
+ 		}
+-		list_del_rcu(&hook->list);
+-		nft_netdev_hook_free_rcu(hook);
++		nft_netdev_hook_unlink_free_rcu(hook);
+ 	}
+ 
+ 	return err;
+@@ -8988,10 +8988,8 @@ static void nft_hooks_destroy(struct list_head *hook_list)
+ {
+ 	struct nft_hook *hook, *next;
+ 
+-	list_for_each_entry_safe(hook, next, hook_list, list) {
+-		list_del_rcu(&hook->list);
+-		nft_netdev_hook_free_rcu(hook);
+-	}
++	list_for_each_entry_safe(hook, next, hook_list, list)
++		nft_netdev_hook_unlink_free_rcu(hook);
+ }
+ 
+ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+@@ -9079,8 +9077,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 				nft_unregister_flowtable_ops(ctx->net,
+ 							     flowtable, ops);
+ 		}
+-		list_del_rcu(&hook->list);
+-		nft_netdev_hook_free_rcu(hook);
++		nft_netdev_hook_unlink_free_rcu(hook);
+ 	}
+ 
+ 	return err;
+@@ -9586,13 +9583,8 @@ static void nf_tables_flowtable_notify(struct nft_ctx *ctx,
+ 
+ static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
+ {
+-	struct nft_hook *hook, *next;
+-
+ 	flowtable->data.type->free(&flowtable->data);
+-	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
+-		list_del_rcu(&hook->list);
+-		nft_netdev_hook_free_rcu(hook);
+-	}
++	nft_hooks_destroy(&flowtable->hook_list);
+ 	kfree(flowtable->name);
+ 	module_put(flowtable->data.type->owner);
+ 	kfree(flowtable);
 -- 
 2.53.0
 
