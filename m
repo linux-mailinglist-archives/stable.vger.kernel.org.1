@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-250381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO0pATDoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:24 +0200
+	id QLmeEmUZDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C535B592B8B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD44C599A1A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7BFA5302A2FB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 982293590525
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E11372B24;
-	Wed, 20 May 2026 16:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA7F37754D;
+	Wed, 20 May 2026 17:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDw8G4sK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDF85ESP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260C0369D4E;
-	Wed, 20 May 2026 16:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9C3366075;
+	Wed, 20 May 2026 17:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295265; cv=none; b=III0iUnqBAMy4F/sO2NIz/DYtQaE9tcDTEH4u6fqyHQ1WwGqfkzXouDNtJDDyv6BQQdfQ+zgs1FkuPiM9s47lUWvUCUHfbUSX1Y+eQAsiIEBfxVMNX3VEuV+pbtnUVm9cefkwO+sFhi/brUzQqDkhSpK0L8vz3xNnW6k07EqfwE=
+	t=1779297678; cv=none; b=T6RfYVermKObhSM59Bd2l2GG8g0GYqHkqpTHmcYCxbEOl42+Dqs6qjYO/Auv92zbhQIJeZoW7vmCFq0P49VnDI3iGdgsmYGADZs+rnvYhuYDA/u9OWl6RNwGWxENXQNE3Rb+dLFepzT2mlFmq0SMjau1HuspUdLZoEa3yXMWqSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295265; c=relaxed/simple;
-	bh=QA7awYhLaLcR0u6LXAkDHHxYn93onZdE5l+R6NMR2/E=;
+	s=arc-20240116; t=1779297678; c=relaxed/simple;
+	bh=9lhbT+c4LSWe1bi1PToXwgW9cYYQLkIXb/0JMd65QAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGaSi6o0exZf5oAviiF2hLJbAH2xEGva79XHqIP3gZHMu73XNNqj55xGjzZ6Se7hKXSnM/urXJ/wmC+HHIexYrOiCB+/U2WHOWcPTFmlp5XzsGXK+9c0BqTfSXLcZNelBDX61cXyfT2SA7btrbteOQjax3aQoSwpWVwWvJhr8uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDw8G4sK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828131F00893;
-	Wed, 20 May 2026 16:41:03 +0000 (UTC)
+	 MIME-Version; b=BNCqbB85EZSyESGJDfhsQYXSnnG76kNzwMla5e1Ux9hrU1TlWsGAI39i7cyYqZlHaABwY38pbBXTr5HQbvBBxBdFl3JeU9ujoITPPWlhk3G5z38iBFnfXSNWj0yFG05D0sCEYTHOeZGYl3Kl4HrfOLPnqx2/3mS+hICTEMmPR3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDF85ESP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98011F000E9;
+	Wed, 20 May 2026 17:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295264;
-	bh=+AjcQdD3YvFVjsWs9her8BzKeClTRhpxbdlJBTKSHCQ=;
+	s=korg; t=1779297677;
+	bh=IbxwSl9bGVWBxIRn4smkj2Sx17vDo1yHLgdcoWGCC2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cDw8G4sKrnOQCwRJ9RVAcP68MAcA0UxiuHrJ6f+uUU3yINQrWoKK3AudQSZTJDP0H
-	 hWO7CG/rap3PMaQdkY1RqfbFYJ7V776FfIXDtj68ohYjbk9ExHIvh5WPyWuX4PoUvg
-	 euZNkoY7oY94r3YiWBi3E7qDjxyt3/+oAbhESxW0=
+	b=WDF85ESPvsuanSesl1+HXYbkIA3EuKiWhpM5RoH0C7ZMA9yLYe1Zvq5HBrL0HfBaR
+	 eC/5bcv285sYJ0JWSTe0bMIFONSDLZuxbW+3GU8QB7N/W4ak/SqGlc+9eL7btxQfoW
+	 j9xhV2hkjLJlHalUf/zSCqRnLHPjm/Twq1R7eV9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victoria Brekenfeld <victoria@system76.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0354/1146] drm/msm: Fix VM_BIND UNMAP locking
+Subject: [PATCH 6.18 121/957] bpf: fix end-of-list detection in cgroup_storage_get_next_key()
 Date: Wed, 20 May 2026 18:10:04 +0200
-Message-ID: <20260520162156.211442662@linuxfoundation.org>
+Message-ID: <20260520162137.182960225@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +67,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250381-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251321-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: C535B592B8B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,asu.edu:email]
+X-Rspamd-Queue-Id: DD44C599A1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 85042c2cd970a6b0e686329387096fe19989ae62 ]
+[ Upstream commit 5828b9e5b272ecff7cf5d345128d3de7324117f7 ]
 
-Wrong argument meant that the objs involved in UNMAP ops were not always
-getting locked.
+list_next_entry() never returns NULL -- when the current element is the
+last entry it wraps to the list head via container_of(). The subsequent
+NULL check is therefore dead code and get_next_key() never returns
+-ENOENT for the last element, instead reading storage->key from a bogus
+pointer that aliases internal map fields and copying the result to
+userspace.
 
-Since _NO_SHARE objs share a common resv with the VM (which is always
-locked) this would only show up with non-_NO_SHARE BOs.
+Replace it with list_entry_is_head() so the function correctly returns
+-ENOENT when there are no more entries.
 
-Reported-by: Victoria Brekenfeld <victoria@system76.com>
-Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/94
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/713898/
-Message-ID: <20260324220519.1221471-2-robin.clark@oss.qualcomm.com>
+Fixes: de9cbbaadba5 ("bpf: introduce cgroup storage maps")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260403132951.43533-2-bestswngs@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_vma.c | 2 +-
+ kernel/bpf/local_storage.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
-index 1c2f486302bcd..9e3632019bc92 100644
---- a/drivers/gpu/drm/msm/msm_gem_vma.c
-+++ b/drivers/gpu/drm/msm/msm_gem_vma.c
-@@ -1245,7 +1245,7 @@ vm_bind_job_lock_objects(struct msm_vm_bind_job *job, struct drm_exec *exec)
- 			case MSM_VM_BIND_OP_UNMAP:
- 				ret = drm_gpuvm_sm_unmap_exec_lock(job->vm, exec,
- 							      op->iova,
--							      op->obj_offset);
-+							      op->range);
- 				break;
- 			case MSM_VM_BIND_OP_MAP:
- 			case MSM_VM_BIND_OP_MAP_NULL: {
+diff --git a/kernel/bpf/local_storage.c b/kernel/bpf/local_storage.c
+index c93a756e035c0..b8db4fbd3bd2a 100644
+--- a/kernel/bpf/local_storage.c
++++ b/kernel/bpf/local_storage.c
+@@ -259,7 +259,7 @@ static int cgroup_storage_get_next_key(struct bpf_map *_map, void *key,
+ 			goto enoent;
+ 
+ 		storage = list_next_entry(storage, list_map);
+-		if (!storage)
++		if (list_entry_is_head(storage, &map->list, list_map))
+ 			goto enoent;
+ 	} else {
+ 		storage = list_first_entry(&map->list,
 -- 
 2.53.0
 
