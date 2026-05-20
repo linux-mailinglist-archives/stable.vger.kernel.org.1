@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJUKMHDtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:48 +0200
+	id yJV5MgEmDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71492593645
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D8259AC10
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2777630CA197
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 485F8385F0B9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE293F44EA;
-	Wed, 20 May 2026 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCF53F787E;
+	Wed, 20 May 2026 18:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs1aWjcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCjSWCuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D99C37D101;
-	Wed, 20 May 2026 17:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A8A3E95A4;
+	Wed, 20 May 2026 18:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296602; cv=none; b=BuZJEoD1xbSW/hp0172aKPvhzIFbu9bWTE77CKnGD4T0OU8Xg6iUavew3BDC8DJgEYdmbiXBcqog+ydnwy/v6S/2fnFnImwEpZESOkp147n2ptyCBvDcWZQRkNn7CeMhbTTLrdhxbTCWp2VFtQAn10jKodbym7vi145Zh89ImEg=
+	t=1779300810; cv=none; b=VX69nB9gsIiWqVTTyhXe6W+z642l40zCSOGYIw7j3sDgC/k+kdE1yziw52nnIgBG9C3nUDvGy+ttbpxzA8LiUg+GqhlC7OmRoL/Xa/xoPDdWp5wan18vEp5zGgCCEt3lP6Kr6Gb6D/2Qmd5geFrXAxOpJqb61mQaquF9PhWeSo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296602; c=relaxed/simple;
-	bh=MqsPZKlAKI85SybdWWBtjdUF25PyW+h3/KTNVggPYK8=;
+	s=arc-20240116; t=1779300810; c=relaxed/simple;
+	bh=66tWRRz54H2OZM7d5JZivUb27kQmQhJNeljYYIy0yWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTvic7IFfwrOyE+WK5hJBAFmJocLET3nYUDwEEw3CFXLyR08Xcj0u7rPo4w3hInLNDAkZ1tfpYNcDc7Blm/OYDGWe4Wtbkn9DxL6wJZeP9oa9+Mh6I7QkfZApQYDpHU2zAcTePPqP19GHnZq36nhE3vReny2jP0ESkyGIVNYNYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs1aWjcD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A1B1F000E9;
-	Wed, 20 May 2026 17:03:20 +0000 (UTC)
+	 MIME-Version; b=qmbB/rd74W34wJWlwNBRcpT1JzLxRC9YesNAIlUDPu0TYyn/+t/Dy4hYdSDQ1CWBaoJQRH8MHi7aJCOhtF7Phafk/FdV6N53+kcB1DwRKfzxBwykm+ky6CqMmuNOqaIJGfS66lfQ2wdZYG53fKM1UPjaeJrtcBtrvDLcwPGYSmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCjSWCuH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795901F000E9;
+	Wed, 20 May 2026 18:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296601;
-	bh=L0gOyvbmccFbdis9mYpU0jq4cVTkNsJZHHai94+scQY=;
+	s=korg; t=1779300809;
+	bh=RvIsUCXPQsHed9US/o4YJwoqnqUYuu86agaz2BUxwFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zs1aWjcDyVq1L1EpWKAMSlisltITg1bYiNMKazVPj6qtEW3TnuwR3I5hu5Fi8mgM6
-	 EOkUYONrXvsYVMi7C7NIK1jnwrJrtdwrCeptr6bwljbyZ8RvoqshAQgSmgsEoPZr2C
-	 K5xUZH9yGLdjtAKe4UgN6YBXUeWMqpTFX+jrbIM8=
+	b=LCjSWCuH3e5nsT2AKj6nZKG870bV+xEdTvGT1KzRBV21dFHDukfCJY6kqP9p1dsZx
+	 CAc1Bfw1DOMhZYzhLn0iVIEOQSZBnjb2RrkeV1mA89CzNxoWwzgmHnbB9bz5/xCatR
+	 yhqkGXodG2HyFLbcWCNLkJjSbaV4SgwkSzaPO1II=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
-	Kohei Enju <kohei@enjuk.jp>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0860/1146] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
+Subject: [PATCH 6.12 299/666] arm64: dts: lx2160a: rename pinmux nodes for readability
 Date: Wed, 20 May 2026 18:18:30 +0200
-Message-ID: <20260520162207.702801511@linuxfoundation.org>
+Message-ID: <20260520162117.696458114@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +64,253 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250901-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252490-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: 71492593645
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 28D8259AC10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
+[ Upstream commit 456eb494746afd56d3a9dc30271300136e55b96e ]
 
-syzbot reported "sleeping function called from invalid context" in
-vhost_net_busy_poll().
+LX2160A pinmux is done in groups by various length bitfields within
+configuration registers.
 
-Commit 030881372460 ("vhost_net: basic polling support") introduced a
-busy-poll loop and preempt_{disable,enable}() around it, where each
-iteration calls a sleepable function inside the loop.
+Each group of pins is named in the reference manual after a primary
+function using soc-specific naming, e.g. IIC1 (for i2c0).
 
-The purpose of disabling preemption was to keep local_clock()-based
-timeout accounting on a single CPU, rather than as a requirement of
-busy-poll itself:
+Hardware block numbering starts from zero in device-tree but one in the
+reference manual.
 
-https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+Rename the already defined pinmux nodes originally added for changing
+i2c pins between i2c and gpio functions reflecting the reference manual
+name (IIC) in the node name, and the device-tree name (i2c, gpio) in the
+label.
 
->From this perspective, migrate_disable() is sufficient here, so replace
-preempt_disable() with migrate_disable(), avoiding sleepable accesses
-from a preempt-disabled context.
+Specifically, drop the "_scl" suffix from the I2C labels because the
+nodes actually configure both SDA and SCL pins together. Instead add
+"_pins" suffix to avoid conflicts with I2C controller labels.
 
-Fixes: 030881372460 ("vhost_net: basic polling support")
-Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For GPIO functions, include the specific controller and pin numbers in
+the label to clarify they are generic GPIOs and help spot mistakes.
+
+No functional change intended.
+
+Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 64 +++++++++----------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 80965181920c3..c6536cad9c4f9 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -560,7 +560,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
- 				     tvq->busyloop_timeout;
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+index 599d7d4a4c573..2b322cdab9479 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+@@ -750,8 +750,8 @@ i2c0: i2c@2000000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c0_scl>;
+-			pinctrl-1 = <&i2c0_scl_gpio>;
++			pinctrl-0 = <&i2c0_pins>;
++			pinctrl-1 = <&gpio0_3_2_pins>;
+ 			scl-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -766,8 +766,8 @@ i2c1: i2c@2010000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c1_scl>;
+-			pinctrl-1 = <&i2c1_scl_gpio>;
++			pinctrl-0 = <&i2c1_pins>;
++			pinctrl-1 = <&gpio0_31_30_pins>;
+ 			scl-gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -782,8 +782,8 @@ i2c2: i2c@2020000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c2_scl>;
+-			pinctrl-1 = <&i2c2_scl_gpio>;
++			pinctrl-0 = <&i2c2_pins>;
++			pinctrl-1 = <&gpio0_29_28_pins>;
+ 			scl-gpios = <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -798,8 +798,8 @@ i2c3: i2c@2030000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c3_scl>;
+-			pinctrl-1 = <&i2c3_scl_gpio>;
++			pinctrl-0 = <&i2c3_pins>;
++			pinctrl-1 = <&gpio0_27_26_pins>;
+ 			scl-gpios = <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -814,8 +814,8 @@ i2c4: i2c@2040000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c4_scl>;
+-			pinctrl-1 = <&i2c4_scl_gpio>;
++			pinctrl-0 = <&i2c4_pins>;
++			pinctrl-1 = <&gpio0_25_24_pins>;
+ 			scl-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -830,8 +830,8 @@ i2c5: i2c@2050000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c5_scl>;
+-			pinctrl-1 = <&i2c5_scl_gpio>;
++			pinctrl-0 = <&i2c5_pins>;
++			pinctrl-1 = <&gpio0_23_22_pins>;
+ 			scl-gpios = <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -846,8 +846,8 @@ i2c6: i2c@2060000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c6_scl>;
+-			pinctrl-1 = <&i2c6_scl_gpio>;
++			pinctrl-0 = <&i2c6_i2c7_pins>;
++			pinctrl-1 = <&gpio1_18_15_pins>;
+ 			scl-gpios = <&gpio1 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -862,8 +862,8 @@ i2c7: i2c@2070000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c6_scl>;
+-			pinctrl-1 = <&i2c6_scl_gpio>;
++			pinctrl-0 = <&i2c6_i2c7_pins>;
++			pinctrl-1 = <&gpio1_18_15_pins>;
+ 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -1709,11 +1709,11 @@ pinmux_i2crv: pinmux@70010012c {
+ 			pinctrl-single,register-width = <32>;
+ 			pinctrl-single,function-mask = <0x7>;
  
--	preempt_disable();
-+	migrate_disable();
- 	endtime = busy_clock() + busyloop_timeout;
+-			i2c1_scl: i2c1-scl-pins {
++			i2c1_pins: iic2-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 0x7>;
+ 			};
  
- 	while (vhost_can_busy_poll(endtime)) {
-@@ -577,7 +577,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 		cpu_relax();
- 	}
+-			i2c1_scl_gpio: i2c1-scl-gpio-pins {
++			gpio0_31_30_pins: iic2-gpio-pins {
+ 				pinctrl-single,bits = <0x0 0x1 0x7>;
+ 			};
  
--	preempt_enable();
-+	migrate_enable();
+@@ -1721,35 +1721,35 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
+ 				pinctrl-single,bits = <0x0 0x6 0x7>;
+ 			};
  
- 	if (poll_rx || sock_has_rx_data(sock))
- 		vhost_net_busy_poll_try_queue(net, vq);
+-			i2c2_scl: i2c2-scl-pins {
++			i2c2_pins: iic3-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
+ 			};
+ 
+-			i2c2_scl_gpio: i2c2-scl-gpio-pins {
++			gpio0_29_28_pins: iic3-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 3) (0x7 << 3)>;
+ 			};
+ 
+-			i2c3_scl: i2c3-scl-pins {
++			i2c3_pins: iic4-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
+ 			};
+ 
+-			i2c3_scl_gpio: i2c3-scl-gpio-pins {
++			gpio0_27_26_pins: iic4-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 6) (0x7 << 6)>;
+ 			};
+ 
+-			i2c4_scl: i2c4-scl-pins {
++			i2c4_pins: iic5-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
+ 			};
+ 
+-			i2c4_scl_gpio: i2c4-scl-gpio-pins {
++			gpio0_25_24_pins: iic5-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 9) (0x7 << 9)>;
+ 			};
+ 
+-			i2c5_scl: i2c5-scl-pins {
++			i2c5_pins: iic6-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
+ 			};
+ 
+-			i2c5_scl_gpio: i2c5-scl-gpio-pins {
++			gpio0_23_22_pins: iic6-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
+ 			};
+ 
+@@ -1773,19 +1773,19 @@ gpio0_14_12_pins: sdhc1-dir-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
+ 			};
+ 
+-			i2c6_scl: i2c6-scl-pins {
+-				pinctrl-single,bits = <0x4 0x2 0x7>;
++			gpio1_18_15_pins: iic8-iic7-gpio-pins {
++				pinctrl-single,bits = <0x4 0x1 0x7>;
+ 			};
+ 
+-			i2c6_scl_gpio: i2c6-scl-gpio-pins {
+-				pinctrl-single,bits = <0x4 0x1 0x7>;
++			i2c6_i2c7_pins: iic8-iic7-i2c-pins {
++				pinctrl-single,bits = <0x4 0x2 0x7>;
+ 			};
+ 
+-			i2c0_scl: i2c0-scl-pins {
++			i2c0_pins: iic1-i2c-pins {
+ 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
+ 			};
+ 
+-			i2c0_scl_gpio: i2c0-scl-gpio-pins {
++			gpio0_3_2_pins: iic1-gpio-pins {
+ 				pinctrl-single,bits = <0x8 (0x1 << 10) (0x1 << 10)>;
+ 			};
+ 		};
 -- 
 2.53.0
 
