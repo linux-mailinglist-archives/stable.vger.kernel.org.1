@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-252952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250918-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLBMExkrDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252952-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:53 +0200
+	id eOsUAJPqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250918-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E29459B3D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F229592F98
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 556C43159050
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 223FC3080E20
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9603D6CB7;
-	Wed, 20 May 2026 18:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A336F421;
+	Wed, 20 May 2026 17:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vb2lZD+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrDnKsio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C47272E56;
-	Wed, 20 May 2026 18:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625932E128;
+	Wed, 20 May 2026 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302018; cv=none; b=SYoDp+Szdlas91FWjAsOmd1BsiB7MHlyKZMlkm37zkEQWX9VIDDEJWuP2523uyhaDWbrlXuDFsMVD/bhfd86NqEo8KOpIcAzkYf8W7519xTWkh40ljMk8j7l1vqxB4e5bLWlJqSobqVbsEi4EkdGFDhOUiNZbj2Ns+PTotbXsYA=
+	t=1779296647; cv=none; b=LP7BIKmzGRLuH9mukz7ZjpUXL6o2FMrw2d6LAoAK0liIwEbRtGDw5nUSCk7BNE69Ct3Z3RUSmgq5f4qEXtT700H6Wm7vLdSOOd7LrIyrf0y0fyL2Xt1TkMt43T2Sl+fIAwvizk9ezm6+OLdYNbVECCPxBpp63Z/usQU8Z8DXZJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302018; c=relaxed/simple;
-	bh=tt7It5SbOWMhnwUnjbGdZlxjKTVP77R0gXsorAVR7SQ=;
+	s=arc-20240116; t=1779296647; c=relaxed/simple;
+	bh=+EbRVZ8dO0FGVrvewfDmWl/GB3ThODJZBjpSdjAPDGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=db2XbxLTR0UHxIPuHQE+xBq4tznabMKGJMBPwJyv9J7wTQb2xdm68RDjpMWt9R4pDya7QfQolYi29TNQrmWaA9YcAzqruDnXjfUF6x+VQmoQTc5eTArjjUudke0yVwA7YMU8gDwZjYms+yP7Kr+QPX5yVU/f4CnrmxdAGCCQkdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vb2lZD+B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B981F000E9;
-	Wed, 20 May 2026 18:33:36 +0000 (UTC)
+	 MIME-Version; b=uCbnKA3EUsv9u2sBUFvm3pTlLGtpQ/6L3wEMKP/0dhMqhS1GSlgVjRu1bJxBEvaja2R/z/m75PJ3rw9PYdCO17WIKffXNAuIPJ9dXtAAP3Xq/4EejQ4LBTknUO/wry2zRX8yTZY7oJx6/em5RlWHePu7Hez1XXwpIYkPQbVRS/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrDnKsio; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8591F000E9;
+	Wed, 20 May 2026 17:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302016;
-	bh=tS0LIyWn8PutpdqTYAAKco9V0a+SUsabiIGZzTX8264=;
+	s=korg; t=1779296646;
+	bh=P4DtDcDOXAQ/TextFQjinB26Mi70b4LpsM6lPrDK9+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vb2lZD+BUvaYn2Wz5KKAYueR6TVHnVHrmRuMjSouwZGEYVs6J5/AecDmGESQXCLjX
-	 zXvFfVLzBxBylgwnhAMh8mKRcUS+VaODgPK0fyJyOAjwhtVQvf5tFP+Dy4LHgyw24l
-	 FLQBG9sRCdDtZSvrWUKtrgCPFLdKYk0VgfbjExZ4=
+	b=xrDnKsioujPsrp5f4943HZfg+cfi6mpdlqvMx8tDteSpRSTYgzekw8PUbC3euzvNF
+	 qi+D/ofU0gda9Zs2Km/MMx4w7PuX/v6VY41LU0Sj4LEh6VCfTGiuZt83DDlMOho6hS
+	 MufsO4YeXUpj9Yb0s12yL/Bwr4gl5ivdThSOpWSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/508] drm/amdgpu: Add default case in DVI mode validation
+Subject: [PATCH 7.0 0879/1146] mailbox: mailbox-test: free channels on probe error
 Date: Wed, 20 May 2026 18:18:49 +0200
-Message-ID: <20260520162100.918273015@linuxfoundation.org>
+Message-ID: <20260520162208.131440933@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +63,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252952-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linaro.org,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250918-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 2E29459B3D4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7F229592F98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit e6020a55b8e364d15eac27f9c788e13114eec6b7 ]
+[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
 
-amdgpu_connector_dvi_mode_valid() assigns max_digital_pixel_clock_khz
-based on connector_object_id using a switch statement that lacks a
-default case.
+On probe error, free the previously obtained channels. This not only
+prevents a leak, but also UAF scenarios because the client structure
+will be removed nonetheless because it was allocated with devm.
 
-In practice this code path should never be hit because the existing
-cases already cover all digital connector types that this function is
-used for. This is also legacy display code which is not used for new
-hardware.
-
-Add a default case returning MODE_BAD to make the switch exhaustive and
-silence the static analyzer smatch error. The new branch is effectively
-defensive and should never be reached during normal operation.
-
-Fixes: 585b2f685c56 ("drm/amdgpu: Respect max pixel clock for HDMI and DVI-D (v2)")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Timur Kristóf <timur.kristof@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-index 52c093e42531b..5f4fef27177b4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_connectors.c
-@@ -1257,6 +1257,8 @@ static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector
- 		case CONNECTOR_OBJECT_ID_HDMI_TYPE_B:
- 			max_digital_pixel_clock_khz = max_dvi_single_link_pixel_clock * 2;
- 			break;
-+		default:
-+			return MODE_BAD;
- 		}
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 3a28ab5c42e57..197cad7b3d401 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -404,18 +404,27 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-		if (!tdev->rx_buffer)
+-			return -ENOMEM;
++		if (!tdev->rx_buffer) {
++			ret = -ENOMEM;
++			goto err_free_chans;
++		}
+ 	}
  
- 		/* When the display EDID claims that it's an HDMI display,
+ 	ret = mbox_test_add_debugfs(pdev, tdev);
+ 	if (ret)
+-		return ret;
++		goto err_free_chans;
+ 
+ 	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
+ 
+ 	return 0;
++
++err_free_chans:
++	if (tdev->tx_channel)
++		mbox_free_channel(tdev->tx_channel);
++	if (tdev->rx_channel)
++		mbox_free_channel(tdev->rx_channel);
++	return ret;
+ }
+ 
+ static void mbox_test_remove(struct platform_device *pdev)
 -- 
 2.53.0
 
