@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gC7qEeUgDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-251983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:21 +0200
+	id oLSYKxUmDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C113A59A5EB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FDF59AC32
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0218335AD9F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9C21347873C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBC93F23C5;
-	Wed, 20 May 2026 17:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E01737DE8A;
+	Wed, 20 May 2026 18:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocb43PnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hG5jT7oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA8C2F363F;
-	Wed, 20 May 2026 17:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E267E347515;
+	Wed, 20 May 2026 18:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299438; cv=none; b=Hztxn//AUTica51nMoKUYgtEfbfdJxgtBcpUOlIq20k8NaaA9kkN+MpnaqqnUYru35FzKQc/I1/8zBeBzdsKKMPftEAe04IwwXTWKjOTSbGYfvO7628lcI58M6GBz4vypYBhiMCpVcM66O+llH3ja4Cv1YdVABXEGM/b7rYDPoY=
+	t=1779301148; cv=none; b=nG3dmFhH+/bzzqW5qEwoxA4bX25JLVnnYLcuXGi3ZVfpI9G2LJbmq8HRAmoPUcxMqOaDMe4+HdRPxIT/5XdbXBiqgz7OW0PDgti9DnJKzBbvZOPt1wIFojUfq1HMuR6nEl/tGx61PFpMKcg/5Vdt69mUQeZc6z70n3lagMXKru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299438; c=relaxed/simple;
-	bh=W0uvDuCx81D2HqWHaRSQPZFAoGOnv7DGgmNT4gHsbbE=;
+	s=arc-20240116; t=1779301148; c=relaxed/simple;
+	bh=w/d3Le4xsE9S9jJyOnxcYWFRHgVH14aSJu8Q2FvhkAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nG/B2GclPdY5zY1cNkJ5Y1bypXBQ1ydcyw0/Ca03etfJiiwt1prWNFsA8w5h/roKSQJDftSXJRE53hI5H9pRmOMHxAaTl8F6r07Zr02dXi5TPx7tfy+atjHhO0AgbYoOi4QtuIovzwEtvoWUyZyu3AIryfcUQtRJh0SK9pBjvQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocb43PnS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13E21F000E9;
-	Wed, 20 May 2026 17:50:36 +0000 (UTC)
+	 MIME-Version; b=Xob2IIP6Hxxhv6CkgsaLrA90Cr6TzN5VB1Xk6kLF4FvHkx/YBhQdLDyM/9wjJEiS78s/AnO5fbqzWq/jQQqMrrehwvJO3je0imxU2A92OyLSfjXYnk+ox+UXfFpcAI09XpLNfazXBv6b2q/mPhMUWluwVAwHraOI/sW15//sEP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hG5jT7oZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023FE1F000E9;
+	Wed, 20 May 2026 18:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299437;
-	bh=SGpYBBGjEq5lifxPnIQGBmy8m3cX2hwvdM9NRkWiYEQ=;
+	s=korg; t=1779301146;
+	bh=8JYREuzL1OuzzIo+vSAyaWr+OyXXEH3Pt4kOC3guJ90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ocb43PnSld4VnlDcVqD/F90+ubFFsKkEdTb1seBmB36RUEa6eOR87ovGg0+x7bPG1
-	 YuYs+KepS5IJxdh9U3jdpL0iUj+A2eb/30rvxqw7R33cWE3+NucOMyhmxq6jl/Xy6w
-	 AMm02QuSnrZh7WqrIA3E41tc3DiNEeE1GeeHaPqA=
+	b=hG5jT7oZKmfQTW7C/CtoPV7uyHVeCVXoxkpSNzO8VUB42KMpanJiDJub/+zO64kU7
+	 jndtGnapQekb1/Tg90h62e6Jc90AT1EOVFjiaRVnugM1jSMrAtZnO4llaX3JpLm6Dr
+	 R1vtE0/5bWpSWY23zmUHV+pfra+2kmbzaVoZVGXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengping Zhang <aquapinn@qq.com>,
-	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dudu Lu <phx0fer@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 772/957] net: airoha: fix typo in function name
-Date: Wed, 20 May 2026 18:20:55 +0200
-Message-ID: <20260520162151.304568404@linuxfoundation.org>
+Subject: [PATCH 6.12 445/666] macvlan: fix macvlan_get_size() not reserving space for IFLA_MACVLAN_BC_CUTOFF
+Date: Wed, 20 May 2026 18:20:56 +0200
+Message-ID: <20260520162120.915519891@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,10 +76,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251983-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252618-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -94,75 +94,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C113A59A5EB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,msgid.link:url]
+X-Rspamd-Queue-Id: 40FDF59AC32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengping Zhang <aquapinn@qq.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit aebf15e8eb09b01e99f043e9f5d423798aac9d32 ]
+[ Upstream commit fa92a77b0ed4d5f11a71665a232ac5a54a4b055d ]
 
-Corrected the typo in the function name from
- `airhoa_is_lan_gdm_port` to `airoha_is_lan_gdm_port`. This change ensures
- consistency in the API naming convention.
+macvlan_get_size() does not account for IFLA_MACVLAN_BC_CUTOFF, but
+macvlan_fill_info() conditionally includes it when port->bc_cutoff != 1.
+This causes nla_put_s32() to fail with -EMSGSIZE when the netlink skb
+runs out of space, triggering a WARN_ON in rtnetlink and preventing the
+interface from being dumped.
 
-Signed-off-by: Zhengping Zhang <aquapinn@qq.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/tencent_E4FD5D6BC0131E617D848896F5F9FCED6E0A@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e070aac63b42 ("net: airoha: Do not wake all netdev TX queues in airoha_qdma_wake_netdev_txqs()")
+The bug can be reproduced with:
+
+  ip link add macvlan0 link eth0 type macvlan mode bridge
+  ip link set macvlan0 type macvlan bc_cutoff 0
+  ip -d link show macvlan0   # fails with -EMSGSIZE
+
+The bc_cutoff feature was added in commit 954d1fa1ac93 ("macvlan: Add
+netlink attribute for broadcast cutoff"), which added the nla_put_s32()
+call in macvlan_fill_info() but missed adding the corresponding
+nla_total_size(4) in macvlan_get_size(). A follow-up commit
+55cef78c244d ("macvlan: add forgotten nla_policy for
+IFLA_MACVLAN_BC_CUTOFF") fixed the missing nla_policy entry but still
+did not fix the size calculation.
+
+Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260413085349.73977-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
- drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
- drivers/net/ethernet/airoha/airoha_ppe.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/macvlan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index fd612cc339e13..9691b4134285f 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -76,7 +76,7 @@ static void airoha_set_macaddr(struct airoha_gdm_port *port, const u8 *addr)
- 	struct airoha_eth *eth = port->qdma->eth;
- 	u32 val, reg;
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index b43a1221a5908..e778367c1d296 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -1678,6 +1678,7 @@ static size_t macvlan_get_size(const struct net_device *dev)
+ 		+ macvlan_get_size_mac(vlan) /* IFLA_MACVLAN_MACADDR */
+ 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN */
+ 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN_USED */
++		+ nla_total_size(4) /* IFLA_MACVLAN_BC_CUTOFF */
+ 		);
+ }
  
--	reg = airhoa_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
-+	reg = airoha_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
- 					   : REG_FE_WAN_MAC_H;
- 	val = (addr[0] << 16) | (addr[1] << 8) | addr[2];
- 	airoha_fe_wr(eth, reg, val);
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 28dfa35a3abed..abd996492cb7f 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -627,7 +627,7 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 mask, u32 val);
- #define airoha_qdma_clear(qdma, offset, val)			\
- 	airoha_rmw((qdma)->regs, (offset), (val), 0)
- 
--static inline bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
-+static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
- {
- 	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
- 	 * GDM{2,3,4} can be used as wan port connected to an external
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 6cd5febce6b59..005128717a45c 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -331,7 +331,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
- 			/* For downlink traffic consume SRAM memory for hw
- 			 * forwarding descriptors queue.
- 			 */
--			if (airhoa_is_lan_gdm_port(port))
-+			if (airoha_is_lan_gdm_port(port))
- 				val |= AIROHA_FOE_IB2_FAST_PATH;
- 			if (dsa_port >= 0)
- 				val |= FIELD_PREP(AIROHA_FOE_IB2_NBQ,
 -- 
 2.53.0
 
