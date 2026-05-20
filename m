@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-253193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGdeJpwFDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:56 +0200
+	id YHJ/A98uDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8A5597A8F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CA859B911
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BE0143059A4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F21CB397C465
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8B9408039;
-	Wed, 20 May 2026 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005AD409135;
+	Wed, 20 May 2026 18:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMZOxR7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgzXji1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1974A2701C4;
-	Wed, 20 May 2026 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7643409127;
+	Wed, 20 May 2026 18:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302647; cv=none; b=MqanezukikMtsQSbYxC1+JFDBnBSQDoMifndcSyuetWiytZan9AI6Ulb99esOkgaOSOV7E4CwrNiD6rjl3nr2B36+Vd5XDZX5UA25eH2e0ukpcf4e8fArY7zzHMuLpJUDgMZdPM/yVNPbyE5cSwhk0ctRvWh8cXEsLg/N+tkIbY=
+	t=1779302649; cv=none; b=Fo7JnyZ8i7QyLl2DI6D0Ue+F8mtqE3MuuyqcpBfuI4BNrEOdb/dPhqdBtBfMqKbh8NOOXrLPfGBEABT/gccEjZ/jzWEO9EwpOZSECJkAJFbgshvYVQxai+DlJP0WF/e6zZTk9GFZKKYsk2z/wuxbzDyFCacWNzvb71BxBKcSwBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302647; c=relaxed/simple;
-	bh=pHDD8F972suN3fnAPJsmcpHmNvATQlk9YdsxW+IX6j8=;
+	s=arc-20240116; t=1779302649; c=relaxed/simple;
+	bh=ENML4/Ct3F8G3pp6zd2f5qZhid+6Nwpi8ijzFcxxAaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMzUkTGl571jlE2kqa6gEv0behII0ZCJmDKXlEtQOu/qTMdaXRnJA94RkHp+AS1NRoMfG3SMKKjWRX0kIWbCdJDsXWkpwLv4bOlxMhGgC0WIb7GBQksu8YwoO7gkoiSbpdnRk8qq1FHBsywjeDP1Z4144Or3QD1trY9Lk+Dqmfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMZOxR7m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800381F000E9;
-	Wed, 20 May 2026 18:44:05 +0000 (UTC)
+	 MIME-Version; b=mxS/eNlEJrEN6G8xBwus0j/BsvxOQWV8QMi3RMB9yTSkDnyNiqce1NcND5Nb+E5UKZe3UmDd2OSFSZH3XhMGhhQfknmEGZENd4N5US5dvVeblsyW9nnqjtnP0+IjfYj4XWzV6W46k9Vv3s+9sjRq592bhIykjtV/MkLy9arRpxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgzXji1Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283641F000E9;
+	Wed, 20 May 2026 18:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302646;
-	bh=ocT/Z0zwR0F2HIa3j4Eh49ZOZ34y0HcQ3t4/BcpX4IY=;
+	s=korg; t=1779302648;
+	bh=eWnXlcNzIrB8DieizBjLBldKqCGg9RoYhHwD0OE1hk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DMZOxR7m8ss+eJkyZQ5wof/GykekBTt+AgF9blZxC0mrV74kq/jbXvu9f4NasSIfz
-	 djZwPm0CGkgfnVvRuRA+TAaw2GNfXMD+65HfsxAQ6fWWy/lb9aqLeNR+3JyuEogUD+
-	 VKDmusvH5ykrjeH1o/gDqfDWFm20kRzpUFqgPmc8=
+	b=YgzXji1ZntbmZSzYI06PGQtuiQ5WH5t94ITgF7nAiNxpkHf5mxy7Cen4BYTyYfCHz
+	 EXfX8T+8g1LO8XqWZMzRqF6Hl4JIxD92eg556JXjCGHDTJgXZIjN3qljWKUKwTq0jH
+	 1XGG0Qz5YmoctMwiVvL6uc8BTqgHsDmXvGDp7caE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peng Fan <peng.fan@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 305/508] arm64: dts: imx8mp-dhcom-som: Correct PAD settings for PMIC_nINT
-Date: Wed, 20 May 2026 18:22:08 +0200
-Message-ID: <20260520162105.249399272@linuxfoundation.org>
+Subject: [PATCH 6.6 306/508] arm64: dts: imx8mp-data-modul-edm-sbc: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:22:09 +0200
+Message-ID: <20260520162105.271055226@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253193-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253195-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4A8A5597A8F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 74CA859B911
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,26 +102,26 @@ X-Rspamd-Server: lfdr
 
 From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit f9ed5afc988da3e22543725e35be6addbb0497bc ]
+[ Upstream commit 8ff145577e93f312ff398cb950ee3bd44835f5be ]
 
 PMIC_nINT is low level triggered, but the current PAD settings is
 PE=0,PUE=0,FSEL_1_FAST_SLEW_RATE=1,SION=1. So PAD needs to be configured
 as PULL UP with PULL Enable, no need SION. Correct it.
 
-Fixes: 8d6712695bc8e ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
+Fixes: 562d222f23f0f ("arm64: dts: imx8mp: Add support for Data Modul i.MX8M Plus eDM SBC")
 Signed-off-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 2ff47f6ec7979..e1b2b1d4ff39f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -902,7 +902,7 @@ MX8MP_IOMUXC_HDMI_DDC_SDA__GPIO3_IO27		0x84
- 	pinctrl_pmic: dhcom-pmic-grp {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+index 678ecc9f81dbb..816469fcd5d76 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+@@ -780,7 +780,7 @@ MX8MP_IOMUXC_SAI3_RXFS__AUDIOMIX_PDM_BIT_STREAM00	0x0
+ 	pinctrl_pmic: pmic-grp {
  		fsl,pins = <
  			/* PMIC_nINT */
 -			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40000090
