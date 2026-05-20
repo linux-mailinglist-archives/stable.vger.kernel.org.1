@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPHjI7v8DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:03 +0200
+	id sv3PGEn5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062B3596209
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1375957EC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D46030DC499
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 161EF3273A93
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326A348C55;
-	Wed, 20 May 2026 18:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757333F4DDB;
+	Wed, 20 May 2026 17:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXk4pia7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG5/mG6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286513A6B99;
-	Wed, 20 May 2026 18:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3373F23A4;
+	Wed, 20 May 2026 17:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301208; cv=none; b=ENV30dOZe19FbQvwcvtrGrTe+VwM2Rx5zTflvCGFxSNt8IIbAqKHCtsPA/EC9uKErWHf2UvXTuj7e+TGyNpU1nPbprBPtNuODE6lG0vongyFRAALBn/6FNgSxrlknnXT1YeeHa/V/dytxQ9CzLKgGM/bUrNDNoH38uGK6XRT1YE=
+	t=1779299502; cv=none; b=Oghmq91Nxlb3c9sYbkBKY1K9lyFe4EoBJ3IckOqkDr35bW7Sm0b+/iQc5H3L1NcxI/6gkprNqUhs8O1Hxgm/2Unw6OqSGLcdzS5T0a/ecryJ+QS5tBsPdWBgvQrg3C53bCBe3LBZPg/Ld93+w4KzdtI8T7YFrJ0NBaHGZDnUbGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301208; c=relaxed/simple;
-	bh=qve7sQOsKuqFbLRXgarZPIjSQMGagLkys6LwnbfxOVo=;
+	s=arc-20240116; t=1779299502; c=relaxed/simple;
+	bh=dfA/dqqt+elDXVAtWAPLklYKwyhqlEbxjcyokH9tT88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8+RrL9mPRgApqsO2uQZacVfaNPT5Jo1F3cjQklZdiitcKvOJ8F+RkX8A4mnzlBNPQ8jr7nsEYDnHCzqj+aF3nFQycKGwgyuLa88afYGTe/GoQ317wOI7iT1aH2aI02Q9y5mI7zz9IlT9TCAaOmquxh7R0fqaqPfuW9+50ewfhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXk4pia7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2061F000E9;
-	Wed, 20 May 2026 18:20:06 +0000 (UTC)
+	 MIME-Version; b=UADIdOyjBrzvyTDNtQGt389w547Ih7+A5kWBhAU70b1Ij5HfE+OOKj+bRh42GE+KBrEbBBjXVWBIsB9zoFP+Hxkn6hcGU6V9Kz3EOqzVMz2sDJVIhdt0Jm4LLNadJ4M0ppLQRP0t6QrvmeWrTguqcNNYKQ5WHzrDajXzLPJv4+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG5/mG6q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2341F000E9;
+	Wed, 20 May 2026 17:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301207;
-	bh=qjBw1vATadvOtPL7tnCuM3KmnAhg1HwVnrKrDBpN8cw=;
+	s=korg; t=1779299500;
+	bh=iEfqpM+s2NwV2Gv04Wvt0JABknFotIfuZDR/APHPKmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qXk4pia7AWep22CgjhI9mqrhwaEYG/ikKpIR+fIw20viDWzSOQJUe5eL+YP9Nd4Mu
-	 HLUa55nW93ofEkMEHQ/IHvTOwwvzPKe/LTmv+x2OPukSPZ9tW1p5F36iwFB37fv1/2
-	 oWeq/pZnomn//afpkzrBFZ0baehCF03clxQ/BhE8=
+	b=gG5/mG6q0B6y6YnKIfBf8jYQVsixPUuVDkxUE54vMDWLVoblz4R+sTo/A1Qss3ycm
+	 yXMIWf4kq4jiKC6yFcRODrBztHzsyfLFqKFrn1iX/W+T6nyFjpmgvVDCi8NYERs8yc
+	 zd6Vm4/rqOIAys4o+6C/0OpMaCM0lIMQOoPhzGlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Su Yue <glass.su@suse.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 466/666] openvswitch: cap upcall PID array size and pre-size vport replies
+Subject: [PATCH 6.18 794/957] md/md-bitmap: split bitmap sysfs groups
 Date: Wed, 20 May 2026 18:21:17 +0200
-Message-ID: <20260520162121.368624244@linuxfoundation.org>
+Message-ID: <20260520162151.783330531@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,162 +68,216 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252641-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-252007-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 062B3596209
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fnnas.com:email]
+X-Rspamd-Queue-Id: 6A1375957EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
+[ Upstream commit aba3d6d6cb55c6e1116d1215140559dd7ecdf9a9 ]
 
-The vport netlink reply helpers allocate a fixed-size skb with
-nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
-array via ovs_vport_get_upcall_portids().  Since
-ovs_vport_set_upcall_portids() accepts any non-zero multiple of
-sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
-array large enough to overflow the reply buffer, causing nla_put() to
-fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
-unprivileged user namespaces enabled (e.g., Ubuntu default), this is
-reachable via unshare -Urn since OVS vport mutation operations use
-GENL_UNS_ADMIN_PERM.
+Split the classic bitmap sysfs files into a common bitmap group with
+the location attribute and a separate internal bitmap group for the
+remaining files.
 
- kernel BUG at net/openvswitch/datapath.c:2414!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
- RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
- Call Trace:
-  <TASK>
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
-  genl_rcv_msg (net/netlink/genetlink.c:1194)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  genl_rcv (net/netlink/genetlink.c:1219)
-  netlink_unicast (net/netlink/af_netlink.c:1344)
-  netlink_sendmsg (net/netlink/af_netlink.c:1894)
-  __sys_sendto (net/socket.c:2206)
-  __x64_sys_sendto (net/socket.c:2209)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
- Kernel panic - not syncing: Fatal exception
+At the same time, convert bitmap operations from a single sysfs group
+to a sysfs group array so backends can share part of their sysfs
+layout while adding backend-specific attributes separately.
 
-Reject attempts to set more PIDs than nr_cpu_ids in
-ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
-size in ovs_vport_cmd_msg_size() based on that bound, similar to the
-existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
-used by the per-CPU dispatch configuration on the datapath side
-(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
-two sides stay consistent.
+Switch the bitmap sysfs helpers to use sysfs_update_groups() for the
+add and update path, and remove groups in reverse order so shared named
+groups are unmerged before the last group removes the directory.
 
-Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also make bitmap operation lookup depend only on the currently selected
+bitmap id matching the installed backend. This prepares the lookup path
+for a later registered none backend.
+
+Reviewed-by: Su Yue <glass.su@suse.com>
+Link: https://lore.kernel.org/r/20260425024615.1696892-3-yukuai@fnnas.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
- net/openvswitch/vport.c    |  3 +++
- 2 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/md/md-bitmap.c   | 23 +++++++++++++++++++----
+ drivers/md/md-bitmap.h   |  2 +-
+ drivers/md/md-llbitmap.c |  7 ++++++-
+ drivers/md/md.c          | 21 ++++++++++++++-------
+ 4 files changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 8d3c01f0e2aa1..607b5ca70ea54 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -2157,9 +2157,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	return err;
- }
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 7bb56d0491a2f..7a96600949139 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2956,8 +2956,12 @@ static struct md_sysfs_entry max_backlog_used =
+ __ATTR(max_backlog_used, S_IRUGO | S_IWUSR,
+        behind_writes_used_show, behind_writes_used_reset);
  
-+static size_t ovs_vport_cmd_msg_size(void)
-+{
-+	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
+-static struct attribute *md_bitmap_attrs[] = {
++static struct attribute *md_bitmap_common_attrs[] = {
+ 	&bitmap_location.attr,
++	NULL
++};
 +
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
-+	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
-+	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
++static struct attribute *md_bitmap_internal_attrs[] = {
+ 	&bitmap_space.attr,
+ 	&bitmap_timeout.attr,
+ 	&bitmap_backlog.attr,
+@@ -2968,9 +2972,20 @@ static struct attribute *md_bitmap_attrs[] = {
+ 	NULL
+ };
+ 
+-static struct attribute_group md_bitmap_group = {
++static struct attribute_group md_bitmap_common_group = {
++	.name = "bitmap",
++	.attrs = md_bitmap_common_attrs,
++};
 +
-+	/* OVS_VPORT_ATTR_STATS */
-+	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
++static struct attribute_group md_bitmap_internal_group = {
+ 	.name = "bitmap",
+-	.attrs = md_bitmap_attrs,
++	.attrs = md_bitmap_internal_attrs,
++};
 +
-+	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
-+	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
-+	 */
-+	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
-+				  nla_total_size_64bit(sizeof(u64)));
++static const struct attribute_group *bitmap_groups[] = {
++	&md_bitmap_common_group,
++	&md_bitmap_internal_group,
++	NULL,
+ };
+ 
+ static struct bitmap_operations bitmap_ops = {
+@@ -3014,7 +3029,7 @@ static struct bitmap_operations bitmap_ops = {
+ 	.set_pages		= bitmap_set_pages,
+ 	.free			= md_bitmap_free,
+ 
+-	.group			= &md_bitmap_group,
++	.groups			= bitmap_groups,
+ };
+ 
+ int md_bitmap_init(void)
+diff --git a/drivers/md/md-bitmap.h b/drivers/md/md-bitmap.h
+index b42a28fa83a0f..214f623c7e790 100644
+--- a/drivers/md/md-bitmap.h
++++ b/drivers/md/md-bitmap.h
+@@ -125,7 +125,7 @@ struct bitmap_operations {
+ 	void (*set_pages)(void *data, unsigned long pages);
+ 	void (*free)(void *data);
+ 
+-	struct attribute_group *group;
++	const struct attribute_group **groups;
+ };
+ 
+ /* the bitmap API */
+diff --git a/drivers/md/md-llbitmap.c b/drivers/md/md-llbitmap.c
+index 0526e742062ac..50eeddf7f539b 100644
+--- a/drivers/md/md-llbitmap.c
++++ b/drivers/md/md-llbitmap.c
+@@ -1562,6 +1562,11 @@ static struct attribute_group md_llbitmap_group = {
+ 	.attrs = md_llbitmap_attrs,
+ };
+ 
++static const struct attribute_group *md_llbitmap_groups[] = {
++	&md_llbitmap_group,
++	NULL,
++};
 +
-+	/* OVS_VPORT_ATTR_UPCALL_PID */
-+	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
-+
-+	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
-+	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
-+	 */
-+	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
-+				  nla_total_size(nla_total_size(0)));
-+
-+	return msgsize;
-+}
-+
- static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+ static struct bitmap_operations llbitmap_ops = {
+ 	.head = {
+ 		.type	= MD_BITMAP,
+@@ -1598,7 +1603,7 @@ static struct bitmap_operations llbitmap_ops = {
+ 	.dirty_bits		= llbitmap_dirty_bits,
+ 	.write_all		= llbitmap_write_all,
+ 
+-	.group			= &md_llbitmap_group,
++	.groups			= md_llbitmap_groups,
+ };
+ 
+ int md_llbitmap_init(void)
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 3061370e959b3..213221abc44c3 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -688,7 +688,7 @@ static void no_op(struct percpu_ref *r) {}
+ 
+ static void md_bitmap_sysfs_add(struct mddev *mddev)
  {
--	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+-	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
++	if (sysfs_update_groups(&mddev->kobj, mddev->bitmap_ops->groups))
+ 		pr_warn("md: cannot register extra bitmap attributes for %s\n",
+ 			mdname(mddev));
+ 	else
+@@ -701,16 +701,23 @@ static void md_bitmap_sysfs_add(struct mddev *mddev)
+ 
+ static void md_bitmap_sysfs_del(struct mddev *mddev)
+ {
+-	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
++	int nr_groups = 0;
++
++	for (nr_groups = 0; mddev->bitmap_ops->groups[nr_groups]; nr_groups++)
++		;
++
++	while (--nr_groups >= 1)
++		sysfs_unmerge_group(&mddev->kobj,
++				    mddev->bitmap_ops->groups[nr_groups]);
++	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->groups[0]);
  }
  
- /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
-@@ -2169,7 +2200,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
- 	struct sk_buff *skb;
- 	int retval;
+ static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
+ {
+-	struct bitmap_operations *old = mddev->bitmap_ops;
+ 	struct md_submodule_head *head;
  
--	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	skb = ovs_vport_cmd_alloc_info();
- 	if (!skb)
- 		return ERR_PTR(-ENOMEM);
+-	if (mddev->bitmap_id == ID_BITMAP_NONE ||
+-	    (old && old->head.id == mddev->bitmap_id))
++	if (mddev->bitmap_ops &&
++	    mddev->bitmap_ops->head.id == mddev->bitmap_id)
+ 		return true;
  
-diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
-index 2a996858a9145..469bc1fda726e 100644
---- a/net/openvswitch/vport.c
-+++ b/net/openvswitch/vport.c
-@@ -407,6 +407,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
- 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
- 		return -EINVAL;
+ 	xa_lock(&md_submodule);
+@@ -6454,7 +6461,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	if (err)
+ 		return err;
  
-+	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
-+		return -EINVAL;
-+
- 	old = ovsl_dereference(vport->upcall_portids);
+-	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
+ 		md_bitmap_sysfs_add(mddev);
  
- 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
+ 	return 0;
+@@ -6472,7 +6479,7 @@ static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
+ static void md_bitmap_destroy(struct mddev *mddev)
+ {
+ 	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
+-	    mddev->bitmap_ops->group)
++	    mddev->bitmap_ops->groups)
+ 		md_bitmap_sysfs_del(mddev);
+ 
+ 	md_bitmap_destroy_nosysfs(mddev);
 -- 
 2.53.0
 
