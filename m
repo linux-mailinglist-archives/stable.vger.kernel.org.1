@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-253174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAm6DbAuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:12 +0200
+	id wAFPJswCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EAB59B8E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D43059753D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 774E935BB8BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25C0A399B674
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3AF407CEC;
-	Wed, 20 May 2026 18:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BAF3F9280;
+	Wed, 20 May 2026 18:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6McLOhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvw+SLzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7AB3FC5D1;
-	Wed, 20 May 2026 18:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A56036A033;
+	Wed, 20 May 2026 18:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302597; cv=none; b=m9zMz+2RRjp8elpejgYMyubtfl0lliWGVGDI5IDbpeODYhbSk6kICiKHwW8sOUi2TK/tQlJ8rS1R/frbKmGeZwfSMX2aTH5H2hFICpXYW4pjVuwt3MMiYFJzEAfa1SnG/yudDHF/BxxUQsEui2fPgOnULYdX86DE22Rz6Po57Rw=
+	t=1779301397; cv=none; b=EDiTyQ5NYz6EaABsHxaBbmlODA9FYhwaQy1AYKel3y1BGQKruN5vORf5vyuTZE2ARoepBI/915KGB/YrB0fSIf63+pZFMswDC79Dbaws1u15h4BZoc2l2cA9HR/E16aKrXLSE+Z07j3rPwkl3kiRz7uPv7Lj+hhMFT1n3X8I9uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302597; c=relaxed/simple;
-	bh=p4hUuUenbcVMI3BTj7tPmS1CwHjcTGvIHEGXmoY+hM0=;
+	s=arc-20240116; t=1779301397; c=relaxed/simple;
+	bh=+5eiioj8k2llRebhV5v19P2Ep0bSnGtV2p5pPQ6x/kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCTst2uYDdNlydYttBG6XjmnYSHsIn4dEGzWJBFDREZhFdBuLeqwfgILqcHXYp4wgm53zC30r+Bsyg2lpuDBukmKv7uCJVOVACqvHgiAznQtO80mmvLe1BhBsC6i0fYPyiWNXOSKtdDHmdK0GEeEJRrEjnRMZNsQTXmc7JUWzqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6McLOhc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD1F81F00893;
-	Wed, 20 May 2026 18:43:15 +0000 (UTC)
+	 MIME-Version; b=NHuRHsb/2zYdDyRb370WWlWwiTpGwm3u9XUTNSAScG7zkWkbKmA3g6QLPXLFGHz9C3eUB0P/YqxzFX93XJqv0r7aZv+z14eS7Q4Lcr21W9NiVeL5PKm0dU4i+NFNGKmWwqQS2AvChFOALPklNGm6eSMzF5fGYYuvmIEdW4+5Kfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvw+SLzY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123D41F000E9;
+	Wed, 20 May 2026 18:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302596;
-	bh=oXErK6f5EBInueMOB9dccw1hfUvKyYkx9buqhuDP3YE=;
+	s=korg; t=1779301396;
+	bh=KLFa3aMKdAYGm5xmNDLvBA6Kz18sXaLDiILtdS2Qjkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r6McLOhcaGdjzeZG4vjirXeelfBrfy99pTFGiMEnRix79xPTycxVE4YJ3W2sRtMyd
-	 sou+j2mKuFBs0uhhgiWhC1f2u2dLlmSoNHqxnzOA66hnsIDcY+Njkd9Jq9rLdzSqCk
-	 kVl4D1BV7akfLHwiX+8KWjPUZA7jzXvGGbw+tTzg=
+	b=kvw+SLzYuwT8MxrtApBOEfLkPIo6i/eWPwr8hhwwpscnqNW0EDboWan9XgaR0WSXl
+	 m/QQulGAb/oSRTL3/0pcUutxUqXm73pO9PBAIFyzAM/tMB5+CCAX/5ZUwK+SQ5A2Tb
+	 HAUSkyXv6MzmheN0R4KPIN3fRz2aCJR5pw8q6uPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	Haoze Xie <royenheart@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/508] pppoe: drop PFC frames
+Subject: [PATCH 6.12 539/666] vrf: Fix a potential NPD when removing a port from a VRF
 Date: Wed, 20 May 2026 18:22:30 +0200
-Message-ID: <20260520162105.719838642@linuxfoundation.org>
+Message-ID: <20260520162122.953465544@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,142 +73,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253174-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252714-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 87EAB59B8E6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1D43059753D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@linux.dev>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit cc1ff87bce1ccd38410ab10960f576dcd17db679 ]
+[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
 
-RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
-RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
-PFC for PPPoE sessions, and the current PPPoE driver assumes an
-uncompressed (2-byte) protocol field. However, the generic PPP layer
-function ppp_input() is not aware of the negotiation result, and still
-accepts PFC frames.
+RCU readers that identified a net device as a VRF port using
+netif_is_l3_slave() assume that a subsequent call to
+netdev_master_upper_dev_get_rcu() will return a VRF device. They then
+continue to dereference its l3mdev operations.
 
-If a peer with a broken implementation or an attacker sends a frame with
-a compressed (1-byte) protocol field, the subsequent PPP payload is
-shifted by one byte. This causes the network header to be 4-byte
-misaligned, which may trigger unaligned access exceptions on some
-architectures.
+This assumption is not always correct and can result in a NPD [1]. There
+is no RCU synchronization when removing a port from a VRF, so it is
+possible for an RCU reader to see a new master device (e.g., a bridge)
+that does not have l3mdev operations.
 
-To reduce the attack surface, drop PPPoE PFC frames. Introduce
-ppp_skb_is_compressed_proto() helper function to be used in both
-ppp_generic.c and pppoe.c to avoid open-coding.
+Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
+flag. Skip this synchronization when a net device is removed from a VRF
+as part of its deletion and when the VRF device itself is deleted. In
+the latter case an RCU grace period will pass by the time RTNL is
+released.
 
-Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260415022456.141758-2-qingfang.deng@linux.dev
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
+[...]
+Call Trace:
+<TASK>
+l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
+__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
+inet_bind_sk (net/ipv4/af_inet.c:469)
+__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
+__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
+Reported-by: Haoze Xie <royenheart@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c |  2 +-
- drivers/net/ppp/pppoe.c       |  8 +++++++-
- include/linux/ppp_defs.h      | 16 ++++++++++++++++
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/net/vrf.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 7c863cb99383b..2b5843d14cbb8 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -2245,7 +2245,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
-  */
- static void __ppp_decompress_proto(struct sk_buff *skb)
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index b62462d8eff26..93ecd9577f4d3 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1104,6 +1104,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+ 
+ err:
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	synchronize_net();
+ 	return ret;
+ }
+ 
+@@ -1123,10 +1124,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+ }
+ 
+ /* inverse of do_vrf_add_slave */
+-static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
++static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
++			    bool needs_sync)
  {
--	if (skb->data[0] & 0x01)
-+	if (ppp_skb_is_compressed_proto(skb))
- 		*(u8 *)skb_push(skb, 1) = 0x00;
- }
- 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index 96cca4ee470a4..bc726b54ca745 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -425,7 +425,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb_mac_header_len(skb) < ETH_HLEN)
- 		goto drop;
- 
--	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
-+	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
- 		goto drop;
- 
- 	ph = pppoe_hdr(skb);
-@@ -435,6 +435,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
- 	if (skb->len < len)
- 		goto drop;
- 
-+	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
-+	 * Drop PFC frames.
+ 	netdev_upper_dev_unlink(port_dev, dev);
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	/* Make sure that concurrent RCU readers that identified the device
++	 * as a VRF port see a VRF master or no master at all.
 +	 */
-+	if (ppp_skb_is_compressed_proto(skb))
-+		goto drop;
-+
- 	if (pskb_trim_rcsum(skb, len))
- 		goto drop;
++	if (needs_sync)
++		synchronize_net();
  
-diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
-index b7e57fdbd4139..b1d1f46d7d3be 100644
---- a/include/linux/ppp_defs.h
-+++ b/include/linux/ppp_defs.h
-@@ -8,6 +8,7 @@
- #define _PPP_DEFS_H_
+ 	cycle_netdev(port_dev, NULL);
  
- #include <linux/crc-ccitt.h>
-+#include <linux/skbuff.h>
- #include <uapi/linux/ppp_defs.h>
+@@ -1135,7 +1142,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
  
- #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
-@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
- 	return !!((proto & 0x0101) == 0x0001);
+ static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ {
+-	return do_vrf_del_slave(dev, port_dev);
++	return do_vrf_del_slave(dev, port_dev, true);
  }
  
-+/**
-+ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
-+ * @skb: skb to check
-+ *
-+ * Check if the PPP protocol field is compressed (the least significant
-+ * bit of the most significant octet is 1). skb->data must point to the PPP
-+ * protocol header.
-+ *
-+ * Return: Whether the PPP protocol field is compressed.
-+ */
-+static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
-+{
-+	return unlikely(skb->data[0] & 0x01);
-+}
-+
- #endif /* _PPP_DEFS_H_ */
+ static void vrf_dev_uninit(struct net_device *dev)
+@@ -1691,7 +1698,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
+ 	struct list_head *iter;
+ 
+ 	netdev_for_each_lower_dev(dev, port_dev, iter)
+-		vrf_del_slave(dev, port_dev);
++		do_vrf_del_slave(dev, port_dev, false);
+ 
+ 	vrf_map_unregister_dev(dev);
+ 
+@@ -1822,7 +1829,7 @@ static int vrf_device_event(struct notifier_block *unused,
+ 			goto out;
+ 
+ 		vrf_dev = netdev_master_upper_dev_get(dev);
+-		vrf_del_slave(vrf_dev, dev);
++		do_vrf_del_slave(vrf_dev, dev, false);
+ 	}
+ out:
+ 	return NOTIFY_DONE;
 -- 
 2.53.0
 
