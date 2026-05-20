@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPvpCLEfDmp26QUAu9opvQ
-	(envelope-from <stable+bounces-251893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:13 +0200
+	id 0L0VL3AADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BADA59A4F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4FE597039
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD2F73797A23
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 392013120F13
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0293B0AD6;
-	Wed, 20 May 2026 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A743F7A9F;
+	Wed, 20 May 2026 18:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JALEm6ge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff9SWkiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C625C3F1ADC;
-	Wed, 20 May 2026 17:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB02331A41;
+	Wed, 20 May 2026 18:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299162; cv=none; b=FT2yfjfcSXei+CN5TIFsJWelr6ZUo1uEG9kGewdivMsKJpu2BL197GKuGX4rw2clJ6YYEQMYK0OuyuM1vlcCi7z0bHz2/QtF2t69D+kwYOkhBFUb8w7/pyVBbzk2rsMMtVK6xH/nYI7Msmrl5IX+jl4lOaFl/fWHfy9RBtv/4N8=
+	t=1779302121; cv=none; b=Xg44JcmP9DKJ/reZ8rA0XBT7h3zDxuuLSRHIAgdfupxRFaKCZLjK0NIoSbmNj9jDn16RKpmDuO9n+7PoiirFr17FJgu3SQBLizKNgEPW0pvSv7okYLagf0dJEPmmgB4xwdiLy2azwKIC6Hk+6dA1hvHofEJZJ9xHirpKee+cMhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299162; c=relaxed/simple;
-	bh=Zn9wzP4HuslQSXPDHpQRfDvcet3AfrHkZzyU/p1c0zA=;
+	s=arc-20240116; t=1779302121; c=relaxed/simple;
+	bh=7dt1hudJaydaruABMlmmloK2BCxyFilkzUDr/g3dee0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cm4ooRctsgIM/G4xNd/Dy1Mbsf4Kn9dUTzx4NkQjXPS6cX04o4w0Zh7xt7S9EDEhsgSWSf/k9aqsvWlo41CY2Sl31fbjG9jp/rzsT9yVc5wnYTUfY16n4/3tX1CJb+PdTELO3rck1J18KZVpHkO3kRaeu3WhfCPllffptxshFsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JALEm6ge; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361281F000E9;
-	Wed, 20 May 2026 17:46:01 +0000 (UTC)
+	 MIME-Version; b=q630p5RCYnErOLb1ZhkmyCSdjXi9VR5rsVqLgzskFLa4JjjMlHZ69BLTqwExWFeEriZ27jGHj5Wv9ccE5PrxHLic7EppiDFnlX+jaakMnjUVGtDBXBkcHgCRZA9+qDYNSqI1lPfyVEWMQy3iaGSY5DNbcb6yGTYBwI7HRY3EQGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff9SWkiC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4DC1F000E9;
+	Wed, 20 May 2026 18:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299161;
-	bh=cXOY1TNRcldTLUBh8qUgdnqZQd0/8AtQaVq5x8Pc33E=;
+	s=korg; t=1779302119;
+	bh=jbl1vKl82iRCjYCmEhyPi/DZXfCo6MJcqkKwxlCYZKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JALEm6ge01j/Jxv/UprhHC/FhkA6VUK4v88vDDFJnBi6BVZp26bP+OQV7S7G1xwDv
-	 o53kr7rItnw1K4nYxalNaBqY+c27b1B0+ngW2dGXuzJmHz9Iitgvgd/UvltUSBLn9o
-	 UCngSfwJlnVYbbClL2v4htV/1hn1qXo6iu6FJk24=
+	b=Ff9SWkiC2YILD1xFnKF/9Ci6BSV2Dkif6qeL8orfwGONjb6WgBTV+jEmJcLR40qbv
+	 yoz64FBVg5hKUWBlgjqfhyw/saPFkq3GIe06jyi0Ctu727Kyy6ob69R4XmGRNHe9Y8
+	 QOgs5gzbZZi9qeO/BgFB4ubv9ta/ssVffnSFrTjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 686/957] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
+Subject: [PATCH 6.6 146/508] ASoC: qcom: qdsp6: topology: check widget type before accessing data
 Date: Wed, 20 May 2026 18:19:29 +0200
-Message-ID: <20260520162149.417384687@linuxfoundation.org>
+Message-ID: <20260520162101.794038965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,124 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251893-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252992-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 6BADA59A4F2
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4B4FE597039
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit a6edf2cd4156b71e07258876b7626692e158f7e8 ]
+[ Upstream commit d5bfdd28e0cdd45043ae6e0ac168a451d59283dc ]
 
-hhf_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+Check widget type before accessing the private data, as this could a
+virtual widget which is no associated with a dsp graph, container and
+module. Accessing witout check could lead to incorrect memory access.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421143349.4052215-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-4-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hhf.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ sound/soc/qcom/qdsp6/topology.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index 2d4855e28a286..81c3a388c9437 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
- 				return NULL;
- 			list_del(&flow->flowchain);
- 			kfree(flow);
--			q->hh_flows_current_cnt--;
-+			WRITE_ONCE(q->hh_flows_current_cnt,
-+				   q->hh_flows_current_cnt - 1);
- 		} else if (flow->hash_id == hash) {
- 			return flow;
- 		}
-@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+diff --git a/sound/soc/qcom/qdsp6/topology.c b/sound/soc/qcom/qdsp6/topology.c
+index d4c3bc85fb356..51d1926ea3c2b 100644
+--- a/sound/soc/qcom/qdsp6/topology.c
++++ b/sound/soc/qcom/qdsp6/topology.c
+@@ -903,9 +903,6 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
+ 	struct audioreach_container *cont;
+ 	struct audioreach_module *mod;
+ 
+-	mod = dobj->private;
+-	cont = mod->container;
+-
+ 	if (w->id == snd_soc_dapm_mixer) {
+ 		/* virtual widget */
+ 		struct snd_ar_control *scontrol = dobj->private;
+@@ -914,6 +911,11 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
+ 		kfree(scontrol);
+ 		return 0;
  	}
++	mod = dobj->private;
++	if (!mod)
++		return 0;
++
++	cont = mod->container;
  
- 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
--		q->hh_flows_overlimit++;
-+		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
- 		return NULL;
- 	}
- 	/* Create new entry. */
-@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
- 	if (!flow)
- 		return NULL;
- 
--	q->hh_flows_current_cnt++;
-+	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
- 	INIT_LIST_HEAD(&flow->flowchain);
- 	list_add_tail(&flow->flowchain, head);
- 
-@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
- 			return WDRR_BUCKET_FOR_NON_HH;
- 		flow->hash_id = hash;
- 		flow->hit_timestamp = now;
--		q->hh_flows_total_cnt++;
-+		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
- 
- 		/* By returning without updating counters in q->hhf_arrays,
- 		 * we implicitly implement "shielding" (see Optimization O1).
-@@ -403,7 +404,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return NET_XMIT_SUCCESS;
- 
- 	prev_backlog = sch->qstats.backlog;
--	q->drop_overlimit++;
-+	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
- 	/* Return Congestion Notification only if we dropped a packet from this
- 	 * bucket.
- 	 */
-@@ -687,10 +688,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct hhf_sched_data *q = qdisc_priv(sch);
- 	struct tc_hhf_xstats st = {
--		.drop_overlimit = q->drop_overlimit,
--		.hh_overlimit	= q->hh_flows_overlimit,
--		.hh_tot_count	= q->hh_flows_total_cnt,
--		.hh_cur_count	= q->hh_flows_current_cnt,
-+		.drop_overlimit = READ_ONCE(q->drop_overlimit),
-+		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
-+		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
-+		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
- 	};
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
+ 	mutex_lock(&apm->lock);
+ 	idr_remove(&apm->modules_idr, mod->instance_id);
 -- 
 2.53.0
 
