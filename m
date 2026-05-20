@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-250221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANh2EAsODmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-250221-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:55 +0200
+	id eDUUDLblDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B887A59890F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40EF592748
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B34A033F7D15
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:35:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B103B309C272
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C3233BBAF;
-	Wed, 20 May 2026 16:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9755E32B9B5;
+	Wed, 20 May 2026 16:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM0Y5mRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwlzc6wn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439562609FD;
-	Wed, 20 May 2026 16:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8636239B969;
+	Wed, 20 May 2026 16:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294846; cv=none; b=rUy/qJL8LQy6YtJq2K4EyaoyTJhCp1zH+mBek18kx2aS6Tbdt7eNH72kUWiH+wodZmlI7rxCZflNXXvfbBnJJeTrDQjLtM20NTNvw4qGywz54SZkv9rZVkJjZJO/VXc4DNbcwySZbAwbErt8VjwgDIix4LMaJS4SKcVmZAzA0aU=
+	t=1779294852; cv=none; b=iIvhIRxutE4iFpZjnx8xLQ0E398upk8BCEgMRXu8GOFdF4YhOG+ngp+FwTXVf6q3GG5m224jdbxkvhTtZA1EXLwmF0/3ddmRTu834Gc2bqr9VR0Jd0HBJyfPo6ldURUAPphUG5szx7vjTFu4BOIOChbKMCvUDTGbv1rFWwjMsyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294846; c=relaxed/simple;
-	bh=oTYrDsQlmP09ShACXbqkSzVSNO1sRgsZ3pdnZVkeBaI=;
+	s=arc-20240116; t=1779294852; c=relaxed/simple;
+	bh=R/VBoTs+7yc0vEwl27fEubOo20h7UIAohSpIWl1Rtpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eu6BeuSY9aFgLnfIEHNYayA2TiUMjwtzllWwBgmWiu0RjHcvPagTh4wUDfqLK79z0wvui6DE1y1EyjwKnSyOXEaXHs7TLWT3roJ+S6AXV66xnDesOkToZK6QEgj/jgBLS+QiW2Plqr2AXa0ZPPXZRy8+rpJHJmW/cP/sDjR44Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM0Y5mRa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A031F000E9;
-	Wed, 20 May 2026 16:34:04 +0000 (UTC)
+	 MIME-Version; b=o1WAuSePZiRYjqSFhDiGu916Ehl6dAlaff+29zPAWnK6fgBSKvtmI6vIhThDbh95rQyeOI8JvX1HEBmW4Ou7iSWbY8fcEXdhyIeusan67q7pw9hdmFuMXyXsFykv18qVOWTdY9pIEB8hcfyeYeXVWGwuLV/edl59f2bw3QCQytQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwlzc6wn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAEBC1F000E9;
+	Wed, 20 May 2026 16:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294845;
-	bh=4z8W85Y3TVqg+t0pIGg5xo9HLrbO8Kh3yOKvlq5EUOk=;
+	s=korg; t=1779294850;
+	bh=HQR3VVGXi5sRYDG0Jf30u68sjB6JLNIKRLyds/VW4vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PM0Y5mRaDWj2EGVcUPUwdeBOqxwJXlTdjwl6gJfIFT3aiducUBkEpuDalpKKh4FwX
-	 M6cITLi8YmThyt7LZfUQcpynHJzS/WmrInqD79YO+WMyyzh0v2Ejqzcl8HHkeEwsck
-	 QdYeGNlQVdekoIUeeCnyl5tCSqSSHSZWzhtGkAvI=
+	b=Bwlzc6wn0cH+/B3sJZKwEtz9ffb69pgzyhMwkCE9MXpo7tVFd2ZbIr/IGEn7o03wa
+	 VLuk1ieh7/hBnGJyjDi35i74O2XSGi+n26QEy3SqGZvpNn8zkef3te7y6KZCa7wUUx
+	 7dw+GorkyhvCT3QLFwT0bYqAZMDVQnRVwzt7vtHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damilola Bello <damilola@aterlo.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
+	Quan Sun <2022090917019@std.uestc.edu.cn>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0194/1146] net_sched: fix skb memory leak in deferred qdisc drops
-Date: Wed, 20 May 2026 18:07:24 +0200
-Message-ID: <20260520162152.665692824@linuxfoundation.org>
+Subject: [PATCH 7.0 0195/1146] bpf: Fix same-register dst/src OOB read and pointer leak in sock_ops
+Date: Wed, 20 May 2026 18:07:25 +0200
+Message-ID: <20260520162152.689361140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,31 +74,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250221-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250223-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: B887A59890F
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,hust.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,uestc.edu.cn:email]
+X-Rspamd-Queue-Id: C40EF592748
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,63 +105,82 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit a6bd339dbb3514bce690fdcf252e788dfab4ee76 ]
+[ Upstream commit 10f86a2a5c91fc4c4d001960f1c21abe52545ef6 ]
 
-When the network stack cleans up the deferred list via qdisc_run_end(),
-it operates on the root qdisc. If the root qdisc do not implement the
-TCQ_F_DEQUEUE_DROPS flag the packets queue to free are never freed and
-gets stranded on the child's local to_free list.
+When a BPF sock_ops program accesses ctx fields with dst_reg == src_reg,
+the SOCK_OPS_GET_SK() and SOCK_OPS_GET_FIELD() macros fail to zero the
+destination register in the !fullsock / !locked_tcp_sock path.
 
-Fix this by making qdisc_dequeue_drop() aware of the root qdisc. It
-fetches the root qdisc and check for the TCQ_F_DEQUEUE_DROPS flag. If
-the flag is present, the packet is appended directly to the root's
-to_free list. Otherwise, drop it directly as it was done before the
-optimization was implemented.
+Both macros borrow a temporary register to check is_fullsock /
+is_locked_tcp_sock when dst_reg == src_reg, because dst_reg holds the
+ctx pointer. When the check is false (e.g., TCP_NEW_SYN_RECV state with
+a request_sock), dst_reg should be zeroed but is not, leaving the stale
+ctx pointer:
 
-Fixes: a6efc273ab82 ("net_sched: use qdisc_dequeue_drop() in cake, codel, fq_codel")
-Reported-by: Damilola Bello <damilola@aterlo.com>
-Closes: https://lore.kernel.org/netdev/CAPgFtOLaedBMU0f_BxV2bXftTJSmJr018Q5uozOo5vVo6b9tjw@mail.gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260408100044.4530-1-fmancera@suse.de
+ - SOCK_OPS_GET_SK: dst_reg retains the ctx pointer, passes NULL checks
+   as PTR_TO_SOCKET_OR_NULL, and can be used as a bogus socket pointer,
+   leading to stack-out-of-bounds access in helpers like
+   bpf_skc_to_tcp6_sock().
+
+ - SOCK_OPS_GET_FIELD: dst_reg retains the ctx pointer which the
+   verifier believes is a SCALAR_VALUE, leaking a kernel pointer.
+
+Fix both macros by:
+ - Changing JMP_A(1) to JMP_A(2) in the fullsock path to skip the
+   added instruction.
+ - Adding BPF_MOV64_IMM(si->dst_reg, 0) after the temp register
+   restore in the !fullsock path, placed after the restore because
+   dst_reg == src_reg means we need src_reg intact to read ctx->temp.
+
+Fixes: fd09af010788 ("bpf: sock_ops ctx access may stomp registers in corner case")
+Fixes: 84f44df664e9 ("bpf: sock_ops sk access may stomp registers when dst_reg = src_reg")
+Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Closes: https://lore.kernel.org/bpf/6fe1243e-149b-4d3b-99c7-fcc9e2f75787@std.uestc.edu.cn/T/#u
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20260407022720.162151-2-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ net/core/filter.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index c3d657359a3d2..5fc0b1ebaf25c 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1170,12 +1170,22 @@ static inline void tcf_kfree_skb_list(struct sk_buff *skb)
- static inline void qdisc_dequeue_drop(struct Qdisc *q, struct sk_buff *skb,
- 				      enum skb_drop_reason reason)
- {
-+	struct Qdisc *root;
-+
- 	DEBUG_NET_WARN_ON_ONCE(!(q->flags & TCQ_F_DEQUEUE_DROPS));
- 	DEBUG_NET_WARN_ON_ONCE(q->flags & TCQ_F_NOLOCK);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 78b548158fb05..53ce06ed4a88e 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -10581,10 +10581,11 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 				      si->dst_reg, si->dst_reg,		      \
+ 				      offsetof(OBJ, OBJ_FIELD));	      \
+ 		if (si->dst_reg == si->src_reg)	{			      \
+-			*insn++ = BPF_JMP_A(1);				      \
++			*insn++ = BPF_JMP_A(2);				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+ 				      temp));				      \
++			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+ 		}							      \
+ 	} while (0)
  
--	tcf_set_drop_reason(skb, reason);
--	skb->next = q->to_free;
--	q->to_free = skb;
-+	rcu_read_lock();
-+	root = qdisc_root_sleeping(q);
-+
-+	if (root->flags & TCQ_F_DEQUEUE_DROPS) {
-+		tcf_set_drop_reason(skb, reason);
-+		skb->next = root->to_free;
-+		root->to_free = skb;
-+	} else {
-+		kfree_skb_reason(skb, reason);
-+	}
-+	rcu_read_unlock();
- }
+@@ -10618,10 +10619,11 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 				      si->dst_reg, si->src_reg,		      \
+ 				      offsetof(struct bpf_sock_ops_kern, sk));\
+ 		if (si->dst_reg == si->src_reg)	{			      \
+-			*insn++ = BPF_JMP_A(1);				      \
++			*insn++ = BPF_JMP_A(2);				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+ 				      temp));				      \
++			*insn++ = BPF_MOV64_IMM(si->dst_reg, 0);	      \
+ 		}							      \
+ 	} while (0)
  
- /* Instead of calling kfree_skb() while root qdisc lock is held,
 -- 
 2.53.0
 
