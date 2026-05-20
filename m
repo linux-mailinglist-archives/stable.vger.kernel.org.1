@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPxgF48dDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-253216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:07 +0200
+	id uDwKOAn+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AEC59A146
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E5A596721
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2BB7331F865F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C64DC31802D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F2840F8DB;
-	Wed, 20 May 2026 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753E63FE348;
+	Wed, 20 May 2026 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5ZY4kSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXb29ZtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA77283CB5;
-	Wed, 20 May 2026 18:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8B03FC5B7;
+	Wed, 20 May 2026 18:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302705; cv=none; b=DJHEgkNs6GGd0gLUinPbVCW5Js4C68UbBQJAHvoxLC1X6IxLRIxPFPNo6vOhm1YoFx2mmz/RFIUQgJqKNTe6Wi2cz44Hx2l/Yd6qUFPdRZ7T1pplCXYJWfyXsAcdv1YvniAEUPAJbTjRE9oTMP3f2q3bzpuQPzVvRb9CoChx3jM=
+	t=1779301503; cv=none; b=DPEo6HaqO/BtjAI0mr2+MmpMqx1nRB8gvQOJBU93uX5fH4SkDYUqbuEB4w/1s7w0W6N8zBEP9WfZqeWOI+QF67zLcxo8S1Olm+HxQGD0D2y2LbFQnTjDvhnok56UtnNedxARL9VMwCGOF82yHSKnsj0Xtt4bmjbY2YRq16GUTYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302705; c=relaxed/simple;
-	bh=fOSkIf3CNO0Ym84b5y9kcWaD7DSglncZ4sxFZ/7ehUQ=;
+	s=arc-20240116; t=1779301503; c=relaxed/simple;
+	bh=9amsdpHr+P1B2iSdu1ywJIHaOyOLtbhcrDMC+xpvohw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/Zw6hW8e3CSLmKCuZdF3/916Z8YeXQseHLXEveddA9MLfBC6huJGBRwrhMjE6cJNjrtkFVP0L7NTHTqLgWfvExtpnNkTafkOGvOwOBRrQ8/0VTC3hBlZ9TftIwa51xs7f9cc49w7gRPh56UBm3Rvd14luq1ZvYzlBR7uReFZu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5ZY4kSZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BB91F00893;
-	Wed, 20 May 2026 18:45:03 +0000 (UTC)
+	 MIME-Version; b=JK4BA6k5w8VgYCz/myCKpYD4IWiyyO+Ab4yMO4slGFb/x4AQ3kY8MIVfWkvtn1QIDBJ6Z9AUKHbxlR+N6u2d0/e43PwMoWOjm9uM4hjseqnXMHw8Nnlq5RbhvG1eke8D2YxrxmdcAmOtU6cBfqpEHRv2zgAXSIFqOiDocrvFjOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXb29ZtD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781731F000E9;
+	Wed, 20 May 2026 18:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302704;
-	bh=b+Y+jw43ScKRdaCLbsZ2JilmOsjUJ87YJ38tYHULEkE=;
+	s=korg; t=1779301502;
+	bh=tiBkif7hUeOD6DLLpmdHjo33NA/ywX9/V85s5zZuATU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c5ZY4kSZU13ccm1r4YyMU1AJxU1Y9mDE34ABTRz/v9C07xZo4IfRwcMumdqPI0nYL
-	 KZNyobZIUuQmTVdX1H4WfSuoZ6iIPOkxHFjk2hz96uz/PVed+ThAhaE37IuP9Yb+o/
-	 Os8AtRc4XQ1J2VdMt2NsLQMovRdCA65nhcMlcY0E=
+	b=XXb29ZtD1AdjDodRGKBOY39BDN+CWyHGwpu2usah/91fvMdO+1dTUxJXlBESds1wL
+	 OZSxpR/CDbMSkTqIwUbifSeNqkLgIYL6OFsChffTrYoXoe51/kE1Dl+uCwU0Tvk7vd
+	 7BoZfUO5vW1Zu/0jV4sEpZCousift0Pc5OswUeY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 368/508] netfilter: arp_tables: fix IEEE1394 ARP payload parsing
+Subject: [PATCH 6.12 580/666] drm/xe/debugfs: Correct printing of register whitelist ranges
 Date: Wed, 20 May 2026 18:23:11 +0200
-Message-ID: <20260520162106.600982617@linuxfoundation.org>
+Message-ID: <20260520162123.839779200@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,158 +67,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253216-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252754-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: 66AEC59A146
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 96E5A596721
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit 1e8e3f449b1e73b73a843257635b9c50f0cc0f0a ]
+[ Upstream commit 03f2499c51dffce611b065b2894406beb9f2ebe0 ]
 
-Weiming Shi says:
+The register-save-restore debugfs prints whitelist entries as offset
+ranges.  E.g.,
 
-"arp_packet_match() unconditionally parses the ARP payload assuming two
-hardware addresses are present (source and target). However,
-IPv4-over-IEEE1394 ARP (RFC 2734) omits the target hardware address
-field, and arp_hdr_len() already accounts for this by returning a
-shorter length for ARPHRD_IEEE1394 devices.
+        REG[0x39319c-0x39319f]: allow read access
 
-As a result, on IEEE1394 interfaces arp_packet_match() advances past a
-nonexistent target hardware address and reads the wrong bytes for both
-the target device address comparison and the target IP address. This
-causes arptables rules to match against garbage data, leading to
-incorrect filtering decisions: packets that should be accepted may be
-dropped and vice versa.
+for a single dword-sized register.  However the GENMASK value used to
+set the lower bits to '1' for the upper bound of the whitelist range
+incorrectly included one more bit than it should have, causing the
+whitelist ranges to sometimes appear twice as large as they really were.
+For example,
 
-The ARP stack in net/ipv4/arp.c (arp_create and arp_process) already
-handles this correctly by skipping the target hardware address for
-ARPHRD_IEEE1394. Apply the same pattern to arp_packet_match()."
+        REG[0x6210-0x6217]: allow rw access
 
-Mangle the original patch to always return 0 (no match) in case user
-matches on the target hardware address which is never present in
-IEEE1394.
+was also intended to be a single dword-sized register whitelist (with a
+range 0x6210-0x6213) but was printed incorrectly as a qword-sized range
+because one too many bits was flipped on.  Similar 'off by one' logic
+was applied when printing 4-dword register ranges and 64-dword register
+ranges as well.
 
-Note that this returns 0 (no match) for either normal and inverse match
-because matching in the target hardware address in ARPHRD_IEEE1394 has
-never been supported by arptables. This is intentional, matching on the
-target hardware address should never evaluate true for ARPHRD_IEEE1394.
+Correct the GENMASK logic to print these ranges in debugfs correctly.
+No impact outside of correcting the misleading debugfs output.
 
-Moreover, adjust arpt_mangle to drop the packet too as AI suggests:
-
-In arpt_mangle, the logic assumes a standard ARP layout. Because
-IEEE1394 (FireWire) omits the target hardware address, the linear
-pointer arithmetic miscalculates the offset for the target IP address.
-This causes mangling operations to write to the wrong location, leading
-to packet corruption. To ensure safety, this patch drops packets
-(NF_DROP) when mangling is requested for these fields on IEEE1394
-devices, as the current implementation cannot correctly map the FireWire
-ARP payload.
-
-This omits both mangling target hardware and IP address. Even if IP
-address mangling should be possible in IEEE1394, this would require
-to adjust arpt_mangle offset calculation, which has never been
-supported.
-
-Based on patch from Weiming Shi <bestswngs@gmail.com>.
-
-Fixes: 6752c8db8e0c ("firewire net, ipv4 arp: Extend hardware address and remove driver-level packet inspection.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d855d2246ea6 ("drm/xe: Print whitelist while applying")
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://patch.msgid.link/20260408-regsr_wl_range-v1-1-e9a28c8b4264@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 1a2a722ff96749734a5585dfe7f0bea7719caa8b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arp_tables.c  | 18 +++++++++++++++---
- net/ipv4/netfilter/arpt_mangle.c |  8 ++++++++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_reg_whitelist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 14365b20f1c5c..564054123772a 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -110,13 +110,25 @@ static inline int arp_packet_match(const struct arphdr *arphdr,
- 	arpptr += dev->addr_len;
- 	memcpy(&src_ipaddr, arpptr, sizeof(u32));
- 	arpptr += sizeof(u32);
--	tgt_devaddr = arpptr;
--	arpptr += dev->addr_len;
-+
-+	if (IS_ENABLED(CONFIG_FIREWIRE_NET) && dev->type == ARPHRD_IEEE1394) {
-+		if (unlikely(memchr_inv(arpinfo->tgt_devaddr.mask, 0,
-+					sizeof(arpinfo->tgt_devaddr.mask))))
-+			return 0;
-+
-+		tgt_devaddr = NULL;
-+	} else {
-+		tgt_devaddr = arpptr;
-+		arpptr += dev->addr_len;
-+	}
- 	memcpy(&tgt_ipaddr, arpptr, sizeof(u32));
+diff --git a/drivers/gpu/drm/xe/xe_reg_whitelist.c b/drivers/gpu/drm/xe/xe_reg_whitelist.c
+index 3996934974fa0..3de0a867149da 100644
+--- a/drivers/gpu/drm/xe/xe_reg_whitelist.c
++++ b/drivers/gpu/drm/xe/xe_reg_whitelist.c
+@@ -137,7 +137,7 @@ void xe_reg_whitelist_print_entry(struct drm_printer *p, unsigned int indent,
+ 	}
  
- 	if (NF_INVF(arpinfo, ARPT_INV_SRCDEVADDR,
- 		    arp_devaddr_compare(&arpinfo->src_devaddr, src_devaddr,
--					dev->addr_len)) ||
-+					dev->addr_len)))
-+		return 0;
-+
-+	if (tgt_devaddr &&
- 	    NF_INVF(arpinfo, ARPT_INV_TGTDEVADDR,
- 		    arp_devaddr_compare(&arpinfo->tgt_devaddr, tgt_devaddr,
- 					dev->addr_len)))
-diff --git a/net/ipv4/netfilter/arpt_mangle.c b/net/ipv4/netfilter/arpt_mangle.c
-index a4e07e5e9c118..f65dd339208e8 100644
---- a/net/ipv4/netfilter/arpt_mangle.c
-+++ b/net/ipv4/netfilter/arpt_mangle.c
-@@ -40,6 +40,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
- 	}
- 	arpptr += pln;
- 	if (mangle->flags & ARPT_MANGLE_TDEV) {
-+		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
-+			     skb->dev->type == ARPHRD_IEEE1394))
-+			return NF_DROP;
-+
- 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
- 		   (arpptr + hln > skb_tail_pointer(skb)))
- 			return NF_DROP;
-@@ -47,6 +51,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
- 	}
- 	arpptr += hln;
- 	if (mangle->flags & ARPT_MANGLE_TIP) {
-+		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
-+			     skb->dev->type == ARPHRD_IEEE1394))
-+			return NF_DROP;
-+
- 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
- 		   (arpptr + pln > skb_tail_pointer(skb)))
- 			return NF_DROP;
+ 	range_start = reg & REG_GENMASK(25, range_bit);
+-	range_end = range_start | REG_GENMASK(range_bit, 0);
++	range_end = range_start | REG_GENMASK(range_bit - 1, 0);
+ 
+ 	switch (val & RING_FORCE_TO_NONPRIV_ACCESS_MASK) {
+ 	case RING_FORCE_TO_NONPRIV_ACCESS_RW:
 -- 
 2.53.0
 
