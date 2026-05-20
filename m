@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNhbG2fyDWro4wUAu9opvQ
-	(envelope-from <stable+bounces-251152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:59 +0200
+	id +FVxJ8b+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3015594541
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22921596A61
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 943363145B2B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94608324B4D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC36C34B40F;
-	Wed, 20 May 2026 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5263F1AD9;
+	Wed, 20 May 2026 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXJN9k/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLuoEfH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867393403F4;
-	Wed, 20 May 2026 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B67225A38;
+	Wed, 20 May 2026 17:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297234; cv=none; b=o5FJtniKA4VR02gUvLwU0Zh/kZZ80bX4K6Yw9nbbWylaRy/leaG+1U23dmgidv49UCwUOjizo6jZa8UumQulO185fcA/EhVOEoiQR9pELxfgu7OsC2rOh444rLPc4CITdFpWjsdG69qCHffErl56sRVPbcFdtrEuHWHaHi+WRUs=
+	t=1779299696; cv=none; b=puIXVDGwCYInLkTzHFqr1i2qLy//sf5Q6XCjTNoVFs6OeLHqgkLz7Rs9HfBSAd9i4ano8l/OOEbkwRZ0fL7uaE+CTMMYoTsd5MHJDVS6RR+yczeo9Cv92Xr4Th0w8pqTg/2FORR0k5SB/tc27eJ44MuV656I0KBLX3310b6xV08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297234; c=relaxed/simple;
-	bh=qo91nTGiZ9FhwegCk0uIk0WM1EUl9XqC2UtLsfm6biI=;
+	s=arc-20240116; t=1779299696; c=relaxed/simple;
+	bh=V9bo2rk10RjskXJUoVC4nBWMESb5397CUYd28ckbo7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XukTRJprN2lO2pW29YNACCqz5ymMqFZkgA896FiCJiqYaU0Vvl0+/gf70yyl/5OHh8ZEgowO5ocKAL2/Z/dmrcXK165uTQSqcUNxJdw8HWJSGwGKM5O6U5Y3CaemCEv8PQ1oT8rV83c5qagOzagywBAMWSLWgG2OSxZfw8brxo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXJN9k/7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2DA1F000E9;
-	Wed, 20 May 2026 17:13:52 +0000 (UTC)
+	 MIME-Version; b=XmZIBhB38NReZt4VOIfPJz2lvpGCx2Xdm/FLxpenM6rKc+Zt3JliLc7Do+eVyFs4hu4ZkMOoR1IM+LzJRmeaiM00kjgC6B5odiCJNQbZ36PNi3gjNSKGMpHyQ3l5oeILd7p84vh2iZx/5AAMjmqYL+FtzH7bFw/qVAMOGsgXUOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLuoEfH1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DCA1F000E9;
+	Wed, 20 May 2026 17:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297233;
-	bh=DTLWYUAAza/Y7gCx4AV0FK/My07FCEuO0CG/BLJnxho=;
+	s=korg; t=1779299695;
+	bh=YA3+Sb7oCC5I0iU7nujUEknix5jVwsDdXmkEAbZIcuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uXJN9k/7m0ycR8eWLiYes5X3BLlWeeVB8peUw7c170dfLzZRU/5Es8LvjqfPcd9f1
-	 OeBA8czb4hH1txIR8LrvRnpwBu+Nd1Ntzf5rHV6LqjntEOIrWUZzl7l6Tm5jNBrBMi
-	 /Vsc8uKIWlz5RIVmou8mYluWhJput5H4Wmsk6VSQ=
+	b=CLuoEfH1GXk2CbIOYQRoj8NEeOuI6wF9WVGXnrmO36PUY4aoeaIxzHOpNBy78EQgF
+	 MYnpcWGTDB7eMysn5mBEAMuEMpNLdeXNuZ580LZ98tCdryrKahMQkhcwBZedbV89Cx
+	 2PfhPr6jG4nzNpCWId94YyK3goeyyOSRxxWglbTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Songsong Zhang <U2FsdGVkX1@gmail.com>
-Subject: [PATCH 7.0 1102/1146] riscv: misaligned: Make enabling delegation depend on NONPORTABLE
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 869/957] net: airoha: Move entries to queue head in case of DMA mapping failure in airoha_dev_xmit()
 Date: Wed, 20 May 2026 18:22:32 +0200
-Message-ID: <20260520162213.183375345@linuxfoundation.org>
+Message-ID: <20260520162153.412432934@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,116 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,microchip.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-251152-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-252081-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F3015594541
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 22921596A61
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivian Wang <wangruikang@iscas.ac.cn>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit b69bcb13ed7024a84d6cd8ad330f1e32782fcf28 upstream.
+[ Upstream commit 75df490c9e8457990c8b227650f6491218ce018b ]
 
-The unaligned access emulation code in Linux has various deficiencies.
-For example, it doesn't emulate vector instructions [1] [2], and doesn't
-emulate KVM guest accesses. Therefore, requesting misaligned exception
-delegation with SBI FWFT actually regresses vector instructions' and KVM
-guests' behavior.
+In order to respect the original descriptor order and avoid any
+potential IOMMU fault or memory corruption, move pending queue entries
+to the head of hw queue tx_list if the DMA mapping of current inflight
+packet fails in airoha_dev_xmit routine.
 
-Until Linux can handle it properly, guard these sbi_fwft_set() calls
-behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends on
-NONPORTABLE. Those who are sure that this wouldn't be a problem can
-enable this option, perhaps getting better performance.
-
-The rest of the existing code proceeds as before, except as if
-SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
-address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
-implementation is also not touched, but it is disabled if the firmware
-emulates unaligned accesses.
-
-Cc: stable@vger.kernel.org
-Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception from SBI")
-Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
-Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224f529c@iscas.ac.cn/ [1]
-Link: https://lore.kernel.org/linux-riscv/b3cfcdac-0337-4db0-a611-258f2868855f@iscas.ac.cn/ [2]
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260401-riscv-misaligned-dont-delegate-v2-1-5014a288c097@iscas.ac.cn
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f47e67dff1f7 ("net: airoha: Add the capability to consume out-of-order DMA tx descriptors")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260429-airoha-xmit-unmap-error-path-v2-1-32e43b7c6d25@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Kconfig                   |   22 ++++++++++++++++++++++
- arch/riscv/kernel/traps_misaligned.c |    2 +-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -941,6 +941,28 @@ config RISCV_VECTOR_MISALIGNED
- 	help
- 	  Enable detecting support for vector misaligned loads and stores.
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 4364f4320428a..b4dfab2702cb9 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2136,14 +2136,12 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	return NETDEV_TX_OK;
  
-+config RISCV_SBI_FWFT_DELEGATE_MISALIGNED
-+	bool "Request firmware delegation of unaligned access exceptions"
-+	depends on RISCV_SBI
-+	depends on NONPORTABLE
-+	help
-+	  Use SBI FWFT to request delegation of load address misaligned and
-+	  store address misaligned exceptions, if possible, and prefer Linux
-+	  kernel emulation of these accesses to firmware emulation.
-+
-+	  Unfortunately, Linux's emulation is still incomplete. Namely, it
-+	  currently does not handle vector instructions and KVM guest accesses.
-+	  On platforms where these accesses would have been handled by firmware,
-+	  enabling this causes unexpected kernel oopses, userspaces crashes and
-+	  KVM guest crashes. If you are sure that these are not a problem for
-+	  your platform, you can say Y here, which may improve performance.
-+
-+	  Saying N here will not worsen emulation support for unaligned accesses
-+	  even in the case where the firmware also has incomplete support. It
-+	  simply keeps the firmware's emulation enabled.
-+
-+	  If you don't know what to do here, say N.
-+
- choice
- 	prompt "Unaligned Accesses Support"
- 	default RISCV_PROBE_UNALIGNED_ACCESS
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -584,7 +584,7 @@ static int cpu_online_check_unaligned_ac
+ error_unmap:
+-	while (!list_empty(&tx_list)) {
+-		e = list_first_entry(&tx_list, struct airoha_queue_entry,
+-				     list);
++	list_for_each_entry(e, &tx_list, list) {
+ 		dma_unmap_single(dev->dev.parent, e->dma_addr, e->dma_len,
+ 				 DMA_TO_DEVICE);
+ 		e->dma_addr = 0;
+-		list_move_tail(&e->list, &q->tx_list);
+ 	}
++	list_splice(&tx_list, &q->tx_list);
  
- static bool misaligned_traps_delegated;
- 
--#ifdef CONFIG_RISCV_SBI
-+#if defined(CONFIG_RISCV_SBI_FWFT_DELEGATE_MISALIGNED)
- 
- static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
- {
+ 	spin_unlock_bh(&q->lock);
+ error:
+-- 
+2.53.0
+
 
 
 
