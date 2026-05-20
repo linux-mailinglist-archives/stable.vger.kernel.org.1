@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-253079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHMnOicMDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:31:51 +0200
+	id KECpJV4EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0026859866A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:31:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB96597802
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC3C33229E5C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83A0E3185211
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2700F43D51D;
-	Wed, 20 May 2026 18:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDB743E9FD;
+	Wed, 20 May 2026 18:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l22hrCy/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGAn0tpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B139A43C04C;
-	Wed, 20 May 2026 18:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC8B43E49A;
+	Wed, 20 May 2026 18:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302349; cv=none; b=dAocFhFkmTTOAyqCLd2gi2n2qz89sF9clNPRChWH/2y2KhbJUPECzMeb/9LPRhuEBq1iEdmZLYYdKFDoTAqQoysJoBlYfDkglNHhtoASMiN8MOoxyYt6GLRpAzN2E8pXh/IKzlEYoPATZKZwiwiRd15rxyABIRP5JHjFjUKV4f4=
+	t=1779302352; cv=none; b=JyH+e6z1avB1h0sl7iSiWksqh5ixCNCGcCZczy7h75OfPz6aObGRElgCUh5A8jA0zOA83L55xyZMmUDWrYRRZjVPgoCiUAuUD/1fdaghUChiXNIGqw55YtDjLAbFBeG6+cOmDgg0NbKD0IooO5klovBjqgSQP2/z7Fxjn0wOa1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302349; c=relaxed/simple;
-	bh=w4Ae6xiyLZj95Puw7AYO9tavsC99U/Zsr5yBYxVCP/M=;
+	s=arc-20240116; t=1779302352; c=relaxed/simple;
+	bh=BC7zEtp1QolM3fca7MPSgpeA8Zwnz9nciH/1fp81MFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJieP8rcY1ARqvw5FR/yr+QGILxUPcteLOJcefRGNtiaQvC9eBxqSrlCX8oTrcRWV12C1/8eyHTIPWhwbtvxuLDiKYfDcweMZFPXO4W4tH60JxW+SPFsDIBPLIXZv9FHKCD1jF764YI2w82uppNUjuHU8zNEfnv5qlU5D/QcP1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l22hrCy/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5601F008A1;
-	Wed, 20 May 2026 18:39:07 +0000 (UTC)
+	 MIME-Version; b=XEllWLrdvmNcbp46I59orPI2oW7aSN/5aNn4rl1tuWQ6PGYYIcaiDJFvMV4FG1eu4C2oAJ44YKPIFPUkCmvKaR9kAJ32UbNu4J7l5YZEDKwny+r3dWxe+sk5MRNGC67btqQnobmHSXcMZ07JUlyY0bD1vGaM1LLd73UQyKKCRzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGAn0tpF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D6C1F00897;
+	Wed, 20 May 2026 18:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302348;
-	bh=dSa1lnT0pZztqkxSqUK8osgIn38aZ1nsgb4HV4nr7lE=;
+	s=korg; t=1779302351;
+	bh=1t9YbWRnDk8vUz9zWfHH0rlYBCvDPdgqp1DIk7EY6CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l22hrCy/J9fpnYDbSQcpJwt8oITx8S4ovygRvivFByB3HaIkIFwlK/FZnUhxkPhwe
-	 3V8OufEL3WXnle2ej2qx1k1vlaFM7YCfaXPKqorouSagK+H6VyvRYKryQcWr7y1HBj
-	 OXqEfZaJnVZ2aC5oxjE72u73Aq2ikoMnFkwFiTKE=
+	b=TGAn0tpF9oVkPLRMZYrV4LIkniH3yd0D/yTlvHbOBLF9sJU4qUwOb+TQL3l0VAUkx
+	 CpKrOW/tE36AVl43QzRdIA6kbNny2RKVRgRt0oNAzqfDXgWlt/K42hbm26EUrw8X1d
+	 sZ6RNDCw89S7pTmbS/Qmp+pnOywcclmyQgMoMbGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/508] mtd: rawnand: sunxi: fix sunxi_nfc_hw_ecc_read_extra_oob
-Date: Wed, 20 May 2026 18:20:56 +0200
-Message-ID: <20260520162103.698904060@linuxfoundation.org>
+Subject: [PATCH 6.6 234/508] HID: usbhid: fix deadlock in hid_post_reset()
+Date: Wed, 20 May 2026 18:20:57 +0200
+Message-ID: <20260520162103.720849539@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -65,37 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253079-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253080-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email]
-X-Rspamd-Queue-Id: 0026859866A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3DB96597802
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,64 +100,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 848c13996c55fe4ea6bf5acc3ce6c8c5c944b5f6 ]
+[ Upstream commit 8df2c1b47ee3cd50fd454f75c7a7e2ae8a6adf72 ]
 
-When dumping the OOB, the bytes at the end where actually copied from
-the beginning of the OOB instead of current_offset.
+You can build a USB device that includes a HID component
+and a storage or UAS component. The components can be reset
+only together. That means that hid_pre_reset() and hid_post_reset()
+are in the block IO error handling. Hence no memory allocation
+used in them may do block IO because the IO can deadlock
+on the mutex held while resetting a device and calling the
+interface drivers.
+Use GFP_NOIO for all allocations in them.
 
-That leads to something like:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-instead of:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-(example with BCH16, user data [8,0], no scrambling)
-
-*cur_off (offset from the beginning of the page) was compared to offset
-(offset from the beginning of the OOB), and then, the
-nand_change_read_column_op() sets the current position to the beginning
-of the OOB instead of OOB+offset
-
-Fixes: 15d6f118285f ("mtd: rawnand: sunxi: Stop supporting ECC_HW_SYNDROME mode")
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: dc3c78e434690 ("HID: usbhid: Check HID report descriptor contents after device reset")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/usbhid/hid-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-index 4469618ee6033..8d31cb0133acc 100644
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -886,9 +886,9 @@ static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
- 	if (len <= 0)
- 		return;
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index 5e3bd615066c1..415d44ac14807 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -1549,7 +1549,7 @@ static int hid_post_reset(struct usb_interface *intf)
+ 	 * configuration descriptors passed, we already know that
+ 	 * the size of the HID report descriptor has not changed.
+ 	 */
+-	rdesc = kmalloc(hid->dev_rsize, GFP_KERNEL);
++	rdesc = kmalloc(hid->dev_rsize, GFP_NOIO);
+ 	if (!rdesc)
+ 		return -ENOMEM;
  
--	if (!cur_off || *cur_off != offset)
--		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
--					   false);
-+	if (!cur_off || *cur_off != (offset + mtd->writesize))
-+		nand_change_read_column_op(nand, mtd->writesize + offset,
-+					   NULL, 0, false);
- 
- 	if (!randomize)
- 		sunxi_nfc_read_buf(nand, oob + offset, len);
 -- 
 2.53.0
 
