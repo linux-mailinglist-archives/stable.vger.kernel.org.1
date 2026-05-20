@@ -1,223 +1,198 @@
-Return-Path: <stable+bounces-249785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249796-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 7ECDMOJzDWrSxgUAu9opvQ
-	(envelope-from <stable+bounces-249785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:42:10 +0200
+	id 2IfTIaKIDWrBygUAu9opvQ
+	(envelope-from <stable+bounces-249796-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:10:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A32D589F8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:42:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B465958B6AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EBFCB310C659
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:35:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F37C3305D11B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072C3BADB6;
-	Wed, 20 May 2026 08:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5463B19AB;
+	Wed, 20 May 2026 10:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x2iEvvHD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3P64RFxP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5C+ltdQ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332913BAD9C;
-	Wed, 20 May 2026 08:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D177B3D47BD;
+	Wed, 20 May 2026 10:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779266042; cv=none; b=r0gl3I2YukF/r6lb2QntU3qtjn8uQLTMWjXk3WJWdt8V9T4SNg8WySzYEthG9FU7uSoKSMJyN+ZiiXPU96eHbezjEbnQG6fJOkRRYMIkNMGtDtChzmgnuxs+z35db4meC1pET51ijN4nxmmjtdoQSje8+jcH1XsHbpU9DK93Yhg=
+	t=1779271580; cv=none; b=dL/qTyFyqHdJ7xmJGErhxqcDKDzJ4MJwjPjHk54dJQNzjG8VrhIqc8Is1tg9hLxsmY7GCQoGzOE4MFIwZwXwmd+I+/SJH3407Kkq+06BrpghHoYh6UzJlCB3+euo3qReKr/bYivuAof1OPLpvgyMymhoCc0oJ1OzrkmHF37ViU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779266042; c=relaxed/simple;
-	bh=n24lq8I4Tj6r+9b0Eie//R4FmP7tXjhAddS5NdwHsIY=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qpLtyG3PJYeMQcdI5p7yN0++gIpbTKiT1+uNjpAOD/BBassNnnPk4Wfztwg9WzlTMcFlgYjb8fVdt35L4mbMEozPp5gQ2hk31CW7LUFRu/+BIdRYGFZDAA3nHEdr8vSYXlqE+M0YKAKTP3+Bi9ceCJznl96V0CCRlvg3OW3neLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x2iEvvHD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3P64RFxP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 May 2026 08:33:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779266039;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEyHSLydSXBgoJytFAgglxdQ6AI7xczA0pyTghR0DnY=;
-	b=x2iEvvHD0EdyqTedvs+8D6kSZfm7+FXAfguMA9Dts8wpuUuIdenY2MXTMjDfUBtf54+LOl
-	yqySbiscAzQqSo5i1kMerkwaSvhDOaIvz7bgvGpLGiDDBTTnsMZvSZ55OzEMuzccIRLQbF
-	WeeD4vjKr0TJ3HmKa8iwcJXMuxsN8T+HkUuBurt/2ZKN2BwIETDlQrwMriH/ciZh3rvVYP
-	t6IVr7nnb2olluSw6MM3iaifVTXtSBdyZdZyw6r1oD2l/4ABXGJFm6r2m0kUVW8WRkd/VO
-	/G4Kce9TA8fdY4eHm9ooxdG6CElSwtdXFIYLiZcY1cuzYogRefbKJdFprEulzg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779266039;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lEyHSLydSXBgoJytFAgglxdQ6AI7xczA0pyTghR0DnY=;
-	b=3P64RFxPquA4M0vfLvDgweaCxc0VO1QU+pB6+emNDl3zkfTNH10EGR9hNPFbOeWDr6ThvA
-	tAEgcowrktgQo1BQ==
-From: "tip-bot2 for Steven Rostedt" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/rt: Have RT_PUSH_IPI be default off for non
- PREEMPT_RT
-Cc: Tejun Heo <tj@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260515103740.25ccbed8@gandalf.local.home>
-References: <20260515103740.25ccbed8@gandalf.local.home>
+	s=arc-20240116; t=1779271580; c=relaxed/simple;
+	bh=2XTuY4WQFg1yE+alU+n4fPiYKY1hm6hed38GIC5mPio=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kfa/PxXyHyTfvLDt54DHMtmM8snsBPkJsFIAsLXlVWVKiXeIZxrGUDy3Ef27uoCyzxJGVB11px7Is7G3eusyOZRIyWUc5PUwaNAVdEG6uOEWkthTABsz3z4hTs4T9lfjLhm3YKlIN9ejMMzxUe0Z0TC4hcpZY9lGEWxZKusU70c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5C+ltdQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B1E1F00893;
+	Wed, 20 May 2026 10:06:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779271576;
+	bh=tQNdIfyc+XsckweYif30VsXjlB9TtEyaoe4FnMptanA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W5C+ltdQy31Z3KhUSxZbwEOz84BeSZupOaMLVL04Q8X5i4Izc4BT79JWplqGe8b0z
+	 ob37LZYMdXBW6pi8YTWYiP6b6lVWMxM+B3cp8HyoapNNtlgF6o0C/iVWOeG69EfvI2
+	 0Zzsx71b2uSMmEaegzsCWt0GBi/Y50RcBItVkp7ziUy35rYoS3fnHIBJLFQ2us41NU
+	 qFinh3GFYrWWn6sMzvpTpSIR8WWYKf1fPWqvX0pSPZq8qBQzwuKEcMNyxN4Epi22yi
+	 Gl3c2a/o6oOzcc3frnX5ZKdJdugtYqD+ykBn3YeCghECRwdU5yyfM27w4+qX1SsFnx
+	 36u+mCM4z2iQA==
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+To: linux-media@vger.kernel.org
+Cc: Nicolas Dufresne <nicolas@ndufresne.ca>,
+	stable@vger.kernel.org,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCHv2 1/2] media: vivid: add vivid_update_reduced_fps()
+Date: Wed, 20 May 2026 10:36:21 +0200
+Message-ID: <f641f5393c2d9bc7893dd224a646d34c4e042660.1779266182.git.hverkuil+cisco@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1779266182.git.hverkuil+cisco@kernel.org>
+References: <cover.1779266182.git.hverkuil+cisco@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177926603830.711.2887528860384008788.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249785-lists,stable=lfdr.de];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-249796-lists,stable=lfdr.de,cisco];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 3A32D589F8C
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[hverkuil@kernel.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B465958B6AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the sched/core branch of tip:
+Don't call vivid_update_format_cap() when switching to/from reduced fps
+for HDMI inputs: that will also reset the format, which is overkill for
+this.
 
-Commit-ID:     dd29c017aed628076e915fe4cdfb5392fd4c5cab
-Gitweb:        https://git.kernel.org/tip/dd29c017aed628076e915fe4cdfb5392fd4=
-c5cab
-Author:        Steven Rostedt <rostedt@goodmis.org>
-AuthorDate:    Fri, 15 May 2026 10:37:40 -04:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 19 May 2026 12:17:39 +02:00
+Make a new vivid_update_reduced_fps() function that just updates the
+dev->timeperframe_vid_cap.
 
-sched/rt: Have RT_PUSH_IPI be default off for non PREEMPT_RT
-
-RT migration is done aggressively. When a CPU schedules out a high
-priority RT task for a lower priority task, it will look to see if there's
-any RT tasks that are waiting to run on another CPU that is of higher
-priority than the task this CPU is about to run. If it finds one, it will
-pull that task over to the CPU and allow it to run there instead.
-
-Normally, this pulling is done by looking at the RT overloaded mask (rto)
-which contains all the CPUs in the scheduler domain with RT tasks that are
-waiting to run due to a higher priority RT task currently running on their
-CPU. The CPU that is about to schedule a lower priority task will grab the
-rq lock of the overloaded CPU and move the RT task from that CPU's runqueue
-to the local one and schedule the higher priority RT task.
-
-This caused issues when a lot of CPUs would schedule a lower priority task
-at the same time. They would all try to grab the same runqueue lock of
-the CPU with the overloaded RT tasks. Only the first CPU that got in will
-get that task. All the others would wait until they got the runqueue lock
-and see there's nothing to pull and do nothing. On systems with lots of
-CPUs, this caused a large latency (up to 500us) which is beyond what
-PREEMPT_RT is to allow.
-
-The solution to that was to create an RT_PUSH_IPI logic. When any CPU
-wanted to pull a task, instead of grabbing the runqueue lock of the
-overloaded CPU, it would start by sending an IPI to the overloaded CPU,
-and that IPI handler would have the CPU with the waiting RT task do a push
-instead. Then that handler would send an IPI to the next CPU with
-overloaded RT tasks, and so on. Note, after the first CPU starts this
-process, if another CPU wanted to do a pull, it would see that the process
-has already begun and would only increment a counter to have the IPIs
-continue again.
-
-The RT_PUSH_IPI solved the latency problem with PREEMPT_RT but could cause
-a new issue with non PREEMPT_RT. Namely, softirqs run in a threaded
-context on PREEMPT_RT but they can run in an interrupt context in non-RT.
-
-If an IPI lands on a CPU that has just woken up multiple RT tasks and the
-current CPU is running a non RT or a low priority RT task, instead of
-doing a push, it would simply do a schedule on that CPU. But if a softirq
-was also executing on this CPU, the schedule would need to wait until the
-softirq finished. Until then, the CPU would still be considered overloaded
-as there are RT tasks still waiting to run on it.
-
-A live lock occurred on a workload that was doing heavy networking traffic
-on a large machine where the softirqs would run 500us out of 750us. And it
-would also be waking up RT tasks, causing the RT pull logic to be
-constantly executed.
-
-When a softirq triggered on a CPU with RT tasks queued but not running
-yet, and the other CPUs would see this CPU as being overloaded, they would
-send an IPI over to it. The CPU would notice that the waiting RT tasks are
-of higher priority than the currently running task and simply schedule
-that CPU instead. But because the softirq was executing, before it could
-schedule, it would receive another IPI to do the same. The amount of IPIs
-would slow down the currently running softirq so much that before it could
-return back to task context, it would execute another softirq never
-allowing the CPU to schedule. This live locked that CPU.
-
-As RT_PUSH_IPI was created to help PREEMPT_RT, make it default off if
-PREEMPT_RT is not enabled.
-
-Fixes: b6366f048e0c ("sched/rt: Use IPI to trigger RT task push migration ins=
-tead of pulling")
-Closes: https://lore.kernel.org/all/20260506235716.2530720-1-tj@kernel.org/
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: c79aa6aeadb0 ("[media] vivid-capture: add control for reduced frame rate")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260515103740.25ccbed8@gandalf.local.home
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 ---
- kernel/sched/features.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../media/test-drivers/vivid/vivid-ctrls.c    |  3 +-
+ .../media/test-drivers/vivid/vivid-vid-cap.c  | 32 +++++++++++--------
+ .../media/test-drivers/vivid/vivid-vid-cap.h  |  1 +
+ 3 files changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 84c4fe3..8f0dee8 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -110,8 +110,16 @@ SCHED_FEAT(WARN_DOUBLE_CLOCK, false)
-  * rq lock and possibly create a large contention, sending an
-  * IPI to that CPU and let that CPU push the RT task to where
-  * it should go may be a better scenario.
-+ *
-+ * This is best for PREEMPT_RT, but for non-RT it can cause issues
-+ * when preemption is disabled for long periods of time. Have
-+ * it only default enabled for PREEMPT_RT.
-  */
-+# ifdef CONFIG_PREEMPT_RT
- SCHED_FEAT(RT_PUSH_IPI, true)
-+# else
-+SCHED_FEAT(RT_PUSH_IPI, false)
-+# endif
- #endif
-=20
- SCHED_FEAT(RT_RUNTIME_SHARE, false)
+diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+index f94c15ff84f7..1077445f5772 100644
+--- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
++++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+@@ -609,7 +609,8 @@ static int vivid_vid_cap_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		break;
+ 	case VIVID_CID_REDUCED_FPS:
+ 		dev->reduced_fps = ctrl->val;
+-		vivid_update_format_cap(dev, true);
++		if (dev->input_type[dev->input] == HDMI)
++			vivid_update_reduced_fps(dev);
+ 		break;
+ 	case VIVID_CID_HAS_CROP_CAP:
+ 		dev->has_crop_cap = ctrl->val;
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index b95f06a9b5ae..76e0b161c049 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -364,6 +364,24 @@ static enum tpg_pixel_aspect vivid_get_pixel_aspect(const struct vivid_dev *dev)
+ 	return TPG_PIXEL_ASPECT_SQUARE;
+ }
+ 
++void vivid_update_reduced_fps(struct vivid_dev *dev)
++{
++	struct v4l2_bt_timings *bt = &dev->dv_timings_cap[dev->input].bt;
++	unsigned int size = V4L2_DV_BT_FRAME_WIDTH(bt) * V4L2_DV_BT_FRAME_HEIGHT(bt);
++	u64 pixelclock;
++
++	if (dev->reduced_fps && can_reduce_fps(bt)) {
++		pixelclock = div_u64(bt->pixelclock * 1000, 1001);
++		bt->flags |= V4L2_DV_FL_REDUCED_FPS;
++	} else {
++		pixelclock = bt->pixelclock;
++		bt->flags &= ~V4L2_DV_FL_REDUCED_FPS;
++	}
++	dev->timeperframe_vid_cap = (struct v4l2_fract) {
++		size / 100, (u32)pixelclock / 100
++	};
++}
++
+ /*
+  * Called whenever the format has to be reset which can occur when
+  * changing inputs, standard, timings, etc.
+@@ -372,8 +390,6 @@ void vivid_update_format_cap(struct vivid_dev *dev, bool keep_controls)
+ {
+ 	struct v4l2_bt_timings *bt = &dev->dv_timings_cap[dev->input].bt;
+ 	u32 dims[V4L2_CTRL_MAX_DIMS] = {};
+-	unsigned size;
+-	u64 pixelclock;
+ 
+ 	switch (dev->input_type[dev->input]) {
+ 	case WEBCAM:
+@@ -402,17 +418,7 @@ void vivid_update_format_cap(struct vivid_dev *dev, bool keep_controls)
+ 	case HDMI:
+ 		dev->src_rect.width = bt->width;
+ 		dev->src_rect.height = bt->height;
+-		size = V4L2_DV_BT_FRAME_WIDTH(bt) * V4L2_DV_BT_FRAME_HEIGHT(bt);
+-		if (dev->reduced_fps && can_reduce_fps(bt)) {
+-			pixelclock = div_u64(bt->pixelclock * 1000, 1001);
+-			bt->flags |= V4L2_DV_FL_REDUCED_FPS;
+-		} else {
+-			pixelclock = bt->pixelclock;
+-			bt->flags &= ~V4L2_DV_FL_REDUCED_FPS;
+-		}
+-		dev->timeperframe_vid_cap = (struct v4l2_fract) {
+-			size / 100, (u32)pixelclock / 100
+-		};
++		vivid_update_reduced_fps(dev);
+ 		if (bt->interlaced)
+ 			dev->field_cap = V4L2_FIELD_ALTERNATE;
+ 		else
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.h b/drivers/media/test-drivers/vivid/vivid-vid-cap.h
+index 38a99f7e038e..d08a85927510 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.h
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.h
+@@ -9,6 +9,7 @@
+ #define _VIVID_VID_CAP_H_
+ 
+ void vivid_update_quality(struct vivid_dev *dev);
++void vivid_update_reduced_fps(struct vivid_dev *dev);
+ void vivid_update_format_cap(struct vivid_dev *dev, bool keep_controls);
+ void vivid_update_outputs(struct vivid_dev *dev);
+ void vivid_update_connected_outputs(struct vivid_dev *dev);
+-- 
+2.53.0
+
 
