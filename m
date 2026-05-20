@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFnAL8zzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:56 +0200
+	id QO9CC+APDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A0759497A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF861598BE2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49BFA316B6E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2A10375378D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E538737754D;
-	Wed, 20 May 2026 17:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1732636C5BF;
+	Wed, 20 May 2026 16:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dvgqE2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMD2tZSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D31369999;
-	Wed, 20 May 2026 17:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD66E36A357;
+	Wed, 20 May 2026 16:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297670; cv=none; b=OhmPn7MT41KTrmCQkLc86v1im7v8yEpeoiyhcN76eYd44Xy9XXlTPbv3xUFFiqUuC9DLQt8C+z1ZLRMF1DeazRv99yN9xc20PHo4hoDjG3oihygEQb88DVlqX8HBmvUKIAkjH8l60yipgjx5xlB3btQBPAF+m8vZuY5ixIMMLog=
+	t=1779295259; cv=none; b=aV/LmPG4jzMkpNdY9Gh7bzNHD6P5ddUyphej0F3N6tZVhWdQcz1qM52vXRP0LjcxubLRS6VqeKaiDtqxzq5qamcHbioziTdrJSvenwruq/wuFVJ0e0fv1FvmurQ3JbifUCKioCffMDnowqkatoiVX6toSv9r8AMbyAsn2gxOtVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297670; c=relaxed/simple;
-	bh=+L8af0L9BDKgrfU8BX5Bag88NIKpoGEGxIXvJ3Bxcjg=;
+	s=arc-20240116; t=1779295259; c=relaxed/simple;
+	bh=6jSuLTqGHPqolENk5vrPKjP3h2+lXAmmoDplTz3R6KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nRWIpplHskrdt7V5EyGzpmC40tQYztTIzJdACZ0AhYkSk/4aPH4JLAMDeNifryp1dEIdeKwq6gixW5OmCMMyty/nn4QX5Ot2d5qAXVViI/moAFfAFkjAlcC7n+aKuEiktvsdd5bAhLY0WAUCMO0gR4jcDqmYIB+uYjRrgJpPiYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dvgqE2Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2B81F000E9;
-	Wed, 20 May 2026 17:21:08 +0000 (UTC)
+	 MIME-Version; b=Zn8wcHEXbGm7AHg8KvUbB/krt0uLW7hFWIDQj/JkmD+Dq/Sex3UCbCpmTmClunN7IvbaooS7N43/p+KePg1523A0ItETskyFh/OBqmO/cYqt9joUFkiI9nyqT7Jt2v7lbAalEZuZkLPpcCmmpdyk7KfDkGsV9wx3rEuvNlA874E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMD2tZSE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9C01F000E9;
+	Wed, 20 May 2026 16:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297669;
-	bh=uEd2KCp5WH6AVJ1uMETXbgZ5FKHCsIudCjv62mTvVHg=;
+	s=korg; t=1779295258;
+	bh=/ZQj9dt09rYI+KG8x8OGPUgknpSaELrIRNWQa3O1+Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0dvgqE2QGe6FfNNEoGg5iYge6ooZE3t8rve8Ed68sej+4y6pp+ZtL0WtMYF6fmI4R
-	 ihFDLtoysRQRmyOv+2zR5E+YQCUQi5UdCzZXcfV4fAEUV5of7WSnetUMfTmPYVzZcz
-	 TEJ7MZitqRa9sUpKyMwtY0/fmG6rz53fQUj5FGFk=
+	b=KMD2tZSEnarKVqixku7ZZDfXlFeCx0jRx554taT00Faj7DrGfziFF6bR+31liMZvN
+	 4KtTtV7brWY/NASfbEll+25BitaXkfGt8QO2NLqW+nGm2zhfqnWPziji7nO5FrLQOX
+	 o8VuT4xfHPlxtfysD9ZrvAa4rfhmdJgtCXLCRGek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 118/957] selftests/powerpc: Suppress -Wmaybe-uninitialized with GCC 15
-Date: Wed, 20 May 2026 18:10:01 +0200
-Message-ID: <20260520162137.119427196@linuxfoundation.org>
+Subject: [PATCH 7.0 0352/1146] drm/msm/a6xx: Add missing aperture_lock init
+Date: Wed, 20 May 2026 18:10:02 +0200
+Message-ID: <20260520162156.166085793@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,117 +65,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251318-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250379-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gnu.org:url]
-X-Rspamd-Queue-Id: 67A0759497A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: AF861598BE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 6e65886fceb23605eff952d6b1975737b4c4b154 ]
+[ Upstream commit d4ef6d77bb1ef92bdbfb70c7a5d08072848357d8 ]
 
-GCC 15 reports the below false positive '-Wmaybe-uninitialized' warning
-in vphn_unpack_associativity() when building the powerpc selftests.
+Looks like this was somehow missed when introducing gen8 support.
 
-  # make -C tools/testing/selftests TARGETS="powerpc"
-  [...]
-    CC       test-vphn
-  In file included from test-vphn.c:3:
-  In function ‘vphn_unpack_associativity’,
-      inlined from ‘test_one’ at test-vphn.c:371:2,
-      inlined from ‘test_vphn’ at test-vphn.c:399:9:
-  test-vphn.c:10:33: error: ‘be_packed’ may be used uninitialized [-Werror=maybe-uninitialized]
-     10 | #define be16_to_cpup(x)         bswap_16(*x)
-        |                                 ^~~~~~~~
-  vphn.c:42:27: note: in expansion of macro ‘be16_to_cpup’
-     42 |                 u16 new = be16_to_cpup(field++);
-        |                           ^~~~~~~~~~~~
-  In file included from test-vphn.c:19:
-  vphn.c: In function ‘test_vphn’:
-  vphn.c:27:16: note: ‘be_packed’ declared here
-     27 |         __be64 be_packed[VPHN_REGISTER_COUNT];
-        |                ^~~~~~~~~
-  cc1: all warnings being treated as errors
-
-When vphn_unpack_associativity() is called from hcall_vphn() in kernel
-the error is not seen while building vphn.c during kernel compilation.
-This is because the top level Makefile includes '-fno-strict-aliasing'
-flag always.
-
-The issue here is that GCC 15 emits '-Wmaybe-uninitialized' due to type
-punning between __be64[] and __b16* when accessing the buffer via
-be16_to_cpup(). The underlying object is fully initialized but GCC 15
-fails to track the aliasing due to the strict aliasing violation here.
-Please refer [1] and [2]. This results in a false positive warning which
-is promoted to an error under '-Werror'. This problem is not seen when
-the compilation is performed with GCC 13 and 14. An issue [1] has also
-been created on GCC bugzilla.
-
-The selftest compiles fine with '-fno-strict-aliasing'. Since this GCC
-flag is used to compile vphn.c in kernel too, the same flag should be
-used to build vphn tests when compiling vphn.c in the selftest as well.
-
-Fix this by including '-fno-strict-aliasing' during vphn.c compilation
-in the selftest. This keeps the build working while limiting the scope
-of the suppression to building vphn tests.
-
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=124427
-[2] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99768
-
-Fixes: 58dae82843f5 ("selftests/powerpc: Add test for VPHN")
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260313165426.43259-1-amachhiw@linux.ibm.com
+Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/713545/
+Message-ID: <20260323161603.1165108-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/vphn/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/powerpc/vphn/Makefile b/tools/testing/selftests/powerpc/vphn/Makefile
-index 61d519a076c6f..778fc396340db 100644
---- a/tools/testing/selftests/powerpc/vphn/Makefile
-+++ b/tools/testing/selftests/powerpc/vphn/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- include ../../lib.mk
- include ../flags.mk
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index d6dfe6337bc34..f17bb5e78e0b9 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -2656,6 +2656,7 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
+ 	gpu = &adreno_gpu->base;
  
--CFLAGS += -m64 -I$(CURDIR)
-+CFLAGS += -m64 -I$(CURDIR) -fno-strict-aliasing
+ 	mutex_init(&a6xx_gpu->gmu.lock);
++	spin_lock_init(&a6xx_gpu->aperture_lock);
  
- $(TEST_GEN_PROGS): ../harness.c
+ 	adreno_gpu->registers = NULL;
  
 -- 
 2.53.0
