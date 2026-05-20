@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEW+AhEUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:37 +0200
+	id wCmcH8kADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-251742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085B45991C4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA4F597138
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6817B3089B44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6AA9031B6B97
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C38F3E5ECF;
-	Wed, 20 May 2026 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3163EAC83;
+	Wed, 20 May 2026 17:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaxYnVzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqlPgA74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADB0331220;
-	Wed, 20 May 2026 18:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E44363C6F;
+	Wed, 20 May 2026 17:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300605; cv=none; b=YTYnYy+D0zy6oC9X2TdZGpNyW1Rv0be0QHigVGWcjRcz+Tb26+PYasfne+n3UBPDxlr7zF7udDe+IQ4ikBf2AVBrqSupb06HQFgXRxBSbBp0ZRgva4cIaJCVGGVzQA3ZphrqzerC/Aop2NqyZ24UvFIq6UvAYRy+zeLQQKEA5rg=
+	t=1779298773; cv=none; b=E7NZrA9lfUI+Mdhvb0rV/qch3SZwpOBkh7qJuXbE1TiCsWUXey/Wo1OixBlHRdMHeVkTc150t3yf5zcsWwspEWocilRDLEPrHiwpR9kxrP317QYJtCYBLKRwPQrntJTY7LmxiTBqFXDZY2y+hYmIO4mgzKJTmBlEekyyo//lDU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300605; c=relaxed/simple;
-	bh=dmlDzF3RTWBrloxU+6BcZNYwKBam/ldq6LUKMT3qW0Y=;
+	s=arc-20240116; t=1779298773; c=relaxed/simple;
+	bh=7/EU3byhlzldlWv/O5/XNIYKWYwkYDFk8YHPAAQ/PDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lp+crXWwekTd/R49fgw2JhFYE4hVRtMBf8d63EwiKhnsYaYzdwOLQkkPuHgbgZqgVazWt+lklL06L+gt6r16Ia285zhYVr+wO5wj9Wn/EI6oFYJJiCls031DwsARye+iL3OQeHm6kDYVhAbekEWoBMFjAEnS2DchJZbaOhtcyBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaxYnVzw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83F11F000E9;
-	Wed, 20 May 2026 18:10:03 +0000 (UTC)
+	 MIME-Version; b=d8qY0NOAQOqqV/XRT8RSbwUEmkV0A13HHKTr0v7aQxN/qwzkWDlr9zFx81fl5DH/PmVB4p1lJ9T2v7oAszas4vZlnCsnMoRvddRGIggeCnagSeljEBVyUShDk6sV5xERqFKSJjO1PJP0PvfHESr727w52T1RDf/iQM+aT4BSgvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqlPgA74; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AC41F000E9;
+	Wed, 20 May 2026 17:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300604;
-	bh=TfoDkPBCG6DLaJxZ9jXCyNuOIxNBV+YUQ5wjgAuOuvA=;
+	s=korg; t=1779298772;
+	bh=7nrsZrWkin5ZNt1mcExS5k9qS/9Dn4i8hOz/2XFvAkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZaxYnVzwb0/qjVWaWWaGIRJCOBnjqs5DvMqf6/7jzvY5xLlUhItBdEsnmqHVEc6Wq
-	 Z/xNW2bdqw3mUzvxe6iSGvsbFrWGZqMJZ6ItGK7r7jxT6W9DGbVokZjn7DgyF/FxAo
-	 kA+nQtujMYqMrPwyBjRcGHZaJMV5Jy2ObcVSrlUQ=
+	b=zqlPgA74WvLat+t5QfiPnbCoO3hrbOc0kBrSGZMyTVBO94szsKZGN4HeI2C8pulzp
+	 Q9lZAaw4rKGzQI9bvxmOu9Ze6Mx+27HYEa54awK/bG4DYMv3BfeJutBsWexQGYVJs+
+	 8DhzPXbZQRsUbEKXx8i7L7Cy1PHMmcm5eSpct/bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 211/666] iommu/amd: Reduce domain lock scope in attach device path
+Subject: [PATCH 6.18 539/957] NFSD: fix nfs4_file access extra count in nfsd4_add_rdaccess_to_wrdeleg
 Date: Wed, 20 May 2026 18:17:02 +0200
-Message-ID: <20260520162115.778249205@linuxfoundation.org>
+Message-ID: <20260520162146.223438999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252411-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251742-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,193 +92,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 085B45991C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8BA4F597138
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit d6b47dec368400a62d2b9d44c8e136fc15eac72c ]
+[ Upstream commit b48f44f36e6607b2f818560f19deb86b4a9c717b ]
 
-Currently attach device path takes protection domain lock followed by
-dev_data lock. Most of the operations in this function is specific to
-device data except pdom_attach_iommu() where it updates protection
-domain structure. Hence reduce the scope of protection domain lock.
+In nfsd4_add_rdaccess_to_wrdeleg, if fp->fi_fds[O_RDONLY] is already
+set by another thread, __nfs4_file_get_access should not be called
+to increment the nfs4_file access count since that was already done
+by the thread that added READ access to the file. The extra fi_access
+count in nfs4_file can prevent the corresponding nfsd_file from being
+freed.
 
-Note that this changes the locking order. Now it takes device lock
-before taking doamin lock (group->mutex -> dev_data->lock ->
-pdom->lock). dev_data->lock is used only in device attachment path.
-So changing order is fine. It will not create any issue.
+When stopping nfs-server service, these extra access counts trigger a
+BUG in kmem_cache_destroy() that shows nfsd_file object remaining on
+__kmem_cache_shutdown.
 
-Finally move numa node assignment to pdom_attach_iommu().
+This problem can be reproduced by running the Git project's test
+suite over NFS.
 
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241030063556.6104-8-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
+Fixes: 8072e34e1387 ("nfsd: fix nfsd_file reference leak in nfsd4_add_rdaccess_to_wrdeleg()")
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 52 ++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 22 deletions(-)
+ fs/nfsd/nfs4state.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 799e1a1adfc32..3ac8f64a21475 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2057,16 +2057,23 @@ static int pdom_attach_iommu(struct amd_iommu *iommu,
- 			     struct protection_domain *pdom)
- {
- 	struct pdom_iommu_info *pdom_iommu_info, *curr;
-+	struct io_pgtable_cfg *cfg = &pdom->iop.pgtbl.cfg;
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	spin_lock_irqsave(&pdom->lock, flags);
- 
- 	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
- 	if (pdom_iommu_info) {
- 		pdom_iommu_info->refcnt++;
--		return 0;
-+		goto out_unlock;
- 	}
- 
- 	pdom_iommu_info = kzalloc(sizeof(*pdom_iommu_info), GFP_ATOMIC);
--	if (!pdom_iommu_info)
--		return -ENOMEM;
-+	if (!pdom_iommu_info) {
-+		ret = -ENOMEM;
-+		goto out_unlock;
-+	}
- 
- 	pdom_iommu_info->iommu = iommu;
- 	pdom_iommu_info->refcnt = 1;
-@@ -2075,43 +2082,52 @@ static int pdom_attach_iommu(struct amd_iommu *iommu,
- 			  NULL, pdom_iommu_info, GFP_ATOMIC);
- 	if (curr) {
- 		kfree(pdom_iommu_info);
--		return -ENOSPC;
-+		ret = -ENOSPC;
-+		goto out_unlock;
- 	}
- 
--	return 0;
-+	/* Update NUMA Node ID */
-+	if (cfg->amd.nid == NUMA_NO_NODE)
-+		cfg->amd.nid = dev_to_node(&iommu->dev->dev);
-+
-+out_unlock:
-+	spin_unlock_irqrestore(&pdom->lock, flags);
-+	return ret;
- }
- 
- static void pdom_detach_iommu(struct amd_iommu *iommu,
- 			      struct protection_domain *pdom)
- {
- 	struct pdom_iommu_info *pdom_iommu_info;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&pdom->lock, flags);
- 
- 	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
--	if (!pdom_iommu_info)
-+	if (!pdom_iommu_info) {
-+		spin_unlock_irqrestore(&pdom->lock, flags);
- 		return;
-+	}
- 
- 	pdom_iommu_info->refcnt--;
- 	if (pdom_iommu_info->refcnt == 0) {
- 		xa_erase(&pdom->iommu_array, iommu->index);
- 		kfree(pdom_iommu_info);
- 	}
-+
-+	spin_unlock_irqrestore(&pdom->lock, flags);
- }
- 
- static int do_attach(struct iommu_dev_data *dev_data,
- 		     struct protection_domain *domain)
- {
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
--	struct io_pgtable_cfg *cfg = &domain->iop.pgtbl.cfg;
- 	int ret = 0;
- 
- 	/* Update data structures */
- 	dev_data->domain = domain;
- 	list_add(&dev_data->list, &domain->dev_list);
- 
--	/* Update NUMA Node ID */
--	if (cfg->amd.nid == NUMA_NO_NODE)
--		cfg->amd.nid = dev_to_node(dev_data->dev);
--
- 	/* Do reference counting */
- 	ret = pdom_attach_iommu(iommu, domain);
- 	if (ret)
-@@ -2133,12 +2149,15 @@ static void do_detach(struct iommu_dev_data *dev_data)
- {
- 	struct protection_domain *domain = dev_data->domain;
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
-+	unsigned long flags;
- 
- 	/* Clear DTE and flush the entry */
- 	dev_update_dte(dev_data, false);
- 
- 	/* Flush IOTLB and wait for the flushes to finish */
-+	spin_lock_irqsave(&domain->lock, flags);
- 	amd_iommu_domain_flush_all(domain);
-+	spin_unlock_irqrestore(&domain->lock, flags);
- 
- 	/* Clear GCR3 table */
- 	if (pdom_is_sva_capable(domain))
-@@ -2160,11 +2179,8 @@ static int attach_device(struct device *dev,
- 			 struct protection_domain *domain)
- {
- 	struct iommu_dev_data *dev_data;
--	unsigned long flags;
- 	int ret = 0;
- 
--	spin_lock_irqsave(&domain->lock, flags);
--
- 	dev_data = dev_iommu_priv_get(dev);
- 
- 	spin_lock(&dev_data->lock);
-@@ -2179,8 +2195,6 @@ static int attach_device(struct device *dev,
- out:
- 	spin_unlock(&dev_data->lock);
- 
--	spin_unlock_irqrestore(&domain->lock, flags);
--
- 	return ret;
- }
- 
-@@ -2190,13 +2204,9 @@ static int attach_device(struct device *dev,
- static void detach_device(struct device *dev)
- {
- 	struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
--	struct protection_domain *domain = dev_data->domain;
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
--	unsigned long flags;
- 	bool ppr = dev_data->ppr;
- 
--	spin_lock_irqsave(&domain->lock, flags);
--
- 	spin_lock(&dev_data->lock);
- 
- 	/*
-@@ -2220,8 +2230,6 @@ static void detach_device(struct device *dev)
- out:
- 	spin_unlock(&dev_data->lock);
- 
--	spin_unlock_irqrestore(&domain->lock, flags);
--
- 	/* Remove IOPF handler */
- 	if (ppr)
- 		amd_iommu_iopf_remove_device(iommu, dev_data);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index c5dba49c90356..adc33830438bb 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6255,12 +6255,12 @@ nfsd4_add_rdaccess_to_wrdeleg(struct svc_rqst *rqstp, struct nfsd4_open *open,
+ 			return (false);
+ 		fp = stp->st_stid.sc_file;
+ 		spin_lock(&fp->fi_lock);
+-		__nfs4_file_get_access(fp, NFS4_SHARE_ACCESS_READ);
+ 		if (!fp->fi_fds[O_RDONLY]) {
++			__nfs4_file_get_access(fp, NFS4_SHARE_ACCESS_READ);
+ 			fp->fi_fds[O_RDONLY] = nf;
++			fp->fi_rdeleg_file = nfsd_file_get(fp->fi_fds[O_RDONLY]);
+ 			nf = NULL;
+ 		}
+-		fp->fi_rdeleg_file = nfsd_file_get(fp->fi_fds[O_RDONLY]);
+ 		spin_unlock(&fp->fi_lock);
+ 		if (nf)
+ 			nfsd_file_put(nf);
 -- 
 2.53.0
 
