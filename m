@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBctBAkADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:09 +0200
+	id oFB1AysfDmpd6QUAu9opvQ
+	(envelope-from <stable+bounces-251839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECED8596F4A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC3259A3F6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06BED3035326
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9ECDA3773862
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6EE331A41;
-	Wed, 20 May 2026 18:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D42436405A;
+	Wed, 20 May 2026 17:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYNrIajr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK18zjD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B1C34EEF7;
-	Wed, 20 May 2026 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A203D75D3;
+	Wed, 20 May 2026 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301982; cv=none; b=J4OJhQMiCY38mlY4wm2XlhjetL2rX+Mfrxhy6YACEbT7AzgVCNOi10+N6P7F3vzuV2iJnjimU9x5zvmFhjJcwGMbDKxIDMyBbVBJkIs6yFU8HWG7BFXLOAEPIvKK6kvBdYIypyL8Szmh0AZyd3jd6LU9ju8CsOWGS3gjuEprLGc=
+	t=1779299024; cv=none; b=eTZZpzy+vkUZKZBoWCVit41Q6SXtbJYm+dYN5Rvs8hcfvAK8w4Aiel+12DB/phDRtQWsDKdo7rh9vc7Djd8B+eNopfe4DoE6almsf0lhil5mqB1tgH/bKk5uk3C+lXAKB0YnOmwInqYngeCmdaBew5/wkhc3g/CAs1PXiIYYz2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301982; c=relaxed/simple;
-	bh=ktS9kbeFS3uiEMeEKnGWeTYfsJ6MdcjSZaPU0PeqbXE=;
+	s=arc-20240116; t=1779299024; c=relaxed/simple;
+	bh=ifQN6M8vhdJixXfhHzNA9HmWT6E3GU9nLtPsfjbUg7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wl4wxhvvIyjFAVtrbnzIY1jZHaBUpVmz75t/98QBT2+WrARsmBurB+pexhgwT/JjapFwvc0c9YDyskCuJYyAHGztK3YZAvVVQ1cOzqaWHZ8kcwaFqrGGrU4M8Q+dGetJdWpiymmVQVofdSI6rZILNQfsV7xn4WSOo5tGwg4EIAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYNrIajr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9F91F000E9;
-	Wed, 20 May 2026 18:32:59 +0000 (UTC)
+	 MIME-Version; b=eqiE9eeWHep9g/vwFXKAUyAKBC+ldflCkxLzuhUPwf5WuLyA7d29NL3NOGOzSDeceO+1Y9ZFyazGWfYC40ZZziXY8Gru/7rUa3qpyD8zZB2ZmtSEmMtmvlqie8FQ5pc/ASwWbalefmQ0Hz4Gcch+V8EkleG7dAglf47tJnh/Lfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK18zjD1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0262E1F000E9;
+	Wed, 20 May 2026 17:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301980;
-	bh=HOH5Hje1vYYGVUnyt3bQKm5/xrzEMnR3snm1Cxj7Afc=;
+	s=korg; t=1779299022;
+	bh=ROlMfS+XVS8aNR6t+PnYZwkDRmIavuj88NL3ZpT5zBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fYNrIajrwDtAzlm2I4GQOYPj8MEUoHxFuhA4rOc/Dn3nR9SgXF/BM/yOxhfw8/Lew
-	 2sKd9ZzVhzv2Kuwrm88N5qdzSOEeiQ55RazYlFRMTrfC4rQEx+XRfXsufAgM95uGCQ
-	 5Dfv+tlt1qpdbatEhM3PiZk9MfbsAbnlpHePTVXM=
+	b=uK18zjD11kz8m5CfTCDhfEFPJsr8IDwadBbYpVTeZ+c5HBmrlEDbqtLaAhJwqXtUA
+	 QFPbl3wZOrZoj7ZzNyqwHX6kd4Dzh9QtkJ9PfHbZ2y0baSTSqm6bYUX+UdEeynP1AK
+	 HP47hHfybC1cq2voBb2eRCe6zwJVZ/ZcDXcv7Nt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/508] dm cache policy smq: fix missing locks in invalidating cache blocks
+Subject: [PATCH 6.18 634/957] tcp: annotate data-races around tp->snd_ssthresh
 Date: Wed, 20 May 2026 18:18:37 +0200
-Message-ID: <20260520162100.651868714@linuxfoundation.org>
+Message-ID: <20260520162148.279122434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252938-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251839-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,98 +91,341 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ECED8596F4A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4CC3259A3F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2d1f7b65f5deedd2e6b09fdc6ea27f8375f24b45 ]
+[ Upstream commit fd571afb05ebaeac5d8f09460a0640d4cf6755f8 ]
 
-In passthrough mode, the policy invalidate_mapping operation is called
-simultaneously from multiple workers, thus it should be protected by a
-lock. Otherwise, we might end up with data races on the allocated blocks
-counter, or even use-after-free issues with internal data structures
-when doing concurrent writes.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Note that the existing FIXME in smq_invalidate_mapping() doesn't affect
-passthrough mode since migration tasks don't exist there, but would need
-attention if supporting fast device shrinking via suspend/resume without
-target reloading.
-
-Reproduce steps:
-
-1. Create a cache device consisting of 1024 cache entries
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Populate the cache, and record the number of cached blocks
-
-fio --name=populate --filename=/dev/mapper/cache --rw=randwrite --bs=4k \
---size=64m --direct=1
-nr_cached=$(dmsetup status cache | awk '{split($7, a, "/"); print a[1]}')
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the passthrough cache. By setting multiple jobs with I/O
-   size equal to the cache block size, cache blocks are invalidated
-   concurrently from different workers.
-
-fio --filename=/dev/mapper/cache --name=test --rw=randwrite --bs=64k \
---direct=1 --numjobs=2 --randrepeat=0 --size=64m
-
-5. Check if demoted matches cached block count. These numbers should
-   match but may differ due to the data race.
-
-nr_demoted=$(dmsetup status cache | awk '{print $12}')
-echo "$nr_cached, $nr_demoted"
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 7156d194a077 ("tcp: add snd_ssthresh stat in SCM_TIMESTAMPING_OPT_STATS")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-policy-smq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/core/filter.c       | 2 +-
+ net/ipv4/tcp.c          | 4 ++--
+ net/ipv4/tcp_bbr.c      | 6 +++---
+ net/ipv4/tcp_bic.c      | 2 +-
+ net/ipv4/tcp_cdg.c      | 4 ++--
+ net/ipv4/tcp_cubic.c    | 6 +++---
+ net/ipv4/tcp_dctcp.c    | 2 +-
+ net/ipv4/tcp_input.c    | 8 ++++----
+ net/ipv4/tcp_metrics.c  | 4 ++--
+ net/ipv4/tcp_nv.c       | 4 ++--
+ net/ipv4/tcp_output.c   | 4 ++--
+ net/ipv4/tcp_vegas.c    | 9 +++++----
+ net/ipv4/tcp_westwood.c | 4 ++--
+ net/ipv4/tcp_yeah.c     | 3 ++-
+ 14 files changed, 32 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
-index 8bd2ad743d9ae..1566e040f7aac 100644
---- a/drivers/md/dm-cache-policy-smq.c
-+++ b/drivers/md/dm-cache-policy-smq.c
-@@ -1589,14 +1589,18 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
- {
- 	struct smq_policy *mq = to_smq_policy(p);
- 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
-+	unsigned long flags;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index ae6d0453cf123..bad3fb6318461 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5387,7 +5387,7 @@ static int bpf_sol_tcp_setsockopt(struct sock *sk, int optname,
+ 		if (val <= 0)
+ 			return -EINVAL;
+ 		tp->snd_cwnd_clamp = val;
+-		tp->snd_ssthresh = val;
++		WRITE_ONCE(tp->snd_ssthresh, val);
+ 		break;
+ 	case TCP_BPF_DELACK_MAX:
+ 		timeout = usecs_to_jiffies(val);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 9e7e5ebcf14d5..3de09b59663d8 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3408,7 +3408,7 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	icsk->icsk_rto = TCP_TIMEOUT_INIT;
+ 	WRITE_ONCE(icsk->icsk_rto_min, TCP_RTO_MIN);
+ 	WRITE_ONCE(icsk->icsk_delack_max, TCP_DELACK_MAX);
+-	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
++	WRITE_ONCE(tp->snd_ssthresh, TCP_INFINITE_SSTHRESH);
+ 	tcp_snd_cwnd_set(tp, TCP_INIT_CWND);
+ 	tp->snd_cwnd_cnt = 0;
+ 	tp->is_cwnd_limited = 0;
+@@ -4404,7 +4404,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u8(stats, TCP_NLA_RECUR_RETRANS,
+ 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
+ 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
+-	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, tp->snd_ssthresh);
++	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
  
- 	if (!e->allocated)
- 		return -ENODATA;
+diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
+index 760941e55153e..3df6160f51567 100644
+--- a/net/ipv4/tcp_bbr.c
++++ b/net/ipv4/tcp_bbr.c
+@@ -896,8 +896,8 @@ static void bbr_check_drain(struct sock *sk, const struct rate_sample *rs)
  
-+	spin_lock_irqsave(&mq->lock, flags);
- 	// FIXME: what if this block has pending background work?
- 	del_queue(mq, e);
- 	h_remove(&mq->table, e);
- 	free_entry(&mq->cache_alloc, e);
-+	spin_unlock_irqrestore(&mq->lock, flags);
-+
- 	return 0;
+ 	if (bbr->mode == BBR_STARTUP && bbr_full_bw_reached(sk)) {
+ 		bbr->mode = BBR_DRAIN;	/* drain queue we created */
+-		tcp_sk(sk)->snd_ssthresh =
+-				bbr_inflight(sk, bbr_max_bw(sk), BBR_UNIT);
++		WRITE_ONCE(tcp_sk(sk)->snd_ssthresh,
++			   bbr_inflight(sk, bbr_max_bw(sk), BBR_UNIT));
+ 	}	/* fall through to check if in-flight is already small: */
+ 	if (bbr->mode == BBR_DRAIN &&
+ 	    bbr_packets_in_net_at_edt(sk, tcp_packets_in_flight(tcp_sk(sk))) <=
+@@ -1042,7 +1042,7 @@ __bpf_kfunc static void bbr_init(struct sock *sk)
+ 	struct bbr *bbr = inet_csk_ca(sk);
+ 
+ 	bbr->prior_cwnd = 0;
+-	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
++	WRITE_ONCE(tp->snd_ssthresh, TCP_INFINITE_SSTHRESH);
+ 	bbr->rtt_cnt = 0;
+ 	bbr->next_rtt_delivered = tp->delivered;
+ 	bbr->prev_ca_state = TCP_CA_Open;
+diff --git a/net/ipv4/tcp_bic.c b/net/ipv4/tcp_bic.c
+index 58358bf92e1b8..65444ff142413 100644
+--- a/net/ipv4/tcp_bic.c
++++ b/net/ipv4/tcp_bic.c
+@@ -74,7 +74,7 @@ static void bictcp_init(struct sock *sk)
+ 	bictcp_reset(ca);
+ 
+ 	if (initial_ssthresh)
+-		tcp_sk(sk)->snd_ssthresh = initial_ssthresh;
++		WRITE_ONCE(tcp_sk(sk)->snd_ssthresh, initial_ssthresh);
  }
  
+ /*
+diff --git a/net/ipv4/tcp_cdg.c b/net/ipv4/tcp_cdg.c
+index fbad6c35dee9c..37f094204b6d0 100644
+--- a/net/ipv4/tcp_cdg.c
++++ b/net/ipv4/tcp_cdg.c
+@@ -162,7 +162,7 @@ static void tcp_cdg_hystart_update(struct sock *sk)
+ 				NET_ADD_STATS(sock_net(sk),
+ 					      LINUX_MIB_TCPHYSTARTTRAINCWND,
+ 					      tcp_snd_cwnd(tp));
+-				tp->snd_ssthresh = tcp_snd_cwnd(tp);
++				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+ 				return;
+ 			}
+ 		}
+@@ -181,7 +181,7 @@ static void tcp_cdg_hystart_update(struct sock *sk)
+ 				NET_ADD_STATS(sock_net(sk),
+ 					      LINUX_MIB_TCPHYSTARTDELAYCWND,
+ 					      tcp_snd_cwnd(tp));
+-				tp->snd_ssthresh = tcp_snd_cwnd(tp);
++				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+ 			}
+ 		}
+ 	}
+diff --git a/net/ipv4/tcp_cubic.c b/net/ipv4/tcp_cubic.c
+index 76c23675ae50a..f891e8d1e5458 100644
+--- a/net/ipv4/tcp_cubic.c
++++ b/net/ipv4/tcp_cubic.c
+@@ -136,7 +136,7 @@ __bpf_kfunc static void cubictcp_init(struct sock *sk)
+ 		bictcp_hystart_reset(sk);
+ 
+ 	if (!hystart && initial_ssthresh)
+-		tcp_sk(sk)->snd_ssthresh = initial_ssthresh;
++		WRITE_ONCE(tcp_sk(sk)->snd_ssthresh, initial_ssthresh);
+ }
+ 
+ __bpf_kfunc static void cubictcp_cwnd_event(struct sock *sk, enum tcp_ca_event event)
+@@ -423,7 +423,7 @@ static void hystart_update(struct sock *sk, u32 delay)
+ 				NET_ADD_STATS(sock_net(sk),
+ 					      LINUX_MIB_TCPHYSTARTTRAINCWND,
+ 					      tcp_snd_cwnd(tp));
+-				tp->snd_ssthresh = tcp_snd_cwnd(tp);
++				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+ 			}
+ 		}
+ 	}
+@@ -443,7 +443,7 @@ static void hystart_update(struct sock *sk, u32 delay)
+ 				NET_ADD_STATS(sock_net(sk),
+ 					      LINUX_MIB_TCPHYSTARTDELAYCWND,
+ 					      tcp_snd_cwnd(tp));
+-				tp->snd_ssthresh = tcp_snd_cwnd(tp);
++				WRITE_ONCE(tp->snd_ssthresh, tcp_snd_cwnd(tp));
+ 			}
+ 		}
+ 	}
+diff --git a/net/ipv4/tcp_dctcp.c b/net/ipv4/tcp_dctcp.c
+index 03abe0848420d..6f103038b0152 100644
+--- a/net/ipv4/tcp_dctcp.c
++++ b/net/ipv4/tcp_dctcp.c
+@@ -177,7 +177,7 @@ static void dctcp_react_to_loss(struct sock *sk)
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 
+ 	ca->loss_cwnd = tcp_snd_cwnd(tp);
+-	tp->snd_ssthresh = max(tcp_snd_cwnd(tp) >> 1U, 2U);
++	WRITE_ONCE(tp->snd_ssthresh, max(tcp_snd_cwnd(tp) >> 1U, 2U));
+ }
+ 
+ __bpf_kfunc static void dctcp_state(struct sock *sk, u8 new_state)
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 64e7bcbb42993..16bb525c04f1d 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2348,7 +2348,7 @@ void tcp_enter_loss(struct sock *sk)
+ 	    (icsk->icsk_ca_state == TCP_CA_Loss && !icsk->icsk_retransmits)) {
+ 		tp->prior_ssthresh = tcp_current_ssthresh(sk);
+ 		tp->prior_cwnd = tcp_snd_cwnd(tp);
+-		tp->snd_ssthresh = icsk->icsk_ca_ops->ssthresh(sk);
++		WRITE_ONCE(tp->snd_ssthresh, icsk->icsk_ca_ops->ssthresh(sk));
+ 		tcp_ca_event(sk, CA_EVENT_LOSS);
+ 		tcp_init_undo(tp);
+ 	}
+@@ -2641,7 +2641,7 @@ static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
+ 		tcp_snd_cwnd_set(tp, icsk->icsk_ca_ops->undo_cwnd(sk));
+ 
+ 		if (tp->prior_ssthresh > tp->snd_ssthresh) {
+-			tp->snd_ssthresh = tp->prior_ssthresh;
++			WRITE_ONCE(tp->snd_ssthresh, tp->prior_ssthresh);
+ 			tcp_ecn_withdraw_cwr(tp);
+ 		}
+ 	}
+@@ -2759,7 +2759,7 @@ static void tcp_init_cwnd_reduction(struct sock *sk)
+ 	tp->prior_cwnd = tcp_snd_cwnd(tp);
+ 	tp->prr_delivered = 0;
+ 	tp->prr_out = 0;
+-	tp->snd_ssthresh = inet_csk(sk)->icsk_ca_ops->ssthresh(sk);
++	WRITE_ONCE(tp->snd_ssthresh, inet_csk(sk)->icsk_ca_ops->ssthresh(sk));
+ 	tcp_ecn_queue_cwr(tp);
+ }
+ 
+@@ -2901,7 +2901,7 @@ static void tcp_non_congestion_loss_retransmit(struct sock *sk)
+ 
+ 	if (icsk->icsk_ca_state != TCP_CA_Loss) {
+ 		tp->high_seq = tp->snd_nxt;
+-		tp->snd_ssthresh = tcp_current_ssthresh(sk);
++		WRITE_ONCE(tp->snd_ssthresh, tcp_current_ssthresh(sk));
+ 		tp->prior_ssthresh = 0;
+ 		tp->undo_marker = 0;
+ 		tcp_set_ca_state(sk, TCP_CA_Loss);
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 170ca11edf6b9..7b08d3e58a741 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -490,9 +490,9 @@ void tcp_init_metrics(struct sock *sk)
+ 	val = READ_ONCE(net->ipv4.sysctl_tcp_no_ssthresh_metrics_save) ?
+ 	      0 : tcp_metric_get(tm, TCP_METRIC_SSTHRESH);
+ 	if (val) {
+-		tp->snd_ssthresh = val;
++		WRITE_ONCE(tp->snd_ssthresh, val);
+ 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
+-			tp->snd_ssthresh = tp->snd_cwnd_clamp;
++			WRITE_ONCE(tp->snd_ssthresh, tp->snd_cwnd_clamp);
+ 	}
+ 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
+ 	if (val && tp->reordering != val)
+diff --git a/net/ipv4/tcp_nv.c b/net/ipv4/tcp_nv.c
+index a60662f4bdf92..f345897a68dfc 100644
+--- a/net/ipv4/tcp_nv.c
++++ b/net/ipv4/tcp_nv.c
+@@ -396,8 +396,8 @@ static void tcpnv_acked(struct sock *sk, const struct ack_sample *sample)
+ 
+ 			/* We have enough data to determine we are congested */
+ 			ca->nv_allow_cwnd_growth = 0;
+-			tp->snd_ssthresh =
+-				(nv_ssthresh_factor * max_win) >> 3;
++			WRITE_ONCE(tp->snd_ssthresh,
++				   (nv_ssthresh_factor * max_win) >> 3);
+ 			if (tcp_snd_cwnd(tp) - max_win > 2) {
+ 				/* gap > 2, we do exponential cwnd decrease */
+ 				int dec;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index c4cf76f71520f..3c25292ae72d8 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -151,7 +151,7 @@ void tcp_cwnd_restart(struct sock *sk, s32 delta)
+ 
+ 	tcp_ca_event(sk, CA_EVENT_CWND_RESTART);
+ 
+-	tp->snd_ssthresh = tcp_current_ssthresh(sk);
++	WRITE_ONCE(tp->snd_ssthresh, tcp_current_ssthresh(sk));
+ 	restart_cwnd = min(restart_cwnd, cwnd);
+ 
+ 	while ((delta -= inet_csk(sk)->icsk_rto) > 0 && cwnd > restart_cwnd)
+@@ -2060,7 +2060,7 @@ static void tcp_cwnd_application_limited(struct sock *sk)
+ 		u32 init_win = tcp_init_cwnd(tp, __sk_dst_get(sk));
+ 		u32 win_used = max(tp->snd_cwnd_used, init_win);
+ 		if (win_used < tcp_snd_cwnd(tp)) {
+-			tp->snd_ssthresh = tcp_current_ssthresh(sk);
++			WRITE_ONCE(tp->snd_ssthresh, tcp_current_ssthresh(sk));
+ 			tcp_snd_cwnd_set(tp, (tcp_snd_cwnd(tp) + win_used) >> 1);
+ 		}
+ 		tp->snd_cwnd_used = 0;
+diff --git a/net/ipv4/tcp_vegas.c b/net/ipv4/tcp_vegas.c
+index 786848ad37ea8..3ec7308441a78 100644
+--- a/net/ipv4/tcp_vegas.c
++++ b/net/ipv4/tcp_vegas.c
+@@ -240,7 +240,8 @@ static void tcp_vegas_cong_avoid(struct sock *sk, u32 ack, u32 acked)
+ 				 */
+ 				tcp_snd_cwnd_set(tp, min(tcp_snd_cwnd(tp),
+ 							 (u32)target_cwnd + 1));
+-				tp->snd_ssthresh = tcp_vegas_ssthresh(tp);
++				WRITE_ONCE(tp->snd_ssthresh,
++					   tcp_vegas_ssthresh(tp));
+ 
+ 			} else if (tcp_in_slow_start(tp)) {
+ 				/* Slow start.  */
+@@ -256,8 +257,8 @@ static void tcp_vegas_cong_avoid(struct sock *sk, u32 ack, u32 acked)
+ 					 * we slow down.
+ 					 */
+ 					tcp_snd_cwnd_set(tp, tcp_snd_cwnd(tp) - 1);
+-					tp->snd_ssthresh
+-						= tcp_vegas_ssthresh(tp);
++					WRITE_ONCE(tp->snd_ssthresh,
++						   tcp_vegas_ssthresh(tp));
+ 				} else if (diff < alpha) {
+ 					/* We don't have enough extra packets
+ 					 * in the network, so speed up.
+@@ -275,7 +276,7 @@ static void tcp_vegas_cong_avoid(struct sock *sk, u32 ack, u32 acked)
+ 			else if (tcp_snd_cwnd(tp) > tp->snd_cwnd_clamp)
+ 				tcp_snd_cwnd_set(tp, tp->snd_cwnd_clamp);
+ 
+-			tp->snd_ssthresh = tcp_current_ssthresh(sk);
++			WRITE_ONCE(tp->snd_ssthresh, tcp_current_ssthresh(sk));
+ 		}
+ 
+ 		/* Wipe the slate clean for the next RTT. */
+diff --git a/net/ipv4/tcp_westwood.c b/net/ipv4/tcp_westwood.c
+index c6e97141eef25..b5a42adfd6ca1 100644
+--- a/net/ipv4/tcp_westwood.c
++++ b/net/ipv4/tcp_westwood.c
+@@ -244,11 +244,11 @@ static void tcp_westwood_event(struct sock *sk, enum tcp_ca_event event)
+ 
+ 	switch (event) {
+ 	case CA_EVENT_COMPLETE_CWR:
+-		tp->snd_ssthresh = tcp_westwood_bw_rttmin(sk);
++		WRITE_ONCE(tp->snd_ssthresh, tcp_westwood_bw_rttmin(sk));
+ 		tcp_snd_cwnd_set(tp, tp->snd_ssthresh);
+ 		break;
+ 	case CA_EVENT_LOSS:
+-		tp->snd_ssthresh = tcp_westwood_bw_rttmin(sk);
++		WRITE_ONCE(tp->snd_ssthresh, tcp_westwood_bw_rttmin(sk));
+ 		/* Update RTT_min when next ack arrives */
+ 		w->reset_rtt_min = 1;
+ 		break;
+diff --git a/net/ipv4/tcp_yeah.c b/net/ipv4/tcp_yeah.c
+index 18b07ff5d20e6..74a2538e79e06 100644
+--- a/net/ipv4/tcp_yeah.c
++++ b/net/ipv4/tcp_yeah.c
+@@ -147,7 +147,8 @@ static void tcp_yeah_cong_avoid(struct sock *sk, u32 ack, u32 acked)
+ 					tcp_snd_cwnd_set(tp, max(tcp_snd_cwnd(tp),
+ 								 yeah->reno_count));
+ 
+-					tp->snd_ssthresh = tcp_snd_cwnd(tp);
++					WRITE_ONCE(tp->snd_ssthresh,
++						   tcp_snd_cwnd(tp));
+ 				}
+ 
+ 				if (yeah->reno_count <= 2)
 -- 
 2.53.0
 
