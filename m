@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNCBAnn6DWrh5AUAu9opvQ
-	(envelope-from <stable+bounces-252365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
+	id uB5AG/r3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78769595B08
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C90595453
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C667D313632D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 81EE43067651
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E0B3F9296;
-	Wed, 20 May 2026 18:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B253F1AD9;
+	Wed, 20 May 2026 17:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/K3GGCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vF+F5FCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B00A3FB060;
-	Wed, 20 May 2026 18:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E604C3E6385;
+	Wed, 20 May 2026 17:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300484; cv=none; b=kSPI/VfyRzTT6zVHnPWhhzSmfNX8rWJdUWvSsxltt9RY81E2lMSfPYNvbzn/KlO3dij6F0uE/2QRjSXTOt2C8vR++BVnEIXc5IFX9fnJVWy3uet2cwHLjCUZzpUw3jH9vntjJO2NS9WV9kLL7pG/U8DvR/tGZp/FemH8NEhv6T0=
+	t=1779298728; cv=none; b=p19DcOFB97BAIVBXM6LFAPfj1V7fG0ncR5ltxPRSk7HqhS7+qp9GPHNO793kyCkxJWyaDLe6Nby6olBx6IYHtsF6/VT9grwJRsozWISZROk/Bp22MdoW69zTq4bcaEZUOV4yXNH+/LOXTQ3q1l6uC1+0RF0XEJkvkRtzByUBEMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300484; c=relaxed/simple;
-	bh=BqAlOKuyrjrwOm2g/cjMiAbpe2uF8PJlrATHQJafH6Q=;
+	s=arc-20240116; t=1779298728; c=relaxed/simple;
+	bh=LrxR+M/kLJdyVoDkGq8VLJ9xQLiLiLXg8D+H+g7br/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THqlPNH9xekD02n7VVEF72brTpj9dMZj02AC++raQnhNNIlzYQQGqsUyIE28UvDefqbi0tp1MYTLCNXv+kKfQ6cHF+t4PudiT5UwII8YqqOnzRwC4Awzqd+m290u0/O5ybZ/Zm25LIi0uHxGJTRbQ2kP3EIlqzrJTTnNiz+DP20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/K3GGCi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54301F000E9;
-	Wed, 20 May 2026 18:08:02 +0000 (UTC)
+	 MIME-Version; b=MobBO6k1eoEO1d4GJ9y8hB3+lqya/VkhOL+ZiMRNMjvRzT6LuGwAkHUFR4jzZaxz+bl33vP6ohMRhB3GpCS4NDIOjAI9ttkAs17GH8IGx9hxF/ZTm7fRziAJGG/oMt2v6nSAgBPPTCvMNj7VecA5Nly2e6H2CapmX35FeZCAkCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vF+F5FCN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC1D1F000E9;
+	Wed, 20 May 2026 17:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300483;
-	bh=TC1oIZCyxhLVcJR1Eq8d4IlPY/oPKOWq7+GYtnOCS/s=;
+	s=korg; t=1779298727;
+	bh=fdFcFRpmYZjRnJYHjfNZCzz79pNKIPQe2NcbJiqPR6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G/K3GGCiikYN/kLUiSrfC//Jp38HAPRjuBVZCXmeRxyqGcG5DDECdy9xHhRe42cqT
-	 N0EVS94M3Zerps+/0Wj378+DYDlfxuAAMucfw/lE+r2iR1LCbP6HEoouXvMbL6VKGX
-	 vQwyEOjLHOpeGn3dqQlbPsXH1hXqyxpUCwn6dOEY=
+	b=vF+F5FCNrqCkfsmMuffjRbhHcmTQIgIreJNStGeGVUD6bVT1TQGZe5g9igaxRij1J
+	 KLc9bEUqjoNdq61FVc7vvchU8YL0mmlfbV7qk7ZpFVa8n5gJ8B6yhq/lWwTVIXb/WV
+	 WtHGsK4aYChz0xRkY12hZMPxtPT1whN63SEw2WP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/666] drm/msm/shrinker: Fix can_block() logic
+Subject: [PATCH 6.18 520/957] perf maps: Fix fixup_overlap_and_insert that can break sorted by name order
 Date: Wed, 20 May 2026 18:16:43 +0200
-Message-ID: <20260520162115.362087197@linuxfoundation.org>
+Message-ID: <20260520162145.810731919@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252365-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251725-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,52 +89,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 78769595B08
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 59C90595453
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
+[ Upstream commit c4f3ff3289380437d26177e8f2fe4b7507816ee3 ]
 
-The intention here was to allow blocking if DIRECT_RECLAIM or if called
-from kswapd and KSWAPD_RECLAIM is set.
+When an entry in the address array is replaced, the corresponding name
+entry is replaced. The entries names may sort differently and so it is
+important that the sorted by name property be cleared on the maps.
 
-Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
-
-Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
-Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714238/
-Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
+Fixes: 0d11fab32714 ("perf maps: Fixup maps_by_name when modifying maps_by_address")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/perf/util/maps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-index 07ca4ddfe4e37..89c0ea8ddeaac 100644
---- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-+++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-@@ -26,9 +26,8 @@ static bool can_swap(void)
+diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
+index c51ec159ac769..ff82d1d937b2f 100644
+--- a/tools/perf/util/maps.c
++++ b/tools/perf/util/maps.c
+@@ -924,6 +924,7 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
+ 			if (maps_by_name) {
+ 				map__put(maps_by_name[ni]);
+ 				maps_by_name[ni] = map__get(new);
++				maps__set_maps_by_name_sorted(maps, false);
+ 			}
  
- static bool can_block(struct shrink_control *sc)
- {
--	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
--		return false;
--	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
-+	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
-+	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
- }
+ 			err = __maps__insert_sorted(maps, i + 1, after, NULL);
+@@ -949,6 +950,7 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
+ 				if (maps_by_name) {
+ 					map__put(maps_by_name[ni]);
+ 					maps_by_name[ni] = map__get(new);
++					maps__set_maps_by_name_sorted(maps, false);
+ 				}
  
- static unsigned long
+ 				check_invariants(maps);
 -- 
 2.53.0
 
