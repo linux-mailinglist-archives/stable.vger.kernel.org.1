@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMdRI0LxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:06 +0200
+	id 0LQCKFcBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374675941F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D896597305
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 560D831F9422
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0AAB31602AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA1D3F20E5;
-	Wed, 20 May 2026 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56EE1371CEA;
+	Wed, 20 May 2026 18:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8DOQsz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bonYbv6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1341E37754D;
-	Wed, 20 May 2026 17:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB97C36EA8B;
+	Wed, 20 May 2026 18:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296950; cv=none; b=AWDvTVaaWe5tydDT01otjptS3V5AS6pou90kGQ79Ij0jhwJejCbGEE7IBxNeeuXrKs5Dum2TFvIPqdotuj0R/ZRcPwY4x+vlOyPBt98uzC1E665beeMaZ+nGCIAMhNPSy0GuRky+7Zb3ONlqx6fFMXaBktgf7Qgxmd5FYfEGvgM=
+	t=1779302310; cv=none; b=AeDqNAUJbevk4FY/HaEkSFfAhCyQz/b2uk4Hxhzb4JIKIGwO8amtiqL3LhvTqB1o8oaUPt9/uAXKx4dcD+58PcCPWYVENpA84EA3Y54u1NjmQ7xMXTxJOHqySLvvEYxxo5ofg1AW/7B7JEE0IZCY9MlSIDWBHGBADb3qz9zp0qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296950; c=relaxed/simple;
-	bh=esCqjtaD5cbjhaLG/fxbTJ7chi3WeBpaQ2R6zJ1o5OM=;
+	s=arc-20240116; t=1779302310; c=relaxed/simple;
+	bh=k5d2BGsiLtr/TrmfA7E136zwf+/R9sLas/9q+HuGSME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rJXA9CPP9FWVl01sdxtAsENrEzvQfgquXwOsY4rCzYeIxfwePbihUq0Am3cGV82L2ZrIVRVQsdBn1hr2hI5wS+rgUoJM2wr5SyCJl1nYZkpdGq3bUxj4vPLuEhqt2WgavShu07nyMn56XqqEJZI2ROYOCadQ6MWibv+Zuskkdug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8DOQsz9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787461F000E9;
-	Wed, 20 May 2026 17:09:08 +0000 (UTC)
+	 MIME-Version; b=In3NNmEeBjsWPD3t/2duykon4kmUfwJzkrPuoSnCZ8e+X1sB3nLB4QaNree9WBac5Gl8RflZGQfCFxABD0JjyzT8Xb8SMTdBDAq3iknVt64z13knE0jdb3PXp9UCdaZxWAoSUThOOmtpiVITaZuaiUeQKHibmcARqkMkwP2kd0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bonYbv6n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1F11F000E9;
+	Wed, 20 May 2026 18:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296949;
-	bh=FZrw65Y2Fqvlv+3eb3+5L1DmS9DPZ/EDzVoWcZC5qLs=;
+	s=korg; t=1779302308;
+	bh=jgYzVlVfcgUR1ptaLd6wvvNyJs/tcHJ0gJLzHgSExFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N8DOQsz9bEZQREJc60vsnyjfSx3sfh/UTRDyYKU+vk6uKPOIPLBWwF9ysr749jOYv
-	 5zpAvj7Yw/LicewZeopkWat2tzaGS/nmnI9LVa/PisPEvqX2eyvoOzM5tGyOU2qhrv
-	 9V6R78pwNtCneFyQZWuof4oKpDlKAcujI6RWkp9c=
+	b=bonYbv6nE/8etM/x4pdx+3h+pfN86u3CbwgZnaJK1UPNAYDRvgTimfCd8kyCFTh9t
+	 WZID30PUGZ/mpyJWjj4s2tg0ckWCUlXr7HIY7P5FZW3db04XJpa1TlltrgiaAnwh73
+	 AYZ96ZiEkw9QYkqEEoWmiYD+6+Jx4ODb7iH4gB28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Norman Bintang <normanbt@google.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0992/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (IV)
+Subject: [PATCH 6.6 219/508] soundwire: cadence: Clear message complete before signaling waiting thread
 Date: Wed, 20 May 2026 18:20:42 +0200
-Message-ID: <20260520162210.680896289@linuxfoundation.org>
+Message-ID: <20260520162103.386683190@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,310 +65,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251042-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253064-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,toke.dk:email]
-X-Rspamd-Queue-Id: 374675941F8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cirrus.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1D896597305
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 8fab48d87745a6ab1cec594b8d5865d9ae2db879 ]
+[ Upstream commit cbfea84f820962c3c5394ff06e7e9344c96bf761 ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+Clear the CDNS_MCP_INT_RX_WL interrupt before signaling completion.
 
-In this fourth patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for the following fields:
+This is to prevent the potential race where:
+- The main thread is scheduled immediately the completion is signaled,
+   and starts a new message
+- The RX_WL IRQ for this new message happens before sdw_cdns_irq() has
+  been re-scheduled.
+- When sdw_cdns_irq() is re-scheduled it clears the new RX_WL interrupt.
 
-- avg_peak_bandwidth
-- buffer_limit
-- buffer_max_used
-- avg_netoff
-- max_netlen
-- max_adjlen
-- min_netlen
-- min_adjlen
-- active_queues
-- tin_rate_bps
-- bytes
-- tin_backlog
+MAIN THREAD                        |  IRQ THREAD
+                                   |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                                   | sdw_cdns_irq()
+                                   | {
+                                   |    signal completion
+                          <== RESCHEDULE <==
+  Handle message completion        |
+  }                                |
+                                   |
+Start new message                  |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                          ==> RESCHEDULE ==>
+                                   |    // New RX_WL IRQ is cleared before
+                                   |    // it has been handled.
+                                   |    clear CDNS_MCP_INTSTAT
 
-Other annotations are added in following patch, to ease code review.
+                                   |    return IRQ_HANDLED;
+                                   | }
 
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Before this change, this error message was sometimes seen on kernels
+that have large amounts of debugging enabled:
+
+   SCP Msg trf timed out
+
+This error indicates that the completion has not been signalled after
+500ms.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 956baa1992f9 ("soundwire: cdns: Add sdw_master_ops and IO transfer support")
+Reported-by: Norman Bintang <normanbt@google.com>
+Closes: https://issuetracker.google.com/issues/477099834
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20260310113133.1707288-1-rf@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 90 ++++++++++++++++++++++----------------------
- 1 file changed, 46 insertions(+), 44 deletions(-)
+ drivers/soundwire/cadence_master.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 3605f32ebf813..804e8f4c46f32 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1379,9 +1379,9 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- 		len -= off;
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index e69982dbd449b..fdbd5d477a68e 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -932,6 +932,14 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
  
- 	if (qd->max_netlen < len)
--		qd->max_netlen = len;
-+		WRITE_ONCE(qd->max_netlen, len);
- 	if (qd->min_netlen > len)
--		qd->min_netlen = len;
-+		WRITE_ONCE(qd->min_netlen, len);
+ 		cdns_read_response(cdns);
  
- 	len += q->rate_overhead;
- 
-@@ -1401,9 +1401,9 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
- 	}
- 
- 	if (qd->max_adjlen < len)
--		qd->max_adjlen = len;
-+		WRITE_ONCE(qd->max_adjlen, len);
- 	if (qd->min_adjlen > len)
--		qd->min_adjlen = len;
-+		WRITE_ONCE(qd->min_adjlen, len);
- 
- 	return len;
- }
-@@ -1416,7 +1416,7 @@ static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
- 	u16 segs = qdisc_pkt_segs(skb);
- 	u32 len = qdisc_pkt_len(skb);
- 
--	q->avg_netoff = cake_ewma(q->avg_netoff, off << 16, 8);
-+	WRITE_ONCE(q->avg_netoff, cake_ewma(q->avg_netoff, off << 16, 8));
- 
- 	if (segs == 1)
- 		return cake_calc_overhead(q, len, off);
-@@ -1596,7 +1596,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	len = qdisc_pkt_len(skb);
- 	q->buffer_used      -= skb->truesize;
- 	b->backlogs[idx]    -= len;
--	b->tin_backlog      -= len;
-+	WRITE_ONCE(b->tin_backlog, b->tin_backlog - len);
- 	sch->qstats.backlog -= len;
- 
- 	flow->dropped++;
-@@ -1824,11 +1824,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		}
- 
- 		/* stats */
--		b->bytes	    += slen;
- 		b->backlogs[idx]    += slen;
--		b->tin_backlog      += slen;
- 		sch->qstats.backlog += slen;
- 		q->avg_window_bytes += slen;
-+		WRITE_ONCE(b->bytes, b->bytes + slen);
-+		WRITE_ONCE(b->tin_backlog, b->tin_backlog + slen);
- 
- 		qdisc_tree_reduce_backlog(sch, 1-numsegs, len-slen);
- 		consume_skb(skb);
-@@ -1847,7 +1847,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			WRITE_ONCE(b->ack_drops, b->ack_drops + 1);
- 			sch->qstats.drops++;
- 			ack_pkt_len = qdisc_pkt_len(ack);
--			b->bytes += ack_pkt_len;
-+			WRITE_ONCE(b->bytes, b->bytes + ack_pkt_len);
- 			q->buffer_used += skb->truesize - ack->truesize;
- 			if (q->config->rate_flags & CAKE_FLAG_INGRESS)
- 				cake_advance_shaper(q, b, ack, now, true);
-@@ -1861,11 +1861,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 		/* stats */
- 		WRITE_ONCE(b->packets, b->packets + 1);
--		b->bytes	    += len - ack_pkt_len;
- 		b->backlogs[idx]    += len - ack_pkt_len;
--		b->tin_backlog      += len - ack_pkt_len;
- 		sch->qstats.backlog += len - ack_pkt_len;
- 		q->avg_window_bytes += len - ack_pkt_len;
-+		WRITE_ONCE(b->bytes, b->bytes + len - ack_pkt_len);
-+		WRITE_ONCE(b->tin_backlog, b->tin_backlog + len - ack_pkt_len);
- 	}
- 
- 	if (q->overflow_timeout)
-@@ -1895,9 +1895,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			u64 b = q->avg_window_bytes * (u64)NSEC_PER_SEC;
- 
- 			b = div64_u64(b, window_interval);
--			q->avg_peak_bandwidth =
--				cake_ewma(q->avg_peak_bandwidth, b,
--					  b > q->avg_peak_bandwidth ? 2 : 8);
-+			WRITE_ONCE(q->avg_peak_bandwidth,
-+				   cake_ewma(q->avg_peak_bandwidth, b,
-+					     b > q->avg_peak_bandwidth ? 2 : 8));
- 			q->avg_window_bytes = 0;
- 			q->avg_window_begin = now;
- 
-@@ -1938,7 +1938,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	if (q->buffer_used > q->buffer_max_used)
--		q->buffer_max_used = q->buffer_used;
-+		WRITE_ONCE(q->buffer_max_used, q->buffer_used);
- 
- 	if (q->buffer_used <= q->buffer_limit)
- 		return NET_XMIT_SUCCESS;
-@@ -1978,7 +1978,7 @@ static struct sk_buff *cake_dequeue_one(struct Qdisc *sch)
- 		skb = dequeue_head(flow);
- 		len = qdisc_pkt_len(skb);
- 		b->backlogs[q->cur_flow] -= len;
--		b->tin_backlog		 -= len;
-+		WRITE_ONCE(b->tin_backlog, b->tin_backlog - len);
- 		sch->qstats.backlog      -= len;
- 		q->buffer_used		 -= skb->truesize;
- 		sch->q.qlen--;
-@@ -2043,7 +2043,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 
- 		cake_configure_rates(sch, new_rate, true);
- 		q->last_checked_active = now;
--		q->active_queues = num_active_qs;
-+		WRITE_ONCE(q->active_queues, num_active_qs);
- 	}
- 
- begin:
-@@ -2347,7 +2347,7 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
- 		/* else unlimited, ie. zero delay */
- 		WRITE_ONCE(b->flow_quantum, 1514);
- 	}
--	b->tin_rate_bps  = rate;
-+	WRITE_ONCE(b->tin_rate_bps, rate);
- 	b->tin_rate_ns   = rate_ns;
- 	b->tin_rate_shft = rate_shft;
- 
-@@ -2617,25 +2617,27 @@ static void cake_reconfigure(struct Qdisc *sch)
- {
- 	struct cake_sched_data *qd = qdisc_priv(sch);
- 	struct cake_sched_config *q = qd->config;
-+	u32 buffer_limit;
- 
- 	cake_configure_rates(sch, qd->config->rate_bps, false);
- 
- 	if (q->buffer_config_limit) {
--		qd->buffer_limit = q->buffer_config_limit;
-+		buffer_limit = q->buffer_config_limit;
- 	} else if (q->rate_bps) {
- 		u64 t = q->rate_bps * q->interval;
- 
- 		do_div(t, USEC_PER_SEC / 4);
--		qd->buffer_limit = max_t(u32, t, 4U << 20);
-+		buffer_limit = max_t(u32, t, 4U << 20);
- 	} else {
--		qd->buffer_limit = ~0;
-+		buffer_limit = ~0;
- 	}
- 
- 	sch->flags &= ~TCQ_F_CAN_BYPASS;
- 
--	qd->buffer_limit = min(qd->buffer_limit,
--			       max(sch->limit * psched_mtu(qdisc_dev(sch)),
--				   q->buffer_config_limit));
-+	WRITE_ONCE(qd->buffer_limit,
-+		   min(buffer_limit,
-+		       max(sch->limit * psched_mtu(qdisc_dev(sch)),
-+			   q->buffer_config_limit)));
- }
- 
- static int cake_config_change(struct cake_sched_config *q, struct nlattr *opt,
-@@ -2780,10 +2782,10 @@ static int cake_change(struct Qdisc *sch, struct nlattr *opt,
- 		return ret;
- 
- 	if (overhead_changed) {
--		qd->max_netlen = 0;
--		qd->max_adjlen = 0;
--		qd->min_netlen = ~0;
--		qd->min_adjlen = ~0;
-+		WRITE_ONCE(qd->max_netlen, 0);
-+		WRITE_ONCE(qd->max_adjlen, 0);
-+		WRITE_ONCE(qd->min_netlen, ~0);
-+		WRITE_ONCE(qd->min_adjlen, ~0);
- 	}
- 
- 	if (qd->tins) {
-@@ -3001,15 +3003,15 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 			goto nla_put_failure;			       \
- 	} while (0)
- 
--	PUT_STAT_U64(CAPACITY_ESTIMATE64, q->avg_peak_bandwidth);
--	PUT_STAT_U32(MEMORY_LIMIT, q->buffer_limit);
--	PUT_STAT_U32(MEMORY_USED, q->buffer_max_used);
--	PUT_STAT_U32(AVG_NETOFF, ((q->avg_netoff + 0x8000) >> 16));
--	PUT_STAT_U32(MAX_NETLEN, q->max_netlen);
--	PUT_STAT_U32(MAX_ADJLEN, q->max_adjlen);
--	PUT_STAT_U32(MIN_NETLEN, q->min_netlen);
--	PUT_STAT_U32(MIN_ADJLEN, q->min_adjlen);
--	PUT_STAT_U32(ACTIVE_QUEUES, q->active_queues);
-+	PUT_STAT_U64(CAPACITY_ESTIMATE64, READ_ONCE(q->avg_peak_bandwidth));
-+	PUT_STAT_U32(MEMORY_LIMIT, READ_ONCE(q->buffer_limit));
-+	PUT_STAT_U32(MEMORY_USED, READ_ONCE(q->buffer_max_used));
-+	PUT_STAT_U32(AVG_NETOFF, ((READ_ONCE(q->avg_netoff) + 0x8000) >> 16));
-+	PUT_STAT_U32(MAX_NETLEN, READ_ONCE(q->max_netlen));
-+	PUT_STAT_U32(MAX_ADJLEN, READ_ONCE(q->max_adjlen));
-+	PUT_STAT_U32(MIN_NETLEN, READ_ONCE(q->min_netlen));
-+	PUT_STAT_U32(MIN_ADJLEN, READ_ONCE(q->min_adjlen));
-+	PUT_STAT_U32(ACTIVE_QUEUES, READ_ONCE(q->active_queues));
- 
- #undef PUT_STAT_U32
- #undef PUT_STAT_U64
-@@ -3035,9 +3037,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		if (!ts)
- 			goto nla_put_failure;
- 
--		PUT_TSTAT_U64(THRESHOLD_RATE64, b->tin_rate_bps);
--		PUT_TSTAT_U64(SENT_BYTES64, b->bytes);
--		PUT_TSTAT_U32(BACKLOG_BYTES, b->tin_backlog);
-+		PUT_TSTAT_U64(THRESHOLD_RATE64, READ_ONCE(b->tin_rate_bps));
-+		PUT_TSTAT_U64(SENT_BYTES64, READ_ONCE(b->bytes));
-+		PUT_TSTAT_U32(BACKLOG_BYTES, READ_ONCE(b->tin_backlog));
- 
- 		PUT_TSTAT_U32(TARGET_US,
- 			      ktime_to_us(ns_to_ktime(b->cparams.target)));
-@@ -3304,10 +3306,10 @@ static int cake_mq_change(struct Qdisc *sch, struct nlattr *opt,
- 		struct cake_sched_data *qd = qdisc_priv(chld);
- 
- 		if (overhead_changed) {
--			qd->max_netlen = 0;
--			qd->max_adjlen = 0;
--			qd->min_netlen = ~0;
--			qd->min_adjlen = ~0;
-+			WRITE_ONCE(qd->max_netlen, 0);
-+			WRITE_ONCE(qd->max_adjlen, 0);
-+			WRITE_ONCE(qd->min_netlen, ~0);
-+			WRITE_ONCE(qd->min_adjlen, ~0);
- 		}
- 
- 		if (qd->tins) {
++		/*
++		 * Clear interrupt before signalling the completion to avoid
++		 * a race between this thread and the main thread starting
++		 * another TX.
++		 */
++		cdns_writel(cdns, CDNS_MCP_INTSTAT, CDNS_MCP_INT_RX_WL);
++		int_status &= ~CDNS_MCP_INT_RX_WL;
++
+ 		if (defer && defer->msg) {
+ 			cdns_fill_msg_resp(cdns, defer->msg,
+ 					   defer->length, 0);
 -- 
 2.53.0
 
