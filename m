@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-252590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A/RINYmDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:42 +0200
+	id IIgIBGL9DWoo5QUAu9opvQ
+	(envelope-from <stable+bounces-251955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC6359AD30
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2AF596467
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 002CA331130B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D26D32576C1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CE53C140F;
-	Wed, 20 May 2026 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6898D3F4DD7;
+	Wed, 20 May 2026 17:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2sh8O0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac/SShwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1662129B78D;
-	Wed, 20 May 2026 18:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A76D36405A;
+	Wed, 20 May 2026 17:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301074; cv=none; b=nQN6AOE0mxgEZtbS32HAWPxz+2aVA0u0HfRyoK877pj2y0decaSRxhOoANfiWHT/PBf0hRB2kKWPxKIwjxWGqECWtm5RrpXNZe5z4nvvZuhD8pzEqxLtPhdh8K97iCTyuv27XB51pVaCy+pmUAIr5hpMSf8jFU3fpX2GAKFC13I=
+	t=1779299365; cv=none; b=dnCwLry+9COOlBnlVPEP4e6sHIJ+GqDoO60FXQC4Q0tmKoSRUgx412dr2Qty9rczHYsMhG911nZ0O8FbfC7mZEZ47GtD5IFj3LLE1k4gHiHeooYPeHP5/rSwBEzRj/nyTQGNupxFBA+gBEszS1HZxz1/nhB9W1P2eAiO6Jskj7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301074; c=relaxed/simple;
-	bh=CSgPiop/8Ln0wc30djhek9HQSnxNfIEa+TMMvoLyhlQ=;
+	s=arc-20240116; t=1779299365; c=relaxed/simple;
+	bh=IgdYDr9tdSzjVIgIBe2xPPi4zNSdWqPo4wFbFHpwbeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H6uarvJjv8o5R8q5R+QtHavM1bNNbSlAIMv6FmvO39i4rg2VBZDIgYfH7GX9V7PUv6lrNBYgPm72EYQ2rWnpSrQXNW1LN4oRrpwvjkd4sk2kIAkkB4Y2Qi+aiUQ3oi+qd9/BGgoI4eWi6yqBsClJWAts+KcjxXDdROJOBadeoms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2sh8O0j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAA01F000E9;
-	Wed, 20 May 2026 18:17:52 +0000 (UTC)
+	 MIME-Version; b=Xgou6BdWsc0e3QaiyMsGycqZhnmb9yeUlXq+YQGuf7LlkYsmB1K1zS8Kln05YOD5jOwTEENpIn/YgaTk20sZg+C8ytmlb0y53kVelCwPU2pVLt4k4My0Gcv8pXYGBTqMUcWSq/i0fTD+jIc1DaE+WyGx3YAG9LQZNH+/F4h9tnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac/SShwr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443171F000E9;
+	Wed, 20 May 2026 17:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301072;
-	bh=w5qyr8i1s2n8PkZmaQj3Gk2S6SJf0iIEuFY/qpBDONU=;
+	s=korg; t=1779299363;
+	bh=UJNdaZMb7X75IQaGNEWZ1RIbEUB+AZ0DfS15C6ZemCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k2sh8O0jQCjwH6BVCNKU7eIcwAvmzJhTtEnETe5eDGS6eeIdeMsOjD/1QWe+hMxIb
-	 nuNZhU4mabFhpdmw8BmHj2zZ+PvsK2S7DYf3tDAr83/ofEXFQx0W148/mphFHdrbZi
-	 nnl2nvJ89e/odYz637HmQzgzsXkfX67V+8AsWVL0=
+	b=Ac/SShwrF0O1Sgg4wIPE5JlTQ8tnIDLzDG6fCAOZD7p7CNvO9nuV3L+VbEYcQgDOq
+	 DJB+SI+Y1XnPeldM2soTvhcSFtD0u33hOfzxUB4EuMCpJMhmKut1reV0KyrN5ekOVm
+	 H7hkMDuIPDwhVowuW2tEBy6hKbU5B0fCfHOKcppQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 415/666] x86/um/vdso: Drop VDSO64-y from Makefile
+Subject: [PATCH 6.18 743/957] tracing: branch: Fix inverted check on stat tracer registration
 Date: Wed, 20 May 2026 18:20:26 +0200
-Message-ID: <20260520162120.259094420@linuxfoundation.org>
+Message-ID: <20260520162150.673922299@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +67,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252590-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,efficios.com,elte.hu,gmail.com,debian.org,kernel.org,goodmis.org];
+	TAGGED_FROM(0.00)[bounces-251955-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,vdso.so:url,weissschuh.net:email]
-X-Rspamd-Queue-Id: DEC6359AD30
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,efficios.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4C2AF596467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 3c9b904f9033fb250db72d258bbdec791dc89405 ]
+[ Upstream commit 3b75dd76e64a04771861bb5647951c264919e563 ]
 
-This symbol is unnecessary, remove it.
+init_annotated_branch_stats() and all_annotated_branch_stats() check the
+return value of register_stat_tracer() with "if (!ret)", but
+register_stat_tracer() returns 0 on success and a negative errno on
+failure. The inverted check causes the warning to be printed on every
+successful registration, e.g.:
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20251013-uml-vdso-cleanup-v1-4-a079c7adcc69@weissschuh.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: d1895c15fc7d ("x86/um: fix vDSO installation")
+  Warning: could not register annotated branches stats
+
+while leaving real failures silent. The initcall also returned a
+hard-coded 1 instead of the actual error.
+
+Invert the check and propagate ret so that the warning fires on real
+errors and the initcall reports the correct status.
+
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Link: https://patch.msgid.link/20260420-tracing-v1-1-d8f4cd0d6af1@debian.org
+Fixes: 002bb86d8d42 ("tracing/ftrace: separate events tracing and stats tracing engine")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/um/vdso/Makefile | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ kernel/trace/trace_branch.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/um/vdso/Makefile b/arch/x86/um/vdso/Makefile
-index 6a77ea6434ffd..b3dfd60619e8a 100644
---- a/arch/x86/um/vdso/Makefile
-+++ b/arch/x86/um/vdso/Makefile
-@@ -3,16 +3,13 @@
- # Building vDSO images for x86.
- #
+diff --git a/kernel/trace/trace_branch.c b/kernel/trace/trace_branch.c
+index 6809b370e991d..d1564db95a8f5 100644
+--- a/kernel/trace/trace_branch.c
++++ b/kernel/trace/trace_branch.c
+@@ -373,10 +373,10 @@ __init static int init_annotated_branch_stats(void)
+ 	int ret;
  
--VDSO64-y		:= y
--
--vdso-install-$(VDSO64-y)	+= vdso.so
--
-+vdso-install-y += vdso.so
+ 	ret = register_stat_tracer(&annotated_branch_stats);
+-	if (!ret) {
++	if (ret) {
+ 		printk(KERN_WARNING "Warning: could not register "
+ 				    "annotated branches stats\n");
+-		return 1;
++		return ret;
+ 	}
+ 	return 0;
+ }
+@@ -438,10 +438,10 @@ __init static int all_annotated_branch_stats(void)
+ 	int ret;
  
- # files to link into the vdso
- vobjs-y := vdso-note.o um_vdso.o
- 
- # files to link into kernel
--obj-$(VDSO64-y)			+= vdso.o vma.o
-+obj-y += vdso.o vma.o
- 
- vobjs := $(foreach F,$(vobjs-y),$(obj)/$F)
- 
+ 	ret = register_stat_tracer(&all_branch_stats);
+-	if (!ret) {
++	if (ret) {
+ 		printk(KERN_WARNING "Warning: could not register "
+ 				    "all branches stats\n");
+-		return 1;
++		return ret;
+ 	}
+ 	return 0;
+ }
 -- 
 2.53.0
 
