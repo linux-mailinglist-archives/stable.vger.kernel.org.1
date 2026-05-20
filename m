@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-252742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOCaHOgoDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:32 +0200
+	id YBTVGlEFDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E508359B08B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA804597A00
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 273ED39D1E74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C9F731DBE6E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0FF3FE370;
-	Wed, 20 May 2026 18:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321D8403EB8;
+	Wed, 20 May 2026 18:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcpYdqku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncK8f4Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD833F9F21;
-	Wed, 20 May 2026 18:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDCD3FC5B4;
+	Wed, 20 May 2026 18:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301471; cv=none; b=PkRbvhfPq2j1V5nE0yIAp/ZHv/mrpzamTdq5XiH/94FEqJbJu5NLSu5EU4qT8e3e8dybyMtv56cEQlOLKF7ShufGhNnKI6QJKjRVO/ZtjtpctzR+tWWG8IC0jVdg/bA5btV/lGVXwqHV0c1QJ4FPhItoHSByLLtT/BXNCgy5hXo=
+	t=1779302558; cv=none; b=PxD7nv8QAjKf60101rNuqSyZ6lO3R/CbE/0ngB79ui3kO2trs+RImvOz6AGg3OgxpJUAnNIxJOwBVCtR17TuhEROelKPq7t8UfGnLyESHeqhlNNMrc2HRoqBUa8/gIfWLzUqJ58K/y2gJr2pCSLusRxJC8N+aa+LJO9W6llF1Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301471; c=relaxed/simple;
-	bh=daTqXE3U1eYNBR7XXRtDgVhJf+5xwpUO2JY09SC0vxo=;
+	s=arc-20240116; t=1779302558; c=relaxed/simple;
+	bh=XaNkHkYZaYlyXtq9dVUlpe0LCJwepCqzI165kMBWGmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGMPxWMQqMfTKca7lOVEDzL5g/38I0Sk3NTP4ijPrUg8BxFuC6iAFDqnstFuWvu+hI3kNEUH4DNivAXyqtDQjqemarIWfznHP/ZJZGAS73pjfDqslaBNqM++93+Qh4l0P+Xd5JMbf16rlqTrULdOAv6ywMx5IgBEbdWDtDvCIcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcpYdqku; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC0F1F000E9;
-	Wed, 20 May 2026 18:24:29 +0000 (UTC)
+	 MIME-Version; b=CQ1THzmMgK30KWkCF7E5Fekk4JfgW6nwycqnxITnFtIQVkAicswkAa2ColUeo3PcfMcguQtpfiDbcKy29A/DdgZEbvbooERJkGPdX1fNVCxCFVd47ofqHAb7cYfhQz5Ha+vBOhDnJogSbFmtTI0b51ELBxd/0PAzyNJifl2tqME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncK8f4Z1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED661F000E9;
+	Wed, 20 May 2026 18:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301470;
-	bh=TcaDgZEpoj7UgOFf9nSSyeS5/GRNM5in1LqVhqerJ/w=;
+	s=korg; t=1779302556;
+	bh=TmAcLryYLvdzTVHW40fQdsJVnJfIfvXSkC+KHChAPME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CcpYdqkucci5mYSNOwh68LNQpYBEKbY53S8B3kbNY53oPfPoI5z3itMCFP/KgTh5D
-	 lj4d/Ga4oo5yu6R13VUHOgNtviuf2RoiUg477c2aApCqtJVIIaouakOICp0eDfSOzo
-	 DjbSEdMxCdhG1Dvp0RZVlTnYgQ3y3/xHd4kd5/48=
+	b=ncK8f4Z1tDz1hyXYKbfDfVj48GWsu2lAMwbbcGBjCqwVR89GPEYfOhXRsZIogXQtt
+	 UhXYGvBeMGCkHffqyR7uGFYScWCNHQ+3fsr+pR33u1IYYjwCBljyizfOmRtEN94GEM
+	 Z0KixViT2kMPgS/Kzfzl3QXW0Y9PxR6cTitFP/ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Umang Jain <uajain@igalia.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 525/666] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
+Subject: [PATCH 6.6 313/508] nexthop: fix IPv6 route referencing IPv4 nexthop
 Date: Wed, 20 May 2026 18:22:16 +0200
-Message-ID: <20260520162122.647350972@linuxfoundation.org>
+Message-ID: <20260520162105.420684400@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252742-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253158-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -87,193 +83,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amd.com:email,igalia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
-X-Rspamd-Queue-Id: E508359B08B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EA804597A00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit b0f6f4ac7d5d04fe2adcdd63ed1cd1ad505b8958 ]
+[ Upstream commit 29c95185ba32b621fbc3800fb86e7dc3edf5c2be ]
 
-Commit 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
-introduced a change that "broke" Steam Deck's audio probe, in the OLED
-model, as observed in the following dmesg snippet:
+syzbot reported a panic [1] [2].
 
-[...]
-snd_sof_amd_vangogh 0000:04:00.5: Topology: ABI 3:26:0 Kernel ABI 3:23:1
-sof_mach nau8821-max: ASoC: physical link acp-bt-codec (id 2) not exist
-sof_mach nau8821-max: ASoC: topology: could not load header: -22
-snd_sof_amd_vangogh 0000:04:00.5: tplg amd/sof-tplg/sof-vangogh-nau8821-max.tplg component load failed -22
-snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP topology -22
-snd_sof_amd_vangogh 0000:04:00.5: ASoC error (-22): at snd_soc_component_probe() on 0000:04:00.5
-sof_mach nau8821-max: ASoC: failed to instantiate card -22
-sof_mach nau8821-max: error -EINVAL: Failed to register card(sof-nau8821-max)
-sof_mach nau8821-max: probe with driver sof_mach failed with error -22
-[...]
+When an IPv6 nexthop is replaced with an IPv4 nexthop, the has_v4 flag
+of all groups containing this nexthop is not updated. This is because
+nh_group_v4_update is only called when replacing AF_INET to AF_INET6,
+but the reverse direction (AF_INET6 to AF_INET) is missed.
 
-Notice the quotes in "broke": it's not really a bug in such commit,
-but instead a problem with a topology file from Steam Deck OLED. This
-was discussed to great extent in [1], and Cristian proposed a pretty
-simple and functional change that resolved the issue for the Deck's
-issue. That change, though, would break other devices, so it wasn't
-accepted upstream. And the proper suggested solution (fix the topology)
-was never implemented, so Valve's kernel (and anyone that wants to boot
-the mainline on Steam Deck OLED) is carrying that fix downstream.
+This allows a stale has_v4=false to bypass fib6_check_nexthop, causing
+IPv6 routes to be attached to groups that effectively contain only AF_INET
+members. Subsequent route lookups then call nexthop_fib6_nh() which
+returns NULL for the AF_INET member, leading to a NULL pointer
+dereference.
 
-So, we propose hereby a different approach: a DMI quirk, as many already
-present in the sound drivers, to address this issue solely on Steam Deck
-OLED, not breaking other devices and as a bonus, allowing simple patch
-up in case eventually the topology file gets fixed (we'd just need to
-check against any DMI info reflecting that or the topology/FW versions).
+Fix by calling nh_group_v4_update whenever the family changes, not just
+AF_INET to AF_INET6.
 
-The motivation of such upstream quirk is related to users that want
-to test latest kernel trees on their devices and get no only non-working
-sound device, but seems some games (like Ori and the Blind Forest)
-can't properly work without a proper functional audio device.
-Example of such report can be seen at [2].
+Reproducer:
+	# AF_INET6 blackhole
+	ip -6 nexthop add id 1 blackhole
+	# group with has_v4=false
+	ip nexthop add id 100 group 1
+	# replace with AF_INET (no -6), has_v4 stays false
+	ip nexthop replace id 1 blackhole
+	# pass stale has_v4 check
+	ip -6 route add 2001:db8::/64 nhid 100
+	# panic
+	ping -6 2001:db8::1
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Robert Beckett <bob.beckett@collabora.com>
-Cc: Umang Jain <uajain@igalia.com>
-Fixes: 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
-Link: https://lore.kernel.org/r/20231209205351.880797-11-cristian.ciocaltea@collabora.com/ [1]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218677 [2]
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Link: https://patch.msgid.link/20260423183505.116445-1-gpiccoli@igalia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1] https://syzkaller.appspot.com/bug?id=e17283eb2f8dcf3dd9b47fe6f67a95f71faadad0
+[2] https://syzkaller.appspot.com/bug?id=8699b6ae54c9f35837d925686208402949e12ef3
+Fixes: 7bf4796dd099 ("nexthops: add support for replace")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260413114522.147784-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-mach.c |  2 +-
- sound/soc/amd/acp/acp-mach-common.c | 22 +++++++++++++++++++---
- sound/soc/amd/acp/acp-mach.h        |  4 ++++
- sound/soc/amd/acp/acp-sof-mach.c    |  2 +-
- 4 files changed, 25 insertions(+), 5 deletions(-)
+ net/ipv4/nexthop.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
-index d104f7e8fdcd8..4221fc0f081b8 100644
---- a/sound/soc/amd/acp/acp-legacy-mach.c
-+++ b/sound/soc/amd/acp/acp-legacy-mach.c
-@@ -174,7 +174,7 @@ static int acp_asoc_probe(struct platform_device *pdev)
- 		acp_card_drvdata->platform =  *((int *)dev->platform_data);
- 
- 	dmi_id = dmi_first_match(acp_quirk_table);
--	if (dmi_id && dmi_id->driver_data)
-+	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
- 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
- 
- 	ret = acp_legacy_dai_links_create(card);
-diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
-index e9ff4815c12c8..6c0a92d76b54d 100644
---- a/sound/soc/amd/acp/acp-mach-common.c
-+++ b/sound/soc/amd/acp/acp-mach-common.c
-@@ -20,6 +20,7 @@
- #include <sound/soc.h>
- #include <linux/input.h>
- #include <linux/module.h>
-+#include <linux/dmi.h>
- 
- #include "../../codecs/rt5682.h"
- #include "../../codecs/rt1019.h"
-@@ -37,15 +38,21 @@
- #define NAU8821_FREQ_OUT	12288000
- #define MAX98388_CODEC_DAI	"max98388-aif1"
- 
--#define TDM_MODE_ENABLE 1
--
- const struct dmi_system_id acp_quirk_table[] = {
- 	{
- 		/* Google skyrim proto-0 */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Google_Skyrim"),
- 		},
--		.driver_data = (void *)TDM_MODE_ENABLE,
-+		.driver_data = (void *)QUIRK_TDM_MODE_ENABLE,
-+	},
-+	{
-+		/* Valve Steam Deck OLED */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
-+		},
-+		.driver_data = (void *)QUIRK_REMAP_DMIC_BT,
- 	},
- 	{}
- };
-@@ -1385,6 +1392,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 	struct snd_soc_dai_link *links;
- 	struct device *dev = card->dev;
- 	struct acp_card_drvdata *drv_data = card->drvdata;
-+	const struct dmi_system_id *dmi_id = dmi_first_match(acp_quirk_table);
- 	int i = 0, num_links = 0;
- 
- 	if (drv_data->hs_cpu_id)
-@@ -1562,6 +1570,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 			links[i].codecs = &snd_soc_dummy_dlc;
- 			links[i].num_codecs = 1;
- 		}
-+
-+		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT)
-+			links[i].id = DMIC_BE_ID;
- 		i++;
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 99385fe34a1e5..4f30ddd2016b6 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -2183,10 +2183,10 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
+ 			goto err_notify;
  	}
  
-@@ -1577,6 +1588,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 		links[i].dpcm_capture = 1;
- 		links[i].nonatomic = true;
- 		links[i].no_pcm = 1;
-+
-+		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT) {
-+			links[i].id = BT_BE_ID;
-+			dev_dbg(dev, "quirk REMAP_DMIC_BT enabled\n");
-+		}
- 	}
- 
- 	card->dai_link = links;
-diff --git a/sound/soc/amd/acp/acp-mach.h b/sound/soc/amd/acp/acp-mach.h
-index 93d9e3886b7ec..4b255cbde9ff4 100644
---- a/sound/soc/amd/acp/acp-mach.h
-+++ b/sound/soc/amd/acp/acp-mach.h
-@@ -24,6 +24,10 @@
- 
- #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
- 
-+/* List of DMI quirks - check acp-mach-common.c for usage. */
-+#define QUIRK_TDM_MODE_ENABLE 1
-+#define QUIRK_REMAP_DMIC_BT 2
-+
- enum be_id {
- 	HEADSET_BE_ID = 0,
- 	AMP_BE_ID,
-diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
-index f36750167fa29..4c069a34fbe17 100644
---- a/sound/soc/amd/acp/acp-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sof-mach.c
-@@ -113,7 +113,7 @@ static int acp_sof_probe(struct platform_device *pdev)
- 
- 	acp_card_drvdata = card->drvdata;
- 	dmi_id = dmi_first_match(acp_quirk_table);
--	if (dmi_id && dmi_id->driver_data)
-+	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
- 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
- 
- 	ret = acp_sofdsp_dai_links_create(card);
+-	/* When replacing an IPv4 nexthop with an IPv6 nexthop, potentially
++	/* When replacing a nexthop with one of a different family, potentially
+ 	 * update IPv4 indication in all the groups using the nexthop.
+ 	 */
+-	if (oldi->family == AF_INET && newi->family == AF_INET6) {
++	if (oldi->family != newi->family) {
+ 		list_for_each_entry(nhge, &old->grp_list, nh_list) {
+ 			struct nexthop *nhp = nhge->nh_parent;
+ 			struct nh_group *nhg;
 -- 
 2.53.0
 
