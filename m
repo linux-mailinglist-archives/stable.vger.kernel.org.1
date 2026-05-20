@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Dy3IqETDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:45 +0200
+	id mCSqBwD8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114EC59910F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3569595F17
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B20A637F74C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34146306DD02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8A53ED3B8;
-	Wed, 20 May 2026 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7750F3FD133;
+	Wed, 20 May 2026 18:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSZwn09k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/HRVy96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB5F34EF05;
-	Wed, 20 May 2026 16:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A6B3FCB2F;
+	Wed, 20 May 2026 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296130; cv=none; b=mxF71ISbapAl+y6JdT9KX31Nxl3LJcla4EJbtHOq5wA9F8G+gzAgg+wFifOq2Uok0U+PD6uxFBWIyiDP6KFRyZna6FQA1ekx0Vgmfx0QPYQLKf0H//ZKlgN7EGdRL+oq5s4eClczRCPqLRyKYF8e4RULZnN72hxBnYphHYkbxmE=
+	t=1779300313; cv=none; b=XnGoReJZ2p4HPU+wASPV+XMSQ0ES6/hJdGQPQIi1rtoT0YMsUFNDsz6w7SU7GXL+5IE5eRVMJXDQeKCD1U5CW+GTJXbf3hZKtjIwKQ4k6Vox68tUToh3MmNFsKfzecWtzwnx67TFL5Z9/p46GjBIVHPt0RQJKhKLlMrcX4CAyFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296130; c=relaxed/simple;
-	bh=iiBDbnKpZbnUc9uKjlpv5dsqUDMKBCBkZGUkrAG1F6I=;
+	s=arc-20240116; t=1779300313; c=relaxed/simple;
+	bh=fDxacHg9Xgt4gAu2pijvAsx7n5rIm8k/rgTexNP0lpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XMTjIYyQNBpB08HQhEvX6rptFnZHFQO1Sp0C4kuF+SerbLdtEbypLlXqrpX6UNTC8r9dn4kxWf4DGDdtXodkCXq1TYgOZkQXxPRk5aufut4BY3F2WJTIdML4OaBycA9swn76RWf5C0TJdhSJAIxcot+rdbDzG2Ynfpshmi0uKbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSZwn09k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513B01F000E9;
-	Wed, 20 May 2026 16:55:28 +0000 (UTC)
+	 MIME-Version; b=CxJS4kLWI53+wpssv0HFk1SDiernQ+ekzWZDIKDi7Tw2+e64oLdqmNUSC7AyuX0UbK4wLNZPAiguDZBwMw012VsETDfWX5Cj03k3ebOLRdQKBtHd5y+tWekcB4BqN0h0UBkmnDZVO6LJiluDbQutM0yKMiyI7JVgH7g/C2dTRyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/HRVy96; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC121F000E9;
+	Wed, 20 May 2026 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296128;
-	bh=eg4j1fAXBWdoY6DTeOwufBIrtNebyVz5UlQR/nTlddg=;
+	s=korg; t=1779300311;
+	bh=gE0fg5P/qkrsH3fCNnjExXMEZrT/iTv+I9lpGldffDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zSZwn09kc0bYDpxgVif0ZaN/0L6WtSWtRdhLs6HDsMGt8MNOR1rqi1/7Sdm+1t3MV
-	 GKr7HCaSzDLUuc2GEXBkO5CW8ee4DPpD5BHlicEV5UL+zZudtY+8zghjntPzBFiW4q
-	 qvwM15OdENvdHbw2sf0xpRm5cba2JTMhLDp3Bi/k=
+	b=Y/HRVy96BrqaFUWGk5ijX4LZoeJb7ORsOk6fyjHdf3H7eQZkD2enrw36oSJxsRiJ9
+	 5H9RFZtJgJNxlFZCfLGt+K2lk36l2IlOb55AuAcbqcJr5wXd1MU5lzgyR5xEzKjO7N
+	 SWF8ewCsrrkX12SmioUmiuC0GUQRZn2nWIGWEqQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	=?UTF-8?q?Damien=20Ri=C3=A9gel?= <damien.riegel@silabs.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0681/1146] greybus: raw: fix use-after-free if write is called after disconnect
+Subject: [PATCH 6.12 120/666] ASoC: add symmetric_ prefix for dai->rate/channels/sample_bits
 Date: Wed, 20 May 2026 18:15:31 +0200
-Message-ID: <20260520162203.599694334@linuxfoundation.org>
+Message-ID: <20260520162113.818399856@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,228 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250716-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252299-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 114EC59910F
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,d.xxx:url]
+X-Rspamd-Queue-Id: B3569595F17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Riégel <damien.riegel@silabs.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 84265cbd96b97058ef67e3f8be3933667a000835 ]
+[ Upstream commit 1bd775da9ba919b87b2313a78d5957afc1a62dde ]
 
-If a user writes to the chardev after disconnect has been called, the
-kernel panics with the following trace (with
-CONFIG_INIT_ON_FREE_DEFAULT_ON=y):
+snd_soc_dai has rate/channels/sample_bits parameter, but it is only valid
+if symmetry is being enforced by symmetric_xxx flag on driver.
 
-        BUG: kernel NULL pointer dereference, address: 0000000000000218
-         ...
-        Call Trace:
-         <TASK>
-         gb_operation_create_common+0x61/0x180
-         gb_operation_create_flags+0x28/0xa0
-         gb_operation_sync_timeout+0x6f/0x100
-         raw_write+0x7b/0xc7 [gb_raw]
-         vfs_write+0xcf/0x420
-         ? task_mm_cid_work+0x136/0x220
-         ksys_write+0x63/0xe0
-         do_syscall_64+0xa4/0x290
-         entry_SYSCALL_64_after_hwframe+0x77/0x7f
+It is very difficult to know about it from current naming, and easy to
+misunderstand it. add symmetric_ prefix for it.
 
-Disconnect calls gb_connection_destroy, which ends up freeing the
-connection object. When gb_operation_sync is called in the write file
-operations, its gets a freed connection as parameter and the kernel
-panics.
-
-The gb_connection_destroy cannot be moved out of the disconnect
-function, as the Greybus subsystem expect all connections belonging to a
-bundle to be destroyed when disconnect returns.
-
-To prevent this bug, use a rw lock to synchronize access between write
-and disconnect. This guarantees that the write function doesn't try
-to use a disconnected connection.
-
-Fixes: e806c7fb8e9b ("greybus: raw: add raw greybus kernel driver")
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Damien Riégel <damien.riegel@silabs.com>
-Link: https://patch.msgid.link/20260324140039.40001-2-damien.riegel@silabs.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87zfmd8bnf.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 07c774dd64ba ("ASoC: soc-compress: use function to clear symmetric params")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/raw.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ include/sound/soc-dai.h                     |  6 ++---
+ sound/soc/mediatek/mt8188/mt8188-dai-pcm.c  |  2 +-
+ sound/soc/mediatek/mt8195/mt8195-dai-pcm.c  |  2 +-
+ sound/soc/mediatek/mt8365/mt8365-dai-dmic.c |  6 ++---
+ sound/soc/mediatek/mt8365/mt8365-dai-pcm.c  |  2 +-
+ sound/soc/soc-compress.c                    |  4 +--
+ sound/soc/soc-pcm.c                         | 29 +++++++++++----------
+ 7 files changed, 26 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/staging/greybus/raw.c b/drivers/staging/greybus/raw.c
-index 47a9845546811..459aed0f12401 100644
---- a/drivers/staging/greybus/raw.c
-+++ b/drivers/staging/greybus/raw.c
-@@ -21,6 +21,8 @@ struct gb_raw {
- 	struct list_head list;
- 	int list_data;
- 	struct mutex list_lock;
-+	struct rw_semaphore disconnect_lock;
-+	bool disconnected;
- 	struct cdev cdev;
- 	struct device dev;
- };
-@@ -200,6 +202,7 @@ static int gb_raw_probe(struct gb_bundle *bundle,
+diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
+index 0d1b215f24f4f..4a3505674f2f2 100644
+--- a/include/sound/soc-dai.h
++++ b/include/sound/soc-dai.h
+@@ -450,9 +450,9 @@ struct snd_soc_dai {
+ 	struct snd_soc_dai_stream stream[SNDRV_PCM_STREAM_LAST + 1];
  
- 	INIT_LIST_HEAD(&raw->list);
- 	mutex_init(&raw->list_lock);
-+	init_rwsem(&raw->disconnect_lock);
+ 	/* Symmetry data - only valid if symmetry is being enforced */
+-	unsigned int rate;
+-	unsigned int channels;
+-	unsigned int sample_bits;
++	unsigned int symmetric_rate;
++	unsigned int symmetric_channels;
++	unsigned int symmetric_sample_bits;
  
- 	raw->connection = connection;
- 	greybus_set_drvdata(bundle, raw);
-@@ -235,6 +238,11 @@ static void gb_raw_disconnect(struct gb_bundle *bundle)
- 	struct raw_data *temp;
+ 	/* parent platform/codec */
+ 	struct snd_soc_component *component;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-dai-pcm.c b/sound/soc/mediatek/mt8188/mt8188-dai-pcm.c
+index 5bc854a8f3df3..8ca7cc75e21dc 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-dai-pcm.c
++++ b/sound/soc/mediatek/mt8188/mt8188-dai-pcm.c
+@@ -128,7 +128,7 @@ static int mtk_dai_pcm_configure(struct snd_pcm_substream *substream,
+ 	unsigned int lrck_inv;
+ 	unsigned int bck_inv;
+ 	unsigned int fmt;
+-	unsigned int bit_width = dai->sample_bits;
++	unsigned int bit_width = dai->symmetric_sample_bits;
+ 	unsigned int val = 0;
+ 	unsigned int mask = 0;
+ 	int fs = 0;
+diff --git a/sound/soc/mediatek/mt8195/mt8195-dai-pcm.c b/sound/soc/mediatek/mt8195/mt8195-dai-pcm.c
+index 6d6d79300d512..cdc16057d50e2 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-dai-pcm.c
++++ b/sound/soc/mediatek/mt8195/mt8195-dai-pcm.c
+@@ -127,7 +127,7 @@ static int mtk_dai_pcm_configure(struct snd_pcm_substream *substream,
+ 	unsigned int lrck_inv;
+ 	unsigned int bck_inv;
+ 	unsigned int fmt;
+-	unsigned int bit_width = dai->sample_bits;
++	unsigned int bit_width = dai->symmetric_sample_bits;
+ 	unsigned int val = 0;
+ 	unsigned int mask = 0;
+ 	int fs = 0;
+diff --git a/sound/soc/mediatek/mt8365/mt8365-dai-dmic.c b/sound/soc/mediatek/mt8365/mt8365-dai-dmic.c
+index f9945c2a2cd13..0bac143b48bfb 100644
+--- a/sound/soc/mediatek/mt8365/mt8365-dai-dmic.c
++++ b/sound/soc/mediatek/mt8365/mt8365-dai-dmic.c
+@@ -118,13 +118,13 @@ static int mt8365_dai_configure_dmic(struct mtk_base_afe *afe,
+ 	unsigned int clk_phase_sel_ch1 = dmic_data->clk_phase_sel_ch1;
+ 	unsigned int clk_phase_sel_ch2 = dmic_data->clk_phase_sel_ch2;
+ 	unsigned int val = 0;
+-	unsigned int rate = dai->rate;
+-	int reg = get_chan_reg(dai->channels);
++	unsigned int rate = dai->symmetric_rate;
++	int reg = get_chan_reg(dai->symmetric_channels);
  
- 	cdev_device_del(&raw->cdev, &raw->dev);
-+
-+	down_write(&raw->disconnect_lock);
-+	raw->disconnected = true;
-+	up_write(&raw->disconnect_lock);
-+
- 	gb_connection_disable(connection);
- 	gb_connection_destroy(connection);
+ 	if (reg < 0)
+ 		return -EINVAL;
  
-@@ -277,11 +285,22 @@ static ssize_t raw_write(struct file *file, const char __user *buf,
- 	if (count > MAX_PACKET_SIZE)
- 		return -E2BIG;
+-	dmic_data->dmic_channel = dai->channels;
++	dmic_data->dmic_channel = dai->symmetric_channels;
  
-+	down_read(&raw->disconnect_lock);
-+
-+	if (raw->disconnected) {
-+		retval = -ENODEV;
-+		goto exit;
-+	}
-+
- 	retval = gb_raw_send(raw, count, buf);
- 	if (retval)
--		return retval;
-+		goto exit;
+ 	val |= DMIC_TOP_CON_SDM3_LEVEL_MODE;
  
--	return count;
-+	retval = count;
-+exit:
-+	up_read(&raw->disconnect_lock);
-+
-+	return retval;
+diff --git a/sound/soc/mediatek/mt8365/mt8365-dai-pcm.c b/sound/soc/mediatek/mt8365/mt8365-dai-pcm.c
+index f85ec07249c3b..3373b88da28ea 100644
+--- a/sound/soc/mediatek/mt8365/mt8365-dai-pcm.c
++++ b/sound/soc/mediatek/mt8365/mt8365-dai-pcm.c
+@@ -44,7 +44,7 @@ static int mt8365_dai_configure_pcm1(struct snd_pcm_substream *substream,
+ 	bool lrck_inv = pcm_priv->lrck_inv;
+ 	bool bck_inv = pcm_priv->bck_inv;
+ 	unsigned int fmt = pcm_priv->format;
+-	unsigned int bit_width = dai->sample_bits;
++	unsigned int bit_width = dai->symmetric_sample_bits;
+ 	unsigned int val = 0;
+ 
+ 	if (!slave_mode) {
+diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
+index e692aa3b8b22f..f787f60a16a11 100644
+--- a/sound/soc/soc-compress.c
++++ b/sound/soc/soc-compress.c
+@@ -69,10 +69,10 @@ static int soc_compr_clean(struct snd_compr_stream *cstream, int rollback)
+ 	snd_soc_dai_digital_mute(codec_dai, 1, stream);
+ 
+ 	if (!snd_soc_dai_active(cpu_dai))
+-		cpu_dai->rate = 0;
++		cpu_dai->symmetric_rate = 0;
+ 
+ 	if (!snd_soc_dai_active(codec_dai))
+-		codec_dai->rate = 0;
++		codec_dai->symmetric_rate = 0;
+ 
+ 	snd_soc_link_compr_shutdown(cstream, rollback);
+ 
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 0e21ff9f7b74e..83e6a76da7e63 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -462,13 +462,13 @@ static void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
+ 				   struct snd_pcm_hw_params *params)
+ {
+ 	if (params) {
+-		dai->rate	 = params_rate(params);
+-		dai->channels	 = params_channels(params);
+-		dai->sample_bits = snd_pcm_format_physical_width(params_format(params));
++		dai->symmetric_rate	   = params_rate(params);
++		dai->symmetric_channels	   = params_channels(params);
++		dai->symmetric_sample_bits = snd_pcm_format_physical_width(params_format(params));
+ 	} else {
+-		dai->rate	 = 0;
+-		dai->channels	 = 0;
+-		dai->sample_bits = 0;
++		dai->symmetric_rate	   = 0;
++		dai->symmetric_channels	   = 0;
++		dai->symmetric_sample_bits = 0;
+ 	}
  }
  
- static ssize_t raw_read(struct file *file, char __user *buf, size_t count,
+@@ -482,14 +482,14 @@ static int soc_pcm_apply_symmetry(struct snd_pcm_substream *substream,
+ 		return 0;
+ 
+ #define __soc_pcm_apply_symmetry(name, NAME)				\
+-	if (soc_dai->name && (soc_dai->driver->symmetric_##name ||	\
+-			      rtd->dai_link->symmetric_##name)) {	\
++	if (soc_dai->symmetric_##name &&				\
++	    (soc_dai->driver->symmetric_##name || rtd->dai_link->symmetric_##name)) { \
+ 		dev_dbg(soc_dai->dev, "ASoC: Symmetry forces %s to %d\n",\
+-			#name, soc_dai->name);				\
++			#name, soc_dai->symmetric_##name);		\
+ 									\
+ 		ret = snd_pcm_hw_constraint_single(substream->runtime,	\
+ 						   SNDRV_PCM_HW_PARAM_##NAME,\
+-						   soc_dai->name);	\
++						   soc_dai->symmetric_##name);	\
+ 		if (ret < 0) {						\
+ 			dev_err(soc_dai->dev,				\
+ 				"ASoC: Unable to apply %s constraint: %d\n",\
+@@ -525,9 +525,11 @@ static int soc_pcm_params_symmetry(struct snd_pcm_substream *substream,
+ 	if (symmetry)							\
+ 		for_each_rtd_cpu_dais(rtd, i, cpu_dai)			\
+ 			if (!snd_soc_dai_is_dummy(cpu_dai) &&		\
+-			    cpu_dai->xxx && cpu_dai->xxx != d.xxx) {	\
++			    cpu_dai->symmetric_##xxx &&			\
++			    cpu_dai->symmetric_##xxx != d.symmetric_##xxx) { \
+ 				dev_err(rtd->dev, "ASoC: unmatched %s symmetry: %s:%d - %s:%d\n", \
+-					#xxx, cpu_dai->name, cpu_dai->xxx, d.name, d.xxx); \
++					#xxx, cpu_dai->name, cpu_dai->symmetric_##xxx, \
++					d.name, d.symmetric_##xxx);	\
+ 				return -EINVAL;				\
+ 			}
+ 
+@@ -798,8 +800,7 @@ static int soc_pcm_clean(struct snd_soc_pcm_runtime *rtd,
+ 
+ 		/* Make sure DAI parameters cleared if the DAI becomes inactive */
+ 		for_each_rtd_dais(rtd, i, dai) {
+-			if (snd_soc_dai_active(dai) == 0 &&
+-			    (dai->rate || dai->channels || dai->sample_bits))
++			if (snd_soc_dai_active(dai) == 0)
+ 				soc_pcm_set_dai_params(dai, NULL);
+ 		}
+ 	}
 -- 
 2.53.0
 
