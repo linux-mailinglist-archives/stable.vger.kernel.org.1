@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-251189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QABgHvTuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:16 +0200
+	id uCOWEPkDDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19785593B36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB8F597711
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AD8A5304A62A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9844431F9D3F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0013F44EA;
-	Wed, 20 May 2026 17:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F2C407CED;
+	Wed, 20 May 2026 18:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu4ikFQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsMBRsF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E423F4DCC;
-	Wed, 20 May 2026 17:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEE9407CE5;
+	Wed, 20 May 2026 18:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297332; cv=none; b=MFbCsFQciujYXYm8UwntMhVXOn4uFWoKa+ftMy9zG7ByL4ksIrhveKedZM+KQPUfDaJfBweLeO3PzcPWqbRpbIqE668GIx+V9B95jZYbT8WV03KzbhP1AGYNP47sGKy8Q3N0046WqKkaHwQUK3qzH1zn0mOvm/UOpoKrKPwN99I=
+	t=1779302592; cv=none; b=nNYfElCm0gbQ652/+TcKr1e4icDKf2u4CaXRQ5ZLYHIWqh+pkKTNJ/jJOklkmDObM+onAvG21vhpDk0cvDUEqWIW1+o9MRhOUkMyLklvsPt8RNXENfshu0cEk7zGHiCFhGcXeYm69U74Sjf8dLShsAh0lYJBbizy/ZCXUW8tu/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297332; c=relaxed/simple;
-	bh=gk95xzrhW1HS+n3nui6aOvQRvfmCvenr8W60NHPsOvE=;
+	s=arc-20240116; t=1779302592; c=relaxed/simple;
+	bh=58p+138I5fA2HQ/lP5RtV6ikaq1QXPmh3doydPMLlds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJRtPd7CyjtX5jiyTwqaxjwdbhPUFr7zQsAiK3eyOMO92ycsjdfj3PVwWnW0zLYx08nKdg9WydTX0Or6xw8sy4XDYY4guZQQnE01nqd/mZ/dW+JkVnrnfDIkvCvrfN/p4X9QmA8GHgcnhPX0SL5NtmBpPzsq9Oqz0ITz8Eg+lxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu4ikFQA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396811F000E9;
-	Wed, 20 May 2026 17:15:30 +0000 (UTC)
+	 MIME-Version; b=u2UykdHxeQ58vnuU3GuT+ul5PEQ1YT70c6yy8NIFgNO5+Q26AOZ5JEau2oGJ3jsDnC247YnfzksLOWSw7zj4F+TB+ii7dynVubE/DACbA6y46yZJOSvcR9TmgWxaCn9gAz6/7P0r9gCPS4UxJcdq7TP6JPEWfJxK0VAGQ+nGeMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsMBRsF6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870771F000E9;
+	Wed, 20 May 2026 18:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297330;
-	bh=AL8J+QawhwppXMlPloe8fJNk4EBfUr6aai3Th4STYDE=;
+	s=korg; t=1779302591;
+	bh=r34ybbZLdSkvkA8bOxtgH5OAWqvKUciHhxjwmQ2NDEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xu4ikFQAeRBwrUFnYG/v+SXYemeOC8boB+qTqgXcJ4boPZHEm/1bi9auaOBBsDMEQ
-	 FSr1uAoNlJcio+3zrNUeMzZLl3m69HhqcGJdILR/gRu50YQSn2J89ziILbEm+4/HQz
-	 0fsPXewMJCkaXekTQKQx/zRuZTyF+CVYP92sobS4=
+	b=XsMBRsF6fbaaooFVth031BReOrZHv1hyucYdpcc2CND2lX7CVtn0Cw8NvKcbgYfdC
+	 9OOpw0Cnu7h4afatcQMFpX9lPgFHaFrost/wtwGhPILPwNV1IKFZzPONVfkpJkWvdD
+	 SiL9GrKa78BjUyGezyp6V5EHJeNfUMZ93N8p9hMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Carlini <nicholas@carlini.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 1097/1146] io-wq: check that the predecessor is hashed in io_wq_remove_pending()
-Date: Wed, 20 May 2026 18:22:27 +0200
-Message-ID: <20260520162213.069088714@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Joe Damato <joe@dama.to>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 325/508] ipv6: fix possible UAF in icmpv6_rcv()
+Date: Wed, 20 May 2026 18:22:28 +0200
+Message-ID: <20260520162105.677067015@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +71,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253172-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251189-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
-X-Rspamd-Queue-Id: 19785593B36
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,dama.to:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CBB8F597711
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Carlini <nicholas@carlini.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d6a2d7b04b5a093021a7a0e2e69e9d5237dfa8cc upstream.
+[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
 
-io_wq_remove_pending() needs to fix up wq->hash_tail[] if the cancelled
-work was the tail of its hash bucket. When doing this, it checks whether
-the preceding entry in acct->work_list has the same hash value, but
-never checks that the predecessor is hashed at all. io_get_work_hash()
-is simply atomic_read(&work->flags) >> IO_WQ_HASH_SHIFT, and the hash
-bits are never set for non-hashed work, so it returns 0. Thus, when a
-hashed bucket-0 work is cancelled while a non-hashed work is its list
-predecessor, the check spuriously passes and a pointer to the non-hashed
-io_kiocb is stored in wq->hash_tail[0].
+Caching saddr and daddr before pskb_pull() is problematic
+since skb->head can change.
 
-Because non-hashed work is dequeued via the fast path in
-io_get_next_work(), which never touches hash_tail[], the stale pointer
-is never cleared. Therefore, after the non-hashed io_kiocb completes and
-is freed back to req_cachep, wq->hash_tail[0] is a dangling pointer. The
-io_wq is per-task (tctx->io_wq) and survives ring open/close, so the
-dangling pointer persists for the lifetime of the task; the next hashed
-bucket-0 enqueue dereferences it in io_wq_insert_work() and
-wq_list_add_after() writes through freed memory.
+Remove these temporary variables:
 
-Add the missing io_wq_is_hashed() check so a non-hashed predecessor
-never inherits a hash_tail[] slot.
+- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
+  when net_dbg_ratelimited() is called in the slow path.
 
-Cc: stable@vger.kernel.org
-Fixes: 204361a77f40 ("io-wq: fix hang after cancelling pending hashed work")
-Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Avoid potential future misuse after pskb_pull() call.
+
+Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/icmp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1124,7 +1124,8 @@ static inline void io_wq_remove_pending(
- 	if (io_wq_is_hashed(work) && work == wq->hash_tail[hash]) {
- 		if (prev)
- 			prev_work = container_of(prev, struct io_wq_work, list);
--		if (prev_work && io_get_work_hash(prev_work) == hash)
-+		if (prev_work && io_wq_is_hashed(prev_work) &&
-+		    io_get_work_hash(prev_work) == hash)
- 			wq->hash_tail[hash] = prev_work;
- 		else
- 			wq->hash_tail[hash] = NULL;
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 0002fe04e0409..9c56612c66211 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -907,7 +907,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net_rcu(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+-	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+ 	u8 type;
+ 
+@@ -938,12 +937,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
+ 
+-	saddr = &ipv6_hdr(skb)->saddr;
+-	daddr = &ipv6_hdr(skb)->daddr;
+-
+ 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
+ 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 		goto csum_error;
+ 	}
+ 
+@@ -1026,7 +1023,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 			break;
+ 
+ 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 
+ 		/*
+ 		 * error of unknown type.
+-- 
+2.53.0
+
 
 
 
