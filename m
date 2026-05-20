@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKw2Ln32DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:25 +0200
+	id gIa4CX37DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610945950C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B17595D98
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFC7C3140A4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E2A573078514
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12433369D67;
-	Wed, 20 May 2026 17:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DAF3D75C7;
+	Wed, 20 May 2026 18:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0vuaINH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kf2Dpu7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F9F359A6F;
-	Wed, 20 May 2026 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304383A3E79;
+	Wed, 20 May 2026 18:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298408; cv=none; b=glA9EbxS76Ha5ukXz63pzMQX1GNXNLIO6cA2dD6RSjGF9UDIo5vgMbK4iq5n7r7JI7X8+fhm5V9nzwmknISYD2rySBbuG6uK5qcSiaromV3AwlDilCSOvSPvYhhX/kNvbucw7MzDg4tpDJzhceYLG4MG7byFo5EMlQyzwquHNOU=
+	t=1779300191; cv=none; b=INBONM181v2Snmu3mCo2w6oc864bel2mIF586KDWnwQkVhyWjHE3aJfEWi7OF7GEXl57xDJkkdoQJgbZBTkIHVWXiqCzwjBATYkWX9yqxTq7pvg0OprGYpcp0O81fRiJlOgsRKnvUZpsWf24cX8Ius5Lr/k8fo6toqt56G24848=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298408; c=relaxed/simple;
-	bh=e7Bm99WnyIdS1PO+1xqbv//1Fr7o3eFgRK262WspM88=;
+	s=arc-20240116; t=1779300191; c=relaxed/simple;
+	bh=x+ilijrX0RmOWOIGKjePYMrNYYOGcoWsvMEHJpas/C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq0AuaexmtNWEsR9uJ1BbpHk+u6yMAbLxdq0ufPBQOLKg6CtUt78ixsFnzRYemIzYBeDKizx/gwdMp3XsboLdp8f73Brg1F1A5ZeSU8s4AU8gWA8/erg3Z7EYMDy19uNmjUNVHfeOV1TBLgA1D9iPLyr+2HfIgWnLTB02o8XptU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0vuaINH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F5C1F00893;
-	Wed, 20 May 2026 17:33:27 +0000 (UTC)
+	 MIME-Version; b=J4GH4nEjVX3aTO7i6k7JTApGqabJPdJb59gUcqPhqLI6xh08RU/dsW5X6vGa0z+LGe80KrSPIFD3xEJou6DjqccSbCzuRFdcbWUn4xazIw7LfW3lcc4CEh2GBYyNr0tYyTDi+m87tQBZIZxgoqCgIthGioiUu4ZWRzy5wgoY5f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kf2Dpu7c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9593D1F00893;
+	Wed, 20 May 2026 18:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298407;
-	bh=OmZEPrW8f/YhKkDAOIXfAkMbzo4zGAOMpT4Dagg6+4M=;
+	s=korg; t=1779300190;
+	bh=UCfz2CH7fxcQf1jZakE6qlCeffZku/oGY3jP95E04Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I0vuaINH8ep7nSQvpGIC2A424NMVwN9ndDxu8aFL+69DuIsXWWIEGD4RYZrkPT32m
-	 sRYowSKAEPWGv3hbiEWZtQt2gN6ivqLxIq3XdGgVEfSkJI1FLfWEvAbjQGUJ+4yzL/
-	 /2cIsyCwdeNIKkosQURj75xSGKRrfv4GEonGJr6M=
+	b=Kf2Dpu7cunZ5Gcf4FcTGjNkG3AfOToztsQcrRefUniEPWmSCkiIAjD5Y/IXng/DB1
+	 LowzgHwM0malIWL9gRTP32xPVqC486uHpRSxCYUQnKu/0I+0/1pjDBFuobupDk5ncV
+	 3iTc+rf7UTFF/t67XzioBcfFSNWX0h+Gei3XIbJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 357/957] gfs2: add some missing log locking
+Subject: [PATCH 6.12 029/666] hrtimer: Reduce trace noise in hrtimer_start()
 Date: Wed, 20 May 2026 18:14:00 +0200
-Message-ID: <20260520162142.271710623@linuxfoundation.org>
+Message-ID: <20260520162111.867078021@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251602-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252252-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,119 +87,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 610945950C0
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D0B17595D98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-[ Upstream commit fe2c8d051150b90b3ccb85f89e3b1d636cb88ec8 ]
+[ Upstream commit f2e388a019e4cf83a15883a3d1f1384298e9a6aa ]
 
-Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
-gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
-but these functions require exclusion against concurrent transactions.
+hrtimer_start() when invoked with an already armed timer traces like:
 
-To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
-gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
-flushing functions and __gfs2_log_flush().
+ <comm>-..   [032] d.h2. 5.002263: hrtimer_cancel: hrtimer= ....
+ <comm>-..   [032] d.h1. 5.002263: hrtimer_start: hrtimer= ....
 
-Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Which is incorrect as the timer doesn't get canceled. Just the expiry time
+changes. The internal dequeue operation which is required for that is not
+really interesting for trace analysis. But it makes it tedious to keep real
+cancellations and the above case apart.
+
+Remove the cancel tracing in hrtimer_start() and add a 'was_armed'
+indicator to the hrtimer start tracepoint, which clearly indicates what the
+state of the hrtimer is when hrtimer_start() is invoked:
+
+<comm>-..   [032] d.h1. 6.200103: hrtimer_start: hrtimer= .... was_armed=0
+ <comm>-..   [032] d.h1. 6.200558: hrtimer_start: hrtimer= .... was_armed=1
+
+Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260224163430.208491877@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ include/trace/events/timer.h | 11 +++++----
+ kernel/time/hrtimer.c        | 43 +++++++++++++++++-------------------
+ 2 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 115c4ac457e90..592f69602e5aa 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1027,14 +1027,15 @@ static void trans_drain(struct gfs2_trans *tr)
- }
- 
- /**
-- * gfs2_log_flush - flush incore transaction(s)
-+ * __gfs2_log_flush - flush incore transaction(s)
-  * @sdp: The filesystem
-  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
-  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
-  *
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 1ef58a04fc579..19c975ffea176 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -218,12 +218,13 @@ TRACE_EVENT(hrtimer_init,
+  * hrtimer_start - called when the hrtimer is started
+  * @hrtimer:	pointer to struct hrtimer
+  * @mode:	the hrtimers mode
++ * @was_armed:	Was armed when hrtimer_start*() was invoked
   */
+ TRACE_EVENT(hrtimer_start,
  
--void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
-+			     u32 flags)
- {
- 	struct gfs2_trans *tr = NULL;
- 	unsigned int reserved_blocks = 0, used_blocks = 0;
-@@ -1042,7 +1043,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	unsigned int first_log_head;
- 	unsigned int reserved_revokes = 0;
+-	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
++	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
  
--	down_write(&sdp->sd_log_flush_lock);
- 	trace_gfs2_log_flush(sdp, 1, flags);
+-	TP_ARGS(hrtimer, mode),
++	TP_ARGS(hrtimer, mode, was_armed),
  
- repeat:
-@@ -1154,7 +1154,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 		gfs2_assert_withdraw_delayed(sdp, used_blocks < reserved_blocks);
- 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
- 	}
--	up_write(&sdp->sd_log_flush_lock);
- 	gfs2_trans_free(sdp, tr);
- 	if (gfs2_withdrawing(sdp))
- 		gfs2_withdraw(sdp);
-@@ -1177,6 +1176,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	goto out_end;
+ 	TP_STRUCT__entry(
+ 		__field( void *,	hrtimer		)
+@@ -231,6 +232,7 @@ TRACE_EVENT(hrtimer_start,
+ 		__field( s64,		expires		)
+ 		__field( s64,		softexpires	)
+ 		__field( enum hrtimer_mode,	mode	)
++		__field( bool,		was_armed	)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -239,13 +241,14 @@ TRACE_EVENT(hrtimer_start,
+ 		__entry->expires	= hrtimer_get_expires(hrtimer);
+ 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
+ 		__entry->mode		= mode;
++		__entry->was_armed	= was_armed;
+ 	),
+ 
+ 	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
+-		  "mode=%s", __entry->hrtimer, __entry->function,
++		  "mode=%s was_armed=%d", __entry->hrtimer, __entry->function,
+ 		  (unsigned long long) __entry->expires,
+ 		  (unsigned long long) __entry->softexpires,
+-		  decode_hrtimer_mode(__entry->mode))
++		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
+ );
+ 
+ /**
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 343c7e4008aba..5d1b880de171d 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -489,17 +489,10 @@ debug_init(struct hrtimer *timer, clockid_t clockid,
+ 	trace_hrtimer_init(timer, clockid, mode);
  }
  
-+void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+{
-+	down_write(&sdp->sd_log_flush_lock);
-+	__gfs2_log_flush(sdp, gl, flags);
-+	up_write(&sdp->sd_log_flush_lock);
-+}
+-static inline void debug_activate(struct hrtimer *timer,
+-				  enum hrtimer_mode mode)
++static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
+ {
+ 	debug_hrtimer_activate(timer, mode);
+-	trace_hrtimer_start(timer, mode);
+-}
+-
+-static inline void debug_deactivate(struct hrtimer *timer)
+-{
+-	debug_hrtimer_deactivate(timer);
+-	trace_hrtimer_cancel(timer);
++	trace_hrtimer_start(timer, mode, was_armed);
+ }
+ 
+ static struct hrtimer_clock_base *
+@@ -1094,9 +1087,9 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
+  * Returns true when the new timer is the leftmost timer in the tree.
+  */
+ static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+-			    enum hrtimer_mode mode)
++			    enum hrtimer_mode mode, bool was_armed)
+ {
+-	debug_activate(timer, mode);
++	debug_activate(timer, mode, was_armed);
+ 	WARN_ON_ONCE(!base->cpu_base->online);
+ 
+ 	base->cpu_base->active_bases |= 1 << base->index;
+@@ -1156,6 +1149,8 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 	if (state & HRTIMER_STATE_ENQUEUED) {
+ 		bool reprogram;
+ 
++		debug_hrtimer_deactivate(timer);
 +
- /**
-  * gfs2_merge_trans - Merge a new transaction into a cached transaction
-  * @sdp: the filesystem
-@@ -1319,19 +1325,25 @@ int gfs2_logd(void *data)
- 		}
+ 		/*
+ 		 * Remove the timer and force reprogramming when high
+ 		 * resolution mode is active and the timer is on the current
+@@ -1164,7 +1159,6 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 		 * reprogramming happens in the interrupt handler. This is a
+ 		 * rare case and less expensive than a smp call.
+ 		 */
+-		debug_deactivate(timer);
+ 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
  
- 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_JFLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_JFLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
+ 		/*
+@@ -1231,15 +1225,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ {
+ 	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
+ 	struct hrtimer_clock_base *new_base;
+-	bool force_local, first;
++	bool force_local, first, was_armed;
  
- 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 		    gfs2_ail_flush_reqd(sdp)) {
- 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
+ 	/*
+ 	 * If the timer is on the local cpu base and is the first expiring
+ 	 * timer then this might end up reprogramming the hardware twice
+-	 * (on removal and on enqueue). To avoid that by prevent the
+-	 * reprogram on removal, keep the timer local to the current CPU
+-	 * and enforce reprogramming after it is queued no matter whether
+-	 * it is the new first expiring timer again or not.
++	 * (on removal and on enqueue). To avoid that prevent the reprogram
++	 * on removal, keep the timer local to the current CPU and enforce
++	 * reprogramming after it is queued no matter whether it is the new
++	 * first expiring timer again or not.
+ 	 */
+ 	force_local = base->cpu_base == this_cpu_base;
+ 	force_local &= base->cpu_base->next_timer == timer;
+@@ -1261,7 +1255,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	 * avoids programming the underlying clock event twice (once at
+ 	 * removal and once after enqueue).
+ 	 */
+-	remove_hrtimer(timer, base, true, force_local);
++	was_armed = remove_hrtimer(timer, base, true, force_local);
  
- 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
+ 	if (mode & HRTIMER_MODE_REL)
+ 		tim = ktime_add_safe(tim, base->get_time());
+@@ -1278,7 +1272,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 		new_base = base;
+ 	}
+ 
+-	first = enqueue_hrtimer(timer, new_base, mode);
++	first = enqueue_hrtimer(timer, new_base, mode, was_armed);
+ 
+ 	/*
+ 	 * If the hrtimer interrupt is running, then it will reevaluate the
+@@ -1382,8 +1376,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
+ 
+ 	base = lock_hrtimer_base(timer, &flags);
+ 
+-	if (!hrtimer_callback_running(timer))
++	if (!hrtimer_callback_running(timer)) {
+ 		ret = remove_hrtimer(timer, base, false, false);
++		if (ret)
++			trace_hrtimer_cancel(timer);
++	}
+ 
+ 	unlock_hrtimer_base(timer, &flags);
+ 
+@@ -1770,7 +1767,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 	 */
+ 	if (restart != HRTIMER_NORESTART &&
+ 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
+-		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
+ 
+ 	/*
+ 	 * Separate the ->running assignment from the ->state assignment.
+@@ -2252,7 +2249,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 	while ((node = timerqueue_getnext(&old_base->active))) {
+ 		timer = container_of(node, struct hrtimer, node);
+ 		BUG_ON(hrtimer_callback_running(timer));
+-		debug_deactivate(timer);
++		debug_hrtimer_deactivate(timer);
+ 
+ 		/*
+ 		 * Mark it as ENQUEUED not INACTIVE otherwise the
+@@ -2269,7 +2266,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 		 * sort out already expired timers and reprogram the
+ 		 * event device.
+ 		 */
+-		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
+ 	}
+ }
+ 
 -- 
 2.53.0
 
