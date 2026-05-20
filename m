@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOMCA+joDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:28 +0200
+	id oEaMN878DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2D9592D1D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE210596243
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9BB5312268C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D02B3203451
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAF137269C;
-	Wed, 20 May 2026 16:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BCC3F6C4C;
+	Wed, 20 May 2026 17:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8I81elF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMWxrWsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01E372EDE;
-	Wed, 20 May 2026 16:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ED53F6C4E;
+	Wed, 20 May 2026 17:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295541; cv=none; b=RBAyr2GbxfK5RTimXjZ59US+/IVwBFlYipfn2XinVPXOCgAlD3ER0OQuKYjaBl6s1apHYioqR/4PqLiVzQ7BCIThoY26ScuriyoBUINQU40bL3bS5O+0GjnJhCszNNgq82U6p1PBOtEhTROL9iga2mJ/RqN49Z/NnVN4Vg4s+7k=
+	t=1779297947; cv=none; b=rB4r7mQ9UIJILcI9YwiC/9BeSrj+VkdP8f1jtN6rUAlpVzNv4+Ol9IjgEqYf6DTviNFmLM+jKmuL5XSYy2jnfRc4Q78T57zyE2U+buHUIftvlEvjqQJEeeljKYBruDq+rn8qdVVzcAsUS27Q/n+pUG2OwQy1UDORPZAcduhkb48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295541; c=relaxed/simple;
-	bh=EEpL5uyuexjGKhN9JkX9mEvP3AixClF3OO3ogYuBj2s=;
+	s=arc-20240116; t=1779297947; c=relaxed/simple;
+	bh=QAQCnOIEnhKBZGaBFZKRHRusEN2r2uk1OFGN1kDbz+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTWY681Nfuo0TRTB3w7lEARnNDSs+/LWE7XsIjKFZek58EYIVMBG59DPA3Vk+mQLsYmFaX+DZ//QC38iQezWVu7fySjmHEsEqIUgyaX5SUATEPacCruHgMNmjSMqPF638mVF/mXaq0+//dEuBZ+kMC3eEPv+8He2/jsCnLSeA6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8I81elF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFCB1F000E9;
-	Wed, 20 May 2026 16:45:39 +0000 (UTC)
+	 MIME-Version; b=OrIeTsS7oYq2kvc8L3/nrEZMlquTm7EXm8p6XzHHG33iDr6nPRMWSPJudW1Bi0fGap0uNu0gQb9TnnfRO3mQVDmtE6MVSbGwW5GKSuWfNmV12X58rO66qhw7gXcVhP7XK2jcwDx6zt2kEZcgs3vBn6B2qqJkLhmbx0yWsWmRP/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMWxrWsd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEBF1F000E9;
+	Wed, 20 May 2026 17:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295539;
-	bh=190O2ElUI8ZTXI8kGcrSxKcLFiw5MhyNc+YtSTkgeh8=;
+	s=korg; t=1779297946;
+	bh=XU/bS2/s1+TzdwqGJ0uV83Zs22iICnKEjMRGLdVUUaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W8I81elFAx9SKx/iHPIeirvdev6a6vDEux3XbTu6edE0geYD/WHA7bz3pbZXI/hwu
-	 Gxqe1dkqWMVyzxMy5M3vOO9zS0AYwxnU9ZAUVAKcp/HBkmluB1pMEruq8WpigSwqg0
-	 5yW4TDbxGieOS7AWoUIeYa6xMlJo3JjKuUGNXX2U=
+	b=TMWxrWsdiF34s299v7K2/xJA34iPG22ihh4hTKYmlEP049O3pVJNXZDEs3dKQSk+w
+	 aOgBBAYbyW4lQFNV//hqvy1hHQu7d4n9suvijBPKD7l4B7Ri2+5f4nRG3f4W6NDctW
+	 CMCzzD360NLQtUSsy9dW4lWwiKFp+FPJc2MwJM+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0457/1146] rtla: Fix segfault on multiple SIGINTs
-Date: Wed, 20 May 2026 18:11:47 +0200
-Message-ID: <20260520162158.540982416@linuxfoundation.org>
+Subject: [PATCH 6.18 225/957] iommu/riscv: Stop polling when CQCSR reports an error
+Date: Wed, 20 May 2026 18:11:48 +0200
+Message-ID: <20260520162139.420678207@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251425-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,76 +89,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8B2D9592D1D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,alibaba.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EE210596243
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-[ Upstream commit be8058f31b4e237604e4ce7599593ab68dc69ae7 ]
+[ Upstream commit b2e5684558edf3e9bbe18d0e0043854994eab1be ]
 
-Detach stop_trace() from SIGINT/SIGALRM on tool clean-up to prevent it
-from crashing RTLA by accessing freed memory.
+The cmdq wait loop busy-polls the consumer index until it advances
+or the software timeout expires. If the IOMMU has already signaled
+a command queue failure in CQCSR, continuing to poll for progress is
+pointless.
 
-This prevents a crash when multiple SIGINTs are received.
+Make riscv_iommu_queue_wait() also terminate the poll when any of these
+CQCSR error bits are observed.
 
-Fixes: d6899e560366 ("rtla/timerlat_hist: Abort event processing on second signal")
-Fixes: 80967b354a76 ("rtla/timerlat_top: Abort event processing on second signal")
-Reviewed-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20260310160725.144443-1-tglozar@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+This helps the caller return earlier in failure cases and avoids
+spinning until the full timeout interval when the hardware has already
+reported an error. On single-core systems in particular, the current
+busy-wait can delay servicing the command-timeout interrupt until the
+software timeout expires (90s by default).
+
+Fixes: 856c0cfe5c5f ("iommu/riscv: Command and fault queue support")
+Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/common.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/iommu/riscv/iommu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/tracing/rtla/src/common.c b/tools/tracing/rtla/src/common.c
-index f310b0d59ad3e..839c78c065e12 100644
---- a/tools/tracing/rtla/src/common.c
-+++ b/tools/tracing/rtla/src/common.c
-@@ -39,6 +39,18 @@ static void set_signals(struct common_params *params)
- 	}
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index c183818015813..1e8007a153c32 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -368,6 +368,8 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
+ 				  unsigned int timeout_us)
+ {
+ 	unsigned int cons = atomic_read(&queue->head);
++	unsigned int flags = RISCV_IOMMU_CQCSR_CQMF | RISCV_IOMMU_CQCSR_CMD_TO |
++			     RISCV_IOMMU_CQCSR_CMD_ILL;
+ 
+ 	/* Already processed by the consumer */
+ 	if ((int)(cons - index) > 0)
+@@ -375,6 +377,7 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
+ 
+ 	/* Monitor consumer index */
+ 	return readx_poll_timeout(riscv_iommu_queue_cons, queue, cons,
++				 (riscv_iommu_readl(queue->iommu, queue->qcr) & flags) ||
+ 				 (int)(cons - index) > 0, 0, timeout_us);
  }
  
-+/*
-+ * unset_signals - unsets the signals to stop the tool
-+ */
-+static void unset_signals(struct common_params *params)
-+{
-+	signal(SIGINT, SIG_DFL);
-+	if (params->duration) {
-+		alarm(0);
-+		signal(SIGALRM, SIG_DFL);
-+	}
-+}
-+
- /*
-  * getopt_auto - auto-generates optstring from long_options
-  */
-@@ -314,7 +326,7 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
- 
- 	retval = ops->main(tool);
- 	if (retval)
--		goto out_trace;
-+		goto out_signals;
- 
- 	if (params->user_workload && !params->user.stopped_running) {
- 		params->user.should_run = 0;
-@@ -336,6 +348,8 @@ int run_tool(struct tool_ops *ops, int argc, char *argv[])
- 	if (ops->analyze)
- 		ops->analyze(tool, stopped);
- 
-+out_signals:
-+	unset_signals(params);
- out_trace:
- 	trace_events_destroy(&tool->record->trace, params->events);
- 	params->events = NULL;
 -- 
 2.53.0
 
