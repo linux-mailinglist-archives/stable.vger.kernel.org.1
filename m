@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252379-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COm4LTUBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:09 +0200
+	id 0IzPAFUkDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252379-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BF95972D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9169159A984
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 26AFE322A535
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5C39381F087
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBDE3E123F;
-	Wed, 20 May 2026 17:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF8436D4E1;
+	Wed, 20 May 2026 18:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfOYYNED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KUJCkF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317F53E9C3D;
-	Wed, 20 May 2026 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6673D75AB;
+	Wed, 20 May 2026 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298868; cv=none; b=uRkQlW4AZNbaMe4/PeIh9mDCumC8C3gXOeaRRCVHKpviu5cDPSZCJRqkAQnIvwL5ibdW3sEnpqszib7r2hfIbXaBYea5w+89xG2gCaOWBUEOaJ2x7TiuatinI+6srDxx9VWDPVblRV3YyeEcZpnwk0JDzgeeJEL5fPRee4sK30c=
+	t=1779300521; cv=none; b=LzpknBzG6OzL9C94ROKcjyTf55CHgMCkwZSCFfnwwkBiZCMeDpQ67OgY8awF7nTwbObBWgK5X1mUkL6En2k09f4iTZNcyypYyST80EgVB31HOXQOXFz9XAyOL2MvYxIdTi+SDK6uaSw+wvStM8a53WlVrokNy7PaOqSQOVBunBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298868; c=relaxed/simple;
-	bh=owq5UvBM1ShicPa2/29/FMs/NTB8LS4RO3fIBRIkn+U=;
+	s=arc-20240116; t=1779300521; c=relaxed/simple;
+	bh=3/SisJg8WoSMiEOVAIa+e5+iaRXnt7UjgIUCFgVpqLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oD36rDhE22YE2883a8T++FJO89MpNq8f/EAgtOtdDJQN28qC6tZDMBVpF2s8kruC850w+rKcqpGuVJrUE8ipBxy/UtF0Ha/Cl6694saRherxFDGZGci/55GP3vECN+YyXr2P4jbQhN/nExG1AGUkA1San+Vv4SwclqI7rPvn9L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfOYYNED; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EAA1F00893;
-	Wed, 20 May 2026 17:41:06 +0000 (UTC)
+	 MIME-Version; b=EJoNzPz2nUqVdBcCcXxg/uGzn9AQO/erolJx1c8LcV8EZEWaCVcOJ6moudbB8ZNye3XaM9DFeoTu0SCJE3DZ187iaOMBEzEF9+UoiaLTRgZLKgskkCyhk6YmsusIXdidQ1K9T6CwkbqoflpSkDnd0ctETkj1h4kEq7/xuxq9pMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KUJCkF3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15191F000E9;
+	Wed, 20 May 2026 18:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298867;
-	bh=WhkoSjLr6c/8Sl9i+hpXPb4FX4loWAb+Oqy//ZdFtDU=;
+	s=korg; t=1779300520;
+	bh=RtjSPu1FSamrGTirMFaEru21qg/Arsbnylb63uCgClE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wfOYYNEDWfmi1mHvZODawo20O2sbYCPiXi///jukLvUOs61koqNJGnOU7NrE7s3d9
-	 EvqpJbzSy1Y071V2GP837izJupVh2rliNYx0RnBYIQ8ftkNKs4yU3TgrH3xt9OR1Uw
-	 SMeCpgguTUfXUm3h6BEg1ecLnGrmVaOeFsODB/7E=
+	b=1KUJCkF3Ifm2JbiCVamXSiX2NrNriV+oVbQwMZOcdUhqd8C9GKm0bk5Hxvb9fLjXq
+	 1bQhMrWe8ZJrgU/KPofT/BmxEnShq2LGqF2IytBSvo9FXtC/bKAp48mIgAddQJblpk
+	 CW0ETzntORBlmzlVnEcwHdmGKkPux9R24AihJnUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 532/957] usb: typec: Fix error pointer dereference
+Subject: [PATCH 6.12 204/666] ASoC: fsl_xcvr: Fix event generation in fsl_xcvr_mode_put()
 Date: Wed, 20 May 2026 18:16:55 +0200
-Message-ID: <20260520162146.070386365@linuxfoundation.org>
+Message-ID: <20260520162115.627017395@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +68,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251778-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252379-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C4BF95972D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 9169159A984
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit f2529d08fcb429ea01bb87c326342f41483f8b2f ]
+[ Upstream commit 64a496ba976324615b845d60739dfcdae3d57434 ]
 
-The variable tps->partner is checked for an error pointer and then if it
-is, it sends an error message but does not return and then immediately
-dereferenced a few lines below:
+ALSA controls should return 1 if the value in the control changed but the
+control put operation fsl_xcvr_mode_put() only returns 0 or a negative
+error code, causing ALSA to not generate any change events.
 
-tps->partner = typec_register_partner(tps->port, &desc);
-if (IS_ERR(tps->partner))
-	dev_warn(tps->dev, "%s: failed to register partnet\n", __func__);
+Add a suitable check in the function before updating the mode variable.
 
-if (desc.identity) {
-	typec_partner_set_identity(tps->partner);
-	cd321x->cur_partner_identity = st.partner_identity;
-}
-
-Add early return and fix spelling mistake in error message.
-
-Detected by Smatch:
-drivers/usb/typec/tipd/core.c:827 cd321x_update_work() error:
-'tps->partner' dereferencing possible ERR_PTR()
-
-Fixes: 82432bbfb9e83 ("usb: typec: tipd: Handle mode transitions for CD321x")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260218214621.38154-1-ethantidmore06@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 28564486866f ("ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-9-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tipd/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
-index 2b1049c9a6f3c..01c657bc84e68 100644
---- a/drivers/usb/typec/tipd/core.c
-+++ b/drivers/usb/typec/tipd/core.c
-@@ -814,8 +814,10 @@ static void cd321x_update_work(struct work_struct *work)
- 			desc.identity = &st.partner_identity;
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index cae42d919f930..a042bae63ab34 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -218,10 +218,17 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
+ 	struct fsl_xcvr *xcvr = snd_soc_dai_get_drvdata(dai);
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int *item = ucontrol->value.enumerated.item;
++	int val = snd_soc_enum_item_to_val(e, item[0]);
+ 	struct snd_soc_card *card = dai->component->card;
+ 	struct snd_soc_pcm_runtime *rtd;
++	int ret;
++
++	if (val < FSL_XCVR_MODE_SPDIF || val > FSL_XCVR_MODE_EARC)
++		return -EINVAL;
  
- 		tps->partner = typec_register_partner(tps->port, &desc);
--		if (IS_ERR(tps->partner))
--			dev_warn(tps->dev, "%s: failed to register partnet\n", __func__);
-+		if (IS_ERR(tps->partner)) {
-+			dev_warn(tps->dev, "%s: failed to register partner\n", __func__);
-+			return;
-+		}
+-	xcvr->mode = snd_soc_enum_item_to_val(e, item[0]);
++	ret = (xcvr->mode != val);
++
++	xcvr->mode = val;
  
- 		if (desc.identity) {
- 			typec_partner_set_identity(tps->partner);
+ 	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
+ 			      (xcvr->mode == FSL_XCVR_MODE_ARC));
+@@ -231,7 +238,7 @@ static int fsl_xcvr_mode_put(struct snd_kcontrol *kcontrol,
+ 	rtd = snd_soc_get_pcm_runtime(card, card->dai_link);
+ 	rtd->pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream_count =
+ 		(xcvr->mode == FSL_XCVR_MODE_SPDIF ? 1 : 0);
+-	return 0;
++	return ret;
+ }
+ 
+ static int fsl_xcvr_mode_get(struct snd_kcontrol *kcontrol,
 -- 
 2.53.0
 
