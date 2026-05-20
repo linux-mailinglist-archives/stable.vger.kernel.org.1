@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K75FiP+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:03 +0200
+	id +G+oKyj1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59B2596766
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31536594DBF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35B513181779
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E88630B387E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15028368968;
-	Wed, 20 May 2026 18:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06CA3F23B7;
+	Wed, 20 May 2026 17:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsMoUwNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llk5WdqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4B681AA8;
-	Wed, 20 May 2026 18:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C233F23A4;
+	Wed, 20 May 2026 17:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300970; cv=none; b=ibAZBlC+eHH3WJLhhzZ4gwTdqv7dwBB5No2c6OFpti9Li++vqhMVnJgL3AGDMXdKSzq6bzqRPOXdSKgB3TELYymLlqfw/JabXqtqIJFOzR3RFVpLcbt+GsWh3D75617+ddQ+X6IXgyPQGVR85nyVRQG8eJZwyBvPRfGZNLlbHOc=
+	t=1779299215; cv=none; b=DncrqrmFXW0wgZgyqmIbVlHZbkJrn50Pr7XU34OQFoQG6XsqksbwuwjHEI3OhyPhEjMDfSJMrdY9ww+R+CuGaVxDB/5Iu1+F0APaTepUwT3XRCgjdVaS2w5lptZYJ9811jbwCC0yYiR5i8VBtAq7jJQ37BhOjmFKkiaZ44JHHLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300970; c=relaxed/simple;
-	bh=oKtn+EQrlNU6/OS+dub5s2a/EsYDAH1NiXtlU/a2R+w=;
+	s=arc-20240116; t=1779299215; c=relaxed/simple;
+	bh=FvGTcmAokTmvOXFyHlxqJrT/gb/FNVRSANNx/GJm/jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDyBWIac/oVYtJuuzk2oJ/QiyqWFWm+Fssq3AMq11CefcRl1FU0vDZVZmbPa7dLnVs6e31/OgSv9whjT8yKfRDKGXHAjLWtmL0OrHlaDfIMfd+BONAKKFXfIgCfwFitkVuXKGTLFzdVOYcLkZ/J6w6VlVt7UQfNKuBsrm+2hY84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsMoUwNi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886221F000E9;
-	Wed, 20 May 2026 18:16:06 +0000 (UTC)
+	 MIME-Version; b=S9hfyOOM0XYeuKu5wzPuzAAL0P7ZaODZpbfXbZU6MQW2/DAMDWcLz1eTr6M/9B04lNC86XnSUK1JeYs6963JWaomswho56iQ58CQn2Xoj1lI0LU0Tan7oQDuXssuf0pKmt9wKjuqQAdOSme/eh73gHJ3gOPtr7bzYyASpozhZEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llk5WdqH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ED31F000E9;
+	Wed, 20 May 2026 17:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300967;
-	bh=yxIkJ2/Dx3BhbKGQhAU/TokCZ83QeWhxILK9nAVojGo=;
+	s=korg; t=1779299214;
+	bh=LVdnAMsmAv8zIT61DSS896CZ8omwLQihNqFyIsywo70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EsMoUwNiNQp83xZ74lVTIeBa4tpMgSYAsRalll6BdAxa5ttG21Bw5xa2hwJFxcNuB
-	 60ogB7j1PIc3J/ih4KYyB9Pxo99v8M5UjYnruSCKcOmLZ5Mt33YYRYiaXnWD2DnBrs
-	 9mwPEKBGP8NvcmFCeWjauaQSUOnBCUOckGqLHNRU=
+	b=llk5WdqHksLvac7In/E3Fkq8FxE8k1Xrizhyo7RvvwWXJdAihnKyULHbBhyzzvPde
+	 z0WqFNm2NphWBBPkEnhbq9KGYTXvW5PHqYotA+DZKfId/9Z9iJRRtlPJHYinwAGuiE
+	 KALnZMfi7p1QKJh2nSrQtJ3mD942+xezo4ySdY6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 375/666] perf tool_pmu: Factor tool events into their own PMU
-Date: Wed, 20 May 2026 18:19:46 +0200
-Message-ID: <20260520162119.375577583@linuxfoundation.org>
+Subject: [PATCH 6.18 704/957] net: mana: Add standard counter rx_missed_errors
+Date: Wed, 20 May 2026 18:19:47 +0200
+Message-ID: <20260520162149.806961119@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,1475 +69,223 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251914-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252550-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,info.name:url]
-X-Rspamd-Queue-Id: E59B2596766
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 31536594DBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 240505b2d0adcdc8fd018117e88dc27b09734735 ]
+[ Upstream commit be4f1d67ec56f23f37714ac73c01094e63c7ff28 ]
 
-Rather than treat tool events as a special kind of event, create a
-tool only PMU where the events/aliases match the existing
-duration_time, user_time and system_time events. Remove special
-parsing and printing support for the tool events, but add function
-calls for when PMU functions are called on a tool_pmu.
+Report standard counter stats->rx_missed_errors
+using hc_rx_discards_no_wqe from the hardware.
 
-Move the tool PMU code in evsel into tool_pmu.c to better encapsulate
-the tool event behavior in that file.
+Add a global workqueue to periodically run
+mana_query_gf_stats every 2 seconds to get the latest
+info in eth_stats and define a driver capability flag
+to notify hardware of the periodic queries.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20241002032016.333748-5-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: c9ef786c0970 ("perf cgroup: Update metric leader in evlist__expand_cgroup")
+To avoid repeated failures and log flooding, the workqueue
+is not rescheduled if mana_query_gf_stats fails on HWC timeout
+error and the stats are reset to 0. Other errors are transient
+which will not need a VF reset for recovery.
+
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1763120599-6331-3-git-send-email-ernis@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7fdaf069bd0 ("net: mana: Don't overwrite port probe error with add_adev result")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-list.c      |  13 +-
- tools/perf/builtin-stat.c      |   1 +
- tools/perf/util/Build          |   1 +
- tools/perf/util/evsel.c        | 272 ++--------------------
- tools/perf/util/evsel.h        |  28 +--
- tools/perf/util/metricgroup.c  |   1 +
- tools/perf/util/parse-events.c |  39 ----
- tools/perf/util/parse-events.h |   3 -
- tools/perf/util/parse-events.l |  11 -
- tools/perf/util/parse-events.y |  16 --
- tools/perf/util/pmu.c          |  20 +-
- tools/perf/util/pmu.h          |   2 +
- tools/perf/util/pmus.c         |   9 +
- tools/perf/util/print-events.c |  36 +--
- tools/perf/util/print-events.h |   1 -
- tools/perf/util/stat-display.c |   6 +-
- tools/perf/util/stat-shadow.c  |   1 +
- tools/perf/util/tool_pmu.c     | 411 +++++++++++++++++++++++++++++++++
- tools/perf/util/tool_pmu.h     |  51 ++++
- 19 files changed, 530 insertions(+), 392 deletions(-)
- create mode 100644 tools/perf/util/tool_pmu.c
- create mode 100644 tools/perf/util/tool_pmu.h
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 36 +++++++++++++++++--
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  2 --
+ include/net/mana/gdma.h                       |  6 +++-
+ include/net/mana/mana.h                       |  6 +++-
+ 4 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/builtin-list.c b/tools/perf/builtin-list.c
-index c5331721dfee9..9e7fdfcdd7ffb 100644
---- a/tools/perf/builtin-list.c
-+++ b/tools/perf/builtin-list.c
-@@ -19,6 +19,7 @@
- #include "util/string2.h"
- #include "util/strlist.h"
- #include "util/strbuf.h"
-+#include "util/tool_pmu.h"
- #include <subcmd/pager.h>
- #include <subcmd/parse-options.h>
- #include <linux/zalloc.h>
-@@ -614,9 +615,18 @@ int cmd_list(int argc, const char **argv)
- 					event_symbols_hw, PERF_COUNT_HW_MAX);
- 		else if (strcmp(argv[i], "sw") == 0 ||
- 			 strcmp(argv[i], "software") == 0) {
-+			char *old_pmu_glob = default_ps.pmu_glob;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 2e5efc03cacec..b0d411ab1067f 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -534,6 +534,11 @@ static void mana_get_stats64(struct net_device *ndev,
+ 
+ 	netdev_stats_to_stats64(st, &ndev->stats);
+ 
++	if (apc->ac->hwc_timeout_occurred)
++		netdev_warn_once(ndev, "HWC timeout occurred\n");
 +
- 			print_symbol_events(&print_cb, ps, PERF_TYPE_SOFTWARE,
- 					event_symbols_sw, PERF_COUNT_SW_MAX);
--			print_tool_events(&print_cb, ps);
-+			default_ps.pmu_glob = strdup("tool");
-+			if (!default_ps.pmu_glob) {
-+				ret = -1;
-+				goto out;
-+			}
-+			perf_pmus__print_pmu_events(&print_cb, ps);
-+			zfree(&default_ps.pmu_glob);
-+			default_ps.pmu_glob = old_pmu_glob;
- 		} else if (strcmp(argv[i], "cache") == 0 ||
- 			 strcmp(argv[i], "hwcache") == 0)
- 			print_hwcache_events(&print_cb, ps);
-@@ -664,7 +674,6 @@ int cmd_list(int argc, const char **argv)
- 					event_symbols_hw, PERF_COUNT_HW_MAX);
- 			print_symbol_events(&print_cb, ps, PERF_TYPE_SOFTWARE,
- 					event_symbols_sw, PERF_COUNT_SW_MAX);
--			print_tool_events(&print_cb, ps);
- 			print_hwcache_events(&print_cb, ps);
- 			perf_pmus__print_pmu_events(&print_cb, ps);
- 			print_tracepoint_events(&print_cb, ps);
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index e476598de8083..e8708f785e7f2 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -46,6 +46,7 @@
- #include "util/parse-events.h"
- #include "util/pmus.h"
- #include "util/pmu.h"
-+#include "util/tool_pmu.h"
- #include "util/event.h"
- #include "util/evlist.h"
- #include "util/evsel.h"
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index dc616292b2ddf..fa508e113dd0c 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -83,6 +83,7 @@ perf-util-y += pmu.o
- perf-util-y += pmus.o
- perf-util-y += pmu-flex.o
- perf-util-y += pmu-bison.o
-+perf-util-y += tool_pmu.o
- perf-util-y += svghelper.o
- perf-util-$(CONFIG_LIBTRACEEVENT) += trace-event-info.o
- perf-util-y += trace-event-scripting.o
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index 6e8d70ec05bad..d2965dc49bac2 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -10,7 +10,6 @@
- #include <errno.h>
- #include <inttypes.h>
- #include <linux/bitops.h>
--#include <api/io.h>
- #include <api/fs/fs.h>
- #include <api/fs/tracing_path.h>
- #include <linux/hw_breakpoint.h>
-@@ -51,6 +50,7 @@
- #include "off_cpu.h"
- #include "pmu.h"
- #include "pmus.h"
-+#include "tool_pmu.h"
- #include "rlimit.h"
- #include "../perf-sys.h"
- #include "util/parse-branch-options.h"
-@@ -71,33 +71,6 @@ struct perf_missing_features perf_missing_features;
- 
- static clockid_t clockid;
- 
--static const char *const perf_tool_event__tool_names[PERF_TOOL_MAX] = {
--	NULL,
--	"duration_time",
--	"user_time",
--	"system_time",
--};
--
--const char *perf_tool_event__to_str(enum perf_tool_event ev)
--{
--	if (ev > PERF_TOOL_NONE && ev < PERF_TOOL_MAX)
--		return perf_tool_event__tool_names[ev];
--
--	return NULL;
--}
--
--enum perf_tool_event perf_tool_event__from_str(const char *str)
--{
--	int i;
--
--	perf_tool_event__for_each_event(i) {
--		if (!strcmp(str, perf_tool_event__tool_names[i]))
--			return i;
--	}
--	return PERF_TOOL_NONE;
--}
--
--
- static int evsel__no_extra_init(struct evsel *evsel __maybe_unused)
- {
- 	return 0;
-@@ -422,7 +395,6 @@ struct evsel *evsel__clone(struct evsel *orig)
- 	evsel->core.leader = orig->core.leader;
- 
- 	evsel->max_events = orig->max_events;
--	evsel->tool_event = orig->tool_event;
- 	free((char *)evsel->unit);
- 	evsel->unit = strdup(orig->unit);
- 	if (evsel->unit == NULL)
-@@ -620,11 +592,6 @@ static int evsel__sw_name(struct evsel *evsel, char *bf, size_t size)
- 	return r + evsel__add_modifiers(evsel, bf + r, size - r);
- }
- 
--static int evsel__tool_name(enum perf_tool_event ev, char *bf, size_t size)
--{
--	return scnprintf(bf, size, "%s", perf_tool_event__to_str(ev));
--}
--
- static int __evsel__bp_name(char *bf, size_t size, u64 addr, u64 type)
- {
- 	int r;
-@@ -775,10 +742,7 @@ const char *evsel__name(struct evsel *evsel)
- 		break;
- 
- 	case PERF_TYPE_SOFTWARE:
--		if (evsel__is_tool(evsel))
--			evsel__tool_name(evsel__tool_event(evsel), bf, sizeof(bf));
--		else
--			evsel__sw_name(evsel, bf, sizeof(bf));
-+		evsel__sw_name(evsel, bf, sizeof(bf));
- 		break;
- 
- 	case PERF_TYPE_TRACEPOINT:
-@@ -789,6 +753,10 @@ const char *evsel__name(struct evsel *evsel)
- 		evsel__bp_name(evsel, bf, sizeof(bf));
- 		break;
- 
-+	case PERF_PMU_TYPE_TOOL:
-+		scnprintf(bf, sizeof(bf), "%s", evsel__tool_pmu_event_name(evsel));
-+		break;
++	st->rx_missed_errors = apc->ac->hc_stats.hc_rx_discards_no_wqe;
 +
- 	default:
- 		scnprintf(bf, sizeof(bf), "unknown attr type: %d",
- 			  evsel->core.attr.type);
-@@ -814,7 +782,7 @@ const char *evsel__metric_id(const struct evsel *evsel)
- 		return evsel->metric_id;
+ 	for (q = 0; q < num_queues; q++) {
+ 		rx_stats = &apc->rxqs[q]->stats;
  
- 	if (evsel__is_tool(evsel))
--		return perf_tool_event__to_str(evsel__tool_event(evsel));
-+		return evsel__tool_pmu_event_name(evsel);
- 
- 	return "unknown";
- }
-@@ -1698,167 +1666,6 @@ static int evsel__read_group(struct evsel *leader, int cpu_map_idx, int thread)
- 	return evsel__process_group_data(leader, cpu_map_idx, thread, data);
- }
- 
--static bool read_until_char(struct io *io, char e)
--{
--	int c;
--
--	do {
--		c = io__get_char(io);
--		if (c == -1)
--			return false;
--	} while (c != e);
--	return true;
--}
--
--static int read_stat_field(int fd, struct perf_cpu cpu, int field, __u64 *val)
--{
--	char buf[256];
--	struct io io;
--	int i;
--
--	io__init(&io, fd, buf, sizeof(buf));
--
--	/* Skip lines to relevant CPU. */
--	for (i = -1; i < cpu.cpu; i++) {
--		if (!read_until_char(&io, '\n'))
--			return -EINVAL;
--	}
--	/* Skip to "cpu". */
--	if (io__get_char(&io) != 'c') return -EINVAL;
--	if (io__get_char(&io) != 'p') return -EINVAL;
--	if (io__get_char(&io) != 'u') return -EINVAL;
--
--	/* Skip N of cpuN. */
--	if (!read_until_char(&io, ' '))
--		return -EINVAL;
--
--	i = 1;
--	while (true) {
--		if (io__get_dec(&io, val) != ' ')
--			break;
--		if (field == i)
--			return 0;
--		i++;
--	}
--	return -EINVAL;
--}
--
--static int read_pid_stat_field(int fd, int field, __u64 *val)
--{
--	char buf[256];
--	struct io io;
--	int c, i;
--
--	io__init(&io, fd, buf, sizeof(buf));
--	if (io__get_dec(&io, val) != ' ')
--		return -EINVAL;
--	if (field == 1)
--		return 0;
--
--	/* Skip comm. */
--	if (io__get_char(&io) != '(' || !read_until_char(&io, ')'))
--		return -EINVAL;
--	if (field == 2)
--		return -EINVAL; /* String can't be returned. */
--
--	/* Skip state */
--	if (io__get_char(&io) != ' ' || io__get_char(&io) == -1)
--		return -EINVAL;
--	if (field == 3)
--		return -EINVAL; /* String can't be returned. */
--
--	/* Loop over numeric fields*/
--	if (io__get_char(&io) != ' ')
--		return -EINVAL;
--
--	i = 4;
--	while (true) {
--		c = io__get_dec(&io, val);
--		if (c == -1)
--			return -EINVAL;
--		if (c == -2) {
--			/* Assume a -ve was read */
--			c = io__get_dec(&io, val);
--			*val *= -1;
--		}
--		if (c != ' ')
--			return -EINVAL;
--		if (field == i)
--			return 0;
--		i++;
--	}
--	return -EINVAL;
--}
--
--static int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
--{
--	__u64 *start_time, cur_time, delta_start;
--	int fd, err = 0;
--	struct perf_counts_values *count;
--	bool adjust = false;
--
--	count = perf_counts(evsel->counts, cpu_map_idx, thread);
--
--	switch (evsel__tool_event(evsel)) {
--	case PERF_TOOL_DURATION_TIME:
--		/*
--		 * Pretend duration_time is only on the first CPU and thread, or
--		 * else aggregation will scale duration_time by the number of
--		 * CPUs/threads.
--		 */
--		start_time = &evsel->start_time;
--		if (cpu_map_idx == 0 && thread == 0)
--			cur_time = rdclock();
--		else
--			cur_time = *start_time;
--		break;
--	case PERF_TOOL_USER_TIME:
--	case PERF_TOOL_SYSTEM_TIME: {
--		bool system = evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME;
--
--		start_time = xyarray__entry(evsel->start_times, cpu_map_idx, thread);
--		fd = FD(evsel, cpu_map_idx, thread);
--		lseek(fd, SEEK_SET, 0);
--		if (evsel->pid_stat) {
--			/* The event exists solely on 1 CPU. */
--			if (cpu_map_idx == 0)
--				err = read_pid_stat_field(fd, system ? 15 : 14, &cur_time);
--			else
--				cur_time = 0;
--		} else {
--			/* The event is for all threads. */
--			if (thread == 0) {
--				struct perf_cpu cpu = perf_cpu_map__cpu(evsel->core.cpus,
--									cpu_map_idx);
--
--				err = read_stat_field(fd, cpu, system ? 3 : 1, &cur_time);
--			} else {
--				cur_time = 0;
--			}
--		}
--		adjust = true;
--		break;
--	}
--	case PERF_TOOL_NONE:
--	case PERF_TOOL_MAX:
--	default:
--		err = -EINVAL;
--	}
--	if (err)
--		return err;
--
--	delta_start = cur_time - *start_time;
--	if (adjust) {
--		__u64 ticks_per_sec = sysconf(_SC_CLK_TCK);
--
--		delta_start *= 1000000000 / ticks_per_sec;
--	}
--	count->val    = delta_start;
--	count->ena    = count->run = delta_start;
--	count->lost   = 0;
--	return 0;
--}
--
- bool __evsel__match(const struct evsel *evsel, u32 type, u64 config)
- {
- 
-@@ -2074,6 +1881,7 @@ static struct perf_thread_map *empty_thread_map;
- static int __evsel__prepare_open(struct evsel *evsel, struct perf_cpu_map *cpus,
- 		struct perf_thread_map *threads)
- {
-+	int ret = 0;
- 	int nthreads = perf_thread_map__nr(threads);
- 
- 	if ((perf_missing_features.write_backward && evsel->core.attr.write_backward) ||
-@@ -2104,19 +1912,14 @@ static int __evsel__prepare_open(struct evsel *evsel, struct perf_cpu_map *cpus,
- 	    perf_evsel__alloc_fd(&evsel->core, perf_cpu_map__nr(cpus), nthreads) < 0)
- 		return -ENOMEM;
- 
--	if ((evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME ||
--	     evsel__tool_event(evsel) == PERF_TOOL_USER_TIME) &&
--	    !evsel->start_times) {
--		evsel->start_times = xyarray__new(perf_cpu_map__nr(cpus), nthreads, sizeof(__u64));
--		if (!evsel->start_times)
--			return -ENOMEM;
--	}
-+	if (evsel__is_tool(evsel))
-+		ret = evsel__tool_pmu_prepare_open(evsel, cpus, nthreads);
- 
- 	evsel->open_flags = PERF_FLAG_FD_CLOEXEC;
- 	if (evsel->cgrp)
- 		evsel->open_flags |= PERF_FLAG_PID_CGROUP;
- 
--	return 0;
-+	return ret;
- }
- 
- static void evsel__disable_missing_features(struct evsel *evsel)
-@@ -2294,13 +2097,6 @@ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
- 	int pid = -1, err, old_errno;
- 	enum rlimit_action set_rlimit = NO_CHANGE;
- 
--	if (evsel__tool_event(evsel) == PERF_TOOL_DURATION_TIME) {
--		if (evsel->core.attr.sample_period) /* no sampling */
--			return -EINVAL;
--		evsel->start_time = rdclock();
--		return 0;
--	}
--
- 	if (evsel__is_retire_lat(evsel))
- 		return tpebs_start(evsel->evlist);
- 
-@@ -2325,6 +2121,12 @@ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
- 	pr_debug3("Opening: %s\n", evsel__name(evsel));
- 	display_attr(&evsel->core.attr);
- 
-+	if (evsel__is_tool(evsel)) {
-+		return evsel__tool_pmu_open(evsel, threads,
-+					    start_cpu_map_idx,
-+					    end_cpu_map_idx);
-+	}
-+
- 	for (idx = start_cpu_map_idx; idx < end_cpu_map_idx; idx++) {
- 
- 		for (thread = 0; thread < nthreads; thread++) {
-@@ -2336,46 +2138,6 @@ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
- 			if (!evsel->cgrp && !evsel->core.system_wide)
- 				pid = perf_thread_map__pid(threads, thread);
- 
--			if (evsel__tool_event(evsel) == PERF_TOOL_USER_TIME ||
--			    evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME) {
--				bool system = evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME;
--				__u64 *start_time = NULL;
--
--				if (evsel->core.attr.sample_period) {
--					/* no sampling */
--					err = -EINVAL;
--					goto out_close;
--				}
--				if (pid > -1) {
--					char buf[64];
--
--					snprintf(buf, sizeof(buf), "/proc/%d/stat", pid);
--					fd = open(buf, O_RDONLY);
--					evsel->pid_stat = true;
--				} else {
--					fd = open("/proc/stat", O_RDONLY);
--				}
--				FD(evsel, idx, thread) = fd;
--				if (fd < 0) {
--					err = -errno;
--					goto out_close;
--				}
--				start_time = xyarray__entry(evsel->start_times, idx, thread);
--				if (pid > -1) {
--					err = read_pid_stat_field(fd, system ? 15 : 14,
--								  start_time);
--				} else {
--					struct perf_cpu cpu;
--
--					cpu = perf_cpu_map__cpu(evsel->core.cpus, idx);
--					err = read_stat_field(fd, cpu, system ? 3 : 1,
--							      start_time);
--				}
--				if (err)
--					goto out_close;
--				continue;
--			}
--
- 			group_fd = get_group_fd(evsel, idx, thread);
- 
- 			if (group_fd == -2) {
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index dc0d300776f16..b23fa3ca88883 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -11,6 +11,7 @@
- #include <perf/evsel.h>
- #include "symbol_conf.h"
- #include "pmus.h"
-+#include "pmu.h"
- 
- struct bpf_object;
- struct cgroup;
-@@ -22,25 +23,9 @@ struct target;
- struct hashmap;
- struct bperf_leader_bpf;
- struct bperf_follower_bpf;
--struct perf_pmu;
- 
- typedef int (evsel__sb_cb_t)(union perf_event *event, void *data);
- 
--enum perf_tool_event {
--	PERF_TOOL_NONE		= 0,
--	PERF_TOOL_DURATION_TIME = 1,
--	PERF_TOOL_USER_TIME = 2,
--	PERF_TOOL_SYSTEM_TIME = 3,
--
--	PERF_TOOL_MAX,
--};
--
--const char *perf_tool_event__to_str(enum perf_tool_event ev);
--enum perf_tool_event perf_tool_event__from_str(const char *str);
--
--#define perf_tool_event__for_each_event(ev)		\
--	for ((ev) = PERF_TOOL_DURATION_TIME; (ev) < PERF_TOOL_MAX; ev++)
--
- /** struct evsel - event selector
-  *
-  * @evlist - evlist this evsel is in, if it is in one.
-@@ -83,7 +68,6 @@ struct evsel {
- 		const char		*unit;
- 		struct cgroup		*cgrp;
- 		const char		*metric_id;
--		enum perf_tool_event	tool_event;
- 		/* parse modifier helper */
- 		int			exclude_GH;
- 		int			sample_read;
-@@ -323,21 +307,11 @@ const char *evsel__name(struct evsel *evsel);
- bool evsel__name_is(struct evsel *evsel, const char *name);
- const char *evsel__metric_id(const struct evsel *evsel);
- 
--static inline bool evsel__is_tool(const struct evsel *evsel)
--{
--	return evsel->tool_event != PERF_TOOL_NONE;
--}
--
- static inline bool evsel__is_retire_lat(const struct evsel *evsel)
- {
- 	return evsel->retire_lat;
- }
- 
--static inline enum perf_tool_event evsel__tool_event(const struct evsel *evsel)
--{
--	return evsel->tool_event;
--}
--
- const char *evsel__group_name(struct evsel *evsel);
- int evsel__group_desc(struct evsel *evsel, char *buf, size_t size);
- 
-diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
-index 4dff3e925a47b..9181548e88810 100644
---- a/tools/perf/util/metricgroup.c
-+++ b/tools/perf/util/metricgroup.c
-@@ -14,6 +14,7 @@
- #include "pmus.h"
- #include "print-events.h"
- #include "smt.h"
-+#include "tool_pmu.h"
- #include "expr.h"
- #include "rblist.h"
- #include <string.h>
-diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
-index fcc4dab618bee..ba84a451c70a3 100644
---- a/tools/perf/util/parse-events.c
-+++ b/tools/perf/util/parse-events.c
-@@ -302,38 +302,6 @@ static int add_event(struct list_head *list, int *idx,
- 			   alternate_hw_config) ? 0 : -ENOMEM;
- }
- 
--static int add_event_tool(struct list_head *list, int *idx,
--			  enum perf_tool_event tool_event)
--{
--	struct evsel *evsel;
--	struct perf_event_attr attr = {
--		.type = PERF_TYPE_SOFTWARE,
--		.config = PERF_COUNT_SW_DUMMY,
--	};
--	struct perf_cpu_map *cpu_list = NULL;
--
--	if (tool_event == PERF_TOOL_DURATION_TIME) {
--		/* Duration time is gathered globally, pretend it is only on CPU0. */
--		cpu_list = perf_cpu_map__new("0");
--	}
--	evsel = __add_event(list, idx, &attr, /*init_attr=*/true, /*name=*/NULL,
--			    /*metric_id=*/NULL, /*pmu=*/NULL,
--			    /*config_terms=*/NULL, /*auto_merge_stats=*/false,
--			    cpu_list,
--			    /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
--	perf_cpu_map__put(cpu_list);
--	if (!evsel)
--		return -ENOMEM;
--	evsel->tool_event = tool_event;
--	if (tool_event == PERF_TOOL_DURATION_TIME
--	    || tool_event == PERF_TOOL_USER_TIME
--	    || tool_event == PERF_TOOL_SYSTEM_TIME) {
--		free((char *)evsel->unit);
--		evsel->unit = strdup("ns");
--	}
--	return 0;
--}
--
- /**
-  * parse_aliases - search names for entries beginning or equalling str ignoring
-  *                 case. If mutliple entries in names match str then the longest
-@@ -1430,13 +1398,6 @@ int parse_events_add_numeric(struct parse_events_state *parse_state,
- 					type, /*extended_type=*/0, config, head_config);
- }
- 
--int parse_events_add_tool(struct parse_events_state *parse_state,
--			  struct list_head *list,
--			  int tool_event)
--{
--	return add_event_tool(list, &parse_state->idx, tool_event);
--}
--
- static bool config_term_percore(struct list_head *config_terms)
- {
- 	struct evsel_config_term *term;
-diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
-index 2b52f8d6aa29a..e9f59de2304be 100644
---- a/tools/perf/util/parse-events.h
-+++ b/tools/perf/util/parse-events.h
-@@ -227,9 +227,6 @@ int parse_events_add_numeric(struct parse_events_state *parse_state,
- 			     u32 type, u64 config,
- 			     const struct parse_events_terms *head_config,
- 			     bool wildcard);
--int parse_events_add_tool(struct parse_events_state *parse_state,
--			  struct list_head *list,
--			  int tool_event);
- int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
- 			   struct parse_events_state *parse_state,
- 			   struct parse_events_terms *parsed_terms);
-diff --git a/tools/perf/util/parse-events.l b/tools/perf/util/parse-events.l
-index 5a0bcd7f166ae..14e5bd856a187 100644
---- a/tools/perf/util/parse-events.l
-+++ b/tools/perf/util/parse-events.l
-@@ -121,14 +121,6 @@ static int sym(yyscan_t scanner, int type, int config)
- 	return type == PERF_TYPE_HARDWARE ? PE_VALUE_SYM_HW : PE_VALUE_SYM_SW;
- }
- 
--static int tool(yyscan_t scanner, enum perf_tool_event event)
--{
--	YYSTYPE *yylval = parse_events_get_lval(scanner);
--
--	yylval->num = event;
--	return PE_VALUE_SYM_TOOL;
--}
--
- static int term(yyscan_t scanner, enum parse_events__term_type type)
- {
- 	YYSTYPE *yylval = parse_events_get_lval(scanner);
-@@ -404,9 +396,6 @@ cpu-migrations|migrations			{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COU
- alignment-faults				{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_ALIGNMENT_FAULTS); }
- emulation-faults				{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_EMULATION_FAULTS); }
- dummy						{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_DUMMY); }
--duration_time					{ return tool(yyscanner, PERF_TOOL_DURATION_TIME); }
--user_time						{ return tool(yyscanner, PERF_TOOL_USER_TIME); }
--system_time						{ return tool(yyscanner, PERF_TOOL_SYSTEM_TIME); }
- bpf-output					{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_BPF_OUTPUT); }
- cgroup-switches					{ return sym(yyscanner, PERF_TYPE_SOFTWARE, PERF_COUNT_SW_CGROUP_SWITCHES); }
- 
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index dcf47fabdfdd7..f888cbb076d67 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -56,7 +56,6 @@ static void free_list_evsel(struct list_head* list_evsel)
- 
- %token PE_START_EVENTS PE_START_TERMS
- %token PE_VALUE PE_VALUE_SYM_HW PE_VALUE_SYM_SW PE_TERM
--%token PE_VALUE_SYM_TOOL
- %token PE_EVENT_NAME
- %token PE_RAW PE_NAME
- %token PE_MODIFIER_EVENT PE_MODIFIER_BP PE_BP_COLON PE_BP_SLASH
-@@ -68,7 +67,6 @@ static void free_list_evsel(struct list_head* list_evsel)
- %type <num> PE_VALUE
- %type <num> PE_VALUE_SYM_HW
- %type <num> PE_VALUE_SYM_SW
--%type <num> PE_VALUE_SYM_TOOL
- %type <mod> PE_MODIFIER_EVENT
- %type <term_type> PE_TERM
- %type <num> value_sym
-@@ -350,20 +348,6 @@ value_sym sep_slash_slash_dc
- 		PE_ABORT(err);
- 	$$ = list;
- }
--|
--PE_VALUE_SYM_TOOL sep_slash_slash_dc
--{
--	struct list_head *list;
--	int err;
--
--	list = alloc_list();
--	if (!list)
--		YYNOMEM;
--	err = parse_events_add_tool(_parse_state, list, $1);
--	if (err)
--		YYNOMEM;
--	$$ = list;
--}
- 
- event_legacy_cache:
- PE_LEGACY_CACHE opt_event_config
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 8885998c19530..15fb144e890f0 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -19,6 +19,7 @@
- #include "evsel.h"
- #include "pmu.h"
- #include "pmus.h"
-+#include "tool_pmu.h"
- #include <util/pmu-bison.h>
- #include <util/pmu-flex.h>
- #include "parse-events.h"
-@@ -1511,6 +1512,9 @@ int perf_pmu__config(struct perf_pmu *pmu, struct perf_event_attr *attr,
- {
- 	bool zero = !!pmu->perf_event_attr_init_default;
- 
-+	if (perf_pmu__is_tool(pmu))
-+		return tool_pmu__config_terms(attr, head_terms, err);
-+
- 	/* Fake PMU doesn't have proper terms so nothing to configure in attr. */
- 	if (perf_pmu__is_fake(pmu))
- 		return 0;
-@@ -1623,8 +1627,8 @@ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_
- 	info->scale    = 0.0;
- 	info->snapshot = false;
- 
--	/* Fake PMU doesn't rewrite terms. */
--	if (perf_pmu__is_fake(pmu))
-+	/* Tool/fake PMU doesn't rewrite terms. */
-+	if (perf_pmu__is_tool(pmu) || perf_pmu__is_fake(pmu))
- 		goto out;
- 
- 	list_for_each_entry_safe(term, h, &head_terms->terms, list) {
-@@ -1794,6 +1798,8 @@ bool perf_pmu__have_event(struct perf_pmu *pmu, const char *name)
- {
- 	if (!name)
- 		return false;
-+	if (perf_pmu__is_tool(pmu))
-+		return perf_tool_event__from_str(name) != PERF_TOOL_NONE;
- 	if (perf_pmu__find_alias(pmu, name, /*load=*/ true) != NULL)
- 		return true;
- 	if (pmu->cpu_aliases_added || !pmu->events_table)
-@@ -1805,6 +1811,9 @@ size_t perf_pmu__num_events(struct perf_pmu *pmu)
- {
- 	size_t nr;
- 
-+	if (perf_pmu__is_tool(pmu))
-+		return tool_pmu__num_events();
-+
- 	pmu_aliases_parse(pmu);
- 	nr = pmu->sysfs_aliases + pmu->sys_json_aliases;
- 
-@@ -1866,6 +1875,9 @@ int perf_pmu__for_each_event(struct perf_pmu *pmu, bool skip_duplicate_pmus,
- 	int ret = 0;
- 	struct strbuf sb;
- 
-+	if (perf_pmu__is_tool(pmu))
-+		return tool_pmu__for_each_event_cb(pmu, state, cb);
-+
- 	strbuf_init(&sb, /*hint=*/ 0);
- 	pmu_aliases_parse(pmu);
- 	pmu_add_cpu_aliases(pmu);
-@@ -1954,6 +1966,7 @@ bool perf_pmu__is_software(const struct perf_pmu *pmu)
- 	case PERF_TYPE_HW_CACHE:	return false;
- 	case PERF_TYPE_RAW:		return false;
- 	case PERF_TYPE_BREAKPOINT:	return true;
-+	case PERF_PMU_TYPE_TOOL:	return true;
- 	default: break;
- 	}
- 	for (size_t i = 0; i < ARRAY_SIZE(known_sw_pmus); i++) {
-@@ -2281,6 +2294,9 @@ const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config)
- 	if (!pmu)
- 		return NULL;
- 
-+	if (perf_pmu__is_tool(pmu))
-+		return perf_tool_event__to_str(config);
-+
- 	pmu_aliases_parse(pmu);
- 	pmu_add_cpu_aliases(pmu);
- 	list_for_each_entry(event, &pmu->aliases, list) {
-diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
-index 0222124b86b92..2dba1cfa20ddd 100644
---- a/tools/perf/util/pmu.h
-+++ b/tools/perf/util/pmu.h
-@@ -37,6 +37,7 @@ struct perf_pmu_caps {
- };
- 
- enum {
-+	PERF_PMU_TYPE_TOOL = 0xFFFFFFFE,
- 	PERF_PMU_TYPE_FAKE = 0xFFFFFFFF,
- };
- 
-@@ -285,6 +286,7 @@ struct perf_pmu *perf_pmu__lookup(struct list_head *pmus, int dirfd, const char
- struct perf_pmu *perf_pmu__create_placeholder_core_pmu(struct list_head *core_pmus);
- void perf_pmu__delete(struct perf_pmu *pmu);
- struct perf_pmu *perf_pmus__find_core_pmu(void);
-+
- const char *perf_pmu__name_from_config(struct perf_pmu *pmu, u64 config);
- 
- #endif /* __PMU_H */
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index 362596ed27294..5af26a08fb915 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -15,6 +15,7 @@
- #include "evsel.h"
- #include "pmus.h"
- #include "pmu.h"
-+#include "tool_pmu.h"
- #include "print-events.h"
- #include "strbuf.h"
- 
-@@ -200,6 +201,7 @@ static void pmu_read_sysfs(bool core_only)
- 	int fd;
- 	DIR *dir;
- 	struct dirent *dent;
-+	struct perf_pmu *tool_pmu;
- 
- 	if (read_sysfs_all_pmus || (core_only && read_sysfs_core_pmus))
- 		return;
-@@ -229,6 +231,10 @@ static void pmu_read_sysfs(bool core_only)
- 			pr_err("Failure to set up any core PMUs\n");
- 	}
- 	list_sort(NULL, &core_pmus, pmus_cmp);
-+	if (!core_only) {
-+		tool_pmu = perf_pmus__tool_pmu();
-+		list_add_tail(&tool_pmu->list, &other_pmus);
-+	}
- 	list_sort(NULL, &other_pmus, pmus_cmp);
- 	if (!list_empty(&core_pmus)) {
- 		read_sysfs_core_pmus = true;
-@@ -584,6 +590,9 @@ void perf_pmus__print_raw_pmu_events(const struct print_callbacks *print_cb, voi
- 		int len = pmu_name_len_no_suffix(pmu->name);
- 		const char *desc = "(see 'man perf-list' or 'man perf-record' on how to encode it)";
- 
-+		if (perf_pmu__is_tool(pmu))
-+			continue;
-+
- 		if (!pmu->is_core)
- 			desc = NULL;
- 
-diff --git a/tools/perf/util/print-events.c b/tools/perf/util/print-events.c
-index a1c71d9793bd8..83aaf7cda6359 100644
---- a/tools/perf/util/print-events.c
-+++ b/tools/perf/util/print-events.c
-@@ -29,6 +29,7 @@
- #include "tracepoint.h"
- #include "pfm.h"
- #include "thread_map.h"
-+#include "tool_pmu.h"
- #include "util.h"
- 
- #define MAX_NAME_LEN 100
-@@ -43,21 +44,6 @@ static const char * const event_type_descriptors[] = {
- 	"Hardware breakpoint",
- };
- 
--static const struct event_symbol event_symbols_tool[PERF_TOOL_MAX] = {
--	[PERF_TOOL_DURATION_TIME] = {
--		.symbol = "duration_time",
--		.alias  = "",
--	},
--	[PERF_TOOL_USER_TIME] = {
--		.symbol = "user_time",
--		.alias  = "",
--	},
--	[PERF_TOOL_SYSTEM_TIME] = {
--		.symbol = "system_time",
--		.alias  = "",
--	},
--};
--
- /*
-  * Print the events from <debugfs_mount_point>/tracing/events
-  */
-@@ -342,24 +328,6 @@ int print_hwcache_events(const struct print_callbacks *print_cb, void *print_sta
+@@ -2836,7 +2841,7 @@ int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
  	return 0;
  }
  
--void print_tool_events(const struct print_callbacks *print_cb, void *print_state)
--{
--	// Start at 1 because the first enum entry means no tool event.
--	for (int i = 1; i < PERF_TOOL_MAX; ++i) {
--		print_cb->print_event(print_state,
--				"tool",
--				/*pmu_name=*/NULL,
--				event_symbols_tool[i].symbol,
--				event_symbols_tool[i].alias,
--				/*scale_unit=*/NULL,
--				/*deprecated=*/false,
--				"Tool event",
--				/*desc=*/NULL,
--				/*long_desc=*/NULL,
--				/*encoding_desc=*/NULL);
--	}
--}
--
- void print_symbol_events(const struct print_callbacks *print_cb, void *print_state,
- 			 unsigned int type, const struct event_symbol *syms,
- 			 unsigned int max)
-@@ -423,8 +391,6 @@ void print_events(const struct print_callbacks *print_cb, void *print_state)
- 	print_symbol_events(print_cb, print_state, PERF_TYPE_SOFTWARE,
- 			event_symbols_sw, PERF_COUNT_SW_MAX);
- 
--	print_tool_events(print_cb, print_state);
--
- 	print_hwcache_events(print_cb, print_state);
- 
- 	perf_pmus__print_pmu_events(print_cb, print_state);
-diff --git a/tools/perf/util/print-events.h b/tools/perf/util/print-events.h
-index bf4290bef0cd6..445efa1636c1b 100644
---- a/tools/perf/util/print-events.h
-+++ b/tools/perf/util/print-events.h
-@@ -36,7 +36,6 @@ void print_sdt_events(const struct print_callbacks *print_cb, void *print_state)
- void print_symbol_events(const struct print_callbacks *print_cb, void *print_state,
- 			 unsigned int type, const struct event_symbol *syms,
- 			 unsigned int max);
--void print_tool_events(const struct print_callbacks *print_cb, void *print_state);
- void print_tracepoint_events(const struct print_callbacks *print_cb, void *print_state);
- bool is_event_supported(u8 type, u64 config);
- 
-diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
-index ea96e4ebad8c8..a82a8ec79b399 100644
---- a/tools/perf/util/stat-display.c
-+++ b/tools/perf/util/stat-display.c
-@@ -21,6 +21,7 @@
- #include "iostat.h"
- #include "pmu.h"
- #include "pmus.h"
-+#include "tool_pmu.h"
- 
- #define CNTR_NOT_SUPPORTED	"<not supported>"
- #define CNTR_NOT_COUNTED	"<not counted>"
-@@ -946,7 +947,10 @@ static bool should_skip_zero_counter(struct perf_stat_config *config,
- 	if (config->aggr_mode == AGGR_THREAD && config->system_wide)
- 		return true;
- 
--	/* Tool events have the software PMU but are only gathered on 1. */
-+	/*
-+	 * Many tool events are only gathered on the first index, skip other
-+	 * zero values.
-+	 */
- 	if (evsel__is_tool(counter))
- 		return true;
- 
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 7c49997fab3a3..caffdaa8be9a1 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -15,6 +15,7 @@
- #include <linux/zalloc.h>
- #include "iostat.h"
- #include "util/hashmap.h"
-+#include "tool_pmu.h"
- 
- struct stats walltime_nsecs_stats;
- struct rusage_stats ru_stats;
-diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
-new file mode 100644
-index 0000000000000..f41fed39d70d8
---- /dev/null
-+++ b/tools/perf/util/tool_pmu.c
-@@ -0,0 +1,411 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "cgroup.h"
-+#include "counts.h"
-+#include "evsel.h"
-+#include "pmu.h"
-+#include "print-events.h"
-+#include "time-utils.h"
-+#include "tool_pmu.h"
-+#include <api/io.h>
-+#include <internal/threadmap.h>
-+#include <perf/threadmap.h>
-+#include <fcntl.h>
-+#include <strings.h>
-+
-+static const char *const tool_pmu__event_names[PERF_TOOL_MAX] = {
-+	NULL,
-+	"duration_time",
-+	"user_time",
-+	"system_time",
-+};
-+
-+
-+const char *perf_tool_event__to_str(enum perf_tool_event ev)
-+{
-+	if (ev > PERF_TOOL_NONE && ev < PERF_TOOL_MAX)
-+		return tool_pmu__event_names[ev];
-+
-+	return NULL;
-+}
-+
-+enum perf_tool_event perf_tool_event__from_str(const char *str)
-+{
-+	int i;
-+
-+	perf_tool_event__for_each_event(i) {
-+		if (!strcasecmp(str, tool_pmu__event_names[i]))
-+			return i;
-+	}
-+	return PERF_TOOL_NONE;
-+}
-+
-+static int tool_pmu__config_term(struct perf_event_attr *attr,
-+				 struct parse_events_term *term,
-+				 struct parse_events_error *err)
-+{
-+	if (term->type_term == PARSE_EVENTS__TERM_TYPE_USER) {
-+		enum perf_tool_event ev = perf_tool_event__from_str(term->config);
-+
-+		if (ev == PERF_TOOL_NONE)
-+			goto err_out;
-+
-+		attr->config = ev;
-+		return 0;
-+	}
-+err_out:
-+	if (err) {
-+		char *err_str;
-+
-+		parse_events_error__handle(err, term->err_val,
-+					asprintf(&err_str,
-+						"unexpected tool event term (%s) %s",
-+						parse_events__term_type_str(term->type_term),
-+						term->config) < 0
-+					? strdup("unexpected tool event term")
-+					: err_str,
-+					NULL);
-+	}
-+	return -EINVAL;
-+}
-+
-+int tool_pmu__config_terms(struct perf_event_attr *attr,
-+			   struct parse_events_terms *terms,
-+			   struct parse_events_error *err)
-+{
-+	struct parse_events_term *term;
-+
-+	list_for_each_entry(term, &terms->terms, list) {
-+		if (tool_pmu__config_term(attr, term, err))
-+			return -EINVAL;
-+	}
-+
-+	return 0;
-+
-+}
-+
-+int tool_pmu__for_each_event_cb(struct perf_pmu *pmu, void *state, pmu_event_callback cb)
-+{
-+	struct pmu_event_info info = {
-+		.pmu = pmu,
-+		.event_type_desc = "Tool event",
-+	};
-+	int i;
-+
-+	perf_tool_event__for_each_event(i) {
-+		int ret;
-+
-+		info.name = perf_tool_event__to_str(i);
-+		info.alias = NULL;
-+		info.scale_unit = NULL;
-+		info.desc = NULL;
-+		info.long_desc = NULL;
-+		info.encoding_desc = NULL;
-+		info.topic = NULL;
-+		info.pmu_name = pmu->name;
-+		info.deprecated = false;
-+		ret = cb(state, &info);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+bool perf_pmu__is_tool(const struct perf_pmu *pmu)
-+{
-+	return pmu && pmu->type == PERF_PMU_TYPE_TOOL;
-+}
-+
-+bool evsel__is_tool(const struct evsel *evsel)
-+{
-+	return perf_pmu__is_tool(evsel->pmu);
-+}
-+
-+enum perf_tool_event evsel__tool_event(const struct evsel *evsel)
-+{
-+	if (!evsel__is_tool(evsel))
-+		return PERF_TOOL_NONE;
-+
-+	return (enum perf_tool_event)evsel->core.attr.config;
-+}
-+
-+const char *evsel__tool_pmu_event_name(const struct evsel *evsel)
-+{
-+	return perf_tool_event__to_str(evsel->core.attr.config);
-+}
-+
-+static bool read_until_char(struct io *io, char e)
-+{
-+	int c;
-+
-+	do {
-+		c = io__get_char(io);
-+		if (c == -1)
-+			return false;
-+	} while (c != e);
-+	return true;
-+}
-+
-+static int read_stat_field(int fd, struct perf_cpu cpu, int field, __u64 *val)
-+{
-+	char buf[256];
-+	struct io io;
-+	int i;
-+
-+	io__init(&io, fd, buf, sizeof(buf));
-+
-+	/* Skip lines to relevant CPU. */
-+	for (i = -1; i < cpu.cpu; i++) {
-+		if (!read_until_char(&io, '\n'))
-+			return -EINVAL;
-+	}
-+	/* Skip to "cpu". */
-+	if (io__get_char(&io) != 'c') return -EINVAL;
-+	if (io__get_char(&io) != 'p') return -EINVAL;
-+	if (io__get_char(&io) != 'u') return -EINVAL;
-+
-+	/* Skip N of cpuN. */
-+	if (!read_until_char(&io, ' '))
-+		return -EINVAL;
-+
-+	i = 1;
-+	while (true) {
-+		if (io__get_dec(&io, val) != ' ')
-+			break;
-+		if (field == i)
-+			return 0;
-+		i++;
-+	}
-+	return -EINVAL;
-+}
-+
-+static int read_pid_stat_field(int fd, int field, __u64 *val)
-+{
-+	char buf[256];
-+	struct io io;
-+	int c, i;
-+
-+	io__init(&io, fd, buf, sizeof(buf));
-+	if (io__get_dec(&io, val) != ' ')
-+		return -EINVAL;
-+	if (field == 1)
-+		return 0;
-+
-+	/* Skip comm. */
-+	if (io__get_char(&io) != '(' || !read_until_char(&io, ')'))
-+		return -EINVAL;
-+	if (field == 2)
-+		return -EINVAL; /* String can't be returned. */
-+
-+	/* Skip state */
-+	if (io__get_char(&io) != ' ' || io__get_char(&io) == -1)
-+		return -EINVAL;
-+	if (field == 3)
-+		return -EINVAL; /* String can't be returned. */
-+
-+	/* Loop over numeric fields*/
-+	if (io__get_char(&io) != ' ')
-+		return -EINVAL;
-+
-+	i = 4;
-+	while (true) {
-+		c = io__get_dec(&io, val);
-+		if (c == -1)
-+			return -EINVAL;
-+		if (c == -2) {
-+			/* Assume a -ve was read */
-+			c = io__get_dec(&io, val);
-+			*val *= -1;
-+		}
-+		if (c != ' ')
-+			return -EINVAL;
-+		if (field == i)
-+			return 0;
-+		i++;
-+	}
-+	return -EINVAL;
-+}
-+
-+int evsel__tool_pmu_prepare_open(struct evsel *evsel,
-+				 struct perf_cpu_map *cpus,
-+				 int nthreads)
-+{
-+	if ((evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME ||
-+	     evsel__tool_event(evsel) == PERF_TOOL_USER_TIME) &&
-+	    !evsel->start_times) {
-+		evsel->start_times = xyarray__new(perf_cpu_map__nr(cpus),
-+						  nthreads,
-+						  sizeof(__u64));
-+		if (!evsel->start_times)
-+			return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+#define FD(e, x, y) (*(int *)xyarray__entry(e->core.fd, x, y))
-+
-+int evsel__tool_pmu_open(struct evsel *evsel,
-+			 struct perf_thread_map *threads,
-+			 int start_cpu_map_idx, int end_cpu_map_idx)
-+{
-+	enum perf_tool_event ev = evsel__tool_event(evsel);
-+	int pid = -1, idx = 0, thread = 0, nthreads, err = 0, old_errno;
-+
-+	if (ev == PERF_TOOL_DURATION_TIME) {
-+		if (evsel->core.attr.sample_period) /* no sampling */
-+			return -EINVAL;
-+		evsel->start_time = rdclock();
-+		return 0;
-+	}
-+
-+	if (evsel->cgrp)
-+		pid = evsel->cgrp->fd;
-+
-+	nthreads = perf_thread_map__nr(threads);
-+	for (idx = start_cpu_map_idx; idx < end_cpu_map_idx; idx++) {
-+		for (thread = 0; thread < nthreads; thread++) {
-+			if (thread >= nthreads)
-+				break;
-+
-+			if (!evsel->cgrp && !evsel->core.system_wide)
-+				pid = perf_thread_map__pid(threads, thread);
-+
-+			if (ev == PERF_TOOL_USER_TIME || ev == PERF_TOOL_SYSTEM_TIME) {
-+				bool system = ev == PERF_TOOL_SYSTEM_TIME;
-+				__u64 *start_time = NULL;
-+				int fd;
-+
-+				if (evsel->core.attr.sample_period) {
-+					/* no sampling */
-+					err = -EINVAL;
-+					goto out_close;
-+				}
-+				if (pid > -1) {
-+					char buf[64];
-+
-+					snprintf(buf, sizeof(buf), "/proc/%d/stat", pid);
-+					fd = open(buf, O_RDONLY);
-+					evsel->pid_stat = true;
-+				} else {
-+					fd = open("/proc/stat", O_RDONLY);
-+				}
-+				FD(evsel, idx, thread) = fd;
-+				if (fd < 0) {
-+					err = -errno;
-+					goto out_close;
-+				}
-+				start_time = xyarray__entry(evsel->start_times, idx, thread);
-+				if (pid > -1) {
-+					err = read_pid_stat_field(fd, system ? 15 : 14,
-+								  start_time);
-+				} else {
-+					struct perf_cpu cpu;
-+
-+					cpu = perf_cpu_map__cpu(evsel->core.cpus, idx);
-+					err = read_stat_field(fd, cpu, system ? 3 : 1,
-+							      start_time);
-+				}
-+				if (err)
-+					goto out_close;
-+			}
-+
-+		}
-+	}
-+	return 0;
-+out_close:
-+	if (err)
-+		threads->err_thread = thread;
-+
-+	old_errno = errno;
-+	do {
-+		while (--thread >= 0) {
-+			if (FD(evsel, idx, thread) >= 0)
-+				close(FD(evsel, idx, thread));
-+			FD(evsel, idx, thread) = -1;
-+		}
-+		thread = nthreads;
-+	} while (--idx >= 0);
-+	errno = old_errno;
-+	return err;
-+}
-+
-+int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
-+{
-+	__u64 *start_time, cur_time, delta_start;
-+	int fd, err = 0;
-+	struct perf_counts_values *count;
-+	bool adjust = false;
-+
-+	count = perf_counts(evsel->counts, cpu_map_idx, thread);
-+
-+	switch (evsel__tool_event(evsel)) {
-+	case PERF_TOOL_DURATION_TIME:
-+		/*
-+		 * Pretend duration_time is only on the first CPU and thread, or
-+		 * else aggregation will scale duration_time by the number of
-+		 * CPUs/threads.
-+		 */
-+		start_time = &evsel->start_time;
-+		if (cpu_map_idx == 0 && thread == 0)
-+			cur_time = rdclock();
-+		else
-+			cur_time = *start_time;
-+		break;
-+	case PERF_TOOL_USER_TIME:
-+	case PERF_TOOL_SYSTEM_TIME: {
-+		bool system = evsel__tool_event(evsel) == PERF_TOOL_SYSTEM_TIME;
-+
-+		start_time = xyarray__entry(evsel->start_times, cpu_map_idx, thread);
-+		fd = FD(evsel, cpu_map_idx, thread);
-+		lseek(fd, SEEK_SET, 0);
-+		if (evsel->pid_stat) {
-+			/* The event exists solely on 1 CPU. */
-+			if (cpu_map_idx == 0)
-+				err = read_pid_stat_field(fd, system ? 15 : 14, &cur_time);
-+			else
-+				cur_time = 0;
-+		} else {
-+			/* The event is for all threads. */
-+			if (thread == 0) {
-+				struct perf_cpu cpu = perf_cpu_map__cpu(evsel->core.cpus,
-+									cpu_map_idx);
-+
-+				err = read_stat_field(fd, cpu, system ? 3 : 1, &cur_time);
-+			} else {
-+				cur_time = 0;
-+			}
-+		}
-+		adjust = true;
-+		break;
-+	}
-+	case PERF_TOOL_NONE:
-+	case PERF_TOOL_MAX:
-+	default:
-+		err = -EINVAL;
-+	}
-+	if (err)
+-void mana_query_gf_stats(struct mana_context *ac)
++int mana_query_gf_stats(struct mana_context *ac)
+ {
+ 	struct gdma_context *gc = ac->gdma_dev->gdma_context;
+ 	struct mana_query_gf_stat_resp resp = {};
+@@ -2879,14 +2884,14 @@ void mana_query_gf_stats(struct mana_context *ac)
+ 				sizeof(resp));
+ 	if (err) {
+ 		dev_err(dev, "Failed to query GF stats: %d\n", err);
+-		return;
 +		return err;
+ 	}
+ 	err = mana_verify_resp_hdr(&resp.hdr, MANA_QUERY_GF_STAT,
+ 				   sizeof(resp));
+ 	if (err || resp.hdr.status) {
+ 		dev_err(dev, "Failed to query GF stats: %d, 0x%x\n", err,
+ 			resp.hdr.status);
+-		return;
++		return err;
+ 	}
+ 
+ 	ac->hc_stats.hc_rx_discards_no_wqe = resp.rx_discards_nowqe;
+@@ -2921,6 +2926,8 @@ void mana_query_gf_stats(struct mana_context *ac)
+ 	ac->hc_stats.hc_tx_mcast_pkts = resp.hc_tx_mcast_pkts;
+ 	ac->hc_stats.hc_tx_mcast_bytes = resp.hc_tx_mcast_bytes;
+ 	ac->hc_stats.hc_tx_err_gdma = resp.tx_err_gdma;
 +
-+	delta_start = cur_time - *start_time;
-+	if (adjust) {
-+		__u64 ticks_per_sec = sysconf(_SC_CLK_TCK);
-+
-+		delta_start *= 1000000000 / ticks_per_sec;
-+	}
-+	count->val    = delta_start;
-+	count->ena    = count->run = delta_start;
-+	count->lost   = 0;
 +	return 0;
-+}
+ }
+ 
+ void mana_query_phy_stats(struct mana_port_context *apc)
+@@ -3459,6 +3466,24 @@ int mana_rdma_service_event(struct gdma_context *gc, enum gdma_service_type even
+ 	return 0;
+ }
+ 
++#define MANA_GF_STATS_PERIOD (2 * HZ)
 +
-+struct perf_pmu *perf_pmus__tool_pmu(void)
++static void mana_gf_stats_work_handler(struct work_struct *work)
 +{
-+	static struct perf_pmu tool = {
-+		.name = "tool",
-+		.type = PERF_PMU_TYPE_TOOL,
-+		.aliases = LIST_HEAD_INIT(tool.aliases),
-+		.caps = LIST_HEAD_INIT(tool.caps),
-+		.format = LIST_HEAD_INIT(tool.format),
-+	};
++	struct mana_context *ac =
++		container_of(to_delayed_work(work), struct mana_context, gf_stats_work);
++	int err;
 +
-+	return &tool;
-+}
-diff --git a/tools/perf/util/tool_pmu.h b/tools/perf/util/tool_pmu.h
-new file mode 100644
-index 0000000000000..05a4052c8b9d8
---- /dev/null
-+++ b/tools/perf/util/tool_pmu.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __TOOL_PMU_H
-+#define __TOOL_PMU_H
-+
-+#include "pmu.h"
-+
-+struct evsel;
-+struct perf_thread_map;
-+struct print_callbacks;
-+
-+enum perf_tool_event {
-+	PERF_TOOL_NONE = 0,
-+	PERF_TOOL_DURATION_TIME = 1,
-+	PERF_TOOL_USER_TIME = 2,
-+	PERF_TOOL_SYSTEM_TIME = 3,
-+
-+	PERF_TOOL_MAX,
-+};
-+
-+#define perf_tool_event__for_each_event(ev)				\
-+	for ((ev) = PERF_TOOL_DURATION_TIME; (ev) < PERF_TOOL_MAX; ev++)
-+
-+static inline size_t tool_pmu__num_events(void)
-+{
-+	return PERF_TOOL_MAX - 1;
++	err = mana_query_gf_stats(ac);
++	if (err == -ETIMEDOUT) {
++		/* HWC timeout detected - reset stats and stop rescheduling */
++		ac->hwc_timeout_occurred = true;
++		memset(&ac->hc_stats, 0, sizeof(ac->hc_stats));
++		return;
++	}
++	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
 +}
 +
-+const char *perf_tool_event__to_str(enum perf_tool_event ev);
-+enum perf_tool_event perf_tool_event__from_str(const char *str);
-+int tool_pmu__config_terms(struct perf_event_attr *attr,
-+			   struct parse_events_terms *terms,
-+			   struct parse_events_error *err);
-+int tool_pmu__for_each_event_cb(struct perf_pmu *pmu, void *state, pmu_event_callback cb);
+ int mana_probe(struct gdma_dev *gd, bool resuming)
+ {
+ 	struct gdma_context *gc = gd->gdma_context;
+@@ -3551,6 +3576,10 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 	}
+ 
+ 	err = add_adev(gd, "eth");
 +
-+bool perf_pmu__is_tool(const struct perf_pmu *pmu);
++	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
++	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
 +
+ out:
+ 	if (err) {
+ 		mana_remove(gd, false);
+@@ -3580,6 +3609,7 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 	dev = gc->dev;
+ 
+ 	disable_work_sync(&ac->link_change_work);
++	cancel_delayed_work_sync(&ac->gf_stats_work);
+ 
+ 	/* adev currently doesn't support suspending, always remove it */
+ 	if (gd->adev)
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+index 3dfd96146424e..99e8112086833 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+@@ -213,8 +213,6 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
+ 
+ 	if (!apc->port_is_up)
+ 		return;
+-	/* we call mana function to update stats from GDMA */
+-	mana_query_gf_stats(apc->ac);
+ 
+ 	/* We call this mana function to get the phy stats from GDMA and includes
+ 	 * aggregate tx/rx drop counters, Per-TC(Traffic Channel) tx/rx and pause
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 637f42485dba6..2e4f2f3175e55 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -592,6 +592,9 @@ enum {
+ #define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
+ #define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
+ 
++/* Driver can send HWC periodically to query stats */
++#define GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY BIT(21)
 +
-+bool evsel__is_tool(const struct evsel *evsel);
-+enum perf_tool_event evsel__tool_event(const struct evsel *evsel);
-+const char *evsel__tool_pmu_event_name(const struct evsel *evsel);
-+int evsel__tool_pmu_prepare_open(struct evsel *evsel,
-+				 struct perf_cpu_map *cpus,
-+				 int nthreads);
-+int evsel__tool_pmu_open(struct evsel *evsel,
-+			 struct perf_thread_map *threads,
-+			 int start_cpu_map_idx, int end_cpu_map_idx);
-+int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread);
+ #define GDMA_DRV_CAP_FLAGS1 \
+ 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
+ 	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
+@@ -601,7 +604,8 @@ enum {
+ 	 GDMA_DRV_CAP_FLAG_1_DYNAMIC_IRQ_ALLOC_SUPPORT | \
+ 	 GDMA_DRV_CAP_FLAG_1_SELF_RESET_ON_EQE | \
+ 	 GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE | \
+-	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE)
++	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE | \
++	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY)
+ 
+ #define GDMA_DRV_CAP_FLAGS2 0
+ 
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 265f2d90027d6..7e946239effa9 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -480,6 +480,10 @@ struct mana_context {
+ 	struct mana_eq *eqs;
+ 	struct dentry *mana_eqs_debugfs;
+ 
++	/* Workqueue for querying hardware stats */
++	struct delayed_work gf_stats_work;
++	bool hwc_timeout_occurred;
 +
-+struct perf_pmu *perf_pmus__tool_pmu(void);
-+
-+#endif /* __TOOL_PMU_H */
+ 	struct net_device *ports[MAX_PORTS_IN_MANA_DEV];
+ 
+ 	/* Link state change work */
+@@ -582,7 +586,7 @@ u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
+ struct bpf_prog *mana_xdp_get(struct mana_port_context *apc);
+ void mana_chn_setxdp(struct mana_port_context *apc, struct bpf_prog *prog);
+ int mana_bpf(struct net_device *ndev, struct netdev_bpf *bpf);
+-void mana_query_gf_stats(struct mana_context *ac);
++int mana_query_gf_stats(struct mana_context *ac);
+ int mana_query_link_cfg(struct mana_port_context *apc);
+ int mana_set_bw_clamp(struct mana_port_context *apc, u32 speed,
+ 		      int enable_clamping);
 -- 
 2.53.0
 
