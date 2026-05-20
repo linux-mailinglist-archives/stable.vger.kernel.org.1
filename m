@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BGdHXokDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:38 +0200
+	id QKCUA3z/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BFC59A9C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55BD596CD5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3888E383CFFF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34E6A30A83D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB513ED3B8;
-	Wed, 20 May 2026 18:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FE832D7FA;
+	Wed, 20 May 2026 18:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O31MgcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWTsf+fd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56363D75AB;
-	Wed, 20 May 2026 18:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA8D2264B0;
+	Wed, 20 May 2026 18:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300552; cv=none; b=QRd9Iql3lsQeRXlFsMin6mkvLSbgjVr2HWQRF/9vYYT9tXjtLsaN7Eq7O+hscZE4rChsrXe8vpdxLP2GRMzlbydxrY8Bd9a378vEtgfDKrH34XRFnvLD67T58cyJfy5/5PmNOjn2j2briO/B28A8wYCOqrCNYGl4HetAN4pwdQQ=
+	t=1779301827; cv=none; b=QNuiRoinFkfru5/vUnyeyYWYirGCw+8+Rzv4opn0pVAGtnImylIEXlMaVwtd6BooE67AUyxP/vcNWWTJmKIe0sHkSFqNTmqMVYJyXwk0Ayt1VGhRAMCyAjZuEab1Pdzk5iroYzSbN0l8QZtQaasUxFT3okKt0v36OFQc0vcw6ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300552; c=relaxed/simple;
-	bh=3pZLRIOXmf+Dx43tZ+M+7PPMsfAKnoaAhcOlW/g2kKk=;
+	s=arc-20240116; t=1779301827; c=relaxed/simple;
+	bh=acd/xq1P6Cg4mO9YvYohe6VrnEVOYduxrpDxZt7fp/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoT5YMAh+vwW3djXOovvF7AlmyjX8NHFruWciLFXB5HTYPFYvGy15vYwcbDcwBkXqMDzMqubza1nCdtDiLySSbxhh1iZHUHriP2nKBBvmJO2SD0M/liLj5u7BnX9mDWI5iRncIBt6nxdg+ax5yZcIx6XkAsEE4p5BdI58QITEIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O31MgcP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479981F000E9;
-	Wed, 20 May 2026 18:09:11 +0000 (UTC)
+	 MIME-Version; b=ddNjoSZBVLMmveksJeUL3UsYb4s4PR9T1tJCzSt+nOfAsULGCPQsyjCIJtK6/nZ80lm7hTW+/YhAjyAjxvdnURIG2RWRFPfnrDk64HieNLrTD2DFpyceBcYgwbJ03DsBg1KiyuPw4jbqu7q8QewJGsKZNS3A3/Og75KSLqE/mNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWTsf+fd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1481F000E9;
+	Wed, 20 May 2026 18:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300551;
-	bh=y+3Sns7J4K8CbAQk1s/gGq94+L2kafQF80SHK8KcfGk=;
+	s=korg; t=1779301826;
+	bh=4z/UO8P94NtPI9H7nnnMH3jUWUgO8BDArPUMnAugark=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1O31MgcPVXXr05/C9NTsGKZXwe7VF88tJ6tpPMXEzfcoQy+aMm/6631wxufqIvWva
-	 oRdTTVy1X5ZPwwHXzBcIHc+bzdX9oFeVw8hDc01Nult4jZjaZgvi9dbuTckddA321q
-	 QtMrcwTGiwnpyn0O7uXrq8CzTSgtY66o3FOP1cxY=
+	b=hWTsf+fd3glxnUwoFiPGdZgnBzV1azaUcmYPKsfympVuZLTpq8o6fcXEwNXS839Dc
+	 luPWiI6UPAextR5I9CYMTl8FriIXYnXoMLTaPsvb9QEPwDJ/PRWHZ0W//7HvfumAxq
+	 0OL9U/N844Vbpi1XJ/4Rk9bNQiHPeFlCJTToe1H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/666] crypto: qat - disable 4xxx AE cluster when lead engine is fused off
+Subject: [PATCH 6.6 007/508] pstore/ram: fix resource leak when ioremap() fails
 Date: Wed, 20 May 2026 18:17:10 +0200
-Message-ID: <20260520162115.955339870@linuxfoundation.org>
+Message-ID: <20260520162058.742502912@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +68,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252391-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252879-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 06BFC59A9C0
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,unwrap.rs:email]
+X-Rspamd-Queue-Id: A55BD596CD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahsan Atta <ahsan.atta@intel.com>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit b260d53561dd69b29505222ec44cf386ac2c2ca6 ]
+[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
 
-The get_ae_mask() function only disables individual engines based on
-the fuse register, but engines are organized in clusters of 4. If the
-lead engine of a cluster is fused off, the entire cluster must be
-disabled.
+In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
+failure. Currently, if this happens, the function returns NULL without
+releasing the memory region acquired by request_mem_region().
 
-Replace the single bitmask inversion with explicit test_bit() checks
-on the lead engine of each group, disabling the full ADF_AE_GROUP
-when the lead bit is set.
+This leads to a resource leak where the memory region remains reserved
+but unusable.
 
-Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Fixes: 8c8268166e834 ("crypto: qat - add qat_4xxx driver")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Additionally, the caller persistent_ram_buffer_map() handles NULL
+correctly by returning -ENOMEM, but without this check, a NULL return
+combined with request_mem_region() succeeding leaves resources in an
+inconsistent state.
+
+This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
+ram_core: fix incorrect success return when vmap() fails") which fixed
+a similar issue in the vmap() path.
+
+Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c   | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/pstore/ram_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-index a6d253ff20888..579f92e466f6d 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -101,9 +101,19 @@ static struct adf_hw_device_class adf_4xxx_class = {
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index 7b6d6378a3b87..95675d4bab141 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
+ 	else
+ 		va = ioremap_wc(start, size);
  
- static u32 get_ae_mask(struct adf_hw_device_data *self)
- {
--	u32 me_disable = self->fuses[ADF_FUSECTL4];
-+	unsigned long fuses = self->fuses[ADF_FUSECTL4];
-+	u32 mask = ADF_4XXX_ACCELENGINES_MASK;
- 
--	return ~me_disable & ADF_4XXX_ACCELENGINES_MASK;
-+	if (test_bit(0, &fuses))
-+		mask &= ~ADF_AE_GROUP_0;
++	/* We must release the mem region if ioremap fails. */
++	if (!va)
++		release_mem_region(start, size);
 +
-+	if (test_bit(4, &fuses))
-+		mask &= ~ADF_AE_GROUP_1;
-+
-+	if (test_bit(8, &fuses))
-+		mask &= ~ADF_AE_GROUP_2;
-+
-+	return mask;
- }
- 
- static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ 	/*
+ 	 * Since request_mem_region() and ioremap() are byte-granularity
+ 	 * there is no need handle anything special like we do when the
 -- 
 2.53.0
 
