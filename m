@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEqiBTj5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:04 +0200
+	id ECrAFN8nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61065957C6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE91859AEEE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55B1F315E1DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 620D3348B3A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E9F3F39EE;
-	Wed, 20 May 2026 17:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2063E5ECF;
+	Wed, 20 May 2026 18:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeIeraVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8A5163Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3439368941;
-	Wed, 20 May 2026 17:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537ED29B78D;
+	Wed, 20 May 2026 18:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299556; cv=none; b=qkr6zsbufZF0z6P+lXLy3X70fxq66gWjW+z+kJQEs6/kQ2pxPXwSvdNDtwWC3rJ1wYVfsnsdCh5Z8qkIpc1qpx06bf7L/mv2WHt1U2dUtb5mhZHuPxfafFtZWrLs5+UJdJtElHrSqw05xxJF7uTo4DucKjmgj4bNlajcxMcgg3o=
+	t=1779301263; cv=none; b=lZassAbLIyjEHYykkBngRNB/G8oSvgausBwxIYFJspEQU7sv9Rrh7Fca4+uUvmpGRLKMoIejXjHqXv2LZXR/648u//YhL5ySvdUKKy9gu6c1/FrX3NURkyNq9/u0vxqRssBMUpAeoptn1ysrK7Oxo9IUHMhB2mS/RMT512e9Ie4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299556; c=relaxed/simple;
-	bh=4KjObqbU2D/O1gkNHdPw0DeiyZ9uaYR73c4aPNOcKvI=;
+	s=arc-20240116; t=1779301263; c=relaxed/simple;
+	bh=CKpOKvutdTC5FXNu7o0uVkOJsxhdC/fRNvDEI/N9xJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJXt2U3g3U1fswDJNtbdI6rOBrn5GgsKd20d0Mt+lOfKxQk1S3TFLAqfBRwrYG/57U5ELRZ94rhzJKIWnIAzD6Kv9WeunhUImaPkoDOg6GqIkYMPNr85vMWlChZa1DEsgF1F/JFc2xReF74qjcGY6sTok2Y78UXFkcOH+oNOnuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeIeraVs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4377D1F000E9;
-	Wed, 20 May 2026 17:52:35 +0000 (UTC)
+	 MIME-Version; b=XfL9DBtWXIRSeAHUmzVd3ZKuOO6mLHLSY/EUm1irJTQPFFNJ7U1AbDPrPsV3A6KomJWQGi0ZYN6d/KK1fwOvbdZnHEtMz6fhDq8iGvsc0bF6aLH6EBcoi5SVkEHFTtZXGe6Q/01PITisFo+XN0Duzh/iMQczoED4RUoDeCrAZLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8A5163Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E228F1F00893;
+	Wed, 20 May 2026 18:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299555;
-	bh=W+4RzHWJRZc91ZLeYpQu/DdffkaSZp3OiqO0sxAFVxU=;
+	s=korg; t=1779301262;
+	bh=wJHYGFzVNdcsm/4uNIWz6EwI+Pfm68cQmIyt1FAtyxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WeIeraVsChW3AD0y37Syf4CsNnwkz0lSgd74kjOv/TkCSfUF74038a5El5VZTLFy6
-	 xO47mlOereuQkTgyzsYmCNOPxNHo/j7+FG5vRjMTaqAu1tDBICWX44MWAvdpP7iIk8
-	 s3ZdiImYrYn1n0DgkkPQdEdTALOvH42js+xyju2c=
+	b=M8A5163QaRewJqUi8uLhfvrYuRw9HFR7N4qgEr/q7v5ssfgL9+phCz+8cr6H3MDqL
+	 TNadB+e0SxKgZdNrI6d3EdFHxjEon3FYmvmXZIGU+YUaZyw8pyq51zJezX4kYhULB7
+	 28c4rZb8QAFBoljx0w4PJaq8qF/3AIBeru6/q3Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20 ?= <u.kleine-koenig@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 817/957] ASoC: codecs: ab8500: Fix casting of private data
+Subject: [PATCH 6.12 489/666] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
 Date: Wed, 20 May 2026 18:21:40 +0200
-Message-ID: <20260520162152.285325388@linuxfoundation.org>
+Message-ID: <20260520162121.863250098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252028-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252662-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email,msgid.link:url,codasip.com:email]
-X-Rspamd-Queue-Id: D61065957C6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: DE91859AEEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a201aef1a88b675e9eb8487e27d14e2eef3cef80 ]
+[ Upstream commit 1ada03fdef82d3d7d2edb9dcd3acc91917675e48 ]
 
-ab8500_filter_controls[i].private_value is initialized using
+sfb_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-	.private_value = (unsigned long)&(struct filter_control)
-		{.count = xcount, .min = xmin, .max = xmax}
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-thus it's a pointer to a struct filter_control casted to unsigned long.
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
 
-So to get back that pointer .private_data must be cast back, not its
-address.
+tc_sfb_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
 
-Fixes: 679d7abdc754 ("ASoC: codecs: Add AB8500 codec-driver")
-Signed-off-by: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
-Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20260428192255.2294705-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260421141655.3953721-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ab8500-codec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_sfb.c | 54 +++++++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/sound/soc/codecs/ab8500-codec.c b/sound/soc/codecs/ab8500-codec.c
-index 04b5e1d5a6530..32d9cdbc8c310 100644
---- a/sound/soc/codecs/ab8500-codec.c
-+++ b/sound/soc/codecs/ab8500-codec.c
-@@ -2496,13 +2496,13 @@ static int ab8500_codec_probe(struct snd_soc_component *component)
- 		return status;
- 	}
- 	fc = (struct filter_control *)
--		&ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
-+		ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
- 	drvdata->anc_fir_values = (long *)fc->value;
- 	fc = (struct filter_control *)
--		&ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
-+		ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
- 	drvdata->anc_iir_values = (long *)fc->value;
- 	fc = (struct filter_control *)
--		&ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
-+		ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
- 	drvdata->sid_fir_values = (long *)fc->value;
+diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
+index b717e15a3a17b..c36725f0870d4 100644
+--- a/net/sched/sch_sfb.c
++++ b/net/sched/sch_sfb.c
+@@ -130,7 +130,7 @@ static void increment_one_qlen(u32 sfbhash, u32 slot, struct sfb_sched_data *q)
  
- 	snd_soc_dapm_disable_pin(dapm, "ANC Configure Input");
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen < 0xFFFF)
+-			b[hash].qlen++;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen + 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
+ 	}
+ }
+@@ -159,7 +159,7 @@ static void decrement_one_qlen(u32 sfbhash, u32 slot,
+ 
+ 		sfbhash >>= SFB_BUCKET_SHIFT;
+ 		if (b[hash].qlen > 0)
+-			b[hash].qlen--;
++			WRITE_ONCE(b[hash].qlen, b[hash].qlen - 1);
+ 		b += SFB_NUMBUCKETS; /* next level */
+ 	}
+ }
+@@ -179,12 +179,12 @@ static void decrement_qlen(const struct sk_buff *skb, struct sfb_sched_data *q)
+ 
+ static void decrement_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
+ {
+-	b->p_mark = prob_minus(b->p_mark, q->decrement);
++	WRITE_ONCE(b->p_mark, prob_minus(b->p_mark, q->decrement));
+ }
+ 
+ static void increment_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
+ {
+-	b->p_mark = prob_plus(b->p_mark, q->increment);
++	WRITE_ONCE(b->p_mark, prob_plus(b->p_mark, q->increment));
+ }
+ 
+ static void sfb_zero_all_buckets(struct sfb_sched_data *q)
+@@ -202,11 +202,14 @@ static u32 sfb_compute_qlen(u32 *prob_r, u32 *avgpm_r, const struct sfb_sched_da
+ 	const struct sfb_bucket *b = &q->bins[q->slot].bins[0][0];
+ 
+ 	for (i = 0; i < SFB_LEVELS * SFB_NUMBUCKETS; i++) {
+-		if (qlen < b->qlen)
+-			qlen = b->qlen;
+-		totalpm += b->p_mark;
+-		if (prob < b->p_mark)
+-			prob = b->p_mark;
++		u32 b_qlen = READ_ONCE(b->qlen);
++		u32 b_mark = READ_ONCE(b->p_mark);
++
++		if (qlen < b_qlen)
++			qlen = b_qlen;
++		totalpm += b_mark;
++		if (prob < b_mark)
++			prob = b_mark;
+ 		b++;
+ 	}
+ 	*prob_r = prob;
+@@ -294,7 +297,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	if (unlikely(sch->q.qlen >= q->limit)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.queuedrop++;
++		WRITE_ONCE(q->stats.queuedrop,
++			   q->stats.queuedrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -347,7 +351,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 	if (unlikely(minqlen >= q->max)) {
+ 		qdisc_qstats_overlimit(sch);
+-		q->stats.bucketdrop++;
++		WRITE_ONCE(q->stats.bucketdrop,
++			   q->stats.bucketdrop + 1);
+ 		goto drop;
+ 	}
+ 
+@@ -373,7 +378,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		}
+ 		if (sfb_rate_limit(skb, q)) {
+ 			qdisc_qstats_overlimit(sch);
+-			q->stats.penaltydrop++;
++			WRITE_ONCE(q->stats.penaltydrop,
++				   q->stats.penaltydrop + 1);
+ 			goto drop;
+ 		}
+ 		goto enqueue;
+@@ -388,14 +394,17 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			 * In either case, we want to start dropping packets.
+ 			 */
+ 			if (r < (p_min - SFB_MAX_PROB / 2) * 2) {
+-				q->stats.earlydrop++;
++				WRITE_ONCE(q->stats.earlydrop,
++					   q->stats.earlydrop + 1);
+ 				goto drop;
+ 			}
+ 		}
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.marked++;
++			WRITE_ONCE(q->stats.marked,
++				   q->stats.marked + 1);
+ 		} else {
+-			q->stats.earlydrop++;
++			WRITE_ONCE(q->stats.earlydrop,
++				   q->stats.earlydrop + 1);
+ 			goto drop;
+ 		}
+ 	}
+@@ -408,7 +417,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->q.qlen++;
+ 		increment_qlen(&cb, q);
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.childdrop++;
++		WRITE_ONCE(q->stats.childdrop,
++			   q->stats.childdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -597,12 +607,12 @@ static int sfb_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct sfb_sched_data *q = qdisc_priv(sch);
+ 	struct tc_sfb_xstats st = {
+-		.earlydrop = q->stats.earlydrop,
+-		.penaltydrop = q->stats.penaltydrop,
+-		.bucketdrop = q->stats.bucketdrop,
+-		.queuedrop = q->stats.queuedrop,
+-		.childdrop = q->stats.childdrop,
+-		.marked = q->stats.marked,
++		.earlydrop = READ_ONCE(q->stats.earlydrop),
++		.penaltydrop = READ_ONCE(q->stats.penaltydrop),
++		.bucketdrop = READ_ONCE(q->stats.bucketdrop),
++		.queuedrop = READ_ONCE(q->stats.queuedrop),
++		.childdrop = READ_ONCE(q->stats.childdrop),
++		.marked = READ_ONCE(q->stats.marked),
+ 	};
+ 
+ 	st.maxqlen = sfb_compute_qlen(&st.maxprob, &st.avgprob, q);
 -- 
 2.53.0
 
