@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gC6QIA8aDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251378-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:11 +0200
+	id eNHQEkHoDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45BA599B6D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DFE592B9A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C70E337D632
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EFC4D3088515
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8AA3F2117;
-	Wed, 20 May 2026 17:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C72C3C3458;
+	Wed, 20 May 2026 16:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zekEoFx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okuALz4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C489D3F44D9;
-	Wed, 20 May 2026 17:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6375A3BED1E;
+	Wed, 20 May 2026 16:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297824; cv=none; b=ojB3cE20e/OMXFsaTS7yBAPTyaRHNI+eiaGeV2mf2Yi9lTYIh+R/fFNDS5dUnoVOb9PCStLbFh4xH86VdBLmU+6H6tDcKajw0kNPBGhmxa9Aux+WyPPl/tcHDY+OkkcbbjaT7IwwUVms9kdbGdNUD6MsvtgjUv22zYQRBHaP1+E=
+	t=1779295307; cv=none; b=MufT8bC6CpSB6VTC4QTUsoTne7/0FZKwjMFPu4aBsQGeER+41epSkIrWzPGvQlLCWUMO7GFVdwBMjOTCmCsbjmCszjHGb9dBuVRnZf7rDDT2nGJo+ge1HRLPG92cTW6iNGzdhdtNn4OyD+UHdJPChsTDYia7oDIoYCJrdaMqeYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297824; c=relaxed/simple;
-	bh=28T6z7FYpkZGR7PJ5/7SR8RZYZmLUCrp9nnt0uap5pY=;
+	s=arc-20240116; t=1779295307; c=relaxed/simple;
+	bh=822Et5abSHBgBbB0lOSJHCBYsWDiKjjpzySdYhoKgMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2CMkfrdzK4nrkEdSYkqavdyGFWIAdPIJEdQXbOttMSjL7V2Cj6Ew/jaCIygKgqLU5CT8KQyv6x7uSGnbBhp68dA/Rt7H9kCGUWJOqmxLCOj8oF4e3ft5c+z2tDZ+5SKN+8VjTV2RVgy/EY2bi8FVVbGzVVxrFjZ96Dr0EnxZWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zekEoFx3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3386D1F000E9;
-	Wed, 20 May 2026 17:23:42 +0000 (UTC)
+	 MIME-Version; b=tXnNL7ggXkXpDEBSB6iscjMGrO1SFckgD6VA5jJVMKNV10bauQjwq7pu4XcADWPjvNDPv4xw6FG837rHksoSzIPFWPWT0mwcdyo1Hdcmyj+TPX8CD+qPQG5G1uIKlZo4SFOl0+CvaMCmIVy/84HHQvmSqrYasRUvZ1WTZjgD0Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okuALz4C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C363D1F000E9;
+	Wed, 20 May 2026 16:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297822;
-	bh=D/9vCC/7LF/pqdUSYvrFgbT8PoOPyNw+IBaqjgyVT1k=;
+	s=korg; t=1779295306;
+	bh=GwmI+Hob7LI7Ys8LrfJbAR9RmXndStvHSydLgU/12tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zekEoFx3yCVJNZjJWKw38ZUX3pGqwHWxtrtblxJREFHim/IGMe/3bqwbA2EUqGNjK
-	 A4FwWxAU3V6SwoaeSv+whOAKaOU0j5jLlQedkZijThDyR+/UiPv20VhBghU3UADbk5
-	 6FyoKsGXdovYgbM2yn7Ga4zv76Temp96vdBoBTUE=
+	b=okuALz4CNCzjnVf72/z0xv1ZG83cB/jbmm2k/pr+ogeHZVxrD/Y7NsfDDjNkuqQLP
+	 5ew9zy0PjiYRgTms6jL6C57+vGAjoT2HAL8BNcQPhQpx3erQZMHmRjWj62DK/5fEg9
+	 AfKpxQ1n4+rb8LuRHICLn2T8Xg6qtWWTk+tf4NTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 136/957] net: bcmgenet: fix off-by-one in bcmgenet_put_txcb
+Subject: [PATCH 7.0 0369/1146] ASoC: fsl_micfil: Add access property for "VAD Detected"
 Date: Wed, 20 May 2026 18:10:19 +0200
-Message-ID: <20260520162137.504464934@linuxfoundation.org>
+Message-ID: <20260520162156.552257474@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251378-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250397-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,tipi-net.de:email,broadcom.com:email]
-X-Rspamd-Queue-Id: C45BA599B6D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E0DFE592B9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 57f3f53d2c9c5a9e133596e2f7bc1c50688a6d38 ]
+[ Upstream commit c7661bfc7422443df394c01e069ae4e5c3a7f04c ]
 
-The write_ptr points to the next open tx_cb. We want to return the
-tx_cb that gets rewinded, so we must rewind the pointer first then
-return the tx_cb that it points to. That way the txcb can be correctly
-cleaned up.
+Add access property SNDRV_CTL_ELEM_ACCESS_READ for control "VAD
+Detected", which doesn't support put operation, otherwise there will be
+issue with mixer-test.
 
-Fixes: 876dbadd53a7 ("net: bcmgenet: Fix unmapping of fragments in bcmgenet_xmit()")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260406175756.134567-2-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index e142939d87cbe..1791523b83383 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1815,15 +1815,15 @@ static struct enet_cb *bcmgenet_put_txcb(struct bcmgenet_priv *priv,
- {
- 	struct enet_cb *tx_cb_ptr;
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index d6cde2757c6d5..79850211742cb 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -503,7 +503,13 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+ 	SOC_SINGLE("HWVAD ZCD Adjustment", REG_MICFIL_VAD0_ZCD, 8, 15, 0),
+ 	SOC_SINGLE("HWVAD ZCD And Behavior Switch",
+ 		   REG_MICFIL_VAD0_ZCD, 4, 1, 0),
+-	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.name = "VAD Detected",
++		.info = snd_soc_info_bool_ext,
++		.get = hwvad_detected,
++	},
+ };
  
--	tx_cb_ptr = ring->cbs;
--	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
--
- 	/* Rewinding local write pointer */
- 	if (ring->write_ptr == ring->cb_ptr)
- 		ring->write_ptr = ring->end_ptr;
- 	else
- 		ring->write_ptr--;
- 
-+	tx_cb_ptr = ring->cbs;
-+	tx_cb_ptr += ring->write_ptr - ring->cb_ptr;
-+
- 	return tx_cb_ptr;
- }
- 
+ static int fsl_micfil_use_verid(struct device *dev)
 -- 
 2.53.0
 
