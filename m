@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHPiHY4ZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:02 +0200
+	id sHGlEP3pDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE92599A5D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA2C592E85
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C11AE31E691A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDFFB3045467
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F9933CEA2;
-	Wed, 20 May 2026 18:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3973F39F3;
+	Wed, 20 May 2026 17:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZEBTO/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNXCsPyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687D7272E56;
-	Wed, 20 May 2026 18:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE53F8EA7;
+	Wed, 20 May 2026 17:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302044; cv=none; b=NflQKd1hkC5pN9Krc+6wwGvOZX/xqsXtoWcotvxEfrDyLGVi8vqAW+6e3MZcZy+DkzbQAY0Ps5+r1oD2KdpZQkB8G9jjfR/qePObMy20ICSiu+a96+ii+6atLsZVVd4PUhU1sx+61McG1/mB8O5YpQbwlBFkE3zLHJdHj2lo0Q0=
+	t=1779296586; cv=none; b=hVY44Qf87FEGP9w0GhzLDi3p0TOOzM2OsgcSWPZuNrMAF6244qG6wn99i1l2jl32rt94/yzKCq/Qlv4DjS5HO+YJUpdRrYQURCKK3aaUVqWRuKZKVGToGXeFeBdTHYjlUX350HeruvynRy4KWfOZ8Ot36WKJ/1CmDO0Kd8xSfAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302044; c=relaxed/simple;
-	bh=lCNYRC7dZBVPDxy+Obez/3ztRDVrgj2HyokGmny8kJw=;
+	s=arc-20240116; t=1779296586; c=relaxed/simple;
+	bh=kj5EESWoKw/EV7XKFwA4SlX0kRCJgR/V91nJw8nk1M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiOP1vO/8D06XgX1HXQRKjiFbUrL9Cw0f+DOwQ4AepVFbQLSMuG+8GAsE1pABJX7qPxxA93f7/1s01qhW65s6zVCVELHQQVzgj80QMu+8q3Z0QOz2x3xOm7VWXeWkHTaAnbx0/g7lxoYI7/hOMAR/fWXV5m7cb/iD0Vis/p736A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZEBTO/8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B51F000E9;
-	Wed, 20 May 2026 18:34:02 +0000 (UTC)
+	 MIME-Version; b=d7j7ChrRDpYqxq6+yt7GmyEm4is4iSTON7VUOcrxF27pB5es+AaVo2yM5gIf1ZzZyQe2j7OxOWjXtaJ2MZ0ymP0ZTE7WHtzkBcZR6XooZbx4XIpAu8mdMbBSX3DyudlyCmGzr1wOU9hLr63nAKKC6dTkSOaIWTaiNGhcFFEctFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNXCsPyR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB411F00894;
+	Wed, 20 May 2026 17:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302043;
-	bh=uz8284G7WcBEBfVwvNQho4uLEnN7S1fk43UySb3nuiY=;
+	s=korg; t=1779296582;
+	bh=3kpA4HnR/pc5Kl5l4jh5eMZiQ8KogBP2DzDKV/zijkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1ZEBTO/8oSgADNjqjXed00RLVa7hY70p/6WrxlHPkXHfbIjZtipA1YYji7Q+ZMLUD
-	 GCApznKBjXBzEld1P1JYSHOt6J2UVxIi1mtEVT96bwOh5ZnN8yl5v9tAlP1BoGwWsE
-	 AjdbJC95xfMhCIGVRw2Tg0IxkfFpKjvB66Lo+mPM=
+	b=wNXCsPyRO0xd88umnROpENeXS4cFxyDYNxqqeVY5Dw7wXZROmsXFsJ8p302XL6Cco
+	 A9xAUkoMidlztfeUZmhUzdU1CRWLgVEINvsG3BfMPuwGUAJ/6VEK0yl/RTmAmDiSZQ
+	 bVaNIEiawEj/dSI1pAKc/Fsdg/nGfDrQHe5gu6k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/508] Bluetooth: l2cap: Add missing chan lock in l2cap_ecred_reconf_rsp
+Subject: [PATCH 7.0 0853/1146] net: mana: Dont overwrite port probe error with add_adev result
 Date: Wed, 20 May 2026 18:18:23 +0200
-Message-ID: <20260520162100.343726007@linuxfoundation.org>
+Message-ID: <20260520162207.543350661@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252962-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250894-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 9CE92599A5D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: ADA2C592E85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 42776497cdbc9a665b384a6dcb85f0d4bd927eab ]
+[ Upstream commit a7fdaf069bd031fcc234581fa6a580be11bf2175 ]
 
-l2cap_ecred_reconf_rsp() calls l2cap_chan_del() without holding
-l2cap_chan_lock(). Every other l2cap_chan_del() caller in the file
-acquires the lock first. A remote BLE device can send a crafted
-L2CAP ECRED reconfiguration response to corrupt the channel list
-while another thread is iterating it.
+In mana_probe(), if mana_probe_port() fails for any port, the error
+is stored in 'err' and the loop breaks. However, the subsequent
+unconditional 'err = add_adev(gd, "eth")' overwrites this error.
+If add_adev() succeeds, mana_probe() returns success despite ports
+being left in a partially initialized state (ac->ports[i] == NULL).
 
-Add l2cap_chan_hold() and l2cap_chan_lock() before l2cap_chan_del(),
-and l2cap_chan_unlock() and l2cap_chan_put() after, matching the
-pattern used in l2cap_ecred_conn_rsp() and l2cap_conn_del().
+Only call add_adev() when there is no prior error, so the probe
+correctly fails and triggers mana_remove() cleanup.
 
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260420124741.1056179-5-ernis@linux.microsoft.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 2a15863a882d6..bbaf0070ca617 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5400,7 +5400,13 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
- 		if (chan->ident != cmd->ident)
- 			continue;
- 
-+		l2cap_chan_hold(chan);
-+		l2cap_chan_lock(chan);
-+
- 		l2cap_chan_del(chan, ECONNRESET);
-+
-+		l2cap_chan_unlock(chan);
-+		l2cap_chan_put(chan);
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index e5b4f07e009bf..09d67617dfbbf 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3643,10 +3643,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 	if (!resuming) {
+ 		for (i = 0; i < ac->num_ports; i++) {
+ 			err = mana_probe_port(ac, i, &ac->ports[i]);
+-			/* we log the port for which the probe failed and stop
+-			 * probes for subsequent ports.
+-			 * Note that we keep running ports, for which the probes
+-			 * were successful, unless add_adev fails too
++			/* Log the port for which the probe failed, stop probing
++			 * subsequent ports, and skip add_adev.
++			 * mana_remove() will clean up already-probed ports.
+ 			 */
+ 			if (err) {
+ 				dev_err(dev, "Probe Failed for port %d\n", i);
+@@ -3660,10 +3659,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 			enable_work(&apc->queue_reset_work);
+ 			err = mana_attach(ac->ports[i]);
+ 			rtnl_unlock();
+-			/* we log the port for which the attach failed and stop
+-			 * attach for subsequent ports
+-			 * Note that we keep running ports, for which the attach
+-			 * were successful, unless add_adev fails too
++			/* Log the port for which the attach failed, stop
++			 * attaching subsequent ports, and skip add_adev.
++			 * mana_remove() will clean up already-attached ports.
+ 			 */
+ 			if (err) {
+ 				dev_err(dev, "Attach Failed for port %d\n", i);
+@@ -3672,7 +3670,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 		}
  	}
  
- 	return 0;
+-	err = add_adev(gd, "eth");
++	if (!err)
++		err = add_adev(gd, "eth");
+ 
+ 	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
+ 
 -- 
 2.53.0
 
