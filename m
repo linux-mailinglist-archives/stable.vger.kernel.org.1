@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-253356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MzOIVQwDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:06:12 +0200
+	id MG1rH9b+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17B859BBD1
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFFF596AD7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A33CC30610C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2DEE322596B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7963FE37C;
-	Wed, 20 May 2026 18:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC2A3F39EE;
+	Wed, 20 May 2026 17:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvRE8DGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGaTQ5J7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DA43FC5A9;
-	Wed, 20 May 2026 18:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBBE3A3E9C;
+	Wed, 20 May 2026 17:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303066; cv=none; b=cYEZadIgx2blX4BqUXqcTFD6jTqRGPzOViL7xaUzy6lJTbBKM7Nv2RFjpKBhxQfFUmgChc0cy5MJHmyaaqHEuG7b85icp3Lrjhb7Wmw51KcQ0+bmLM1kv0TNhHLif1511HpvXCiLGgx4d6UPrdS7ByXit967VF/qb4HtvFlEt48=
+	t=1779299768; cv=none; b=Z9qMBVQRXW8jW4OvsxY+1cch62Y0qLyWUb3c80wsSKPbBOt0xIyNJvGN89RxwlPEsWr02/cX+1XLKbGz/qyMUAj2hOu9wS6vViB0IuF3BG+sNwLwp9X4PXgKU5HG/YtDejOuWSmjCZRrE9PKp+qG8zZinN1Ou0oYlZ/0Diw4eUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303066; c=relaxed/simple;
-	bh=lt+Dv5tVIH6iikWfAxZENwHQnck8Y+zQvL0Mki8QkpM=;
+	s=arc-20240116; t=1779299768; c=relaxed/simple;
+	bh=KansAh/KXnE5bCBniMBxeoCROAN+1ntuprBXLUEKDIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSOlpNDr0kTpnCRYZBLuL6twFmeEyIbYycE67G3ntB2k1f8fZ0yqxfjX77H8sZx27M+E1hO0BArnPYGaFgzeVVVDyNVBLEEDWv5KzMRB+ydXsR+Xli7tXR/p2HHq0bO5rZ7PiPhrt9oRG29KdCMR7IG23AGYUvSPYZ2zWfbaVKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvRE8DGn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25F41F000E9;
-	Wed, 20 May 2026 18:51:03 +0000 (UTC)
+	 MIME-Version; b=qpsH6a5kjubk5mirfpAdAbByqXU8mocKsDhXAzH9+Xv/w8LrSBRsJ1j3lLYNpAmaiHd3Ai8Udw6PcaDXoVVRY6FYJugmSc3GULOfqQhZ5T3RvezzuqqvEKdfvi5+ZuTfXY5mC6moKHiNOlaG/veud6IqFpy/V/LBcTXodVhTv98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGaTQ5J7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A121F00893;
+	Wed, 20 May 2026 17:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779303064;
-	bh=M1WI9enX5A9/QmjB3MCDJEaF0ZM3pjKCPMBp/rUCdOM=;
+	s=korg; t=1779299766;
+	bh=hk/fVxjxoZxRn6G5uH+B7mkTPo4ndodK4bf18x3upWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qvRE8DGnpjltM2rm9F/8xGcsFkVyaSfqCBBDvCu2IeBZdJ3Ac67OjjKaaFIOi/Q+M
-	 p+7V1wN5oXYOIUAWEtrXnFGs/Q0EW4rdm/dUuCTLBKYsFAHgngVNS7cSJNptFF3QKp
-	 lynraibM+4BgTA3BF08xjq0fOFQpqmNEOv+afTfI=
+	b=QGaTQ5J7bb6CoNqr2PDkcz5kBE/RJWzMqC8AY06lzeOnd9e7s5IUydSxxuxWJdZ2a
+	 KcRWyizZSoLJsF2YEN6GNC1bUBYa18ws8etCm08T1oT32pJnkWt9LCHs3PLiBsRWOe
+	 exrbc9Ze+vhCKuc0URljfGA2mluRJZWR8/or6I/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
+	Yash Shah <yash.shah@sifive.com>,
+	Johan Hovold <johan@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 505/508] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
-Date: Wed, 20 May 2026 18:25:28 +0200
-Message-ID: <20260520162109.544024816@linuxfoundation.org>
+Subject: [PATCH 6.6 506/508] spi: sifive: fix controller deregistration
+Date: Wed, 20 May 2026 18:25:29 +0200
+Message-ID: <20260520162109.565974872@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -66,33 +67,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253356-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252098-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E17B859BBD1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sifive.com:email]
+X-Rspamd-Queue-Id: EFFFF596AD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,101 +100,52 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 140039c23aca067b9ff0242e3c0ce96276bb95f3 ]
+[ Upstream commit 0f25236694a2854627c1597465a071e6bb6fe572 ]
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the bus clock. This reduces boilerplate code
-and error handling, as the managed API automatically disables the clock
-when the device is removed or if probe fails.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the probe
-error path and the remove callback. Adjust the error handling to use the
-existing put_host label.
+Note that clocks were also disabled before the recent commit
+140039c23aca ("spi: sifive: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/73d0d8ecb4e1af5a558d6a7866c0f886d94fe3d1.1773885292.git.xiaopei01@kylinos.cn
+Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Yash Shah <yash.shah@sifive.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-15-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0f25236694a2 ("spi: sifive: fix controller deregistration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sifive.c |   21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/spi/spi-sifive.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 --- a/drivers/spi/spi-sifive.c
 +++ b/drivers/spi/spi-sifive.c
-@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platf
- 		goto put_host;
- 	}
- 
--	spi->clk = devm_clk_get(&pdev->dev, NULL);
-+	/* Spin up the bus clock before hitting registers */
-+	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		dev_err(&pdev->dev, "Unable to find bus clock\n");
- 		ret = PTR_ERR(spi->clk);
-@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platf
- 		goto put_host;
- 	}
- 
--	/* Spin up the bus clock before hitting registers */
--	ret = clk_prepare_enable(spi->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable bus clock\n");
--		goto put_host;
--	}
--
- 	/* probe the number of CS lines */
- 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
-@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platf
- 	if (!cs_bits) {
- 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	num_cs = ilog2(cs_bits) + 1;
- 	if (num_cs > SIFIVE_SPI_MAX_CS) {
- 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	/* Define our host */
-@@ -393,7 +387,7 @@ static int sifive_spi_probe(struct platf
- 			       dev_name(&pdev->dev), spi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
+@@ -393,7 +393,7 @@ static int sifive_spi_probe(struct platf
  	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
-@@ -402,13 +396,11 @@ static int sifive_spi_probe(struct platf
- 	ret = devm_spi_register_controller(&pdev->dev, host);
+ 		 irq, host->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
  	if (ret < 0) {
  		dev_err(&pdev->dev, "spi_register_host failed\n");
--		goto disable_clk;
-+		goto put_host;
- 	}
+ 		goto put_host;
+@@ -412,8 +412,14 @@ static void sifive_spi_remove(struct pla
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct sifive_spi *spi = spi_controller_get_devdata(host);
  
- 	return 0;
- 
--disable_clk:
--	clk_disable_unprepare(spi->clk);
- put_host:
- 	spi_controller_put(host);
- 
-@@ -422,7 +414,6 @@ static void sifive_spi_remove(struct pla
- 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
  	/* Disable all the interrupts just in case */
  	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
--	clk_disable_unprepare(spi->clk);
++
++	spi_controller_put(host);
  }
  
  static int sifive_spi_suspend(struct device *dev)
