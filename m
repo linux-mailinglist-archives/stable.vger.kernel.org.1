@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CM5tG0n7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:53 +0200
+	id uJ2HHVXqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CA9595D46
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D206592F12
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCA4730EFD00
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 251B13069C2E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0182B3F789B;
-	Wed, 20 May 2026 18:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311A6366075;
+	Wed, 20 May 2026 17:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+8ew4Uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHTRSt9d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7233769E0;
-	Wed, 20 May 2026 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87B63F4DF4;
+	Wed, 20 May 2026 17:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300867; cv=none; b=X0w3CmI1XHjoGMjj4rmt5LKfN7bNPUQd3aJZOBOtsQQR/SJFaYSqT57389PJvqGCc/cp+s6D8kc8+2VcwF/yBomyDjmycEliZVhxQiTcC/cqvEOa+/8NcnAEqfyMbxkffgXUHvUcGEE4DFdOfBsoYh68GahIY7LgdB4mI1WOpbY=
+	t=1779296613; cv=none; b=D84pewPni+hE/HQYrWlsLaI+5QF8QYRH7BZvUUGSVwAEUpmPH7obHBkEckqgJ87gwfd+Pf5APMMBQkz5w2iX0Wme0zAW8+qMbAiFVMha5Bc8IzX+dsbNbKdakluJNfxCnSt+bEis5m1+U20V/9E+avuNZ4Lgq06MjeNbOXNcHw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300867; c=relaxed/simple;
-	bh=7uwzOi4jvyc6e53sjJObZWVF0pt+GjDNiT48nQyIkpE=;
+	s=arc-20240116; t=1779296613; c=relaxed/simple;
+	bh=BZ4+Q/upgRJV42j4ceLhElNEgpT64tYxfmXIPi9yX6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuqBgPymvtwfU0TxdrMhPqQEVy7v/qjW1iu6hgtHl+LHjqXUBhWSzsmgyMle6wH4R6pmUr9LAy5wuXhb4h3XosHMCU9y4ScizcTmC7+CJE5nUPmHyBVocfAptAwZg+jNtAHoPcbmFtNXMlfZ5jIkLWw5s08NevVt9iwkRht8UGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+8ew4Uv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9B41F000E9;
-	Wed, 20 May 2026 18:14:25 +0000 (UTC)
+	 MIME-Version; b=u/BjeRpUKjFiF9G+xUeOMMl8XNK9PKbs3Z3mkoGFuVZa0Kl3DQGvofwjvEUXmBN+bDKworBXS38BQBSJL+pmj2W+x/1K12qBIFiYC4/JXNVgHlvHry5IAahcGw0188Z3dcuMfZT1P7my+KIXSZ5nSba1N0n9dgQHGZItHlQzHP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHTRSt9d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491291F000E9;
+	Wed, 20 May 2026 17:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300866;
-	bh=VWX4Bnm8VdVeul6yJD2NJoipoaWLMiw+vN9SSTvXA7k=;
+	s=korg; t=1779296611;
+	bh=uGEr2zOy7piVBObdBTTHy+g+bFSUwRy9npSYB3AyfDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N+8ew4UvxuGCf/DMN8mMvEUwiUcF3Ir6akeEjnemQJuGjDV2vMq65MUoo094ko9to
-	 d0/lx+VayuzanCoB7ifHwEqXtY3pIN5r3cwVBKE2GRoqVbxmkbSuXLuZd9mdh3J98m
-	 lz3yM2NRGLI8lQI1dS5nqMNLvopFr7Jz8NCmIkxo=
+	b=SHTRSt9dcmK7yelhEcybXKVIvg4I5h3QVKUshafU2E47WECvScMCTp/pOzn6kmqzr
+	 NAaXnC8S1eQAwmyZEBs+Fr2yKonbmk88PS6yq6Q6mON+CM+CMZvAbGKf0wFttWx+sz
+	 N9Jr7QHHAReIQA4OLV+vRczyA6EO1towXySwZfLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/666] arm64: dts: lx2160a: change zeros to hexadecimal in pinmux nodes
-Date: Wed, 20 May 2026 18:18:32 +0200
-Message-ID: <20260520162117.742408825@linuxfoundation.org>
+Subject: [PATCH 7.0 0863/1146] eventpoll: split __ep_remove()
+Date: Wed, 20 May 2026 18:18:33 +0200
+Message-ID: <20260520162207.768542565@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252512-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250905-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,81 +90,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[70010012c:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,solid-run.com:email]
-X-Rspamd-Queue-Id: D9CA9595D46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 0D206592F12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 03241620d2b9915c9e3463dbc56e9eb95ad43c08 ]
+[ Upstream commit 0f7bdfd413000985de09fc39eb9efa1e091a3ce0 ]
 
-Replace some stray zeros from decimal to hexadecimal format within
-pinmux nodes.
+Split __ep_remove() to delineate file removal from epoll item removal.
 
-No functional change intended.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-2-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/eventpoll.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 83e618df6f4b9..15a5691c40060 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1718,7 +1718,7 @@ pinmux_i2crv: pinmux@70010012c {
- 			pinctrl-single,function-mask = <0x7>;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 3f960473840a6..99188c30fe6c7 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -826,6 +826,9 @@ static void ep_free(struct eventpoll *ep)
+ 	kfree_rcu(ep, rcu);
+ }
  
- 			i2c1_pins: iic2-i2c-pins {
--				pinctrl-single,bits = <0x0 0 0x7>;
-+				pinctrl-single,bits = <0x0 0x0 0x7>;
- 			};
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
++static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
++
+ /*
+  * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+  * all the associated resources. Must be called with "mtx" held.
+@@ -837,8 +840,6 @@ static void ep_free(struct eventpoll *ep)
+ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ {
+ 	struct file *file = epi->ffd.file;
+-	struct epitems_head *to_free;
+-	struct hlist_head *head;
  
- 			gpio0_31_30_pins: iic2-gpio-pins {
-@@ -1730,7 +1730,7 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
- 			};
+ 	lockdep_assert_irqs_enabled();
  
- 			i2c2_pins: iic3-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 3)>;
- 			};
+@@ -854,8 +855,21 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 		return false;
+ 	}
  
- 			gpio0_29_28_pins: iic3-gpio-pins {
-@@ -1738,7 +1738,7 @@ gpio0_29_28_pins: iic3-gpio-pins {
- 			};
+-	to_free = NULL;
+-	head = file->f_ep;
++	__ep_remove_file(ep, epi, file);
++	return __ep_remove_epi(ep, epi);
++}
++
++/*
++ * Called with &file->f_lock held,
++ * returns with it released
++ */
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
++{
++	struct epitems_head *to_free = NULL;
++	struct hlist_head *head = file->f_ep;
++
++	lockdep_assert_held(&ep->mtx);
++
+ 	if (hlist_is_singular_node(&epi->fllink, head)) {
+ 		/* See eventpoll_release() for details. */
+ 		WRITE_ONCE(file->f_ep, NULL);
+@@ -869,6 +883,11 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 	hlist_del_rcu(&epi->fllink);
+ 	spin_unlock(&file->f_lock);
+ 	free_ephead(to_free);
++}
++
++static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
++{
++	lockdep_assert_held(&ep->mtx);
  
- 			i2c3_pins: iic4-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 6)>;
- 			};
+ 	rb_erase_cached(&epi->rbn, &ep->rbr);
  
- 			gpio0_27_26_pins: iic4-gpio-pins {
-@@ -1746,7 +1746,7 @@ gpio0_27_26_pins: iic4-gpio-pins {
- 			};
- 
- 			i2c4_pins: iic5-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 9)>;
- 			};
- 
- 			gpio0_25_24_pins: iic5-gpio-pins {
-@@ -1754,7 +1754,7 @@ gpio0_25_24_pins: iic5-gpio-pins {
- 			};
- 
- 			i2c5_pins: iic6-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 12)>;
- 			};
- 
- 			gpio0_23_22_pins: iic6-gpio-pins {
 -- 
 2.53.0
 
