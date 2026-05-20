@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +G+GBzbuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:06 +0200
+	id WLxFMpcmDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C25E5938CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102B659ACDF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D8C53155901
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDAB32FEBBE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA3F3F23A1;
-	Wed, 20 May 2026 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C67B3F4DD6;
+	Wed, 20 May 2026 18:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMdKiYHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNo0SkQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A617A309;
-	Wed, 20 May 2026 17:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7A33F9287;
+	Wed, 20 May 2026 18:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296953; cv=none; b=GOuV3XdaPAjWU7uOCjNy20wL8YWrRW0678BJyTBUvpDqAvv7cOM+3sE/G4MQyudiRYjP2e55b58i2mpYobiSxPAFa5rzj7oKsq0V7aJyruD8S+hzS5Q/ihRGW9DlZHDDLXi1on20Fe+Y3EnDcv5slhNmPthoRX4kIKUyd+Iq5iE=
+	t=1779301189; cv=none; b=R9v7Ooxb54YbRyLvNehN+Sf9ktFZAPG6eTvt6qqKrUcrVYGyX9H/UFfbtCxGUAgS+udZSt4BQL7WVFrwe/sO+ycyhHv9ZIHSMbpkn3mQuBLYkBAKkU1Gfqc9WzDLw9f3U0MOacvEGEkDFjYX5ds6ZqOFx8PVXsBRGQMwG3GtKPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296953; c=relaxed/simple;
-	bh=Z4PPliaY5WLqVw4cST1sAk+hKhUHCF0UZut1reww1CI=;
+	s=arc-20240116; t=1779301189; c=relaxed/simple;
+	bh=GIcOSfKdSZ/LYyRuZ2tGNyxTWSqVik4xawQ+fXDGM44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tep60b0v0F1gKXqC9PE3fKVsclWCj9guJonJOlDWTB0Y+zqQaqxs7qPKDFA+rBL4Z56jb1EklzigXEFgSlmkZNPxPN2EvmWxhOXlDFg6K72jRr4yvPkN7PGh52NuyFQ3W6ibUrfrLc4+6EmuPgoY8cQRk1TR5INxHoAz/MMxA1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMdKiYHQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257311F00893;
-	Wed, 20 May 2026 17:09:10 +0000 (UTC)
+	 MIME-Version; b=XC8zito7KUUV42nsGwOpbgb1mPP0UZ95aGVjEw4LQsgquPDf3kRKmTugkPMO+b7UBN7puBA9U+qToDVvLPFlj89KtRNPd14KmRujfZUiLHIVj+smqPVH6aiwnLQ7U25hsC9zuJj5r5ss5vK3OCiZT/gJPEf7CkwAKCzSbz8kF10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNo0SkQ8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE631F000E9;
+	Wed, 20 May 2026 18:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296951;
-	bh=wmKwcWlwz9YBYnb57TAOvfRwBBCw1Uc/a5GupAaCij4=;
+	s=korg; t=1779301188;
+	bh=iMJORxYBX9VUHAs5D4FiloiBFdfVFc8jhqSbaojus7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MMdKiYHQy9ZQIiGjfWj2MaCh3mA6P8ML6OW4As0mKjgBoSKOtHF2VvdfNOBExWCA1
-	 6DHWewxja4Zow9cqXrXL9QZq+z0PPWhge8nj0qCUrILLlHw9wlQvTAFwibbByhp+PL
-	 43VBRTRhotz4IYExfL6cPII0oeu1Z/Gn10g6brAM=
+	b=fNo0SkQ8M8LOiIoyDFNHlWB857wLZy7uV2yaMNJk9FH7ibTK0Ut088hv7KPqvF+B4
+	 4sBYE3UgHqL2/jquJWXEcEqPuntg/HJxpE83jc9Q3gvdpJmL6PMSNzABNgEY4NaFXm
+	 wdBhDxrd/ajCimU64vgSKCD38jM3ukWsG6jKcTCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0993/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (V)
-Date: Wed, 20 May 2026 18:20:43 +0200
-Message-ID: <20260520162210.704794620@linuxfoundation.org>
+Subject: [PATCH 6.12 433/666] arm64: dts: imx8mp-debix-model-a: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:20:44 +0200
+Message-ID: <20260520162120.655979656@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251043-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252634-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[toke.dk:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8C25E5938CA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email,nxp.com:email]
+X-Rspamd-Queue-Id: 102B659ACDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit a6c95b833dc17e84d16a8ac0f40fd0931616a52d ]
+[ Upstream commit 3b778178997aee24537b521a8cb60970bc1ce01c ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there is interrupt storm for i.MX8MP DEBIX Model A. Per schematic, there
+is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
+PUE and PU together to make pull up work properly.
 
-In this final patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for cparams.target and cparams.interval.
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c86d350aae68e ("arm64: dts: Add device tree for the Debix Model A Board")
+Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Closes: https://lore.kernel.org/all/20260323105858.GA2185714@killaraus.ideasonboard.com/
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 804e8f4c46f32..7033f859a3948 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2356,10 +2356,11 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+index af02af9e5334d..740cac4cb31d9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+@@ -440,7 +440,7 @@ MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA					0x400001c3
  
- 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
+ 	pinctrl_pmic: pmicirqgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x1c0
+ 		>;
+ 	};
  
--	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
--	b->cparams.interval = max(rtt_est_ns +
--				     b->cparams.target - target_ns,
--				     b->cparams.target * 2);
-+	WRITE_ONCE(b->cparams.target,
-+		   max((byte_target_ns * 3) / 2, target_ns));
-+	WRITE_ONCE(b->cparams.interval,
-+		   max(rtt_est_ns + b->cparams.target - target_ns,
-+		       b->cparams.target * 2));
- 	b->cparams.mtu_time = byte_target_ns;
- 	b->cparams.p_inc = 1 << 24; /* 1/256 */
- 	b->cparams.p_dec = 1 << 20; /* 1/4096 */
-@@ -3042,9 +3043,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		PUT_TSTAT_U32(BACKLOG_BYTES, READ_ONCE(b->tin_backlog));
- 
- 		PUT_TSTAT_U32(TARGET_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.target)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.target))));
- 		PUT_TSTAT_U32(INTERVAL_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.interval))));
- 
- 		PUT_TSTAT_U32(SENT_PACKETS, READ_ONCE(b->packets));
- 		PUT_TSTAT_U32(DROPPED_PACKETS, READ_ONCE(b->tin_dropped));
 -- 
 2.53.0
 
