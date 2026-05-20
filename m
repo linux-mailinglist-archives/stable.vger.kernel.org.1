@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EvKOaP0DWos5AUAu9opvQ
-	(envelope-from <stable+bounces-251873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:31 +0200
+	id gDq5BC/qDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829F2594BED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9565592EC8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1546F301300B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C511A30594CF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B641A3F2115;
-	Wed, 20 May 2026 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F07F3F1AA4;
+	Wed, 20 May 2026 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvGv04ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBEg9DZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615F12BD5B9;
-	Wed, 20 May 2026 17:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676DE3F23D1;
+	Wed, 20 May 2026 17:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299110; cv=none; b=KY6Cvi1v/to1H4jZWiEANgBP/B+QV495tElP5luchHlcY6CpjbTB+5HITtPFZatmEAMM+EUwqXl/jOlU9JHtDQ4GEZv96L/n3rd/F6UIvtT/HAS6YMgsFPzzZZLaii7Z8O2AI2AekEpLgUtlA+NNGM0DAhjXojbSq631TK5QJp4=
+	t=1779296596; cv=none; b=lMZjw3E3pX4cLmnmYbb3WxwAEJIAGqvuh1WYzPpB3SAErOlnrpprqW9TzJqPN59CsACa43HpFxsJw1tcwff6YC+UmPZTjDZh0PUJ7PPL2B4qf9KVsHFyl2GATA2DZ2lwffWsgY5r6Nhk8pfmXz2+5YnY8zoq2/7CcofW8SxxEB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299110; c=relaxed/simple;
-	bh=8K66T0PXzYmD5gWT9lHDtK9rDv8nirpXiAArZlAtIco=;
+	s=arc-20240116; t=1779296596; c=relaxed/simple;
+	bh=sS5tYcefoZLJxDDBAXEDtAZvDbiVwex9C4rV4kB6LII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nff+Se8cQEaHVfPJPGrXK6J0RZpAQK9BWCjSFpwLv/wJ1DjbGRev9Wu/GPO67cJjQzQVlGsie+8XptpUIVxqarrxnrIHw64wnfB/pUNlVBFOHVpJE2VjpHvaworV0Wp1tmoSylf7kMKCB0+IRLk01rJaFDxQJyXM4LA2CO+W/B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvGv04ff; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AA71F000E9;
-	Wed, 20 May 2026 17:45:08 +0000 (UTC)
+	 MIME-Version; b=KtUapZpZjRWfCEGGyfPhFd/h80b8WvijZMpNorDe0uTF/iZ5yIqeF5PGHGfcIa20itvlLEF3ynzcAUTJBilraWsBt0Nz7hY8Ez+fhirTKNiU7yjAb82E4gQtiN/AyiGve4A6CvRBRvkFqjTMV+AUSi3K1LC3xKry3qI8EyCsybU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBEg9DZg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76EE1F00893;
+	Wed, 20 May 2026 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299109;
-	bh=39kPdvTN+/2QAbpC62sj2GxxJdbglc3F7SNN+jtEx+g=;
+	s=korg; t=1779296593;
+	bh=rDFeibUu75/AIG6Hvt6kPSTo/Wd+l0ZiYSJ5i4lkoV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EvGv04ff1/1N2MEfu45Ahd9ub5/+yilm8v2eq8WB0uTx2Ukbskuor4bJs8DLRs28j
-	 rsRBQkXWjHoVu+GNFteR/VQRLTWxawM9ZeJburd3AzV5KvhmoYgRGzQiSa32Y10/eF
-	 iUVQvhp4pg0PR+gvcxOpvPqjXgQ0P33rliq/5Zdw=
+	b=BBEg9DZg7R66Sm5A19sV9DiunY0z9XfBCtSxsOgAYKOk7fb781Xga7pj3WvtYYsE4
+	 Lf8R85UbehSj8fy2sKgp3JFG9i41t10a8cHE+aXILkg+6ZLMD8TnpGpHktH9L5dsdr
+	 ZFa8Z9t4QQ55yLJYpfbS36EJj50AtkkhbHPpCdlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 624/957] net: dsa: remove redundant netdev_lock_ops() from conduit ethtool ops
+Subject: [PATCH 7.0 0857/1146] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
 Date: Wed, 20 May 2026 18:18:27 +0200
-Message-ID: <20260520162148.062461498@linuxfoundation.org>
+Message-ID: <20260520162207.633868755@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,146 +68,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251873-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250898-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bootlin.com:email,fomichev.me:email]
-X-Rspamd-Queue-Id: 829F2594BED
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bell-sw.com:email]
+X-Rspamd-Queue-Id: A9565592EC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit 0f99e0c3e19badaf3fdced0d3feba623e59eed41 ]
+[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
 
-DSA replaces the conduit (master) device's ethtool_ops with its own
-wrappers that aggregate stats from both the conduit and DSA switch
-ports. Taking the lock again inside the DSA wrappers causes a deadlock.
+There is a mismatch between the passed arguments and the actual
+nfp_encode_basic_qdr() function parameter names:
 
-Stumbled upon this when booting qemu with fbnic and CONFIG_NET_DSA_LOOP=y
-(which looks like some kind of testing device that auto-populates the ports
-of eth0). `ethtool -i` is enough to deadlock. This means we have basically zero
-coverage for DSA stuff with real ops locked devs.
+  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
+                                  int mode, bool addr40, int isld1,
+                                  int isld0)
+  {
+      ...
 
-Remove the redundant netdev_lock_ops()/netdev_unlock_ops() calls from
-the DSA conduit ethtool wrappers.
+But "dest_island" and "cpp_tgt" are swapped at every call-site.
+For example:
 
-Fixes: 2bcf4772e45a ("net: ethtool: try to protect all callback with netdev instance lock")
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260414231035.1917035-1-sdf@fomichev.me
+  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+                              mode, addr40, isld1, isld0);
+
+As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
+type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
+as the destination island ID, which can accidentally match or be outside
+the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
+
+Since code already worked for years, also add extra pr_warn() to error
+paths in nfp_encode_basic_qdr() to help identify any potential address
+verification failures.
+
+Detected using the static analysis tool - Svace.
+
+Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/conduit.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/net/dsa/conduit.c b/net/dsa/conduit.c
-index a1b044467bd6f..8398d72d7e4d3 100644
---- a/net/dsa/conduit.c
-+++ b/net/dsa/conduit.c
-@@ -27,9 +27,7 @@ static int dsa_conduit_get_regs_len(struct net_device *dev)
- 	int len;
+diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
+index 79470f198a62a..9cf19446657c6 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
++++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
+@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
  
- 	if (ops && ops->get_regs_len) {
--		netdev_lock_ops(dev);
- 		len = ops->get_regs_len(dev);
--		netdev_unlock_ops(dev);
- 		if (len < 0)
- 			return len;
- 		ret += len;
-@@ -60,15 +58,11 @@ static void dsa_conduit_get_regs(struct net_device *dev,
- 	int len;
+ 	/* Full Island ID and channel bits overlap? */
+ 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
+-	if (ret)
++	if (ret) {
++		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
+ 		return ret;
++	}
  
- 	if (ops && ops->get_regs_len && ops->get_regs) {
--		netdev_lock_ops(dev);
- 		len = ops->get_regs_len(dev);
--		if (len < 0) {
--			netdev_unlock_ops(dev);
-+		if (len < 0)
- 			return;
--		}
- 		regs->len = len;
- 		ops->get_regs(dev, regs, data);
--		netdev_unlock_ops(dev);
- 		data += regs->len;
- 	}
+ 	/* The current address won't go where expected? */
+-	if (dest_island != -1 && dest_island != v)
++	if (dest_island != -1 && dest_island != v) {
++		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
++			__func__, dest_island, v);
+ 		return -EINVAL;
++	}
  
-@@ -115,10 +109,8 @@ static void dsa_conduit_get_ethtool_stats(struct net_device *dev,
- 	int count, mcount = 0;
+ 	/* If dest_island was -1, we don't care where it goes. */
+ 	return 0;
+@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * the address but we can verify if the existing
+ 			 * contents will point to a valid island.
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
  
- 	if (ops && ops->get_sset_count && ops->get_ethtool_stats) {
--		netdev_lock_ops(dev);
- 		mcount = ops->get_sset_count(dev, ETH_SS_STATS);
- 		ops->get_ethtool_stats(dev, stats, data);
--		netdev_unlock_ops(dev);
- 	}
+ 		iid_lsb = addr40 ? 34 : 26;
+@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 		return 0;
+ 	case 1:
+ 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
  
- 	list_for_each_entry(dp, &dst->ports, list) {
-@@ -149,10 +141,8 @@ static void dsa_conduit_get_ethtool_phy_stats(struct net_device *dev,
- 		if (count >= 0)
- 			phy_ethtool_get_stats(dev->phydev, stats, data);
- 	} else if (ops && ops->get_sset_count && ops->get_ethtool_phy_stats) {
--		netdev_lock_ops(dev);
- 		count = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
- 		ops->get_ethtool_phy_stats(dev, stats, data);
--		netdev_unlock_ops(dev);
- 	}
+ 		idx_lsb = addr40 ? 39 : 31;
+@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * be set before hand and with them select an island.
+ 			 * So we need to confirm that it's at least plausible.
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
  
- 	if (count < 0)
-@@ -176,13 +166,11 @@ static int dsa_conduit_get_sset_count(struct net_device *dev, int sset)
- 	struct dsa_switch_tree *dst = cpu_dp->dst;
- 	int count = 0;
+ 		/* Make sure we compare against isldN values
+@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * iid<1> = addr<30> = channel<0>
+ 			 * channel<1> = addr<31> = Index
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
  
--	netdev_lock_ops(dev);
- 	if (sset == ETH_SS_PHY_STATS && dev->phydev &&
- 	    (!ops || !ops->get_ethtool_phy_stats))
- 		count = phy_ethtool_get_sset_count(dev->phydev);
- 	else if (ops && ops->get_sset_count)
- 		count = ops->get_sset_count(dev, sset);
--	netdev_unlock_ops(dev);
- 
- 	if (count < 0)
- 		count = 0;
-@@ -239,7 +227,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
- 	struct dsa_switch_tree *dst = cpu_dp->dst;
- 	int count, mcount = 0;
- 
--	netdev_lock_ops(dev);
- 	if (stringset == ETH_SS_PHY_STATS && dev->phydev &&
- 	    !ops->get_ethtool_phy_stats) {
- 		mcount = phy_ethtool_get_sset_count(dev->phydev);
-@@ -253,7 +240,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
- 			mcount = 0;
- 		ops->get_strings(dev, stringset, data);
- 	}
--	netdev_unlock_ops(dev);
- 
- 	list_for_each_entry(dp, &dst->ports, list) {
- 		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
+ 		isld[0] &= ~3;
 -- 
 2.53.0
 
