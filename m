@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEc5Ki3nDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:05 +0200
+	id 8G8rBjbxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506E8592998
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02CA5941D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09286306BB83
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C088F3041B92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE813546D0;
-	Wed, 20 May 2026 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46E3369999;
+	Wed, 20 May 2026 17:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mU66ma3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz6XXZ3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C613630BC;
-	Wed, 20 May 2026 16:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69136A357;
+	Wed, 20 May 2026 17:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295183; cv=none; b=SWoK2eD2qOxGCuciKaFgnBos8LTrYgDRrEV3gUDCKZO5RmQEesvl0VvTBnm5+NXHsjskL8WQ9vmeZjYcqSZKNvu75qwCE1mIYs5IO3LmAVjnW07ph8+ZrZv5KsvX2/ThPRoGqa1fmnX88Ea/Vvb34Xegzu+gW2CXBD1N2/GH5qk=
+	t=1779297699; cv=none; b=onYwyqRa4lrWHnsDiwpBdKN8XOL/xe/50wnurMnZxOePZzFV5syk9ssm5Hl4DuPsxDkVup1p5exUyy0T8OoW5XP1vkRPsCj5ARwZgVAaN89aOzNNGs6Er0jvxOGw8PA0RQn79pFhkJNL6YSwy18/1V3Nc5YTAIhoLaB7zvqSTrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295183; c=relaxed/simple;
-	bh=ZIj1wwJ/YctL2QalRadeAIs6BYyAqMSfwrIIrNEJ+Ns=;
+	s=arc-20240116; t=1779297699; c=relaxed/simple;
+	bh=sPbOMyc1jHLUYNktxgFfqztroh/m0wH0cwZqOhgprWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEQeBqIk3HH2e+Hqu8IIbirpRNdUsVVDg3k2uBGVXLtyhj2QRty+kW6aC6YUseqY1XYA63F9GERZqVe5JVrdgVLm3cBY4PMHIn8M9qkXYUwgmqEef7Yb4DUckP7lTL40DIdQ7T3GRCJzaeh3p7RHaeik0Y07ju/bMAdWtaweA70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mU66ma3m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313261F000E9;
-	Wed, 20 May 2026 16:39:39 +0000 (UTC)
+	 MIME-Version; b=bEVzmZhFd01xWN6UQFDrwxa9XMNMDdYZClJFe3hIHn2sosLZRyhyLVO20HY++sG3u9fFPhtndMjNPESBeGB9jfWxnCo7V9Ou9GFkvMSlgZau3qjfadbkQoQska9yOwD00J/wrdDAnMb2uPv/XIQHNmvwuU/DLMcFuX3Px8Hbm/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz6XXZ3f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE011F000E9;
+	Wed, 20 May 2026 17:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295179;
-	bh=ZQ/oBe4+1qQT4bFj0o3vnV5oUgDwnun7frv7WNXfu3w=;
+	s=korg; t=1779297698;
+	bh=P1mRQmRD2sOsVyJXYXHF4+Ai4/cbHAWiVaRD9jF4JxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mU66ma3m0B0ut4CWkpKmmfP4RJMWbtUL7oBVOtm+U2wRFX/OV/iVnPXYn91Q6fqwL
-	 y0us992brHgcTmavIHuEbMTROlCIpTK7ICDBHUi+2h4kEk1al7mygYT/V1QKp4/JdM
-	 gEZp7B4sxEbR2s/KJ8ygqXnwsdrGZ06toxLXFs/c=
+	b=xz6XXZ3fBcHevXIntU/xD9uvoNumRCMPgBTycP1AdQ24L/TA916PfJvOS7yCmOWNz
+	 3tcepJ4FkEGJNUoDdHSypMXyNjCwn4AF6mZvbcpGdGyZMmw2qzaZhxqGQHax5Qphw8
+	 rUWX9TqfiXvzi3vvwhPuQJsXgjH2U2BAO9sKcFao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0321/1146] drm/msm/dpu: dont try using 2 LMs if only one DSC is available
+Subject: [PATCH 6.18 088/957] wifi: mt76: Fix memory leak destroying device
 Date: Wed, 20 May 2026 18:09:31 +0200
-Message-ID: <20260520162155.463670393@linuxfoundation.org>
+Message-ID: <20260520162136.469171398@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251329-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +89,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,fairphone.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 506E8592998
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C02CA5941D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit b9699dd862760e642807a2bc226e4d127e35dcb7 ]
+[ Upstream commit 6b470f36616e3448d44b0ef4b1de2a3e3a31b5be ]
 
-Current topology code will try using 2 LMs with just one DSC, which
-breaks cases like SC7280 / Fairphone5. Forbid using 2 LMs split in such
-a case.
+All MT76 rx queues have an associated page_pool even if the queue is not
+associated to a NAPI (e.g. WED RRO queues with WED enabled). Destroy the
+page_pool running mt76_dma_cleanup routine during module unload.
+Moreover returns pages to the page pool if WED is not enabled for WED RRO
+queues.
 
-Fixes: 1ce69c265a53 ("drm/msm/dpu: move resource allocation to CRTC")
-Reported-by: Luca Weiss <luca.weiss@fairphone.com>
-Closes: https://lore.kernel.org/r/DH1IKLU0YZYU.2SW4WYO7H3H4R@fairphone.com/
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # qcm6490-fairphone-fp5
-Patchwork: https://patchwork.freedesktop.org/patch/712386/
-Link: https://lore.kernel.org/r/20260317-fix-3d-dsc-v1-1-88b54f62f659@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: 950d0abb5cd94 ("wifi: mt76: mt7996: add wed rx support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251208-mt76-fix-memory-leak-v1-1-cba813fc62b8@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/dma.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-index 0f4921b1a8922..cbb7caa194c1e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
-@@ -1410,7 +1410,8 @@ static struct msm_display_topology dpu_crtc_get_topology(
- 		topology.num_lm = 2;
- 	else if (topology.num_dsc == 2)
- 		topology.num_lm = 2;
--	else if (dpu_kms->catalog->caps->has_3d_merge)
-+	else if (dpu_kms->catalog->caps->has_3d_merge &&
-+		 topology.num_dsc == 0)
- 		topology.num_lm = (mode->hdisplay > MAX_HDISPLAY_SPLIT) ? 2 : 1;
- 	else
- 		topology.num_lm = 1;
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 1fa7de1d2c45e..9ef073c27f309 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -878,7 +878,12 @@ mt76_dma_rx_cleanup(struct mt76_dev *dev, struct mt76_queue *q)
+ 		if (!buf)
+ 			break;
+ 
+-		if (!mt76_queue_is_wed_rro(q))
++		if (mtk_wed_device_active(&dev->mmio.wed) &&
++		    mt76_queue_is_wed_rro(q))
++			continue;
++
++		if (!mt76_queue_is_wed_rro_rxdmad_c(q) &&
++		    !mt76_queue_is_wed_rro_ind(q))
+ 			mt76_put_page_pool_buf(buf, false);
+ 	} while (1);
+ 
+@@ -1169,10 +1174,6 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	mt76_for_each_q_rx(dev, i) {
+ 		struct mt76_queue *q = &dev->q_rx[i];
+ 
+-		if (mtk_wed_device_active(&dev->mmio.wed) &&
+-		    mt76_queue_is_wed_rro(q))
+-			continue;
+-
+ 		netif_napi_del(&dev->napi[i]);
+ 		mt76_dma_rx_cleanup(dev, q);
+ 
 -- 
 2.53.0
 
