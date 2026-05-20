@@ -1,244 +1,248 @@
-Return-Path: <stable+bounces-251787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEBCIeEdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:29 +0200
+	id YOjEED8fDmpd6QUAu9opvQ
+	(envelope-from <stable+bounces-251845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CD259A1B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A921959A422
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F4783758DF0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E90E3328134F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7E33ED5C8;
-	Wed, 20 May 2026 17:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1DD3F1AC7;
+	Wed, 20 May 2026 17:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ZL8/nn9I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DA99Mr0a"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CF13E123F;
-	Wed, 20 May 2026 17:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4C83EE1FA;
+	Wed, 20 May 2026 17:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298891; cv=none; b=cMz0eUfaFyThlquA2OhtixBiHi0N9vXBLC21FmBJiIdVmoAIUavTQg3CEZBg3xpRlQYshEj4nRiM2Px5MvhyCndXocLnUtvbeT2p7Bhxs/LjxDcyLebSy6fuJ4aeXZyMz6QloZZah7T2D1fZMQMO03c28a99NEwfZSPCMd5KnCA=
+	t=1779299038; cv=none; b=uFi3NvD6RYuv6sn+jTp80HLJkLuKfM6xHd6o+Mln4gNqpmorDs+1FlzQRn/aqxFCEkNv2yCw6m/hjk7tugKdS0IU0eBUOMfA8Q7z++McMaeiceT950OziEAX7tdMRBu0Tj49I7ZQszegmiViTNx0QOFiBXlJswdmnzu6qGiRz5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298891; c=relaxed/simple;
-	bh=iTxehStzlB1GozKYMCfNJeZ67nC8BTcSqdK5qvQx330=;
+	s=arc-20240116; t=1779299038; c=relaxed/simple;
+	bh=HmbzItfoBNw9pRHaQ4Z+zDtSvsx6AuIEaW7Ov5R+vFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=odX8XKNFOZg0QHxwJl9rbkPqsezgpb22k7UXyJ7F1S7RCrbuZyIlIdQ1tUCNnufzfen9p11SqrQON4pgWv9ylosErBMvjHCy2C++eKLB76Si2MF9pPqVS0YiD7Ut5QhpqC0CqinY/EXIUvzLITpM76gTzJYly6283mWoQP1zsRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ZL8/nn9I; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from killaraus.ideasonboard.com (unknown [IPv6:2a01:cb1d:8f2:800:42d6:38fa:3bdf:70df])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4142642B;
-	Wed, 20 May 2026 19:41:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1779298874;
-	bh=iTxehStzlB1GozKYMCfNJeZ67nC8BTcSqdK5qvQx330=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZL8/nn9I+dEVKV+TvrU0ZHScVI4DiFx5+tExY2OgzDi+5DYB8ozCjW4c8O9WM/AeW
-	 m4jyPNsizBE19NFwzuudLRPG+GKWYyWCaimyvmSzH65E3VyCa0HH8hQvj12dCuo7+q
-	 05LuqYpvTeqX2mRugW2qRi7/yovvPXR+5DUEL3uo=
-Date: Wed, 20 May 2026 19:41:26 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Stefan Riedmueller <s.riedmueller@phytec.de>,
-	Jacopo Mondi <jacopo@jmondi.org>, Christian Hemp <c.hemp@phytec.de>,
-	Frank Li <frank.li@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Guoniu Zhou <guoniu.zhou@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] media: nxp: imx8-isi: Fix potential out-of-bounds
- issues
-Message-ID: <20260520174126.GA12108@killaraus.ideasonboard.com>
-References: <20260323-isi-v3-0-8df53b24e622@oss.nxp.com>
- <20260323-isi-v3-1-8df53b24e622@oss.nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dLN4hHYVo0JLOrSgMnw9Btqj2GLzivCs+xE+4wJ+Qwb2sseoAKBjkpTZs2+hOO5SWAo6vaL2mcplFndN7+QQwBVv6fGC+m9BJDuCedhyuuPGK2z4C++Z6RVRYki5vg4H7xFHxTTZU3BJOBmqyAFFKa/KvLhtpbcKmHggDWK5HY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DA99Mr0a; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779299037; x=1810835037;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HmbzItfoBNw9pRHaQ4Z+zDtSvsx6AuIEaW7Ov5R+vFs=;
+  b=DA99Mr0av5ZAisYcOEaFv5QrJBKpMzJbVNoNLEN77+4Rydylwg2wGV4o
+   LP17rZ+tdzRhUQ/82meqfG0Fb50EZEtlaEY0HGCFPZeiavtdTRyvPDOiF
+   /kj70j40egz/1On0Z3q2K9RtUiZ3EG59Yk37pKsTOlJdH0RlryCUEz11w
+   KCYdbNvhc+5tCET4bTMSWanvw21tlNdgNB5ytNp28GXomcKnxTawxnHrv
+   m91CXYbz/LCav80CUrVKpYOmX+P8LkMWPsM1NiK+/wxKjhSZLEafyriIK
+   /G0mmdProDpbSAWVoQkXYaQDlQf6Gauuokoij+BeWOrOetSqf8jqafXJ5
+   A==;
+X-CSE-ConnectionGUID: mV6aRw06QSe+l7/GxjVgnw==
+X-CSE-MsgGUID: IiUVJVs6TySnXTxeEmxgcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="90784892"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="90784892"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 10:43:57 -0700
+X-CSE-ConnectionGUID: 0RuTxDY6T6C4TrX8UPnXYw==
+X-CSE-MsgGUID: vAvB2vGvQe+79Z8PTXhRJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="264063058"
+Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 20 May 2026 10:43:54 -0700
+Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wPkx3-000000003d7-2eTq;
+	Wed, 20 May 2026 17:43:33 +0000
+Date: Thu, 21 May 2026 01:42:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] USB: serial: keyspan: fix missing indat transfer sanity
+ check
+Message-ID: <202605210121.M2IibKiB-lkp@intel.com>
+References: <20260520101230.657426-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323-isi-v3-1-8df53b24e622@oss.nxp.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <20260520101230.657426-1-johan@kernel.org>
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251787-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251845-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,gmail.com,phytec.de,jmondi.org,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ideasonboard.com:email,ideasonboard.com:dkim,killaraus.ideasonboard.com:mid]
-X-Rspamd-Queue-Id: E2CD259A1B0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,01.org:url,git-scm.com:url]
+X-Rspamd-Queue-Id: A921959A422
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 23, 2026 at 04:33:30PM +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> 
-> The maximum downscaling factor supported by ISI can be up to 16. Add
-> minimum value constraint before applying the setting to hardware.
-> Otherwise, the process will not respond even when Ctrl+C is executed.
-> 
-> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> ---
-> Changes in v3:
-> - Replace CLAMP_DOWNSCALE_16 macro with inline function
-> - Adjust downscale threshold from 0x4000 to 0x2000
-> - Clarify downscaling limit in comment
-> ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h | 16 ++++++++++++++++
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c   |  2 +-
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c  | 11 ++++++++---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c | 13 ++++++++-----
->  4 files changed, 33 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index 3cbd35305af0..822466445b72 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -11,6 +11,7 @@
->  #define __MXC_ISI_CORE_H__
->  
->  #include <linux/list.h>
-> +#include <linux/math.h>
->  #include <linux/mutex.h>
->  #include <linux/spinlock.h>
->  #include <linux/types.h>
-> @@ -413,4 +414,19 @@ static inline void mxc_isi_debug_cleanup(struct mxc_isi_dev *isi)
->  }
->  #endif
->  
-> +/*
-> + * ISI scaling engine works in two parts: it performs pre-decimation of
-> + * the image followed by bilinear filtering to achieve the desired
-> + * downscaling factor.
-> + *
-> + * The decimation filter provides a maximum downscaling factor of 8, and
-> + * the subsequent bilinear filter provides a maximum downscaling factor
-> + * of 2. Combined, the maximum scaling factor can be up to 16.
-> + */
-> +static inline unsigned int
-> +mxc_isi_clamp_downscale_16(unsigned int val, unsigned int max_val)
-> +{
-> +	return clamp(val, max(1U, DIV_ROUND_UP(max_val, 16)), max_val);
-> +}
-> +
->  #endif /* __MXC_ISI_CORE_H__ */
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-> index 9225a7ac1c3e..37e59d687ed7 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-hw.c
-> @@ -11,7 +11,7 @@
->  #include "imx8-isi-core.h"
->  #include "imx8-isi-regs.h"
->  
-> -#define	ISI_DOWNSCALE_THRESHOLD		0x4000
-> +#define	ISI_DOWNSCALE_THRESHOLD		0x2000
+Hi Johan,
 
-This should be split to a separate patch as it's a separate fix.
+kernel test robot noticed the following build errors:
 
->  static inline u32 mxc_isi_read(struct mxc_isi_pipe *pipe, u32 reg)
->  {
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> index a39ad7a1ab18..a0e2061f4344 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-> @@ -508,10 +508,15 @@ __mxc_isi_m2m_try_fmt_vid(struct mxc_isi_m2m_ctx *ctx,
->  			  struct v4l2_pix_format_mplane *pix,
->  			  const enum mxc_isi_video_type type)
->  {
-> +	const struct v4l2_pix_format_mplane *format =
-> +		&ctx->queues.out.format;
+[auto build test ERROR on johan-usb-serial/usb-next]
+[also build test ERROR on usb/usb-testing usb/usb-next usb/usb-linus tty/tty-testing tty/tty-next tty/tty-linus linus/master v7.1-rc4 next-20260520]
+[cannot apply to johan-usb-serial/usb-linus]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-This can go in the 'if' below.
+url:    https://github.com/intel-lab-lkp/linux/commits/Johan-Hovold/USB-serial-keyspan-fix-missing-indat-transfer-sanity-check/20260520-181924
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git usb-next
+patch link:    https://lore.kernel.org/r/20260520101230.657426-1-johan%40kernel.org
+patch subject: [PATCH] USB: serial: keyspan: fix missing indat transfer sanity check
+config: i386-buildonly-randconfig-006-20260520 (https://download.01.org/0day-ci/archive/20260521/202605210121.M2IibKiB-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260521/202605210121.M2IibKiB-lkp@intel.com/reproduce)
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605210121.M2IibKiB-lkp@intel.com/
 
-I'll take this patch without the ISI_DOWNSCALE_THRESHOLD change in my
-tree, and will send a separate patch for ISI_DOWNSCALE_THRESHOLD.
+All errors (new ones prefixed by >>):
 
-> +
->  	if (type == MXC_ISI_VIDEO_M2M_CAP) {
-> -		/* Downscaling only  */
-> -		pix->width = min(pix->width, ctx->queues.out.format.width);
-> -		pix->height = min(pix->height, ctx->queues.out.format.height);
-> +		/* Downscaling only, by up to 16. */
-> +		pix->width = mxc_isi_clamp_downscale_16(pix->width,
-> +							format->width);
-> +		pix->height = mxc_isi_clamp_downscale_16(pix->height,
-> +							 format->height);
->  	}
->  
->  	return mxc_isi_format_try(ctx->m2m->pipe, pix, type);
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> index a41c51dd9ce0..b290821d03d2 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
-> @@ -641,16 +641,19 @@ static int mxc_isi_pipe_set_selection(struct v4l2_subdev *sd,
->  			/* Composing is supported on the sink only. */
->  			return -EINVAL;
->  
-> -		/* The sink crop is bound by the sink format downscaling only). */
-> +		/*
-> +		 * The ISI supports downscaling only, with a factor up to 16.
-> +		 * Clamp the compose rectangle size accordingly.
-> +		 */
->  		format = mxc_isi_pipe_get_pad_format(pipe, state,
->  						     MXC_ISI_PIPE_PAD_SINK);
->  
->  		sel->r.left = 0;
->  		sel->r.top = 0;
-> -		sel->r.width = clamp(sel->r.width, MXC_ISI_MIN_WIDTH,
-> -				     format->width);
-> -		sel->r.height = clamp(sel->r.height, MXC_ISI_MIN_HEIGHT,
-> -				      format->height);
-> +		sel->r.width = mxc_isi_clamp_downscale_16(sel->r.width,
-> +							  format->width);
-> +		sel->r.height = mxc_isi_clamp_downscale_16(sel->r.height,
-> +							   format->height);
->  
->  		rect = mxc_isi_pipe_get_pad_compose(pipe, state,
->  						    MXC_ISI_PIPE_PAD_SINK);
-> 
+>> drivers/usb/serial/keyspan.c:1189:25: error: incompatible pointer types passing 'struct usb_device **' to parameter of type 'const struct device *' [-Werror,-Wincompatible-pointer-types]
+    1189 |                         dev_warn_ratelimited(&serial->dev, "malformed indat packet\n");
+         |                                              ^~~~~~~~~~~~
+   include/linux/dev_printk.h:227:34: note: expanded from macro 'dev_warn_ratelimited'
+     227 |         dev_level_ratelimited(dev_warn, dev, fmt, ##__VA_ARGS__)
+         |                                         ^~~
+   include/linux/dev_printk.h:215:13: note: expanded from macro 'dev_level_ratelimited'
+     215 |                 dev_level(dev, fmt, ##__VA_ARGS__);                     \
+         |                           ^~~
+   include/linux/dev_printk.h:156:49: note: expanded from macro 'dev_warn'
+     156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                        ^~~
+   include/linux/dev_printk.h:110:11: note: expanded from macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                         ^~~
+   include/linux/dev_printk.h:89:37: note: passing argument to parameter 'dev' here
+      89 | void _dev_warn(const struct device *dev, const char *fmt, ...)
+         |                                     ^
+   1 error generated.
 
--- 
-Regards,
 
-Laurent Pinchart
+vim +1189 drivers/usb/serial/keyspan.c
+
+  1166	
+  1167	static void usa49wg_indat_callback(struct urb *urb)
+  1168	{
+  1169		int			i, len, x, err;
+  1170		struct usb_serial	*serial;
+  1171		struct usb_serial_port	*port;
+  1172		unsigned char 		*data = urb->transfer_buffer;
+  1173		int status = urb->status;
+  1174	
+  1175		serial = urb->context;
+  1176	
+  1177		if (status) {
+  1178			dev_dbg(&urb->dev->dev, "%s - nonzero status: %d\n",
+  1179					__func__, status);
+  1180			return;
+  1181		}
+  1182	
+  1183		/* inbound data is in the form P#, len, status, data */
+  1184		i = 0;
+  1185		len = 0;
+  1186	
+  1187		while (i < urb->actual_length) {
+  1188			if (urb->actual_length - i < 3) {
+> 1189				dev_warn_ratelimited(&serial->dev, "malformed indat packet\n");
+  1190				break;
+  1191			}
+  1192	
+  1193			/* Check port number from message */
+  1194			if (data[i] >= serial->num_ports) {
+  1195				dev_dbg(&urb->dev->dev, "%s - Unexpected port number %d\n",
+  1196					__func__, data[i]);
+  1197				return;
+  1198			}
+  1199			port = serial->port[data[i++]];
+  1200			len = data[i++];
+  1201	
+  1202			/* 0x80 bit is error flag */
+  1203			if ((data[i] & 0x80) == 0) {
+  1204				/* no error on any byte */
+  1205				i++;
+  1206				for (x = 1; x < len && i < urb->actual_length; ++x)
+  1207					tty_insert_flip_char(&port->port,
+  1208							data[i++], 0);
+  1209			} else {
+  1210				/*
+  1211				 * some bytes had errors, every byte has status
+  1212				 */
+  1213				for (x = 0; x + 1 < len &&
+  1214					    i + 1 < urb->actual_length; x += 2) {
+  1215					int stat = data[i];
+  1216					int flag = TTY_NORMAL;
+  1217	
+  1218					if (stat & RXERROR_OVERRUN) {
+  1219						tty_insert_flip_char(&port->port, 0,
+  1220									TTY_OVERRUN);
+  1221					}
+  1222					/* XXX should handle break (0x10) */
+  1223					if (stat & RXERROR_PARITY)
+  1224						flag = TTY_PARITY;
+  1225					else if (stat & RXERROR_FRAMING)
+  1226						flag = TTY_FRAME;
+  1227	
+  1228					tty_insert_flip_char(&port->port, data[i+1],
+  1229							     flag);
+  1230					i += 2;
+  1231				}
+  1232			}
+  1233			tty_flip_buffer_push(&port->port);
+  1234		}
+  1235	
+  1236		/* Resubmit urb so we continue receiving */
+  1237		err = usb_submit_urb(urb, GFP_ATOMIC);
+  1238		if (err != 0)
+  1239			dev_dbg(&urb->dev->dev, "%s - resubmit read urb failed. (%d)\n", __func__, err);
+  1240	}
+  1241	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
