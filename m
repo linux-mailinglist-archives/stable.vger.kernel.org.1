@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WA4cFNAGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:04 +0200
+	id oDfCJKAVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-251156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEBE597D7E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F38599419
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 337403973BBD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54C983192F4E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170C4407CFB;
-	Wed, 20 May 2026 18:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C5B3FB043;
+	Wed, 20 May 2026 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgIsVnvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQxopLj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FB23EEAD8;
-	Wed, 20 May 2026 18:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128473C6A5C;
+	Wed, 20 May 2026 17:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302615; cv=none; b=cVUxELvpaSjzBxlxa9hY6QTMhBtI8DqwC+6EbjCjX9s6O+n/Y6SXhhS3AMMhQMo9Jtb0+DzY37bpf80yuBKWYlXIxaRthmo36DnJAkV9eVo5BnxoFggUFHFBk/ZCd82g7rNl+uKYXdeMum6SD94oO/20ZZfZH+a8E2JZL0G3BjM=
+	t=1779297245; cv=none; b=BUanjPQ0zRFtw63d+AVYlcbMt6THr7HOiwkczcaE0bj86u6x2Ty+VtK4AOgRz0nHLUfyDzn47IUuiIOETZgh8XbjjUcJkkAUjpOp9QM5nfbZpvU6uJ/kllei3FS9pQOCX/fPypvRHJujzOSDX8peTo7a5zIFq/C7czqFhdQ+a7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302615; c=relaxed/simple;
-	bh=VvQn+/ZyMxaZH4+nV5zR4BWPl6itZkT2YGpK16WvNX8=;
+	s=arc-20240116; t=1779297245; c=relaxed/simple;
+	bh=OO5r/dUF++oaWjEym0HjQNWJoAXHKAhu5MaVpSQ38aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQo+YianIAeoIFdEs6WUQaa7wni6neZWCsgeoTr7YyT4pVx7XkDbofUvbnSKahWe6acP3uCYiELm0HOBk8EKpb+f4snpfzTrIi+ttkBiuCh9nRYjsmfkqM5qXXlnJtf2Eo8VfSxx/AnI8hcoIHlCe1zctZAihJQtzDoQVYBZbe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgIsVnvb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7591F000E9;
-	Wed, 20 May 2026 18:43:33 +0000 (UTC)
+	 MIME-Version; b=HCYJeDKbdkMpAGnpqbuxCeUHA07KFLCE2GGCC1zSxO9/QGZXQ1kj7sDUm9/3F3AzooVWwS1Iy1INEfsV3geFtFtFbvz+6wLMxBnMj1GmcWIfDUiYQOF1imhz0cBjignrMybbUY0MU5cNipmYhzw6iK6R1aZad8vwsaMRCVXYbjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQxopLj+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782BB1F000E9;
+	Wed, 20 May 2026 17:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302614;
-	bh=zSrz6V47VRXWnq/SxnswQvYF72hSFI8xnkAEK3cirPM=;
+	s=korg; t=1779297244;
+	bh=YWtGSxs4nlLtoR8iMM1mPvlholdixoDe5g/5kBH8qH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WgIsVnvbdx6arusNGwXhbDcFvc1IzNE17XFxNCd1zvAeCGaea5KAa9aQ0OxMlkyo5
-	 wkECJ2ySMNg0kNabOSSnkYkbs8PcqRCwx1vZ1ddCHqVKqmYJxdP37oZFLZwVXc/TmM
-	 uU73A/V8+tWL3eROMY3rm6dsnpnzNPIef+wJ9Img=
+	b=yQxopLj+03DRdRlvZBgmpYtoe9266Xi1ALdvrWEEzujDfs+T6icMpGpbUC+VyX6J5
+	 evcX2ABU2nqWwzWyJnPoegtcZMqOgH1RFUYWySCSoSrrGUvKG1/u4SMnttwiU8JbcL
+	 nvencTwDI8MKci4u6UM7Ey5ouGg4sUX1msPS8bbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yingnan Zhang <342144303@qq.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 333/508] ipvs: fix MTU check for GSO packets in tunnel mode
+	Scott Mayhew <smayhew@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 7.0 1106/1146] nfsd: fix file change detection in CB_GETATTR
 Date: Wed, 20 May 2026 18:22:36 +0200
-Message-ID: <20260520162105.847217119@linuxfoundation.org>
+Message-ID: <20260520162213.275112920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,133 +65,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253181-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251156-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qq.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8DEBE597D7E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: 04F38599419
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yingnan Zhang <342144303@qq.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
+commit 304d81a2fbf2b454def4debcb38ea173911b72cd upstream.
 
-Currently, IPVS skips MTU checks for GSO packets by excluding them with
-the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
-mode encapsulates GSO packets with IPIP headers.
+RFC 8881, section 10.4.3 doesn't say anything about caching the file
+size in the delegation record, nor does it say anything about comparing
+a cached file size with the size reported by the client in the
+CB_GETATTR reply for the purpose of determining if the client holds
+modified data for the file.
 
-The issue manifests in two ways:
+What section 10.4.3 of RFC 8881 does say is that the server should
+compare the *current* file size with the size reported by the client
+holding the delegation in the CB_GETATTR reply, and if they differ to
+treat it as a modification regardless of the change attribute retrieved
+via the CB_GETATTR.
 
-1. MTU violation after encapsulation:
-   When a GSO packet passes through IPVS tunnel mode, the original MTU
-   check is bypassed. After adding the IPIP tunnel header, the packet
-   size may exceed the outgoing interface MTU, leading to unexpected
-   fragmentation at the IP layer.
+Doing otherwise would cause the server to believe the client holding the
+delegation has a modified version of the file, even if the client
+flushed the modifications to the server prior to the CB_GETATTR.  This
+would have the added side effect of subsequent CB_GETATTRs causing
+updates to the mtime, ctime, and change attribute even if the client
+holding the delegation makes no further updates to the file.
 
-2. Fragmentation with problematic IP IDs:
-   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
-   is fragmented after encapsulation, each segment gets a sequentially
-   incremented IP ID (0, 1, 2, ...). This happens because:
+Modify nfsd4_deleg_getattr_conflict() to obtain the current file size
+via i_size_read().  Retain the ncf_cur_fsize field, since it's a
+convenient way to return the file size back to nfsd4_encode_fattr4(),
+but don't use it for the purpose of detecting file changes.  Remove the
+unnecessary initialization of ncf_cur_fsize in nfs4_open_delegation().
 
-   a) The GSO packet bypasses MTU check and gets encapsulated
-   b) At __ip_finish_output, the oversized GSO packet is split into
-      separate SKBs (one per segment), with IP IDs incrementing
-   c) Each SKB is then fragmented again based on the actual MTU
+Also, if we recall the delegation (because the client didn't respond to
+the CB_GETATTR), then skip the logic that checks the nfs4_cb_fattr
+fields.
 
-   This sequential IP ID allocation differs from the expected behavior
-   and can cause issues with fragment reassembly and packet tracking.
-
-Fix this by properly validating GSO packets using
-skb_gso_validate_network_len(). This function correctly validates
-whether the GSO segments will fit within the MTU after segmentation. If
-validation fails, send an ICMP Fragmentation Needed message to enable
-proper PMTU discovery.
-
-Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
-Signed-off-by: Yingnan Zhang <342144303@qq.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4state.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index 2877706f0162f..819538d2e4600 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -103,6 +103,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
- 	return dest_dst;
- }
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6368,7 +6368,6 @@ nfs4_open_delegation(struct svc_rqst *rq
+ 		}
+ 		open->op_delegate_type = deleg_ts ? OPEN_DELEGATE_WRITE_ATTRS_DELEG :
+ 						    OPEN_DELEGATE_WRITE;
+-		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+ 		dp->dl_cb_fattr.ncf_initial_cinfo = nfsd4_change_attribute(&stat);
+ 		dp->dl_atime = stat.atime;
+ 		dp->dl_ctime = stat.ctime;
+@@ -9417,11 +9416,15 @@ nfsd4_deleg_getattr_conflict(struct svc_
+ 		if (status != nfserr_jukebox ||
+ 		    !nfsd_wait_for_delegreturn(rqstp, inode))
+ 			goto out_status;
++		status = nfs_ok;
++		goto out_status;
++	}
++	if (!ncf->ncf_file_modified) {
++		if (ncf->ncf_initial_cinfo != ncf->ncf_cb_change)
++			ncf->ncf_file_modified = true;
++		else if (i_size_read(inode) != ncf->ncf_cb_fsize)
++			ncf->ncf_file_modified = true;
+ 	}
+-	if (!ncf->ncf_file_modified &&
+-	    (ncf->ncf_initial_cinfo != ncf->ncf_cb_change ||
+-	     ncf->ncf_cur_fsize != ncf->ncf_cb_fsize))
+-		ncf->ncf_file_modified = true;
+ 	if (ncf->ncf_file_modified) {
+ 		int err;
  
-+/* Based on ip_exceeds_mtu(). */
-+static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
-+{
-+	if (skb->len <= mtu)
-+		return false;
-+
-+	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
-+		return false;
-+
-+	return true;
-+}
-+
- static inline bool
- __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
- {
-@@ -112,10 +124,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
- 		 */
- 		if (IP6CB(skb)->frag_max_size > mtu)
- 			return true; /* largest fragment violate MTU */
--	}
--	else if (skb->len > mtu && !skb_is_gso(skb)) {
-+	} else if (ip_vs_exceeds_mtu(skb, mtu))
- 		return true; /* Packet size violate MTU size */
--	}
-+
- 	return false;
- }
- 
-@@ -233,7 +244,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
- 			return true;
- 
- 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
--			     skb->len > mtu && !skb_is_gso(skb) &&
-+			     ip_vs_exceeds_mtu(skb, mtu) &&
- 			     !ip_vs_iph_icmp(ipvsh))) {
- 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
- 				  htonl(mtu));
--- 
-2.53.0
-
 
 
 
