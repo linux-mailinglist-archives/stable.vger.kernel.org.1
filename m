@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-249834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249836-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EsUG72aDWoMzwUAu9opvQ
-	(envelope-from <stable+bounces-249834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:27:57 +0200
+	id iJX2BP6eDWqC0AUAu9opvQ
+	(envelope-from <stable+bounces-249836-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:46:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C421958C6B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3A958CE17
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3137314BFA7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:21:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1409D3059A47
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A90A36B071;
-	Wed, 20 May 2026 11:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87723DE427;
+	Wed, 20 May 2026 11:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSDlUDOC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JA5bs6+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CD93DC4B1;
-	Wed, 20 May 2026 11:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB253DCD8B;
+	Wed, 20 May 2026 11:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779276009; cv=none; b=sVWGBmfgww3yRNAvU8Rrbn6sM+aQOZmibwYm5Gi71loIPmuJaPcldadNUpsVlvAKWI7rvyOJXHLS1YYHYCiethCziXT7WitGckLeamiAqLMxfoPpkqYrUGItBNFgY+XeL4+tpQNNu2voeRSKmuChTrqFf8BXyq6s4VWyhA/PezE=
+	t=1779276011; cv=none; b=s1tPzFAaTcOJUjbL1cX7/LBaDlEbNxymYdbTFACQznEE5MHKh4IXqYo/Z3hS7AZng7XTAoAhQxUviq1PESnlSd+RGczAkfsXYWZM9GYNEHsdbGhcxbgrzx0M1XtcikhkWLeGOE424Rb2ujF3I4+9xvkKL5W81pQD/gj1e+AUFC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779276009; c=relaxed/simple;
-	bh=YBxiAIRhLLuhZloB1Bm/OKO7SGTkSns5aVZuj2FDPYk=;
+	s=arc-20240116; t=1779276011; c=relaxed/simple;
+	bh=GECVds6PVy5qQArWNQudsG6SbMG1H5Ihikpk5pwJxCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZGrQqdA2RwI7xNhwSz20PoH+XFGHaYvg2eJ3QGscDPJJbVAyHnH4ubgcNViQx0ky5TO1tYGcRdOomOu2z8c91cofEQ0cXy39/cCq9b1I/lWr2lRikLBEDeivV2efMg44KB5F8Az6tG6clUnuP0+UanHUVENx23xLWDJUNDV3Wvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSDlUDOC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBAE1F00896;
-	Wed, 20 May 2026 11:20:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mAAwr+mOMXaQ1D/u3U6MFaWILnwM+C80q6fZMW4hAMOAW6Kb9QZYyhuvFR2tIrZfv2PNDlF+ByUS+Vlmm76hjhVGR7GstBuTSOcLsuOWmKDvv+tJHDatQglJ4Lr4/Lda1v2DqZJ7gW/bUIu/MBO6AX+m6kFpmj1DmnmPw4i0KjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JA5bs6+u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A98F91F000E9;
+	Wed, 20 May 2026 11:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779276003;
-	bh=NuW4Ocbcj6Nn7fwFtaRlCC1fPw05KhvfeqQ4pb/u2yo=;
+	s=k20260515; t=1779276004;
+	bh=cvo1+nCL2Yd6S+uRcIejVau9Fo6tytiTApwPR2MFRFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bSDlUDOCgMK9gQhkcNUg8G/iqJu8Luq4AWWmku1+goTUjV+3T/0o8dyic7BXZVzBX
-	 I1aEtYJ07ob4v7hVLTUu4i9a7WZTCc4AEPB2F3naO58jrqsPBzw20SmAJBksYiEO2z
-	 lQy2AXo2Lq0B1Hd4NmSqPmu6/cKl1t/Y7KGke21cd3z7OvreDlk4P8hWEpU4cW/woo
-	 jIVaODN+2WqP5uA9FtteiZ+lMVDPmOY+o5W7N/SBxLTmENmS1xHkjKAwxMUnQFKq9T
-	 orf4gBog0X7QXnFpK9ZGqOJMrRQRlKZSecRHcaXyWyMgLfRuhj7A47DIpU/Y6dIKj3
-	 5/6LN9vkTPeGA==
+	b=JA5bs6+us1RN0XbPsIdncUCrEeUtvfruN+7z0NJ1bWztVD+s8DDkudiNFS5y71pl3
+	 dDewH6zC9LPsudUHr/3WwAR1kaGfJWBdExPPQLSx5sMykMFbcuF+SG7io2m9aEvIJV
+	 4V16c3vWnjhjd+PG7+N7AFFXeq+Q2FfdHHff3WI/xd9S3gT+e7Sg9bwpiXPlt6DW2W
+	 s6lOtrCmYr4qt2jVkt16WDRJS0mwgCnsnjX3QuYQNuFU9Zyu9XScT0p9rE54Aa3mgP
+	 k/xPYlAEjz1aiAgeVib545RQUNwjnFcQbIu4FVvJL7ixNOCSnmJ3XjTNHyeVxhPVOu
+	 jHilvQZv6HoOg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
+Cc: Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	io-uring@vger.kernel.org,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.6] io_uring: hold uring_lock when walking link chain in io_wq_free_work()
-Date: Wed, 20 May 2026 07:18:45 -0400
-Message-ID: <20260520111944.3424570-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-5.15] wifi: nl80211: re-check wiphy netns in nl80211_prepare_wdev_dump() continuation
+Date: Wed, 20 May 2026 07:18:46 -0400
+Message-ID: <20260520111944.3424570-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260520111944.3424570-1-sashal@kernel.org>
 References: <20260520111944.3424570-1-sashal@kernel.org>
@@ -72,325 +74,231 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249834-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249836-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C421958C6B1
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[p:url,intel.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ntu.edu.sg:email]
+X-Rspamd-Queue-Id: 6B3A958CE17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
 
-[ Upstream commit 20c39819a27646573dfa0ac0d01c38895298a6f6 ]
+[ Upstream commit 79240f3f6d766b342b57c32397d643e1cfa26b81 ]
 
-io_wq_free_work() calls io_req_find_next() from io-wq worker context,
-which reads and clears req->link without holding any lock. This can
-potentially race with other paths that mutate the same chain under
-ctx->uring_lock.
+NL80211_CMD_GET_SCAN is implemented as a multi-call dumpit. The first
+invocation of nl80211_prepare_wdev_dump() validates the requested wdev
+against the caller's netns via __cfg80211_wdev_from_attrs(). Subsequent
+invocations look up the same wiphy by its global index and do not check
+that the wiphy is still in the caller's netns.
 
-Take ctx->uring_lock around the io_req_find_next() call. Only requests
-with IO_REQ_LINK_FLAGS reach this path, which is not the hot path.
+Add the same filter to the continuation path. If the wiphy's netns no
+longer matches the caller's, return -ENODEV and the netlink dump
+machinery terminates the walk cleanly.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Link: https://patch.msgid.link/20260506064854.2207105-3-maoyixie.tju@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit Message Forensics
-Step 1.1 Record: Subsystem `io_uring`; action verb `hold`; intent:
-serialize linked-request chain walking in `io_wq_free_work()` with
-`ctx->uring_lock`.
+## Phase Walkthrough
 
-Step 1.2 Record: Tags present in commit
-`20c39819a27646573dfa0ac0d01c38895298a6f6`:
-- `Signed-off-by: Jens Axboe <axboe@kernel.dk>`
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-
-  by:`, `Link:`, or `Cc: stable@vger.kernel.org` tags in the committed
-  message.
+**Phase 1: Commit Message Forensics**
+- Step 1.1 Record: Subsystem `wifi: nl80211`; action verb `re-check`;
+  intent is to revalidate the wiphy net namespace during
+  `nl80211_prepare_wdev_dump()` continuation.
+- Step 1.2 Record: Tags are `Signed-off-by: Maoyi Xie`, `Link: https://p
+  atch.msgid.link/20260506064854.2207105-3-maoyixie.tju@gmail.com`,
+  `Signed-off-by: Johannes Berg`. No `Fixes`, `Reported-by`, `Tested-
+  by`, `Reviewed-by`, `Acked-by`, or `Cc: stable`.
+- Step 1.3 Record: The committed message says first dump invocation
+  validates via `__cfg80211_wdev_from_attrs()`, but later invocations
+  recover the wiphy by global index and lacked a netns check. The v3
+  mailing-list patch further states the failure mode: BSS scan data can
+  continue being copied from a wiphy after it moved to another netns.
+- Step 1.4 Record: This is a hidden security/correctness fix, not a
+  cleanup. It fixes a namespace isolation race in a multi-call netlink
+  dump.
 
-Step 1.3 Record: The commit states that `io_wq_free_work()` calls
-`io_req_find_next()` from io-wq worker context, and `io_req_find_next()`
-reads and clears `req->link` without a lock. The stated failure mode is
-a potential race with other paths mutating the same chain under
-`ctx->uring_lock`. No stack trace, reproducer, affected-version
-statement, or user report is in the commit message.
+**Phase 2: Diff Analysis**
+- Step 2.1 Record: One file changed, `net/wireless/nl80211.c`; commit
+  stat is 12 insertions. One function changed:
+  `nl80211_prepare_wdev_dump()`. Scope is single-file surgical.
+- Step 2.2 Record: Before, continuation path did
+  `wiphy_idx_to_wiphy(cb->args[0] - 1)`, accepted the wiphy, then
+  searched `wdev_list`. After, it returns `-ENODEV` if
+  `!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))`.
+- Step 2.3 Record: Bug category is race / namespace isolation /
+  information disclosure. A wiphy can move netns between dumpit calls
+  via `NL80211_CMD_SET_WIPHY_NETNS`.
+- Step 2.4 Record: Fix quality is high: one predicate and clean error
+  return before taking `wiphy.mtx`. Regression risk is low; it only
+  rejects a continuation whose object no longer belongs to the caller’s
+  netns.
 
-Step 1.4 Record: This is a hidden bug fix despite the subject not saying
-“fix”: it adds missing synchronization around shared linked-request
-state. The diff confirms it is not a cleanup or feature.
+**Phase 3: Git History**
+- Step 3.1 Record: Current checkout is shallow; `git blame` attributed
+  the region to a shallow boundary, so that blame is not reliable.
+  Pickaxe history found the continuation-by-global-wiphy-index pattern
+  in old history, including `c319d50bfcf67` (`nl80211: fix another
+  nl80211_fam.attrbuf race`), contained by `v3.11-rc6`. Netns support
+  for cfg80211/nl80211 was introduced by `463d018323851`, contained by
+  `v2.6.32-rc1`.
+- Step 3.2 Record: No `Fixes:` tag, so no tagged introducer to follow.
+- Step 3.3 Record: Fetched wireless history shows the candidate
+  immediately follows companion commit `15994bb0cbb8f` (`wifi: nl80211:
+  require CAP_NET_ADMIN over the target netns in SET_WIPHY_NETNS`). No
+  intermediate commit between them.
+- Step 3.4 Record: Author has only these two fetched wireless commits.
+  Committer is Johannes Berg, the nl80211/cfg80211 maintainer.
+- Step 3.5 Record: No compile dependency on the companion commit, but
+  logical/security context is stronger if `15994bb0cbb8f` is backported
+  too.
 
-## Phase 2: Diff Analysis
-Step 2.1 Record: One file changed: `io_uring/io_uring.c`, 6 insertions
-and 1 deletion. Only `io_wq_free_work()` is modified. Scope: single-file
-surgical locking fix.
+**Phase 4: Mailing List / External Research**
+- Step 4.1 Record: `b4 dig -c 79240f3f6d766...` found the v3 patch at
+  the provided `patch.msgid.link` URL. `b4 dig -a` found v1 and v3; `b4
+  am` showed v1, v2, v3. v3 cover says no code changes since v2 and that
+  Johannes review caused comment/trailer cleanup.
+- Step 4.2 Record: `b4 dig -w` shows Johannes Berg, `linux-wireless`,
+  and `linux-kernel` were included.
+- Step 4.3 Record: No syzbot/bugzilla report. The series cover and patch
+  body provide the bug explanation and patch 1 includes a mac80211_hwsim
+  reproducer for the related `SET_WIPHY_NETNS` privilege path.
+- Step 4.4 Record: This is patch 2/2 in a series. Patch 1 hardens
+  target-netns capability checks; patch 2 fixes dump continuation
+  filtering.
+- Step 4.5 Record: Lore WebFetch was blocked by Anubis; WebSearch did
+  not find stable-specific discussion.
 
-Step 2.2 Record: Before, `io_wq_free_work()` called
-`io_req_find_next(req)` directly when `IO_REQ_LINK_FLAGS` was set.
-After, it stores `req->ctx`, takes `ctx->uring_lock`, calls
-`io_req_find_next(req)`, and unlocks. The affected path is io-wq worker
-completion/freeing of linked requests, not the normal unlinked hot path.
+**Phase 5: Code Semantic Analysis**
+- Step 5.1 Record: Modified function is `nl80211_prepare_wdev_dump()`.
+- Step 5.2 Record: Exact callers are `nl80211_dump_station()`,
+  `nl80211_dump_mpath()`, `nl80211_dump_mpp()`, `nl80211_dump_scan()`,
+  and `nl80211_dump_survey()`.
+- Step 5.3 Record: Key callees are `__cfg80211_wdev_from_attrs()`,
+  `wiphy_idx_to_wiphy()`, `wiphy_net()`, `sock_net()`, `net_eq()`,
+  `wiphy_to_rdev()`, and list walk over `wiphy.wdev_list`.
+- Step 5.4 Record: `NL80211_CMD_GET_SCAN` maps to `nl80211_dump_scan()`
+  and has no admin flag in the ops entry; `NL80211_CMD_SET_WIPHY_NETNS`
+  maps to `nl80211_wiphy_netns()` with `GENL_UNS_ADMIN_PERM`.
+- Step 5.5 Record: Similar dump paths `nl80211_dump_wiphy()` and
+  `nl80211_dump_interface()` already filter by `net_eq(wiphy_net(...),
+  sock_net(skb->sk))` each iteration.
 
-Step 2.3 Record: Bug category is synchronization/race condition.
-`io_req_find_next()` reads `req->link` and clears it; `git grep`
-verified other link-chain assignment/mutation sites in
-submission/timeout paths. The fix serializes this worker-side chain walk
-with the mutex used by normal chain mutation paths.
+**Phase 6: Stable Tree Analysis**
+- Step 6.1 Record: The affected continuation code exists in checked tags
+  `v6.19`, `v6.18`, `v6.12`, `v6.6`, `v6.1`, `v5.15`, `v5.10`, `v5.4`,
+  `v4.19`, and `v4.14`.
+- Step 6.2 Record: Modern stable trees have the same helper shape. Older
+  trees such as `v5.4` and `v4.14` have different function
+  signatures/locking, so they may need small backport adjustment.
+- Step 6.3 Record: Searches in checked stable tags did not find this
+  candidate or the companion commit already present.
 
-Step 2.4 Record: The fix is obviously small and locally correct: it
-protects exactly the shared `req->link` read/clear. Regression risk is
-low but not zero, because it adds a mutex acquisition in worker cleanup.
-The commit message and code both verify the path is limited to requests
-with `IO_REQ_LINK_FLAGS`.
+**Phase 7: Subsystem Context**
+- Step 7.1 Record: Subsystem is wireless cfg80211/nl80211, an important
+  networking control-plane subsystem.
+- Step 7.2 Record: `net/wireless/nl80211.c` is actively maintained;
+  fetched wireless history shows this series was taken through Johannes
+  Berg’s wireless tree.
 
-## Phase 3: Git History Investigation
-Step 3.1 Record: `git blame` on the pre-fix parent showed the current
-direct `io_wq_free_work()` call to `io_req_find_next()` came from
-`247f97a5f19b64`, described by `git describe` as `v6.5-rc1~235^2~10`.
-Older helper-based worker cleanup existed before that;
-`io_wq_free_work()`/io-wq callback code is present from at least
-`v5.15-rc1~185^2~41`, and stable branch checks show equivalent
-vulnerable helper paths in `5.10.y`, `5.15.y`, and `6.1.y`.
+**Phase 8: Impact / Risk**
+- Step 8.1 Record: Affected users are systems using wireless devices
+  with nl80211 netns movement support, including delegated/container
+  wireless setups and mac80211_hwsim.
+- Step 8.2 Record: Trigger requires a multi-call dump and a wiphy netns
+  move between invocations. The related series verifies an unprivileged
+  userns path when the caller has a delegated `WIPHY_FLAG_NETNS_OK`
+  wiphy.
+- Step 8.3 Record: Failure mode is namespace isolation breach / cross-
+  netns scan-result exposure, not a crash. Severity: HIGH due
+  security/isolation impact.
+- Step 8.4 Record: Benefit is high for isolation correctness; risk is
+  very low because the patch adds one local validation and returns an
+  existing error code.
 
-Step 3.2 Record: No `Fixes:` tag is present, so there was no tagged
-introducing commit to follow.
-
-Step 3.3 Record: Recent `io_uring/io_uring.c` history includes related
-io-wq/refcount work, notably `390513642ee676` / stable variants,
-“io_uring: always do atomic put from iowq,” which changed the same
-function and was KCSAN/syzbot-motivated. Mainline related commits
-immediately after this candidate are `49ae66eb8c273` and
-`a65855ec34aed`, the other two patches in the linked-request locking
-series.
-
-Step 3.4 Record: `MAINTAINERS` verifies Jens Axboe is the `IO_URING`
-maintainer. `git log --author='Jens Axboe' -- io_uring` shows multiple
-recent io_uring commits by him.
-
-Step 3.5 Record: Build-wise this patch is standalone for trees with the
-current direct `io_wq_free_work()` shape. For older stable trees using
-`io_put_req_find_next()`, it needs a manual backport into the helper or
-equivalent worker path. Semantically, it is patch 1/3 of a related
-locking series; patches `49ae66eb8c273` and `a65855ec34aed` should be
-considered with it to complete the linked-chain locking invariant.
-
-## Phase 4: Mailing List And External Research
-Step 4.1 Record: `b4 dig -c 20c39819a2764` found the original submission
-at `https://patch.msgid.link/20260511182217.226763-2-axboe@kernel.dk`.
-`b4 dig -a` found only v1. The saved mbox shows this was `[PATCH 1/3]`.
-
-Step 4.2 Record: `b4 dig -w` showed the patch was sent by Jens Axboe to
-`io-uring@vger.kernel.org`, with Jens on Cc. No separate
-reviewer/maintainer tags or replies were found in the saved matched
-thread.
-
-Step 4.3 Record: No bug-report link or `Reported-by:` tag exists. Web
-search for the exact subject did not find a direct bug report.
-
-Step 4.4 Record: The mbox cover letter says the series is “Linked
-request fix” and “closing some gaps on linked requests, where iterating
-a chain must hold either ->uring_lock OR ->timeout_lock, and modifying
-any existing [chain] must hold both.” Patch 2 defers linked-timeout
-splicing out of hrtimer context; patch 3 keeps `uring_lock` held across
-`io_kill_timeouts()`.
-
-Step 4.5 Record: WebFetch of lore was blocked by Anubis, but `b4`
-successfully retrieved the thread. Web search did not find stable-
-specific discussion for this exact patch. No direct stable nomination
-was verified.
-
-## Phase 5: Code Semantic Analysis
-Step 5.1 Record: Modified function: `io_wq_free_work()`.
-
-Step 5.2 Record: Callers verified by `git grep`: `io_wq_free_work()` is
-called from `io_uring/io-wq.c` after `io_wq_submit_work()` in the worker
-loop and from the cancel path helper `io_run_cancel()`. This is io-wq
-worker context.
-
-Step 5.3 Record: Key callee is `io_req_find_next()`, verified to read
-`req->link`, set `req->link = NULL`, and return the next linked request.
-`io_wq_free_work()` then frees the current request via `io_free_req()`.
-
-Step 5.4 Record: Reachability is verified from userspace:
-`io_uring_enter()` locks `ctx->uring_lock` and calls `io_submit_sqes()`,
-user SQE flags include `IOSQE_IO_LINK`, `IOSQE_IO_HARDLINK`, and
-`IOSQE_ASYNC`, and async paths queue work into io-wq. This makes the
-affected path reachable by user-submitted linked async io_uring
-requests.
-
-Step 5.5 Record: Similar patterns found: the normal completion/free
-batching path calls `io_queue_next()`/`io_req_find_next()` while
-`__io_submit_flush_completions()` and `io_free_batch_list()` require
-`ctx->uring_lock`. Timeout code also mutates `req->link`, and the same
-series addresses that.
-
-## Phase 6: Cross-Referencing And Stable Tree Analysis
-Step 6.1 Record: Stable branch checks verified equivalent vulnerable
-code in `stable/linux-5.10.y`, `stable/linux-5.15.y`,
-`stable/linux-6.1.y`, `stable/linux-6.6.y`, `stable/linux-6.12.y`,
-`stable/linux-6.19.y`, and `stable/linux-7.0.y`. The exact direct hunk
-exists in newer trees; older trees use `io_put_req_find_next()`.
-
-Step 6.2 Record: `git apply --check` of the candidate patch succeeded on
-the current checked-out `stable/linux-7.0.y` tree. Backport difficulty:
-clean or near-clean for newer trees with the direct function body;
-manual but simple for older helper-based trees.
-
-Step 6.3 Record: Exact-subject `git log` over listed stable branches
-found no existing stable copy of this fix. Related stable history
-contains earlier io_uring link/refcount fixes, but not this locking fix.
-
-## Phase 7: Subsystem And Maintainer Context
-Step 7.1 Record: Subsystem is `io_uring`, a core async I/O subsystem
-reachable through the `io_uring_enter` syscall. Criticality:
-important/core-adjacent because it is syscall-reachable and handles
-request lifetime, completion, and linked request ordering.
-
-Step 7.2 Record: The subsystem is active: recent mainline history around
-the candidate contains multiple io_uring fixes and refactors, and the
-candidate came through the io_uring maintainer tree.
-
-## Phase 8: Impact And Risk Assessment
-Step 8.1 Record: Affected users are systems using io_uring linked
-requests that can complete through io-wq, especially linked async
-operations. This is feature/config/user-workload specific, not
-universal.
-
-Step 8.2 Record: Trigger requires linked request chains and worker
-completion/cancellation interleaving with other chain mutation/walk
-paths. Unprivileged reachability depends on system policy, but the code
-path is syscall-reachable through io_uring submission. No public
-reproducer was verified.
-
-Step 8.3 Record: Verified failure mode is an unsynchronized data race on
-`req->link`. The precise observed symptom is unverified, but the raced
-state controls request-chain lifetime/progression; plausible
-consequences include lost/misordered linked request handling or memory-
-safety/lifetime bugs. Severity: medium-high to high because it is a
-syscall-reachable race in request lifetime code, though no crash report
-was verified.
-
-Step 8.4 Record: Benefit is high enough for stable because it removes a
-real locking hole in io_uring linked-request handling. Risk is low:
-6-line contained mutex protection, not on the unlinked hot path, no new
-API, no behavior change except serialization.
-
-## Phase 9: Final Synthesis
-Step 9.1 Evidence for backporting:
-- Verified real unsynchronized access: `io_wq_free_work()` called
-  `io_req_find_next()` without `ctx->uring_lock`, while
-  `io_req_find_next()` reads and clears `req->link`.
-- Verified reachability from user-submitted io_uring linked async
-  requests.
-- Verified equivalent code exists across active stable trees from
-  `5.10.y` through `7.0.y`.
-- Verified fix is tiny, contained, maintainer-authored, and applies
-  cleanly to `7.0.y`.
-- Verified this is part of an explicit “Linked request fix” series
-  closing locking gaps.
-
-Evidence against or concerns:
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, stable Cc,
-  stack trace, or reproducer was verified.
-- It is patch 1/3 of a related series; for best stable correctness,
-  patches `49ae66eb8c273` and `a65855ec34aed` should be
-  evaluated/backported together.
-- Older stable trees need manual adaptation to `io_put_req_find_next()`.
-
-Step 9.2 Stable rules checklist:
-1. Obviously correct and tested? Correct by inspection; external testing
-   not verified.
-2. Fixes a real bug? Yes, verified race on `req->link`.
-3. Important issue? Yes enough for stable: syscall-reachable request-
-   chain/lifetime race, though exact crash symptom is unverified.
-4. Small and contained? Yes, one function, one file, 6 insertions.
-5. No new features/APIs? Yes.
-6. Can apply to stable? Yes for newer trees; older trees need
-   straightforward backport.
-
-Step 9.3 Exception category: None. This is not a device ID, quirk, DT,
-build, or documentation-only patch.
-
-Step 9.4 Decision: Backport. The technical merit is a small, maintainer-
-authored synchronization fix for a verified io_uring linked-request race
-in code present across stable trees. Treat the rest of the 3-patch
-linked-request locking series as related follow-up material rather than
-ignoring it.
+**Phase 9: Final Synthesis**
+- Step 9.1 Record: Evidence for backporting: real namespace isolation
+  bug, old code present across stable trees, small surgical fix,
+  maintainer-applied, aligns with existing dump filtering. Evidence
+  against: companion patch should also be considered, and older trees
+  may require minor backport edits. Unresolved: no independent `Tested-
+  by`; stable-specific lore discussion could not be fetched.
+- Step 9.2 Record: Stable rules: obviously correct yes; fixes real bug
+  yes; important issue yes due namespace isolation/security; small and
+  contained yes; no new API/feature yes; applies cleanly or with minor
+  adjustment depending on tree.
+- Step 9.3 Record: No exception category applies.
+- Step 9.4 Record: Backport is warranted, preferably together with
+  `15994bb0cbb8f` for the complete netns hardening series.
 
 ## Verification
-- [Phase 1] `git show --format=fuller --stat --patch 20c39819a2764`:
-  confirmed subject, body, tags, one-file diff, and absence of
-  `Fixes:`/`Reported-by:`/stable tags.
-- [Phase 2] Diff inspection: confirmed
-  `mutex_lock(&ctx->uring_lock)`/unlock added around
-  `io_req_find_next()` only in `io_wq_free_work()`.
-- [Phase 3] `git blame` on the parent: confirmed `io_wq_free_work()`
-  direct call history and `req->link` read/clear history.
-- [Phase 3] `git describe --contains`: confirmed relevant code history
-  reaches released kernels including `v6.5-rc1`, `v5.15-rc1`, and
-  earlier helper behavior.
-- [Phase 3] Stable branch `git grep`: confirmed vulnerable worker/helper
-  paths in `5.10.y`, `5.15.y`, `6.1.y`, `6.6.y`, `6.12.y`, `6.19.y`, and
-  `7.0.y`.
-- [Phase 4] `b4 dig -c`, `-a`, `-w`, and saved mbox: confirmed original
-  submission URL, v1-only series, recipients, cover-letter context, and
-  3-patch series.
-- [Phase 4] WebFetch: lore direct fetch was blocked by Anubis; b4 mbox
-  provided the thread content.
-- [Phase 5] `git grep` call tracing: confirmed `io_wq_free_work()`
-  callers in io-wq worker/cancel paths, `io_uring_enter()` to
-  `io_submit_sqes()` submission path, and user-visible link flags.
-- [Phase 6] `git apply --check`: confirmed the patch applies cleanly to
-  the current `stable/linux-7.0.y` worktree.
-- [Phase 7] `MAINTAINERS` search: confirmed Jens Axboe is the `IO_URING`
-  maintainer.
-- [Phase 8] Verified no public reproducer or exact crash symptom in the
-  commit/thread; severity assessment is based on verified race location
-  and syscall reachability, not on an observed report.
+- Phase 1: Parsed `git show 79240f3f6d766...` and b4 v3 patch text;
+  verified tags and commit body.
+- Phase 2: Verified diff is one hunk in `nl80211_prepare_wdev_dump()`
+  with 12 insertions.
+- Phase 3: Ran `git blame`, pickaxe history, `git show` for
+  `c319d50bfcf67`, `463d018323851`, companion `15994bb0cbb8f`, and
+  fetched wireless history.
+- Phase 4: Ran `b4 dig`, `b4 dig -a`, `b4 dig -w`, `b4 am` for v1/v2/v3,
+  saved/read mbox; WebFetch to lore was blocked by Anubis.
+- Phase 5: Verified callers and relevant ops entries in
+  `net/wireless/nl80211.c`.
+- Phase 6: Used `git grep` across stable tags to confirm affected code
+  exists and checked stable logs for absence of the candidate.
+- Phase 8: Severity is based on verified patch text plus code paths; no
+  build or runtime test was run.
 
 **YES**
 
- io_uring/io_uring.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/wireless/nl80211.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 97260bca67e7b..a72efb3a62bac 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1450,8 +1450,13 @@ struct io_wq_work *io_wq_free_work(struct io_wq_work *work)
- 	struct io_kiocb *nxt = NULL;
- 
- 	if (req_ref_put_and_test_atomic(req)) {
--		if (req->flags & IO_REQ_LINK_FLAGS)
-+		if (req->flags & IO_REQ_LINK_FLAGS) {
-+			struct io_ring_ctx *ctx = req->ctx;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index b94231c8441c4..ce3121b1c3319 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -1146,6 +1146,18 @@ static int nl80211_prepare_wdev_dump(struct netlink_callback *cb,
+ 			rtnl_unlock();
+ 			return -ENODEV;
+ 		}
 +
-+			mutex_lock(&ctx->uring_lock);
- 			nxt = io_req_find_next(req);
-+			mutex_unlock(&ctx->uring_lock);
++		/*
++		 * The first invocation validated the wdev's netns against
++		 * the caller via __cfg80211_wdev_from_attrs(). The wiphy
++		 * may have moved netns between dumpit invocations (via
++		 * NL80211_CMD_SET_WIPHY_NETNS), so re-check here.
++		 */
++		if (!net_eq(wiphy_net(wiphy), sock_net(cb->skb->sk))) {
++			rtnl_unlock();
++			return -ENODEV;
 +		}
- 		io_free_req(req);
- 	}
- 	return nxt ? &nxt->work : NULL;
++
+ 		*rdev = wiphy_to_rdev(wiphy);
+ 		*wdev = NULL;
+ 
 -- 
 2.53.0
 
