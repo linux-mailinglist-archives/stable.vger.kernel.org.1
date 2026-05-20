@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKisCDbvDWqa4wUAu9opvQ
-	(envelope-from <stable+bounces-251109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:22 +0200
+	id QB0KL9cDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-253133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFC7593C3C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83A35976CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94BB03109E84
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62AA230E3EAF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723153F20F0;
-	Wed, 20 May 2026 17:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2547A402B8C;
+	Wed, 20 May 2026 18:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V36Z4/rn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbrU43Uf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF8236F421;
-	Wed, 20 May 2026 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73FE3FBEC0;
+	Wed, 20 May 2026 18:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297121; cv=none; b=cwroTai0ry8/1udrQUEcZ3oXXpP8CxXdkvDCY7vZhlzZsYXFoy4Ihymik7ZVAof26Jn1xEo2xj+4MdCzQrfgHGQ9LWruFR+6IRXWR6hOTdznK1Gt7uHMUbwBIJ13ULJhI3RbWBZ85h0ee+CFs6PQuWvK5j2wCOnkqRyI1A+g89s=
+	t=1779302491; cv=none; b=r8+8uJhjDjpdhL+QB1iRFlfXjOOAeA92ZJfFTaj0HFA6isSLxUZsQWJp9J6GoovKrWjHsK71ONj9KY0hPgSkcGnFmA4vosHrvUvHkAVTqeWKJ96Zk+7dV0a0QTJBR4fmwmZVlkF/3E5dX+YKAyQxSOM6OeHoAmrXOKZUcvw6EC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297121; c=relaxed/simple;
-	bh=9L/UMjoFT8+u5Ku2XdTGvUAlXkUDHXwJIc4xNk/VWP4=;
+	s=arc-20240116; t=1779302491; c=relaxed/simple;
+	bh=2NVOIGLM49XTsMAv+uXv5xA/RK79ziLcP1Dbm7Vdado=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwUUkCwTwmF9wyBwOSZFHm9NPcBcDDFKIfrKLahlPTyVK/QPG3QyQizR12AfixFU5b4eouJeVLuJVt2tWF0YAn4j2MilcLcjTFLjfc/hBBMELPF/6mVBjmbqa3chJqJRiFg9FTUj6w0UzjKX9olum0mHPzdyRPnp9yH9P7JFxcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V36Z4/rn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965AB1F000E9;
-	Wed, 20 May 2026 17:11:59 +0000 (UTC)
+	 MIME-Version; b=MqZRppfiuajmQP6qMi4bvaN7GcQeiiUKzcwd9LdbNZmINj98laqZbVclyk1ht/gAbKKItFw0JN63W1AKqu45f8BQfbUHPlqsmGJMD6V8OhBaIraPoDZ59ggfqakhclz44pjKr/c1ZiGOWB7SibbzUKIgXvdWBiXjPXxLrGqFXS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbrU43Uf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492A71F000E9;
+	Wed, 20 May 2026 18:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297120;
-	bh=5Hu1LrCpBY6kBAMRLGfGWCLaCTUFvvwRlLMr+mqIEW0=;
+	s=korg; t=1779302490;
+	bh=7gOi9haTN+XuP7UirlaMHA5acOKmT53COBshtn9BIG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V36Z4/rnrIPwUvZPyMzSeMUEEvn9ywlh/s+HH7RSFE0caVscibG4dcgDBGwcqSZls
-	 oM4LzPhsIApd+VYVipCliMM4oNQpC6Srmq6J8MQ5t/0h98yYt4uJMjx4cVHZA6yhVT
-	 zREzRAyzbwKCCB8ICsteaOxuWTqDJIsJsZSyFbds=
+	b=QbrU43Uf2IqXaszXJ7eOr2471SGfyo8BLf85Tl6yC4eXaLGHYcocOiw33SPALwV69
+	 WYV1esYvC/tEWDg6mNzux6tpyFZOWFzncQ44F+gXFIeYxHLZb3KDHXpiHuSYvPFvUw
+	 uEO6xTpkGRYdRpRfbgN+gyrSFhGN5qE3/x3vVGDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>
-Subject: [PATCH 7.0 1059/1146] KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 286/508] clk: imx8mq: Correct the CSI PHY sels
 Date: Wed, 20 May 2026 18:21:49 +0200
-Message-ID: <20260520162212.199625798@linuxfoundation.org>
+Message-ID: <20260520162104.840271015@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.ibm.com];
-	TAGGED_FROM(0.00)[bounces-251109-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253133-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email]
-X-Rspamd-Queue-Id: BAFC7593C3C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[i.mx:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,nxp.com:email]
+X-Rspamd-Queue-Id: E83A35976CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit 16d990a15491cf76cd6eef0846e1b4100e63261a upstream.
+[ Upstream commit d16f57caa78776e6e8a88b96cb2597797b376138 ]
 
-kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
-aen_host_forward() index the GAIT by manually multiplying the index
-with sizeof(struct zpci_gaite).
+According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
+MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
+SYSTEM_PLL2_DIV3 available as their second source, which corresponds
+to sys2_pll_333m rather than sys2_pll_125m.
 
-Since aift->gait is already a struct zpci_gaite pointer, this
-double-scales the offset, accessing element aisb*16 instead of aisb.
-
-This causes out-of-bounds accesses when aisb >= 32 (with
-ZPCI_NR_DEVICES=512)
-
-Fix by removing the erroneous sizeof multiplication.
-
-Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/interrupt.c |    3 +--
- arch/s390/kvm/pci.c       |    6 ++----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/clk/imx/clk-imx8mq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -3307,8 +3307,7 @@ static void aen_host_forward(unsigned lo
- 	struct zpci_gaite *gaite;
- 	struct kvm *kvm;
+diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
+index f70ed231b92d6..cedc8a02aa1f0 100644
+--- a/drivers/clk/imx/clk-imx8mq.c
++++ b/drivers/clk/imx/clk-imx8mq.c
+@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
+ static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
  
--	gaite = (struct zpci_gaite *)aift->gait +
--		(si * sizeof(struct zpci_gaite));
-+	gaite = aift->gait + si;
- 	if (gaite->count == 0)
- 		return;
- 	if (gaite->aisb != 0)
---- a/arch/s390/kvm/pci.c
-+++ b/arch/s390/kvm/pci.c
-@@ -290,8 +290,7 @@ static int kvm_s390_pci_aif_enable(struc
- 				    phys_to_virt(fib->fmt0.aibv));
+-static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
  
- 	spin_lock_irq(&aift->gait_lock);
--	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
--						   sizeof(struct zpci_gaite));
-+	gaite = aift->gait + zdev->aisb;
+ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
+ static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
  
- 	/* If assist not requested, host will get all alerts */
- 	if (assist)
-@@ -357,8 +356,7 @@ static int kvm_s390_pci_aif_disable(stru
- 	if (zdev->kzdev->fib.fmt0.aibv == 0)
- 		goto out;
- 	spin_lock_irq(&aift->gait_lock);
--	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
--						   sizeof(struct zpci_gaite));
-+	gaite = aift->gait + zdev->aisb;
- 	isc = gaite->gisc;
- 	gaite->count--;
- 	if (gaite->count == 0) {
+-static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 
+ static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+-- 
+2.53.0
+
 
 
 
