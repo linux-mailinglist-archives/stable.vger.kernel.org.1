@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMyKKBr1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:30 +0200
+	id cJDsOhXpDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:02:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD81594D6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2139F592D7F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62D8F30D2B60
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC42D305AF1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2841936A376;
-	Wed, 20 May 2026 17:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9647F362153;
+	Wed, 20 May 2026 16:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf9dsF4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTTuf8y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11963D8137;
-	Wed, 20 May 2026 17:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF6C31F9BE;
+	Wed, 20 May 2026 16:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298024; cv=none; b=lRPey+T5TW8SavcBssiqV0H/0kTtPPHMQYEHkKqtQ5Un370xoJ1hkmD2YOY1c3mgyCWpsYvENIf7T/2SGiHEJlF0IotCwOcymYlUPpG+l/wIck84cCAoGoZJxtnRODi25rW1n+EkHX25z1JlSQ5FpDG1YBiD8AXgj+4QbIDIWuY=
+	t=1779295609; cv=none; b=uvWegMr2nFRsUICi5Ow+Yd82/oE0t9JwbQCaN+tUt24/DWEDlEErfw5ZfaW75VVY36Kayjv9soZlUqGnr3ijyIsfKes0Hxu3FaHAdYx9UpEOVV+v0jkogYh5Vu4pKAsv+tcytW6ZICE1PT3WftZgkiEmusZjoTbVylApTXc/Ypg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298024; c=relaxed/simple;
-	bh=PqxpGXb109g7CFPLZgdx+T5UZ2jP8zORe+h8MNUWuzE=;
+	s=arc-20240116; t=1779295609; c=relaxed/simple;
+	bh=8Mih9Snwnm4dIw0yMGsXVTt1byzMXmLbd/gm39rUU58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VrqTotr/G2zVid3WnTEBG69gecL9hHYWtB3MKubTNU4gB65qssdjIcvGLggj+IW/t2vJaJw9JipfgXg+adsqPFMpAE3fzRLihOLfVavDsjLZe/iumQfi1HZql1Xve7VsDTrAclOzZPlByD1QxepKJ1yYQVGcK5Ghe30XvKyLfYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf9dsF4O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C3B1F000E9;
-	Wed, 20 May 2026 17:27:02 +0000 (UTC)
+	 MIME-Version; b=HL5kmt7qnFmG6Kvg69I20YE48w8+Z70zoO4K7yz/4aJCSmoXO73jEJqOFWJhn+R2MxlKi18OOuZzsTQj8wWyfizUiZF6WqU4z5U3O9oLczcCBYwpzmQZ5aYM7KKumxPLFUCLitF9+CIYUx+zAbKYKAP7bsjZzC87D/K+jscGe7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTTuf8y0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F9B1F000E9;
+	Wed, 20 May 2026 16:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298022;
-	bh=wFEC742dyig/NAAG6YkXpXrgJSfQe7o5/bOgBp7CO6E=;
+	s=korg; t=1779295608;
+	bh=Gy2CefHcUsGraI7/hWXhhhTFsPWBn9L/sCRWGksghd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gf9dsF4OG5Uhu+eUG2zLuG7u40OJc6UE1n9kgMZH/v8E2irIc/7LforLPpxtgL9Ir
-	 Vr9roGfXloPseA4U0dT/WPkWFcVPwjNIF5NgEmlx5vOjs15K2lKLLtZTAxvhkW4j4K
-	 FE7HRTBf/JZp2xcC89gLjf4RlJPfAALoi3C9bHIM=
+	b=OTTuf8y0hjR6bQgsYfjtwDD00EX2h5d6fqbhwygfZ/WfK1YHBz/CG2yKUCzEyjozy
+	 gmlxKAVQ4LiZr8+NbWI8CQi12dcet1ODqsAdmeYeHkCrhxMAU0QzUWuZ01kdRyXtO9
+	 KItNoAdEYjZkwlUiC9iNsdzYeJSeJWDIUO5lWC7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Akari Tsuyukusa <akkun11.open@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 252/957] PCI: Use res_to_dev_res() in reassign_resources_sorted()
+Subject: [PATCH 7.0 0485/1146] arm64: dts: mediatek: mt7981b: Fix gpio-ranges pin count
 Date: Wed, 20 May 2026 18:12:15 +0200
-Message-ID: <20260520162140.007935408@linuxfoundation.org>
+Message-ID: <20260520162159.167765522@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251454-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-250514-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6FD81594D6B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,collabora.com:email,11d00000:email]
+X-Rspamd-Queue-Id: 2139F592D7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Akari Tsuyukusa <akkun11.open@gmail.com>
 
-[ Upstream commit 4bee4fc0f4ee1086e498f9d197352237a0232598 ]
+[ Upstream commit b62a927f4a46a7f58d88ba3d5fb6e88e1a4b4603 ]
 
-reassign_resources_sorted() contains a search loop for a particular
-resource in the head list. res_to_dev_res() already implements the same
-search so use it instead.
+The gpio-ranges in the MT7981B pinctrl node were incorrectly defined,
+therefore, pin 56 cannot be used.
+Correct the range count to match the driver.
 
-Drop unused found_match and dev_res variables.
-
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251219174036.16738-9-ilpo.jarvinen@linux.intel.com
-Stable-dep-of: 1ee4716a5a28 ("PCI: Fix premature removal from realloc_head list during resource assignment")
+Fixes: 62b24c7fdf0a ("arm64: dts: mediatek: mt7981: add pinctrl")
+Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7981b.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index c2d640164f697..3ea6f3e726a8c 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -417,7 +417,6 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 				      struct list_head *head)
- {
- 	struct pci_dev_resource *add_res, *tmp;
--	struct pci_dev_resource *dev_res;
- 	struct pci_dev *dev;
- 	struct resource *res;
- 	const char *res_name;
-@@ -425,8 +424,6 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 	int idx;
- 
- 	list_for_each_entry_safe(add_res, tmp, realloc_head, list) {
--		bool found_match = false;
--
- 		res = add_res->res;
- 		dev = add_res->dev;
- 		idx = pci_resource_num(dev, res);
-@@ -440,13 +437,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
- 			goto out;
- 
- 		/* Skip this resource if not found in head list */
--		list_for_each_entry(dev_res, head, list) {
--			if (dev_res->res == res) {
--				found_match = true;
--				break;
--			}
--		}
--		if (!found_match) /* Just skip */
-+		if (!res_to_dev_res(head, res))
- 			continue;
- 
- 		res_name = pci_resource_name(dev, idx);
+diff --git a/arch/arm64/boot/dts/mediatek/mt7981b.dtsi b/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
+index 4084f4dfa3e5e..1bbe219380f99 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7981b.dtsi
+@@ -332,7 +332,7 @@ pio: pinctrl@11d00000 {
+ 			interrupt-controller;
+ 			interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-parent = <&gic>;
+-			gpio-ranges = <&pio 0 0 56>;
++			gpio-ranges = <&pio 0 0 57>;
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+ 			#interrupt-cells = <2>;
 -- 
 2.53.0
 
