@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDlICDsvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:31 +0200
+	id CKgCINX+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67FD59B9B3
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD39596ACF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2F083995F67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 721453059988
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9923FFAA8;
-	Wed, 20 May 2026 18:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20783D1CC6;
+	Wed, 20 May 2026 18:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5kSdZt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtG7xeZe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7493FB7FC;
-	Wed, 20 May 2026 18:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB39332EBD;
+	Wed, 20 May 2026 18:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302781; cv=none; b=DR9rqhtDY+6NcAu14GxPTOMuw9WCG3UueqOskzKgLmRjimbfGSAyNbHy3dEAPtsA5tkLSQ8Wy4T/ze57jiQ0MWTV7sWLR2KI+3NWL9wePoTziIsD8cDPf85NA5PjI0/0FxJAeSHkYPtoEBw7ve3voa2+RIEMfHgZEJnPHqz1eTY=
+	t=1779301629; cv=none; b=rMRtlPEkEnZJzgoTA+X4ZIrs9RGDVJCFXSsKS0sitZmLTMD4QNLpO3F8NjoyH/im4jh60xfJ+FvVBgJjYuzXc3KQQyNR94eCLXTpkptVBq5GX+ptqBdpgZvkFuNpX03SVBS3a8by59YjmgG4ADEcKorIFV0DdHdAxaAR8fGeGww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302781; c=relaxed/simple;
-	bh=j62D+Qzs9DaZGgsSLSPAr/wScl0FABJ6lHQnPS/3XFo=;
+	s=arc-20240116; t=1779301629; c=relaxed/simple;
+	bh=ObLIzGM1sdZOSj8KkaY1JzeH9T9c9FnimX3TsGrq39k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk1q7BsbW12DZQe+ki+7jGXlqD+olk+g6mUg/Qsb3HQyvMO8wjpIno54LUCuTL4cPPh1cGeW9S1baoST/O0RcRsEAK59LYb9glmxFBBP2K72iz7bxNwjobj9Mv4MZMpa0f2v4snhdQek60tqD7qwaYbLf/5G7FE3ttHeg5df/Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5kSdZt6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFF01F000E9;
-	Wed, 20 May 2026 18:46:19 +0000 (UTC)
+	 MIME-Version; b=eAoAeSZLOhQoPaRHTuarlIB0qxS3Ez9WSnMzTUSie6rK/I1/FiN0PYWu1FoNuxdzaCzkuDjDuTezHK0mrbnRIWjrayKjegTikT966a0g8h8XuUC3Jwokg3//g2VNffsdTl4QelCFqbziUCjUrBVL8+Va7Qd2iDhVYwIdUw5J7Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtG7xeZe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE271F00898;
+	Wed, 20 May 2026 18:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302780;
-	bh=f76BcmtqcolDI3ROc6AeRmizE5ktj06nwMvzoqLrBR0=;
+	s=korg; t=1779301628;
+	bh=kHtD79nHGcW3HHQ3YZpRmPBtv3yupFFWwCZ6xXsvHVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r5kSdZt6X3BXDnV7ZAfR9tgWWLOiItqJUW4gKkztufPZVTm6OV/XaG1p7Pn6l/P91
-	 MoWRZVVMK+23PYMCcx2MULhqdPaFTEpeyvkZoyaQ3VdB9kob8q8YXh7Y2omzJOG2Ik
-	 eJoSbjNHpf7kc+DnOAT7PT9OBv09uF1hKY0OASkg=
+	b=FtG7xeZe3DxYuuwCC1dQ9337eTm/SdUf645Es7Gmpx8Rs0WDu9jceTX6AzvpYfHci
+	 o8z5Wg13SGbK2LFQJAhDm14sgA6aENJRBADKbR5GDh/U1FSvJembVXIEUXKXHTtvGw
+	 eCr/USJXYQrtFJBliF7TNsdhhUeal9DgVqKD/T7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Schocher <hs@nabladev.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 398/508] net: phy: dp83869: fix setting CLK_O_SEL field.
+	Yiming Qian <yimingqian591@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 610/666] crypto: af_alg - Cap AEAD AD length to 0x80000000
 Date: Wed, 20 May 2026 18:23:41 +0200
-Message-ID: <20260520162107.237644003@linuxfoundation.org>
+Message-ID: <20260520162124.492270124@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +65,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253248-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252803-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A67FD59B9B3
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2CD39596ACF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Schocher <hs@nabladev.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 46f74a3f7d57d9cc0110b09cbc8163fa0a01afa2 ]
+commit e4c06479d7059888adf2f22bc1ebcf053bf691a2 upstream.
 
-Table 7-121 in datasheet says we have to set register 0xc6
-to value 0x10 before CLK_O_SEL can be modified. No more infos
-about this field found in datasheet. With this fix, setting
-of CLK_O_SEL field in IO_MUX_CFG register worked through dts
-property "ti,clk-output-sel" on a DP83869HMRGZR.
+In order to prevent arithmetic overflows when checking the TX
+buffer size, cap the associated data length to 0x80000000.
 
-Signed-off-by: Heiko Schocher <hs@nabladev.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-Link: https://patch.msgid.link/20260425031339.3318-1-hs@nabladev.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 400c40cf78da ("crypto: algif - add AEAD support")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/dp83869.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ crypto/af_alg.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index 5f056d7db83ee..760785160ab49 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -31,6 +31,7 @@
- #define DP83869_RGMIICTL	0x0032
- #define DP83869_STRAP_STS1	0x006e
- #define DP83869_RGMIIDCTL	0x0086
-+#define DP83869_ANA_PLL_PROG_PI	0x00c6
- #define DP83869_RXFCFG		0x0134
- #define DP83869_RXFPMD1		0x0136
- #define DP83869_RXFPMD2		0x0137
-@@ -814,12 +815,22 @@ static int dp83869_config_init(struct phy_device *phydev)
- 		dp83869_config_port_mirroring(phydev);
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -586,6 +586,8 @@ static int af_alg_cmsg_send(struct msghd
+ 			if (cmsg->cmsg_len < CMSG_LEN(sizeof(u32)))
+ 				return -EINVAL;
+ 			con->aead_assoclen = *(u32 *)CMSG_DATA(cmsg);
++			if (con->aead_assoclen >= 0x80000000u)
++				return -EINVAL;
+ 			break;
  
- 	/* Clock output selection if muxing property is set */
--	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
-+	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK) {
-+		/*
-+		 * Table 7-121 in datasheet says we have to set register 0xc6
-+		 * to value 0x10 before CLK_O_SEL can be modified.
-+		 */
-+		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
-+				    DP83869_ANA_PLL_PROG_PI, 0x10);
-+		if (ret)
-+			return ret;
-+
- 		ret = phy_modify_mmd(phydev,
- 				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
- 				     dp83869->clk_output_sel <<
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
-+	}
- 
- 	if (phy_interface_is_rgmii(phydev)) {
- 		ret = phy_write_mmd(phydev, DP83869_DEVADDR, DP83869_RGMIIDCTL,
--- 
-2.53.0
-
+ 		default:
 
 
 
