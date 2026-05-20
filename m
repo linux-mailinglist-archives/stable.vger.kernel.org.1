@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDnuDSn/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:25 +0200
+	id kB6QJacUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66A1596BEA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B015992B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0BDB30988DD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51AEB35C72B8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCD3DF59;
-	Wed, 20 May 2026 18:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7F83EC2D1;
+	Wed, 20 May 2026 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aom/pO+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ujhlcgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E0A17A2FC;
-	Wed, 20 May 2026 18:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB423EAC82;
+	Wed, 20 May 2026 17:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301822; cv=none; b=JsGoygF0GHQGkRhhozrJ4yehRqDks4sJV1yv+WD6Grr1Rk+90Jnn1xHSs5emb49e4c5hsgXaSG8PlfArJMBQmyJjepz2ZOBCOuREJmkzMldZfNfPZVbX33F27pGbxFKGUvWObaWsFwqETQoi528Vq9uAivRTeDfDwJAY3v4DMW8=
+	t=1779296404; cv=none; b=fVZbkdjJlUtHCJCFYra0GU7rkZFneAlPbFqaBfhTiwJNA5/DOfXGnRlPC8vmT2PxX/X1lbtlv4fnl0KC5894j0yYjmdF997oPaaM2UtM4M8PWggmimy0E7c3S6XHrAKX+9I4GWcJB+kLClm7V7gElWL7w8D8hCkBaZVvk6ULUMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301822; c=relaxed/simple;
-	bh=lvt+5E3N4/defTmYe3ix/GP3MdarMU/Xzcg4vW16Aws=;
+	s=arc-20240116; t=1779296404; c=relaxed/simple;
+	bh=TINbdzr9lMUREPk76aCLX5BKU0XyWYFXYPba7aBGyiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZARTGx6VBR6rVHfu7CVDNOtMWSMA12CRjE7m2IAvpH3iV/7AMMFU5q4+ENTPUXwyPzlV06YKdOjOJjn0ufjhIPNvpazus3J8vhQkfdMD0N3ze0LilbS0o7FIbzwnQS3Jt1LI98Paxh7Hiw4MugnQpo7x9ymkILWOsJ8ich5jwnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aom/pO+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32301F000E9;
-	Wed, 20 May 2026 18:30:20 +0000 (UTC)
+	 MIME-Version; b=CiEd+l8r/btOK80VaO/XbTsHUVc0eKWiS00TWsBdbuj+N5d9ujLqqERzM3OgRHpD8sQ7vi9QZYNfianT598VUaW8TMenXCwXwGqtqSopfP11eaWCyMHPb99RkoqBNGiWQZbdh4mNuK1So/ZJp5TjP1PtW4w+/WkSwzEIP1mVpcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ujhlcgx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104931F000E9;
+	Wed, 20 May 2026 16:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301821;
-	bh=uBWh4fnPw4VlsBy6E3Xfp3bL0GOqnC7IrD+TPKlKIfs=;
+	s=korg; t=1779296400;
+	bh=zMR2ziScSuoymNoLBZI7kOUTpIOAK0GUHLC4ZeJlDXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1aom/pO+G6YalUSFQ7rm+csA7qtiKBigX5zWQX0RB8rksxx1pnK3DQdnE6vPj36Gd
-	 FFn77tLu6Fvh0GoLyo/cdC9ks5kpqqLOHDIaVUbyVrxegLY7fQyQqK89HBtXm6jpkA
-	 7UssnFUzBLyB0YJ5ebCOTZ7KlPWexiCaeDXrKjvo=
+	b=2ujhlcgxDQptueaxqmaj8T217yXuOmm8gatuICubAze3G+FT8/PD9Hzoq1aStEd2M
+	 6tN/SjL588pcpgF46FC/+WDQCEmUKmKV0Yrbaoa3YkbJD11/rBEy4CDTQzCZARLsOD
+	 ul7oZxLZbqU2PIPc6NWLHLxMNffyFFUzA2CuJoLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+98a040252119df0506f8@syzkaller.appspotmail.com,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com,
-	Junjie Cao <junjie.cao@linux.dev>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/508] nilfs2: reject zero bd_oblocknr in nilfs_ioctl_mark_blocks_dirty()
+Subject: [PATCH 7.0 0778/1146] tcp: move tp->chrono_type next tp->chrono_stat[]
 Date: Wed, 20 May 2026 18:17:08 +0200
-Message-ID: <20260520162058.697024280@linuxfoundation.org>
+Message-ID: <20260520162205.822857293@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +65,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252877-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,dubeyko.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250824-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,98a040252119df0506f8,466a45fcfb0562f5b9a0];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,dubeyko.com:email,appspotmail.com:email,linux.dev:email]
-X-Rspamd-Queue-Id: C66A1596BEA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 05B015992B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit be3e5d10643d3be1cbac9d9939f220a99253f980 ]
+[ Upstream commit 4b78c9cbd8f1fbb9517aee48b372646f4cf05442 ]
 
-nilfs_ioctl_mark_blocks_dirty() uses bd_oblocknr to detect dead blocks
-by comparing it with the current block number bd_blocknr. If they differ,
-the block is considered dead and skipped.
+chrono_type is currently in tcp_sock_read_txrx group, which
+is supposed to hold read-mostly fields.
 
-However, bd_oblocknr should never be 0 since block 0 typically stores the
-primary superblock and is never a valid GC target block. A corrupted ioctl
-request with bd_oblocknr set to 0 causes the comparison to incorrectly
-match when the lookup returns -ENOENT and sets bd_blocknr to 0, bypassing
-the dead block check and calling nilfs_bmap_mark() on a non-existent
-block. This causes nilfs_btree_do_lookup() to return -ENOENT, triggering
-the WARN_ON(ret == -ENOENT).
+But chrono_type is mostly written in tx path, it should
+be moved to tcp_sock_write_tx group, close to other
+chrono fields (chrono_stat[], chrono_start).
 
-Fix this by rejecting ioctl requests with bd_oblocknr set to 0 at the
-beginning of each iteration.
+Note this adds holes, but data locality is far more important.
 
-[ryusuke: slightly modified the commit message and comments for accuracy]
+Use a full u8 for the time being, compiler can generate
+more efficient code.
 
-Fixes: 7942b919f732 ("nilfs2: ioctl operations")
-Reported-by: syzbot+98a040252119df0506f8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=98a040252119df0506f8
-Suggested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
-Cc: Junjie Cao <junjie.cao@linux.dev>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20260308122302.2895067-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 267bf3cf9a6f ("tcp: annotate data-races in tcp_get_info_chrono_stats()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/ioctl.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/tcp.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
-index 53022bfe0b72d..1a6868afa9143 100644
---- a/fs/nilfs2/ioctl.c
-+++ b/fs/nilfs2/ioctl.c
-@@ -751,6 +751,12 @@ static int nilfs_ioctl_mark_blocks_dirty(struct the_nilfs *nilfs,
- 	int ret, i;
- 
- 	for (i = 0; i < nmembs; i++) {
-+		/*
-+		 * bd_oblocknr must never be 0 as block 0
-+		 * is never a valid GC target block
-+		 */
-+		if (unlikely(!bdescs[i].bd_oblocknr))
-+			return -EINVAL;
- 		/* XXX: use macro or inline func to check liveness */
- 		ret = nilfs_bmap_lookup_at_level(bmap,
- 						 bdescs[i].bd_offset,
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index f72eef31fa23c..c44cf9ae8d16f 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -228,8 +228,7 @@ struct tcp_sock {
+ 	u32	sacked_out;	/* SACK'd packets			*/
+ 	u16	tcp_header_len;	/* Bytes of tcp header to send		*/
+ 	u8	scaling_ratio;	/* see tcp_win_from_space() */
+-	u8	chrono_type : 2,	/* current chronograph type */
+-		repair      : 1,
++	u8	repair      : 1,
+ 		tcp_usec_ts : 1, /* TSval values in usec */
+ 		is_sack_reneg:1,    /* in recovery from loss with SACK reneg? */
+ 		is_cwnd_limited:1,/* forward progress limited by snd_cwnd? */
+@@ -264,6 +263,7 @@ struct tcp_sock {
+ 				 * total number of data bytes sent.
+ 				 */
+ 	u32	snd_sml;	/* Last byte of the most recently transmitted small packet */
++	u8	chrono_type;	/* current chronograph type */
+ 	u32	chrono_start;	/* Start time in jiffies of a TCP chrono */
+ 	u32	chrono_stat[3];	/* Time in jiffies for chrono_stat stats */
+ 	u32	write_seq;	/* Tail(+1) of data held in tcp send buffer */
 -- 
 2.53.0
 
