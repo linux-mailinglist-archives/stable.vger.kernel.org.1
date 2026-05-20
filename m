@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QC+LGVb1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-250667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:30 +0200
+	id +AmhLxUBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF3D594E64
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97D7597271
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEA2B31E0096
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4489F380773A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A0A36A352;
-	Wed, 20 May 2026 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090C43E832A;
+	Wed, 20 May 2026 18:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9UE5aeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J66rG26s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902E739C00B;
-	Wed, 20 May 2026 16:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB03F4DC0;
+	Wed, 20 May 2026 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296005; cv=none; b=cLOHx0JGayFra8tGE5/K1vaTwpRoJs52lUOnXG3MI0F2wTpGznqkCecq1Lxuq1cjSWen4ZgonoFUYRUnMz6iQaV2aUGCtDdzvgg9NzN/ndJB+nLg1Cs7OhxF3LwGG9J9aJhAufIhB4w98HiR2Clx7aug8QrU4ULlxPaYWuHi0fA=
+	t=1779300172; cv=none; b=ZSk2TLudlK3TEpRAgrMdDsFv2X6qbRt8fG7KavAixOGKK7+nrZzi6n48/VR5+wWdOcVXplnE+21GTozAIxFOFC/au7IAoIaenjM1k/vDN4mHFBCL+J0R0TgK4bCO/TzMqyCADtFynbs8wKrjV4he22hX23LSSDQSCQ9U6d2E3rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296005; c=relaxed/simple;
-	bh=l5HQfrLVxr/IfZoQlcsyTa093A7gAYg796tYQWQkqvo=;
+	s=arc-20240116; t=1779300172; c=relaxed/simple;
+	bh=9hP/PRFett7uuVpQEdVadLt/AaMf3248wy5/MXwsQAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGha/imEeH7QyhE6R9GUiCfFL5JdANNtPS0GNnBSoFZJECx988k/1G91PrDi72gmVkaUaxJRrzLbLMJOq6z6RfBxg0w4kmPoaMpRyexQnCd/bcctzxN6x9fH4PlGWKUP63y2u88f8jsf6lbgXCwEYUtvmwLYHTyzR/SC7+/eCwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9UE5aeZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007201F00893;
-	Wed, 20 May 2026 16:53:21 +0000 (UTC)
+	 MIME-Version; b=CpqlNauQBIwhKxMJKz72//QNbORFGmmuOKLr87SYp1ksMvM2Ywppb81mFEntUGM4q/PzdoP9ld1NXy4yc4KcOY19y+IYI+KWbqcdDXZwMgA4HBFx55taZT6fQijkAAj//DRRqdPBtqiqWn5TS7f7B9vhF0UUze2pLSU3sZml3YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J66rG26s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3413A1F00893;
+	Wed, 20 May 2026 18:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296002;
-	bh=PWeqcZIHR8l0KGf8w37X4PpwaHGOB4/awueto0TrKhk=;
+	s=korg; t=1779300171;
+	bh=UiBB4oGS3uK0dWffFpvj0P1AnyCHOHgiQ7g0SUfiTJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c9UE5aeZbHEVdz7Ta1x2zrbveM3rqxeATnrPQJ8IO+m5SBYO6fv6p7bzDC5fh74eV
-	 JorZjENLpBlXGqXrBFr2OoDmyrnesnhg5UeCQr0RneIZDY7l/DRFcKKu8GomjD+o6Q
-	 ++7Ac6LzUMFIo3PcplK3JdGRsw63kXUaUzYhhzt4=
+	b=J66rG26s2+mzPbmA92ekU3HFqlz9tOZA2hhZigDFZbWm+VNFKjIZQzbdp8G5utxE1
+	 ctdGbA+Wcx+t5rHa1q9ZEr82NmSrq9lUgmH+ilznijFOQha2AyUT6ZGSj2lb6vvzUs
+	 Y6yGqBKUgoyQWbiGG5Pn/qtQRzVAJUE3zE8nYUKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Wang Wensheng <wsw9603@163.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0633/1146] pinctrl: pinconf-generic: Fully validate pinmux property
+Subject: [PATCH 6.12 072/666] arm64: kexec: Remove duplicate allocation for trans_pgd
 Date: Wed, 20 May 2026 18:14:43 +0200
-Message-ID: <20260520162202.510781945@linuxfoundation.org>
+Message-ID: <20260520162112.792387987@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,73 +74,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252245-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,soleen.com,arm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250667-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DEF3D594E64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C97D7597271
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wang Wensheng <wsw9603@163.com>
 
-[ Upstream commit c98324ea7849b6e5baa1774f71709b375a2c2f9e ]
+[ Upstream commit ee020bf6f14094c9ae434bb37e6957a1fdad513c ]
 
-The pinconf_generic_parse_dt_pinmux() assumes that the 'pinmux' property
-is not empty when present. This might be not true. With that, the allocator
-will give a special value in return and not NULL which lead to the crash
-when trying to access that (invalid) memory. Fix that by fully validating
-'pinmux' value, including its length.
+trans_pgd would be allocated in trans_pgd_create_copy(), so remove the
+duplicate allocation before calling trans_pgd_create_copy().
 
-Fixes: 7112c05fff83 ("pinctrl: pinconf-generic: Add API for pinmux propertity in DTS file")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: 3744b5280e67 ("arm64: kexec: install a copy of the linear-map")
+Signed-off-by: Wang Wensheng <wsw9603@163.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinconf-generic.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/machine_kexec.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinconf-generic.c b/drivers/pinctrl/pinconf-generic.c
-index 2b030bd0e6adc..6b4a794a362c0 100644
---- a/drivers/pinctrl/pinconf-generic.c
-+++ b/drivers/pinctrl/pinconf-generic.c
-@@ -287,12 +287,17 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
- 		return -ENOENT;
+diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
+index 6f121a0164a48..28df62051cc97 100644
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -129,9 +129,6 @@ int machine_kexec_post_load(struct kimage *kimage)
  	}
  
-+	npins_t = prop->length / sizeof(u32);
-+	if (npins_t == 0) {
-+		dev_info(dev, "pinmux property doesn't have entries\n");
-+		return -ENODATA;
-+	}
-+
- 	if (!pid || !pmux || !npins) {
- 		dev_err(dev, "parameters error\n");
- 		return -EINVAL;
- 	}
- 
--	npins_t = prop->length / sizeof(u32);
- 	pid_t = devm_kcalloc(dev, npins_t, sizeof(*pid_t), GFP_KERNEL);
- 	pmux_t = devm_kcalloc(dev, npins_t, sizeof(*pmux_t), GFP_KERNEL);
- 	if (!pid_t || !pmux_t) {
+ 	/* Create a copy of the linear map */
+-	trans_pgd = kexec_page_alloc(kimage);
+-	if (!trans_pgd)
+-		return -ENOMEM;
+ 	rc = trans_pgd_create_copy(&info, &trans_pgd, PAGE_OFFSET, PAGE_END);
+ 	if (rc)
+ 		return rc;
 -- 
 2.53.0
 
