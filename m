@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-252399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GUnJQ0GDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-252399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:49 +0200
+	id aIATCbQEDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-252858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915D2597BC1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6775978D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B305323F7EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 371EB376A24A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F95C3A6B6D;
-	Wed, 20 May 2026 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918F23FB060;
+	Wed, 20 May 2026 18:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4ghXHnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHH0z0+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C483E5ECF;
-	Wed, 20 May 2026 18:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A51C3EDAC6;
+	Wed, 20 May 2026 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300574; cv=none; b=iDHNiOeidkHZe/FzvKtAiBTEihD9oOJ7kCOogRqQwfTNCDg87JeyGg6nvtRdaMeT3/dESyfmcoy3rq/0k0KtuCZUmTXqFyzRECSzPpKnvrh8cChFnY+X0PVhs0px1+hdstgXFM6VVyaIHy3BYa5eS/LIKYAfotXXCPwERQjAkxg=
+	t=1779301772; cv=none; b=mZoc2LvF4eJvLq9jIl450F7r2Bs5TbSD+yHiaJ3yG0Xc5ZQqsIedkrDW1eeXXQVaURMy8q1TZMBRME32SWuvxFHQXR9aGELWLFCQIXhbfdM5qUblnq7jaA4EupGJePcicG5i3MwgSf6GkBm0m+7+B1BX+NdSLiEMpEOt60X8HCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300574; c=relaxed/simple;
-	bh=/ig2/o8vT14V2F4Hd0maL7mFCzaGRdC2Odv7ilYRjWI=;
+	s=arc-20240116; t=1779301772; c=relaxed/simple;
+	bh=IBcd3MJsb4mytmbM3kb8dmNVwyIM3JpWBXj78TBIvb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuW9Ulm/9r54Ik6anqRPt7P82+UxZcNcGooNdD3x2me/tXm8WA++hUVRAdjHUHknTwmqdyct2zp1KtsPvL3aMN2aw5/eV5Cc586r0yCz1U73dmirSUMwxL8luGdA6hVsudkCvnup+4pKSo0kgZtzmQu60c/ZFXavr2nWatO0+LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4ghXHnj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E1F1F000E9;
-	Wed, 20 May 2026 18:09:32 +0000 (UTC)
+	 MIME-Version; b=ouJksht3+kNmGgN+dXdWWWpUfjtegQBaVAEcS4T8QjVkYjpidH+QPkH7GlI+dl84byv4wyFIBhzasbMn3vebU28r9+l7uG9V+9b28TotHgtD6efSH/qJSt2zgd8rLAIRkcs3SoTZFxADICdkzpOikykqDhNyWbVHvw6TS1aDkyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHH0z0+R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79C11F000E9;
+	Wed, 20 May 2026 18:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300572;
-	bh=mvX0938GO02oDPHXQFl/N8sJq+KnV0YU/Gxv3joojog=;
+	s=korg; t=1779301771;
+	bh=61rB2SJTh0SmJLwM1tA45fSAsHYzFEatJ06WG0TYV0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s4ghXHnjjPdzD+PoFEr5OKTVmKEqmNRLNyiCN2zHcHKaJZAAar1oBMui34x5WK2vs
-	 L0HilGmrxZiV+QJofjWcQ9wwr1UeZhg8FhSpRQBJ0s2nFiGmfhE0dv2b9mQd8QooCT
-	 vwb99pyekevU6fqmjUSUGujdeUjupgFyt4bjM09s=
+	b=NHH0z0+R8VIVxoyUIxa3VldMaMKE3L6Cf1DnCTLMRpWk7pOsmkfZd7NtPQZVWt5ik
+	 zOPN6XmtO2f5vAzxncdFrh1VuC5PY1nXHWPJKdtCn8YlLuYQOPhCBjAQ93FfSjkZYV
+	 gvHobpeyLnn2z4qfSw4Ox1BSdhN20kQYdNSPqZEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jane Chu <jane.chu@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hillf Danton <hillf.zj@alibaba-inc.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/666] Documentation: fix a hugetlbfs reservation statement
+Subject: [PATCH 6.6 015/508] s390/cio: convert sprintf()/snprintf() to sysfs_emit()
 Date: Wed, 20 May 2026 18:17:18 +0200
-Message-ID: <20260520162116.133501282@linuxfoundation.org>
+Message-ID: <20260520162058.916180473@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,95 +69,128 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252399-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252858-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 915D2597BC1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9B6775978D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Chu <jane.chu@oracle.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 7a197d346a44384a1a858a98ef03766840e561d4 ]
+[ Upstream commit aaebea959efb2cccd870990f1b6016ff324b0fb6 ]
 
-Documentation/mm/hugetlbfs_reserv.rst has
-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
-		resv_huge_pages += resv_needed;
-which describes this code in gather_surplus_pages()
-	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-	if (needed <= 0) {
-		h->resv_huge_pages += delta;
-		return 0;
-	}
-which means if there are enough free hugepages to account for the new
-reservation, simply update the global reservation count without
-further action.
+Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+or sysfs_emit_at() when formatting the value to be returned to user space.
 
-But the description is backwards, it should be
-	if (resv_needed <= (free_huge_pages - resv_huge_pages))
-instead.
+coccinelle complains that there are still a couple of functions that use
+snprintf(). Convert them to sysfs_emit().
 
-Link: https://lkml.kernel.org/r/20260302201015.1824798-1-jane.chu@oracle.com
-Fixes: 70bc0dc578b3 ("Documentation: vm, add hugetlbfs reservation overview")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Generally, this patch is generated by
+make coccicheck M=<path/to/file> MODE=patch \
+COCCI=scripts/coccinelle/api/device_attr_show.cocci
+
+No functional change intended.
+
+Cc: Vineeth Vijayan <vneethv@linux.ibm.com>
+Cc: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Link: https://lore.kernel.org/r/20240314095209.1325229-1-lizhijian@fujitsu.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: ac4d8bb6e2e1 ("s390/cio: use generic driver_override infrastructure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/mm/hugetlbfs_reserv.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/cio/css.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
-index 4914fbf07966c..a49115db18c76 100644
---- a/Documentation/mm/hugetlbfs_reserv.rst
-+++ b/Documentation/mm/hugetlbfs_reserv.rst
-@@ -155,7 +155,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
- the global reservation count resv_huge_pages is adjusted something like the
- following::
+diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+index 4e63e6d45e6e1..36c46c7f2fb80 100644
+--- a/drivers/s390/cio/css.c
++++ b/drivers/s390/cio/css.c
+@@ -309,7 +309,7 @@ static ssize_t type_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct subchannel *sch = to_subchannel(dev);
  
--	if (resv_needed <= (resv_huge_pages - free_huge_pages))
-+	if (resv_needed <= (free_huge_pages - resv_huge_pages)
- 		resv_huge_pages += resv_needed;
+-	return sprintf(buf, "%01x\n", sch->st);
++	return sysfs_emit(buf, "%01x\n", sch->st);
+ }
  
- Note that the global lock hugetlb_lock is held when checking and adjusting
+ static DEVICE_ATTR_RO(type);
+@@ -319,7 +319,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct subchannel *sch = to_subchannel(dev);
+ 
+-	return sprintf(buf, "css:t%01X\n", sch->st);
++	return sysfs_emit(buf, "css:t%01X\n", sch->st);
+ }
+ 
+ static DEVICE_ATTR_RO(modalias);
+@@ -345,7 +345,7 @@ static ssize_t driver_override_show(struct device *dev,
+ 	ssize_t len;
+ 
+ 	device_lock(dev);
+-	len = snprintf(buf, PAGE_SIZE, "%s\n", sch->driver_override);
++	len = sysfs_emit(buf, "%s\n", sch->driver_override);
+ 	device_unlock(dev);
+ 	return len;
+ }
+@@ -396,8 +396,8 @@ static ssize_t pimpampom_show(struct device *dev,
+ 	struct subchannel *sch = to_subchannel(dev);
+ 	struct pmcw *pmcw = &sch->schib.pmcw;
+ 
+-	return sprintf(buf, "%02x %02x %02x\n",
+-		       pmcw->pim, pmcw->pam, pmcw->pom);
++	return sysfs_emit(buf, "%02x %02x %02x\n",
++			  pmcw->pim, pmcw->pam, pmcw->pom);
+ }
+ static DEVICE_ATTR_RO(pimpampom);
+ 
+@@ -881,7 +881,7 @@ static ssize_t real_cssid_show(struct device *dev, struct device_attribute *a,
+ 	if (!css->id_valid)
+ 		return -EINVAL;
+ 
+-	return sprintf(buf, "%x\n", css->cssid);
++	return sysfs_emit(buf, "%x\n", css->cssid);
+ }
+ static DEVICE_ATTR_RO(real_cssid);
+ 
+@@ -904,7 +904,7 @@ static ssize_t cm_enable_show(struct device *dev, struct device_attribute *a,
+ 	int ret;
+ 
+ 	mutex_lock(&css->mutex);
+-	ret = sprintf(buf, "%x\n", css->cm_enabled);
++	ret = sysfs_emit(buf, "%x\n", css->cm_enabled);
+ 	mutex_unlock(&css->mutex);
+ 	return ret;
+ }
 -- 
 2.53.0
 
