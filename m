@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FlTLDXxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:53 +0200
+	id OFCxDJfwDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E415941D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0CA593FBF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3ADFD3040942
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3977134CAF9D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D3837754D;
-	Wed, 20 May 2026 17:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BE634D4FE;
+	Wed, 20 May 2026 16:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZBM52IR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UozjPxU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047A836CE19;
-	Wed, 20 May 2026 17:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E92433A9CF;
+	Wed, 20 May 2026 16:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297697; cv=none; b=s35LBOlhxtJ8g39gcuoysyPiDYspyf6OkEVWSBps3QXtzfSCvY+Ew0klKg1R4o15tmLlavpxPXY9PUdte/dxkJsQ9OwkI4CDhn0JrcWH/OroUy74lYnP0RolkktfOh9222ZUiXTmtccvznR8ERJi+932d9Bfxi23e9/Tm3HPIbg=
+	t=1779295179; cv=none; b=BRKo96jT3RHw41LtVoADctIrPYWhYcxyexcL0YyJsm0A4dlA5o+HYy9wThgufNt4p63LA/eWwT8kkPiL2/UcULuU/k2UHGHVLyBzsi5L4VGbV2DZmpW6eDZV3OShXWRQgnCY5dpCkITw5GK70roa7Oe+bYPo9sSQub7M6oJhJGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297697; c=relaxed/simple;
-	bh=qv05G7b3k37kyFXqKq8TexdiAs/j6hsSgD2THIDmQx0=;
+	s=arc-20240116; t=1779295179; c=relaxed/simple;
+	bh=i0YPtSDERGGcIP/4nN3c2+7WR3abBL7jPPB00kO073k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pkllq+pBfNZp6T0eLUUAmtvSPuBk0aMQ8npsNQqTNHHcZXAMC/p95yuBDKAoCO4k1A0CVimhdr7Kx5twBBxkF7gUZvki1DQQP1CtqOb1/9p2xLF2DB/QvRGvbpjyFLd4KxX18c6Cj1oqzZWzeULb8fHlK29y4NUiDv8quwiZteU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZBM52IR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0841F000E9;
-	Wed, 20 May 2026 17:21:35 +0000 (UTC)
+	 MIME-Version; b=LzwbcLS8efh/8ILivQqbF4t2HpMB2YkPcwm0yhncX2Eps2KY6ZX4+RYDEv7qKOvN+AT67gVSNk2O+4yfysEikUzeYZyfO1pSH65oERl2Xn3cW7qibaIVqUcxNvHovTWAc80Ali3MJbeOlbSdolX2xE3fu3jTJ7CrZsQ88qiKf0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UozjPxU3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C3F1F00893;
+	Wed, 20 May 2026 16:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297695;
-	bh=q7FDw5i0olHM9d5mR1FeuxAuKUduSDPkRBJ1ZMNzZ28=;
+	s=korg; t=1779295177;
+	bh=6F1ddngqQFFCUkbQiaAj1XQhPHsSDAr5V4+KdHXzZ6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2ZBM52IRxDCx0L8ArXhusbk/A++gExfoMrK/D8Kf8Evlhm8lmhZWpiEX4d2z8H4wN
-	 RoI0G8gas8CFnxYARfHI5tYRo3PVHtsdi7HVyDjRp5VZwSshGdI0iDsoXuU1q18cNU
-	 V7ijd9Xr8ZJ2yV230WfUmGk66FmyThvzXSm0LFAQ=
+	b=UozjPxU3Gcd3d6b8Bb5I+2xCml9dH0HFMVpdgq0WD8Htp3NLGqYiHEU3brhYN9mIA
+	 Zr24yRmETHdVR7o5ApXNZoXQbTqG+dl8yFOLyC/ejWGAUYyOohDwUq0O9H5hfxl55j
+	 GnfMFhp2U/x995dzOzhc98zdWEh+lgf29e7c0keo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rory Little <rory@candelatech.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	kernel test robot <lkp@intel.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/957] wifi: mt76: mt7921: Place upper limit on station AID
+Subject: [PATCH 7.0 0320/1146] drm/msm/dsi: add the missing parameter description
 Date: Wed, 20 May 2026 18:09:30 +0200
-Message-ID: <20260520162136.447498068@linuxfoundation.org>
+Message-ID: <20260520162155.440030420@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250348-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251328-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,candelatech.com:email]
-X-Rspamd-Queue-Id: 32E415941D5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 8F0CA593FBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rory Little <rory@candelatech.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 4d0bf21e3e20619d51d06c0c36207aabab8b712c ]
+[ Upstream commit 958adefc4c0fddee3b12269da5dd7cb49bac953f ]
 
-Any station configured with an AID over 20 causes a firmware crash.
-This situation occurred in our testing using an AP interface on 7922
-hardware, with a modified hostapd, sourced from Mediatek's OpenWRT
-feeds.
+Add a description for is_bonded_dsi in dsi_adjust_pclk_for_compression
+to match the existing kernel-doc comment.
 
-In stock hostapd, station AIDs begin counting at 1, and this
-configuration is prevented with an upper limit on associated stations.
-However, the modified hostapd began allocation at 65, which caused the
-firmware to crash. This fix does not allow these AIDs to work, but will
-prevent the firmware crash.
-
-This crash was only seen on IFTYPE_AP interfaces, and the fix does not
-appear to have an effect on IFTYPE_STATION behavior.
-
-Fixes: 5c14a5f944b9 ("mt76: mt7921: introduce mt7921e support")
-Signed-off-by: Rory Little <rory@candelatech.com>
-Link: https://patch.msgid.link/20250904000711.3033860-1-rory@candelatech.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603080314.XeqyRZ7A-lkp@intel.com/
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/710112/
+Link: https://lore.kernel.org/r/20260309100254.877801-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 5e676916593d3..ea6ff4c6bc90b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -808,6 +808,9 @@ int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	int ret, idx;
- 
-+	if (sta->aid > MT7921_MAX_AID)
-+		return -ENOENT;
-+
- 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1);
- 	if (idx < 0)
- 		return -ENOSPC;
-@@ -851,6 +854,9 @@ int mt7921_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 
-+	if (sta->aid > MT7921_MAX_AID)
-+		return -ENOENT;
-+
- 	if (ev != MT76_STA_EVENT_ASSOC)
- 	    return 0;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index c88793fcec643..faa0d93982144 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -7,6 +7,8 @@
- #include "../mt792x.h"
- #include "regs.h"
- 
-+#define MT7921_MAX_AID                  20
-+
- #define MT7921_TX_RING_SIZE		2048
- #define MT7921_TX_MCU_RING_SIZE		256
- #define MT7921_TX_FWDL_RING_SIZE	128
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index db6da99375a18..6cb634590e7a7 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -569,6 +569,7 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
+  * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
+  * @mode: The selected mode for the DSI output
+  * @dsc: DRM DSC configuration for this DSI output
++ * @is_bonded_dsi: True if two DSI controllers are bonded
+  *
+  * Adjust the pclk rate by calculating a new hdisplay proportional to
+  * the compression ratio such that:
 -- 
 2.53.0
 
