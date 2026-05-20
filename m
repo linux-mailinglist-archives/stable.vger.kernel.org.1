@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-252721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNX0B939DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:53 +0200
+	id sJXgGq75DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B559667B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C33559593A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 544C73068490
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BD1E304FA1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881E43FC5A6;
-	Wed, 20 May 2026 18:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEA63F4DDB;
+	Wed, 20 May 2026 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSr48NmS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7lB+WMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118453FC5AD;
-	Wed, 20 May 2026 18:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4026C3A3E9C;
+	Wed, 20 May 2026 17:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301416; cv=none; b=k6ASTSOyo9o6a52SXEoUGZ3Pqf1Qjqtlwfq8uPu33qWbNsTx7YxnrzE78h5kxkFQdAC+VPYWbhx6JwlQsdNw7av/4+0cISjCNYRJh1iiS+Aih9wmO4d+gGMc+P3ECWhO69HDmvUhr+WQIYosBdcyrn7gtpqJKyZur7RI++uU5Cw=
+	t=1779299712; cv=none; b=HXtbMnoen1UBdDnIghFf8Ubwvr+bY8sXBhi7xcLbIh1h76aFZRY1z0lavXUBpSDOUG643n18EPg8oCo/z3ZciyDqgcAnTPbUDHd6y4JMXzSvmSYEezqLbciDUoE3fDAdj6hNKiUDIr21VxTIvJaXxK0UFxrv/cN9v+pRtZQ6v8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301416; c=relaxed/simple;
-	bh=Vo+FN/ZqnR4GWFdPMPMVxw3llPVcWRwAI3M2MVu9qzc=;
+	s=arc-20240116; t=1779299712; c=relaxed/simple;
+	bh=B54sqhuhUm0BZgYjl0murBoSDyZMYTfQyMuYk5q83mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcmvRkjNDrlspT8yW/oifKrZZbqiiHzNqCdV/RHH4kQpyqrBN8L0PBj/GzLyavmzOwP/w7BDoOtbF8EZ5++6tPcwe+HKbcnZhQ2dt6zDMfXyMUhznyZbXM8lk1cBz9/Df1+qtAsWNDbmq/UBIy/8b8xq3/JyFc1bu2nzPsTnW9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSr48NmS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A4B1F00893;
-	Wed, 20 May 2026 18:23:34 +0000 (UTC)
+	 MIME-Version; b=uRYluPYgviyGVcmCMCbPm6zeLDSiR6Pvfu3+LAk1jI75Ja/M8dgmGfpxsZpo5ya7aFtRXtxpZsKQHdFIDPa3vMOCZumhr2lqH+WTUCZ8TYYYUhtq6JxIVJrxeQsRUjWOE+iMNMt8V5HFT9aW/QEwYT+tDqRXus6LZXDne/A9gcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7lB+WMo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18201F000E9;
+	Wed, 20 May 2026 17:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301415;
-	bh=ZQDhmh1VQUgiTg/+gX+qSbctH+zbBJpB6EGyb7amAms=;
+	s=korg; t=1779299711;
+	bh=6PfFTfM3hjmaSfYBbUW7guzLKGSVAEahztnl8pM8fI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eSr48NmSHXpUC5/Io4M2YFTS5Etn2dwnNoxHdypNbxdXACoiBW+KM5QkpOLuqDOVT
-	 edUMd4ahLFjM9VZJYRusYTO/z9qcEx5Eftunxth2RSJhtx9IMA5D9jOX9EkUpvoMaV
-	 GORtVafGcDWWIrO5fiDL0E3EsNfqCBFx3BoXNas4=
+	b=p7lB+WMoCaB6A8p9pKeSHqlJwCDkJ8G9k7nwjpKiSsEnZfNdoi5b1NiB4xahZv4q+
+	 YEenv86rTMwkIIJdHN2g/eTvSIVhART2t54j3IbPArmVc6frTdrWt5ljiFAzqLEqFK
+	 3FPHwT3EbCop4KZafj+MtelC/x8qt9rRkPnQF0is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@verge.net.au>,
+	Simon Horman <horms@kernel.org>,
+	Long Li <longli@microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 546/666] net, treewide: define and use MAC_ADDR_STR_LEN
-Date: Wed, 20 May 2026 18:22:37 +0200
-Message-ID: <20260520162123.105040119@linuxfoundation.org>
+Subject: [PATCH 6.18 875/957] net: mana: Fix use-after-free in reset service rescan path
+Date: Wed, 20 May 2026 18:22:38 +0200
+Message-ID: <20260520162153.541441318@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252721-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252087-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,145 +87,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,sipsolutions.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 8E6B559667B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2C33559593A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
 
-[ Upstream commit 6d6c1ba7824022528dbe3e283fafbd0775424128 ]
+[ Upstream commit 3387a7ad478b46970ae8254049167d166e398aeb ]
 
-There are a few places in the tree which compute the length of the
-string representation of a MAC address as 3 * ETH_ALEN - 1. Define a
-constant for this and use it where relevant. No functionality changes
-are expected.
+When mana_serv_reset() encounters -ETIMEDOUT or -EPROTO from
+mana_gd_resume(), it performs a PCI rescan via mana_serv_rescan().
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@verge.net.au>
-Link: https://patch.msgid.link/20250312-netconsole-v6-1-3437933e79b8@purestorage.com
+mana_serv_rescan() calls pci_stop_and_remove_bus_device(), which can
+invoke the driver's remove path and free the gdma_context associated
+with the device. After returning, mana_serv_reset() currently jumps to
+the out label and attempts to clear gc->in_service, dereferencing a
+freed gdma_context.
+
+The issue was observed with the following call logs:
+[  698.942636] BUG: unable to handle page fault for address: ff6c2b638088508d
+[  698.943121] #PF: supervisor write access in kernel mode
+[  698.943423] #PF: error_code(0x0002) - not-present page
+[S[  698.943793] Pat Dec  6 07:GD5 100000067 P4D 1002f7067 PUD 1002f8067 PMD 101bef067 PTE 0
+0:56 2025] hv_[n e 698.944283] Oops: Oops: 0002 [#1] SMP NOPTI
+tvsc f8615163-00[  698.944611] CPU: 28 UID: 0 PID: 249 Comm: kworker/28:1
+...
+[Sat Dec  6 07:50:56 2025] R10: [  699.121594] mana 7870:00:00.0 enP30832s1: Configured vPort 0 PD 18 DB 16
+000000000000001b R11: 0000000000000000 R12: ff44cf3f40270000
+[Sat Dec  6 07:50:56 2025] R13: 0000000000000001 R14: ff44cf3f402700c8 R15: ff44cf3f4021b405
+[Sat Dec  6 07:50:56 2025] FS:  0000000000000000(0000) GS:ff44cf7e9fcf9000(0000) knlGS:0000000000000000
+[Sat Dec  6 07:50:56 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Sat Dec  6 07:50:56 2025] CR2: ff6c2b638088508d CR3: 000000011fe43001 CR4: 0000000000b73ef0
+[Sat Dec  6 07:50:56 2025] Call Trace:
+[Sat Dec  6 07:50:56 2025]  <TASK>
+[Sat Dec  6 07:50:56 2025]  mana_serv_func+0x24/0x50 [mana]
+[Sat Dec  6 07:50:56 2025]  process_one_work+0x190/0x350
+[Sat Dec  6 07:50:56 2025]  worker_thread+0x2b7/0x3d0
+[Sat Dec  6 07:50:56 2025]  kthread+0xf3/0x200
+[Sat Dec  6 07:50:56 2025]  ? __pfx_worker_thread+0x10/0x10
+[Sat Dec  6 07:50:56 2025]  ? __pfx_kthread+0x10/0x10
+[Sat Dec  6 07:50:56 2025]  ret_from_fork+0x21a/0x250
+[Sat Dec  6 07:50:56 2025]  ? __pfx_kthread+0x10/0x10
+[Sat Dec  6 07:50:56 2025]  ret_from_fork_asm+0x1a/0x30
+[Sat Dec  6 07:50:56 2025]  </TASK>
+
+Fix this by returning immediately after mana_serv_rescan() to avoid
+accessing GC state that may no longer be valid.
+
+Fixes: 9bf66036d686 ("net: mana: Handle hardware recovery events when probing the device")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Link: https://patch.msgid.link/20251218131054.GA3173@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3bc179bc7146 ("netpoll: fix IPv6 local-address corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c           | 2 +-
- drivers/nvmem/brcm_nvram.c         | 2 +-
- drivers/nvmem/layouts/u-boot-env.c | 2 +-
- include/linux/if_ether.h           | 3 +++
- lib/net_utils.c                    | 4 +---
- net/mac80211/debugfs_sta.c         | 7 ++++---
- 6 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 2f20f9ed3a0d8..4048d99b7c57d 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -652,7 +652,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 0ad082b566f5e..45ee0774522a1 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -481,7 +481,7 @@ static void mana_serv_reset(struct pci_dev *pdev)
+ 		/* Perform PCI rescan on device if we failed on HWC */
+ 		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
+ 		mana_serv_rescan(pdev);
+-		goto out;
++		return;
+ 	}
  
- 	if (!mac_pton(buf, remote_mac))
- 		goto out_unlock;
--	if (buf[3 * ETH_ALEN - 1] && buf[3 * ETH_ALEN - 1] != '\n')
-+	if (buf[MAC_ADDR_STR_LEN] && buf[MAC_ADDR_STR_LEN] != '\n')
- 		goto out_unlock;
- 	memcpy(nt->np.remote_mac, remote_mac, ETH_ALEN);
- 
-diff --git a/drivers/nvmem/brcm_nvram.c b/drivers/nvmem/brcm_nvram.c
-index 3d8c87835f4d6..65f458af3a195 100644
---- a/drivers/nvmem/brcm_nvram.c
-+++ b/drivers/nvmem/brcm_nvram.c
-@@ -100,7 +100,7 @@ static int brcm_nvram_read_post_process_macaddr(void *context, const char *id, i
- {
- 	u8 mac[ETH_ALEN];
- 
--	if (bytes != 3 * ETH_ALEN - 1)
-+	if (bytes != MAC_ADDR_STR_LEN)
- 		return -EINVAL;
- 
- 	if (!mac_pton(buf, mac))
-diff --git a/drivers/nvmem/layouts/u-boot-env.c b/drivers/nvmem/layouts/u-boot-env.c
-index 21f6dcf905dd9..8571aac56295a 100644
---- a/drivers/nvmem/layouts/u-boot-env.c
-+++ b/drivers/nvmem/layouts/u-boot-env.c
-@@ -37,7 +37,7 @@ static int u_boot_env_read_post_process_ethaddr(void *context, const char *id, i
- {
- 	u8 mac[ETH_ALEN];
- 
--	if (bytes != 3 * ETH_ALEN - 1)
-+	if (bytes != MAC_ADDR_STR_LEN)
- 		return -EINVAL;
- 
- 	if (!mac_pton(buf, mac))
-diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
-index 47a0feffc1215..ca9afa824aa4f 100644
---- a/include/linux/if_ether.h
-+++ b/include/linux/if_ether.h
-@@ -19,6 +19,9 @@
- #include <linux/skbuff.h>
- #include <uapi/linux/if_ether.h>
- 
-+/* XX:XX:XX:XX:XX:XX */
-+#define MAC_ADDR_STR_LEN (3 * ETH_ALEN - 1)
-+
- static inline struct ethhdr *eth_hdr(const struct sk_buff *skb)
- {
- 	return (struct ethhdr *)skb_mac_header(skb);
-diff --git a/lib/net_utils.c b/lib/net_utils.c
-index 42bb0473fb22f..215cda672fee1 100644
---- a/lib/net_utils.c
-+++ b/lib/net_utils.c
-@@ -7,11 +7,9 @@
- 
- bool mac_pton(const char *s, u8 *mac)
- {
--	size_t maxlen = 3 * ETH_ALEN - 1;
- 	int i;
- 
--	/* XX:XX:XX:XX:XX:XX */
--	if (strnlen(s, maxlen) < maxlen)
-+	if (strnlen(s, MAC_ADDR_STR_LEN) < MAC_ADDR_STR_LEN)
- 		return false;
- 
- 	/* Don't dirty result unless string is valid MAC. */
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index e6f937cfedcf6..3df6725ab00e7 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -454,11 +454,12 @@ static ssize_t link_sta_addr_read(struct file *file, char __user *userbuf,
- 				  size_t count, loff_t *ppos)
- {
- 	struct link_sta_info *link_sta = file->private_data;
--	u8 mac[3 * ETH_ALEN + 1];
-+	u8 mac[MAC_ADDR_STR_LEN + 2];
- 
- 	snprintf(mac, sizeof(mac), "%pM\n", link_sta->pub->addr);
- 
--	return simple_read_from_buffer(userbuf, count, ppos, mac, 3 * ETH_ALEN);
-+	return simple_read_from_buffer(userbuf, count, ppos, mac,
-+				       MAC_ADDR_STR_LEN + 1);
- }
- 
- LINK_STA_OPS(addr);
-@@ -1237,7 +1238,7 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
- 	struct ieee80211_local *local = sta->local;
- 	struct ieee80211_sub_if_data *sdata = sta->sdata;
- 	struct dentry *stations_dir = sta->sdata->debugfs.subdir_stations;
--	u8 mac[3*ETH_ALEN];
-+	u8 mac[MAC_ADDR_STR_LEN + 1];
- 
- 	if (!stations_dir)
- 		return;
+ 	if (ret)
 -- 
 2.53.0
 
