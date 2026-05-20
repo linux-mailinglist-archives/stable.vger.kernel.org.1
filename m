@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-250843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEn0C1z5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:40 +0200
+	id kMhuHyAGDmqv5gUAu9opvQ
+	(envelope-from <stable+bounces-252418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A9159582E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586C8597BEC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7854A33BB6BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE4D731DA4DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7933F54D4;
-	Wed, 20 May 2026 17:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4570236CE19;
+	Wed, 20 May 2026 18:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C6jk/ZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGAK0BQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3AC3A1E72;
-	Wed, 20 May 2026 17:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2E83C140F;
+	Wed, 20 May 2026 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296451; cv=none; b=B1ZKMupko7AnZgsAAvmxFErEWKPzrzYqkaSvdMFkxBZCxilKXPBxS5Z3UPaeULGFIPTj8/vfnI3Au3eyphUFZdbUghP5eXKrm+8ASYb0ne4JVoHotVJeK8kFSZ/uiN0GABQ6hapCXx6sCH6Um1GBUvIMzGT/KAGlax+EqZ+AWU8=
+	t=1779300621; cv=none; b=jdspuvncsIiIZ2RaJQPRxvbyWvXHsKHbk1hO8HHWbm65rN0rYRIkn69H9wyOyts0WRy7Kuu7KkqhcSa9N+yqwsCTlQwQMUc5oJvEXoUYVpoFISNZiIgf1B6VJdu+OUeeMpoj6XB8rGg8CdBcMGiINSGtPVsn36Fj47acEAhTvJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296451; c=relaxed/simple;
-	bh=szayO4GfZkqYNlZNwwM16cnLL14oPpjZfsONDVvxfiM=;
+	s=arc-20240116; t=1779300621; c=relaxed/simple;
+	bh=DZN9Jflrokius9LNcNzjjWs1HnsVs+wZal0Zyx1rMGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iW64HksxsXKfnWu0jTl2XNtzjWs7qZSFcqnuIiG7vgxd+jXJdNrbrC0BtTkV3PX+Aj7hx/su+Q0tvkSPjZLNSB2ti5rzZDoQqwubqyJ5cbTqI4Toq/Ur+P6JNI7S4T+no1TBtoDAJmTCxMtBzKBE5TXC5dZ/uaN/QGnxnSuIYz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C6jk/ZX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477471F000E9;
-	Wed, 20 May 2026 17:00:50 +0000 (UTC)
+	 MIME-Version; b=C3g5pNMsfCQCPL2IkR4tecaChvfNIpYid1jh+i++hEPqe/zwwWpluolLCeJeeBiJW0Q3ZqCorgQMjg77yh5TXpM1CviS8e2rXQPlvEHwGzqyIxU0gGSm2Dqu/6EqSY+WG3fMnncPuN+DQaHl/eRQc2TMp4dPopWsR0cXrg3gzis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGAK0BQR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CD51F000E9;
+	Wed, 20 May 2026 18:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296450;
-	bh=92qIOK5MKCchAJQHy1aSogYet81RuwL6//I2sUccDuA=;
+	s=korg; t=1779300619;
+	bh=WXEUKwceE2bUM+csIB1W+ulgBG9q9ZQc3/A4WxhNT9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1C6jk/ZX82jOACJFtcDOIewp4kxTuY6bfeSjC8OBYa7YhX2kqkQD/9Ulm8w1mpD0J
-	 E28stDd3ptUPFc3bnztqABeCxow/8E87y68vkVWKNTaEDEQbcvhfDB3IoUSQhhMWaH
-	 HpQ4+RagrInAKjaafs8DR0rNxIqEwvA7EBTv5W3s=
+	b=WGAK0BQRoOA39yAh6SK/r1MvTD7sO40+EBSkexPPhnJG0DNeOCS6RYqUrFMid2Fv/
+	 NFLcK0iwTNiPQHJ/z9Okqk/rWXGxtN2DFpPamL9tbTAkwCVn5Wj58DiU4b6IA09Tkz
+	 L3G7xVRhZl84qHw5wwtdlN3rfT1yp4nf2qXDqbHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Joe Damato <joe@dama.to>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0804/1146] ipv6: fix possible UAF in icmpv6_rcv()
+Subject: [PATCH 6.12 243/666] PCI: tegra194: Use DWC IP core version
 Date: Wed, 20 May 2026 18:17:34 +0200
-Message-ID: <20260520162206.422865228@linuxfoundation.org>
+Message-ID: <20260520162116.485423500@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,100 +71,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250843-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252418-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 90A9159582E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 586C8597BEC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
+[ Upstream commit ea60ca067f0f098043610c96a915d162113c1aac ]
 
-Caching saddr and daddr before pskb_pull() is problematic
-since skb->head can change.
+Tegra194 PCIe driver used custom version numbers to detect Tegra194 and
+Tegra234 IPs. With version detect logic added, version check results in
+mismatch warnings:
 
-Remove these temporary variables:
+  tegra194-pcie 14100000.pcie: Versions don't match (0000562a != 3536322a)
 
-- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
-  when net_dbg_ratelimited() is called in the slow path.
+Use HW version numbers which match to PORT_LOGIC.PCIE_VERSION_OFF in
+Tegra194 driver to avoid these kernel warnings.
 
-- Avoid potential future misuse after pskb_pull() call.
-
-Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Joe Damato <joe@dama.to>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-12-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/icmp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware.h | 2 ++
+ drivers/pci/controller/dwc/pcie-tegra194.c   | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
-index d5d23a9296eac..88356cbfb68b1 100644
---- a/net/ipv6/icmp.c
-+++ b/net/ipv6/icmp.c
-@@ -1104,7 +1104,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 	struct net *net = dev_net_rcu(skb->dev);
- 	struct net_device *dev = icmp6_dev(skb);
- 	struct inet6_dev *idev = __in6_dev_get(dev);
--	const struct in6_addr *saddr, *daddr;
- 	struct icmp6hdr *hdr;
- 	u8 type;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 0fad7751490f5..a5f58ac8ea941 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -31,8 +31,10 @@
+ #define DW_PCIE_VER_470A		0x3437302a
+ #define DW_PCIE_VER_480A		0x3438302a
+ #define DW_PCIE_VER_490A		0x3439302a
++#define DW_PCIE_VER_500A		0x3530302a
+ #define DW_PCIE_VER_520A		0x3532302a
+ #define DW_PCIE_VER_540A		0x3534302a
++#define DW_PCIE_VER_562A		0x3536322a
  
-@@ -1135,12 +1134,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ #define __dw_pcie_ver_cmp(_pci, _ver, _op) \
+ 	((_pci)->version _op DW_PCIE_VER_ ## _ver)
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index dd08ad8d08cbd..5faac8b7190ca 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -35,8 +35,8 @@
+ #include <soc/tegra/bpmp-abi.h>
+ #include "../../pci.h"
  
- 	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
+-#define TEGRA194_DWC_IP_VER			0x490A
+-#define TEGRA234_DWC_IP_VER			0x562A
++#define TEGRA194_DWC_IP_VER			DW_PCIE_VER_500A
++#define TEGRA234_DWC_IP_VER			DW_PCIE_VER_562A
  
--	saddr = &ipv6_hdr(skb)->saddr;
--	daddr = &ipv6_hdr(skb)->daddr;
--
- 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
- 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 		goto csum_error;
- 	}
- 
-@@ -1220,7 +1217,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
- 			break;
- 
- 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
--				    saddr, daddr);
-+				    &ipv6_hdr(skb)->saddr,
-+				    &ipv6_hdr(skb)->daddr);
- 
- 		/*
- 		 * error of unknown type.
+ #define APPL_PINMUX				0x0
+ #define APPL_PINMUX_PEX_RST			BIT(0)
 -- 
 2.53.0
 
