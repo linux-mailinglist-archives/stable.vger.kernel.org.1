@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAj4BCXyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:53 +0200
+	id ePwUAwDqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFE559443C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E71592E8C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10E38312B76A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E19530A8297
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A23A3A3825;
-	Wed, 20 May 2026 17:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C86D2F83A0;
+	Wed, 20 May 2026 16:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly13JKSj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfxvEvC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E48369D7E;
-	Wed, 20 May 2026 17:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CD934216C;
+	Wed, 20 May 2026 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298400; cv=none; b=Ppyt7ZlhumsyiL18XW3kf8lGV2/FBnR8izKU5u580p1C9V1ii/6Z4y0Lh+qdwLPoxYANsWQABP/Qhj5sN+SOI1kt7+VKqDiM7cK8H4cfFZspQo4Bary7/LhWIGLXa8Gm6F9YTCd5YdeuSycXbG1/DWPZ7MdgPNR9Xsxpwx8UVDQ=
+	t=1779295883; cv=none; b=LEDNn+Vm/DZXZaIWqEGwlzaf/jdivFSlHLabU8ImynVwnh41gMPyNvPQeJ1mldns/6fGavktRK0Q3dboV6ZxaPwJKgl9LEZ8q8ZOn3KxMqF7mvj9UOaGmM3ZQ3c6Io3+Xbu2K2YHeJNxRb+yjACZWHz2gNm6Ym57mGaQegY48us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298400; c=relaxed/simple;
-	bh=uEiBYne8AqzX11+RmBuyW13DIAP8J6WhLbRYMROOjWM=;
+	s=arc-20240116; t=1779295883; c=relaxed/simple;
+	bh=HZ/j/l9/ETF+2tZP03+pnb6bTqATSm29wUC8IsQ06hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca8r5pk+LW7vC5lPi4kYh0ap49ubWaNfd+xO9KreXIvwO3AP/6/V8fIY8ZqrFWEZb3vco+VB3jYYp0vAN02wpRcb88Qk37s1n4IdA1a0VPEBEI1WWcQqIWu+zKP08ReuwS63TuTPInC4FPdTklPSmI7F/ZxAEopwNACHEuQIbG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly13JKSj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A471F000E9;
-	Wed, 20 May 2026 17:33:19 +0000 (UTC)
+	 MIME-Version; b=a4k4qdBDIE2M/7AeeWytSvr66Hqna+QwAKdT4gYTtdN/P6wKQVnnZbt3c3iGPIfKdJeaUdn3ARXTfYgSiNlcmv+ops9RFlbxwq/u92pXDNf7zaMOxkDkSnpH9fmTP28UmUSTs+MtaG4NwUV03Sd6OdcpHq1I0eYW/GOseOlfTkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfxvEvC0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02A81F000E9;
+	Wed, 20 May 2026 16:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298399;
-	bh=UX3iAwtyv6RXDO8m3GtDgN9pArH9QBa3xF6/Nw65Hg0=;
+	s=korg; t=1779295881;
+	bh=sTO/5NOgC8Rm081w8dD7n5M6VRlPV+5SDVYBL94o4Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ly13JKSjsaEl0U11BWlRwhAYCrzVqlBUVKd1WXeEGbO/b98/GT0X+dXQYcqJJEunO
-	 3WOdSfLyouD8wqFemdQAzt7YXpCyDwz64NDZSGPSp+rK1hZBzLfj8NvznkAQSO5ZfM
-	 U1XwlXsdf4VkLZ1AGD2jm4BkjOCBBu0BBIJyGpso=
+	b=PfxvEvC0rmGViL49MXBNNwq+QVuueobO3DTslmd+A2HD/nzRpaTN5gatYH7/qe4/4
+	 SVHqbfsuBTmMFBlcVogUdkpuJQ5LtJhLS1f/P/POxi9qnEmMIRNmYdPJFK9avFT4yb
+	 GWio0bJqmj5hztO6TJUo1nwRxokTix1zDvBbejZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 354/957] gfs2: less aggressive low-memory log flushing
-Date: Wed, 20 May 2026 18:13:57 +0200
-Message-ID: <20260520162142.206802549@linuxfoundation.org>
+Subject: [PATCH 7.0 0588/1146] workqueue: devres: Add device-managed allocate workqueue
+Date: Wed, 20 May 2026 18:13:58 +0200
+Message-ID: <20260520162201.484541412@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +69,175 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250618-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251599-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BCFE559443C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: C1E71592E8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit 7288185ce87ec70133b7bc3b694b0f74bf46a0ee ]
+[ Upstream commit 1dfc9d60a69ec148e1cb709256617d86e5f0e8f8 ]
 
-It turns out that for some workloads, the fix in commit b74cd55aa9a9d
-("gfs2: low-memory forced flush fixes") causes the number of forced log
-flushes to increase to a degree that the overall filesystem performance
-drops significantly.  Address that by forcing a log flush only when
-gfs2_writepages cannot make any progress rather than when it cannot make
-"enough" progress.
+Add a Resource-managed version of alloc_workqueue() to fix common
+problem of drivers mixing devm() calls with destroy_workqueue.  Such
+naive and discouraged driver approach leads to difficult to debug bugs
+when the driver:
 
-Fixes: b74cd55aa9a9d ("gfs2: low-memory forced flush fixes")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+1. Allocates workqueue in standard way and destroys it in driver
+   remove() callback,
+2. Sets work struct with devm_work_autocancel(),
+3. Registers interrupt handler with devm_request_threaded_irq().
+
+Which leads to following unbind/removal path:
+
+1. destroy_workqueue() via driver remove(),
+   Any interrupt coming now would still execute the interrupt handler,
+   which queues work on destroyed workqueue.
+2. devm_irq_release(),
+3. devm_work_drop() -> cancel_work_sync() on destroyed workqueue.
+
+devm_alloc_workqueue() has two benefits:
+1. Solves above problem of mix-and-match devres and non-devres code in
+   driver,
+2. Simplify any sane drivers which were correctly using
+   alloc_workqueue() + devm_add_action_or_reset().
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: 1e668baadefb ("power: supply: max77705: Free allocated workqueue and fix removal order")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/aops.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../driver-api/driver-model/devres.rst        |  4 +++
+ include/linux/workqueue.h                     | 22 +++++++++++++++
+ kernel/workqueue.c                            | 28 +++++++++++++++++++
+ 3 files changed, 54 insertions(+)
 
-diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
-index 47d74afd63ac9..eafe0488b10d4 100644
---- a/fs/gfs2/aops.c
-+++ b/fs/gfs2/aops.c
-@@ -159,6 +159,7 @@ static int gfs2_writepages(struct address_space *mapping,
- 			   struct writeback_control *wbc)
- {
- 	struct gfs2_sbd *sdp = gfs2_mapping2sbd(mapping);
-+	long initial_nr_to_write = wbc->nr_to_write;
- 	struct iomap_writepage_ctx wpc = {
- 		.inode		= mapping->host,
- 		.wbc		= wbc,
-@@ -167,13 +168,13 @@ static int gfs2_writepages(struct address_space *mapping,
- 	int ret;
+diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+index 7d2b897d66fa9..017fb155a5bc2 100644
+--- a/Documentation/driver-api/driver-model/devres.rst
++++ b/Documentation/driver-api/driver-model/devres.rst
+@@ -464,3 +464,7 @@ SPI
  
- 	/*
--	 * Even if we didn't write enough pages here, we might still be holding
-+	 * Even if we didn't write any pages here, we might still be holding
- 	 * dirty pages in the ail. We forcibly flush the ail because we don't
- 	 * want balance_dirty_pages() to loop indefinitely trying to write out
- 	 * pages held in the ail that it can't find.
- 	 */
- 	ret = iomap_writepages(&wpc);
--	if (ret == 0 && wbc->nr_to_write > 0)
-+	if (ret == 0 && wbc->nr_to_write == initial_nr_to_write)
- 		set_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
- 	return ret;
+ WATCHDOG
+   devm_watchdog_register_device()
++
++WORKQUEUE
++  devm_alloc_workqueue()
++  devm_alloc_ordered_workqueue()
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index a4749f56398fd..f8d235aef10dd 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -512,6 +512,26 @@ __printf(1, 4) struct workqueue_struct *
+ alloc_workqueue_noprof(const char *fmt, unsigned int flags, int max_active, ...);
+ #define alloc_workqueue(...)	alloc_hooks(alloc_workqueue_noprof(__VA_ARGS__))
+ 
++/**
++ * devm_alloc_workqueue - Resource-managed allocate a workqueue
++ * @dev: Device to allocate workqueue for
++ * @fmt: printf format for the name of the workqueue
++ * @flags: WQ_* flags
++ * @max_active: max in-flight work items, 0 for default
++ * @...: args for @fmt
++ *
++ * Resource managed workqueue, see alloc_workqueue() for details.
++ *
++ * The workqueue will be automatically destroyed on driver detach.  Typically
++ * this should be used in drivers already relying on devm interafaces.
++ *
++ * RETURNS:
++ * Pointer to the allocated workqueue on success, %NULL on failure.
++ */
++__printf(2, 5) struct workqueue_struct *
++devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
++		     int max_active, ...);
++
+ #ifdef CONFIG_LOCKDEP
+ /**
+  * alloc_workqueue_lockdep_map - allocate a workqueue with user-defined lockdep_map
+@@ -568,6 +588,8 @@ alloc_workqueue_lockdep_map(const char *fmt, unsigned int flags, int max_active,
+  */
+ #define alloc_ordered_workqueue(fmt, flags, args...)			\
+ 	alloc_workqueue(fmt, WQ_UNBOUND | __WQ_ORDERED | (flags), 1, ##args)
++#define devm_alloc_ordered_workqueue(dev, fmt, flags, args...)		\
++	devm_alloc_workqueue(dev, fmt, WQ_UNBOUND | __WQ_ORDERED | (flags), 1, ##args)
+ 
+ #define create_workqueue(name)						\
+ 	alloc_workqueue("%s", __WQ_LEGACY | WQ_MEM_RECLAIM | WQ_PERCPU, 1, (name))
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index c6ea96d5b7167..e57040931d8b7 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -41,6 +41,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/freezer.h>
+ #include <linux/debug_locks.h>
++#include <linux/device/devres.h>
+ #include <linux/lockdep.h>
+ #include <linux/idr.h>
+ #include <linux/jhash.h>
+@@ -5904,6 +5905,33 @@ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
  }
+ EXPORT_SYMBOL_GPL(alloc_workqueue_noprof);
+ 
++static void devm_workqueue_release(void *res)
++{
++	destroy_workqueue(res);
++}
++
++__printf(2, 5) struct workqueue_struct *
++devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
++		     int max_active, ...)
++{
++	struct workqueue_struct *wq;
++	va_list args;
++	int ret;
++
++	va_start(args, max_active);
++	wq = alloc_workqueue(fmt, flags, max_active, args);
++	va_end(args);
++	if (!wq)
++		return NULL;
++
++	ret = devm_add_action_or_reset(dev, devm_workqueue_release, wq);
++	if (ret)
++		return NULL;
++
++	return wq;
++}
++EXPORT_SYMBOL_GPL(devm_alloc_workqueue);
++
+ #ifdef CONFIG_LOCKDEP
+ __printf(1, 5)
+ struct workqueue_struct *
 -- 
 2.53.0
 
