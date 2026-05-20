@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-251566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PepFxb8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:18 +0200
+	id qMr8HJARDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-252249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9200595F9E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A013598E28
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A08C231541E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD45031277E0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7E536F421;
-	Wed, 20 May 2026 17:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4143F789B;
+	Wed, 20 May 2026 18:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHf9QUbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9eBgvDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1EF34F462;
-	Wed, 20 May 2026 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3333ED3B8;
+	Wed, 20 May 2026 18:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298313; cv=none; b=mo97onQeXwvg3BlEXgdWDqg99JGX1WT3KUsL12EptVKN4v0bjx0vQsaCLK28Z3TYQv+LFo/EFe3j8VxmXI8tdHG4lGIqrH81so/PdE7KpdS0ymWPqiwsD8QH9SHyfwcNm/4Ea/jKOFgfkZ/eEPooHOksLldpNYYzxMYiM2vSG+c=
+	t=1779300183; cv=none; b=UnBN5EBm0FL9V4ii2B/v8oxcvRSf/q5J9EDfPNByNsHwCbF6JrUUa08QFC/UL4mSGKHBmvmdGmFR93wvttS2eIB/f9KNKYk/Kq1wS1mDfZJnbT6nQQP6Gn8wpONTaI1pY7teCLYU1iZEsJv1OqB2RgR78NduOsJHdDQ65mKabjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298313; c=relaxed/simple;
-	bh=MrCxFlWzrSGBaTEOk68cFNkaXLXyVwJhG5MBiPCI2fc=;
+	s=arc-20240116; t=1779300183; c=relaxed/simple;
+	bh=B9nVh/pemO+Jm5T1GTpRhoIx600cJSTupHUuhS7DBG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q15hHQD4b8hRcefi21zR3JYVdidTJBsZpmc9vwiq6RniUv2HiUBmUpFPml/oPC4lgymqgGoM0M4/OKhFS7LBHHVrIVqKc8sfAF7JKkwIXmbNYhoTv4R4MMweoh4BaQPJ+dVCwhESeu/dsueskCFAynT6Q/J1i5RsBPRDiy88mbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHf9QUbz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8F51F000E9;
-	Wed, 20 May 2026 17:31:52 +0000 (UTC)
+	 MIME-Version; b=hcnaOwe0aRp/JwCgjfQJT36qkg6Si+Zw1Qwrot7MWhJ4Z/cQz+fRA/o4MvVU/8CPmkqQdhpyh8xGfcQ8QVZSv1SjYUz20Y075nM6vOhWFTG1p9D1OP/ufWweUHRwNhwDdrIEpqcujNJKGoZyWAiZM4O6CeYvegqJ8hoQ/Mw+U20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9eBgvDu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D751F00893;
+	Wed, 20 May 2026 18:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298312;
-	bh=HOtWqhPlDwmFrM1EglSu0EJ2933SkoBpSJbdSmpqCuQ=;
+	s=korg; t=1779300182;
+	bh=7LoOiz+Vg5vL3dKyPLru1KSm+wwyrcH+gB3ufps5CdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DHf9QUbzvnCyrsJ9pvr+2tKy0Sq1siX0ds3xCrr8GUA7IxP1FRAkBDKPftjaTmI98
-	 BQ2D6PpkLBhdYVx15/bSj6Wp5QC5cSwzxaKyQ07OXBNGztpQ9Y398MAyr9tHsTmgRS
-	 28M5ejJtD52MjRLNaTv3wkkXpIz85DtV3pDSsfnE=
+	b=p9eBgvDuJErekwPsu4KUgtcM6+LU6M5ikfTq8y+kOHQ1QFG9aqQP64VqgykcTcxbc
+	 8hRXrorGUv0B2WEOkY8flEEeMXDFGtO5336tpMY28QZQ0d7grd9fs/X2Ne1BrEV1WV
+	 VMLLNQNiLiuXy2wxRl6WjvJarzcFkeT6bj4wUfio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Feng Yang <yangfeng@kylinos.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	syzbot@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 364/957] memory: tegra30-emc: Fix dll_change check
+Subject: [PATCH 6.12 036/666] bpf: test_run: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
 Date: Wed, 20 May 2026 18:14:07 +0200
-Message-ID: <20260520162142.423890306@linuxfoundation.org>
+Message-ID: <20260520162112.020116824@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +72,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252249-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251566-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D9200595F9E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,kylinos.cn:email]
+X-Rspamd-Queue-Id: 9A013598E28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Feng Yang <yangfeng@kylinos.cn>
 
-[ Upstream commit 0a93f2355cf4922ad2399dbef5ea1049fef116d4 ]
+[ Upstream commit 972787479ee73006fddb5e59ab5c8e733810ff42 ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+The bpf_lwt_xmit_push_encap helper needs to access skb_dst(skb)->dev to
+calculate the needed headroom:
 
-Fixes: e34212c75a68 ("memory: tegra: Introduce Tegra30 EMC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-2-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+	err = skb_cow_head(skb,
+			   len + LL_RESERVED_SPACE(skb_dst(skb)->dev));
+
+But skb->_skb_refdst may not be initialized when the skb is set up by
+bpf_prog_test_run_skb function. Executing bpf_lwt_push_ip_encap function
+in this scenario will trigger null pointer dereference, causing a kernel
+crash as Yinhao reported:
+
+[  105.186365] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  105.186382] #PF: supervisor read access in kernel mode
+[  105.186388] #PF: error_code(0x0000) - not-present page
+[  105.186393] PGD 121d3d067 P4D 121d3d067 PUD 106c83067 PMD 0
+[  105.186404] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  105.186412] CPU: 3 PID: 3250 Comm: poc Kdump: loaded Not tainted 6.19.0-rc5 #1
+[  105.186423] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  105.186427] RIP: 0010:bpf_lwt_push_ip_encap+0x1eb/0x520
+[  105.186443] Code: 0f 84 de 01 00 00 0f b7 4a 04 66 85 c9 0f 85 47 01 00 00 31 c0 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 48 8b 73 58 48 83 e6 fe <48> 8b 36 0f b7 be ec 00 00 00 0f b7 b6 e6 00 00 00 01 fe 83 e6 f0
+[  105.186449] RSP: 0018:ffffbb0e0387bc50 EFLAGS: 00010246
+[  105.186455] RAX: 000000000000004e RBX: ffff94c74e036500 RCX: ffff94c74874da00
+[  105.186460] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff94c74e036500
+[  105.186463] RBP: 0000000000000001 R08: 0000000000000002 R09: 0000000000000000
+[  105.186467] R10: ffffbb0e0387bd50 R11: 0000000000000000 R12: ffffbb0e0387bc98
+[  105.186471] R13: 0000000000000014 R14: 0000000000000000 R15: 0000000000000002
+[  105.186484] FS:  00007f166aa4d680(0000) GS:ffff94c8b7780000(0000) knlGS:0000000000000000
+[  105.186490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  105.186494] CR2: 0000000000000000 CR3: 000000015eade001 CR4: 0000000000770ee0
+[  105.186499] PKRU: 55555554
+[  105.186502] Call Trace:
+[  105.186507]  <TASK>
+[  105.186513]  bpf_lwt_xmit_push_encap+0x2b/0x40
+[  105.186522]  bpf_prog_a75eaad51e517912+0x41/0x49
+[  105.186536]  ? kvm_clock_get_cycles+0x18/0x30
+[  105.186547]  ? ktime_get+0x3c/0xa0
+[  105.186554]  bpf_test_run+0x195/0x320
+[  105.186563]  ? bpf_test_run+0x10f/0x320
+[  105.186579]  bpf_prog_test_run_skb+0x2f5/0x4f0
+[  105.186590]  __sys_bpf+0x69c/0xa40
+[  105.186603]  __x64_sys_bpf+0x1e/0x30
+[  105.186611]  do_syscall_64+0x59/0x110
+[  105.186620]  entry_SYSCALL_64_after_hwframe+0x76/0xe0
+[  105.186649] RIP: 0033:0x7f166a97455d
+
+Temporarily add the setting of skb->_skb_refdst before bpf_test_run to resolve the issue.
+
+Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Closes: https://groups.google.com/g/hust-os-kernel-patches/c/8-a0kPpBW2s
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Tested-by: syzbot@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20260304094429.168521-2-yangfeng59949@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra30-emc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bpf/test_run.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/memory/tegra/tegra30-emc.c b/drivers/memory/tegra/tegra30-emc.c
-index 921dce1b8bc63..4981b7fa0f780 100644
---- a/drivers/memory/tegra/tegra30-emc.c
-+++ b/drivers/memory/tegra/tegra30-emc.c
-@@ -554,14 +554,14 @@ static int emc_prepare_timing_change(struct tegra_emc *emc, unsigned long rate)
- 	emc->emc_cfg = readl_relaxed(emc->regs + EMC_CFG);
- 	emc_dbg = readl_relaxed(emc->regs + EMC_DBG);
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index c885a3942a161..18257cf6bb488 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1097,6 +1097,21 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		skb->ip_summed = CHECKSUM_COMPLETE;
+ 	}
  
--	if (emc->dll_on == !!(timing->emc_mode_1 & 0x1))
-+	if (emc->dll_on == !(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
- 
--	emc->dll_on = !!(timing->emc_mode_1 & 0x1);
-+	emc->dll_on = !(timing->emc_mode_1 & 0x1);
- 
- 	if (timing->data[80] && !readl_relaxed(emc->regs + EMC_ZCAL_INTERVAL))
- 		emc->zcal_long = true;
++	if (prog->type == BPF_PROG_TYPE_LWT_XMIT) {
++		if (!ipv6_bpf_stub) {
++			pr_warn_once("Please test this program with the IPv6 module loaded\n");
++			ret = -EOPNOTSUPP;
++			goto out;
++		}
++#if IS_ENABLED(CONFIG_IPV6)
++		/* For CONFIG_IPV6=n, ipv6_bpf_stub is NULL which is
++		 * handled by the above if statement.
++		 */
++		dst_hold(&net->ipv6.ip6_null_entry->dst);
++		skb_dst_set(skb, &net->ipv6.ip6_null_entry->dst);
++#endif
++	}
++
+ 	ret = bpf_test_run(prog, skb, repeat, &retval, &duration, false);
+ 	if (ret)
+ 		goto out;
 -- 
 2.53.0
 
