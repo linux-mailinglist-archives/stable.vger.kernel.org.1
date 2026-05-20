@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-251139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECvOI2sVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:23 +0200
+	id QOCaHOgoDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF05993BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E508359B08B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24D773121C24
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 273ED39D1E74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFEF3F5BE1;
-	Wed, 20 May 2026 17:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0FF3FE370;
+	Wed, 20 May 2026 18:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il0M+lJZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcpYdqku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4447B372691;
-	Wed, 20 May 2026 17:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD833F9F21;
+	Wed, 20 May 2026 18:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297200; cv=none; b=KH9Yey31Ht5J8IU6trVtlnQ+k0B5wVwwWmP+MKvhtyQQCBA1EVkJJa1KdMPL746toCyccAXu/ZtM38igHB1r7Grl0DKGvEvRg0JIE4mfyZoHoNqQ+cX9U+xlWeXBDpQs+m1WCelgb2mX+qAo0tew/9tOnXIMUGg636r3NBMN3vk=
+	t=1779301471; cv=none; b=PkRbvhfPq2j1V5nE0yIAp/ZHv/mrpzamTdq5XiH/94FEqJbJu5NLSu5EU4qT8e3e8dybyMtv56cEQlOLKF7ShufGhNnKI6QJKjRVO/ZtjtpctzR+tWWG8IC0jVdg/bA5btV/lGVXwqHV0c1QJ4FPhItoHSByLLtT/BXNCgy5hXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297200; c=relaxed/simple;
-	bh=bPHks68DfYr/pXOPT15kcbcsjUr9FNQBbDlkLkozEHM=;
+	s=arc-20240116; t=1779301471; c=relaxed/simple;
+	bh=daTqXE3U1eYNBR7XXRtDgVhJf+5xwpUO2JY09SC0vxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i3gKEeeKjzbEOXBYsJotTly+UC8HiQvJOdrbL/yKTLAkAAj+Kdvn2DxtmCbWa1B7DFn83kndEpRByiy7tfPwlFMIzc0Gi6kvkqHZ/cY0g0btH+so6cG2cGn2Pl1Lj1Mnqb5/eswLl824IS6Y6ZSbGrBC9cNUwpIfpr0UoriLAJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il0M+lJZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A965C1F000E9;
-	Wed, 20 May 2026 17:13:18 +0000 (UTC)
+	 MIME-Version; b=BGMPxWMQqMfTKca7lOVEDzL5g/38I0Sk3NTP4ijPrUg8BxFuC6iAFDqnstFuWvu+hI3kNEUH4DNivAXyqtDQjqemarIWfznHP/ZJZGAS73pjfDqslaBNqM++93+Qh4l0P+Xd5JMbf16rlqTrULdOAv6ywMx5IgBEbdWDtDvCIcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcpYdqku; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC0F1F000E9;
+	Wed, 20 May 2026 18:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297199;
-	bh=Q0kDc5RgP4n7iZe1x10j/zV90FvQxvQdaVbQuh5nCYc=;
+	s=korg; t=1779301470;
+	bh=TcaDgZEpoj7UgOFf9nSSyeS5/GRNM5in1LqVhqerJ/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=il0M+lJZ7T0H6hyTyXGGy/+HZVMZUkc9Ljmt2SZIOuv2+X3lI49ORqm1OOyomLSj4
-	 8qq5/TQYbWEmDYxYgEexrP3BKjho5sz7ztpeYBisek/Ol7h459HQHLwmQk+fO/IJNQ
-	 v4hzA2BM/kfyocgLvUbz57kiXfgKJYIFC0/6qEqM=
+	b=CcpYdqkucci5mYSNOwh68LNQpYBEKbY53S8B3kbNY53oPfPoI5z3itMCFP/KgTh5D
+	 lj4d/Ga4oo5yu6R13VUHOgNtviuf2RoiUg477c2aApCqtJVIIaouakOICp0eDfSOzo
+	 DjbSEdMxCdhG1Dvp0RZVlTnYgQ3y3/xHd4kd5/48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Rong Zhang <i@rong.moe>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 7.0 1086/1146] platform/x86: lenovo-wmi-other: Limit adding attributes to supported devices
+	Mark Brown <broonie@kernel.org>,
+	Robert Beckett <bob.beckett@collabora.com>,
+	Umang Jain <uajain@igalia.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 525/666] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
 Date: Wed, 20 May 2026 18:22:16 +0200
-Message-ID: <20260520162212.812721643@linuxfoundation.org>
+Message-ID: <20260520162122.647350972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,233 +68,215 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251139-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252742-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,rong.moe,squebb.ca,linux.intel.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,squebb.ca:email,msgid.link:url,rong.moe:email]
-X-Rspamd-Queue-Id: 0AFF05993BB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,amd.com:email,igalia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
+X-Rspamd-Queue-Id: E508359B08B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek J. Clark <derekjohn.clark@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 03bb5147da083cb91e5c8c2599fcb2f8fd05cb8f upstream.
+[ Upstream commit b0f6f4ac7d5d04fe2adcdd63ed1cd1ad505b8958 ]
 
-Adds lwmi_is_attr_01_supported, and only creates the attribute subfolder
-if the attribute is supported by the hardware. Due to some poorly
-implemented BIOS this is a multi-step sequence of events. This is
-because:
-- Some BIOS support getting the capability data from custom mode (0xff),
-  while others only support it in no-mode (0x00).
-- Some BIOS support get/set for the current value from custom mode (0xff),
-  while others only support it in no-mode (0x00).
-- Some BIOS report capability data for a method that is not fully
-  implemented.
-- Some BIOS have methods fully implemented, but no complimentary
-  capability data.
+Commit 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
+introduced a change that "broke" Steam Deck's audio probe, in the OLED
+model, as observed in the following dmesg snippet:
 
-To ensure we only expose fully implemented methods with corresponding
-capability data, we check each outcome before reporting that an
-attribute can be supported.
+[...]
+snd_sof_amd_vangogh 0000:04:00.5: Topology: ABI 3:26:0 Kernel ABI 3:23:1
+sof_mach nau8821-max: ASoC: physical link acp-bt-codec (id 2) not exist
+sof_mach nau8821-max: ASoC: topology: could not load header: -22
+snd_sof_amd_vangogh 0000:04:00.5: tplg amd/sof-tplg/sof-vangogh-nau8821-max.tplg component load failed -22
+snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP topology -22
+snd_sof_amd_vangogh 0000:04:00.5: ASoC error (-22): at snd_soc_component_probe() on 0000:04:00.5
+sof_mach nau8821-max: ASoC: failed to instantiate card -22
+sof_mach nau8821-max: error -EINVAL: Failed to register card(sof-nau8821-max)
+sof_mach nau8821-max: probe with driver sof_mach failed with error -22
+[...]
 
-Checking for lwmi_is_attr_01_supported during remove is not done to
-ensure that we don't attempt to call cd01 or send WMI events if one of
-the interfaces being removed was the cause of the driver unloading.
+Notice the quotes in "broke": it's not really a bug in such commit,
+but instead a problem with a topology file from Steam Deck OLED. This
+was discussed to great extent in [1], and Cristian proposed a pretty
+simple and functional change that resolved the issue for the Deck's
+issue. That change, though, would break other devices, so it wasn't
+accepted upstream. And the proper suggested solution (fix the topology)
+was never implemented, so Valve's kernel (and anyone that wants to boot
+the mainline on Steam Deck OLED) is carrying that fix downstream.
 
-Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
-Reported-by: Kurt Borja <kuurtb@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/DG60P3SHXR8H.3NSEHMZ6J7XRC@gmail.com/
-Cc: stable@vger.kernel.org
-Reviewed-by: Rong Zhang <i@rong.moe>
-Tested-by: Rong Zhang <i@rong.moe>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-10-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, we propose hereby a different approach: a DMI quirk, as many already
+present in the sound drivers, to address this issue solely on Steam Deck
+OLED, not breaking other devices and as a bonus, allowing simple patch
+up in case eventually the topology file gets fixed (we'd just need to
+check against any DMI info reflecting that or the topology/FW versions).
+
+The motivation of such upstream quirk is related to users that want
+to test latest kernel trees on their devices and get no only non-working
+sound device, but seems some games (like Ori and the Blind Forest)
+can't properly work without a proper functional audio device.
+Example of such report can be seen at [2].
+
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Robert Beckett <bob.beckett@collabora.com>
+Cc: Umang Jain <uajain@igalia.com>
+Fixes: 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
+Link: https://lore.kernel.org/r/20231209205351.880797-11-cristian.ciocaltea@collabora.com/ [1]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218677 [2]
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Tested-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://patch.msgid.link/20260423183505.116445-1-gpiccoli@igalia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo/wmi-other.c |   92 ++++++++++++++++++++++++++++++--
- 1 file changed, 88 insertions(+), 4 deletions(-)
+ sound/soc/amd/acp/acp-legacy-mach.c |  2 +-
+ sound/soc/amd/acp/acp-mach-common.c | 22 +++++++++++++++++++---
+ sound/soc/amd/acp/acp-mach.h        |  4 ++++
+ sound/soc/amd/acp/acp-sof-mach.c    |  2 +-
+ 4 files changed, 25 insertions(+), 5 deletions(-)
 
---- a/drivers/platform/x86/lenovo/wmi-other.c
-+++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -546,6 +546,8 @@ struct tunable_attr_01 {
- 	u8 feature_id;
- 	u8 device_id;
- 	u8 type_id;
-+	u8 cd_mode_id; /* mode arg for searching capdata */
-+	u8 cv_mode_id; /* mode arg for set/get current_value */
- };
+diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
+index d104f7e8fdcd8..4221fc0f081b8 100644
+--- a/sound/soc/amd/acp/acp-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-legacy-mach.c
+@@ -174,7 +174,7 @@ static int acp_asoc_probe(struct platform_device *pdev)
+ 		acp_card_drvdata->platform =  *((int *)dev->platform_data);
  
- /**
-@@ -723,7 +725,7 @@ static ssize_t attr_capdata01_show(struc
- 	u32 attribute_id;
- 	int value, ret;
+ 	dmi_id = dmi_first_match(acp_quirk_table);
+-	if (dmi_id && dmi_id->driver_data)
++	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
+ 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
  
--	attribute_id = tunable_attr_01_id(tunable_attr, LWMI_GZ_THERMAL_MODE_CUSTOM);
-+	attribute_id = tunable_attr_01_id(tunable_attr, tunable_attr->cd_mode_id);
+ 	ret = acp_legacy_dai_links_create(card);
+diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
+index e9ff4815c12c8..6c0a92d76b54d 100644
+--- a/sound/soc/amd/acp/acp-mach-common.c
++++ b/sound/soc/amd/acp/acp-mach-common.c
+@@ -20,6 +20,7 @@
+ #include <sound/soc.h>
+ #include <linux/input.h>
+ #include <linux/module.h>
++#include <linux/dmi.h>
  
- 	ret = lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata);
- 	if (ret)
-@@ -788,7 +790,7 @@ static ssize_t attr_current_value_store(
- 	if (mode != LWMI_GZ_THERMAL_MODE_CUSTOM)
- 		return -EBUSY;
+ #include "../../codecs/rt5682.h"
+ #include "../../codecs/rt1019.h"
+@@ -37,15 +38,21 @@
+ #define NAU8821_FREQ_OUT	12288000
+ #define MAX98388_CODEC_DAI	"max98388-aif1"
  
--	args.arg0 = tunable_attr_01_id(tunable_attr, mode);
-+	args.arg0 = tunable_attr_01_id(tunable_attr, tunable_attr->cd_mode_id);
- 
- 	ret = lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata);
- 	if (ret)
-@@ -801,6 +803,7 @@ static ssize_t attr_current_value_store(
- 	if (value < capdata.min_value || value > capdata.max_value)
- 		return -EINVAL;
- 
-+	args.arg0 = tunable_attr_01_id(tunable_attr, tunable_attr->cv_mode_id);
- 	args.arg1 = value;
- 
- 	ret = lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_SET,
-@@ -841,6 +844,10 @@ static ssize_t attr_current_value_show(s
- 	if (ret)
- 		return ret;
- 
-+	/* If "no-mode" is the supported mode, ensure we never send current mode */
-+	if (tunable_attr->cv_mode_id == LWMI_GZ_THERMAL_MODE_NONE)
-+		mode = tunable_attr->cv_mode_id;
-+
- 	args.arg0 = tunable_attr_01_id(tunable_attr, mode);
- 
- 	ret = lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_GET,
-@@ -852,6 +859,81 @@ static ssize_t attr_current_value_show(s
- 	return sysfs_emit(buf, "%d\n", retval);
- }
- 
-+/**
-+ * lwmi_attr_01_is_supported() - Determine if the given attribute is supported.
-+ * @tunable_attr: The attribute to verify.
-+ *
-+ * For an attribute to be supported it must have a functional get/set method,
-+ * as well as associated capability data stored in the capdata01 table.
-+ *
-+ * First check if the attribute has a corresponding data table under custom mode
-+ * (0xff), then under no mode (0x00). If either of those passes, check if the
-+ * supported field of the capdata struct is > 0. If it is supported, store the
-+ * successful mode in the cd_mode_id field of tunable_attr.
-+ *
-+ * If the attribute capdata shows it is supported, attempt to determine the mode
-+ * for the current value property get/set methods using a similar pattern to the
-+ * capdata table check. If the value returned by either mode is 0 or an error,
-+ * assume that mode is not supported. Otherwise, store the successful mode in the
-+ * cv_mode_id field of tunable_attr.
-+ *
-+ * If any of the above checks fail then the attribute is not fully supported.
-+ *
-+ * Return: true if capdata and set/get modes are found, otherwise false.
-+ */
-+static bool lwmi_attr_01_is_supported(struct tunable_attr_01 *tunable_attr)
-+{
-+	u8 modes[2] = { LWMI_GZ_THERMAL_MODE_CUSTOM, LWMI_GZ_THERMAL_MODE_NONE };
-+	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
-+	struct wmi_method_args_32 args = {};
-+	bool cd_mode_found = false;
-+	bool cv_mode_found = false;
-+	struct capdata01 capdata;
-+	int retval, ret, i;
-+
-+	/* Determine tunable_attr->cd_mode_id */
-+	for (i = 0; i < ARRAY_SIZE(modes); i++) {
-+		args.arg0 = tunable_attr_01_id(tunable_attr, modes[i]);
-+
-+		ret = lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata);
-+		if (ret || !capdata.supported)
-+			continue;
-+
-+		tunable_attr->cd_mode_id = modes[i];
-+		cd_mode_found = true;
-+		break;
-+	}
-+
-+	if (!cd_mode_found)
-+		return cd_mode_found;
-+
-+	dev_dbg(tunable_attr->dev,
-+		"cd_mode_id: %#010x\n", args.arg0);
-+
-+	/* Determine tunable_attr->cv_mode_id, returns 1 if supported */
-+	for (i = 0; i < ARRAY_SIZE(modes); i++) {
-+		args.arg0 = tunable_attr_01_id(tunable_attr, modes[i]);
-+
-+		ret = lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_GET,
-+					    (u8 *)&args, sizeof(args),
-+					    &retval);
-+		if (ret || !retval)
-+			continue;
-+
-+		tunable_attr->cv_mode_id = modes[i];
-+		cv_mode_found = true;
-+		break;
-+	}
-+
-+	if (!cv_mode_found)
-+		return cv_mode_found;
-+
-+	dev_dbg(tunable_attr->dev, "cv_mode_id: %#010x, attribute support level: %#010x\n",
-+		args.arg0, capdata.supported);
-+
-+	return capdata.supported > 0;
-+}
-+
- /* Lenovo WMI Other Mode Attribute macros */
- #define __LWMI_ATTR_RO(_func, _name)                                  \
- 	{                                                             \
-@@ -975,12 +1057,14 @@ static void lwmi_om_fw_attr_add(struct l
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++) {
-+		cd01_attr_groups[i].tunable_attr->dev = &priv->wdev->dev;
-+		if (!lwmi_attr_01_is_supported(cd01_attr_groups[i].tunable_attr))
-+			continue;
-+
- 		err = sysfs_create_group(&priv->fw_attr_kset->kobj,
- 					 cd01_attr_groups[i].attr_group);
- 		if (err)
- 			goto err_remove_groups;
+-#define TDM_MODE_ENABLE 1
 -
--		cd01_attr_groups[i].tunable_attr->dev = &priv->wdev->dev;
- 	}
- 	return;
+ const struct dmi_system_id acp_quirk_table[] = {
+ 	{
+ 		/* Google skyrim proto-0 */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Google_Skyrim"),
+ 		},
+-		.driver_data = (void *)TDM_MODE_ENABLE,
++		.driver_data = (void *)QUIRK_TDM_MODE_ENABLE,
++	},
++	{
++		/* Valve Steam Deck OLED */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
++		},
++		.driver_data = (void *)QUIRK_REMAP_DMIC_BT,
+ 	},
+ 	{}
+ };
+@@ -1385,6 +1392,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 	struct snd_soc_dai_link *links;
+ 	struct device *dev = card->dev;
+ 	struct acp_card_drvdata *drv_data = card->drvdata;
++	const struct dmi_system_id *dmi_id = dmi_first_match(acp_quirk_table);
+ 	int i = 0, num_links = 0;
  
+ 	if (drv_data->hs_cpu_id)
+@@ -1562,6 +1570,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 			links[i].codecs = &snd_soc_dummy_dlc;
+ 			links[i].num_codecs = 1;
+ 		}
++
++		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT)
++			links[i].id = DMIC_BE_ID;
+ 		i++;
+ 	}
+ 
+@@ -1577,6 +1588,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 		links[i].dpcm_capture = 1;
+ 		links[i].nonatomic = true;
+ 		links[i].no_pcm = 1;
++
++		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT) {
++			links[i].id = BT_BE_ID;
++			dev_dbg(dev, "quirk REMAP_DMIC_BT enabled\n");
++		}
+ 	}
+ 
+ 	card->dai_link = links;
+diff --git a/sound/soc/amd/acp/acp-mach.h b/sound/soc/amd/acp/acp-mach.h
+index 93d9e3886b7ec..4b255cbde9ff4 100644
+--- a/sound/soc/amd/acp/acp-mach.h
++++ b/sound/soc/amd/acp/acp-mach.h
+@@ -24,6 +24,10 @@
+ 
+ #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
+ 
++/* List of DMI quirks - check acp-mach-common.c for usage. */
++#define QUIRK_TDM_MODE_ENABLE 1
++#define QUIRK_REMAP_DMIC_BT 2
++
+ enum be_id {
+ 	HEADSET_BE_ID = 0,
+ 	AMP_BE_ID,
+diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
+index f36750167fa29..4c069a34fbe17 100644
+--- a/sound/soc/amd/acp/acp-sof-mach.c
++++ b/sound/soc/amd/acp/acp-sof-mach.c
+@@ -113,7 +113,7 @@ static int acp_sof_probe(struct platform_device *pdev)
+ 
+ 	acp_card_drvdata = card->drvdata;
+ 	dmi_id = dmi_first_match(acp_quirk_table);
+-	if (dmi_id && dmi_id->driver_data)
++	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
+ 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
+ 
+ 	ret = acp_sofdsp_dai_links_create(card);
+-- 
+2.53.0
+
 
 
 
