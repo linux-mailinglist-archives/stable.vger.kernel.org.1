@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-252033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KxyA2r+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:14 +0200
+	id UE0pNJ0nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CFF596892
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1980559AE75
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75B8C3312574
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 297113664161
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B033F54A7;
-	Wed, 20 May 2026 17:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055A73D1CC6;
+	Wed, 20 May 2026 18:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbWRkg3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxV0MyjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016513F54D1;
-	Wed, 20 May 2026 17:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B602348C55;
+	Wed, 20 May 2026 18:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299570; cv=none; b=OZNqXd0bF4trlAS8wXl+l/RcHHdl7bUAth8OBHyXXNp7rljoJVBbbkuIZLnjKQry5i6E22k8m8ma1dGmNGNuQsS6FR1aSWj0jRNtvJ+ZqRUhnY50cP+Bt+N8QIsT1AloUx92FBY4YiNk4yutvzHgxRJObZv/B3qAlmlutXLwLk8=
+	t=1779301276; cv=none; b=BJYvUz+tpQq2OnIcqZDT8gmkpVcg9xOmKBm9+Cr3CKak7NzK6srmPijMaGEaO/xA4HhBhyJqerzhxoBBIgUm6TRY568Ezs47qQKslRby1kyvHfZ+skuhuwcq2CWXsaXlM/Ide2jK7YNF1bhb5UooOZdl9prbgYXVTSQ2ydD5rmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299570; c=relaxed/simple;
-	bh=eQiTRXDChfW3yO7JF3uvQoqEpQoDr68XbyDR4+jo36Q=;
+	s=arc-20240116; t=1779301276; c=relaxed/simple;
+	bh=jN930yQxiXNpu4/W1lQuRsrhMqgW58g0MBlsMwXHeHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O9xFKH4ONUTRScgCQhd6AiYjxpxVx9QjGF/GplnegsY8TZ98bqNHEUGTT+jLJ/XXR34ykSPJ+9PmEezfLCkpKUTy3JDhVex5Y8IRtw9YPLOlBhLA7t2ekZcO81AT52rLNlKghIwB3ANmVTp+3ZdmxniCfu7w8sayr6IKz3rETbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbWRkg3F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D531F000E9;
-	Wed, 20 May 2026 17:52:48 +0000 (UTC)
+	 MIME-Version; b=QsSbLBL95EsH8vRZN7nfqETuxpWH2iZDekdCgZy4vnQyfPjH90Cv5O0ha9RPh52MoPlOCjQClcYt5mU4Ex2QluqfywfkiZL2wRZImr3OMiRyfNBNsh58VGQkn3HXJxBcs/3azhUP4KbcoQWuar+ZKP+lGmGbkIBX+SbA0GZCBNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxV0MyjI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61C51F00893;
+	Wed, 20 May 2026 18:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299568;
-	bh=GBgFlJDt6exBJyBxKM1qiESQqCphvwvBJj04WOex8Uo=;
+	s=korg; t=1779301275;
+	bh=bL6S5vf0JBTDmIEDaVp1xTSXoSxcwOZLfdZaCqrj/GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CbWRkg3FQMuiK78upzfwtoZqIyYrlfkmIBmcGaY/VDYEn/if5MN9G7epFN75fCNcM
-	 WroXrAuxPws2Z23U79qdotuFiDF0AqdcVF/NHxF/ltmnh57gPnqR/g+/vrYcj4imAz
-	 PzDHsZptEkPBdXcxfQFfeTF1z36Gh9FhXJJ+OCWs=
+	b=CxV0MyjIutUOt0liwa3/GEc+KH/cEaWKilCpCyv4y7CdeMZQX42DGf6djFaEsFH0j
+	 BPgSbep67fLlA/42uEy7WIzuqUuEtaEvYOSvDpA3ZSTVtIMpHGMv+JXVBa/TOdwQAw
+	 Pa5eddlCDofecu41BvJRm44kEFTJU8ve+bF0cD4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 822/957] net/sched: sch_cake: annotate data-races in cake_dump_stats() (V)
+Subject: [PATCH 6.12 494/666] virtio_net: Use new RSS config structs
 Date: Wed, 20 May 2026 18:21:45 +0200
-Message-ID: <20260520162152.395254557@linuxfoundation.org>
+Message-ID: <20260520162121.969322406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +67,320 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252033-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252668-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,toke.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 20CFF596892
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[daynix.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1980559AE75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-[ Upstream commit a6c95b833dc17e84d16a8ac0f40fd0931616a52d ]
+[ Upstream commit ed3100e90d0d120a045a551b85eb43cf2527e885 ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+The new RSS configuration structures allow easily constructing data for
+VIRTIO_NET_CTRL_MQ_RSS_CONFIG as they strictly follow the order of data
+for the command.
 
-In this final patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for cparams.target and cparams.interval.
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-6-edumazet@google.com
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20250321-virtio-v2-3-33afb8f4640b@daynix.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3bc06da858ef ("virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/virtio_net.c | 117 ++++++++++++++-------------------------
+ 1 file changed, 43 insertions(+), 74 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 7b97f6b57cb17..f2ad946a519c2 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2305,10 +2305,11 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 05b50a4626b85..7aa1832672942 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -365,24 +365,7 @@ struct receive_queue {
+ 	bool do_dma;
+ };
  
- 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
+-/* This structure can contain rss message with maximum settings for indirection table and keysize
+- * Note, that default structure that describes RSS configuration virtio_net_rss_config
+- * contains same info but can't handle table values.
+- * In any case, structure would be passed to virtio hw through sg_buf split by parts
+- * because table sizes may be differ according to the device configuration.
+- */
+ #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+-struct virtio_net_ctrl_rss {
+-	__le32 hash_types;
+-	__le16 indirection_table_mask;
+-	__le16 unclassified_queue;
+-	__le16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
+-	__le16 max_tx_vq;
+-	u8 hash_key_length;
+-	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+-
+-	__le16 *indirection_table;
+-};
  
--	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
--	b->cparams.interval = max(rtt_est_ns +
--				     b->cparams.target - target_ns,
--				     b->cparams.target * 2);
-+	WRITE_ONCE(b->cparams.target,
-+		   max((byte_target_ns * 3) / 2, target_ns));
-+	WRITE_ONCE(b->cparams.interval,
-+		   max(rtt_est_ns + b->cparams.target - target_ns,
-+		       b->cparams.target * 2));
- 	b->cparams.mtu_time = byte_target_ns;
- 	b->cparams.p_inc = 1 << 24; /* 1/256 */
- 	b->cparams.p_dec = 1 << 20; /* 1/4096 */
-@@ -2938,9 +2939,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		PUT_TSTAT_U32(BACKLOG_BYTES, b->tin_backlog);
+ /* Control VQ buffers: protected by the rtnl lock */
+ struct control_buf {
+@@ -426,7 +409,9 @@ struct virtnet_info {
+ 	u16 rss_indir_table_size;
+ 	u32 rss_hash_types_supported;
+ 	u32 rss_hash_types_saved;
+-	struct virtio_net_ctrl_rss rss;
++	struct virtio_net_rss_config_hdr *rss_hdr;
++	struct virtio_net_rss_config_trailer rss_trailer;
++	u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
  
- 		PUT_TSTAT_U32(TARGET_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.target)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.target))));
- 		PUT_TSTAT_U32(INTERVAL_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.interval))));
+ 	/* Has control virtqueue */
+ 	bool has_cvq;
+@@ -520,23 +505,16 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
+ 					       struct page *page, void *buf,
+ 					       int len, int truesize);
  
- 		PUT_TSTAT_U32(SENT_PACKETS, READ_ONCE(b->packets));
- 		PUT_TSTAT_U32(DROPPED_PACKETS, READ_ONCE(b->tin_dropped));
+-static int rss_indirection_table_alloc(struct virtio_net_ctrl_rss *rss, u16 indir_table_size)
++static size_t virtnet_rss_hdr_size(const struct virtnet_info *vi)
+ {
+-	if (!indir_table_size) {
+-		rss->indirection_table = NULL;
+-		return 0;
+-	}
++	u16 indir_table_size = vi->has_rss ? vi->rss_indir_table_size : 1;
+ 
+-	rss->indirection_table = kmalloc_array(indir_table_size, sizeof(u16), GFP_KERNEL);
+-	if (!rss->indirection_table)
+-		return -ENOMEM;
+-
+-	return 0;
++	return struct_size(vi->rss_hdr, indirection_table, indir_table_size);
+ }
+ 
+-static void rss_indirection_table_free(struct virtio_net_ctrl_rss *rss)
++static size_t virtnet_rss_trailer_size(const struct virtnet_info *vi)
+ {
+-	kfree(rss->indirection_table);
++	return struct_size(&vi->rss_trailer, hash_key_data, vi->rss_key_size);
+ }
+ 
+ static bool is_xdp_frame(void *ptr)
+@@ -3477,15 +3455,16 @@ static void virtnet_rss_update_by_qpairs(struct virtnet_info *vi, u16 queue_pair
+ 
+ 	for (; i < vi->rss_indir_table_size; ++i) {
+ 		indir_val = ethtool_rxfh_indir_default(i, queue_pairs);
+-		vi->rss.indirection_table[i] = cpu_to_le16(indir_val);
++		vi->rss_hdr->indirection_table[i] = cpu_to_le16(indir_val);
+ 	}
+-	vi->rss.max_tx_vq = cpu_to_le16(queue_pairs);
++	vi->rss_trailer.max_tx_vq = cpu_to_le16(queue_pairs);
+ }
+ 
+ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ {
+ 	struct virtio_net_ctrl_mq *mq __free(kfree) = NULL;
+-	struct virtio_net_ctrl_rss old_rss;
++	struct virtio_net_rss_config_hdr *old_rss_hdr;
++	struct virtio_net_rss_config_trailer old_rss_trailer;
+ 	struct net_device *dev = vi->dev;
+ 	struct scatterlist sg;
+ 
+@@ -3500,24 +3479,28 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	 * update (VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET below) and return directly.
+ 	 */
+ 	if (vi->has_rss && !netif_is_rxfh_configured(dev)) {
+-		memcpy(&old_rss, &vi->rss, sizeof(old_rss));
+-		if (rss_indirection_table_alloc(&vi->rss, vi->rss_indir_table_size)) {
+-			vi->rss.indirection_table = old_rss.indirection_table;
++		old_rss_hdr = vi->rss_hdr;
++		old_rss_trailer = vi->rss_trailer;
++		vi->rss_hdr = kzalloc(virtnet_rss_hdr_size(vi), GFP_KERNEL);
++		if (!vi->rss_hdr) {
++			vi->rss_hdr = old_rss_hdr;
+ 			return -ENOMEM;
+ 		}
+ 
++		*vi->rss_hdr = *old_rss_hdr;
+ 		virtnet_rss_update_by_qpairs(vi, queue_pairs);
+ 
+ 		if (!virtnet_commit_rss_command(vi)) {
+ 			/* restore ctrl_rss if commit_rss_command failed */
+-			rss_indirection_table_free(&vi->rss);
+-			memcpy(&vi->rss, &old_rss, sizeof(old_rss));
++			kfree(vi->rss_hdr);
++			vi->rss_hdr = old_rss_hdr;
++			vi->rss_trailer = old_rss_trailer;
+ 
+ 			dev_warn(&dev->dev, "Fail to set num of queue pairs to %d, because committing RSS failed\n",
+ 				 queue_pairs);
+ 			return -EINVAL;
+ 		}
+-		rss_indirection_table_free(&old_rss);
++		kfree(old_rss_hdr);
+ 		goto succ;
+ 	}
+ 
+@@ -3960,28 +3943,12 @@ static int virtnet_set_ringparam(struct net_device *dev,
+ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
+ {
+ 	struct net_device *dev = vi->dev;
+-	struct scatterlist sgs[4];
+-	unsigned int sg_buf_size;
++	struct scatterlist sgs[2];
+ 
+ 	/* prepare sgs */
+-	sg_init_table(sgs, 4);
+-
+-	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, hash_cfg_reserved);
+-	sg_set_buf(&sgs[0], &vi->rss, sg_buf_size);
+-
+-	if (vi->has_rss) {
+-		sg_buf_size = sizeof(uint16_t) * vi->rss_indir_table_size;
+-		sg_set_buf(&sgs[1], vi->rss.indirection_table, sg_buf_size);
+-	} else {
+-		sg_set_buf(&sgs[1], &vi->rss.hash_cfg_reserved, sizeof(uint16_t));
+-	}
+-
+-	sg_buf_size = offsetof(struct virtio_net_ctrl_rss, key)
+-			- offsetof(struct virtio_net_ctrl_rss, max_tx_vq);
+-	sg_set_buf(&sgs[2], &vi->rss.max_tx_vq, sg_buf_size);
+-
+-	sg_buf_size = vi->rss_key_size;
+-	sg_set_buf(&sgs[3], vi->rss.key, sg_buf_size);
++	sg_init_table(sgs, 2);
++	sg_set_buf(&sgs[0], vi->rss_hdr, virtnet_rss_hdr_size(vi));
++	sg_set_buf(&sgs[1], &vi->rss_trailer, virtnet_rss_trailer_size(vi));
+ 
+ 	if (!virtnet_send_command(vi, VIRTIO_NET_CTRL_MQ,
+ 				  vi->has_rss ? VIRTIO_NET_CTRL_MQ_RSS_CONFIG
+@@ -3998,17 +3965,17 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
+ 
+ static void virtnet_init_default_rss(struct virtnet_info *vi)
+ {
+-	vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_supported);
++	vi->rss_hdr->hash_types = cpu_to_le32(vi->rss_hash_types_supported);
+ 	vi->rss_hash_types_saved = vi->rss_hash_types_supported;
+-	vi->rss.indirection_table_mask = vi->rss_indir_table_size
++	vi->rss_hdr->indirection_table_mask = vi->rss_indir_table_size
+ 						? cpu_to_le16(vi->rss_indir_table_size - 1) : 0;
+-	vi->rss.unclassified_queue = 0;
++	vi->rss_hdr->unclassified_queue = 0;
+ 
+ 	virtnet_rss_update_by_qpairs(vi, vi->curr_queue_pairs);
+ 
+-	vi->rss.hash_key_length = vi->rss_key_size;
++	vi->rss_trailer.hash_key_length = vi->rss_key_size;
+ 
+-	netdev_rss_key_fill(vi->rss.key, vi->rss_key_size);
++	netdev_rss_key_fill(vi->rss_hash_key_data, vi->rss_key_size);
+ }
+ 
+ static void virtnet_get_hashflow(const struct virtnet_info *vi, struct ethtool_rxnfc *info)
+@@ -4119,7 +4086,7 @@ static bool virtnet_set_hashflow(struct virtnet_info *vi, struct ethtool_rxnfc *
+ 
+ 	if (new_hashtypes != vi->rss_hash_types_saved) {
+ 		vi->rss_hash_types_saved = new_hashtypes;
+-		vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
++		vi->rss_hdr->hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		if (vi->dev->features & NETIF_F_RXHASH)
+ 			return virtnet_commit_rss_command(vi);
+ 	}
+@@ -5291,11 +5258,11 @@ static int virtnet_get_rxfh(struct net_device *dev,
+ 
+ 	if (rxfh->indir) {
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			rxfh->indir[i] = le16_to_cpu(vi->rss.indirection_table[i]);
++			rxfh->indir[i] = le16_to_cpu(vi->rss_hdr->indirection_table[i]);
+ 	}
+ 
+ 	if (rxfh->key)
+-		memcpy(rxfh->key, vi->rss.key, vi->rss_key_size);
++		memcpy(rxfh->key, vi->rss_hash_key_data, vi->rss_key_size);
+ 
+ 	rxfh->hfunc = ETH_RSS_HASH_TOP;
+ 
+@@ -5319,7 +5286,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
+ 			return -EOPNOTSUPP;
+ 
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			vi->rss.indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
++			vi->rss_hdr->indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
+ 		update = true;
+ 	}
+ 
+@@ -5331,7 +5298,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
+ 		if (!vi->has_rss && !vi->has_rss_hash_report)
+ 			return -EOPNOTSUPP;
+ 
+-		memcpy(vi->rss.key, rxfh->key, vi->rss_key_size);
++		memcpy(vi->rss_hash_key_data, rxfh->key, vi->rss_key_size);
+ 		update = true;
+ 	}
+ 
+@@ -5945,9 +5912,9 @@ static int virtnet_set_features(struct net_device *dev,
+ 
+ 	if ((dev->features ^ features) & NETIF_F_RXHASH) {
+ 		if (features & NETIF_F_RXHASH)
+-			vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
++			vi->rss_hdr->hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		else
+-			vi->rss.hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
++			vi->rss_hdr->hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
+ 
+ 		if (!virtnet_commit_rss_command(vi))
+ 			return -EINVAL;
+@@ -6619,9 +6586,11 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
+ 	}
+-	err = rss_indirection_table_alloc(&vi->rss, vi->rss_indir_table_size);
+-	if (err)
++	vi->rss_hdr = kzalloc(virtnet_rss_hdr_size(vi), GFP_KERNEL);
++	if (!vi->rss_hdr) {
++		err = -ENOMEM;
+ 		goto free;
++	}
+ 
+ 	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+@@ -6900,7 +6869,7 @@ static void virtnet_remove(struct virtio_device *vdev)
+ 
+ 	remove_vq_common(vi);
+ 
+-	rss_indirection_table_free(&vi->rss);
++	kfree(vi->rss_hdr);
+ 
+ 	free_netdev(vi->dev);
+ }
 -- 
 2.53.0
 
