@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-250875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AGFLF07tDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:14 +0200
+	id +O8jDcr/DWqA5QUAu9opvQ
+	(envelope-from <stable+bounces-252908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3A45935D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0AE596E3D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 145D031B412B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8033930C5BFD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68D63F7A85;
-	Wed, 20 May 2026 17:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1295A368968;
+	Wed, 20 May 2026 18:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A69s0AwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA88uSHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DE8368968;
-	Wed, 20 May 2026 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B840F343880;
+	Wed, 20 May 2026 18:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296534; cv=none; b=k6yCkNB9KYpr48iPbAHOol3KP8vjNimphn+SsAZhHfIFKrI6/OslN97u6dwgKhz1hco+7XQtzWNgGtte67503ai8oYuj99jZUspfpQw1Oz62qcPnufkw2Tvbio+a8OM6O3DDDgraOWkwVfQ2zL/QOUFCvTIM2aOhvW8iad2DMOE=
+	t=1779301904; cv=none; b=hjfm1ATIVa6t0WOOffwjQX1j97llOoKTUwZV3GO++PC4JEihTtvulNItfntPv7i7Ki/qpCBtxRPkstSl9GKEAXohBXs2jonQGuVQot82Omor5FuB4FYVmghRc4Y6ENRpYPKBxUdSWnezXVJCe92PvkS6BDetnCT8szxI22nfRJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296534; c=relaxed/simple;
-	bh=54BkATPEKaWg/2dYCymkrrY6wbBE/8lz43vlfRZeExk=;
+	s=arc-20240116; t=1779301904; c=relaxed/simple;
+	bh=MvcWL1jUkbziRQEo5bF48MwLumY9x3fhESAMUDhq75Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxh8FEnePL9kp4MZFPlufBS4rBz4DEqva8VQtGVl0lCUtjLzMlEjCWzVJRvDMDQk1qaly6x0Mod+JCdll9S+ZpQJCsbRk0hDdVPMjNcKM4nXRGTQZDuas9SsG6S9rFwHF3RmGP/8/2euK2OF9vzXfGXE3zsEdmb7V/BFH2dcm7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A69s0AwP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5A81F000E9;
-	Wed, 20 May 2026 17:02:11 +0000 (UTC)
+	 MIME-Version; b=Y6ycHunxUA9pHbtS6Y7UvxLjtvRh8UyoMkOv46i6XFLra+vKyihsgDY2yz50vYWq3LwI4hgJzkZO66DHex5ckSdgtgfPe2cMtuAzPtwDcA3iwVp5eangoT8VaWDT5mxpzBR2C57rC6+aUKzRQ5BUbYzf9eXEjUu183dp45z7wUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA88uSHL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2863B1F000E9;
+	Wed, 20 May 2026 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296532;
-	bh=+M8crOsxaTP+TlWXrFFc6vYCf/Hm7iAAiM35umBYsB4=;
+	s=korg; t=1779301903;
+	bh=op6UmuCrMwf4ZKeVdvWx1yeN+eBI0f93xpB7c0A03WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A69s0AwPk1im8aEcpRtsobxWk4HfLfHOc8f6j+z+enh7bLiursbdqB3LZy6zyQpLl
-	 DUjduaNFKvHoLaqIokvAtIIBWu6eCLaDoE7NJHB8KDjGDIdJWjiDwZHyPjFPm4ePBm
-	 rP6QJjwnJb9F4XtHui2RNUaRSQ60BJH1RN5kEhl8=
+	b=dA88uSHLIgBHmTtf7OcZk3TtUBI2iVfMnJ4WJGiniQovbDXtRkLBHxnfDBzW9RFw4
+	 zhNveJ8GIVXwMPmwmC1ZzigeqmAX7TBqU9q/L2h8n0+Qz+AR/y9YZGJKIlh+HVqWnt
+	 MUBPbFwW9OOIJsERFgxHDIxBz4ngOB9B8R789UMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Miskell <timothy.miskell@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Petr Oros <poros@redhat.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0836/1146] ice: perform PHY soft reset for E825C ports at initialization
+Subject: [PATCH 6.6 063/508] bpf: Fix RCU stall in bpf_fd_array_map_clear()
 Date: Wed, 20 May 2026 18:18:06 +0200
-Message-ID: <20260520162207.151271872@linuxfoundation.org>
+Message-ID: <20260520162059.966319637@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,25 +65,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250875-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-252908-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -96,208 +93,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 2B3A45935D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EF0AE596E3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit 3ec46e157c7fa420c77dfc23f7030e61f2f3fd55 ]
+[ Upstream commit 4406942e65ca128c56c67443832988873c21d2e9 ]
 
-In some cases the PHY timestamp block of the E825C can become stuck. This
-is known to occur if the software writes 0 to the Tx timestamp threshold,
-and with older versions of the ice driver the threshold configuration is
-buggy and can race in such that hardware briefly operates with a zero
-threshold enabled. There are no other known ways to trigger this behavior,
-but once it occurs, the hardware is not recovered by normal reset, a driver
-reload, or even a warm power cycle of the system. A cold power cycle is
-sufficient to recover hardware, but this is extremely invasive and can
-result in significant downtime on customer deployments.
+Add a missing cond_resched() in bpf_fd_array_map_clear() loop.
 
-The PHY for each port has a timestamping block which has its own reset
-functionality accessible by programming the PHY_REG_GLOBAL register.
-Writing to the PHY_REG_GLOBAL_SOFT_RESET_BIT triggers the hardware to
-perform a complete reset of the timestamping block of the PHY. This
-includes clearing the timestamp status for the port, clearing all
-outstanding timestamps in the memory bank, and resetting the PHY timer.
+For PROG_ARRAY maps with many entries this loop calls
+prog_array_map_poke_run() per entry which can be expensive, and
+without yielding this can cause RCU stalls under load:
 
-The new ice_ptp_phy_soft_reset_eth56g() function toggles the
-PHY_REG_GLOBAL soft reset bit with the required delays, ensuring the
-PHY is properly reinitialized without requiring a full device reset.
-The sequence clears the reset bit, asserts it, then clears it again,
-with short waits between transitions to allow hardware stabilization.
+  rcu: Stack dump where RCU GP kthread last ran:
+  CPU: 0 UID: 0 PID: 30932 Comm: kworker/0:2 Not tainted 6.14.0-13195-g967e8def1100 #2 PREEMPT(undef)
+  Workqueue: events prog_array_map_clear_deferred
+  RIP: 0010:write_comp_data+0x38/0x90 kernel/kcov.c:246
+  Call Trace:
+   <TASK>
+   prog_array_map_poke_run+0x77/0x380 kernel/bpf/arraymap.c:1096
+   __fd_array_map_delete_elem+0x197/0x310 kernel/bpf/arraymap.c:925
+   bpf_fd_array_map_clear kernel/bpf/arraymap.c:1000 [inline]
+   prog_array_map_clear_deferred+0x119/0x1b0 kernel/bpf/arraymap.c:1141
+   process_one_work+0x898/0x19d0 kernel/workqueue.c:3238
+   process_scheduled_works kernel/workqueue.c:3319 [inline]
+   worker_thread+0x770/0x10b0 kernel/workqueue.c:3400
+   kthread+0x465/0x880 kernel/kthread.c:464
+   ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:153
+   ret_from_fork_asm+0x19/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
 
-Call this function in the new ice_ptp_init_phc_e825c(), implementing the
-E825C device specific variant of the ice_ptp_init_phc(). Note that if
-ice_ptp_init_phc() fails, PTP functionality may be disabled, but the driver
-will still load to allow basic functionality to continue.
-
-This causes the clock owning PF driver to perform a PHY soft reset for
-every port during initialization. This ensures the driver begins life in a
-known functional state regardless of how it was previously programmed.
-
-This ensures that we properly reconfigure the hardware after a device reset
-or when loading the driver, even if it was previously misconfigured with an
-out-of-date or modified driver.
-
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Signed-off-by: Timothy Miskell <timothy.miskell@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Petr Oros <poros@redhat.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260420-jk-iwl-net-2026-04-20-ptp-e825c-phy-interrupt-fixes-v1-2-bc2240f42251@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
+Fixes: da765a2f5993 ("bpf: Add poke dependency tracking for prog array maps")
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Link: https://lore.kernel.org/r/20260407103823.3942156-1-rhkrqnwk98@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 90 ++++++++++++++++++++-
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  4 +
- 2 files changed, 93 insertions(+), 1 deletion(-)
+ kernel/bpf/arraymap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 7f2f7440e705c..d4c2bb084255d 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -377,6 +377,31 @@ static void ice_ptp_cfg_sync_delay(const struct ice_hw *hw, u32 delay)
-  * The following functions operate on devices with the ETH 56G PHY.
-  */
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 1811efcfbd6e3..ec5c489ed3131 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -938,8 +938,10 @@ static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+ 	int i;
  
-+/**
-+ * ice_ptp_init_phc_e825c - Perform E825C specific PHC initialization
-+ * @hw: pointer to HW struct
-+ *
-+ * Perform E825C-specific PTP hardware clock initialization steps.
-+ *
-+ * Return: 0 on success, or a negative error value on failure.
-+ */
-+static int ice_ptp_init_phc_e825c(struct ice_hw *hw)
-+{
-+	int err;
-+
-+	/* Soft reset all ports, to ensure everything is at a clean state */
-+	for (int port = 0; port < hw->ptp.num_lports; port++) {
-+		err = ice_ptp_phy_soft_reset_eth56g(hw, port);
-+		if (err) {
-+			ice_debug(hw, ICE_DBG_PTP, "Failed to soft reset port %d, err %d\n",
-+				  port, err);
-+			return err;
-+		}
+-	for (i = 0; i < array->map.max_entries; i++)
++	for (i = 0; i < array->map.max_entries; i++) {
+ 		__fd_array_map_delete_elem(map, &i, need_defer);
++		cond_resched();
 +	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_ptp_get_dest_dev_e825 - get destination PHY for given port number
-  * @hw: pointer to the HW struct
-@@ -2179,6 +2204,69 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
- 	return 0;
  }
  
-+/**
-+ * ice_ptp_phy_soft_reset_eth56g - Perform a PHY soft reset on ETH56G
-+ * @hw: pointer to the HW structure
-+ * @port: PHY port number
-+ *
-+ * Trigger a soft reset of the ETH56G PHY by toggling the soft reset
-+ * bit in the PHY global register. The reset sequence consists of:
-+ *   1. Clearing the soft reset bit
-+ *   2. Asserting the soft reset bit
-+ *   3. Clearing the soft reset bit again
-+ *
-+ * Short delays are inserted between each step to allow the hardware
-+ * to settle. This provides a controlled way to reinitialize the PHY
-+ * without requiring a full device reset.
-+ *
-+ * Return: 0 on success, or a negative error code on failure when
-+ *         reading or writing the PHY register.
-+ */
-+int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port)
-+{
-+	u32 global_val;
-+	int err;
-+
-+	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, &global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to read PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+
-+	global_val &= ~PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Clearing soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+
-+	usleep_range(5000, 6000);
-+
-+	global_val |= PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Set soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err) {
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+		return err;
-+	}
-+	usleep_range(5000, 6000);
-+
-+	global_val &= ~PHY_REG_GLOBAL_SOFT_RESET_M;
-+	ice_debug(hw, ICE_DBG_PTP, "Clear soft reset bit for port %d, val: 0x%x\n",
-+		  port, global_val);
-+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_GLOBAL, global_val);
-+	if (err)
-+		ice_debug(hw, ICE_DBG_PTP, "Failed to write PHY_REG_GLOBAL for port %d, err %d\n",
-+			  port, err);
-+	return err;
-+}
-+
- /**
-  * ice_get_phy_tx_tstamp_ready_eth56g - Read the Tx memory status register
-  * @hw: pointer to the HW struct
-@@ -5592,7 +5680,7 @@ int ice_ptp_init_phc(struct ice_hw *hw)
- 	case ICE_MAC_GENERIC:
- 		return ice_ptp_init_phc_e82x(hw);
- 	case ICE_MAC_GENERIC_3K_E825:
--		return 0;
-+		return ice_ptp_init_phc_e825c(hw);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index 5896b346e5790..9d7acc7eb2ceb 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -374,6 +374,7 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset);
- int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port);
- int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold);
- int ice_phy_cfg_ptp_1step_eth56g(struct ice_hw *hw, u8 port);
-+int ice_ptp_phy_soft_reset_eth56g(struct ice_hw *hw, u8 port);
- 
- #define ICE_ETH56G_NOMINAL_INCVAL	0x140000000ULL
- #define ICE_ETH56G_NOMINAL_PCS_REF_TUS	0x100000000ULL
-@@ -676,6 +677,9 @@ static inline u64 ice_get_base_incval(struct ice_hw *hw)
- #define ICE_P0_GNSS_PRSNT_N	BIT(4)
- 
- /* ETH56G PHY register addresses */
-+#define PHY_REG_GLOBAL			0x0
-+#define PHY_REG_GLOBAL_SOFT_RESET_M	BIT(11)
-+
- /* Timestamp PHY incval registers */
- #define PHY_REG_TIMETUS_L		0x8
- #define PHY_REG_TIMETUS_U		0xC
+ static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
 -- 
 2.53.0
 
