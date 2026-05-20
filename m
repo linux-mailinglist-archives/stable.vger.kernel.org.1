@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHLUCgD1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-251431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:04 +0200
+	id 6PqLHawQDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-250495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED73594D0E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1817598CAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B10673051919
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AE6A379A6F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C063EAC83;
-	Wed, 20 May 2026 17:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE9C3246FE;
+	Wed, 20 May 2026 16:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06rzaxOe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alcuJRa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB753D8137;
-	Wed, 20 May 2026 17:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719BD1BD9D0;
+	Wed, 20 May 2026 16:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297963; cv=none; b=KYZUZt9bE4nfKhEIfTI+IiymANgYDNKN91cUDre4pvF8t13RHyCqfmllD7jHxLdDdRWy7upYyTDaHVsTWn7T0LkW8XfzLJ1zOPzETalhMWiV/Y8KTM1Y1agknor37LZx1wnJ/ENPaYkKJpF0StjORXFokAvaZpDUurY+G1XzqsE=
+	t=1779295559; cv=none; b=odR1gSyVg4oMUEfLb/YgaLxClLPdxuT4MGFW1ehOrxT0f7uVG6H9cq9/UeG7t6DRPp2e1PJUsakzI9jvZ7FSRAzDEczaoattOt6Zp7CWuul8AIZU5ov+m56IDtQmw8fppRKBGzX+IiCv1+1Yw583+iHJk0aEOSR976oxY9FZhgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297963; c=relaxed/simple;
-	bh=Hif1o5xqqkN0t23rQ2U/XUHG8vWCIIpQInOJY3av9qA=;
+	s=arc-20240116; t=1779295559; c=relaxed/simple;
+	bh=qMTeoYkH2eaQ1i5p37SkKIAMhWiaDWM8KxgbPsj3xMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDtwLk5oXdUIpqJYgRSNzfOUud1Ae1V4g3LDDNKjASN3JsrNP3lF5GsvcUHnKXPHqZZA+MRVn45U8TkgXbC5MNXMCsdV49DGXMLH0piUqZBd9zRQ23A1sh+X+Wz/baKhQfW+I9TE1X26FA3zMqxBRJxAHT+Ias+3cKwdkNHiN+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06rzaxOe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CC61F000E9;
-	Wed, 20 May 2026 17:26:01 +0000 (UTC)
+	 MIME-Version; b=fDPmG3RFjtbDFMLyfqoWMnPMrXMRfqgLXQQF+1oQtT6ePZr//SeCOEfwSh7LbvZK9Oxma7yUA4s4MWIbQwF7iANSgutWc5vFzs8ff26YK2ZuLXP/906fJv207zI9rZTvwhmGWNyt7KxiUWRnMqudlzAnPCYBLoW1MAOIMl5QEXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alcuJRa8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72B51F000E9;
+	Wed, 20 May 2026 16:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297962;
-	bh=kLZg56v2/aVjiQn2C5/y6ZA/UtIgYE1oGVoHay9NwWI=;
+	s=korg; t=1779295558;
+	bh=M+TuZM9oGCosDQdyH/lmgxPEZ4JsapqtEkSqAvbiZW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=06rzaxOeFLipmWY6gfcQaFiMrJmZs2XYrzW7cFtt1ygumHtCl/PbYHO+skcZfRdj9
-	 4wVJf3t9uX6PI4RFlVnycOB/uu08B4rx6i6bx63iVuQqP0SdzuuUtclUGFkrc/1OTG
-	 dq15+gfslaaNKGmTNcLUjgGdy0Ie2DpNdHwB4Gy0=
+	b=alcuJRa8cmqxjezXss6xorWOeYvOTqxNy2kcKkyuJ4SZ/1Mxn1nc59+vzN61AxDyR
+	 BPHZ/HqLk9lNX9KNdh5KlIqQWnuP5DkkbPh40TzdDSNSQ8SndXCVNJIxvXcE7RNgRL
+	 oRqdFD+cLKIKrkOZ93lXDOY3MmHSztQQgcKvetOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Thomas Huth <thuth@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 231/957] crypto: atmel-aes - guard unregister on error in atmel_aes_register_algs
+Subject: [PATCH 7.0 0464/1146] efi/capsule-loader: fix incorrect sizeof in phys array reallocation
 Date: Wed, 20 May 2026 18:11:54 +0200
-Message-ID: <20260520162139.549209585@linuxfoundation.org>
+Message-ID: <20260520162158.696392209@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250495-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251431-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BED73594D0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C1817598CAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Thomas Huth <thuth@redhat.com>
 
-[ Upstream commit 57a13941c0bb06ae24e3b34672d7b6f2172b253f ]
+[ Upstream commit 48a428215782321b56956974f23593e40ce84b7a ]
 
-Ensure the device supports XTS and GCM with 'has_xts' and 'has_gcm'
-before unregistering algorithms when XTS or authenc registration fails,
-which would trigger a WARN in crypto_unregister_alg().
+The krealloc() call for cap_info->phys in __efi_capsule_setup_info() uses
+sizeof(phys_addr_t *) instead of sizeof(phys_addr_t), which might be
+causing an undersized allocation.
 
-Currently, with the capabilities defined in atmel_aes_get_cap(), this
-bug cannot happen because all devices that support XTS and authenc also
-support GCM, but the error handling should still be correct regardless
-of hardware capabilities.
+The allocation is also inconsistent with the initial array allocation in
+efi_capsule_open() that allocates one entry with sizeof(phys_addr_t),
+and the efi_capsule_write() function that stores phys_addr_t values (not
+pointers) via page_to_phys().
 
-Fixes: d52db5188a87 ("crypto: atmel-aes - add support to the XTS mode")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+On 64-bit systems where sizeof(phys_addr_t) == sizeof(phys_addr_t *), this
+goes unnoticed. On 32-bit systems with PAE where phys_addr_t is 64-bit but
+pointers are 32-bit, this allocates half the required space, which might
+lead to a heap buffer overflow when storing physical addresses.
+
+This is similar to the bug fixed in commit fccfa646ef36 ("efi/capsule-loader:
+fix incorrect allocation size") which fixed the same issue at the initial
+allocation site.
+
+Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
+Assisted-by: Claude:claude-sonnet-4-5
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/atmel-aes.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/capsule-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
-index 9b0cb97055dc5..b393689400b4c 100644
---- a/drivers/crypto/atmel-aes.c
-+++ b/drivers/crypto/atmel-aes.c
-@@ -2270,10 +2270,12 @@ static int atmel_aes_register_algs(struct atmel_aes_dev *dd)
- 	/* i = ARRAY_SIZE(aes_authenc_algs); */
- err_aes_authenc_alg:
- 	crypto_unregister_aeads(aes_authenc_algs, i);
--	crypto_unregister_skcipher(&aes_xts_alg);
-+	if (dd->caps.has_xts)
-+		crypto_unregister_skcipher(&aes_xts_alg);
- #endif
- err_aes_xts_alg:
--	crypto_unregister_aead(&aes_gcm_alg);
-+	if (dd->caps.has_gcm)
-+		crypto_unregister_aead(&aes_gcm_alg);
- err_aes_gcm_alg:
- 	i = ARRAY_SIZE(aes_algs);
- err_aes_algs:
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 2c628a1270919..8e8f81f0a5a0a 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -67,7 +67,7 @@ int __efi_capsule_setup_info(struct capsule_info *cap_info)
+ 	cap_info->pages = temp_page;
+ 
+ 	temp_page = krealloc(cap_info->phys,
+-			     pages_needed * sizeof(phys_addr_t *),
++			     pages_needed * sizeof(phys_addr_t),
+ 			     GFP_KERNEL | __GFP_ZERO);
+ 	if (!temp_page)
+ 		return -ENOMEM;
 -- 
 2.53.0
 
