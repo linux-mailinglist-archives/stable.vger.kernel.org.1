@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NDDDlEQDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:37 +0200
+	id YI3hJtr6DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-251385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D996598C5A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF37595BE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21620376F660
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A204B35B082C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2102B3CB2F8;
-	Wed, 20 May 2026 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933713A3833;
+	Wed, 20 May 2026 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKwrIb5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orc/DIQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC0D364E89;
-	Wed, 20 May 2026 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3A53ED3A4;
+	Wed, 20 May 2026 17:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295438; cv=none; b=M9vuYwZM6ml6+c+iF+8++luPxU3OPo83OYfpFIphwBJ0DmOE5VV4bHbjLzAdhbBM+SXy6zN7NyjhjCZcqqGHszLQXuwOXW4Pd0irGde7bT5LcDW/MBdpVT/EW4/TUCt1jujdIa96DL2Mn1Yk6gbik1C1zwDwrVMun5UzD5gRkqs=
+	t=1779297842; cv=none; b=bt2ck8NT9AaoOUzgyYNPQj8Shnezgi9CEp4cGWHvELkd5+CHHD6uDiBc9LPKisDJtyzdZHfGvO65v8t4uneudqbT2qfWEE1+mVmwGC/KurEtOLZdbz5g4CyxjruX7YzoLsbXq7qLr1m65nYqPUVXpgXiv5mnIyGWX5v0RzQ0SGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295438; c=relaxed/simple;
-	bh=h5xl3PoEIyrTblEDZUQp8Nmc4JS680XpUTdV0s0Qysc=;
+	s=arc-20240116; t=1779297842; c=relaxed/simple;
+	bh=4xOc1Y0U3izuAyhaWiqgm7PgW72YN+XjTiW3Ael1Ubc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h46yXF5Iv241KyPGQ2/mgz5cQJIGpSZPj+22LmN14MszVcSylIEbtueQ2zXFxKzcqe3Qc1thvEk/MPbcyj5RC8S/U1dkmYa52wbS4WevbUCW8x0ghHFP1zf4a8k/bRyUGGfVb29DL5ybviqe0OuUz6gxfvxebbbjrdBTV5q89Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKwrIb5l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1451D1F00893;
-	Wed, 20 May 2026 16:43:56 +0000 (UTC)
+	 MIME-Version; b=nX5HZ2//s74hyu55/UrVlhR+CHujt1H7xGTv7XN5G2vswX1JckgphZRAuTh0hjs5jxNOFOY2R9JisvZmaroU8aNut3G7eqnvBblxpSxkyzyHOL9JBkE2fDfm4Grg4G593aXeJjSTcgVbUn7yNEg+UvsYYHHZNJhgUYNCFCKacXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orc/DIQP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37A81F000E9;
+	Wed, 20 May 2026 17:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295437;
-	bh=TGy/+MWvpoOAKZEedBp0uFMALsEOSiyIS/8+Gp06qdo=;
+	s=korg; t=1779297841;
+	bh=W/WsDnn82L/jJ6Hw0lqCBQq3/aLm4SZdcQt0lr0Izl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QKwrIb5lOPc/ukGh1NA6SSdFBTSGeQzZRGp3lIlNSRLB7dxZGPt2x525e2gu6xslQ
-	 kgJcf8t6lvlTWBMHGT4+0xVuhxf38huf1obMwe5B/5Di6s49+JPdd2MT64iLp1Pkxk
-	 PgbSMJJgJTQYK/w2qlouUDDgxwdQLtkVZXmAhY4s=
+	b=orc/DIQPR0A/JIXHm0wXuzvp9U13k4NmsEU5ydvfUAKJpHJQrYl9MRUjzNG+xX8zj
+	 alP/H1T3iKB0B+7hyUfc6zSL8s05z7M7Ka9ZuBFkEimnQbjJOJ6i7VWXE+YuJP1SZq
+	 HJHmHDMms6WDkvZL3JDeVseCMT/9NZVVwGHaHEZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Yuwen Chen <ywen.chen@foxmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0418/1146] PCI: tegra194: Dont force the device into the D0 state before L2
+Subject: [PATCH 6.18 185/957] selftests/futex: Fix incorrect result reporting of futex_requeue test item
 Date: Wed, 20 May 2026 18:11:08 +0200
-Message-ID: <20260520162157.655425146@linuxfoundation.org>
+Message-ID: <20260520162138.564458204@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +66,151 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250448-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251385-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,foxmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9D996598C5A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0CF37595BE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Yuwen Chen <ywen.chen@foxmail.com>
 
-[ Upstream commit 71d9f67701e1affc82d18ca88ae798c5361beddf ]
+[ Upstream commit d317e2ef9dcf673c9f37cda784284af7c6812757 ]
 
-As per PCIe CEM r6.0, sec 2.3, the PCIe Endpoint device should be in D3cold
-to assert WAKE# pin. The previous workaround that forced downstream devices
-to D0 before taking the link to L2 cited PCIe r4.0, sec 5.2, "Link State
-Power Management"; however, that spec does not explicitly require putting
-the device into D0 and only indicates that power removal may be initiated
-without transitioning to D3hot.
+When using the TEST_HARNESS_MAIN macro definition to declare the main
+function, it is required to use the EXPECT*() and ASSERT*() macros in
+conjunction and not ksft_test_result_*(). Otherwise, even if a test item
+fails, the test will still return a success result because
+ksft_test_result_*() does not affect the test harness state.
 
-Remove the D0 workaround so that Endpoint devices can use wake
-functionality (WAKE# from D3). With some Endpoints the link may not enter
-L2 when they remain in D3, but the Root Port continues with the usual flow
-after PME timeout, so there is no functional issue.
+Convert the code to use EXPECT/ASSERT() variants, which ensures that the
+overall test result is fail if one of the EXPECT()s fails.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-5-mmaddireddy@nvidia.com
+[ tglx: Massaged change log to explain _why_ ksft_test_result*() is the wrong
+  	choice ]
+
+Fixes: f341a20f6d7e ("selftests/futex: Refactor futex_requeue with kselftest_harness.h")
+Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/tencent_51851B741CC4B5EC9C22AFF70BA82BB60805@qq.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 41 ----------------------
- 1 file changed, 41 deletions(-)
+ .../futex/functional/futex_requeue.c          | 49 +++----------------
+ 1 file changed, 8 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index b38dbd02214b9..c84eb1ba3a11c 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1258,44 +1258,6 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
- 	return 0;
+diff --git a/tools/testing/selftests/futex/functional/futex_requeue.c b/tools/testing/selftests/futex/functional/futex_requeue.c
+index 69e2555b60399..d6be3fbd436a4 100644
+--- a/tools/testing/selftests/futex/functional/futex_requeue.c
++++ b/tools/testing/selftests/futex/functional/futex_requeue.c
+@@ -34,34 +34,18 @@ TEST(requeue_single)
+ 	volatile futex_t _f1 = 0;
+ 	volatile futex_t f2 = 0;
+ 	pthread_t waiter[10];
+-	int res;
+ 
+ 	f1 = &_f1;
+ 
+ 	/*
+ 	 * Requeue a waiter from f1 to f2, and wake f2.
+ 	 */
+-	if (pthread_create(&waiter[0], NULL, waiterfn, NULL))
+-		ksft_exit_fail_msg("pthread_create failed\n");
++	ASSERT_EQ(0, pthread_create(&waiter[0], NULL, waiterfn, NULL));
+ 
+ 	usleep(WAKE_WAIT_US);
+ 
+-	ksft_print_dbg_msg("Requeuing 1 futex from f1 to f2\n");
+-	res = futex_cmp_requeue(f1, 0, &f2, 0, 1, 0);
+-	if (res != 1)
+-		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
+-				      res ? errno : res,
+-				      res ? strerror(errno) : "");
+-
+-	ksft_print_dbg_msg("Waking 1 futex at f2\n");
+-	res = futex_wake(&f2, 1, 0);
+-	if (res != 1) {
+-		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
+-				      res ? errno : res,
+-				      res ? strerror(errno) : "");
+-	} else {
+-		ksft_test_result_pass("futex_requeue simple succeeds\n");
+-	}
++	EXPECT_EQ(1, futex_cmp_requeue(f1, 0, &f2, 0, 1, 0));
++	EXPECT_EQ(1, futex_wake(&f2, 1, 0));
  }
  
--static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
--{
--	struct dw_pcie_rp *pp = &pcie->pci.pp;
--	struct pci_bus *child, *root_port_bus = NULL;
--	struct pci_dev *pdev;
--
--	/*
--	 * link doesn't go into L2 state with some of the endpoints with Tegra
--	 * if they are not in D0 state. So, need to make sure that immediate
--	 * downstream devices are in D0 state before sending PME_TurnOff to put
--	 * link into L2 state.
--	 * This is as per PCI Express Base r4.0 v1.0 September 27-2017,
--	 * 5.2 Link State Power Management (Page #428).
--	 */
--
--	list_for_each_entry(child, &pp->bridge->bus->children, node) {
--		if (child->parent == pp->bridge->bus) {
--			root_port_bus = child;
--			break;
--		}
+ TEST(requeue_multiple)
+@@ -69,7 +53,7 @@ TEST(requeue_multiple)
+ 	volatile futex_t _f1 = 0;
+ 	volatile futex_t f2 = 0;
+ 	pthread_t waiter[10];
+-	int res, i;
++	int i;
+ 
+ 	f1 = &_f1;
+ 
+@@ -77,30 +61,13 @@ TEST(requeue_multiple)
+ 	 * Create 10 waiters at f1. At futex_requeue, wake 3 and requeue 7.
+ 	 * At futex_wake, wake INT_MAX (should be exactly 7).
+ 	 */
+-	for (i = 0; i < 10; i++) {
+-		if (pthread_create(&waiter[i], NULL, waiterfn, NULL))
+-			ksft_exit_fail_msg("pthread_create failed\n");
+-	}
++	for (i = 0; i < 10; i++)
++		ASSERT_EQ(0, pthread_create(&waiter[i], NULL, waiterfn, NULL));
+ 
+ 	usleep(WAKE_WAIT_US);
+ 
+-	ksft_print_dbg_msg("Waking 3 futexes at f1 and requeuing 7 futexes from f1 to f2\n");
+-	res = futex_cmp_requeue(f1, 0, &f2, 3, 7, 0);
+-	if (res != 10) {
+-		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
+-				      res ? errno : res,
+-				      res ? strerror(errno) : "");
 -	}
 -
--	if (!root_port_bus) {
--		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
--		return;
+-	ksft_print_dbg_msg("Waking INT_MAX futexes at f2\n");
+-	res = futex_wake(&f2, INT_MAX, 0);
+-	if (res != 7) {
+-		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
+-				      res ? errno : res,
+-				      res ? strerror(errno) : "");
+-	} else {
+-		ksft_test_result_pass("futex_requeue many succeeds\n");
 -	}
--
--	/* Bring downstream devices to D0 if they are not already in */
--	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
--		if (PCI_SLOT(pdev->devfn) == 0) {
--			if (pci_set_power_state(pdev, PCI_D0))
--				dev_err(pcie->dev,
--					"Failed to transition %s to D0 state\n",
--					dev_name(&pdev->dev));
--		}
--	}
--}
--
- static int tegra_pcie_get_slot_regulators(struct tegra_pcie_dw *pcie)
- {
- 	pcie->slot_ctl_3v3 = devm_regulator_get_optional(pcie->dev, "vpcie3v3");
-@@ -1625,7 +1587,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
++	EXPECT_EQ(10, futex_cmp_requeue(f1, 0, &f2, 3, 7, 0));
++	EXPECT_EQ(7, futex_wake(&f2, INT_MAX, 0));
+ }
  
- static void tegra_pcie_deinit_controller(struct tegra_pcie_dw *pcie)
- {
--	tegra_pcie_downstream_dev_to_D0(pcie);
- 	dw_pcie_host_deinit(&pcie->pci.pp);
- 	tegra_pcie_dw_pme_turnoff(pcie);
- 	tegra_pcie_unconfig_controller(pcie);
-@@ -2336,7 +2297,6 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
- 	if (!pcie->link_state)
- 		return 0;
- 
--	tegra_pcie_downstream_dev_to_D0(pcie);
- 	tegra_pcie_dw_pme_turnoff(pcie);
- 	tegra_pcie_unconfig_controller(pcie);
- 
-@@ -2410,7 +2370,6 @@ static void tegra_pcie_dw_shutdown(struct platform_device *pdev)
- 			return;
- 
- 		debugfs_remove_recursive(pcie->debugfs);
--		tegra_pcie_downstream_dev_to_D0(pcie);
- 
- 		disable_irq(pcie->pci.pp.irq);
- 		if (IS_ENABLED(CONFIG_PCI_MSI))
+ TEST_HARNESS_MAIN
 -- 
 2.53.0
 
