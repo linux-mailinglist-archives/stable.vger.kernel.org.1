@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-250446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNZqJq7yDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:10 +0200
+	id qFNNOdDzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1EB59461D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DAC594982
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E88FC376E8CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8805430EE8CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEB33CAE97;
-	Wed, 20 May 2026 16:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A17B3D5642;
+	Wed, 20 May 2026 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWsddFDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+a028kL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D83C3458;
-	Wed, 20 May 2026 16:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B13F1661;
+	Wed, 20 May 2026 17:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295433; cv=none; b=ui6gVjrASQbiOPLiHZUZTUj4pp9zo1vc4V6x/20+LQ1FQKv42oAsWrBiJUE87OAf9F7nxlDkQ4/pLGQBfKuEIyGDTz+kNUxEI0XmTN5BHOWGVw+3wsDlHemwWaekEJoIiI6SWsvIVXqOiHP/LsnVlYJSvzlnuuX/94c0filHh+w=
+	t=1779297837; cv=none; b=JtcOnSUbIaFSqfnA9Rkovc2BKzyTlG03Ytt+1+Vj4dIYLuw9TC/qwQLeU28uBZZnR6HjGfoS4LeX0mzg7UIqe7+wRlYtneWwqu24AJ15pbn3bJND2aY9Vxx0VZAXkXvt0zhbPFdG0+e6wkiXh6iQtEW7Szo9e5xs5ZJ/Mo1JcTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295433; c=relaxed/simple;
-	bh=iHPGDlavqKEd34PKWapG+KL50Y5shy3lL9nVjol6Evk=;
+	s=arc-20240116; t=1779297837; c=relaxed/simple;
+	bh=Mq2hTHk58Lbfo2CHiaLaCedFV3vFwN5NxgfQQZdpHYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeXOl+AYDyeinph2LE4Xdt/EEzF8nXmJF1rbt6OWvYmhRiHBzTFIaNJ1tDpCCEjH/qEPngHdImknzwdqz/DcD7uSQjjDALgv13gwIUaUGleiW1qqsxNXh/m/iWFoall9rnofa4xtEucd5B4bdaar9ImWOor3eepSG26Hsz8wscw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWsddFDw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42171F000E9;
-	Wed, 20 May 2026 16:43:51 +0000 (UTC)
+	 MIME-Version; b=GSNl9idgsnk6aZnnXRKh1x9oioTEaVPOUIna3an+dGxMC4PTkpcGIZqoW0f5u2D3bMZn+wA1TqgBGgKkHueKrsjtj7X0qF9qW10lLh+WCGX3QITxZHKmpZESw4G22h15eUtvcmQbmBjbsSW5jsiAMsjK90Vo6jxzG00CF75d0J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+a028kL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFAF1F000E9;
+	Wed, 20 May 2026 17:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295432;
-	bh=6Rx2F+rLRW4dhkSzUW0O0Ozkwn2/5VK1ZzwsddTBGko=;
+	s=korg; t=1779297835;
+	bh=Cxt9sR3Ahdssuo10C4j7/o8CXqBYJoHSaLNIH5z8vtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xWsddFDwZhr1vcIVczysTbGCqzgsIJe4cCe5NhkD+FXH1ymYBr4QhIDIIKYeL/tNN
-	 KtRRQozxetYhip7VjrMFYmETe0C37ssijfT/7sshuCmRIo8LW2+R13Yvhqhk9+mYvD
-	 EMe/Mbz/hE9Sud/bDRRkvpTjjTApD+/+9DfHgs2A=
+	b=Z+a028kLPmYn3HwxycuReES9UvX8EzMUjLD3igeDwMptuFehbB+sQdtbq5zk6ZGk9
+	 yrvVmpf0QlHCMgpPYzr6o9Y+QiuBlo+k3vyPcXoAjKHYfSDwyvUjSmoFE86c5NPipO
+	 Er9pE8+KhHK16GLVH+oDVZOWbiTpZZQG1gzT/0e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0416/1146] PCI: tegra194: Increase LTSSM poll time on surprise link down
+Subject: [PATCH 6.18 183/957] net, bpf: fix null-ptr-deref in xdp_master_redirect() for down master
 Date: Wed, 20 May 2026 18:11:06 +0200
-Message-ID: <20260520162157.612198735@linuxfoundation.org>
+Message-ID: <20260520162138.521424523@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,139 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251383-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250446-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CB1EB59461D
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,80e046b8da2820b6ba73];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,appspotmail.com:email,iogearbox.net:email]
+X-Rspamd-Queue-Id: 85DAC594982
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 74dd8efe4d6cead433162147333af989a568aac7 ]
+[ Upstream commit 1921f91298d1388a0bb9db8f83800c998b649cb3 ]
 
-On surprise link down, LTSSM state transits from L0 -> Recovery.RcvrLock ->
-Recovery.RcvrSpeed -> Gen1 Recovery.RcvrLock -> Detect. Recovery.RcvrLock
-and Recovery.RcvrSpeed transit times are 24 ms and 48 ms respectively, so
-the total time from L0 to Detect is ~96 ms. Increase the poll timeout to
-120 ms to account for this.
+syzkaller reported a kernel panic in bond_rr_gen_slave_id() reached via
+xdp_master_redirect(). Full decoded trace:
 
-While at it, add LTSSM state defines for Detect-related states and use them
-in the poll condition. Use readl_poll_timeout() instead of
-readl_poll_timeout_atomic() in tegra_pcie_dw_pme_turnoff() since that path
-runs in non-atomic context.
+  https://syzkaller.appspot.com/bug?extid=80e046b8da2820b6ba73
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-3-mmaddireddy@nvidia.com
+bond_rr_gen_slave_id() dereferences bond->rr_tx_counter, a per-CPU
+counter that bonding only allocates in bond_open() when the mode is
+round-robin. If the bond device was never brought up, rr_tx_counter
+stays NULL.
+
+The XDP redirect path can still reach that code on a bond that was
+never opened: bpf_master_redirect_enabled_key is a global static key,
+so as soon as any bond device has native XDP attached, the
+XDP_TX -> xdp_master_redirect() interception is enabled for every
+slave system-wide. The path xdp_master_redirect() ->
+bond_xdp_get_xmit_slave() -> bond_xdp_xmit_roundrobin_slave_get() ->
+bond_rr_gen_slave_id() then runs against a bond that has no
+rr_tx_counter and crashes.
+
+Fix this in the generic xdp_master_redirect() by refusing to call into
+the master's ->ndo_xdp_get_xmit_slave() when the master device is not
+up. IFF_UP is only set after ->ndo_open() has successfully returned,
+so this reliably excludes masters whose XDP state has not been fully
+initialized. Drop the frame with XDP_ABORTED so the exception is
+visible via trace_xdp_exception() rather than silently falling through.
+This is not specific to bonding: any current or future master that
+defers XDP state allocation to ->ndo_open() is protected.
+
+Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
+Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
+Suggested-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260411005524.201200-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 36 +++++++++++++---------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 13949f6f7d5be..94113b2e33080 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -137,7 +137,11 @@
- #define APPL_DEBUG_PM_LINKST_IN_L0		0x11
- #define APPL_DEBUG_LTSSM_STATE_MASK		GENMASK(8, 3)
- #define APPL_DEBUG_LTSSM_STATE_SHIFT		3
--#define LTSSM_STATE_PRE_DETECT			5
-+#define LTSSM_STATE_DETECT_QUIET		0x00
-+#define LTSSM_STATE_DETECT_ACT			0x08
-+#define LTSSM_STATE_PRE_DETECT_QUIET		0x28
-+#define LTSSM_STATE_DETECT_WAIT			0x30
-+#define LTSSM_STATE_L2_IDLE			0xa8
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 3d4bf4d2a1a4b..7fc01474c3781 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4385,6 +4385,8 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
+ 	struct net_device *master, *slave;
  
- #define APPL_RADM_STATUS			0xE4
- #define APPL_PM_XMT_TURNOFF_STATE		BIT(0)
-@@ -198,7 +202,8 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
- 
--#define LTSSM_TIMEOUT 50000	/* 50ms */
-+#define LTSSM_DELAY_US		10000	/* 10 ms */
-+#define LTSSM_TIMEOUT_US	120000	/* 120 ms */
- 
- #define GEN3_GEN4_EQ_PRESET_INIT	5
- 
-@@ -1597,15 +1602,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 		data &= ~APPL_CTRL_LTSSM_EN;
- 		writel(data, pcie->appl_base + APPL_CTRL);
- 
--		err = readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG,
--						data,
--						((data &
--						APPL_DEBUG_LTSSM_STATE_MASK) >>
--						APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--						LTSSM_STATE_PRE_DETECT,
--						1, LTSSM_TIMEOUT);
-+		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT),
-+			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 		if (err)
--			dev_info(pcie->dev, "Link didn't go to detect state\n");
-+			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
- 	}
- 	/*
- 	 * DBI registers may not be accessible after this as PLL-E would be
-@@ -1685,12 +1689,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	appl_writel(pcie, val, APPL_CTRL);
- 
- 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
--				 ((val & APPL_DEBUG_LTSSM_STATE_MASK) >>
--				 APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--				 LTSSM_STATE_PRE_DETECT,
--				 1, LTSSM_TIMEOUT);
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_L2_IDLE),
-+		LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 	if (ret)
--		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
-+		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
- 
- 	reset_control_assert(pcie->core_rst);
- 
+ 	master = netdev_master_upper_dev_get_rcu(xdp->rxq->dev);
++	if (unlikely(!(master->flags & IFF_UP)))
++		return XDP_ABORTED;
+ 	slave = master->netdev_ops->ndo_xdp_get_xmit_slave(master, xdp);
+ 	if (slave && slave != xdp->rxq->dev) {
+ 		/* The target device is different from the receiving device, so
 -- 
 2.53.0
 
