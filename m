@@ -1,170 +1,223 @@
-Return-Path: <stable+bounces-249784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMZ1J/BwDWroxQUAu9opvQ
-	(envelope-from <stable+bounces-249784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:29:36 +0200
+	id 7ECDMOJzDWrSxgUAu9opvQ
+	(envelope-from <stable+bounces-249785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:42:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE86589C4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:29:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A32D589F8C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F4007300443E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:29:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EBFCB310C659
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:35:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14F137754B;
-	Wed, 20 May 2026 08:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E072C3BADB6;
+	Wed, 20 May 2026 08:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Mf4Y5h71"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x2iEvvHD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3P64RFxP"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12C343886
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 08:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332913BAD9C;
+	Wed, 20 May 2026 08:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779265770; cv=none; b=R2tJssNg3tvB8Hv5aGmbyaXYmclWIJtz3fWntSSdWzR+pYsED/EecHditD6xIhj1Lu11sdGQc0UTYuJaqA73oiZesoP7swiCr5406KVyxJbDim1nfxP2HOwE2mqXbFSPmWIrjLtKTymMAdyY+oyeNCoRZIsUahTAHLbgrdts/jk=
+	t=1779266042; cv=none; b=r0gl3I2YukF/r6lb2QntU3qtjn8uQLTMWjXk3WJWdt8V9T4SNg8WySzYEthG9FU7uSoKSMJyN+ZiiXPU96eHbezjEbnQG6fJOkRRYMIkNMGtDtChzmgnuxs+z35db4meC1pET51ijN4nxmmjtdoQSje8+jcH1XsHbpU9DK93Yhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779265770; c=relaxed/simple;
-	bh=Toc6Hf57MsxqjcmT4Wwv1Dez0FV6nEjIiy/BCwrLaT4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=twdG3eX0vnJF8Ryf/UlNI5SsWERbVaLrXbB3Bro13QWAoJWex4xHF77KytcZdaLB6W1Ygev/n82KrdtCIhML1cuYAEJonM/FaZ1jdgk/oX1yVcVme9pkzFLfUHHfQv977KK+TnHnvvw+9P3eY4/Cpgj54+ytXGyM0qQ4/K6sHBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Mf4Y5h71; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779265765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1779266042; c=relaxed/simple;
+	bh=n24lq8I4Tj6r+9b0Eie//R4FmP7tXjhAddS5NdwHsIY=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=qpLtyG3PJYeMQcdI5p7yN0++gIpbTKiT1+uNjpAOD/BBassNnnPk4Wfztwg9WzlTMcFlgYjb8fVdt35L4mbMEozPp5gQ2hk31CW7LUFRu/+BIdRYGFZDAA3nHEdr8vSYXlqE+M0YKAKTP3+Bi9ceCJznl96V0CCRlvg3OW3neLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x2iEvvHD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3P64RFxP; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 20 May 2026 08:33:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1779266039;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Toc6Hf57MsxqjcmT4Wwv1Dez0FV6nEjIiy/BCwrLaT4=;
-	b=Mf4Y5h71GBTlwpU539Q7BpbVNRdZ4P70r5Ia7Es3et5LVM7XirXAvHh+DSzRgnXo4Isqhf
-	fzM5loPs05h0o8nqF5QaXHMdq3VFxROeF3cusFoOziqnTOf3todhElqflVEhbui9kRCBXr
-	mcY0tPrqWBVx11r1sUlF6cEeNOFwu78=
+	bh=lEyHSLydSXBgoJytFAgglxdQ6AI7xczA0pyTghR0DnY=;
+	b=x2iEvvHD0EdyqTedvs+8D6kSZfm7+FXAfguMA9Dts8wpuUuIdenY2MXTMjDfUBtf54+LOl
+	yqySbiscAzQqSo5i1kMerkwaSvhDOaIvz7bgvGpLGiDDBTTnsMZvSZ55OzEMuzccIRLQbF
+	WeeD4vjKr0TJ3HmKa8iwcJXMuxsN8T+HkUuBurt/2ZKN2BwIETDlQrwMriH/ciZh3rvVYP
+	t6IVr7nnb2olluSw6MM3iaifVTXtSBdyZdZyw6r1oD2l/4ABXGJFm6r2m0kUVW8WRkd/VO
+	/G4Kce9TA8fdY4eHm9ooxdG6CElSwtdXFIYLiZcY1cuzYogRefbKJdFprEulzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1779266039;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEyHSLydSXBgoJytFAgglxdQ6AI7xczA0pyTghR0DnY=;
+	b=3P64RFxPquA4M0vfLvDgweaCxc0VO1QU+pB6+emNDl3zkfTNH10EGR9hNPFbOeWDr6ThvA
+	tAEgcowrktgQo1BQ==
+From: "tip-bot2 for Steven Rostedt" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/rt: Have RT_PUSH_IPI be default off for non
+ PREEMPT_RT
+Cc: Tejun Heo <tj@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260515103740.25ccbed8@gandalf.local.home>
+References: <20260515103740.25ccbed8@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <55481a8b-dcfc-4bef-ba59-aa0b43dca88b@kernel.org>
-Date: Wed, 20 May 2026 16:28:32 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>,
- Stefan Strogin <stefan.strogin@gmail.com>,
- Dmitry Safonov <0x7f454c46@gmail.com>,
- Michal Nazarewicz <mina86@mina86.com>,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+MIME-Version: 1.0
+Message-ID: <177926603830.711.2887528860384008788.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C1420350-1A8F-4470-8E86-F6D3D9F42CD6@linux.dev>
-References: <20260520061025.3971821-1-songmuchun@bytedance.com>
- <55481a8b-dcfc-4bef-ba59-aa0b43dca88b@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249784-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,kvack.org,kernel.org,infradead.org,google.com,suse.com,gmail.com,mina86.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249785-lists,stable=lfdr.de];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6EE86589C4B
+	MISSING_XM_UA(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+X-Rspamd-Queue-Id: 3A32D589F8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+The following commit has been merged into the sched/core branch of tip:
 
+Commit-ID:     dd29c017aed628076e915fe4cdfb5392fd4c5cab
+Gitweb:        https://git.kernel.org/tip/dd29c017aed628076e915fe4cdfb5392fd4=
+c5cab
+Author:        Steven Rostedt <rostedt@goodmis.org>
+AuthorDate:    Fri, 15 May 2026 10:37:40 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 19 May 2026 12:17:39 +02:00
 
-> On May 20, 2026, at 16:19, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 5/20/26 08:10, Muchun Song wrote:
->> cma_activate_area() can fail after allocating range bitmaps. Its =
-cleanup
->> path frees those bitmaps, but only clears cma->count and
->> cma->available_count. It leaves cma->nranges and each range's count =
-in
->> place, so cma_debugfs_init() can still register debugfs files for an =
-area
->> that never activated successfully.
->>=20
->> That exposes two problems. Reading the bitmap file can make debugfs =
-walk a
->> freed range bitmap and trigger an invalid memory access. Reading =
-maxchunk
->> can also take cma->lock even though that lock is initialized only on =
-the
->> successful activation path.
->>=20
->> Fix this by creating debugfs entries only for CMA areas that reached
->> CMA_ACTIVATED.
->>=20
->> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if =
-requested")
->> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages =
-counters")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->=20
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+sched/rt: Have RT_PUSH_IPI be default off for non PREEMPT_RT
 
-Thanks.
+RT migration is done aggressively. When a CPU schedules out a high
+priority RT task for a lower priority task, it will look to see if there's
+any RT tasks that are waiting to run on another CPU that is of higher
+priority than the task this CPU is about to run. If it finds one, it will
+pull that task over to the CPU and allow it to run there instead.
 
->=20
-> cma_sysfs_init() also traverses all cma_area_count. Does it make sense =
-to expose
-> them there?
+Normally, this pulling is done by looking at the RT overloaded mask (rto)
+which contains all the CPUs in the scheduler domain with RT tasks that are
+waiting to run due to a higher priority RT task currently running on their
+CPU. The CPU that is about to schedule a lower priority task will grab the
+rq lock of the overloaded CPU and move the RT task from that CPU's runqueue
+to the local one and schedule the higher priority RT task.
 
-It is better to hide them from users. A separate cleanup patch is better =
-since
-there is no critical issue when accessing those sysfs files.
+This caused issues when a lot of CPUs would schedule a lower priority task
+at the same time. They would all try to grab the same runqueue lock of
+the CPU with the overloaded RT tasks. Only the first CPU that got in will
+get that task. All the others would wait until they got the runqueue lock
+and see there's nothing to pull and do nothing. On systems with lots of
+CPUs, this caused a large latency (up to 500us) which is beyond what
+PREEMPT_RT is to allow.
 
-Thanks,
-Muhcun
+The solution to that was to create an RT_PUSH_IPI logic. When any CPU
+wanted to pull a task, instead of grabbing the runqueue lock of the
+overloaded CPU, it would start by sending an IPI to the overloaded CPU,
+and that IPI handler would have the CPU with the waiting RT task do a push
+instead. Then that handler would send an IPI to the next CPU with
+overloaded RT tasks, and so on. Note, after the first CPU starts this
+process, if another CPU wanted to do a pull, it would see that the process
+has already begun and would only increment a counter to have the IPIs
+continue again.
 
->=20
-> --=20
-> Cheers,
->=20
-> David
+The RT_PUSH_IPI solved the latency problem with PREEMPT_RT but could cause
+a new issue with non PREEMPT_RT. Namely, softirqs run in a threaded
+context on PREEMPT_RT but they can run in an interrupt context in non-RT.
 
+If an IPI lands on a CPU that has just woken up multiple RT tasks and the
+current CPU is running a non RT or a low priority RT task, instead of
+doing a push, it would simply do a schedule on that CPU. But if a softirq
+was also executing on this CPU, the schedule would need to wait until the
+softirq finished. Until then, the CPU would still be considered overloaded
+as there are RT tasks still waiting to run on it.
 
+A live lock occurred on a workload that was doing heavy networking traffic
+on a large machine where the softirqs would run 500us out of 750us. And it
+would also be waking up RT tasks, causing the RT pull logic to be
+constantly executed.
+
+When a softirq triggered on a CPU with RT tasks queued but not running
+yet, and the other CPUs would see this CPU as being overloaded, they would
+send an IPI over to it. The CPU would notice that the waiting RT tasks are
+of higher priority than the currently running task and simply schedule
+that CPU instead. But because the softirq was executing, before it could
+schedule, it would receive another IPI to do the same. The amount of IPIs
+would slow down the currently running softirq so much that before it could
+return back to task context, it would execute another softirq never
+allowing the CPU to schedule. This live locked that CPU.
+
+As RT_PUSH_IPI was created to help PREEMPT_RT, make it default off if
+PREEMPT_RT is not enabled.
+
+Fixes: b6366f048e0c ("sched/rt: Use IPI to trigger RT task push migration ins=
+tead of pulling")
+Closes: https://lore.kernel.org/all/20260506235716.2530720-1-tj@kernel.org/
+Reported-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260515103740.25ccbed8@gandalf.local.home
+---
+ kernel/sched/features.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 84c4fe3..8f0dee8 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -110,8 +110,16 @@ SCHED_FEAT(WARN_DOUBLE_CLOCK, false)
+  * rq lock and possibly create a large contention, sending an
+  * IPI to that CPU and let that CPU push the RT task to where
+  * it should go may be a better scenario.
++ *
++ * This is best for PREEMPT_RT, but for non-RT it can cause issues
++ * when preemption is disabled for long periods of time. Have
++ * it only default enabled for PREEMPT_RT.
+  */
++# ifdef CONFIG_PREEMPT_RT
+ SCHED_FEAT(RT_PUSH_IPI, true)
++# else
++SCHED_FEAT(RT_PUSH_IPI, false)
++# endif
+ #endif
+=20
+ SCHED_FEAT(RT_RUNTIME_SHARE, false)
 
