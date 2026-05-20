@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IO+GbPoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:35 +0200
+	id GOm7OAX8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42685592CA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032CA595F29
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D042F310FFA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0931C31BB752
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101E337A4BA;
-	Wed, 20 May 2026 16:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9959F3F39C9;
+	Wed, 20 May 2026 17:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G465ICet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSu++tpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB13369D6A;
-	Wed, 20 May 2026 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6FF3ED5C8;
+	Wed, 20 May 2026 17:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295480; cv=none; b=tinx4Z+rYpk/AkFcyJUWNW96WR1AXfNjW3L3MTuF1UfYSYfYO7TS6OHE0C/cJf4VIFHg5x2QOpHft2t/lhm6p+kzugtCsJZ2r5e86YHpH8RBrVYEtAfUx5ksmW3siuaSeTq6hdHcSyVpqr3N09HQ156dGtOfDjJC6noN4vKmAhI=
+	t=1779297871; cv=none; b=DgUpZ7+A2oDOE+/NikdormxBEJtSkDXaORq+q2lMpgm4Uvx1BmMNQAs1Cs497vxTsCZZMoqHpupMtDGq5YpVqoidfNH/UUd2egAVS5eKsLcXMJ3c4dXjBqLIHACtTY6wBY4j17o3t52BUgc7HlcUaQU2HhkLPnzhpI3oZNYDSD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295480; c=relaxed/simple;
-	bh=OTPwUTQzjXOtos0aFtM4dY3ID8UWeCUAdX5Cq2ceRGU=;
+	s=arc-20240116; t=1779297871; c=relaxed/simple;
+	bh=r7zCcBZPNdR8iamA0aDY9yl6PqQuYLWbv9YUSm9yLLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ungeUx+Hpq7P35Di7nxYY/9HNu4/ItwpSBujK/EUBM9qp89v7McN4pjKyXMezV+46JPdy2nXnOWPZRpl21TQqMLbbXRDQ6PzoyWQpkKKVDTBFkC7tY2lH7Zah9XEDL2W+ttZl6V/RyJAd/msjgygAwVWyoH7Jx83+42r0uVokY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G465ICet; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F1E1F000E9;
-	Wed, 20 May 2026 16:44:38 +0000 (UTC)
+	 MIME-Version; b=qoxQtg8+tjZwWbiBjy7meDVYZWgixPp0JplCauc/KFx2iRPH5+T+PTN4uR/VvggmHX44zm42yTBwNLXoh4rjwiy97nKokPDMlI376O0ZJERUC8VvqogvOQR6phRCWw1iNCZdlqQO4TGaPLgOOiL/k7P1bYNnGPX4zQJHdj1yL/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSu++tpP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E92F1F000E9;
+	Wed, 20 May 2026 17:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295479;
-	bh=7rG6OXpOFDTRnn4SeUwmNX75Qsf75GHZ1PWvAtbtbtg=;
+	s=korg; t=1779297870;
+	bh=Fj8BqrIgn9EBiSfoM5YDMXKYFx5ojXvqDDVLbYhQh0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G465ICetfhFOG8fU8vzW/uEzRDlKMkMMWikwhEQK2j9LXatWtqXLR5I+5IXBOtIIf
-	 Qjm7WCIRuY80b4uSBqazpCJIUm1IykXcTfKaFYSBOkPyvIxT5HWKheL+Qw8+ywe7fx
-	 GTdOazfOxcsEl9uBINGzvOvRcePNAHGMnzKvaCcg=
+	b=hSu++tpP9mMZIWroXVrAsWUk848QzmcYDiyv9mlSiV/ANy39IBYHpZ9dmnpiU8nY3
+	 qQkyoSTNE15LLuXgOBwOrqh7ciZzZhSXSdK6TtnvxGrTw5VuQaL9Mlo/3yCCQHq5r8
+	 bq9jAhqp2PUHLuwkcMiFn0JbkRTM2lOl2I1LkH/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0428/1146] PCI: tegra194: Fix CBB timeout caused by DBI access before core power-on
+Subject: [PATCH 6.18 195/957] crypto: inside-secure/eip93 - fix register definition
 Date: Wed, 20 May 2026 18:11:18 +0200
-Message-ID: <20260520162157.875987038@linuxfoundation.org>
+Message-ID: <20260520162138.779604365@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251396-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,gondor.apana.org.au,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250464-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 42685592CA1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,wp.pl:email]
+X-Rspamd-Queue-Id: 032CA595F29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 34b3eef48d980cd37b876e128bbf314f69fb5d70 ]
+[ Upstream commit b7abbc8c7acaeb60c114b038f1fa91bbedb3d16a ]
 
-When PERST# is deasserted twice (assert -> deassert -> assert -> deassert),
-a CBB (Control Backbone) timeout occurs at DBI register offset 0x8bc
-(PCIE_MISC_CONTROL_1_OFF). This happens because pci_epc_deinit_notify()
-and dw_pcie_ep_cleanup() are called before reset_control_deassert() powers
-on the controller core.
+Checked the register definitions with the documentation[1]. Turns out
+that the PKTE_INBUF_CNT register has a bad offset. It's used in Direct
+Host Mode (DHM). The driver uses Autonomous Ring Mode (ARM), so it
+causes no harm.
 
-The call chain that causes the timeout:
-
-  pex_ep_event_pex_rst_deassert()
-    pci_epc_deinit_notify()
-      pci_epf_test_epc_deinit()
-        pci_epf_test_clear_bar()
-          pci_epc_clear_bar()
-            dw_pcie_ep_clear_bar()
-              __dw_pcie_ep_reset_bar()
-                dw_pcie_dbi_ro_wr_en()      <- Accesses 0x8bc DBI register
-    reset_control_deassert(pcie->core_rst)  <- Core powered on HERE
-
-The DBI registers, including PCIE_MISC_CONTROL_1_OFF (0x8bc), are only
-accessible after the controller core is powered on via
-reset_control_deassert(pcie->core_rst). Accessing them before this point
-results in a CBB timeout because the hardware is not yet operational.
-
-Fix this by moving pci_epc_deinit_notify() and dw_pcie_ep_cleanup() to
-after reset_control_deassert(pcie->core_rst), ensuring the controller is
-fully powered on before any DBI register accesses occur.
-
-Fixes: 40e2125381dc ("PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()")
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-15-mmaddireddy@nvidia.com
+1. ADSP-SC58x/ADSP-2158x SHARC+ Processor Hardware Reference
+Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/inside-secure/eip93/eip93-regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index eb24f88e0175b..336d3c759547a 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1750,10 +1750,6 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
- 		goto fail_phy;
- 	}
+diff --git a/drivers/crypto/inside-secure/eip93/eip93-regs.h b/drivers/crypto/inside-secure/eip93/eip93-regs.h
+index 0490b8d151311..116b3fbb6ad79 100644
+--- a/drivers/crypto/inside-secure/eip93/eip93-regs.h
++++ b/drivers/crypto/inside-secure/eip93/eip93-regs.h
+@@ -109,7 +109,7 @@
+ #define EIP93_REG_PE_BUF_THRESH			0x10c
+ #define   EIP93_PE_OUTBUF_THRESH		GENMASK(23, 16)
+ #define   EIP93_PE_INBUF_THRESH			GENMASK(7, 0)
+-#define EIP93_REG_PE_INBUF_COUNT		0x100
++#define EIP93_REG_PE_INBUF_COUNT		0x110
+ #define EIP93_REG_PE_OUTBUF_COUNT		0x114
+ #define EIP93_REG_PE_BUF_RW_PNTR		0x118 /* BUF_PNTR */
  
--	/* Perform cleanup that requires refclk */
--	pci_epc_deinit_notify(pcie->pci.ep.epc);
--	dw_pcie_ep_cleanup(&pcie->pci.ep);
--
- 	/* Clear any stale interrupt statuses */
- 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
- 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
-@@ -1823,6 +1819,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
- 
- 	reset_control_deassert(pcie->core_rst);
- 
-+	/* Perform cleanup that requires refclk and core reset deasserted */
-+	pci_epc_deinit_notify(pcie->pci.ep.epc);
-+	dw_pcie_ep_cleanup(&pcie->pci.ep);
-+
- 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
- 	val &= ~PORT_LOGIC_SPEED_CHANGE;
- 	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
 -- 
 2.53.0
 
