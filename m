@@ -1,254 +1,248 @@
-Return-Path: <stable+bounces-253366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEykOnUIDmrY5gUAu9opvQ
-	(envelope-from <stable+bounces-253366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:05 +0200
+	id gKmKKBgHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ED55980A8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDBE597DD0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BA1630EA4A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3777D324462D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728A440586A;
-	Wed, 20 May 2026 18:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91643FC5C9;
+	Wed, 20 May 2026 18:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WsQBHPx+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C3HYJyk5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021883FF8A0
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 18:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303357; cv=pass; b=Ufmvdm6ZsP0yZFJvCUmQW/taNjCF7vfqj1iwLij3E+qLEAW3e9xzu12Pec3Pr+o+eATnNCiUQuUjqZfoPuMlxG4Onh5dxJpkFSKjehjtaJn2ORLvK7RBEj+Ae9nn6TwrEEpG5MKcpce8uehgw+SRGPmtYr8XMu6XZDgXQCnbgiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303357; c=relaxed/simple;
-	bh=2u490WDo595MMxpuiyMNdGJ0Bm1Dajiv8tCE+WbJBN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ShFMWQ1vPEMz0/cOXxc2c+6cXiJHwNGMQnfIbEoyYszwbgU9mvxRMXPfo5VjxQRiAlgy7DJm3Lyu1K6qyu6izYqqKgNvRVjztAlr2S0n4BfT3BPDiZebIAplgtGqPv+z8Waj+dP4hATcgFe1UCjMUQA465aYZE8gFRGygQ3Am8g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WsQBHPx+; arc=pass smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48d1c670255so3595e9.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 11:55:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779303353; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VipptVguUx1hReTBUZs1AlNST1uyZUK7VhI+qzT6Qxm7Hcgj3+/IhjqTHync4khivG
-         jqC7KjZqovrlfnSSw/Shy3gsD2TzYbIbUaVtpAIbl+oaKxbePpZxSOsQs+CbEO2647Gd
-         u1XiIhGrxQdFPOrOXuH+1Ptx8jDHf8PxDK76AlXLcs26muiBk6zpOkPe+jKvD9ilvZm+
-         YPnMHJATsWd99BFdoUki0DsluqW8/UITIQGqNGiUgRW4/3DoPim8UPaXqH4fYIV3puj1
-         JP8DlnF9kAdi1nQC9E3rrSznofTE159dtTx39wkR698B1dUL4qkqXBvt5wQVfYMUQWxb
-         7eEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=E1+n5AcFKPfiWIk+cScd/VlPyCmYE0i+xazRrH2IaoI=;
-        fh=F8pt44QfuTb0l4Rz2iH98EU6TcTGllyop6YMj+22qNA=;
-        b=QaGh705NFBEJUwQRDHRl/eQeEC08Nuwol0c2xQEhFOT91WKI+S3abyyiujwE93PjTo
-         pLTGU8QAFO8ySplQg9G3CqhcznjvUL9ve5FIYkd0jcOlTpYawFyTJ4VlL4rUrPIHz/UR
-         AFkzLpygRTzaiY5Ilos60TCX7BKjYWtG6i+CRMeB2UnsHSdK5RgIyCjaNyVfVvJOIyeN
-         wUyffAcfdRMhf7+aonvCLBxlntah1Ov8xJrtaIkBFmE0xFB2uo0vWJkR5Fz48Wto9qRe
-         ee5cU0vGX9FLQpBeoasxfntOR+vGBXt12TFW9AJex7CST4Sx0gATLHHxbLThKb4MVX89
-         uZWA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779303353; x=1779908153; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E1+n5AcFKPfiWIk+cScd/VlPyCmYE0i+xazRrH2IaoI=;
-        b=WsQBHPx+1BdW+nbVnlTQBbGq63Wb1VaMHOB+/CgrJ85TIVE1XUrDcLI2HwYcGtbWIR
-         N6+/EMzKPMWnIBJHfT39Ivm1F9ahWDYBFx0TVfLJz61eYOeCIewlw0OYpikMBLNnFxJr
-         HO8KQx5ItyRAHj3UZUZU6+Fo7vj57dkt/v6lPHo6wYAJzbBP1JSJNY9xf7veS7zC2up1
-         tEFmr3WozL8BN4j/iOBo0gqg64kTsqgh830MTm59+UKFHKL7dCAoSNjP8UIauEfM9oC1
-         TSauVAuFuwi/R+61DGCvuy4qNbfp84N8YsRXtQO3nrEeC5Sj9l8Qxup2IXo5KE6p0g4e
-         nyxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779303353; x=1779908153;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E1+n5AcFKPfiWIk+cScd/VlPyCmYE0i+xazRrH2IaoI=;
-        b=fvulzjAlgyKODQv8vCdcofiErRv75hF02SGcif8oJGs2TPE+JVcXm1Kvxi5h0JXQBN
-         21txii+ESkG+u9q6kromkUpT7ZHTjy/9Vn0MU2QJ+BoCgu7lWnThYL888jSenGF270Gb
-         yM4YBlTCxB7thXAUa0HpNAzNJtoHInzL/dEcBC34NBvhIHDmslwvMX4/CCHHjx8+F0qE
-         4t//V8d3FmfVdF8BE+ctCsB5pDHBPjpk8iRZ4w//9fHH2noZlVjGXDsYDwZe4GhWqnc8
-         PpqlSlONXht3rFg3tus23Wb0Ud2ITrsQ5vx2oykJNzB4P5s8x4wqEdSo/lm5xKn79L5S
-         DXMg==
-X-Forwarded-Encrypted: i=1; AFNElJ9xTIPB7HvXYbYZiobX/8CKOuTlGMg/izH/fdlBGprJlWJI7Pg4CjtzzMNrO0bKuHhkTsm2Nrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ9jiLrr1r/SbJSEWPOnFN8B0PT2u+7436WiByxTvW2qXpSlv5
-	rpIcqA/+avhENmxLSQeHgdiPsFXXOx9g88hDxsGyph/eRjOd8NXa/NBDhQgqlqRYA8Y52Yl3Kfg
-	G3DyLiSM5Fk8g2rMsoq2CIpVUb/KvmFCZMq1t+Kri
-X-Gm-Gg: Acq92OHgtK9836oa44ZB1OuJwgSRZbBbvf9UsVOEQ+2xnHtRG4h20i4DkSUSuq1VCGM
-	h9qy2x6MXWEkVExBikb4pZWBjDp+uJMLEVLKaBC2Mcr9gD9Xfk3WN2fngncX3qdUFbTlKGtOr/h
-	jmwwMBGyYbqzYRzUgwjv7Fg7FYxZqDFsnULSGA8wjm441iTi2inaJXxWOMWcK/goQ/C1N+vYGGy
-	TS15wlPsvfxi1Fe4qe6cRhVmA5YSPv/03dl6AqMwS1RXyxW7yg0hGdL06aMUTiMBqMn1vxgdbyD
-	+csZMmfZwj4BZpomSb4nqWkz2mcJoe7VghSqJeDqw0MAU+IgkpjQ
-X-Received: by 2002:a05:600c:609b:b0:488:7ed5:38ef with SMTP id
- 5b1f17b1804b1-4903415dcf6mr120965e9.9.1779303352876; Wed, 20 May 2026
- 11:55:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4F32701C4;
+	Wed, 20 May 2026 18:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779303538; cv=none; b=XRUAvRA7r8baIvOIiH/I09tw2S6LPD6vrpA4Ag/CGaJwn8dovxlr5Idjaz/jWvvRKVjcWO8eyURc0Vq5C/3Df8qHYHYruk+HJV2zaoD/+1Tstjr3mssbvix/qpaFvlCzWiG3b2ysxwuE6BvFr1dXVUWHD5NHmK1+4iOHCZw+WGM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779303538; c=relaxed/simple;
+	bh=tQ2CvlZD5E4G/EoOu8BkHnDUHVLY01kjEqytn+FSuns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RmreU9yv4a2jTlvmyry3CQRjY/N5pR05puGfbT5E6AnySJnxu5LOkqMSgVX0lLFhXYAMQ7VRoZ52iC4XvKKM9mKLvfCvxvKKvBTcuO9fblRsHBo+NB9yOez+VYe3tYa3SEAF7zEm82OoPkQ1ckojd0qi5JQskjyUfDusTBKzfGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C3HYJyk5; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779303536; x=1810839536;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tQ2CvlZD5E4G/EoOu8BkHnDUHVLY01kjEqytn+FSuns=;
+  b=C3HYJyk5dFAc9JhyKoKizc2jNJtGx7EbUguzC1w8k12vNu0TIuz7WiSN
+   uO5BYrCRn5QFsxa77yB/cYVFebtzHR/V92qz+1T//1HcMp1kb8df64ZZP
+   16JQbeJHwrjXmlQyRrkjDVPkYVi7x/J6yIOIbBbCZvnmIO2+IDW9h8gfk
+   1NdORTciKRxIMtoR5y7qKZwRVVIWhvWYc9wHHU6tjuDODmkZLPGehiZO8
+   710EuOJ1ggprxZFg/J6Cjsjb7woR1HHAplC4GcpJ7Wl8ang+eoyzulhgP
+   cHHfOADuC8DklEzSJsc06K0rvRVR/scCcedHOAMgbDrZiqXOAv62JDOpk
+   g==;
+X-CSE-ConnectionGUID: VcLrXReVQ4+h+H7nXwotiA==
+X-CSE-MsgGUID: wShn7LAdS42JWRWl/JqqSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80332753"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="80332753"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 11:58:55 -0700
+X-CSE-ConnectionGUID: 96T3v6E8Td+OA/16PJLZpg==
+X-CSE-MsgGUID: fJPfPjFAScC0AyDkCDgYUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="245266532"
+Received: from lkp-server02.sh.intel.com (HELO 30e86e9c1927) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 20 May 2026 11:58:54 -0700
+Received: from kbuild by 30e86e9c1927 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wPm7l-000000003jh-4AQk;
+	Wed, 20 May 2026 18:58:38 +0000
+Date: Thu, 21 May 2026 02:57:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] USB: serial: keyspan: fix missing indat transfer sanity
+ check
+Message-ID: <202605210249.xpCIgp3t-lkp@intel.com>
+References: <20260520101230.657426-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519203530.66310-1-devnexen@gmail.com>
-In-Reply-To: <20260519203530.66310-1-devnexen@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 20 May 2026 11:55:19 -0700
-X-Gm-Features: AVHnY4KsF6gLgHIJlsnHvTuhZIZ-lL6YqMhepw9Q71OPa8u5kx3HMdWQKIsVi1M
-Message-ID: <CAHS8izOL4yyPH4+ZUXxKB6JAj0EgbFK5UkG+SSb4rk_vG6EfhQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: devmem: reject dma-buf bind with
- non-page-aligned size or SG length
-To: David Carlier <devnexen@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	sdf@fomichev.me, sdf.kernel@gmail.com, kaiyuanz@google.com, 
-	bobbyeshleman@gmail.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520101230.657426-1-johan@kernel.org>
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253366-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253367-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[almasrymina@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,fomichev.me,gmail.com];
-	TAGGED_RCPT(0.00)[stable];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 72ED55980A8
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,01.org:url]
+X-Rspamd-Queue-Id: 1DDBE597DD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 1:35=E2=80=AFPM David Carlier <devnexen@gmail.com> =
-wrote:
->
-> net_devmem_bind_dmabuf() trusts dmabuf->size and sg_dma_len() to be
-> PAGE_SIZE multiples without checking:
->
->   - tx_vec is sized dmabuf->size / PAGE_SIZE, and
->     net_devmem_get_niov_at() only bounds-checks virt_addr < dmabuf->size
->     before indexing tx_vec[virt_addr / PAGE_SIZE]. With size =3D
->     N*PAGE_SIZE + r (1 <=3D r < PAGE_SIZE), sendmsg() at iov_base =3D
->     N*PAGE_SIZE passes the bound check and reads tx_vec[N] -- one past.
->
->   - owner->area.num_niovs =3D len / PAGE_SIZE while gen_pool_add_owner()
->     covers the full byte len, so a non-page-multiple non-final sg
->     desyncs num_niovs from the gen_pool region for every later sg, on
->     both RX and TX.
->
-> dma-buf does not require page-aligned sizes, so the bind path has to
-> enforce what its own indexing assumes. Reject both with -EINVAL.
->
-> The size check is TX-only (only tx_vec is sized off dmabuf->size); the
-> SG-length check covers both directions.
->
-> Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
-> Changes in v2:
->   - Reframe commit message around the kernel-side OOB instead of
->     "real exporters already page-align", which read as the OOB being
->     unreachable and undercut Cc: stable (Stanislav Fomichev).
->   - Hoist the SG-length check out of the if (TX) branch so it covers
->     RX too; RX has the same num_niovs / gen_pool desync on a
->     contract-violating exporter, just without an OOB. Keep the
->     size-multiple check TX-only (Stanislav Fomichev).
->   - Drop bool todevice; compare direction =3D=3D DMA_TO_DEVICE inline to
->     match the existing call site at the tx_vec[] assignment
->     (Bobby Eshleman).
->
->  net/core/devmem.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 468344739db2..4f71de44c0fb 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -241,6 +241,11 @@ net_devmem_bind_dmabuf(struct net_device *dev,
->         }
->
->         if (direction =3D=3D DMA_TO_DEVICE) {
-> +               if (!IS_ALIGNED(dmabuf->size, PAGE_SIZE)) {
-> +                       err =3D -EINVAL;
-> +                       NL_SET_ERR_MSG(extack, "TX dma-buf size must be a=
- multiple of PAGE_SIZE");
-> +                       goto err_unmap;
-> +               }
->                 binding->tx_vec =3D kvmalloc_objs(struct net_iov *,
->                                                 dmabuf->size / PAGE_SIZE)=
-;
->                 if (!binding->tx_vec) {
-> @@ -267,6 +272,12 @@ net_devmem_bind_dmabuf(struct net_device *dev,
->                 size_t len =3D sg_dma_len(sg);
->                 struct net_iov *niov;
->
-> +               if (!IS_ALIGNED(len, PAGE_SIZE)) {
-> +                       err =3D -EINVAL;
-> +                       NL_SET_ERR_MSG(extack, "dma-buf SG length must be=
- PAGE_SIZE aligned");
-> +                       goto err_free_chunks;
-> +               }
-> +
->                 owner =3D kzalloc_node(sizeof(*owner), GFP_KERNEL,
->                                      dev_to_node(&dev->dev));
->                 if (!owner) {
-> --
-> 2.53.0
->
+Hi Johan,
 
-No hold on, I don't think we actually have a bug here. AFAIR all
-you're describing is intionional . Yes the TX vectors and their niov
-arrays do implicitly 'pad' the dmabuf size to PAGE_SIZE.
+kernel test robot noticed the following build errors:
 
-But net_devmem_get_niov_at has this check that prevents us from trying
-to send past the dma-buf size, even if it's not page_aligned:
+[auto build test ERROR on johan-usb-serial/usb-next]
+[also build test ERROR on usb/usb-testing usb/usb-next usb/usb-linus tty/tty-testing tty/tty-next tty/tty-linus linus/master v7.1-rc4 next-20260520]
+[cannot apply to johan-usb-serial/usb-linus]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-```
-if (virt_addr >=3D binding->dmabuf->size)
-return NULL;
-```
+url:    https://github.com/intel-lab-lkp/linux/commits/Johan-Hovold/USB-serial-keyspan-fix-missing-indat-transfer-sanity-check/20260520-181924
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git usb-next
+patch link:    https://lore.kernel.org/r/20260520101230.657426-1-johan%40kernel.org
+patch subject: [PATCH] USB: serial: keyspan: fix missing indat transfer sanity check
+config: arm-randconfig-002-20260520 (https://download.01.org/0day-ci/archive/20260521/202605210249.xpCIgp3t-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 5bac06718f502014fade905512f1d26d578a18f3)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260521/202605210249.xpCIgp3t-lkp@intel.com/reproduce)
 
-IIRC the NULL should be bubbled up to the user as some error.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605210249.xpCIgp3t-lkp@intel.com/
 
-Please double check that we actually have a bug here. If not, please
-don't merge this. This change could break existing users using devmem
-TX correctly with non-PAGE_SIZE aligned dmabufs, which is a valid use
-case.
+All errors (new ones prefixed by >>):
 
-And if we have a bug, lets fix it in some way that doesn't deprecate
-support for non page-aligned TX dmabufs. You may be breaking users
-here.
+>> drivers/usb/serial/keyspan.c:1189:25: error: incompatible pointer types passing 'struct usb_device **' to parameter of type 'const struct device *' [-Wincompatible-pointer-types]
+    1189 |                         dev_warn_ratelimited(&serial->dev, "malformed indat packet\n");
+         |                                              ^~~~~~~~~~~~
+   include/linux/dev_printk.h:227:34: note: expanded from macro 'dev_warn_ratelimited'
+     227 |         dev_level_ratelimited(dev_warn, dev, fmt, ##__VA_ARGS__)
+         |                                         ^~~
+   include/linux/dev_printk.h:215:13: note: expanded from macro 'dev_level_ratelimited'
+     215 |                 dev_level(dev, fmt, ##__VA_ARGS__);                     \
+         |                           ^~~
+   include/linux/dev_printk.h:156:49: note: expanded from macro 'dev_warn'
+     156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                        ^~~
+   include/linux/dev_printk.h:110:11: note: expanded from macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                         ^~~
+   include/linux/dev_printk.h:52:37: note: passing argument to parameter 'dev' here
+      52 | void _dev_warn(const struct device *dev, const char *fmt, ...);
+         |                                     ^
+   1 error generated.
 
---=20
-Thanks,
-Mina
+
+vim +1189 drivers/usb/serial/keyspan.c
+
+  1166	
+  1167	static void usa49wg_indat_callback(struct urb *urb)
+  1168	{
+  1169		int			i, len, x, err;
+  1170		struct usb_serial	*serial;
+  1171		struct usb_serial_port	*port;
+  1172		unsigned char 		*data = urb->transfer_buffer;
+  1173		int status = urb->status;
+  1174	
+  1175		serial = urb->context;
+  1176	
+  1177		if (status) {
+  1178			dev_dbg(&urb->dev->dev, "%s - nonzero status: %d\n",
+  1179					__func__, status);
+  1180			return;
+  1181		}
+  1182	
+  1183		/* inbound data is in the form P#, len, status, data */
+  1184		i = 0;
+  1185		len = 0;
+  1186	
+  1187		while (i < urb->actual_length) {
+  1188			if (urb->actual_length - i < 3) {
+> 1189				dev_warn_ratelimited(&serial->dev, "malformed indat packet\n");
+  1190				break;
+  1191			}
+  1192	
+  1193			/* Check port number from message */
+  1194			if (data[i] >= serial->num_ports) {
+  1195				dev_dbg(&urb->dev->dev, "%s - Unexpected port number %d\n",
+  1196					__func__, data[i]);
+  1197				return;
+  1198			}
+  1199			port = serial->port[data[i++]];
+  1200			len = data[i++];
+  1201	
+  1202			/* 0x80 bit is error flag */
+  1203			if ((data[i] & 0x80) == 0) {
+  1204				/* no error on any byte */
+  1205				i++;
+  1206				for (x = 1; x < len && i < urb->actual_length; ++x)
+  1207					tty_insert_flip_char(&port->port,
+  1208							data[i++], 0);
+  1209			} else {
+  1210				/*
+  1211				 * some bytes had errors, every byte has status
+  1212				 */
+  1213				for (x = 0; x + 1 < len &&
+  1214					    i + 1 < urb->actual_length; x += 2) {
+  1215					int stat = data[i];
+  1216					int flag = TTY_NORMAL;
+  1217	
+  1218					if (stat & RXERROR_OVERRUN) {
+  1219						tty_insert_flip_char(&port->port, 0,
+  1220									TTY_OVERRUN);
+  1221					}
+  1222					/* XXX should handle break (0x10) */
+  1223					if (stat & RXERROR_PARITY)
+  1224						flag = TTY_PARITY;
+  1225					else if (stat & RXERROR_FRAMING)
+  1226						flag = TTY_FRAME;
+  1227	
+  1228					tty_insert_flip_char(&port->port, data[i+1],
+  1229							     flag);
+  1230					i += 2;
+  1231				}
+  1232			}
+  1233			tty_flip_buffer_push(&port->port);
+  1234		}
+  1235	
+  1236		/* Resubmit urb so we continue receiving */
+  1237		err = usb_submit_urb(urb, GFP_ATOMIC);
+  1238		if (err != 0)
+  1239			dev_dbg(&urb->dev->dev, "%s - resubmit read urb failed. (%d)\n", __func__, err);
+  1240	}
+  1241	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
