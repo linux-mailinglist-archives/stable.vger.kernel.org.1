@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLrHNh0FDmpO5gUAu9opvQ
-	(envelope-from <stable+bounces-253118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:49 +0200
+	id yPxmGtInDmp56gUAu9opvQ
+	(envelope-from <stable+bounces-252658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752D3597993
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8FC59AEC9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 582CD32745F9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00CC334810C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EB43FE352;
-	Wed, 20 May 2026 18:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E263D1CC6;
+	Wed, 20 May 2026 18:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdP1XI5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nogXk03u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870144028C8;
-	Wed, 20 May 2026 18:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0E63A6B99;
+	Wed, 20 May 2026 18:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302452; cv=none; b=pOf+oB9hnKrMjxCtYJQy/sbkFkBHzFXLp+K5jnUr6LL0CFVxMqQtoxXlZ5MeC0lYPwdvNtKq968J9uxkq+Z6qOpnRvJpI68qA3myrfRVtvql0iXsANOwJ4AUmV88IFeZhHF77oLHk6B3dauPflZdbGi9gX8xrqIuxa2tXKcQMWU=
+	t=1779301253; cv=none; b=klZSIj9bmp32V7rZUZeNKNfOJjEjNg6uy0jG+7094ejFM2x0JgsKMdih1UqWufCp+CCcGlcV9a+mRiXsQH4dGXjkdEMiDtIF/5rMNvJJsQyUol/TV2/p4+iU8Us0WCRdvzgl7vcNH9q4odAzQ0ySNV8xu1EymyMP8QZ0+PbnBzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302452; c=relaxed/simple;
-	bh=8Jive/MpmZoJio1Zn9a/4HtVc7hcn+6i6AY/+mAoC7s=;
+	s=arc-20240116; t=1779301253; c=relaxed/simple;
+	bh=+OuAHlWtg5ep00oOAHjLNVTPlE2yiOxMcO662BYZHgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fV0exQ/j+3HYHAlgKCJAESHECfIJNorh+S/vhli715vTk4Q7DfBPu8Jy/1hcdQEMF/cgqeSagKxi/IiQ/87MsMwjEKlnfojtmx8VsBNIinKUaXyLAh3q7sI/k1E+dxPQfXJfcUClVW84Ty8YpcRnogF1f+tVs1EPHkhlYekouyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdP1XI5U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D931F000E9;
-	Wed, 20 May 2026 18:40:50 +0000 (UTC)
+	 MIME-Version; b=ZlVF/BSm12cbbCwZUwfjeQek1qxtlQk28h9U6zTY2gRVOGaZPaW9BIz2kgMMOvDeipMl6XyYgmnXYeA+W/wu/nAx4xMgiZrB62qn72/ZzC+Sr5QH3PWArf+gli/Id2Qfqyl+pTXhDxdQ4e5gXpaNEMEyo+V3pKPgHJ0Yn52weeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nogXk03u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB651F000E9;
+	Wed, 20 May 2026 18:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302451;
-	bh=Rtf7VE5AiANDz9UiYEb2gehdNcQ+KqNaMSnNIHAdA+w=;
+	s=korg; t=1779301251;
+	bh=6Wo3zJr/ChgPSCntv5nbLSTBS8ByYUC341nvw2YG7j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DdP1XI5U7N91KbyW7WoT4Ak2lhJQ1joW8q+2ytWQLoiusi0QBwCCkaoWCLsfby2sn
-	 VOJAsgzzetD0NTbGsRKDCB2A9m+egwsXKV1vZAsizdQrsaBwA6SFtQzxZDuoa5AwHj
-	 89NNcydXkgnAlUCa7qPxrySLIQ8yttzQSvv56JNo=
+	b=nogXk03uuIbcQAMjUrfiqfk+bIzrmiFqICX+Uj8w3cohO8+XzSGNcEMdYvF6i0HkJ
+	 V4Bz1p5+/udI/CHWUzIu2qLOS7DarvbfsD3i5COZOdfSlU+piwXFLYb+tE6i9Le2Rv
+	 MCW5B6FhidlekCY+gFAXV/tb3sKn+0fUjhZ7lppY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/508] scsi: sg: Make sg_sysfs_class constant
+Subject: [PATCH 6.12 485/666] net_sched: sch_hhf: annotate data-races in hhf_dump_stats()
 Date: Wed, 20 May 2026 18:21:36 +0200
-Message-ID: <20260520162104.559629969@linuxfoundation.org>
+Message-ID: <20260520162121.777847775@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +67,124 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253118-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252658-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,marliere.net:email]
-X-Rspamd-Queue-Id: 752D3597993
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: BB8FC59AEC9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f1fb41765d0bff77514ffeaef37bbb45608f6c62 ]
+[ Upstream commit a6edf2cd4156b71e07258876b7626692e158f7e8 ]
 
-Since commit 43a7206b0963 ("driver core: class: make class_register() take
-a const *"), the driver core allows for struct class to be in read-only
-memory, so move the sg_sysfs_class structure to be declared at build time
-placing it into read-only memory, instead of having to be dynamically
-allocated at boot time.
+hhf_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Link: https://lore.kernel.org/r/20240302-class_cleanup-scsi-v1-1-b9096b990e27@marliere.net
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 3033c471aaf6 ("scsi: sg: Fix sysctl sg-big-buff register during sg_init()")
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421143349.4052215-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/sched/sch_hhf.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 0dd8b9f8d6717..799773a879188 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1421,7 +1421,9 @@ static const struct file_operations sg_fops = {
- 	.llseek = no_llseek,
- };
- 
--static struct class *sg_sysfs_class;
-+static const struct class sg_sysfs_class = {
-+	.name = "scsi_generic"
-+};
- 
- static int sg_sysfs_valid = 0;
- 
-@@ -1523,7 +1525,7 @@ sg_add_device(struct device *cl_dev)
- 	if (sg_sysfs_valid) {
- 		struct device *sg_class_member;
- 
--		sg_class_member = device_create(sg_sysfs_class, cl_dev->parent,
-+		sg_class_member = device_create(&sg_sysfs_class, cl_dev->parent,
- 						MKDEV(SCSI_GENERIC_MAJOR,
- 						      sdp->index),
- 						sdp, "%s", sdp->name);
-@@ -1613,7 +1615,7 @@ sg_remove_device(struct device *cl_dev)
- 	read_unlock_irqrestore(&sdp->sfd_lock, iflags);
- 
- 	sysfs_remove_link(&scsidp->sdev_gendev.kobj, "generic");
--	device_destroy(sg_sysfs_class, MKDEV(SCSI_GENERIC_MAJOR, sdp->index));
-+	device_destroy(&sg_sysfs_class, MKDEV(SCSI_GENERIC_MAJOR, sdp->index));
- 	cdev_del(sdp->cdev);
- 	sdp->cdev = NULL;
- 
-@@ -1685,11 +1687,9 @@ init_sg(void)
- 				    SG_MAX_DEVS, "sg");
- 	if (rc)
- 		return rc;
--        sg_sysfs_class = class_create("scsi_generic");
--        if ( IS_ERR(sg_sysfs_class) ) {
--		rc = PTR_ERR(sg_sysfs_class);
-+	rc = class_register(&sg_sysfs_class);
-+	if (rc)
- 		goto err_out;
--        }
- 	sg_sysfs_valid = 1;
- 	rc = scsi_register_interface(&sg_interface);
- 	if (0 == rc) {
-@@ -1698,7 +1698,7 @@ init_sg(void)
- #endif				/* CONFIG_SCSI_PROC_FS */
- 		return 0;
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index 5aa434b467073..914e985427744 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -198,7 +198,8 @@ static struct hh_flow_state *seek_list(const u32 hash,
+ 				return NULL;
+ 			list_del(&flow->flowchain);
+ 			kfree(flow);
+-			q->hh_flows_current_cnt--;
++			WRITE_ONCE(q->hh_flows_current_cnt,
++				   q->hh_flows_current_cnt - 1);
+ 		} else if (flow->hash_id == hash) {
+ 			return flow;
+ 		}
+@@ -226,7 +227,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
  	}
--	class_destroy(sg_sysfs_class);
-+	class_unregister(&sg_sysfs_class);
- 	register_sg_sysctls();
- err_out:
- 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
-@@ -1713,7 +1713,7 @@ exit_sg(void)
- 	remove_proc_subtree("scsi/sg", NULL);
- #endif				/* CONFIG_SCSI_PROC_FS */
- 	scsi_unregister_interface(&sg_interface);
--	class_destroy(sg_sysfs_class);
-+	class_unregister(&sg_sysfs_class);
- 	sg_sysfs_valid = 0;
- 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0),
- 				 SG_MAX_DEVS);
+ 
+ 	if (q->hh_flows_current_cnt >= q->hh_flows_limit) {
+-		q->hh_flows_overlimit++;
++		WRITE_ONCE(q->hh_flows_overlimit, q->hh_flows_overlimit + 1);
+ 		return NULL;
+ 	}
+ 	/* Create new entry. */
+@@ -234,7 +235,7 @@ static struct hh_flow_state *alloc_new_hh(struct list_head *head,
+ 	if (!flow)
+ 		return NULL;
+ 
+-	q->hh_flows_current_cnt++;
++	WRITE_ONCE(q->hh_flows_current_cnt, q->hh_flows_current_cnt + 1);
+ 	INIT_LIST_HEAD(&flow->flowchain);
+ 	list_add_tail(&flow->flowchain, head);
+ 
+@@ -309,7 +310,7 @@ static enum wdrr_bucket_idx hhf_classify(struct sk_buff *skb, struct Qdisc *sch)
+ 			return WDRR_BUCKET_FOR_NON_HH;
+ 		flow->hash_id = hash;
+ 		flow->hit_timestamp = now;
+-		q->hh_flows_total_cnt++;
++		WRITE_ONCE(q->hh_flows_total_cnt, q->hh_flows_total_cnt + 1);
+ 
+ 		/* By returning without updating counters in q->hhf_arrays,
+ 		 * we implicitly implement "shielding" (see Optimization O1).
+@@ -403,7 +404,7 @@ static int hhf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return NET_XMIT_SUCCESS;
+ 
+ 	prev_backlog = sch->qstats.backlog;
+-	q->drop_overlimit++;
++	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
+ 	/* Return Congestion Notification only if we dropped a packet from this
+ 	 * bucket.
+ 	 */
+@@ -685,10 +686,10 @@ static int hhf_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct hhf_sched_data *q = qdisc_priv(sch);
+ 	struct tc_hhf_xstats st = {
+-		.drop_overlimit = q->drop_overlimit,
+-		.hh_overlimit	= q->hh_flows_overlimit,
+-		.hh_tot_count	= q->hh_flows_total_cnt,
+-		.hh_cur_count	= q->hh_flows_current_cnt,
++		.drop_overlimit = READ_ONCE(q->drop_overlimit),
++		.hh_overlimit	= READ_ONCE(q->hh_flows_overlimit),
++		.hh_tot_count	= READ_ONCE(q->hh_flows_total_cnt),
++		.hh_cur_count	= READ_ONCE(q->hh_flows_current_cnt),
+ 	};
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
