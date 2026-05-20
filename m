@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-253315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAxeGTEeDmox6QUAu9opvQ
-	(envelope-from <stable+bounces-253315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:49 +0200
+	id aGlhDlwGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D76D59A26B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E6B597C7B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ED75533A7309
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D0693208E79
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44013FC5AE;
-	Wed, 20 May 2026 18:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D093FC5C5;
+	Wed, 20 May 2026 18:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sl6qBBOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYkDPe9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA35402B87;
-	Wed, 20 May 2026 18:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36348403EA1;
+	Wed, 20 May 2026 18:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302959; cv=none; b=evxVa8u0xNQA4o1l8fjIXb2B0GimLbtN8Ov4GiiXcnXyMGxsOrKsm/JQgXbjfCpqnMDM/YInVq1TfRDQT8gGTgFep0uTNhPANCrvr8Un/QbB9JeReEaM3msj8mau7lt7bKX/mG+ysYYmoTPg1tqzwPO9WSJzV1CnSgrKV9+8nvs=
+	t=1779302961; cv=none; b=l9nUSsc7E+YW6e1PIaXK17b5zxEIe2BeRKhdhEI23R8XKoBnbP+XyhSpeRAECdrT9KRPvXghWqAdBi3sqwopDjMQVH1iS1tPFz6htzONhTGzgMvDSlHWr5aNroXIYIkq4iA6FdCQqFjcJ+lg6pXC6A8kOcjilYq1zpgS1N7Rqy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302959; c=relaxed/simple;
-	bh=Ux1x5Dn405RwQpkUnpMbpuYGMFS37Hw/Bw0opNgag50=;
+	s=arc-20240116; t=1779302961; c=relaxed/simple;
+	bh=Tnzx5gf8CW+u7HM1dv9SQlS+Y5m48FtjQX8WE9CxlOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TZavbi4vRV2cXU+WMFPe7iI6VI3EM/OB7ZEQlzjmrb2fk3ZjxWAPSNlSTErAXrpVB8mqbScnnJacn0wT0zOoRWn3pKzUFmFRQQX249yzGi573pVCXZ2AyC1+ksqQBy7VTfEfDWO9GSfqOhrp4LzNQMdFJJhlL+2mwvY5zlugB0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sl6qBBOa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BAA1F000E9;
-	Wed, 20 May 2026 18:49:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oNFsFuHEPlbVYbmS/Gzm6XyuFCinHvtjxt0DqVUAECnS2FnNT15h/90u69GnuUpy0rTvvoJkCtqyEnqQ0LA/jLGTsu9tbH3pk6gBdsByDS2M9GiDHb0sDOt8BP99QKhmKDVJHKlhAq7dn9WSTxCIjaKCx0s7lWRC4Nn5QQ9muOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYkDPe9v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6E51F00893;
+	Wed, 20 May 2026 18:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302956;
-	bh=TAorVrldkDVZJbPgsEWwufmoX7FFi+obyfvtkXWjXRE=;
+	s=korg; t=1779302959;
+	bh=FN9BgxFacAJFYi2773N6wn2kqb8jJ0dic6UfogL3T2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sl6qBBOagok6ZDScEbxkvFVbd1GYCsO81fSZECLQmSFRnD+Y0Yk4VBJ6SslHQVZwB
-	 rep4kylYi2tHU0gFIC0YiLptphYmOO80ALrii9f8QCGvjssGcGLeK/aWUtJ1dKoO//
-	 udM7uzqJNFQOj83sDp6/NMVpuIR4HQEUZHUnIiOg=
+	b=YYkDPe9vVb7Ly7XKcrBPoYnAZD/kKmDOc6pRKJMEPFV8iWfyvEeLxK5PW+KSb+AK2
+	 wVMkrHh7dZSSZL6xA1es8qSzfU1NQqUanSBVhv9jFeoP9XpS8JNvPqpBDUmT0kyF7v
+	 pepz62mNYZsjo5keRhKkdHHHPplUcETFYGhPuJEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Brown <broonie@kernel.org>,
 	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 463/508] ASoC: SOF: Intel: hda-dai: remove dspless special case
-Date: Wed, 20 May 2026 18:24:46 +0200
-Message-ID: <20260520162108.630070460@linuxfoundation.org>
+Subject: [PATCH 6.6 464/508] ASoC: SOF: Intel: hda-dai: add support for dspless mode beyond HDAudio
+Date: Wed, 20 May 2026 18:24:47 +0200
+Message-ID: <20260520162108.652119405@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -71,12 +71,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253315-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253316-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,kernel.org,foxmail.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -95,8 +95,8 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8D76D59A26B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C2E6B597C7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -106,41 +106,59 @@ X-Rspamd-Server: lfdr
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit daa09d0615ce9c781777802874cffa4380f883c3 ]
+[ Upstream commit 2065610b5ddd5b58eed1dc3b3c3db27a26ebd4b6 ]
 
-The existing code forces a parameter to be NULL but that parameter is
-not used yet. Remove the special case in preparation for additional
-changes.
+For SoundWire/ALH, we need to have a dai configured, but we don't want
+to send a DMA_TLV to firmware. Add additional code branches.
 
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://msgid.link/r/20240213101247.28887-9-peter.ujfalusi@linux.intel.com
+Link: https://msgid.link/r/20240213101247.28887-16-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-dai.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/soc/sof/intel/hda-dai.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
-index 19ec1a45737ea..f5bfa17bf6505 100644
+index f5bfa17bf6505..1fe7cce160913 100644
 --- a/sound/soc/sof/intel/hda-dai.c
 +++ b/sound/soc/sof/intel/hda-dai.c
-@@ -83,12 +83,8 @@ hda_dai_get_ops(struct snd_pcm_substream *substream, struct snd_soc_dai *cpu_dai
+@@ -83,6 +83,11 @@ hda_dai_get_ops(struct snd_pcm_substream *substream, struct snd_soc_dai *cpu_dai
  
  	sdev = widget_to_sdev(w);
  
--	/*
--	 * The swidget parameter of hda_select_dai_widget_ops() is ignored in
--	 * case of DSPless mode
--	 */
++	if (!swidget) {
++		dev_err(sdev->dev, "%s: swidget is NULL\n", __func__);
++		return NULL;
++	}
++
  	if (sdev->dspless_mode_selected)
--		return hda_select_dai_widget_ops(sdev, NULL);
-+		return hda_select_dai_widget_ops(sdev, swidget);
+ 		return hda_select_dai_widget_ops(sdev, swidget);
  
- 	sdai = swidget->private;
+@@ -364,8 +369,11 @@ static int non_hda_dai_hw_params(struct snd_pcm_substream *substream,
+ 		return ret;
+ 	}
+ 
+-	/* get stream_id */
+ 	sdev = widget_to_sdev(w);
++	if (sdev->dspless_mode_selected)
++		goto skip_tlv;
++
++	/* get stream_id */
+ 	hext_stream = ops->get_hext_stream(sdev, cpu_dai, substream);
+ 
+ 	if (!hext_stream) {
+@@ -398,6 +406,7 @@ static int non_hda_dai_hw_params(struct snd_pcm_substream *substream,
+ 	dma_config->dma_stream_channel_map.device_count = 0; /* mapping not used */
+ 	dma_config->dma_priv_config_size = 0;
+ 
++skip_tlv:
+ 	return 0;
+ }
  
 -- 
 2.53.0
