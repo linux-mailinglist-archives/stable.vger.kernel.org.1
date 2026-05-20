@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-251379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOYgJBgaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:20 +0200
+	id uKh2I+3xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0730599B74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 640BD594395
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9098731D0ADE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15C603212182
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31F43D75C7;
-	Wed, 20 May 2026 17:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE0C3A4526;
+	Wed, 20 May 2026 16:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2c1fuoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeW39Ql1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6232636CE19;
-	Wed, 20 May 2026 17:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6A7372B31;
+	Wed, 20 May 2026 16:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297826; cv=none; b=noubFZyMFvFI4A5Cjjpkc38nc9fDwyEJvpJEtAoe2Iu4Jl326lUqinOmFj6tWrWDT4Iw8a94EX/Nuglh/eG4V2l4DCcmg7/9/IdbiwSEtHjQeSUbHMGzJCDg/S9Dm2NNdFBIMF5FRCC9OmeSFgJOO78oACiR3IziXJU9rT1VXxw=
+	t=1779295283; cv=none; b=nfcr8hs76oWaRgxVxtcVIpUsrTGrdxWZUYUkR0uC3SXIipQ4Bf6if85Q2en8qxAFKKPGyg2tnvRhd573qV+YPTIcbHxHKnqfwjjSSgDiP/3+10WIoDkaH1fy82xImzbjBBsTf35O6G4MHeRbteoV5lLUt6nLHxwlxTladtHkGAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297826; c=relaxed/simple;
-	bh=yTOY8mIYJcsaRR02K89hQ7blU8faFRK4SGH0yTVXm7E=;
+	s=arc-20240116; t=1779295283; c=relaxed/simple;
+	bh=MyPls/gySHitaSjVyym3xRlC7v51WZqH/GF84C153Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2rh/iTRg7wtAU3/sh0OQGrvHMLU7665j7S8yta25lz9iD0Z/4xVDmA+wcnMwjn7U9c2t/dWR+C7VBtJZRCWm8Y/ldGVaUFHP19cu2mPAFsYJrIwq/0HlCb3d+8aHBflLIc70F64w67rriJPXG5FK9CGsZzIFNlDYYCN9V+8pAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2c1fuoB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA181F000E9;
-	Wed, 20 May 2026 17:23:44 +0000 (UTC)
+	 MIME-Version; b=XRd1L0EG0uCZ0ZL6bCflqXNO2/EPn0MhD1hV7xP6CVEj3+N3CI8g6SvPLLu+aW9pqyyIGK5zRy4XgLfGlSbD+6N3G85x6sgjU7IyPevovF6/I7UqocHIkBsZjN8f3ryq6p7QpEFDe0XUM48zsSWifG9w2HYFr2w1vHYHH/X6e+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeW39Ql1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EACC1F000E9;
+	Wed, 20 May 2026 16:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297825;
-	bh=57U100keaI/Orqok+JKKI+5TqVldj7CmL9c4pONu0dw=;
+	s=korg; t=1779295282;
+	bh=I32KpGJqADVRlRD7mBbvZ1OhtNHhPoqNi0HmoKAJD94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o2c1fuoBSvVr2OzAvtEgxGjX1TGAu/lho/6vhG1Y1j9PtLw6LpPQAQkMHXrsSBVvQ
-	 PknZRP0rBrU31axwT2lEAtRN6Ti4SlEEt4hNSWMIWZeCogpHArlo1sY2tOoQdhvEsV
-	 FTzLTk2en25vPu5v1li3rNpnrZ5y3PZzSZk1sjLk=
+	b=zeW39Ql1f1zl3C36bElH6CxpETm5ywQYbkyL6nuCHi87AGGLuF0mYlNWRf4BDsdwx
+	 /HkrHdVN782JjLSj14rKIcziQlvSrV9LkBQoQ6G5fZxl+yZdfTTqfE/ZOXNBuP1evP
+	 +etAQCn5Az78cbR6BpwEMQIoNbJTdjQOlvH1hldY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Sun <2022090917019@std.uestc.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 127/957] bpf: Drop task_to_inode and inet_conn_established from lsm sleepable hooks
+Subject: [PATCH 7.0 0360/1146] drm/msm/a6xx: Switch to preemption safe AO counter
 Date: Wed, 20 May 2026 18:10:10 +0200
-Message-ID: <20260520162137.309836478@linuxfoundation.org>
+Message-ID: <20260520162156.348320201@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,76 +73,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251379-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250388-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,uestc.edu.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D0730599B74
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 640BD594395
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit beaf0e96b1da74549a6cabd040f9667d83b2e97e ]
+[ Upstream commit 0c59f258ffd4c9c2a6bd37d71a0ade1db8bc03b7 ]
 
-bpf_lsm_task_to_inode() is called under rcu_read_lock() and
-bpf_lsm_inet_conn_established() is called from softirq context, so
-neither hook can be used by sleepable LSM programs.
+CP_ALWAYS_ON_COUNTER is not save-restored during preemption, so it won't
+provide accurate data about the 'submit' when preemption is enabled.
+Switch to CP_ALWAYS_ON_CONTEXT which is preemption safe.
 
-Fixes: 423f16108c9d8 ("bpf: Augment the set of sleepable LSM hooks")
-Reported-by: Quan Sun <2022090917019@std.uestc.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Closes: https://lore.kernel.org/bpf/3ab69731-24d1-431a-a351-452aafaaf2a5@std.uestc.edu.cn/T/#u
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20260407122334.344072-1-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e7ae83da4a28 ("drm/msm/a6xx: Implement preemption for a7xx targets")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714657/
+Message-ID: <20260327-a8xx-gpu-batch2-v2-3-2b53c38d2101@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_lsm.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/bpf_lsm.c b/kernel/bpf/bpf_lsm.c
-index 0a59df1c550a0..2eead789b898b 100644
---- a/kernel/bpf/bpf_lsm.c
-+++ b/kernel/bpf/bpf_lsm.c
-@@ -357,8 +357,6 @@ BTF_ID(func, bpf_lsm_sb_umount)
- BTF_ID(func, bpf_lsm_settime)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 4fe2b86e7a839..eeecde88e549f 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -347,7 +347,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	 * GPU registers so we need to add 0x1a800 to the register value on A630
+ 	 * to get the right value from PM4.
+ 	 */
+-	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
++	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_CONTEXT,
+ 		rbmemptr_stats(ring, index, alwayson_start));
  
- #ifdef CONFIG_SECURITY_NETWORK
--BTF_ID(func, bpf_lsm_inet_conn_established)
--
- BTF_ID(func, bpf_lsm_socket_accept)
- BTF_ID(func, bpf_lsm_socket_bind)
- BTF_ID(func, bpf_lsm_socket_connect)
-@@ -379,7 +377,6 @@ BTF_ID(func, bpf_lsm_syslog)
- BTF_ID(func, bpf_lsm_task_alloc)
- BTF_ID(func, bpf_lsm_task_prctl)
- BTF_ID(func, bpf_lsm_task_setscheduler)
--BTF_ID(func, bpf_lsm_task_to_inode)
- BTF_ID(func, bpf_lsm_userns_create)
- BTF_SET_END(sleepable_lsm_hooks)
+ 	/* Invalidate CCU depth and color */
+@@ -388,7 +388,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
  
+ 	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
+ 		rbmemptr_stats(ring, index, cpcycles_end));
+-	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
++	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_CONTEXT,
+ 		rbmemptr_stats(ring, index, alwayson_end));
+ 
+ 	/* Write the fence to the scratch register */
+@@ -457,7 +457,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+ 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
+ 	struct msm_ringbuffer *ring = submit->ring;
+-	u32 rbbm_perfctr_cp0, cp_always_on_counter;
++	u32 rbbm_perfctr_cp0, cp_always_on_context;
+ 	unsigned int i, ibs = 0;
+ 
+ 	adreno_check_and_reenable_stall(adreno_gpu);
+@@ -480,14 +480,14 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 
+ 	if (adreno_is_a8xx(adreno_gpu)) {
+ 		rbbm_perfctr_cp0 = REG_A8XX_RBBM_PERFCTR_CP(0);
+-		cp_always_on_counter = REG_A8XX_CP_ALWAYS_ON_COUNTER;
++		cp_always_on_context = REG_A8XX_CP_ALWAYS_ON_CONTEXT;
+ 	} else {
+ 		rbbm_perfctr_cp0 = REG_A7XX_RBBM_PERFCTR_CP(0);
+-		cp_always_on_counter = REG_A6XX_CP_ALWAYS_ON_COUNTER;
++		cp_always_on_context = REG_A6XX_CP_ALWAYS_ON_CONTEXT;
+ 	}
+ 
+ 	get_stats_counter(ring, rbbm_perfctr_cp0, rbmemptr_stats(ring, index, cpcycles_start));
+-	get_stats_counter(ring, cp_always_on_counter, rbmemptr_stats(ring, index, alwayson_start));
++	get_stats_counter(ring, cp_always_on_context, rbmemptr_stats(ring, index, alwayson_start));
+ 
+ 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
+ 	OUT_RING(ring, CP_SET_THREAD_BOTH);
+@@ -535,7 +535,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 	}
+ 
+ 	get_stats_counter(ring, rbbm_perfctr_cp0, rbmemptr_stats(ring, index, cpcycles_end));
+-	get_stats_counter(ring, cp_always_on_counter, rbmemptr_stats(ring, index, alwayson_end));
++	get_stats_counter(ring, cp_always_on_context, rbmemptr_stats(ring, index, alwayson_end));
+ 
+ 	/* Write the fence to the scratch register */
+ 	if (adreno_is_a8xx(adreno_gpu)) {
 -- 
 2.53.0
 
