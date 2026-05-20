@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WF3hLJsjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:55 +0200
+	id OMWVA0frDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A0059A866
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15B05930B8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BAAE390E09F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F4D630C4829
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC4D3F7AA9;
-	Wed, 20 May 2026 18:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E616C3B6349;
+	Wed, 20 May 2026 16:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHH7xEok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2lFJHtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE063F4DC0;
-	Wed, 20 May 2026 18:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81324373BEB;
+	Wed, 20 May 2026 16:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300144; cv=none; b=Lf+np0uuOsGW8poRIl9WIzK1m3iKSWP9dcu6qi0Iz/3c5SYHQ4TO4OW+if5/ZHKW9r1VpPDpd0zpIvlU5dEEEnyIOyMGWE6CAJf1t/7bpEScIjORJSrl9HjD364rquPfPvXJejzAAHN4TaG8IS7WXG/6md5wtX84I+xlrkPNHYU=
+	t=1779295974; cv=none; b=k0UJl2+I/iIIPlJHbCkBU/j5aIMPIepZe/YOY/ObIDI4rCBGCrko4E4XnMUZ/fbhr8zUnIlK9HjfU2adQhBCYLm3gQTusi4RkPm+oVgiRpNYREmisU2/SGPNkHw0h6BxgluFlne9+eUfgFI2i6MKE10uhmV6HngLfu/Ka6Ojptg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300144; c=relaxed/simple;
-	bh=C2WaCv4IOKoZN5bH7+udHP0ZmNzK1iMw+G0GHQX3JwQ=;
+	s=arc-20240116; t=1779295974; c=relaxed/simple;
+	bh=BUKl2ch9K5jlBOo3RoAH3E/Z1f3+BzlcRBTRb/8OLWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r4jnirakiLtAmJmLPob8jwT8dJ7i7Ax6ciG4sLrDBEzK5zKzwYVF++KCNjHmn9fwVQD8jyZRgIwTgltatQMZj4pXpSgRPQG1VrazJQpiF7G/0RyTpHCJQyv1MSa3mWOiPQYiyehzeFX7TbkAwjFa0YVM4qVNQ2W7ChpOEQSbfW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHH7xEok; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5152D1F000E9;
-	Wed, 20 May 2026 18:02:22 +0000 (UTC)
+	 MIME-Version; b=YrHTqgJyGsO+VycKQT4/ZoBmE/aXZga5pDfNbp3OysfmT0dluZcmXR+7QrwnmaadH2BXH311btDOYW5i2kOBKrfUzK2sI+d1+of/wni7OZTkjBaLte0DIDX3vKG7zr+1PL1kTNbUSDU4Jr4YhGiFIFqLFpE5GVS+ei93PvsaZlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2lFJHtb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E61F000E9;
+	Wed, 20 May 2026 16:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300142;
-	bh=TJarv0OIExnFpAQIi/KrMTytw1+P/NgYD/zCOFYO91g=;
+	s=korg; t=1779295973;
+	bh=iYHwDpgoFJnWmLPy2AGmGZ8/hSp+KHG5y3G7KJIqelY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OHH7xEokAt/N4vwIcnjTV67LFoyRkhx4plYU+ELVbF3LY9jsSobuVMCfT7ESNcajG
-	 NsqjR/sLBbl+BFfr3r8Vo3Ikq2aE4w6PXdCoaf8LECGOBDG5JPn+q4VtR/dzMLhHDW
-	 rGVdAITdAX0imzZzY4zTIBoQr9Opf4f3va/eJQHU=
+	b=I2lFJHtb4VYk9hg+8bB0FPgQ9sCFh9ZBEktT0/KSeSVhy16jxqMUgXvwX2z4aUrPN
+	 0Zr7jmw8Mjqnk97e50Q5TcQQakCIw7lQ2teR0ZyevBotWNs6M2+Hd7+mITPHCVNuDw
+	 ERdV5JZRKZL7g8gDDh7ta01XqE9W/xmO+8eLV+H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Amit Machhiwal <amachhiw@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/666] selftests/powerpc: Suppress -Wmaybe-uninitialized with GCC 15
+Subject: [PATCH 7.0 0623/1146] dt-bindings: pinctrl: marvell,armada3710-xb-pinctrl: add missing items keyword
 Date: Wed, 20 May 2026 18:14:33 +0200
-Message-ID: <20260520162112.577246742@linuxfoundation.org>
+Message-ID: <20260520162202.283501345@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252234-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microchip.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250655-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gnu.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 00A0059A866
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,microchip.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,devicetree.org:url,0.0.53.232:email]
+X-Rspamd-Queue-Id: A15B05930B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 6e65886fceb23605eff952d6b1975737b4c4b154 ]
+[ Upstream commit a92b75100826b1ea27e6b8a678e53970ad4736d7 ]
 
-GCC 15 reports the below false positive '-Wmaybe-uninitialized' warning
-in vphn_unpack_associativity() when building the powerpc selftests.
+Even though the type of the 'groups' property of a pinmux node is
+specified as string-array in pinmux-node.yaml, but trying to use
+multiple strings causes dtbs_check warnings.
 
-  # make -C tools/testing/selftests TARGETS="powerpc"
-  [...]
-    CC       test-vphn
-  In file included from test-vphn.c:3:
-  In function ‘vphn_unpack_associativity’,
-      inlined from ‘test_one’ at test-vphn.c:371:2,
-      inlined from ‘test_vphn’ at test-vphn.c:399:9:
-  test-vphn.c:10:33: error: ‘be_packed’ may be used uninitialized [-Werror=maybe-uninitialized]
-     10 | #define be16_to_cpup(x)         bswap_16(*x)
-        |                                 ^~~~~~~~
-  vphn.c:42:27: note: in expansion of macro ‘be16_to_cpup’
-     42 |                 u16 new = be16_to_cpup(field++);
-        |                           ^~~~~~~~~~~~
-  In file included from test-vphn.c:19:
-  vphn.c: In function ‘test_vphn’:
-  vphn.c:27:16: note: ‘be_packed’ declared here
-     27 |         __be64 be_packed[VPHN_REGISTER_COUNT];
-        |                ^~~~~~~~~
-  cc1: all warnings being treated as errors
+For example, checking the following dts ...
 
-When vphn_unpack_associativity() is called from hcall_vphn() in kernel
-the error is not seen while building vphn.c during kernel compilation.
-This is because the top level Makefile includes '-fno-strict-aliasing'
-flag always.
+  $ cat arch/arm64/boot/dts/marvell/armada-3720-test.dts
+  /dts-v1/;
 
-The issue here is that GCC 15 emits '-Wmaybe-uninitialized' due to type
-punning between __be64[] and __b16* when accessing the buffer via
-be16_to_cpup(). The underlying object is fully initialized but GCC 15
-fails to track the aliasing due to the strict aliasing violation here.
-Please refer [1] and [2]. This results in a false positive warning which
-is promoted to an error under '-Werror'. This problem is not seen when
-the compilation is performed with GCC 13 and 14. An issue [1] has also
-been created on GCC bugzilla.
+  #include "armada-372x.dtsi"
 
-The selftest compiles fine with '-fno-strict-aliasing'. Since this GCC
-flag is used to compile vphn.c in kernel too, the same flag should be
-used to build vphn tests when compiling vphn.c in the selftest as well.
+  &pinctrl_nb {
+          pwm-gpio-pins {
+                  groups = "pwm0", "pwm1", "pwm2", "pwm3";
+                  function = "gpio";
+          };
+  };
 
-Fix this by including '-fno-strict-aliasing' during vphn.c compilation
-in the selftest. This keeps the build working while limiting the scope
-of the suppression to building vphn tests.
+... results in this warning:
 
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=124427
-[2] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99768
+  arch/arm64/boot/dts/marvell/armada-3720-test.dtb: pinctrl@13800 (marvell,armada3710-nb-pinctrl): pwm-gpio-pins:groups: ['pwm0', 'pwm1', 'pwm2', 'pwm3'] is too long
+	  from schema $id: http://devicetree.org/schemas/pinctrl/marvell,armada3710-xb-pinctrl.yaml
 
-Fixes: 58dae82843f5 ("selftests/powerpc: Add test for VPHN")
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260313165426.43259-1-amachhiw@linux.ibm.com
+Add the missing 'items' keyword to the schema to allow using multiple
+strings without such warnings. Also adjust the indentation of the next
+statements accordingly.
+
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: c1c9641a04e83 ("dt-bindings: pinctrl: Convert marvell,armada-3710-(sb|nb)-pinctrl to DT schema")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/vphn/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../pinctrl/marvell,armada3710-xb-pinctrl.yaml        | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/vphn/Makefile b/tools/testing/selftests/powerpc/vphn/Makefile
-index 61d519a076c6f..778fc396340db 100644
---- a/tools/testing/selftests/powerpc/vphn/Makefile
-+++ b/tools/testing/selftests/powerpc/vphn/Makefile
-@@ -5,7 +5,7 @@ top_srcdir = ../../../../..
- include ../../lib.mk
- include ../flags.mk
+diff --git a/Documentation/devicetree/bindings/pinctrl/marvell,armada3710-xb-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/marvell,armada3710-xb-pinctrl.yaml
+index 4f9013d368749..727da7fb490ce 100644
+--- a/Documentation/devicetree/bindings/pinctrl/marvell,armada3710-xb-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/marvell,armada3710-xb-pinctrl.yaml
+@@ -84,11 +84,12 @@ patternProperties:
  
--CFLAGS += -m64 -I$(CURDIR)
-+CFLAGS += -m64 -I$(CURDIR) -fno-strict-aliasing
+     properties:
+       groups:
+-        enum: [ emmc_nb, i2c1, i2c2, jtag, mii_col, onewire, pcie1,
+-                pcie1_clkreq, pcie1_wakeup, pmic0, pmic1, ptp, ptp_clk,
+-                ptp_trig, pwm0, pwm1, pwm2, pwm3, rgmii, sdio0, sdio_sb, smi,
+-                spi_cs1, spi_cs2, spi_cs3, spi_quad, uart1, uart2,
+-                usb2_drvvbus1, usb32_drvvbus0 ]
++        items:
++          enum: [ emmc_nb, i2c1, i2c2, jtag, mii_col, onewire, pcie1,
++                  pcie1_clkreq, pcie1_wakeup, pmic0, pmic1, ptp, ptp_clk,
++                  ptp_trig, pwm0, pwm1, pwm2, pwm3, rgmii, sdio0, sdio_sb,
++                  smi, spi_cs1, spi_cs2, spi_cs3, spi_quad, uart1, uart2,
++                  usb2_drvvbus1, usb32_drvvbus0 ]
  
- $(TEST_GEN_PROGS): ../harness.c
- 
+       function:
+         enum: [ drvbus, emmc, gpio, i2c, jtag, led, mii, mii_err, onewire,
 -- 
 2.53.0
 
