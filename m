@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMV6DlQaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:20 +0200
+	id UByZO33yDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92549599BCD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9CD5945AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C14835FF02A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2584F340F46D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4613F39C8;
-	Wed, 20 May 2026 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BB7370AF4;
+	Wed, 20 May 2026 16:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Um0jtsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqT1GsMx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D073D6673;
-	Wed, 20 May 2026 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7436EAB8;
+	Wed, 20 May 2026 16:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297858; cv=none; b=Ukl50wRHSFZ+31KC/RrI8aQ/iL5SSv8rM1wmWQcmdCxNS7pktFQltWHEVpyb1NucTkHDE2QJK+SAheVvBIEHZQ6ZKUw6WonKrbWwvbrKhn4j0XE/j2fXFM8wjscNygRHf1HLADGqwaxyCoV5aTDgVVfCcvhUU7iZPOu8OLAgQoM=
+	t=1779295407; cv=none; b=UXSlq29UsbW9Ie2NIknogqfjpDHT/KyBC4J5BpSZ3kVzI3hB9npVH0+7w3B7p4zzGucRoBZQ/m1FTAnVfG2A8vWkheklya1gj/kKBp3RRLDmALT3u3Lk1ERzB1lR3vU9DMEJ+UQ634Otw3vPxYRVOjmheSiZhyt9ygY3C4yup0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297858; c=relaxed/simple;
-	bh=7XpovQe+dD3ZBJ2oOeSo+Q+jUkyeiGcSnopPU8SKgp4=;
+	s=arc-20240116; t=1779295407; c=relaxed/simple;
+	bh=KquaecswzJ6ATd1bXKKZm/Hp4ASTaPyjR5H82kKdUPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zk4bo80lxbgjkwwlDAJl+iqzl79wFlrqbNAIY9IXbFGF9+4DsjbKokOi9Cykpz49XZpCK+Pe9DvbQPemTUYModcN4aDyOmeLoHJu2p3nEM3DSG7Du/LE/8TXwVaX9Dfg8X6NUTiTwxQnhI84KAufiHTcOJMmcXFT2HcqW5Soi+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Um0jtsa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695B21F000E9;
-	Wed, 20 May 2026 17:24:16 +0000 (UTC)
+	 MIME-Version; b=ENTgBp4WykIrPoYw15eYqfJwjXE0tCZdFh1At5TIZBoOkugcTKQrqzw+8thXCws6eEFVI3nanHNzncNZeatu5h4F7RLume4VI6Y0q/Hq53TgMRakbAzLmgF9oh59ySkSEhhfLroC/yMKhmdc0v98AcxkQjyCGGArzLHb5Xivzfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqT1GsMx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796F91F000E9;
+	Wed, 20 May 2026 16:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297856;
-	bh=Ib4CzhFkPyAkC+0pZkL0v46Ty63HOLBWdPPyuyFsuX4=;
+	s=korg; t=1779295406;
+	bh=1grX5NXIPAwcA3WYVHDLkvkhx/BWbl/2cD/ZTGhANC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1Um0jtsay4ZGO8SPOj5v46ZQ8dgMywsGCkaXFaVvPI/6kt4nszwBquZNSX+lo6aSZ
-	 mx7mpBMuczFFi/1roHPv8OgWLhIHVEulCrn0blE5xT8SzJNmQ6Q4Wwp1nQ8tpPd6jf
-	 btYwjrSqjE00Dl2Z0CqTRlm/T8A/b6I3hKx/xEpo=
+	b=FqT1GsMxVXx3LJq2snpDFDifjHQhWHkRJNqhKzxEGDPuls7BQzehb0TcTr1VwkIRq
+	 NUVDF7R5AIbnimsTrcS33kCRdJOJ/sAxGdRt9fGBM0cH+/EEXGiNfEcF3pMxexHH0D
+	 +ppjO6HnWvBA6ckMOmgKZIvgBZcqnmVW8ueHqr9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Ravi Hothi <ravi.hothi@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 173/957] bpf: reject short IPv4/IPv6 inputs in bpf_prog_test_run_skb
-Date: Wed, 20 May 2026 18:10:56 +0200
-Message-ID: <20260520162138.306507736@linuxfoundation.org>
+Subject: [PATCH 7.0 0407/1146] ASoC: qcom: audioreach: explicitly enable speaker protection modules
+Date: Wed, 20 May 2026 18:10:57 +0200
+Message-ID: <20260520162157.409439341@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251391-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250435-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,619b9ef527f510a57cfc];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 92549599BCD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8F9CD5945AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sun Jian <sun.jian.kdev@gmail.com>
+From: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
 
-[ Upstream commit 12bec2bd4b76d81c5d3996bd14ec1b7f4d983747 ]
+[ Upstream commit b481eabe5a193ba8499f446c2ab7e0ac042f8776 ]
 
-bpf_prog_test_run_skb() calls eth_type_trans() first and then uses
-skb->protocol to initialize sk family and address fields for the test
-run.
+Speaker protection and VI feedback modules are disabled by default.
+Explicitly enable them when configuring speaker protection.
 
-For IPv4 and IPv6 packets, it may access ip_hdr(skb) or ipv6_hdr(skb)
-even when the provided test input only contains an Ethernet header.
-
-Reject the input earlier if the Ethernet frame carries IPv4/IPv6
-EtherType but the L3 header is too short.
-
-Fold the IPv4/IPv6 header length checks into the existing protocol
-switch and return -EINVAL before accessing the network headers.
-
-Fixes: fa5cb548ced6 ("bpf: Setup socket family and addresses in bpf_prog_test_run_skb")
-Reported-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=619b9ef527f510a57cfc
-Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
-Link: https://lore.kernel.org/r/20260408034623.180320-2-sun.jian.kdev@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 3e43a8c033c3 ("ASoC: qcom: audioreach: Add support for VI Sense module")
+Fixes: 0db76f5b2235 ("ASoC: qcom: audioreach: Add support for Speaker Protection module")
+Signed-off-by: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260326113531.3144998-1-ravi.hothi@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ sound/soc/qcom/qdsp6/audioreach.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 65d7f8d51823e..963fee5d01e24 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1057,19 +1057,23 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+diff --git a/sound/soc/qcom/qdsp6/audioreach.c b/sound/soc/qcom/qdsp6/audioreach.c
+index 241c3b4479c6f..ff8cd55b0d898 100644
+--- a/sound/soc/qcom/qdsp6/audioreach.c
++++ b/sound/soc/qcom/qdsp6/audioreach.c
+@@ -1365,9 +1365,14 @@ int audioreach_set_media_format(struct q6apm_graph *graph,
+ 	case MODULE_ID_SPEAKER_PROTECTION:
+ 		rc = audioreach_speaker_protection(graph, module,
+ 						   PARAM_ID_SP_OP_MODE_NORMAL);
++		if (!rc)
++			rc = audioreach_module_enable(graph, module, true);
++
+ 		break;
+ 	case MODULE_ID_SPEAKER_PROTECTION_VI:
+ 		rc = audioreach_speaker_protection_vi(graph, module, cfg);
++		if (!rc)
++			rc = audioreach_module_enable(graph, module, true);
+ 		break;
  
- 	switch (skb->protocol) {
- 	case htons(ETH_P_IP):
--		sk->sk_family = AF_INET;
--		if (sizeof(struct iphdr) <= skb_headlen(skb)) {
--			sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
--			sk->sk_daddr = ip_hdr(skb)->daddr;
-+		if (skb_headlen(skb) < sizeof(struct iphdr)) {
-+			ret = -EINVAL;
-+			goto out;
- 		}
-+		sk->sk_family = AF_INET;
-+		sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
-+		sk->sk_daddr = ip_hdr(skb)->daddr;
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case htons(ETH_P_IPV6):
--		sk->sk_family = AF_INET6;
--		if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
--			sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
--			sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
-+		if (skb_headlen(skb) < sizeof(struct ipv6hdr)) {
-+			ret = -EINVAL;
-+			goto out;
- 		}
-+		sk->sk_family = AF_INET6;
-+		sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
-+		sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
- 		break;
- #endif
  	default:
 -- 
 2.53.0
