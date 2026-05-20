@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDuuDN3yDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:57 +0200
+	id KDLmN076DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-251359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9919A5946A8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A2E595AA8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE6C7351322C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EF953085E89
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3908A3D7D7E;
-	Wed, 20 May 2026 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92C43ED3A4;
+	Wed, 20 May 2026 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiwpofnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KohtR+o+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF0F367B8D;
-	Wed, 20 May 2026 16:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18DD3BA246;
+	Wed, 20 May 2026 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295468; cv=none; b=OCh+7CS/vodp5roXmON1xrg26W/XNU0dPw4/ogrb/n0IkrY6puxp03bKTotw2uTRdoKEe8ZdWwODXXcaPFEgHiJBQ/0SOyGWXnKyG/Z3qgLKLVSZoKfapL3VfkJu/emqOKQHuyFod2CDuFnbiqQZeZ/JxPXWS+wpfGuzA2BLMGc=
+	t=1779297773; cv=none; b=NdrJJluSpX+D/bRIBuLM7PziOnK7PmRZJ25g1sLdnneIvl9oWZDNAcQ1cibAQe5PUv4PUjlsD6zEsV8o+7BE7zLtNHCpa1+tPvmyarC+cWctUbvNBsGxpLDYrTwRh1MCuFsNfWBYXRhCkispqS4q/o0CUv9IRXv9w7/JtiWcE18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295468; c=relaxed/simple;
-	bh=pzIhcKcSVSHpDIV7whqqppGL+ydabpQTQ0d/YFKVH8U=;
+	s=arc-20240116; t=1779297773; c=relaxed/simple;
+	bh=uyeLZoTaJui5BYJZEiBNSwZEbJeHKwkCX/gob62JSnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DfBomDNaANOCFg8cHM+D5IJ7M4oxscOTj3TtIDd2Ra/K4KMfpRIdvAr51wAHrrmUq/ChpqiPsob9hxRCQJPB4zeKEBXOqDNqko0HjX/1cbH9cK4pAJBnwbNSWDWtBS66UT6Z6y8zJb8SwU63r+n+XYpbP0gJbQ5h1/e9Ivh0l0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiwpofnX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C681F000E9;
-	Wed, 20 May 2026 16:44:25 +0000 (UTC)
+	 MIME-Version; b=gbhi52VErfmHHX8f060zVSADS3Bc7QKTqP0+LRZhL+1o0ptDBUbb5PEqXfLTT4WgKewWEs/hz2KzkyZ4JOoipN4vVu9MyOJFlmBcA9qUapQP4JTmAippwPTYk6JD1TDNHS3yvk9DHvOpQ9/+SsxUjEtGan+ZSzp7Zc8TfGGofYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KohtR+o+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146B21F000E9;
+	Wed, 20 May 2026 17:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295466;
-	bh=xNkKbOTGR6hIcaUYTpxY1/kPJJiEuAArXtq65/WVSZw=;
+	s=korg; t=1779297772;
+	bh=jmfGMXBj4Mz46NJhfUPYY6iA6KIOt1ktKNldVdxxgQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eiwpofnXvs1bMnnThcJ1QbXvzI2NEnt157JA3YsesFWMU3stfPrK1S+Kl5WcUmrID
-	 gI50pxQSwXWzEpZFurCaQDovUUzk6tWoJdedogrUvbK22ijHyYwfLcv/zywEd1Sr4u
-	 0DzeyHnHGc/zOQiraiM3i7AsMxWn4LvVH98cS7SU=
+	b=KohtR+o+/hhDSYbHknG7+hpZvsE2LK+dvKu3jfH0pKYS24vjJRG7KtH6i2HBKl6nT
+	 3zWR2strM9H0BZpMeUMCq7WP469tmjrTgURwTWFzc8nDJe6842deFPC4DqVEWQl5+8
+	 /rwVmGOhtMMO2TyzHFRuY1kjVZkvL/6CgIBO1hJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0390/1146] ALSA: hda: Notify IEC958 Default PCM switch state changes
+Subject: [PATCH 6.18 157/957] net: mana: Use pci_name() for debugfs directory naming
 Date: Wed, 20 May 2026 18:10:40 +0200
-Message-ID: <20260520162157.025228385@linuxfoundation.org>
+Message-ID: <20260520162137.955167431@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,192 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250459-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251359-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: 9919A5946A8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 68A2E595AA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 6692ed9b4ced29aa819c95cc4ad9e2dc8720c081 ]
+[ Upstream commit c116f07ab9d22bb6f355f3cf9e44c1e6a47fe559 ]
 
-The "IEC958 Default PCM Playback Switch" control is backed directly by
-mout->share_spdif. The share-switch callbacks currently access that state
-without serialization, and spdif_share_sw_put() always returns 0, so
-normal userspace writes never emit the standard ALSA control value
-notification.
+Use pci_name(pdev) for the per-device debugfs directory instead of
+hardcoded "0" for PFs and pci_slot_name(pdev->slot) for VFs. The
+previous approach had two issues:
 
-snd_hda_multi_out_analog_open() may also clear mout->share_spdif when the
-analog PCM capabilities and the SPDIF capabilities no longer intersect.
-That fallback is still needed to avoid creating an impossible hw
-constraint set, but it changes the mixer backing value without notifying
-subscribers.
+1. pci_slot_name() dereferences pdev->slot, which can be NULL for VFs
+   in environments like generic VFIO passthrough or nested KVM,
+   causing a NULL pointer dereference.
 
-Protect the share-switch callbacks with spdif_mutex like the other SPDIF
-control handlers, return the actual change value from spdif_share_sw_put(),
-and notify the cached control when the open path forcibly disables
-shared SPDIF mode after dropping spdif_mutex.
+2. Multiple PFs would all use "0", and VFs across different PCI
+   domains or buses could share the same slot name, leading to
+   -EEXIST errors from debugfs_create_dir().
 
-This keeps the existing auto-disable behavior while making switch state
-changes visible to userspace.
+pci_name(pdev) returns the unique BDF address, is always valid, and is
+unique across the system.
 
-Fixes: 9a08160bdbe3 ("[ALSA] hda-codec - Add "IEC958 Default PCM" switch")
-Fixes: 022b466fc353 ("ALSA: hda - Avoid invalid formats and rates with shared SPDIF")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260403-hda-spdif-share-notify-v3-1-4eb1356b0f17@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 6607c17c6c5e ("net: mana: Enable debugfs files for MANA device")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260408081224.302308-2-ernis@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/common/codec.c     | 46 +++++++++++++++++++++++++++++-------
- sound/hda/common/hda_local.h |  1 +
- 2 files changed, 39 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/sound/hda/common/codec.c b/sound/hda/common/codec.c
-index 09b1329bb8f35..5123df32ad89f 100644
---- a/sound/hda/common/codec.c
-+++ b/sound/hda/common/codec.c
-@@ -2529,7 +2529,10 @@ EXPORT_SYMBOL_GPL(snd_hda_spdif_ctls_assign);
- static int spdif_share_sw_get(struct snd_kcontrol *kcontrol,
- 			      struct snd_ctl_elem_value *ucontrol)
- {
--	struct hda_multi_out *mout = snd_kcontrol_chip(kcontrol);
-+	struct hda_codec *codec = snd_kcontrol_chip(kcontrol);
-+	struct hda_multi_out *mout = (void *)kcontrol->private_value;
-+
-+	guard(mutex)(&codec->spdif_mutex);
- 	ucontrol->value.integer.value[0] = mout->share_spdif;
- 	return 0;
- }
-@@ -2537,9 +2540,15 @@ static int spdif_share_sw_get(struct snd_kcontrol *kcontrol,
- static int spdif_share_sw_put(struct snd_kcontrol *kcontrol,
- 			      struct snd_ctl_elem_value *ucontrol)
- {
--	struct hda_multi_out *mout = snd_kcontrol_chip(kcontrol);
--	mout->share_spdif = !!ucontrol->value.integer.value[0];
--	return 0;
-+	struct hda_codec *codec = snd_kcontrol_chip(kcontrol);
-+	struct hda_multi_out *mout = (void *)kcontrol->private_value;
-+	bool val = !!ucontrol->value.integer.value[0];
-+	int change;
-+
-+	guard(mutex)(&codec->spdif_mutex);
-+	change = mout->share_spdif != val;
-+	mout->share_spdif = val;
-+	return change;
- }
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 962fdd29d6063..c0de20b2183a2 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -1927,11 +1927,8 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	gc->dev = &pdev->dev;
+ 	xa_init(&gc->irq_contexts);
  
- static const struct snd_kcontrol_new spdif_share_sw = {
-@@ -2550,6 +2559,14 @@ static const struct snd_kcontrol_new spdif_share_sw = {
- 	.put = spdif_share_sw_put,
- };
+-	if (gc->is_pf)
+-		gc->mana_pci_debugfs = debugfs_create_dir("0", mana_debugfs_root);
+-	else
+-		gc->mana_pci_debugfs = debugfs_create_dir(pci_slot_name(pdev->slot),
+-							  mana_debugfs_root);
++	gc->mana_pci_debugfs = debugfs_create_dir(pci_name(pdev),
++						  mana_debugfs_root);
  
-+static void notify_spdif_share_sw(struct hda_codec *codec,
-+				  struct hda_multi_out *mout)
-+{
-+	if (mout->share_spdif_kctl)
-+		snd_ctl_notify_one(codec->card, SNDRV_CTL_EVENT_MASK_VALUE,
-+				   mout->share_spdif_kctl, 0);
-+}
-+
- /**
-  * snd_hda_create_spdif_share_sw - create Default PCM switch
-  * @codec: the HDA codec
-@@ -2559,15 +2576,24 @@ int snd_hda_create_spdif_share_sw(struct hda_codec *codec,
- 				  struct hda_multi_out *mout)
- {
- 	struct snd_kcontrol *kctl;
-+	int err;
- 
- 	if (!mout->dig_out_nid)
- 		return 0;
- 
--	kctl = snd_ctl_new1(&spdif_share_sw, mout);
-+	kctl = snd_ctl_new1(&spdif_share_sw, codec);
- 	if (!kctl)
- 		return -ENOMEM;
--	/* ATTENTION: here mout is passed as private_data, instead of codec */
--	return snd_hda_ctl_add(codec, mout->dig_out_nid, kctl);
-+	/* snd_ctl_new1() stores @codec in private_data; stash @mout in
-+	 * private_value for the share-switch callbacks and cache the
-+	 * assigned control for forced-disable notifications.
-+	 */
-+	kctl->private_value = (unsigned long)mout;
-+	err = snd_hda_ctl_add(codec, mout->dig_out_nid, kctl);
-+	if (err < 0)
-+		return err;
-+	mout->share_spdif_kctl = kctl;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(snd_hda_create_spdif_share_sw);
- 
-@@ -3701,6 +3727,8 @@ int snd_hda_multi_out_analog_open(struct hda_codec *codec,
- 				  struct hda_pcm_stream *hinfo)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
-+	bool notify_share_sw = false;
-+
- 	runtime->hw.channels_max = mout->max_channels;
- 	if (mout->dig_out_nid) {
- 		if (!mout->analog_rates) {
-@@ -3729,10 +3757,12 @@ int snd_hda_multi_out_analog_open(struct hda_codec *codec,
- 					hinfo->maxbps = mout->spdif_maxbps;
- 			} else {
- 				mout->share_spdif = 0;
--				/* FIXME: need notify? */
-+				notify_share_sw = true;
- 			}
- 		}
- 	}
-+	if (notify_share_sw)
-+		notify_spdif_share_sw(codec, mout);
- 	return snd_pcm_hw_constraint_step(substream->runtime, 0,
- 					  SNDRV_PCM_HW_PARAM_CHANNELS, 2);
- }
-diff --git a/sound/hda/common/hda_local.h b/sound/hda/common/hda_local.h
-index ab423f1cef549..98b2c4acebc27 100644
---- a/sound/hda/common/hda_local.h
-+++ b/sound/hda/common/hda_local.h
-@@ -221,6 +221,7 @@ struct hda_multi_out {
- 	unsigned int spdif_rates;
- 	unsigned int spdif_maxbps;
- 	u64 spdif_formats;
-+	struct snd_kcontrol *share_spdif_kctl; /* cached shared SPDIF switch */
- };
- 
- int snd_hda_create_spdif_share_sw(struct hda_codec *codec,
+ 	err = mana_gd_setup(pdev);
+ 	if (err)
 -- 
 2.53.0
 
