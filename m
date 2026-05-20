@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOyUIVkADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-251698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:29 +0200
+	id oJL4FXX8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832FD596FF2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FAA5960F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E291830DA728
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D72B7301F34F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881BB3ED136;
-	Wed, 20 May 2026 17:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B223E5ECF;
+	Wed, 20 May 2026 18:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1nG/Dy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aa4jVjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265953DD504;
-	Wed, 20 May 2026 17:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9244F5E0;
+	Wed, 20 May 2026 18:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298660; cv=none; b=rL2gvhITZ/CfzbKCNhmvhKkzLWnTWa4/DIW5na84NOAkR8FHAEJiYf3xwx6/Gi8AI3a+wmfGTuWJvNykdN9VyyVgnHowiH0k3YAqupaqQ1oRehyvRDWKIB0360Lcs4zywEfCGaIaepgSbwrYBZmiv+EGONFNIoNrfdltChBG+0Y=
+	t=1779300532; cv=none; b=U4GJTkC0XqC+oyeJuKZeAML0fCup6U13whWXUoysu7uT6REZFvkQ3cDqZaWWXD5aIDJRBlnBiJgvCAuZo2rgNhIKgSsbl2pMs6sn5koVX4FizExsFQfiIZKod2EGoTQ7mHMuMtS8v/URaL3dtsNFySTEd8HHg8MSGx9NbL5/+L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298660; c=relaxed/simple;
-	bh=a4O5CQk9c1ne6PUY+ICB7CfwwWBOmCiIIkWa0LZmHTc=;
+	s=arc-20240116; t=1779300532; c=relaxed/simple;
+	bh=LmjZ0CXX4tZWkAGZ1gQCH0zz5tY4IMXy8IlSRUivFWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAIOMc63hAEtteL8hHfXRITGXh6ll7+1zAZxRNyQehOVqYOgBN8ejf8MduH7Z9dbeLNKMHgDGApu05kBlawesbdcEWYN6nXirrdrMQqN4S3ygV/ePDnHA4K8WMNtzTVMTAX/zHlrcYw3Afou87xL9u5hV/LF/BRthTYSb/mI534=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1nG/Dy4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A20E1F000E9;
-	Wed, 20 May 2026 17:37:38 +0000 (UTC)
+	 MIME-Version; b=XtiJ0ZnFmJl1/95Mmf+0dlhHKZNSn3Eh7Ne99H+Wcobr1S5giPu8t5349i6VbOeKy+GW8VhlNDSk+EsUBk1BJi1q8RX24BLa4dribS+rJowHrsuoDHbIMry4L9XzZOHzPDpv6rPG2WbuvkSVhBtiLnvd4G2h6ttAXEF2XXmjIa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aa4jVjk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD301F000E9;
+	Wed, 20 May 2026 18:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298659;
-	bh=eDqwYYPRoW+TM723Qtm2+4PZZayrTDCO0hQYY6d7aRw=;
+	s=korg; t=1779300530;
+	bh=JO9z5EsX0ugEdlirX0u5qdyOHxWyROHff/ZK6o8pqfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v1nG/Dy4x4iXLV1umi3+mFlDfZYN0Rk9uNucqxLkvYaLDsyVibywIek545bDaOxrp
-	 hzZUIoJmRPdjBcPVtwSIY0tJXXT/y1z/VqZfswQDeWd+eRDcOlv4K92OBIy0XNDgTP
-	 /Cpyn2SCKtLlV9e3d+u9Exo8DJGi85rDr/nlPmb8=
+	b=2aa4jVjkVnlGcr+leDU8beOsWCToFPV4fSc12ZeiNqK4qOSTkNN+G3C/hHe9/0ddo
+	 ukdC5fBI+dznhSmj35ajZT0e0SBOkXFdS7c9c2TUdpLIohBapS5RLuWaxuqLZZTCq6
+	 9IDnKGGx28ZtfXATeTflFtAIYLoPj/U210g1MrA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 496/957] bpf, arm32: Reject BPF-to-BPF calls and callbacks in the JIT
+Subject: [PATCH 6.12 168/666] drm/msm/dsi: add the missing parameter description
 Date: Wed, 20 May 2026 18:16:19 +0200
-Message-ID: <20260520162145.282170534@linuxfoundation.org>
+Message-ID: <20260520162114.846364258@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,126 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251698-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252383-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[etsalapatis.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,iogearbox.net:email]
-X-Rspamd-Queue-Id: 832FD596FF2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 00FAA5960F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit e1d486445af3c392628532229f7ce5f5cf7891b6 ]
+[ Upstream commit 958adefc4c0fddee3b12269da5dd7cb49bac953f ]
 
-The ARM32 BPF JIT does not support BPF-to-BPF function calls
-(BPF_PSEUDO_CALL) or callbacks (BPF_PSEUDO_FUNC), but it does
-not reject them either.
+Add a description for is_bonded_dsi in dsi_adjust_pclk_for_compression
+to match the existing kernel-doc comment.
 
-When a program with subprograms is loaded (e.g. libxdp's XDP
-dispatcher uses __noinline__ subprograms, or any program using
-callbacks like bpf_loop or bpf_for_each_map_elem), the verifier
-invokes bpf_jit_subprogs() which calls bpf_int_jit_compile()
-for each subprogram.
-
-For BPF_PSEUDO_CALL, since ARM32 does not reject it, the JIT
-silently emits code using the wrong address computation:
-
-    func = __bpf_call_base + imm
-
-where imm is a pc-relative subprogram offset, producing a bogus
-function pointer.
-
-For BPF_PSEUDO_FUNC, the ldimm64 handler ignores src_reg and
-loads the immediate as a normal 64-bit value without error.
-
-In both cases, build_body() reports success and a JIT image is
-allocated. ARM32 lacks the jit_data/extra_pass mechanism needed
-for the second JIT pass in bpf_jit_subprogs(). On the second
-pass, bpf_int_jit_compile() performs a full fresh compilation,
-allocating a new JIT binary and overwriting prog->bpf_func. The
-first allocation is never freed. bpf_jit_subprogs() then detects
-the function pointer changed and aborts with -ENOTSUPP, but the
-original JIT binary has already been leaked. Each program
-load/unload cycle leaks one JIT binary allocation, as reported
-by kmemleak:
-
-    unreferenced object 0xbf0a1000 (size 4096):
-      backtrace:
-        bpf_jit_binary_alloc+0x64/0xfc
-        bpf_int_jit_compile+0x14c/0x348
-        bpf_jit_subprogs+0x4fc/0xa60
-
-Fix this by rejecting both BPF_PSEUDO_CALL in the BPF_CALL
-handler and BPF_PSEUDO_FUNC in the BPF_LD_IMM64 handler, falling
-through to the existing 'notyet' path. This causes build_body()
-to fail before any JIT binary is allocated, so
-bpf_int_jit_compile() returns the original program unjitted.
-bpf_jit_subprogs() then sees !prog->jited and cleanly falls
-back to the interpreter with no leak.
-
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-Reported-by: Jonas Rebmann <jre@pengutronix.de>
-Closes: https://lore.kernel.org/bpf/b63e9174-7a3d-4e22-8294-16df07a4af89@pengutronix.de
-Tested-by: Jonas Rebmann <jre@pengutronix.de>
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Link: https://lore.kernel.org/r/20260417143353.838911-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603080314.XeqyRZ7A-lkp@intel.com/
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/710112/
+Link: https://lore.kernel.org/r/20260309100254.877801-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/net/bpf_jit_32.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index deeb8f292454b..a900aa9738855 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1852,6 +1852,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 	{
- 		u64 val = (u32)imm | (u64)insn[1].imm << 32;
- 
-+		if (insn->src_reg == BPF_PSEUDO_FUNC)
-+			goto notyet;
-+
- 		emit_a32_mov_i64(dst, val, ctx);
- 
- 		return 1;
-@@ -2055,6 +2058,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 		const s8 *r5 = bpf2a32[BPF_REG_5];
- 		const u32 func = (u32)__bpf_call_base + (u32)imm;
- 
-+		if (insn->src_reg == BPF_PSEUDO_CALL)
-+			goto notyet;
-+
- 		emit_a32_mov_r64(true, r0, r1, ctx);
- 		emit_a32_mov_r64(true, r1, r2, ctx);
- 		emit_push_r64(r5, ctx);
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 0c360e7903295..1027434b72620 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -519,6 +519,7 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
+  * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
+  * @mode: The selected mode for the DSI output
+  * @dsc: DRM DSC configuration for this DSI output
++ * @is_bonded_dsi: True if two DSI controllers are bonded
+  *
+  * Adjust the pclk rate by calculating a new hdisplay proportional to
+  * the compression ratio such that:
 -- 
 2.53.0
 
