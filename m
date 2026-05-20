@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eH31I3PtDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:51 +0200
+	id wEfCA6r8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CD7593656
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 093135961A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D91A93010942
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 273BD304220A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA5933F5BA;
-	Wed, 20 May 2026 16:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25182DC76C;
+	Wed, 20 May 2026 17:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiGKyqLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7LylQI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41E62D12EE;
-	Wed, 20 May 2026 16:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B391335AC18;
+	Wed, 20 May 2026 17:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295233; cv=none; b=AE0GDtppD7IuzYGJqgCBg1IkPEDyoXcpCjDrw3iGWgpkf/Nt5RFG63ixUtSivjyhyxCeEFYoHArAtORDzrLy66YYCXKJXy1b/c2hYkh9TxdITR3XTz/DOts6KvEW4BqY5p8dzwv6Ju9XjpAKu3hvJTLmuazhi65zMLwV3noNZrk=
+	t=1779297638; cv=none; b=JlzFQP/3gMOCtFTnh63Uoq/11mXBirnviULHbtyEz3cv6CEXWO13xUfQvv/Lpt9bmEBe7lwXm3H1s83+kjQYtIBaMpH2BAEf9xXQrHYI38himHC4hAqhObGYJuDlbwuizqFA9X2d6++zQ+KxCG4FStW28MnEqnTLL0MSZhBQQtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295233; c=relaxed/simple;
-	bh=FcnimLIkYC4u6KsRWyrqZV2l0PZpKWE1TPxaUKjgypE=;
+	s=arc-20240116; t=1779297638; c=relaxed/simple;
+	bh=ztRcoxZAu8mIQdKfANVLOkWA2hwup68P+z97j4Clw1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dBf8Os8ri3KxbGz6edPYIs00ueoJprX4vi4b+heAnRdLhHwefMX6Wux4gY7THKHegzHdtWkADCJd5F8YVEh3LkZzJglFRSn+U1vehvDoUskwoXQ+iQDMZ4sh7qn6IPApklgsJ2PXxya65BkeIqaQK1mTiGXHjUBeV1I8omKvUFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiGKyqLz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77E11F000E9;
-	Wed, 20 May 2026 16:40:31 +0000 (UTC)
+	 MIME-Version; b=Y7e6817pn7JMkEo1Gz8GCmDEHdBSB8mMv949o3cLCSimYMgNIR5izL/YJd4kK1NnovTMr0TCZV2ByUGdOAdxJGG537ArTw6lRH70el1ePVDFwHKtNYotVzokA5b/QLWGnbTKztFqeGKZOTf6kgOFevYWaYSdtde+QPPXrqbLyjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7LylQI6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253301F000E9;
+	Wed, 20 May 2026 17:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295232;
-	bh=WhW4vFl8bl2MsHYVwzi1WyNIo/dy0hIURkhU/15pKAY=;
+	s=korg; t=1779297637;
+	bh=NgN95DBoUtr/9c9OrwUXT4lw4UKquZnB18W1hrN2Grc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HiGKyqLzmjbTNzKG12trCClJTwkWaotQpoQTPVlHC1BXo1q/WRU/T9X0oe6plmfZA
-	 Evz4PE3rvjE0nVZQ4SyrkF7krxO4Pe7zufyEAzjWuHcGPkQszj6NVCqS2TN3goPLmQ
-	 Z9/K/qM2cYJbnZ32K0ra/Nhr60pfU0XWcm2fdBI8=
+	b=b7LylQI6ubnCb/53ifM1DIvMOw10SsghXf7BpwbbvCZcW+irf4nf9sAeCn81gcx/l
+	 Jmj8G7POqXs9H/PoY+nER9/GaVqFEN7FYkdM153wKO81GfzgZk2Rs1BI2mg9ePai0b
+	 7bUrnNFg7xXaZpPmXOnRKCzCLKkCxUZWArDO5pn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0339/1146] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
-Date: Wed, 20 May 2026 18:09:49 +0200
-Message-ID: <20260520162155.872039591@linuxfoundation.org>
+Subject: [PATCH 6.18 107/957] wifi: mt76: mt7996: fix RRO EMU configuration
+Date: Wed, 20 May 2026 18:09:50 +0200
+Message-ID: <20260520162136.882148915@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +65,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250369-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251306-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B1CD7593656
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nbd.name:email]
+X-Rspamd-Queue-Id: 093135961A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
+[ Upstream commit 73b46379e5231138025b271ce8e158d2a8aa0768 ]
 
-There are two known cases where MCLK DPM can causes issues:
+Use the correct helper to update specific bitfields instead of
+overwriting the entire register.
 
-Radeon R9 M380 found in iMac computers from 2015.
-The SMU in this GPU just hangs as soon as we send it the
-PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
-disabled, and even when we only populate one MCLK DPM level.
-Apply workaround to all devices with the same subsystem ID.
-
-Radeon R7 260X due to old memory controller microcode.
-We only flash the MC ucode when it isn't set up by the VBIOS,
-therefore there is no way to make sure that it has the correct
-ucode version.
-
-I verified that this patch fixes the SMU hang on the R9 M380
-which would previously fail to boot. This also fixes the UVD
-initialization error on that GPU which happened because the
-SMU couldn't ungate the UVD after it hung.
-
-Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: eedb427eb260 ("wifi: mt76: mt7996: Enable HW RRO for MT7992 chipset")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260312095724.2117448-1-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +--
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c  | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-index 2b5ac21fee399..1d6e30269d567 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-@@ -104,6 +104,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
- 					 PP_GFXOFF_MASK);
- 		hwmgr->pp_table_version = PP_TABLE_V0;
- 		hwmgr->od_enabled = false;
-+		switch (hwmgr->chip_id) {
-+		case CHIP_BONAIRE:
-+			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
-+			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
-+			 */
-+			if (adev->pdev->subsystem_vendor == 0x106B ||
-+			    adev->pdev->device == 0x6658) {
-+				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
-+				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
-+				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
-+			}
-+			break;
-+		default:
-+			break;
-+		}
- 		smu7_init_function_pointers(hwmgr);
- 		break;
- 	case AMDGPU_FAMILY_CZ:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 817acfad31d06..efbd46d649017 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -857,8 +857,7 @@ void mt7996_rro_hw_init(struct mt7996_dev *dev)
+ 			}
+ 		} else {
+ 			/* set emul 3.0 function */
+-			mt76_wr(dev, MT_RRO_3_0_EMU_CONF,
+-				MT_RRO_3_0_EMU_CONF_EN_MASK);
++			mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+ 
+ 			mt76_wr(dev, MT_RRO_ADDR_ARRAY_BASE0,
+ 				dev->wed_rro.addr_elem[0].phy_addr);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index c375b4dd68a20..149d8d711fc4c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -2597,7 +2597,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
+ 	mt7996_dma_start(dev, false, false);
+ 
+ 	if (!is_mt7996(&dev->mt76) && dev->mt76.hwrro_mode == MT76_HWRRO_V3)
+-		mt76_wr(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
++		mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+ 
+ 	if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
+ 		u32 wed_irq_mask = MT_INT_TX_DONE_BAND2 |
 -- 
 2.53.0
 
