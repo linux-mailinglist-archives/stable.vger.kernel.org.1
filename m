@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFB1LbUDDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:49 +0200
+	id CPmkImbvDWqZ4wUAu9opvQ
+	(envelope-from <stable+bounces-251140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE6B59768C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213E1593CCF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 359B739D2893
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5770231CAF1B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ECA3FE371;
-	Wed, 20 May 2026 18:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1063F39F5;
+	Wed, 20 May 2026 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meG2Kfer"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU9hoVcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404303FCB10;
-	Wed, 20 May 2026 18:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56343D8138;
+	Wed, 20 May 2026 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301474; cv=none; b=TqwPtiJCrmArRkAOfqyqHD+bgnuyb7c2Z5QncI9nSRS9NKj8W7vpFVA1rYCvqYZY82vOSdFaWMavcL5sPKqne5PT3gpJ2cJqHo47p/Sux0cI2+ED6z3EK9Crws4qMV4Xn3ByIx97VKu49gS74LDGc0vgdWdk2ns66milz5GBG+A=
+	t=1779297203; cv=none; b=J3+oEoChtQGHl9Bplhr4A/cgElWsWN9sKZE7AuRDJU9zYHLAHq8Uwh2BSujgt4PADSpEyd71p2WbewGNYUG519fEcuMYRu5OnJQ9BcLeHrDpjGYaTjl98Bm/d0W29JbBG98ISppuvpDW8QLrSOGtMZfgQPwFwtOskZ/0TAtoqWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301474; c=relaxed/simple;
-	bh=DGzmZubdNxFXhkNdHe6BxVwuxMH74TWACyoI7U0Hs9M=;
+	s=arc-20240116; t=1779297203; c=relaxed/simple;
+	bh=VRDXyZjmKgZQ1I1W918xuRP7s1CGutN6iaWN9RHIaYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPvE1/joMH3dzI0XoBq6pyKGznphi8VMW04ezxuRhNgCj5Tsma1XnrI2jbeUHmShO1fG2lT/ZtEzrRZQr2rqgHgtMNpC+oldoB2WMHUNtJC6Swdes7r4X7N+hmsq0Rd6gtNSAKMYAWFjuK4EYOve5865ahzqDALaL4UL4qWWvwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meG2Kfer; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC9E1F000E9;
-	Wed, 20 May 2026 18:24:32 +0000 (UTC)
+	 MIME-Version; b=OhELlidO5UOhhcjhpgW5a1jZzu5JuT2u+z5ijt1XWY0GdSzhOHx/hqp3cvdJQGFOIrbFqM+5dgracarg7IYjbBpUpWaaJoYxE17O2O0vKtl2d3ELbZ7+8aDn9GXG40mzUmeAqOkp2NqhmNM4NtXvvmSIH9kdEvkgAcGpllGvhLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU9hoVcD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5644F1F000E9;
+	Wed, 20 May 2026 17:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301472;
-	bh=dpiG52Gk8Mn4EVs7Kc8Lqvbye4OECkXFajPrzszd+b0=;
+	s=korg; t=1779297201;
+	bh=OB5VGmhDzXGlNrlHipUesl7F1qMEoo7EBYo0BJ48WDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=meG2KferJXO88JO2gaJsw0aI7TOQD0ONHe8T1re/EeEvfOHxIab+UOyspoordKTBW
-	 /3YkXHonR8gQH/6AoQZ3wHBqUCFxPfzLbjFYJZkkBrAX6ep2zRAI9UP8KiaFDgV+TQ
-	 S6qW41A4yTIoQNDNCtsR1NrxseuKHhHcuQKITC48=
+	b=lU9hoVcDYigOs0Jcf7fx0xegWepw29b3dukqhqKzi/tzE6T/VlghMjUL/+RVmMjDb
+	 S6d2ZIaCFXeqYhLmZ5lz8eAVU8tvxiDZU4hQi454TAKQGVqh6v9oqCpJ0hLuIHd2nv
+	 A0a1n0eGcog/Z1bI5V77FHrDRzPFmR2HJN+AE3Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Madieu <john.madieu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 526/666] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
+	Gyeyoung Baek <gye976@gmail.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 7.0 1087/1146] accel/rocket: Fix prep_bo ioctl leaking positive return from dma_resv_wait_timeout()
 Date: Wed, 20 May 2026 18:22:17 +0200
-Message-ID: <20260520162122.671179688@linuxfoundation.org>
+Message-ID: <20260520162212.835663388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-252743-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251140-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tomeuvizoso.net,arm.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2DE6B59768C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,arm.com:email]
+X-Rspamd-Queue-Id: 213E1593CCF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Madieu <john.madieu@gmail.com>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
+commit 74570e12b4705ea11dcdfbfbd0a0b0fdaeff3059 upstream.
 
-rockchip_spi_isr() decides whether the current interrupt was the
-cs-inactive event by reading IMR:
+dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
+on success, 0 on timeout, and -errno on failure.
 
-	if (rs->cs_inactive &&
-	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
-		ctlr->target_abort(ctlr);
+rocket_ioctl_prep_bo() returns this 'long' result from an int-typed
+ioctl handler, so positive values reach userspace as bogus errors.
+Explicitly set ret to 0 on the success path.
 
-IMR is the interrupt mask register: it tells which sources are enabled,
-not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
-both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
-
-	if (rs->cs_inactive)
-		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
-			       rs->regs + ROCKCHIP_SPI_IMR);
-
-so the IMR check is always true once cs_inactive is enabled, and every
-PIO interrupt - including normal RF_FULL completions - is dispatched to
-ctlr->target_abort(), aborting the transfer. The bug is reachable on
-ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
-when the transfer is short enough to fall back to PIO
-(rockchip_spi_can_dma() returns false below fifo_len).
-
-Read ISR (which is RISR masked by IMR) so the check actually reflects
-which interrupt fired, and parenthesise the expression for clarity while
-at it.
-
-Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
-Signed-off-by: John Madieu <john.madieu@gmail.com>
-Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 525ad89dd904 ("accel/rocket: Add IOCTLs for synchronizing memory accesses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Link: https://patch.msgid.link/c0ebf83b345721701b22d8f5bc41c52c0ecf5e16.1776581974.git.gye976@gmail.com
+Signed-off-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rockchip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/accel/rocket/rocket_gem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index b480408c812f8..ccb35a2e39fbd 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -357,7 +357,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+--- a/drivers/accel/rocket/rocket_gem.c
++++ b/drivers/accel/rocket/rocket_gem.c
+@@ -145,6 +145,8 @@ int rocket_ioctl_prep_bo(struct drm_devi
+ 	ret = dma_resv_wait_timeout(gem_obj->resv, DMA_RESV_USAGE_WRITE, true, timeout);
+ 	if (!ret)
+ 		ret = timeout ? -ETIMEDOUT : -EBUSY;
++	else if (ret > 0)
++		ret = 0;
  
- 	/* When int_cs_inactive comes, spi target abort */
--	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
-+	if (rs->cs_inactive &&
-+	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
- 		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
--- 
-2.53.0
-
+ 	shmem_obj = &to_rocket_bo(gem_obj)->base;
+ 
 
 
 
