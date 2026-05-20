@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LXkNMboDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:54 +0200
+	id AAT5B9H0DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4B4592CC2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC08594C7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 048F230874EB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9F8631A0E75
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC974285061;
-	Wed, 20 May 2026 16:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6973F1661;
+	Wed, 20 May 2026 17:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qavqq+Oq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj0Rkzud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB90362143;
-	Wed, 20 May 2026 16:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BA43A4526;
+	Wed, 20 May 2026 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295496; cv=none; b=QAqd6JBdZXnYfKxy1WAg/yOlr1T4hWinfX4yTEVGpLTEkBqtmwx2J3TQaPZybc4Eo56hL6BSBZSGGUZzGp+AXELCQL69b1T+r7ApVoQWAARKNkxzzNLg99KVy/f/BD4AFb9ebJtU6D/8GzsBOz3ubmZMe2IrIuya6Zwt0PIlbDQ=
+	t=1779297913; cv=none; b=gqzS4hfFwXvmKy8hlwP+L3ldTuMAPDuqxF0jdQkdSaFNkSKfAVDd/AiKlAS2fZ6T+2YzwcSf42Gbvd+b2D0rvq+p2Jqs2vNUaV5syd7sfNwJEZJ1PGNvKM0LLK7zInpuoZ9+CvgXC/brbcxPcIL9QlvR49PEoWxgC2LBqi8yylA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295496; c=relaxed/simple;
-	bh=yMm0f0CcqQ7zdzxDUfUoVLW/5gVlZbWa0LaFRG4fHP0=;
+	s=arc-20240116; t=1779297913; c=relaxed/simple;
+	bh=9J5jY5j/DGKzhxJ7GlTqJxq3/Q9dH1qqqcxogpGSDu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfh16FUPIDYn144QFBfLrD0WwrPJ+G9mYLQUHCO6Hjbl6FjKUyVRRMKP8Qaq3O9vAMOaMeST1qUUPr9ikd9hg9XGkMtwpX7LAbD1dTHKP2iv0QYp0RJ6mD8FOPcaGVTCkAZbC5pr3YMccL76shPENs9Jvv4vFLZFq6LwnJz2sfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qavqq+Oq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C469D1F000E9;
-	Wed, 20 May 2026 16:44:54 +0000 (UTC)
+	 MIME-Version; b=KkVxo5Mpf6Lj1/95W40EfH77r0vRu0B0FSEd3ldOk5cUyt8OZ9o/HYs3+1e8v9Mk+c197oQUK4cZL8+J8ldl2JZdAY+KwCRZot4SLjb1y4/FARl4zB9Khbx2WF07+u93bvRPHJwkZCcpFAQ+3QZ6rqrcTBTh1dl6/G/aq82l+hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj0Rkzud; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC0A1F000E9;
+	Wed, 20 May 2026 17:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295495;
-	bh=nzTnR8EYHZi5GRcG27SVx3/rcvAxIvhJmfAuFU4Te6Y=;
+	s=korg; t=1779297912;
+	bh=SjxXPFsZs5Cns8nU2fRPJ8TCA/Nb2XRsi4ZGE/Vhpww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qavqq+Oq0syD1LsWJiB0NtKGRmvmnzTZ+FrKoNtpOH6AhqYAkBzw4I6je4csPKagW
-	 nrnwgIPhEn+ctO6sUCirC2S/ahJE1wNyplHkk5TpCgQsOcr3rQlZz/T3VOe2Mkif56
-	 rBSnH823hasUzvagWNatMeBbaL7DhmlrL58vrx2I=
+	b=bj0Rkzud9y0/PNUiKzg0laWRhRFHryEN8jelS9tLF/W2wevKTGvElNJDQ0jQH9VrC
+	 j0QTnBORLd9CoU0OhvfdWyZfVmc5RzpxbIQBcezJPvuj6+4VMSSHSfJA8hANtM6eJh
+	 5f6/5UA7Bb6H1YKUQLjp4z13QDxnoqybPIPY7vGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Subject: [PATCH 7.0 0442/1146] ALSA: hda/realtek - fixed speaker no sound update
-Date: Wed, 20 May 2026 18:11:32 +0200
-Message-ID: <20260520162158.201449940@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 210/957] dm log: fix out-of-bounds write due to region_count overflow
+Date: Wed, 20 May 2026 18:11:33 +0200
+Message-ID: <20260520162139.094176165@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +65,115 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250471-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,realtek.com,suse.de,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251412-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9C4B4592CC2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: DDC08594C7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 46c862f5419e0a86b60b9f9558d247f6084c99f9 ]
+[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
 
-Fixed speaker has pop noise on Lenovo Thinkpad X11 Carbon Gen 12.
+The local variable region_count in create_log_context() is declared as
+unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
+When a device-mapper target has a sufficiently large ti->len with a small
+region_size, the division result can exceed UINT_MAX. The truncated
+value is then used to calculate bitset_size, causing clean_bits,
+sync_bits, and recovering_bits to be allocated far smaller than needed
+for the actual number of regions.
 
-Fixes: 630fbc6e870e ("ALSA: hda/realtek - fixed speaker no sound")
-Reported-and-tested-by: Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Closes: https://lore.kernel.org/CAC88DfsHrhyhy0Pn1O-z9egBvMYu=6NYgcvcC6KCgwh_-Ldkxg@mail.gmail.com
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
+region indices derived from the full untruncated region space, causing
+out-of-bounds writes to kernel heap memory allocated by vmalloc.
+
+This can be reproduced by creating a mirror target whose region_count
+overflows 32 bits:
+
+  dmsetup create bigzero --table '0 8589934594 zero'
+  dmsetup create mymirror --table '0 8589934594 mirror \
+    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
+    /dev/mapper/bigzero 0'
+
+The status output confirms the truncation (sync_count=1 instead of
+4294967297, because 0x100000001 was truncated to 1):
+
+  $ dmsetup status mymirror
+  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
+
+This leads to a kernel crash in core_in_sync:
+
+  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
+  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
+  CR2: 0000000000000008
+  Fixing recursive fault but reboot is needed!
+
+Fix by widening the local region_count to sector_t and adding an
+explicit overflow check before the value is assigned to lc->region_count.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/md/dm-log.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index cbc24d71a1115..d8698c20a3cae 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -3674,22 +3674,11 @@ static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo,
- 				   struct snd_pcm_substream *substream,
- 				   int action)
- {
--	static const struct coef_fw dis_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
--	}; /* Disable AMP silence detection */
--	static const struct coef_fw en_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0084), WRITE_COEF(0x29, 0xb023),
--	}; /* Enable AMP silence detection */
--
- 	switch (action) {
- 	case HDA_GEN_PCM_ACT_OPEN:
--		alc_process_coef_fw(codec, dis_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
- 		break;
- 	case HDA_GEN_PCM_ACT_CLOSE:
--		alc_process_coef_fw(codec, en_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
- 		break;
- 	}
-@@ -3712,10 +3701,15 @@ static void alc287_fixup_lenovo_thinkpad_with_alc1318(struct hda_codec *codec,
- 		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC301),
- 		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
- 	};
-+	static const struct coef_fw dis_coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
-+		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
-+	}; /* Disable AMP silence detection */
+diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
+index bced5a783ee33..4a1369b8f44a0 100644
+--- a/drivers/md/dm-log.c
++++ b/drivers/md/dm-log.c
+@@ -373,7 +373,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
  
- 	if (action != HDA_FIXUP_ACT_PRE_PROBE)
- 		return;
- 	alc_update_coef_idx(codec, 0x10, 1<<11, 1<<11);
-+	alc_process_coef_fw(codec, dis_coefs);
- 	alc_process_coef_fw(codec, coefs);
- 	spec->power_hook = alc287_s4_power_gpio3_default;
- 	spec->gen.pcm_playback_hook = alc287_alc1318_playback_pcm_hook;
+ 	struct log_c *lc;
+ 	uint32_t region_size;
+-	unsigned int region_count;
++	sector_t region_count;
+ 	size_t bitset_size, buf_size;
+ 	int r;
+ 	char dummy;
+@@ -401,6 +401,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+ 	}
+ 
+ 	region_count = dm_sector_div_up(ti->len, region_size);
++	if (region_count > UINT_MAX) {
++		DMWARN("region count exceeds limit of %u", UINT_MAX);
++		return -EINVAL;
++	}
+ 
+ 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
+ 	if (!lc) {
 -- 
 2.53.0
 
