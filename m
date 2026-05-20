@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMXwJCP/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:19 +0200
+	id SGp/LdQHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369F0596BBD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3904D597F81
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F1040308BDA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0460D3646AA8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A6C3FA5D5;
-	Wed, 20 May 2026 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7054028C7;
+	Wed, 20 May 2026 18:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulY1UbPD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYPUfxtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282E23D1CC6;
-	Wed, 20 May 2026 18:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C473FBEBD;
+	Wed, 20 May 2026 18:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301735; cv=none; b=BKTB3FAmOE/jY1ruhAw4XqdCcMTYwxZV8dMdgGQGgpgfImpYuEWQCPQw1UBmE7qslB43BOMtOhTKObskUMqWhc5h1G3gcpM9LD5H0Ur2Nl0PdXKxLdeANwLtRPWZ168INJLunFHsZgbHS0S4WMVejspvJiWciYKj28Q6vzuc7P8=
+	t=1779302905; cv=none; b=iGUqpFUb1YeiDPa0LUrdpGXaq962tKweIeXVE9PG3bwOpcbJ3/ZCZVp35hcC8V6pjdj8zZGxCno+IRJDJPwKx4DJPQyfAAhMSXGVUu6rxgMA0H4+Aq7FFw/ilj5uHO7/gtjNQdmMOWmrBUhojNhiCF5nNRDhpYd5DzTObGt5kZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301735; c=relaxed/simple;
-	bh=d8UZa0kKG+VsqoujEGTrh4op+mgODuzirfZGBbgUnps=;
+	s=arc-20240116; t=1779302905; c=relaxed/simple;
+	bh=EaB/AO5C3aS8p1HQZRZURm7oeYgYoheQxoBDE8G+x0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lA42ar0n5pJ8ah+uMbARdRoLF9srZT1lIV1OKB2iTlY1I3wF9pd1ciNB/8D4vsVvVg9tPnBdJRN0yTO86C6HKHnrm+O0mCog8JNcled2cp4h1r/t/NjCqh8CdTJwb64u2II8r8pgUbk1uukLRT/Yhft4V055FmaaFOsXLp8QT6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulY1UbPD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE7E1F000E9;
-	Wed, 20 May 2026 18:28:53 +0000 (UTC)
+	 MIME-Version; b=kyYxEMeteAH+jBVHOXyTpSMWC3Qjj/9XBfRMJTAYhhn9AsCryY8Km1XkvVCXFyZsAPsc1DCLjewGq87j3Wkez5tgTJ8ljoyP54+ubYIsZt2UdP+fFiNEXyzJ93vfFcZ8v9mNgU29TVgpPR/viCijsGl7VsUiIvxmSNwi7VAiS6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYPUfxtU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAF81F000E9;
+	Wed, 20 May 2026 18:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301734;
-	bh=yFBv5OL5+3GB+Wn3a2OBpb8ALiJq9nLQmBNOahhesvc=;
+	s=korg; t=1779302903;
+	bh=TfCNmN3OTndEHZLbWbYjpx5FHi1SejL0lA4SZfluNho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ulY1UbPDlnweFqNew8zQydf9S12FJg9fzvNMmLjf2QsIwUCRuUxRtwaDgoZjdPSbL
-	 MG1Wz3oVfhQLTYeqi4DzIteblepl0ixeYnvHMVfK7aR2ONIjOaWAYAi+Vom1QBi7fF
-	 2I0SAAP4BRAf2EzAEQkf9sPeTKAcvzOe9YN/a7ts=
+	b=PYPUfxtUrPYHOtYRwdGF4XRPbf9aVnxHAahlg6J7UN1fPJvw7j4e3JXMFTVbFwBgX
+	 eOP5tpBQALfvY02z1L0A/4f1XefCrwjoP/Qalf0YDjfi6EclQAvVa1ldrNsLuG6jRd
+	 hndlS1ADv/snt+Ckt7oKfkDI2czl3jvMdCvSZPO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 656/666] sched_ext: Guard scx_dsq_move() against NULL kit->dsq after failed iter_new
-Date: Wed, 20 May 2026 18:24:27 +0200
-Message-ID: <20260520162125.504155804@linuxfoundation.org>
+Subject: [PATCH 6.6 445/508] net: bcmgenet: Initialize u64 stats seq counter
+Date: Wed, 20 May 2026 18:24:28 +0200
+Message-ID: <20260520162108.240059085@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252843-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253295-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,meta.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 369F0596BBD
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:email]
+X-Rspamd-Queue-Id: 3904D597F81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-[ Upstream commit 4fda9f0e7c950da4fe03cedeb2ac818edf5d03e9 ]
+[ Upstream commit ffc2c8c4a714df53a715827d6334ab9474424f6a ]
 
-bpf_iter_scx_dsq_new() clears kit->dsq on failure and
-bpf_iter_scx_dsq_{next,destroy}() guard against that. scx_dsq_move() doesn't -
-it dereferences kit->dsq immediately, so a BPF program that calls
-scx_bpf_dsq_move[_vtime]() after a failed iter_new oopses the kernel.
+Initialize u64 stats as it uses seq counter on 32bit machines
+as suggested by lockdep below.
 
-Return false if kit->dsq is NULL.
+[    1.830953][    T1] INFO: trying to register non-static key.
+[    1.830993][    T1] The code is fine but needs lockdep annotation, or maybe
+[    1.831027][    T1] you didn't initialize this object before use?
+[    1.831057][    T1] turning off the locking correctness validator.
+[    1.831090][    T1] CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W           6.16.0-rc2-v7l+ #1 PREEMPT
+[    1.831097][    T1] Tainted: [W]=WARN
+[    1.831099][    T1] Hardware name: BCM2711
+[    1.831101][    T1] Call trace:
+[    1.831104][    T1]  unwind_backtrace from show_stack+0x18/0x1c
+[    1.831120][    T1]  show_stack from dump_stack_lvl+0x8c/0xcc
+[    1.831129][    T1]  dump_stack_lvl from register_lock_class+0x9e8/0x9fc
+[    1.831141][    T1]  register_lock_class from __lock_acquire+0x420/0x22c0
+[    1.831154][    T1]  __lock_acquire from lock_acquire+0x130/0x3f8
+[    1.831166][    T1]  lock_acquire from bcmgenet_get_stats64+0x4a4/0x4c8
+[    1.831176][    T1]  bcmgenet_get_stats64 from dev_get_stats+0x4c/0x408
+[    1.831184][    T1]  dev_get_stats from rtnl_fill_stats+0x38/0x120
+[    1.831193][    T1]  rtnl_fill_stats from rtnl_fill_ifinfo+0x7f8/0x1890
+[    1.831203][    T1]  rtnl_fill_ifinfo from rtmsg_ifinfo_build_skb+0xd0/0x138
+[    1.831214][    T1]  rtmsg_ifinfo_build_skb from rtmsg_ifinfo+0x48/0x8c
+[    1.831225][    T1]  rtmsg_ifinfo from register_netdevice+0x8c0/0x95c
+[    1.831237][    T1]  register_netdevice from register_netdev+0x28/0x40
+[    1.831247][    T1]  register_netdev from bcmgenet_probe+0x690/0x6bc
+[    1.831255][    T1]  bcmgenet_probe from platform_probe+0x64/0xbc
+[    1.831263][    T1]  platform_probe from really_probe+0xd0/0x2d4
+[    1.831269][    T1]  really_probe from __driver_probe_device+0x90/0x1a4
+[    1.831273][    T1]  __driver_probe_device from driver_probe_device+0x38/0x11c
+[    1.831278][    T1]  driver_probe_device from __driver_attach+0x9c/0x18c
+[    1.831282][    T1]  __driver_attach from bus_for_each_dev+0x84/0xd4
+[    1.831291][    T1]  bus_for_each_dev from bus_add_driver+0xd4/0x1f4
+[    1.831303][    T1]  bus_add_driver from driver_register+0x88/0x120
+[    1.831312][    T1]  driver_register from do_one_initcall+0x78/0x360
+[    1.831320][    T1]  do_one_initcall from kernel_init_freeable+0x2bc/0x314
+[    1.831331][    T1]  kernel_init_freeable from kernel_init+0x1c/0x144
+[    1.831339][    T1]  kernel_init from ret_from_fork+0x14/0x20
+[    1.831344][    T1] Exception stack(0xf082dfb0 to 0xf082dff8)
+[    1.831349][    T1] dfa0:                                     00000000 00000000 00000000 00000000
+[    1.831353][    T1] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    1.831356][    T1] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
 
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-[ dropped the `struct scx_sched *sch` declaration and `sch = src_dsq->sched` line ]
+Fixes: 59aa6e3072aa ("net: bcmgenet: switch to use 64bit statistics")
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250702092417.46486-1-ryotkkr98@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -6346,6 +6346,14 @@ static bool scx_dispatch_from_dsq(struct
- 	bool in_balance;
- 	unsigned long flags;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index e08abde4685ac..d9bd011e0d7c8 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -4084,6 +4084,12 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 	for (i = 0; i <= priv->hw_params->rx_queues; i++)
+ 		priv->rx_rings[i].rx_max_coalesced_frames = 1;
  
-+	/*
-+	 * The verifier considers an iterator slot initialized on any
-+	 * KF_ITER_NEW return, so a BPF program may legally reach here after
-+	 * bpf_iter_scx_dsq_new() failed and left @kit->dsq NULL.
-+	 */
-+	if (unlikely(!src_dsq))
-+		return false;
++	/* Initialize u64 stats seq counter for 32bit machines */
++	for (i = 0; i <= priv->hw_params->rx_queues; i++)
++		u64_stats_init(&priv->rx_rings[i].stats64.syncp);
++	for (i = 0; i <= priv->hw_params->tx_queues; i++)
++		u64_stats_init(&priv->tx_rings[i].stats64.syncp);
 +
- 	if (!scx_kf_allowed_if_unlocked() && !scx_kf_allowed(SCX_KF_DISPATCH))
- 		return false;
+ 	/* libphy will determine the link state */
+ 	netif_carrier_off(dev);
  
+-- 
+2.53.0
+
 
 
 
