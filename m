@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-252755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBUDNwr+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:38 +0200
+	id qIiFCPUVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985E3596728
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CF45994D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76EE630E0886
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1E0B324CA30
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6693FA5EB;
-	Wed, 20 May 2026 18:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B8C3D6673;
+	Wed, 20 May 2026 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh+B9/L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkCd2Yv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1016D332EBD;
-	Wed, 20 May 2026 18:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6536F356748;
+	Wed, 20 May 2026 17:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301506; cv=none; b=aFlu8phbD0l7JtMrvkWNZjquckUfaW+6XACqXWviZS7xGH8sieTkE22tQbRFvSL1el6j/5EPObNUSJrnPuajLFdFH0qZjdi9ESV0jOgAdtp2tJr5ncqPPrmX6NQzdbFRGVXqnF2Zqn2m3q8jdTrWJUFX/GYSGBGEPxlNgIoA3ms=
+	t=1779297342; cv=none; b=FkqdoR4tPRTr3ncUWrF66UiM3ncLdEibrWBLf6dXOjzI4AeZv3dBcYdqwWHIE2+DbSZyrRYjWVjlWLJRiu4N+mo8PnhxQBzDh4A847N0iIpLmgLcwfZRjG37bvOK6L+JF6+abEsIQ8VJpL9he/ZXaY+rhNqc/+PRLU6CNQ81VDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301506; c=relaxed/simple;
-	bh=QUSDeXhGG6907lVznC92Ye6KzDqJBEBzd7x9nhdOw6o=;
+	s=arc-20240116; t=1779297342; c=relaxed/simple;
+	bh=Mg7/3aTOYNhZrfoaf0ym7OYsDQaqLVmeBlbvmk94WGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8nXt6/D08VtUp1avbo4WAIu+odxnNdym+vLTSmMqzoJbnFw6MS0yOcqiqdYqJvaL0XyQgwlpItGK/cqst1k+o19ArIUneyAx6oFdKzOoswWw/KvjparfTXLrEQM1ESoEFXKWe2/c3SqIjKmAF86XGkpwOudsiucCGSOHXiG4uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh+B9/L7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2252C1F000E9;
-	Wed, 20 May 2026 18:25:03 +0000 (UTC)
+	 MIME-Version; b=RiKEdarjhE+9H9LUg3z7Ln2Gp7lA33HwJqomivOWDQ0ALKmUrnr9tDQSLJyHuOYQ4r+ZI/c1GYD3K/izMY2KcQyNRbyAvdARYxwbZsp0u7Vue84hH+xx1mUVZceqnI1vY7pPUUdq0aWX5yaahmoaM1vCW+F0kJZ1ZCagK3mDVJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkCd2Yv2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24221F000E9;
+	Wed, 20 May 2026 17:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301504;
-	bh=TCtSoQ0Xw1wtzclDZUeVcZoHg62B216rvS3zk+w50Z4=;
+	s=korg; t=1779297341;
+	bh=pOwTtFnfmZZRGI/TZg1bykkBq1bUxa7Ux9tQ3cd/oG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vh+B9/L71cwAV8MRe++2C0N7f2BGsuREFXYRIQ52e3tIakYO1KINIstStIWrPP2tB
-	 YGU6TCxaSczIKc5WtAHMSxGMmFJl3Y9L22zfvhKilE1Z9Ut18dPmosmN1YdR/KJljj
-	 7FFxilFZSpPAxsf/yHngy0Jkrnr39HXK3EoLkMhE=
+	b=OkCd2Yv2b9mgejN7nXvkFvSPtHw9lwTu5Tja8BJP+f61Uysi3Ed1UPOgB6RujFzee
+	 QguDr9+0o7GjpM+NtD8OrlB0NPUD6xctyK1YrzFVI5+au2UrdOBbDIcocDuJ1Hfj+S
+	 AR4A+7rqHIOC4V4wqME35fVHJylReRrFY+GASOHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	David Carlier <devnexen@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 581/666] drm/xe: Fix error cleanup in xe_exec_queue_create_ioctl()
-Date: Wed, 20 May 2026 18:23:12 +0200
-Message-ID: <20260520162123.861437658@linuxfoundation.org>
+Subject: [PATCH 7.0 1143/1146] eventfs: Use list_add_tail_rcu() for SRCU-protected children list
+Date: Wed, 20 May 2026 18:23:13 +0200
+Message-ID: <20260520162214.122340362@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,114 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252755-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251193-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,goodmis.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 985E3596728
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
+X-Rspamd-Queue-Id: 97CF45994D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit f3cc22d4df3ed58439ea7e21daa54c3608e03b78 ]
+[ Upstream commit f67950b2887fa10df50c4317a1fe98a65bc6875b ]
 
-Two error handling issues exist in xe_exec_queue_create_ioctl():
+Commit d2603279c7d6 ("eventfs: Use list_del_rcu() for SRCU protected
+list variable") converted the removal side to pair with the
+list_for_each_entry_srcu() walker in eventfs_iterate(). The insertion
+in eventfs_create_dir() was left as a plain list_add_tail(), which on
+weakly-ordered architectures can expose a new entry to the SRCU reader
+before its list pointers and fields are observable.
 
-1. When xe_hw_engine_group_add_exec_queue() fails, the error path jumps
-   to put_exec_queue which skips xe_exec_queue_kill(). If the VM is in
-   preempt fence mode, xe_vm_add_compute_exec_queue() has already added
-   the queue to the VM's compute exec queue list. Skipping the kill
-   leaves the queue on that list, leading to a dangling pointer after
-   the queue is freed.
+Use list_add_tail_rcu() so the publication pairs with the existing
+list_del_rcu() and list_for_each_entry_srcu().
 
-2. When xa_alloc() fails after xe_hw_engine_group_add_exec_queue() has
-   succeeded, the error path does not call
-   xe_hw_engine_group_del_exec_queue() to remove the queue from the hw
-   engine group list. The queue is then freed while still linked into
-   the hw engine group, causing a use-after-free.
-
-Fix both by:
-- Changing the xe_hw_engine_group_add_exec_queue() failure path to jump
-  to kill_exec_queue so that xe_exec_queue_kill() properly removes the
-  queue from the VM's compute list.
-- Adding a del_hw_engine_group label before kill_exec_queue for the
-  xa_alloc() failure path, which removes the queue from the hw engine
-  group before proceeding with the rest of the cleanup.
-
-Fixes: 7970cb36966c ("'drm/xe/hw_engine_group: Register hw engine group's exec queues")
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408020647.3397933-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 37c831f401746a45d510b312b0ed7a77b1e06ec8)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 43aa6f97c2d0 ("eventfs: Get rid of dentry pointers without refcounts")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260418152251.199343-1-devnexen@gmail.com
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 268cd3123be9d..e6c3074d0a785 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -638,7 +638,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 		if (q->vm && q->hwe->hw_engine_group) {
- 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
- 			if (err)
--				goto put_exec_queue;
-+				goto kill_exec_queue;
- 		}
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -710,7 +710,7 @@ struct eventfs_inode *eventfs_create_dir
+ 
+ 	scoped_guard(mutex, &eventfs_mutex) {
+ 		if (!parent->is_freed)
+-			list_add_tail(&ei->list, &parent->children);
++			list_add_tail_rcu(&ei->list, &parent->children);
  	}
- 
-@@ -647,12 +647,15 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 	/* user id alloc must always be last in ioctl to prevent UAF */
- 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
- 	if (err)
--		goto kill_exec_queue;
-+		goto del_hw_engine_group;
- 
- 	args->exec_queue_id = id;
- 
- 	return 0;
- 
-+del_hw_engine_group:
-+	if (q->vm && q->hwe && q->hwe->hw_engine_group)
-+		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
- kill_exec_queue:
- 	xe_exec_queue_kill(q);
- put_exec_queue:
--- 
-2.53.0
-
+ 	/* Was the parent freed? */
+ 	if (list_empty(&ei->list)) {
 
 
 
