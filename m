@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-250676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB0PGXPrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:19 +0200
+	id oL4lMF0cDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279E759311D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FFA599EBF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD2B53068ADA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 750DF337E031
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C22F0C62;
-	Wed, 20 May 2026 16:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5D636C9D2;
+	Wed, 20 May 2026 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNESgLlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9xQ+OJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6702701C4;
-	Wed, 20 May 2026 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D610828DC4;
+	Wed, 20 May 2026 17:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296024; cv=none; b=F8eUIn9HuT75nLyE8b4jP9C3LYg1v44jJizyR3BkULddcYgxAnXOGqI8FWW2YhmYPhWMF/695J7ZLzx3bq5x091i2MOYlKbNg+5/feZlZawW41JnmYt2rjtHQK683ijqnKof9gPTp4Gl4p2X+OAx1sf99rQUj5wH/iDZg/ezz0E=
+	t=1779298429; cv=none; b=isPtJrx2vba142Z0l6UfmRg04NGiRlPmnOeMojV0Q8YZlqQFiQGpPtRh/TV4E7gzBqldNFI4OXhfRYwJW4L3y3T490mtquHt7Uh2kKnJnIUlkfVaPP5qYcphLWNby8HP1eW1/B31aS9oXOE+QLvbX8PdSA9hI8Rk+jjZFGQpyfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296024; c=relaxed/simple;
-	bh=4MccKmamZYvlABKVFj6YCe5MAn6H45bQzxi1IhUHbUw=;
+	s=arc-20240116; t=1779298429; c=relaxed/simple;
+	bh=E2a07I6341wbAapEqyeSKH9NCf9rB3tQ4Xem2ca+DnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/h2mX148Qxrpmc27Y6m6f7P5nIAjiu9auDQ4p+xtWwy903xXwNoOsAe0mOaU0VEHBPvs5Z1Lv4WkgkZk07EeILK/alPsO5Ld7FiKiM4wlJiMsSsnJo7Cdx8BvKGO6bmq95o69khgN7hEw20cCRJ2XHkXMM+xYiUKew2deZpe7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNESgLlE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155EB1F000E9;
-	Wed, 20 May 2026 16:53:42 +0000 (UTC)
+	 MIME-Version; b=covriG/LNOdVoDkZ53ofVJHDnFYF74xwSkbfml8fSs+iMzqhfHfp73L+H/7/e8LJVSHNXfMLCYMu3I/Xbt4B22riWS+kaJPgycZSzh8qfE4jm6cvf0ZCATCLwPfFS5V5Q5rAK/XDvZ3gQFdK7osnkb23dr/hp8Kqe/7JCz6ojb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9xQ+OJ3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4718A1F000E9;
+	Wed, 20 May 2026 17:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296023;
-	bh=VJfXwYoPU1S6nwYcQLauak7mJaCrC7EYG5rR51ePVto=;
+	s=korg; t=1779298428;
+	bh=nNkgFm/FVgXZwjt3vdgpXMlep0P55Xq63gd/LTLK/TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KNESgLlELh8h7R1KNi/K1dtHzofV6DfxhU16PdaOInJ+TLagJnX11PQwHStmqZfuQ
-	 MgVNbf/2bny7/CrjkK4WXTEbMHa9QYzRwUMA6MR/CoiR/x0mVv9Ry/Z8n/YTMdTyIt
-	 7S+JtVhx6EXjPm5OL8xaPkVHWLqKEdEYScWDQurk=
+	b=H9xQ+OJ35KXw2ocsZLPGJ9oBontHeMOcpoMMOcV3DQyX1gM16Zns+M9jiovgsIoxJ
+	 0G4Tehtit/GDn5kgwtVLlh3jGUmwAUvBPoet0d1JFjhS+vYCKhFGPuErxncAzhO6pG
+	 ViA2rtnsuRyKyQb6OaOKxrw1wUOta/BtnQ9ogNxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Yaroshevskiy <dyaroshev@meta.com>,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Ian Rogers <irogers@google.com>,
-	Breno Leitao <leitao@debian.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0641/1146] perf stat: Fix crash on arm64
+Subject: [PATCH 6.18 408/957] arm64: dts: qcom: sm8550: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:14:51 +0200
-Message-ID: <20260520162202.686130484@linuxfoundation.org>
+Message-ID: <20260520162143.371607334@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250676-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251610-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,108 +86,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,meta.com:email,ilvokhin.com:email]
-X-Rspamd-Queue-Id: 279E759311D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 24FFA599EBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit b5708a308a5602d4a3caf0720dce452082d443ec ]
+[ Upstream commit 66b0f024fba0728ddce6916dce173bb1bdd4eab0 ]
 
-Perf stat is crashing on arm64 hosts with the following issue:
+The restriction on UHS-I speed modes was added to all SM8550 platforms
+by copying it from SM8450 dtsi file, and due to the overclocking of SD
+cards it was an actually reproducible problem. Since the latter issue
+has been fixed, UHS-I speed modes are working fine on SM8550 boards,
+below is the test performed on SM8550-HDK:
 
-  # make -C tools/perf DEBUG=1
-  # perf stat sleep 1
-  perf: util/evsel.c:2034: get_group_fd: Assertion `!(!leader->core.fd)' failed.
-  [1]    1220794 IOT instruction (core dumped)  ./perf stat
+SDR50 speed mode:
 
-The sorting function introduced by commit a745c0831c15c ("perf stat:
-Sort default events/metrics") compares events based on their individual
-properties. This can cause events from different groups to be
-interleaved, resulting in group members appearing before their leaders
-in the sorted evlist.
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
 
-When the iterator opens events in list order, a group member may be
-processed before its leader has been opened.
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 23.5468 s, 45.6 MB/s
 
-For example, CPU_CYCLES (idx=32) with leader STALL_SLOT_BACKEND (idx=37)
-could be sorted before its leader, causing the crash when CPU_CYCLES
-tries to get its group fd from the not-yet-opened leader.
+SDR104 speed mode:
 
-Fix this by comparing events based on their leader's attributes instead
-of their own attributes when the events are in different groups. This
-ensures all members of a group share the same sort key as their leader,
-keeping groups together and guaranteeing leaders are opened before their
-members.
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
 
-Fixes: a745c0831c15c ("perf stat: Sort default events/metrics")
-Reported-by: Denis Yaroshevskiy <dyaroshev@meta.com>
-Tested-by: Dmitry Ilvokhin <d@ilvokhin.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 11.9819 s, 89.6 MB/s
+
+Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
+file, there is no indication that the SDHC controller is broken.
+
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-6-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index 2eb76d7476b7f..6a12c1068d8a0 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -1917,25 +1917,33 @@ static int default_evlist_evsel_cmp(void *priv __maybe_unused,
- 	const struct evsel *lhs = container_of(lhs_core, struct evsel, core);
- 	const struct perf_evsel *rhs_core = container_of(r, struct perf_evsel, node);
- 	const struct evsel *rhs = container_of(rhs_core, struct evsel, core);
-+	const struct evsel *lhs_leader = evsel__leader(lhs);
-+	const struct evsel *rhs_leader = evsel__leader(rhs);
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 002ed12f942c0..118a626dfcff5 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3191,9 +3191,6 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 			bus-width = <4>;
+ 			dma-coherent;
  
--	if (evsel__leader(lhs) == evsel__leader(rhs)) {
-+	if (lhs_leader == rhs_leader) {
- 		/* Within the same group, respect the original order. */
- 		return lhs_core->idx - rhs_core->idx;
- 	}
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0>;
+-
+ 			status = "disabled";
  
-+	/*
-+	 * Compare using leader's attributes so that all members of a group
-+	 * stay together. This ensures leaders are opened before their members.
-+	 */
-+
- 	/* Sort default metrics evsels first, and default show events before those. */
--	if (lhs->default_metricgroup != rhs->default_metricgroup)
--		return lhs->default_metricgroup ? -1 : 1;
-+	if (lhs_leader->default_metricgroup != rhs_leader->default_metricgroup)
-+		return lhs_leader->default_metricgroup ? -1 : 1;
- 
--	if (lhs->default_show_events != rhs->default_show_events)
--		return lhs->default_show_events ? -1 : 1;
-+	if (lhs_leader->default_show_events != rhs_leader->default_show_events)
-+		return lhs_leader->default_show_events ? -1 : 1;
- 
- 	/* Sort by PMU type (prefers legacy types first). */
--	if (lhs->pmu != rhs->pmu)
--		return lhs->pmu->type - rhs->pmu->type;
-+	if (lhs_leader->pmu != rhs_leader->pmu)
-+		return lhs_leader->pmu->type - rhs_leader->pmu->type;
- 
--	/* Sort by name. */
--	return strcmp(evsel__name((struct evsel *)lhs), evsel__name((struct evsel *)rhs));
-+	/* Sort by leader's name. */
-+	return strcmp(evsel__name((struct evsel *)lhs_leader),
-+		      evsel__name((struct evsel *)rhs_leader));
- }
- 
- /*
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
