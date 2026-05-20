@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-253303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YAVSEfwHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:04 +0200
+	id uGWnNbb+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B558597FCB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907A7596A27
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C9A139B0441
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D4D7310D9D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1CA40243A;
-	Wed, 20 May 2026 18:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C493371048;
+	Wed, 20 May 2026 18:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsCxkRCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHAzbiQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDDA402B8C;
-	Wed, 20 May 2026 18:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F19E3EDAC6;
+	Wed, 20 May 2026 18:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302928; cv=none; b=ImId1U2x4jw+kvhRx5ASwqRfLTk2OtQ5M5m49oukGeGbPp5Ga65EJggJP1m9hyON4YFadUJB8dzlARKVM2PBY/BWsNmwkauG9RzbrsrjSCQixusgOj/kYnKkOT09vfAEIy4k5Bnp0a60QrudE2s7jFEeSwJ6JowbIjpka7IwR2g=
+	t=1779301727; cv=none; b=VmR9hYoMc8/THRycjniQtrYbxTi5uh15Gm+9v4Tsm83FaHiZ9JWn2ciPGCQVUkWAKuXnXYHp9kf+WJU4sDis6ZNRgvx2ZLuZY3ep7T7Rc3Rew3UbQ87H/hDMIA1PdRFnxA0o8Lx+zJEQ35atkKfIY6mwwJ8Z4al8VTckOuECazg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302928; c=relaxed/simple;
-	bh=sUvEfVmbOoAYnfrZafAHVBZfIJ4QO9AQTfWhHphWm40=;
+	s=arc-20240116; t=1779301727; c=relaxed/simple;
+	bh=KI5CUuBJAZw26WADwYDdlNwNQ0LOWmnTgX2JdqxdDOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbi+/QMxePWeLSmSk/WiKa6apY68ebxcWKKFwRhTWzQOY0fjRsbaQP7t3k0DPd+QBDc8p9ZLjVdhtrJOVLxx1pehKtDCN6REC23/AocCUFA3WMmb0JGoStHdm1jPGpqHG9aDrW3myoc1gshr9P9W7D0egihnDzQjabIFgZlaRN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsCxkRCg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E481F00893;
-	Wed, 20 May 2026 18:48:44 +0000 (UTC)
+	 MIME-Version; b=O7KfMa7J17EQi5CZUcNSN4y7aUKLpYAbrQIIHMjRimKAOhTaiJ9qIO9gibbXwIA5fkVS+FqM3ce2EzAOQxkXbVvofLu5qEfk5XAlM6McSbK925Fsj29VdQcLYvx6/OdBNCeIGXsJjj0gm3EDjLMBeFT4xb97ct5thtqYrHSol3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHAzbiQI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8317E1F000E9;
+	Wed, 20 May 2026 18:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302924;
-	bh=BAF0qfqiuW1C4XEeZJC/YIGCCdGiHM1qelFVK911P5c=;
+	s=korg; t=1779301726;
+	bh=mSiMvyfU08Now1JhGlMFJwIc7IS7xE2ho9c6HMZjEeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EsCxkRCgTSB4g5D3SsUAoiveZR6FjY9fD/n2VSnYepgT4xObMKUVsJy/4bb2LcHyt
-	 Ix7czobXB734bXUJUlSmhmYnVs62/WXGYDr5RU0dHl26EvwitYzqeKI0biC1vVAGoj
-	 6/rU6pv1E0RgmUtOAQvuttqIj0yZEMsax5PRWpdY=
+	b=HHAzbiQIyaDaNyYoTtPQVsjvAvXReagdKwD1eB3vqvO5wRIJobjDODYen1L8SYgSo
+	 v5Z79AebrOzhXJh7wob3/5csDmWKcQDd+NTvLTTG4surpc5T5dNSAZjWctDC//vxam
+	 Gm/RkfLzZDLeuYmlDV0rI3lLybIml44bDZRQivRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Matt Vollrath <tactii@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 452/508] i40e: Cleanup PTP pins on probe failure
-Date: Wed, 20 May 2026 18:24:35 +0200
-Message-ID: <20260520162108.388570281@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 665/666] mptcp: pm: ADD_ADDR rtx: fix potential data-race
+Date: Wed, 20 May 2026 18:24:36 +0200
+Message-ID: <20260520162125.705066292@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,105 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253303-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,enjuk.jp,gmail.com,molgen.mpg.de,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252840-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9B558597FCB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 907A7596A27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 678b713ece1e853f11e670a84cb887c35e1381b7 upstream.
+[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
 
-PTP pin structs are allocated early in probe, but never cleaned up.
+This mptcp_pm_add_timer() helper is executed as a timer callback in
+softirq context. To avoid any data races, the socket lock needs to be
+held with bh_lock_sock().
 
-Fix this by calling i40e_ptp_free_pins in the error path.
+If the socket is in use, retry again soon after, similar to what is done
+with the keepalive timer.
 
-To support this, i40e_ptp_free_pins is added to the header and
-pin_config is correctly nullified after being freed.
-
-This has been an issue since i40e_ptp_alloc_pins was introduced.
-
-Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
-Reported-by: Kohei Enju <kohei@enjuk.jp>
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Kohei Enju <kohei@enjuk.jp>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-2-a5ea4dc837a9@intel.com
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied hunk to `net/mptcp/pm_netlink.c` instead of `net/mptcp/pm.c` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      |    1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c |    1 +
- drivers/net/ethernet/intel/i40e/i40e_ptp.c  |    3 ++-
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1262,6 +1262,7 @@ void i40e_ptp_restore_hw_time(struct i40
- void i40e_ptp_init(struct i40e_pf *pf);
- void i40e_ptp_stop(struct i40e_pf *pf);
- int i40e_ptp_alloc_pins(struct i40e_pf *pf);
-+void i40e_ptp_free_pins(struct i40e_pf *pf);
- int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
- int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
- int i40e_get_partition_bw_setting(struct i40e_pf *pf);
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16300,6 +16300,7 @@ err_vsis:
- 	i40e_clear_interrupt_scheme(pf);
- 	kfree(pf->vsi);
- err_switch_setup:
-+	i40e_ptp_free_pins(pf);
- 	i40e_reset_interrupt_capability(pf);
- 	timer_shutdown_sync(&pf->service_timer);
- err_mac_addr:
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -937,12 +937,13 @@ int i40e_ptp_get_ts_config(struct i40e_p
-  *
-  * Release memory allocated for PTP pins.
-  **/
--static void i40e_ptp_free_pins(struct i40e_pf *pf)
-+void i40e_ptp_free_pins(struct i40e_pf *pf)
- {
- 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
- 		kfree(pf->ptp_pins);
- 		kfree(pf->ptp_caps.pin_config);
- 		pf->ptp_pins = NULL;
-+		pf->ptp_caps.pin_config = NULL;
- 	}
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -307,6 +307,13 @@ static void mptcp_pm_add_timer(struct ti
+ 	if (!entry->addr.id)
+ 		return;
+ 
++	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		/* Try again later. */
++		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		goto out;
++	}
++
+ 	if (mptcp_pm_should_add_signal_addr(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
+@@ -335,6 +342,7 @@ static void mptcp_pm_add_timer(struct ti
+ 		mptcp_pm_subflow_established(msk);
+ 
+ out:
++	bh_unlock_sock(sk);
+ 	__sock_put(sk);
  }
  
 
