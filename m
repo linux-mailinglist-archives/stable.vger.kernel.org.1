@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-250675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBPSGcISDmoJ6AUAu9opvQ
-	(envelope-from <stable+bounces-250675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:02 +0200
+	id yCUzJe/7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F1C598FE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549BA595ED1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5631C31F91F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7307B3140A72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312DC339844;
-	Wed, 20 May 2026 16:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A043FC5DC;
+	Wed, 20 May 2026 18:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ccdO5sM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQ3S5q7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059E22F0C62;
-	Wed, 20 May 2026 16:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C63F9267;
+	Wed, 20 May 2026 18:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296022; cv=none; b=bgdcRIPIcdc7gsvdrnwRtPDix8NCmndBX5tAX5A2Vv4OzwBCRburquZAAaNkd9QoBcO4OsTQlywyq20FoFp3wDt8Alq9l+Ja2liP2t+vpcAmJ2RkSdGWkriS7zP55OXWSPRWW2i3F37rIIfj29f83nS6h4x/Q7QqZ+OQ6wRFDUU=
+	t=1779300297; cv=none; b=cZbQULMNIPl2azfv/yzB47vriQrpGas3PLvyka0lAHAHoh0ysjcvYlZPtkJN0xgAvdESfgc52AqB/WbDaMqCuNsTBIH3909NCUFbYLjb/uEMZc9YTN/iBOs3RC4uA70sqVjUH6d2yHE7RmHPovTzfpfSa93loYkTCGM48TGqoAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296022; c=relaxed/simple;
-	bh=wvmQN88uUlW0rDGpKP/iG05QXMQDt7gxsQhUduc7n4Y=;
+	s=arc-20240116; t=1779300297; c=relaxed/simple;
+	bh=5bBb5gzAni5mw3KY3e9lUfXbZWagC6Pl3ItyygPu/w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnObe295OoO9/dRc9WNhTK8IYAwiDigaa5cOzwNKVDUQvZ1QK0J0uyUM0Z3VYz8nOI0Z3LGtOvAt9fuFbC1wp/faSkEmAvN0ji1TEOnO4VLZVKfCNxAQ3nxQKqv5g+Z61KZkPCKhH3Bha1sQUJjFHLfwsZRrBaDKdbdYKKeE1sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ccdO5sM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BB41F000E9;
-	Wed, 20 May 2026 16:53:40 +0000 (UTC)
+	 MIME-Version; b=PkIkdIy6y0LLL7OvMs8bHGFo+ENixEZQ38O2WSXpKhv5ngsHcUxuqCLHUrbYx6MaXkPEP/ZGjRFBVjmmV7VHzLcTYWg2d3wiZxuR0+EDfVCS+c092WO1Qrx6Z1WSpWFSsLBwNdIe8FMTHuZPfUPHCIiL3wm7jJ8/uouc9GZBowo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQ3S5q7k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443EF1F000E9;
+	Wed, 20 May 2026 18:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296020;
-	bh=Q/vUjfT5GU8Sdc7PJa3erTv9HHIqZC1X0iqRqTBFjBM=;
+	s=korg; t=1779300295;
+	bh=GncQEhOPI7jE3cPY0nj+DOqKWiDYbxMzmvyttg0MZuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0ccdO5sM8+IHB0InmhFbbHwrZ8m0Lh7fYM0QFvIOMZVgPHXmv12+loZ7+GVpVgnMZ
-	 VVDzVb66s+v4PKn+aqKCPFEhk62+nWQDYhI9ZOThndcTF4Dtx5Ctl7/l8gXN/Csbi5
-	 vqDJHBUa+1CWDuuFNM3Di7mQ8uzY3nFPWB2cM10E=
+	b=vQ3S5q7kdzAZC4XwrXsYubfZTzlXdFEG/Zk03xNKzkfDyJe7v7CMvkUQKQfNpvk+w
+	 IG/cp8gzJcHm8Z8eCdhX5zHbt4KSVDZrnI9BqH3+yZElljW3dyRGCnIJRp1PWlqTUF
+	 rJJsmqFJpKxT9X4O8IPNXgXmHH2GZmqECpXMOnD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Mohsin Bashir <hmohsin@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0640/1146] memblock: reserve_mem: fix end caclulation in reserve_mem_release_by_name()
+Subject: [PATCH 6.12 079/666] eth: fbnic: Use wake instead of start
 Date: Wed, 20 May 2026 18:14:50 +0200
-Message-ID: <20260520162202.664655882@linuxfoundation.org>
+Message-ID: <20260520162112.944473939@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250675-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252293-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C0F1C598FE6
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 549BA595ED1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Mohsin Bashir <hmohsin@meta.com>
 
-[ Upstream commit c12c3e1507809ad1fc0448f51c933f52e17d13cd ]
+[ Upstream commit 12ff2a4aee6c86746623d5aed24389dbf6dffded ]
 
-free_reserved_area() expects end parameter to point to the first address
-after the area, but reserve_mem_release_by_name() passes it the last
-address inside the area.
+fbnic_up() calls netif_tx_start_all_queues(), which only clears
+__QUEUE_STATE_DRV_XOFF.  If qdisc backlog has accumulated on any TX
+queue before the reconfiguration (e.g. ring resize via ethtool -G),
+start does not call __netif_schedule() to kick the qdisc, so the
+pending backlog is never drained and the queue stalls.
 
-Remove subtraction of one in calculation of the area end.
+Switch to netif_tx_wake_all_queues(), which clears DRV_XOFF and also
+calls __netif_schedule() on every queue, ensuring any backlog that
+built up before the down/up cycle is promptly dequeued.
 
-Fixes: 74e2498ccf7b ("mm/memblock: Add reserved memory release function")
-Link: https://patch.msgid.link/20260323074836.3653702-2-rppt@kernel.org
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
+Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
+Link: https://patch.msgid.link/20260408002415.2963915-1-mohsin.bashr@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memblock.c | 2 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index b3ddfdec7a809..d4a02f1750e91 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name)
- 		return 0;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 72bdc6c76c0c5..53bb1d691cc0c 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -137,7 +137,7 @@ void fbnic_up(struct fbnic_net *fbn)
  
- 	start = phys_to_virt(map->start);
--	end = start + map->size - 1;
-+	end = start + map->size;
- 	snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
- 	free_reserved_area(start, end, 0, buf);
- 	map->size = 0;
+ 	/* Enable Tx/Rx processing */
+ 	fbnic_napi_enable(fbn);
+-	netif_tx_start_all_queues(fbn->netdev);
++	netif_tx_wake_all_queues(fbn->netdev);
+ 
+ 	fbnic_service_task_start(fbn);
+ }
 -- 
 2.53.0
 
