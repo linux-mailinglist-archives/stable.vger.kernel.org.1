@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-251372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKZJJt4ZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:22 +0200
+	id sM98MEHvDWqZ4wUAu9opvQ
+	(envelope-from <stable+bounces-250429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1C4599B31
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5B1593C5B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6687362204D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 513F93020BE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4FE36CE19;
-	Wed, 20 May 2026 17:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6234366553;
+	Wed, 20 May 2026 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXEYK9FW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK1JYe9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67C8331220;
-	Wed, 20 May 2026 17:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B5D342CBA;
+	Wed, 20 May 2026 16:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297808; cv=none; b=A3CeKjM7C86T/dp2fzG1vCB7j6gPl67OmT3Qrxk+wFIBPpL4fq8oUUB8rirDbg77LYDsoXIdUVnSQ+feKoxaJsMeXyIxjMzvWadmnWiHesE+BW5epf/iGQW4ONOL21Wi7L0nrFHzCyYKpw3hYNsdQ/uv3A9Ni76mHFRFtQIw6kU=
+	t=1779295391; cv=none; b=ObOeX7jWNm0w4St9+k83v8UjqzHenYESgJPzAmOB5unP2Bgi0DDh05iAikv8tY6VVjtli5QZEtLxGoF2dy1NgentaqgrBXIbKT1maUpuVyYQJvFE9SlSfRoYOTvglFeFphJAfzkgwiV9BQZNUdYnWKSzFfnm+ahtQtyv+ePXGU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297808; c=relaxed/simple;
-	bh=AqUSZ+N9MnklwzZsk4N6o3mIH/3xfDC3HQvPxBZQSes=;
+	s=arc-20240116; t=1779295391; c=relaxed/simple;
+	bh=SkVnDH9lvTraXxb1AP4kOzNtSWl22detHosNXctXwjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJDnHoNupbJ22wnoBaMEGHol6EvbRv8U2oYZPWGyBsrGLvxlKcRwl5S3GCxg2fO6Q73T5a6fMh3enjDXyjU4TKb41mr+knRYUDkEV4h13NyIKxEewLaz38qPzwfXM/PZoJPVmuS03diyUniB/nyrEsBsa+ZjxQaB1fE8XNM0Wac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXEYK9FW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574C81F00893;
-	Wed, 20 May 2026 17:23:26 +0000 (UTC)
+	 MIME-Version; b=a3Z0xHThPrtp70JkIcThw/SpdeOj+uxU/7oCwJZ/G9O4B0kCvr9lhJe8xTpUSGRBxlRw/nmDBIuT+Yj4UhwEhxM9GBX1vrxmbVmyh9Ul6nGAAIsjSr1sReawCdXXMDTTq2apbr5ClzmRlBZflBvAAYlK9o0Fi3wa2r2vyn5OnBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK1JYe9b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7D61F000E9;
+	Wed, 20 May 2026 16:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297806;
-	bh=He/+PFplIzpyf6DPQV6lkdqu9s7+dhP6j32wOVjtPNg=;
+	s=korg; t=1779295390;
+	bh=/eUrGjIpUge8mQCCDRF3+DfKlTpmfemV3FR45OlqZUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bXEYK9FWUiQzy+BNaHwfw9weC/5rebkFcLtV63vuYZ7+9ASdeprXZWXfTmSwmNXMQ
-	 klMrs50bxxLOtzE4FhbnifksXS0dYp8pbqFvqR60zppW+uXnNMRI5cmfxi23iuIICB
-	 /Jgn1fUDscqlxvDIK/+9vLMZEB+YlwwBaWzbDCaU=
+	b=xK1JYe9bhM6QtdXFrvfJeb8ojAdL2OGno994pimTYIbUgiP7dfTAjCbLPYxytSI9D
+	 EbR1MlBDzvHTVlotb5ttvo6BVPwJc/sKP4X8y+2uLi486DmRf2xeHiaKUeBzWS5lw5
+	 ttjwn/ZiyN6XcY3UGG91pTSzEdH6lVKm+N5s3Ehg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Brian Geffon <bgeffon@google.com>,
+	gao xu <gaoxu2@honor.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 169/957] dt-bindings: net: dsa: nxp,sja1105: make spi-cpol optional for sja1110
+Subject: [PATCH 7.0 0402/1146] zram: do not permit params change after init
 Date: Wed, 20 May 2026 18:10:52 +0200
-Message-ID: <20260520162138.218991678@linuxfoundation.org>
+Message-ID: <20260520162157.297902549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +72,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251372-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250429-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,microchip.com:email,solid-run.com:email]
-X-Rspamd-Queue-Id: DC1C4599B31
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kernel.dk:email]
+X-Rspamd-Queue-Id: CA5B1593C5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 600f01dc4bd0c736b3ffea9f7976136d8bf1b136 ]
+[ Upstream commit 241f9005b1c81c2637eef2c836a03c83b4f3eeb9 ]
 
-Currently, the binding requires 'spi-cpha' for SJA1105 and 'spi-cpol'
-for SJA1110.
+Patch series "zram: recompression cleanups and tweaks", v2.
 
-However, the SJA1110 supports both SPI modes 0 and 2. Mode 2
-(cpha=0, cpol=1) is used by the NXP LX2160 Bluebox 3.
+This series is a somewhat random mix of fixups, recompression cleanups and
+improvements partly based on internal conversations.  A few patches in the
+series remove unexpected or confusing behaviour, e.g.  auto correction of
+bad priority= param for recompression, which should have always been just
+an error.  Then it also removes "chain recompression" which has a tricky,
+unexpected and confusing behaviour at times.  We also unify and harden the
+handling of algo/priority params.  There is also an addition of missing
+device lock in algorithm_params_store() which previously permitted
+modification of algo params while the device is active.
 
-On the SolidRun i.MX8DXL HummingBoard Telematics, mode 0 is stable,
-while forcing mode 2 introduces CRC errors especially during bursts.
+This patch (of 6):
 
-Drop the requirement on spi-cpol for SJA1110.
+First, algorithm_params_store(), like any sysfs handler, should grab
+device lock.
 
-Fixes: af2eab1a8243 ("dt-bindings: net: nxp,sja1105: document spi-cpol/cpha")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260409-imx8dxl-sr-som-v2-1-83ff20629ba0@solid-run.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Second, like any write() sysfs handler, it should grab device lock in
+exclusive mode.
+
+Third, it should not permit change of algos' parameters after device init,
+as this doesn't make sense - we cannot compress with one C/D dict and then
+just change C/D dict to a different one, for example.
+
+Another thing to notice is that algorithm_params_store() accesses device's
+->comp_algs for algo priority lookup, which should be protected by device
+lock in exclusive mode in general.
+
+Link: https://lkml.kernel.org/r/20260311084312.1766036-1-senozhatsky@chromium.org
+Link: https://lkml.kernel.org/r/20260311084312.1766036-2-senozhatsky@chromium.org
+Fixes: 4eac932103a5 ("zram: introduce algorithm_params device attribute")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Brian Geffon <bgeffon@google.com>
+Cc: gao xu <gaoxu2@honor.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/block/zram/zram_drv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-index e9dd914b0734c..941f9a25bbea0 100644
---- a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-@@ -140,8 +140,6 @@ allOf:
-     else:
-       properties:
-         spi-cpha: false
--      required:
--        - spi-cpol
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 85943da0cdca8..aaaef8dd82538 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1748,6 +1748,10 @@ static ssize_t algorithm_params_store(struct device *dev,
+ 		}
+ 	}
  
- unevaluatedProperties: false
- 
++	guard(rwsem_write)(&zram->dev_lock);
++	if (init_done(zram))
++		return -EBUSY;
++
+ 	/* Lookup priority by algorithm name */
+ 	if (algo) {
+ 		s32 p;
 -- 
 2.53.0
 
