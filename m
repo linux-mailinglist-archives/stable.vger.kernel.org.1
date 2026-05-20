@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEJ0Gz7uDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:14 +0200
+	id iGvkHRwDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-251938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4CB5938F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42885975A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B9543152B42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C841A305D507
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BE73E277C;
-	Wed, 20 May 2026 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8143859FA;
+	Wed, 20 May 2026 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHwLUH8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlZn1qhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778FF3A3833;
-	Wed, 20 May 2026 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B663F0A83;
+	Wed, 20 May 2026 17:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296976; cv=none; b=qebPIvRx8O8TJFiD1UM3EhaQhlTOPRelSYJjejuxHmGRnLFrxjRX4FfQmF69TSWucMdlW/9SJj30fN8W8MjNa8Ey/yyd86LdimEZeR2Jrv4SlwSEwyclRu5fX2KaYNyck6L7x+Shy/9oYN/9vn+HYMx+gb8skEoQIhiYZqOD61k=
+	t=1779299322; cv=none; b=rNQaFmm2oq7sOKimGErs7qIGldrkcS65smZ9FJ9d1ZxAQmCbBrXZhjtBFgvqTjKuPmCFVWBveo96S/NMtgAfWcYI6S1KPlR8MtHKt73eYLIy1tzrzLEZXjDGid+p+gqkAtYGqRIvLhPYPrF9HfmQR0Hh7eKwESXpueZ3ZPfElF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296976; c=relaxed/simple;
-	bh=uwRPRCpkbtCcEmxPyssExzX5nILP7StXY5EcbnyWEg4=;
+	s=arc-20240116; t=1779299322; c=relaxed/simple;
+	bh=qtFLutK6xkLztUssGeyydMx2Ir25PzkHa6sf/dwIV/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8so5NLJ2aWujy17zbbjs99gXiOTrX71dvAsMMRZic0j/CIhvovust369UxoJoGPedfuBe9q15JQdDyQGna5o3swSM8IzA+h3fi07QUQd5OsOvCWsa9IlrQV8NM+BIx0Zjle+TpZQBkpXgzdEBJmXmzrG9m/vVRrHi3go/0Bb2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHwLUH8V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3041F000E9;
-	Wed, 20 May 2026 17:09:34 +0000 (UTC)
+	 MIME-Version; b=S5fdeLuM+zPj3y8LS6eAlsOJ4qHxD54ME91kMTzH0MVncajwoOlV6Ms0+EVGSVxQDT9H04PHDnU3fVG5Obg/CBAuVytHJZVSSJGbovmz6T/Ez3knLdTh5g76KI59lJbna8Gal4x5H2ZrCEDOau8MEo+sC9zGjvUCqoghjufHjSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlZn1qhi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D8A1F000E9;
+	Wed, 20 May 2026 17:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296975;
-	bh=8GvRlRGDYzE0GXGNQ8HbTmSQY51u8sFxUdiGBHFttX8=;
+	s=korg; t=1779299321;
+	bh=frRPUR8ieQvqyyfIZ4LsTMlIcDp+04fu7upQEbYyiWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gHwLUH8VEwfCIJt3qwVUHLSGjyxSmvoHYRpUZgzkLJrxNIwk8mj82R1UAWsUwyEca
-	 1F4GDNsPRDYs9dkBBmyxI9tn29GGfg0SZImzdWWL/F3jT2nf/ZwB0Idb7i+m09xOPK
-	 Hqw5xXO5ZFyVO/OvDAY3lo4q7E4UPUj/bqBnDxE4=
+	b=BlZn1qhiCE6LAhIZm0qBtm26PgYRDqebE51RbI4tFVVNl3w9K3gKOqPeI2pmuJoQ/
+	 Vv3UB5kT4Au8dX3GDIy/mfbFrwymmiGbtAWbjh/ayfI/J4DGCQbTOugyH3fMlSoOM8
+	 4UsTVGuNSeBPh0QTNJ7ME2oIz57XiC+GS3oaaY+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Schocher <hs@nabladev.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0961/1146] net: phy: dp83869: fix setting CLK_O_SEL field.
+Subject: [PATCH 6.18 728/957] tools/power turbostat: Use strtoul() for iteration parsing
 Date: Wed, 20 May 2026 18:20:11 +0200
-Message-ID: <20260520162209.981333762@linuxfoundation.org>
+Message-ID: <20260520162150.341241470@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251938-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251052-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3B4CB5938F5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C42885975A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Schocher <hs@nabladev.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 46f74a3f7d57d9cc0110b09cbc8163fa0a01afa2 ]
+[ Upstream commit 8e5c0cc326f2e95a71bb6e6063e65caa60c8f951 ]
 
-Table 7-121 in datasheet says we have to set register 0xc6
-to value 0x10 before CLK_O_SEL can be modified. No more infos
-about this field found in datasheet. With this fix, setting
-of CLK_O_SEL field in IO_MUX_CFG register worked through dts
-property "ti,clk-output-sel" on a DP83869HMRGZR.
+Replace strtod() with strtoul() and check errno for -n/-N options, since
+num_iterations and header_iterations are unsigned long counters. Reject
+zero and conversion errors; negative inputs wrap to large positive values
+per standard unsigned semantics.
 
-Signed-off-by: Heiko Schocher <hs@nabladev.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-Link: https://patch.msgid.link/20260425031339.3318-1-hs@nabladev.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Stable-dep-of: ce012c966b51 ("tools/power turbostat: Fix unrecognized option '-P'")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83869.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index 1f381d7b13ff3..96a7d255f50fd 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -31,6 +31,7 @@
- #define DP83869_RGMIICTL	0x0032
- #define DP83869_STRAP_STS1	0x006e
- #define DP83869_RGMIIDCTL	0x0086
-+#define DP83869_ANA_PLL_PROG_PI	0x00c6
- #define DP83869_RXFCFG		0x0134
- #define DP83869_RXFPMD1		0x0136
- #define DP83869_RXFPMD2		0x0137
-@@ -826,12 +827,22 @@ static int dp83869_config_init(struct phy_device *phydev)
- 		dp83869_config_port_mirroring(phydev);
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 48677f1846347..29441e3c711d9 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -11133,18 +11133,20 @@ void cmdline(int argc, char **argv)
+ 			/* Parsed earlier */
+ 			break;
+ 		case 'n':
+-			num_iterations = strtod(optarg, NULL);
++			num_iterations = strtoul(optarg, NULL, 0);
++			errno = 0;
  
- 	/* Clock output selection if muxing property is set */
--	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
-+	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK) {
-+		/*
-+		 * Table 7-121 in datasheet says we have to set register 0xc6
-+		 * to value 0x10 before CLK_O_SEL can be modified.
-+		 */
-+		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
-+				    DP83869_ANA_PLL_PROG_PI, 0x10);
-+		if (ret)
-+			return ret;
-+
- 		ret = phy_modify_mmd(phydev,
- 				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
- 				     dp83869->clk_output_sel <<
- 				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
-+	}
+-			if (num_iterations <= 0) {
+-				fprintf(outf, "iterations %d should be positive number\n", num_iterations);
++			if (errno || num_iterations == 0) {
++				fprintf(outf, "invalid iteration count: %s\n", optarg);
+ 				exit(2);
+ 			}
+ 			break;
+ 		case 'N':
+-			header_iterations = strtod(optarg, NULL);
++			header_iterations = strtoul(optarg, NULL, 0);
++			errno = 0;
  
- 	if (phy_interface_is_rgmii(phydev)) {
- 		ret = phy_write_mmd(phydev, DP83869_DEVADDR, DP83869_RGMIIDCTL,
+-			if (header_iterations <= 0) {
+-				fprintf(outf, "iterations %d should be positive number\n", header_iterations);
++			if (errno || header_iterations == 0) {
++				fprintf(outf, "invalid header iteration count: %s\n", optarg);
+ 				exit(2);
+ 			}
+ 			break;
 -- 
 2.53.0
 
