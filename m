@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-251604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AND6FqDyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:56 +0200
+	id OD84MhESDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003F95945FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445C1598EE3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B38F308CF32
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3E3137AD510
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8EF36F421;
-	Wed, 20 May 2026 17:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088A8356762;
+	Wed, 20 May 2026 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbDdZ1uN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpoGp6g+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2E128DC4;
-	Wed, 20 May 2026 17:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B749323B61B;
+	Wed, 20 May 2026 16:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298414; cv=none; b=GVEMEbEafjqty4O1+BzT3ljF0JGA0m6cyha3cCd70RtWAlpnvxB7/nhOx64W7623HF/xnTr8ngIYAAEUfeX1pY9AaGQNSWK6mKnPGoQdE/gFcEdDUOAtAUM/pMPd8iN8ycS3H3al3c2NP8RQIInEeie6q21+QLoXV6/WX1PEoco=
+	t=1779295866; cv=none; b=c0hgdBmm7+kiWXEmhBca1VpWvpN8gNct6lkiwn21mP/iSijR3MUTMaJopGEoD0V8QRSpr2ubc7QVyr3FKzx4O+mTnp18nL0DFIEsJPugABkKT4MQuLAy1KjzJoKDV4enLPUzR4Kbn26pQ5Cj12weMsPRXx5fvSgXjrhzFiZOcfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298414; c=relaxed/simple;
-	bh=8sAaN/Mde+PyAchN68k5WjREjYJaEtAxmOO4wi6061c=;
+	s=arc-20240116; t=1779295866; c=relaxed/simple;
+	bh=taHbNHkHhSohkGe/wclWpfFNm+xmRMgjovpvdWjKpkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ksg421Lcl/nzLadKrCoVxSaLwdOxWOXhnraecTeqxTJLr6J6ExMy4FOlvWDe9AE/XhOc9wNnlxXw8lZvhqtH42MPV249UnPudrbIIvHCaxnm9IzV//4yzUoSlSLerV3qErqTG+9tbEHg4eN9FkqB9txiPTsak7yMaYUrymIpgoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbDdZ1uN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790181F000E9;
-	Wed, 20 May 2026 17:33:32 +0000 (UTC)
+	 MIME-Version; b=bbU1jI6yfKdji6pZ1mRsRFm+dNixrJxOXqIdLqA6GGtwz+D5sHRy9v6rjWpQ6mr0WdjQtnDa+KZbdWSVXNcjmnoIUWXFQ8jtcAihvGtZupIKLhV0ylw/QX0JR8aaYXU6+4v7hg7T7ak7l9U8hikH8bF8hBfij5+EZR0C2qNMhRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpoGp6g+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298C61F000E9;
+	Wed, 20 May 2026 16:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298412;
-	bh=MoFZDdnfOautIcwZXhgfoqeMBMHD3dQHdVP6OXyVBxw=;
+	s=korg; t=1779295865;
+	bh=ACWc7DiHZ24rXx19m5CWgzl/k36h0f+Q4xOx0K6No/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbDdZ1uN97nSxNRKU7dr2+2Xm0vQKzcNygkv775ENzlOFETwf/DTbnFM1B83hsA/0
-	 DQFhnKTw8n9sJ0U6Mg2dzf5XsXtyKBFoEEtoZBcbDbFqn9RezmkPeca2LrsGFNQEJK
-	 mr7wzmiqZ/ue7Lcq3oP1lvMY6BSPteE2yWdtsdKY=
+	b=FpoGp6g+6v+Pgj36QU8YExdQuliZA2LIQQd8Vt7WJHqgxLZzvuU5NaOczHC7xPVfL
+	 SfmLK1GplmoFTCFabMqoqdP5J7jxCAD0D9uF1FWdMoa78ac6vGlq8AFdX9BjZy2d4Q
+	 EvLWobD1U4T7U7f+ctapHAaYWNfNDcjmay5u8BF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Tim Michals <tcmichals@yahoo.com>,
+	Tanmay Shah <tanmay.shah@amd.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 349/957] ktest: Honor empty per-test option overrides
+Subject: [PATCH 7.0 0582/1146] remoteproc: xlnx: Fix sram property parsing
 Date: Wed, 20 May 2026 18:13:52 +0200
-Message-ID: <20260520162142.099736780@linuxfoundation.org>
+Message-ID: <20260520162201.351724610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,110 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251604-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250612-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yahoo.com,amd.com,linaro.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,suse.com:email,goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 003F95945FA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 445C1598EE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Tim Michals <tcmichals@yahoo.com>
 
-[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
+[ Upstream commit d116bccf6f1c199b27c9ebdf07cc3cfe868f919c ]
 
-A per-test override can clear an inherited default option by assigning an
-empty value, but __set_test_option() still used option_defined() to decide
-whether a per-test key existed. That turned an empty per-test assignment
-back into "fall back to the default", so tests still could not clear
-inherited settings.
+As per sram bindings, "sram" property can be list of phandles.
+When more than one sram phandles are listed, driver can't parse second
+phandle's address correctly. Because, phandle index is passed to the API
+instead of offset of address from reg property which is always 0 as per
+sram.yaml bindings. Fix it by passing 0 to the API instead of sram
+phandle index.
 
-For example:
-
-  DEFAULTS
-  (...)
-  LOG_FILE = /tmp/ktest-empty-override.log
-  CLEAR_LOG = 1
-  ADD_CONFIG = /tmp/.config
-
-  TEST_START
-  TEST_TYPE = build
-  BUILD_TYPE = nobuild
-  ADD_CONFIG =
-
-This would run the test with ADD_CONFIG[1] = /tmp/.config
-
-Fix by checking whether the per-test key exists before falling back. If it
-does exist but is empty, treat it as unset for that test and stop the
-fallback chain there.
-
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
-Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 77fcdf51b8ca ("remoteproc: xlnx: Add sram support")
+Signed-off-by: Tim Michals <tcmichals@yahoo.com>
+Signed-off-by: Tanmay Shah <tanmay.shah@amd.com>
+Link: https://lore.kernel.org/r/20260204202730.3729984-1-tanmay.shah@amd.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/remoteproc/xlnx_r5_remoteproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 28643812184bc..924e17df56f74 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -4183,7 +4183,8 @@ sub __set_test_option {
+diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+index f949749e50b0c..eb5f714de2bff 100644
+--- a/drivers/remoteproc/xlnx_r5_remoteproc.c
++++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+@@ -1007,7 +1007,7 @@ static int zynqmp_r5_get_sram_banks(struct zynqmp_r5_core *r5_core)
+ 		}
  
-     my $option = "$name\[$i\]";
- 
--    if (option_defined($option)) {
-+    if (exists($opt{$option})) {
-+	return undef if (!option_defined($option));
- 	return $opt{$option};
-     }
- 
-@@ -4191,7 +4192,8 @@ sub __set_test_option {
- 	if ($i >= $test &&
- 	    $i < $test + $repeat_tests{$test}) {
- 	    $option = "$name\[$test\]";
--	    if (option_defined($option)) {
-+	    if (exists($opt{$option})) {
-+		return undef if (!option_defined($option));
- 		return $opt{$option};
- 	    }
- 	}
+ 		/* Get SRAM device address */
+-		ret = of_property_read_reg(sram_np, i, &abs_addr, &size);
++		ret = of_property_read_reg(sram_np, 0, &abs_addr, &size);
+ 		if (ret) {
+ 			dev_err(dev, "failed to get reg property\n");
+ 			goto fail_sram_get;
 -- 
 2.53.0
 
