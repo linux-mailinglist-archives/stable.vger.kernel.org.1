@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-250011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KmYDhnSDWpP3gUAu9opvQ
-	(envelope-from <stable+bounces-250011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:09 +0200
+	id OP/1IivaDWrE4AUAu9opvQ
+	(envelope-from <stable+bounces-250012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7169590BE1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E34591593
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A228E305666B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:19:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5941331B0355
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70CD3F9281;
-	Wed, 20 May 2026 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409523F4DDA;
+	Wed, 20 May 2026 15:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgnX+XtG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0RK+gf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DDA3F4DCC
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D373F99F2
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290302; cv=none; b=kOjVZCr9+0G8Fn1cB/wMsU9pug0vC5hiWULq8v8C0kHluEo30Yx/8I8w5abvzOOs4WFc/Xx1joXhsLbok5EKPwVgZdR5EtgdKNvA9AxREkf4HIBd/xBqyR69Ky8qO+YnqL4jwoU52rAYKMLRg7FtboWMdb14/nlFqmTauRAboQo=
+	t=1779290305; cv=none; b=LISX+RRY0SzbN0Cuid9Zr5fcs8PKWK/qvnTfrRbY3SWVo/QaSh4fwkVPissitxKBNLDnMEG9RIFaFgxB+FcJyOhv0IsfmfW5kr/ZoE2VtVvCGAqN6vkHJzcv0BKg3ESC8uL/8W+C1zD8rxqRqt1l2DU2J0MI57/oSeSeB27pVsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290302; c=relaxed/simple;
-	bh=tvQzNcgYJuWiwJYrbrcog5quYwRzSKcabHNAwmsbrQo=;
+	s=arc-20240116; t=1779290305; c=relaxed/simple;
+	bh=Tssskg72px5KsiFIuozQi7gkY6qm94ehHHujFtp+OC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBFdWziIQAxD0OY6BRUiXmfzglMFV3ebJqPLHFiNqFRgHbDpEEfxCEAjC+L12hDOW+4omZOMV2uLJis6wSHD6B/B3IKdYlCpcfLRE1IXeKNLmUMH9XFMJf8D2KR9Oma2wicvbH9pOYdEVgAocl4fWOeun+Dh00L+Chw9gwgrP0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgnX+XtG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876281F000E9;
-	Wed, 20 May 2026 15:18:20 +0000 (UTC)
+	 MIME-Version; b=Jdw4yKHh58x46DbRQqfZvXG0cnlIHsltMpqNGI3ISCNY63sMCaGWlPnXi0z9WrRLVaQE7xWBFPMsbfhjtWAns2CqBEJs3H95140t3XkeC+l2BqhPrq6PiKJsJPOjx1IgI5rrMJmjsfpAZCBcy/n/OryVsEhYhTD6K1hJVULLgiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0RK+gf2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB061F00893;
+	Wed, 20 May 2026 15:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779290301;
-	bh=cDpInlaDz/xIlGdRK3/AaVijUnTBxOzExYWxaX25Xig=;
+	s=k20260515; t=1779290303;
+	bh=7w+/K7orD263fNV3KBNmTTwV0N8Ytj/lefA+p1Qqpyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DgnX+XtGS8YFREcM5iJ1CI4Z6RV4eCx5ENFRTLtC9/ZCZy2CLb41npl6g6swDIBlN
-	 cv8Z1Zd1zCtiANyV4pFSUVqbKnthSjWGeTYP3JWeaUiFulk56mue6TO25N+lzTnXZP
-	 RVulbq9gYlJWvyr1kyA9XDRq5Q5DbCWKrGnH2WQP4wucjMvdhjpPcSR45r40EtSnuk
-	 QWFAA/O5/x0bwLCUULdJi5zle1taVCQXj1Teqmwq5hzemWTBdr/uPSd2YTTOzRBT6c
-	 b9IGOmqT9WYq3pB8MR5uOABdLOYyJN2aCXO1QjDkoA/OX8MGxNfyg72EIlCp9kgJBY
-	 RVhaS/mH9wPTg==
+	b=g0RK+gf2aH3n0uukj3EFdPtwgb1dDEX88qCzYuZklcwDpaJtK4LYIDBlGJ8hexUQP
+	 Ogpf86Qgb8Q2FpK47gGGdXf6ok8dLDsQsS4pZqcr/7G8ZTCrI25Yw/TvBtEO+2MrSd
+	 D+MQ5B6T7ziMHqdjvQVSRspmMYzImxywu0sxiPNmcfWnfdWj9qnuCmQrLGQBrce8pC
+	 Cn6s375Tfwuwkge9JpVsSFXLzmZ+0Kg8OrQZNXkdolNzzeelvt+EnCo1yn62T+Nwm6
+	 z8ZqIvL5fjECOic68THODQUKcfX3XN7QHL6RyrxfCuB7L8qvgpqGyA4lLf6Qp3PtXp
+	 fL00Wza+8uPSA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan@kernel.org>,
-	Yash Shah <yash.shah@sifive.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] spi: sifive: fix controller deregistration
-Date: Wed, 20 May 2026 11:18:18 -0400
-Message-ID: <20260520151818.3912903-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] spi: lantiq-ssc: fix controller deregistration
+Date: Wed, 20 May 2026 11:18:21 -0400
+Message-ID: <20260520151821.3913367-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260520151818.3912903-1-sashal@kernel.org>
-References: <2026051547-backside-sermon-2557@gregkh>
- <20260520151818.3912903-1-sashal@kernel.org>
+In-Reply-To: <2026051543-gurgling-tightly-f17c@gregkh>
+References: <2026051543-gurgling-tightly-f17c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250011-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250012-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,61 +89,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C7169590BE1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,hauke-m.de:email]
+X-Rspamd-Queue-Id: B0E34591593
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 0f25236694a2854627c1597465a071e6bb6fe572 ]
+[ Upstream commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 ]
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+Make sure to deregister the controller before releasing underlying
+resources like clocks during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-140039c23aca ("spi: sifive: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
-Cc: stable@vger.kernel.org	# 5.1
-Cc: Yash Shah <yash.shah@sifive.com>
+Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
+Cc: stable@vger.kernel.org	# 4.11
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-15-johan@kernel.org
+Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
+[ adapted spi_controller/host naming to spi_master/master and preserved the int-returning remove() with trailing return 0 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sifive.c | 8 +++++++-
+ drivers/spi/spi-lantiq-ssc.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index 6964d287ae141..683dce55ef302 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -393,7 +393,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
- 		 irq, host->num_chipselect);
+diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
+index bcb52601804a9..e09e54b02dc0f 100644
+--- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -1003,7 +1003,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
+ 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_host failed\n");
- 		goto put_host;
-@@ -412,8 +412,14 @@ static void sifive_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct sifive_spi *spi = spi_controller_get_devdata(host);
+-	err = devm_spi_register_master(dev, master);
++	err = spi_register_master(master);
+ 	if (err) {
+ 		dev_err(dev, "failed to register spi_master\n");
+ 		goto err_wq_destroy;
+@@ -1027,6 +1027,10 @@ static int lantiq_ssc_remove(struct platform_device *pdev)
+ {
+ 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
  
-+	spi_controller_get(host);
++	spi_master_get(spi->master);
 +
-+	spi_unregister_controller(host);
++	spi_unregister_master(spi->master);
 +
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
+ 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
+ 	rx_fifo_flush(spi);
+@@ -1037,6 +1041,8 @@ static int lantiq_ssc_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(spi->spi_clk);
+ 	clk_put(spi->fpi_clk);
+ 
++	spi_master_put(spi->master);
 +
-+	spi_controller_put(host);
+ 	return 0;
  }
  
- static int sifive_spi_suspend(struct device *dev)
 -- 
 2.53.0
 
