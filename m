@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-251967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dnQPJrQgDmqj6QUAu9opvQ
-	(envelope-from <stable+bounces-251967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:32 +0200
+	id uMPZMVIBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE8C59A5B4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B345972F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47F3637A49DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5A046315E59D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8A93F1AD9;
-	Wed, 20 May 2026 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689053D1CA0;
+	Wed, 20 May 2026 18:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqBjXHwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxK4Z4uc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1FE369D7E;
-	Wed, 20 May 2026 17:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16689371CEA;
+	Wed, 20 May 2026 18:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299396; cv=none; b=hW/ISobgrvQn3RGPQVv+/296rGfHPmQnBtnvQ4/6hTaWBXlubvirpXr0mLUW/W5vkbgAfRk6nF0pnuTO4o7pigW1jMytjbHrNDqglYRI7X0g9iHS/rnGDtDqyUnylMcm8qihMqAWBiEhzq4ya54FTykRsAVZjByPk+/4GMPXvwA=
+	t=1779302302; cv=none; b=CTcaqFq4p/o+FHiBU/PhSFqF1CuHvKg54eswZrpQzu/9gumbiiMIiu7KplH2ymGNbJRBWHnKxZHe9xc7rnc1B7vdwxET03gRxJaoEkrlsb/geq7clzqdsc1rdR9IGBwY6rjaYsWmst/wHGDdCjsFSF7uHo98ah/H9iHSZulKRto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299396; c=relaxed/simple;
-	bh=VEIY6gedS+okHb51t0yr5cTIR3CeGrhg1MDUUsVipaU=;
+	s=arc-20240116; t=1779302302; c=relaxed/simple;
+	bh=BNXH+elWxFBEOMLrusUykcbQlyy4mbFjY1yG8KLSyjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGl0FIL7b9E69drEdT/KcuWVnmxX+W4gPrcmpurc9CA6mfVqhutcNiuo8zEoYFGZDBAQqUu7bpVWURg7kuXSO+mmJoXlp3/40yrkCJeYpJ5kP2zp9kt62a1nUjjyRIXl8l/W/cu+gWHtu6Y1/5GcO6gFeRs7o/j5GWHcexvCWEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqBjXHwL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47DC1F00894;
-	Wed, 20 May 2026 17:49:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lH7O07Pwv2sfr1cmoI4Wn3l8uXuQWeYr+8WI7JEUjgiNsav394uLfBMENx4IdLsh0xt3sw6Tx8KqQaqLnfW/eLspiKXYCvs+qpo2RTOyYoJxQyXWQm0Q07jyPa3l5o/bQWsJ3ZaJxoF83b5SH/kKqLFwNYsXaOQrQidJRaIQuG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxK4Z4uc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836E61F000E9;
+	Wed, 20 May 2026 18:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299395;
-	bh=rKNFENsPhAZc+8ju3megy9+LCdK9PzbjmlHdEIzdamE=;
+	s=korg; t=1779302301;
+	bh=HZ108OrMHe2C8RT2E0R+0dyc0mw2tbBqxZAGZk+Ev/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hqBjXHwLW7tW9pesM4vyv/MTr8SutC41ZHIh906ZqlPxAVz2QND7zROrLtkcbf3jk
-	 lEwmRZuOl4sB1w8kdMmEKlvxpv+Jz4YHve4vJW5WmGx/jrxfMuWzCuNy2kAIe+TUBI
-	 S1zlgM08EZg++vg0YttHtO3P6HIzZ+5XQFQCMW1M=
+	b=NxK4Z4ucjji/PZTAcH7QwnmRq+1bJyKB/6ijljQPr4Hk166OGQmI46reiUQKAVNHH
+	 AVvCojXJJUpeIqk6vum672WivlWcUaL5rk6M5KGdSjBvYV9ta1ujSZFQ/BBO82o7dF
+	 RZlPHHuBW3QKQeXQNAkk/A91CxEnmv4coudkZ300=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 714/957] tipc: fix double-free in tipc_buf_append()
+Subject: [PATCH 6.6 174/508] ktest: Honor empty per-test option overrides
 Date: Wed, 20 May 2026 18:19:57 +0200
-Message-ID: <20260520162150.031427263@linuxfoundation.org>
+Message-ID: <20260520162102.409204748@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +69,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251967-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-253061-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DCE8C59A5B4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,goodmis.org:email,msgid.link:url,suse.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 51B345972F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit d293ca716e7d5dffdaecaf6b9b2f857a33dc3d3a ]
+[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
 
-tipc_msg_validate() can potentially reallocate the skb it is validating,
-freeing the old one.  In tipc_buf_append(), it was being called with a
-pointer to a local variable which was a copy of the caller's skb
-pointer.
+A per-test override can clear an inherited default option by assigning an
+empty value, but __set_test_option() still used option_defined() to decide
+whether a per-test key existed. That turned an empty per-test assignment
+back into "fall back to the default", so tests still could not clear
+inherited settings.
 
-If the skb was reallocated and validation subsequently failed, the error
-handling path would free the original skb pointer, which had already
-been freed, leading to double-free.
+For example:
 
-Fix this by checking if head now points to a newly allocated reassembled
-skb.  If it does, reassign *headbuf for later freeing operations.
+  DEFAULTS
+  (...)
+  LOG_FILE = /tmp/ktest-empty-override.log
+  CLEAR_LOG = 1
+  ADD_CONFIG = /tmp/.config
 
-Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
-Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  TEST_START
+  TEST_TYPE = build
+  BUILD_TYPE = nobuild
+  ADD_CONFIG =
+
+This would run the test with ADD_CONFIG[1] = /tmp/.config
+
+Fix by checking whether the per-test key exists before falling back. If it
+does exist but is empty, treat it as unset for that test and stop the
+fallback chain there.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
+Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 76284fc538ebd..b0bba0feef564 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -177,8 +177,20 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 4eca66310d9b4..13686e7629c4d 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4113,7 +4113,8 @@ sub __set_test_option {
  
- 	if (fragid == LAST_FRAGMENT) {
- 		TIPC_SKB_CB(head)->validated = 0;
--		if (unlikely(!tipc_msg_validate(&head)))
-+
-+		/* If the reassembled skb has been freed in
-+		 * tipc_msg_validate() because of an invalid truesize,
-+		 * then head will point to a newly allocated reassembled
-+		 * skb, while *headbuf points to freed reassembled skb.
-+		 * In such cases, correct *headbuf for freeing the newly
-+		 * allocated reassembled skb later.
-+		 */
-+		if (unlikely(!tipc_msg_validate(&head))) {
-+			if (head != *headbuf)
-+				*headbuf = head;
- 			goto err;
-+		}
-+
- 		*buf = head;
- 		TIPC_SKB_CB(head)->tail = NULL;
- 		*headbuf = NULL;
+     my $option = "$name\[$i\]";
+ 
+-    if (option_defined($option)) {
++    if (exists($opt{$option})) {
++	return undef if (!option_defined($option));
+ 	return $opt{$option};
+     }
+ 
+@@ -4121,7 +4122,8 @@ sub __set_test_option {
+ 	if ($i >= $test &&
+ 	    $i < $test + $repeat_tests{$test}) {
+ 	    $option = "$name\[$test\]";
+-	    if (option_defined($option)) {
++	    if (exists($opt{$option})) {
++		return undef if (!option_defined($option));
+ 		return $opt{$option};
+ 	    }
+ 	}
 -- 
 2.53.0
 
