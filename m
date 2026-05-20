@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNvvHxX4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:13 +0200
+	id iLryFVcUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E2859549A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC1359923E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E31F306B4D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A06503187DC9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6E03EDACC;
-	Wed, 20 May 2026 17:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B343A6B6D;
+	Wed, 20 May 2026 18:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiBv1zS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm7paTfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA9C3D7D7B;
-	Wed, 20 May 2026 17:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19FE3E95A4;
+	Wed, 20 May 2026 18:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298907; cv=none; b=qW3QEHbSLreTQithgw/sCnPtieYZhhwO4wMyTwX71VLU7dRXfZKuYkre7IX+og9eqNBPMHEes5Apsjqo9nX9M7eqCOPErvv0yyIxfisa4+IDmAIrnJ0Ib8AwcRbgJhypkh5KSvKGt4WSmbPnazsk932rRwCExgW+4nsfQrsLosM=
+	t=1779300665; cv=none; b=PW029qMu9woCmuc0HmUIzRCAgod2G3mWmcPqsNHj8u7MuJWbr9aepKSGNMoCA9+cfbsU7aQNO8QO9tEkMeUg/FnTUqfNYwv3LnP/9a6oGmz++qcbDRCB7k0r1tDFivzVo+UIxYJC0WNBGFlutinPetnihclNfwjXfLAg8qF5Rxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298907; c=relaxed/simple;
-	bh=ElAxiPCs/N+GxrnFoQvMF32F59UKRR+7AyGhv64Zm1o=;
+	s=arc-20240116; t=1779300665; c=relaxed/simple;
+	bh=cvhLOhEd23ePWjJAUMkZ9+D7c0mYmn2zuT0Znjejdj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j07FgdynagYvpJVtWidg/aNTUINPQ5IC2VXQ6tzMy+UBZeqHVNIniKanGxq77uWQ8N2XZ3j594EE6c8Tm4YZ3z9H+u1pivfZf7tB0Bl4E26ePxjuSYiOildZ3aopk5AV0CnXUX1DbDFMB2bw6DJ6joObQZdHRCo3Gt0db0A1BFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiBv1zS0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAAC1F000E9;
-	Wed, 20 May 2026 17:41:45 +0000 (UTC)
+	 MIME-Version; b=kMWil82Rr2rRFpmPzoS8ckmlcjg+RLRwqQvVQybo+nI0e3pGF3/irPiVg05RppkMVPPkgLfTeKhW/cHuNmEJCKsEoIpUqIL9FpvDTaoZjKBMtYlX9sVO+grK5VFMrFrUnEtwzxI4mJ3IOYm5V0M2qUHoqFmsrN63bzNC6ggy1Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm7paTfo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0419C1F00893;
+	Wed, 20 May 2026 18:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298906;
-	bh=Ju19b2qCMUofhEbMqoDAZOOvvSIhx/tdtJ1R/crApXE=;
+	s=korg; t=1779300664;
+	bh=DQF8+lBSKt5EgJ3FF7Whk8cAp+UTvleZ15v7xU9Jw3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eiBv1zS0I1xtm8fg0oqS1YLH35saSjyPZ4SoG1s/ljT6uDq3M94qvY6CSz1JauVV0
-	 RGhwYZNz2dJ0/dhIX3cVsseyHkY12biA2peKDDsqmG58ce8X5GKykDLyzIZG3YcpP/
-	 bmZ1fMqMaTq3tswJoxi7Nujbo65DVvfzRa5DG7m8=
+	b=hm7paTfomwjI0yipyLh7/QK7+AsKhpOVaBvrlkVk/t8pZgKFar7uOY+0EDdpY+WTX
+	 N1mLA+YRkOJb+RI1jhkrD+WXnLDDhpNx3/m7e3CHUwd25kZ7ZopMzAYe+zwgiZJQ1A
+	 6BcAZ97xXbr1mYySyp+ZSKzY8EuaosW/GBkxgaGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 590/957] f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()
+Subject: [PATCH 6.12 262/666] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
 Date: Wed, 20 May 2026 18:17:53 +0200
-Message-ID: <20260520162147.326520452@linuxfoundation.org>
+Message-ID: <20260520162116.896284018@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +69,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251794-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252435-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
-X-Rspamd-Queue-Id: 26E2859549A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5DC1359923E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 
-[ Upstream commit 5909bedbed38c558bee7cb6758ceedf9bc3a9194 ]
+[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
 
-In f2fs_sbi_show(), the extension_list, extension_count and
-hot_ext_count are read without holding sbi->sb_lock. If a concurrent
-sysfs store modifies the extension list via f2fs_update_extension_list(),
-the show path may read inconsistent count and array contents, potentially
-leading to out-of-bounds access or displaying stale data.
+ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
+and does not handle the -EINPROGRESS return code from async hardware
+crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
+-EINPROGRESS, ksmbd treats it as an error and immediately frees the
+request while the hardware DMA operation is still in flight. The DMA
+completion callback then dereferences freed memory, causing a NULL
+pointer crash:
 
-Fix this by holding sb_lock around the entire extension list read
-and format operation.
+  pc : qce_skcipher_done+0x24/0x174
+  lr : vchan_complete+0x230/0x27c
+  ...
+  el1h_64_irq+0x68/0x6c
+  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
+  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
 
-Fixes: b6a06cbbb5f7 ("f2fs: support hot file extension")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Use the standard crypto_wait_req() pattern with crypto_req_done() as
+the completion callback, matching the approach used by the SMB client
+in fs/smb/client/smb2ops.c. This properly handles both synchronous
+engines (immediate return) and async engines (-EINPROGRESS followed
+by callback notification).
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Link: https://github.com/openwrt/openwrt/issues/21822
+Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/server/auth.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index a75c3ef300bd2..1f5982a0a6326 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -377,10 +377,12 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 	if (!strcmp(a->attr.name, "extension_list")) {
- 		__u8 (*extlist)[F2FS_EXTENSION_LEN] =
- 					sbi->raw_super->extension_list;
--		int cold_count = le32_to_cpu(sbi->raw_super->extension_count);
--		int hot_count = sbi->raw_super->hot_ext_count;
-+		int cold_count, hot_count;
- 		int len = 0, i;
+diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
+index c12dcb0a47dd5..fea62d1cc4732 100644
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -1111,6 +1111,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
+ 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
+ 	int rc;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist *sg;
+ 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+@@ -1197,12 +1198,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
  
-+		f2fs_down_read(&sbi->sb_lock);
-+		cold_count = le32_to_cpu(sbi->raw_super->extension_count);
-+		hot_count = sbi->raw_super->hot_ext_count;
- 		len += sysfs_emit_at(buf, len, "cold file extension:\n");
- 		for (i = 0; i < cold_count; i++)
- 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
-@@ -388,6 +390,7 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 		len += sysfs_emit_at(buf, len, "hot file extension:\n");
- 		for (i = cold_count; i < cold_count + hot_count; i++)
- 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
-+		f2fs_up_read(&sbi->sb_lock);
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
+-	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
++	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
++				  CRYPTO_TFM_REQ_MAY_SLEEP,
++				  crypto_req_done, &wait);
  
- 		return len;
- 	}
+-	if (enc)
+-		rc = crypto_aead_encrypt(req);
+-	else
+-		rc = crypto_aead_decrypt(req);
++	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
++			     crypto_aead_decrypt(req), &wait);
+ 	if (rc)
+ 		goto free_iv;
+ 
 -- 
 2.53.0
 
