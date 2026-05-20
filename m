@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBR5JeotDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:54 +0200
+	id uGJ8HTIWDmpb6AUAu9opvQ
+	(envelope-from <stable+bounces-252628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20BC59B7DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFB359953E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A7B03835F4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D2751319FB80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F0D46AEDF;
-	Wed, 20 May 2026 18:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C833E5ECF;
+	Wed, 20 May 2026 18:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggPBqfyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKzDHIed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA5466B4B;
-	Wed, 20 May 2026 18:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1698348C55;
+	Wed, 20 May 2026 18:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302376; cv=none; b=m4zbDBIa9NeEW5l9mQeakfwHwh3Fi4Fy0swUjgsgGLpXs28fBSHcrYKJSRWj+H/ZXW47QguAuqkLN0/cuvMV9lho7+gjTf36/e3KQg9JxlaZqjmWs/HxkbCUxU32bnvwrk5Z0UNuns0IYFt9Fqzcuglx5CQBD40o4aIThRjT3Pg=
+	t=1779301174; cv=none; b=ikjp2RBFHX9opJ+DAt/QRWts76ZLwwwc/wYTwYeyCtUc9VmP3cpJEBbkbmyJMr/a77q+k+8SO/hbddGm3xpvn3+eCOFH1644/2XxxKDNiUfthHOGuYi4Khh5/R8BLdhVqYvlzIEl/qSB38FWRgyQSGD2mtSYX5vXiza3cZyw2/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302376; c=relaxed/simple;
-	bh=Ccydpor3WdaB35YomyJShcGY27Ej+KeF46ZD4aq7kFE=;
+	s=arc-20240116; t=1779301174; c=relaxed/simple;
+	bh=iz2YoB1QaLo4tBhvfVUnaTKOXDyAmeD3U7XQAMdCkSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEoEROrQZ9fEUbfyaSGtajrHfhWGzib6mFf9mU/fL34E5BtAZSZztK20H07Tq+siUY/UtAljk9koBnP9Zko5NIoYxz0cLHWtFzJU0VTgbfwSXymZxViJbxZhJ9riW7lbLB3mN1qor4s0tOOevj+CKsHy19JtfaKyOEJbx0xTn3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggPBqfyo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89AF1F00893;
-	Wed, 20 May 2026 18:39:34 +0000 (UTC)
+	 MIME-Version; b=hhUTaQa0rz7wjSz5ZFdRnDcVdehttlUuUUTdwXw+nPrWrO6WIMEq6fkau4UEpOaViHQCC/F7CLJHEfay+0fd6/v5wU/qUiREfvl4wAuk7CySSQ7+O1wsMKVWpWRVAooH4MYnwEiPE7e8o4N1Pf6a9aKVG4uTwA2/sooW3J9odpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKzDHIed; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624381F000E9;
+	Wed, 20 May 2026 18:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302375;
-	bh=llOrHjeIZeISPJYzBbCqGfkleeLFDmSI1lhqOpfvLbg=;
+	s=korg; t=1779301172;
+	bh=rDUfwvojpac62Gp2YEunSK/bEbf8GwuKO1wuz8KkKLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ggPBqfyozf8XdiXJZlGELFna2eQn+KzvV1Rabc0CqWRKWWxrKBZK+yTASWZtEejUQ
-	 1KLxvnmeM5+iYCSEFFk+ZYLHlwLgiYPRnv7Bj9GHtLXFQr3GocR/NHRq/oLGqYqgCk
-	 9aPr4YvKM4j9N0IzmLdOwfJpzJn+7MhnP1el0ahY=
+	b=QKzDHIeducV8tpqVTYZ7q0BIkeYKIPRtitxu2RGb+7Hh+iomN8OzzytGGOjBOAM0k
+	 eHQqxw8BMdP8a7KIGGq8+ppRydT4RfKW7yAamtX/sk/N/VPKWHyI1hD3GMooDLfNGI
+	 VqfaQR2AXaxzCj5GXh8ESRrJ62uNqtDyUwrTgHXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihan Ding <dingyihan@uniontech.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/508] bpf: allow UTF-8 literals in bpf_bprintf_prepare()
+Subject: [PATCH 6.12 454/666] tcp: annotate data-races around (tp->write_seq - tp->snd_nxt)
 Date: Wed, 20 May 2026 18:21:05 +0200
-Message-ID: <20260520162103.893927199@linuxfoundation.org>
+Message-ID: <20260520162121.111235640@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniontech.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253089-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252628-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email]
-X-Rspamd-Queue-Id: D20BC59B7DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5AFB359953E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Ding <dingyihan@uniontech.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b960430ea8862ef37ce53c8bf74a8dc79d3f2404 ]
+[ Upstream commit 3a63b3d160560ef51e43fb4c880a5cde8078053c ]
 
-bpf_bprintf_prepare() only needs ASCII parsing for conversion
-specifiers. Plain text can safely carry bytes >= 0x80, so allow
-UTF-8 literals outside '%' sequences while keeping ASCII control
-bytes rejected and format specifiers ASCII-only.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() annotations to keep KCSAN happy.
 
-This keeps existing parsing rules for format directives unchanged,
-while allowing helpers such as bpf_trace_printk() to emit UTF-8
-literal text.
+WRITE_ONCE() annotations are already present.
 
-Update test_snprintf_negative() in the same commit so selftests keep
-matching the new plain-text vs format-specifier split during bisection.
-
-Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
-Signed-off-by: Yihan Ding <dingyihan@uniontech.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260416120142.1420646-2-dingyihan@uniontech.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e08ab0b377a1 ("tcp: add bytes not sent to SCM_TIMESTAMPING_OPT_STATS")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-14-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c                            | 17 ++++++++++++++++-
- .../testing/selftests/bpf/prog_tests/snprintf.c |  3 ++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 2cfbc48b82425..885ff0710a8b9 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -849,7 +849,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 		data->buf = buffers->buf;
- 
- 	for (i = 0; i < fmt_size; i++) {
--		if ((!isprint(fmt[i]) && !isspace(fmt[i])) || !isascii(fmt[i])) {
-+		unsigned char c = fmt[i];
-+
-+		/*
-+		 * Permit bytes >= 0x80 in plain text so UTF-8 literals can pass
-+		 * through unchanged, while still rejecting ASCII control bytes.
-+		 */
-+		if (isascii(c) && !isprint(c) && !isspace(c)) {
- 			err = -EINVAL;
- 			goto out;
- 		}
-@@ -871,6 +877,15 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 		 * always access fmt[i + 1], in the worst case it will be a 0
- 		 */
- 		i++;
-+		c = fmt[i];
-+		/*
-+		 * The format parser below only understands ASCII conversion
-+		 * specifiers and modifiers, so reject non-ASCII after '%'.
-+		 */
-+		if (!isascii(c)) {
-+			err = -EINVAL;
-+			goto out;
-+		}
- 
- 		/* skip optional "[0 +-][num]" width formatting field */
- 		while (fmt[i] == '0' || fmt[i] == '+'  || fmt[i] == '-' ||
-diff --git a/tools/testing/selftests/bpf/prog_tests/snprintf.c b/tools/testing/selftests/bpf/prog_tests/snprintf.c
-index 4be6fdb78c6a1..20a3c622bd28a 100644
---- a/tools/testing/selftests/bpf/prog_tests/snprintf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/snprintf.c
-@@ -114,7 +114,8 @@ static void test_snprintf_negative(void)
- 	ASSERT_ERR(load_single_snprintf("%--------"), "invalid specifier 5");
- 	ASSERT_ERR(load_single_snprintf("%lc"), "invalid specifier 6");
- 	ASSERT_ERR(load_single_snprintf("%llc"), "invalid specifier 7");
--	ASSERT_ERR(load_single_snprintf("\x80"), "non ascii character");
-+	ASSERT_OK(load_single_snprintf("\x80"), "non ascii plain text");
-+	ASSERT_ERR(load_single_snprintf("%\x80"), "non ascii in specifier");
- 	ASSERT_ERR(load_single_snprintf("\x1"), "non printable character");
- }
- 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index cacb298147d4b..45e093ca22533 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4311,7 +4311,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+-		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
++		    max_t(int, 0,
++			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_nxt)));
+ 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
+ 			  TCP_NLA_PAD);
+ 	if (ack_skb)
 -- 
 2.53.0
 
