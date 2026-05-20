@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMR6NEboDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:46 +0200
+	id 0KZSIpMZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-251340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B158D592BBD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E032E599A64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09CC830825E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11C3B32074F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2263D75BA;
-	Wed, 20 May 2026 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771353D5642;
+	Wed, 20 May 2026 17:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2tDf4aC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ErAaTli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F74B369D6A;
-	Wed, 20 May 2026 16:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2244E3BA246;
+	Wed, 20 May 2026 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295320; cv=none; b=Yyr89cjT2pkwkqF84n8eHWhc0sDaeTduTN2+tmCgNCTkeSgAUiLZLwU6d3kBEraNvDUvGjFk4tIpLabdtzxV8bZGt3fF5GQSWmBYuns3k9i6zBJHs3qNYm9JELRD37Jk7AA8g1P+HqGxxVs3niFQa6rY/WoXy5E9W/mZ7QEA0k0=
+	t=1779297726; cv=none; b=rVMBHp+pxTZ38QqDWxpjjhOMRLCL9M9ui4X7IIXWTSkJHvbwBjvxjXFe8rb+0N95LpekGCI/K7pJ2L1SQZOI2HrBilB/eYUwSYyye8D2ASf1YxJyHR5ersBhBKb5+REMrnmlIPpa1DWjt+duoTTpc0SSi0EKpoC46lqbMab8T6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295320; c=relaxed/simple;
-	bh=wWZhFXM64cizbM3yVBxkJtDpBUJ2sDYzi85a+o/qOEM=;
+	s=arc-20240116; t=1779297726; c=relaxed/simple;
+	bh=JFsSk4pR/iiH0Qq+akG0j2wlIdCfqH68J6fm5O3yH9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvN6NAFXyujW0NKn1SvzZjD5ayJSlUPw+RfaJ8dbZcd5UOc5pgBjtnSOg/a4RDQ25lm1X5WZVqGwiMMDa16Ru2LwlNbxwoN9vPb/PGB566yh3DcTjnejAYCu3ofDi9+H3P91ChkoA65YrCsqw8eGZgrV3oale3qD/aBB5GeqXDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2tDf4aC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED791F000E9;
-	Wed, 20 May 2026 16:41:58 +0000 (UTC)
+	 MIME-Version; b=a3zaO56nX+ZpkkgHJu3SKJ0sLzOfVZXtq7JOZYNln6d4zQ3yHjeudgBu1L/ZmvY+g5iSkH+0S4TUh4EUU4GfD97x2rCaWiSB0QZbl8AuTYhpHO1zU3A2XV56y7y2xodsK+GiJfuSNMhvfD5Dlt69G9hZTt0EUSD5F99e+2Ki0yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ErAaTli; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8795F1F00896;
+	Wed, 20 May 2026 17:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295319;
-	bh=9iSJvZt+vVTXwCpsUx4fjN/g4+CkRqeMYZkYTqIBHNc=;
+	s=korg; t=1779297725;
+	bh=6aVMl1PHzL2JM9KsnLdyz+nsa3xRLLerrHTA9vFfuiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c2tDf4aC50KoriE7BHisYxag/JiIlGaGJkOD7R38kWPocBSRkIunk7dNNASEI8DEP
-	 /1AGvFLse79TpN22bhUo2cCMTjXGDBwK+4IyXChtmZ5rCBAALU7605wIui7Zy6Ew4k
-	 Ggpw4UqMPuEXs6mVIIS52feXjXc/VZCDXstpcaN0=
+	b=0ErAaTli+5rlYP4K4v9HNsX24Kr0BszkEU2CmtkDZo74XBPDO1cKWxkxrOjEYttJv
+	 C/Mu7xsZT3PlyUteqH3cjjN+vZ/CXLR/xtULmxQm4+JpxGnpjAbKCG2Drrf9cps2JQ
+	 cfIqtFYyyQXWaaQqg66H7miAc20f5RAAM0ANbT5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0373/1146] ASoC: fsl_micfil: Fix event generation in micfil_put_dc_remover_state()
-Date: Wed, 20 May 2026 18:10:23 +0200
-Message-ID: <20260520162156.642543249@linuxfoundation.org>
+Subject: [PATCH 6.18 141/957] netfilter: xt_socket: enable defrag after all other checks
+Date: Wed, 20 May 2026 18:10:24 +0200
+Message-ID: <20260520162137.612182501@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +65,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251340-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250402-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B158D592BBD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E032E599A64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7d2bd35100de370dc326b250e8f6b66bee06a2f3 ]
+[ Upstream commit 542be3fa5aff54210a02954c38f07e53ea9bdafd ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation micfil_put_dc_remover_state() only returns 0 or a
-negative error code, causing ALSA to not generate any change events.
+Originally this did not matter because defrag was enabled once per netns
+and only disabled again on netns dismantle.  When this got changed I should
+have adjusted checkentry to not leave defrag enabled on error.
 
-return the value of snd_soc_component_update_bits() directly, as it has
-the capability of return check status of changed or not.
-
-Also enable pm runtime before calling the function
-snd_soc_component_update_bits() to make the regmap cache data align with
-the value in hardware.
-
-Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-6-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: de8c12110a13 ("netfilter: disable defrag once its no longer needed")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/netfilter/xt_socket.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 0cfdd6343291a..983805bbaae27 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -351,6 +351,10 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
- 	if (val < 0 || val > 3)
+diff --git a/net/netfilter/xt_socket.c b/net/netfilter/xt_socket.c
+index 76e01f292aaff..811e53bee4085 100644
+--- a/net/netfilter/xt_socket.c
++++ b/net/netfilter/xt_socket.c
+@@ -168,52 +168,41 @@ static int socket_mt_enable_defrag(struct net *net, int family)
+ static int socket_mt_v1_check(const struct xt_mtchk_param *par)
+ {
+ 	const struct xt_socket_mtinfo1 *info = (struct xt_socket_mtinfo1 *) par->matchinfo;
+-	int err;
+-
+-	err = socket_mt_enable_defrag(par->net, par->family);
+-	if (err)
+-		return err;
+ 
+ 	if (info->flags & ~XT_SOCKET_FLAGS_V1) {
+ 		pr_info_ratelimited("unknown flags 0x%x\n",
+ 				    info->flags & ~XT_SOCKET_FLAGS_V1);
  		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(comp->dev);
-+	if (ret)
-+		return ret;
-+
- 	micfil->dc_remover = val;
- 
- 	/* Calculate total value for all channels */
-@@ -360,10 +364,10 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
- 	/* Update DC Remover mode for all channels */
- 	ret = snd_soc_component_update_bits(comp, REG_MICFIL_DC_CTRL,
- 					    MICFIL_DC_CTRL_CONFIG, reg_val);
--	if (ret < 0)
--		return ret;
- 
+ 	}
 -	return 0;
-+	pm_runtime_put_autosuspend(comp->dev);
 +
-+	return ret;
++	return socket_mt_enable_defrag(par->net, par->family);
  }
  
- static int micfil_get_dc_remover_state(struct snd_kcontrol *kcontrol,
+ static int socket_mt_v2_check(const struct xt_mtchk_param *par)
+ {
+ 	const struct xt_socket_mtinfo2 *info = (struct xt_socket_mtinfo2 *) par->matchinfo;
+-	int err;
+-
+-	err = socket_mt_enable_defrag(par->net, par->family);
+-	if (err)
+-		return err;
+ 
+ 	if (info->flags & ~XT_SOCKET_FLAGS_V2) {
+ 		pr_info_ratelimited("unknown flags 0x%x\n",
+ 				    info->flags & ~XT_SOCKET_FLAGS_V2);
+ 		return -EINVAL;
+ 	}
+-	return 0;
++
++	return socket_mt_enable_defrag(par->net, par->family);
+ }
+ 
+ static int socket_mt_v3_check(const struct xt_mtchk_param *par)
+ {
+ 	const struct xt_socket_mtinfo3 *info =
+ 				    (struct xt_socket_mtinfo3 *)par->matchinfo;
+-	int err;
+ 
+-	err = socket_mt_enable_defrag(par->net, par->family);
+-	if (err)
+-		return err;
+ 	if (info->flags & ~XT_SOCKET_FLAGS_V3) {
+ 		pr_info_ratelimited("unknown flags 0x%x\n",
+ 				    info->flags & ~XT_SOCKET_FLAGS_V3);
+ 		return -EINVAL;
+ 	}
+-	return 0;
++
++	return socket_mt_enable_defrag(par->net, par->family);
+ }
+ 
+ static void socket_mt_destroy(const struct xt_mtdtor_param *par)
 -- 
 2.53.0
 
