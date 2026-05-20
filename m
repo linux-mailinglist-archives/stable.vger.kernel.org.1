@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-253330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK8iJFEIDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:29 +0200
+	id mGgWArgIDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-252827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:17:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45C159806F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B50598143
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AD9E39C215B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96ACA32C4CAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E18407CE3;
-	Wed, 20 May 2026 18:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A73F3F9280;
+	Wed, 20 May 2026 18:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCVyBEcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAy0LuK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDC14048A3;
-	Wed, 20 May 2026 18:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04567363C4C;
+	Wed, 20 May 2026 18:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302999; cv=none; b=egrnB0hUkWHPKRmW/kIVycfkaS/CxMZcPVTNvRfDmzcSZIgGkdKa90/LpkCf/92voWcjAilMwbTOw7qHZJkHVp0i2NWZN8pIvjnSV94EJfstII/sB+cBpBBDtn1lkLXjmaZYrE29RZt1FfNqfeoYzSDdmfmE7AJETvmer4EF2UA=
+	t=1779301693; cv=none; b=fcof8fywXfcgxai4q6KulrxILK68ouAnpg29VoEU+/nlXXix8JE36ZSbc0vNYKSmcJo1n5FSXoezshJ9DOFnUKaZwYl8Vpr6guRRxU1YNWr76wnrwNKzXvKwCUbEaqH4Jor1qE2brla6CrXX887ifJt1mWvbrO4XNrsN70rjWXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302999; c=relaxed/simple;
-	bh=JT95u1Q695P8gtCJR8RTli/88JTMACP4Ub+CIrwHINw=;
+	s=arc-20240116; t=1779301693; c=relaxed/simple;
+	bh=VCYGrkB5DSIKUpSiekBjpDXDmfg+Sm/dlye7RZBamCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZpZV2ZqNW4/7riLRcr16Ul2iVaZed5VG/VvirWttllshualHgE8G4K4wePIeHl9eh5NrlY2McAwZc67QTA4Wf6dOX4LPgzVnVWkFxCph7D1KP4mq6DVA/siFfhWa+zEJqg+ukT/CJb+omHSORpYN3ejJBJm3zuWYP6BFJHPUbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCVyBEcQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751A01F00899;
-	Wed, 20 May 2026 18:49:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fOu82KtHGKnRtIfexSqa4j0wQfZdL8G6X+YvNbmQ0coToqZYMyOy560lGXL5V7/uDvGr77gIT5ppE0NaeyDaHQnyB8yOaq/DJrk2ZXx7W9p+sKo+DRA4LuL/cfM0vQ7S2TBS7j62C6e8Ks1Q1XSN1bRWv3R0HeJyYP4sWfxlJNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAy0LuK6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEE91F000E9;
+	Wed, 20 May 2026 18:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302996;
-	bh=tfO06F/3Z9SEMY3nlapVv2hs+8vVPMqBJj3WEYO6Ax0=;
+	s=korg; t=1779301691;
+	bh=yJg0DQmQjPcxkaf3bHjP3a5ttv+stAnPUhYs7bPcPA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zCVyBEcQ2Moafd77WL+NvIBI7Pn11hdPdCuBfX8yui9XuxvrtQmAIQOIK+TcXcg6t
-	 ThMzEe1dhAlXXEw4VuYzMJoTVJihrkDl0NyBwvGP/B9OGg4d6PcVl+0OpBTJzpaxce
-	 JoXF/dqFCjn15J6M/T2QnFUv8PzJY3jTMEQvy3gU=
+	b=GAy0LuK6zgCGgsSOwMsLMYGW97gHZtdeKNMFW+9yeHdAy8f28byLT7q3DbVFMUJoo
+	 p3ilqAl6S1dlZy2eHdOLnDsCPqw47a0rzSRba5lXaIaDr7IM2XzBGIrFMoWFLASTZk
+	 yI/nZk7Un5f2FiaxnOtNUZbKtP3870jGAIVPtUOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 437/508] net/sched: cls_flower: revert unintended changes
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.12 649/666] drm/v3d: Reject empty multisync extension to prevent infinite loop
 Date: Wed, 20 May 2026 18:24:20 +0200
-Message-ID: <20260520162108.068519685@linuxfoundation.org>
+Message-ID: <20260520162125.350222248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252827-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253330-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,igalia.com];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E45C159806F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,igalia.com:email]
+X-Rspamd-Queue-Id: 08B50598143
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-[ Upstream commit 1e01abec856593e02cd69fd95b784c10dd46880c ]
+v3d_get_extensions() walks a userspace-provided singly-linked list of
+ioctl extensions without any bound on the chain length. A local user
+can craft a self-referential extension (ext->next == &ext) with zero
+in_sync_count and out_sync_count, which bypasses the existing duplicate-
+extension guard:
 
-While applying the blamed commit 4ca07b9239bd ("net: mctp i2c: check
-length before marking flow active"), I unintentionally included
-unrelated and unacceptable changes.
+    if (se->in_sync_count || se->out_sync_count)
+            return -EINVAL;
 
-Revert them.
+The guard never fires because v3d_get_multisync_post_deps() returns
+immediately when count is zero, leaving both fields at zero on every
+iteration. The result is an infinite loop in kernel context, blocking
+the calling thread and pegging a CPU core indefinitely.
 
-Fixes: 4ca07b9239bd ("net: mctp i2c: check length before marking flow active")
-Reported-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Closes: https://lore.kernel.org/netdev/bd8704fe0bd53e278add5cde4873256656623e2e.camel@codeconstruct.com.au/
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/043026a53ff84da88b17648c4b0d17f0331749cb.1777447863.git.pabeni@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by rejecting a multisync extension where both in_sync_count
+and out_sync_count are zero in v3d_get_multisync_submit_deps(). An
+empty multisync carries no synchronization information and serves no
+useful purpose, so returning -EINVAL for such an extension is the
+correct defense against this attack vector.
+
+Fixes: e4165ae8304e ("drm/v3d: add multiple syncobjs support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Link: https://patch.msgid.link/20260415050000.3816128-1-ashutoshdesai993@gmail.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+(cherry picked from commit fb44d589bf3148e13452185a6e772a7efbf2d684)
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flower.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_submit.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 07259b403e108..b00e491e8130d 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -549,7 +549,6 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct cls_fl_head *head = fl_head_dereference(tp);
--	struct fl_flow_mask *mask;
+--- a/drivers/gpu/drm/v3d/v3d_submit.c
++++ b/drivers/gpu/drm/v3d/v3d_submit.c
+@@ -389,6 +389,11 @@ v3d_get_multisync_submit_deps(struct drm
+ 	if (multisync.pad)
+ 		return -EINVAL;
  
- 	*last = false;
- 
-@@ -566,12 +565,11 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 	list_del_rcu(&f->list);
- 	spin_unlock(&tp->lock);
- 
--	mask = f->mask;
-+	*last = fl_mask_put(head, f->mask);
- 	if (!tc_skip_hw(f->flags))
- 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
- 	tcf_unbind_filter(tp, &f->res);
- 	__fl_put(f);
--	*last = fl_mask_put(head, mask);
- 
- 	return 0;
- }
--- 
-2.53.0
-
++	if (!multisync.in_sync_count && !multisync.out_sync_count) {
++		DRM_DEBUG("Empty multisync extension\n");
++		return -EINVAL;
++	}
++
+ 	ret = v3d_get_multisync_post_deps(file_priv, se, multisync.out_sync_count,
+ 					  multisync.out_syncs);
+ 	if (ret)
 
 
 
