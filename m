@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDKeHn72DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:26 +0200
+	id +CNiHSoHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1475950C7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FE3597DFC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0979301983E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B688933D3AE0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F5C3C4576;
-	Wed, 20 May 2026 17:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C4A4218A1;
+	Wed, 20 May 2026 18:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYkT9bHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kziEqQof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE983F20FA;
-	Wed, 20 May 2026 17:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A67346E55;
+	Wed, 20 May 2026 18:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299875; cv=none; b=W/AXjHoxFimnSAgsLEdnBY6228paKDEH92+IgDIy52T87f9rNQ9LhpVygwFlI/TOFOT3tw5agGK1qIRUGQtLYDEwf5g9J5KHUgcnqo7z2dp6OMhSeS7FrzB3zP/iblECDikq9RdTlczJtPvB3T0DL3GL6EDO2nnqaGOFmKsBUDc=
+	t=1779302734; cv=none; b=BfSM0h9CvBrMMrzyxXBSjBTKrON+luDZG+vUqVF6AJ63TwINU4UMQeUYZKriWvE21TY92lsJLz8++O7I4ROGCI8Ee0jyqsaKx5SnEYpxkU3p85YnpblHaxPA7IPYx2rQZTBNVzFtMKnimlNyLURWzz+DTOMzWaqLfm5S+sGk9gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299875; c=relaxed/simple;
-	bh=ZX1FSJoXJIJ2RCjWLqbD1lUgeh9PLn72b9bn/aEdu0Q=;
+	s=arc-20240116; t=1779302734; c=relaxed/simple;
+	bh=C0nqaA80972wgFO0a7OuJWDmdE49fS0yhHDqp5/6rDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+WJPMEbOS2IBbckDP/ybw7dVSWERpAeGKTD0iD8pDW3PX1bcJr7M+LuH+OA1g6mNW9qKmh6C6X+5S6LVADmHvgXEAfitkRK436W1u/BzLB8AndohU7VfPvUz5QygOOy4QihcViFsKbGV536IbJBTz9m4/N15PKHnB1D0GWPOr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYkT9bHt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02011F000E9;
-	Wed, 20 May 2026 17:57:52 +0000 (UTC)
+	 MIME-Version; b=Azf4+fWU5YxeK+pDLtuXMaiEiL2wC8Zu4Hg2frihZdVvAhpwpvPEJS4brdrmpTZ7nxTXZK7oQYGPZ4pBvuoe14TJfG55IqJaTnavbQhnt+BO8Lm4AXJJs9C2QhbIWX77T0ZtuLsw3VSSAdd9EotOorwSZgVI8yXHRQH/7+ey3uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kziEqQof; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6C41F000E9;
+	Wed, 20 May 2026 18:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299873;
-	bh=eE48CuN6dBGdz3PJEXMHwZxJfi56mkg3aw+waUdjjWQ=;
+	s=korg; t=1779302732;
+	bh=nZtGCb3mcxmxaAMOnN0FJc6tfzu3ajHkuMq5Sym6RRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pYkT9bHtzHTFq9YfzVgD/CA6SwaYuj8jj+Sba5vfaEg21wBoY+L7CAHwzc4JzXZc6
-	 8POaY/OlwYoAGYM9b+2UHNNGaYv6//t4vgjKcAh7iiuGB45sPs5Cbqcj9ERnzIBud1
-	 K7Ubhypw9tqnVyZG+I6YjvjH3tE0gfVxVsh+qxJw=
+	b=kziEqQofnQJRX2r0tWP4UdTbkv09pokGCBNFJSgVdFOat1WBdiZOvmoEJN7NBfK7i
+	 VNkCxs21DtP3n1LcLERKV882Dz7NgUQOqp1L4tRRvmyVkq6rgrkozCJIeGHHIIFGD8
+	 gDTlQYnsmcEXfCm+bcnHW1uvCLHKvT3CxN/Nts30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 918/957] ceph: fix BUG_ON in __ceph_build_xattrs_blob() due to stale blob size
+	Wentao Guan <guanwentao@uniontech.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 378/508] arm64/scs: Fix potential sign extension issue of advance_loc4
 Date: Wed, 20 May 2026 18:23:21 +0200
-Message-ID: <20260520162154.488990323@linuxfoundation.org>
+Message-ID: <20260520162106.812959250@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252132-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253229-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,135 +91,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A1475950C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
+X-Rspamd-Queue-Id: C6FE3597DFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-commit 0c22d9511cbde746622f8e4c11aaa63fe76d45f9 upstream.
+[ Upstream commit 4023b7424ecd5d38cc75b650d6c1bf630ef8cb40 ]
 
-The generic/642 test-case can reproduce the kernel crash:
+The expression (*opcode++ << 24) and exp * code_alignment_factor
+may overflow signed int and becomes negative.
 
-[40243.605254] ------------[ cut here ]------------
-[40243.605956] kernel BUG at fs/ceph/xattr.c:918!
-[40243.607142] Oops: invalid opcode: 0000 [#1] SMP PTI
-[40243.608067] CPU: 7 UID: 0 PID: 498762 Comm: kworker/7:1 Not tainted 7.0.0-rc7+ #3 PREEMPT(full)
-[40243.609700] Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[40243.611820] Workqueue: ceph-msgr ceph_con_workfn
-[40243.612715] RIP: 0010:__ceph_build_xattrs_blob+0x1b8/0x1e0
-[40243.613731] Code: 0f 84 82 fe ff ff e9 cf 8e 56 ff 48 8d 65 e8 31 c0 5b 41 5c 41 5d 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 c3 cc cc cc cc <0f> 0b 4c 8b 62 08 41 8b 85 24 07 00 00 49 83 c4 04 41 89 44 24 fc
-[40243.616888] RSP: 0018:ffffcc80c4d4b688 EFLAGS: 00010287
-[40243.617773] RAX: 0000000000010026 RBX: 0000000000000001 RCX: 0000000000000000
-[40243.618928] RDX: ffff8a773798dee0 RSI: 0000000000000000 RDI: 0000000000000000
-[40243.620158] RBP: ffffcc80c4d4b6a0 R08: 0000000000000000 R09: 0000000000000000
-[40243.621573] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8a75f3b58000
-[40243.622907] R13: ffff8a75f3b58000 R14: 0000000000000080 R15: 000000000000bffd
-[40243.624054] FS:  0000000000000000(0000) GS:ffff8a787d1b4000(0000) knlGS:0000000000000000
-[40243.625331] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[40243.626269] CR2: 000072f390b623c0 CR3: 000000011c02a003 CR4: 0000000000372ef0
-[40243.627408] Call Trace:
-[40243.627839]  <TASK>
-[40243.628188]  __prep_cap+0x3fd/0x4a0
-[40243.628789]  ? do_raw_spin_unlock+0x4e/0xe0
-[40243.629474]  ceph_check_caps+0x46a/0xc80
-[40243.630094]  ? __lock_acquire+0x4a2/0x2650
-[40243.630773]  ? find_held_lock+0x31/0x90
-[40243.631347]  ? handle_cap_grant+0x79f/0x1060
-[40243.632068]  ? lock_release+0xd9/0x300
-[40243.632696]  ? __mutex_unlock_slowpath+0x3e/0x340
-[40243.633429]  ? lock_release+0xd9/0x300
-[40243.634052]  handle_cap_grant+0xcf6/0x1060
-[40243.634745]  ceph_handle_caps+0x122b/0x2110
-[40243.635415]  mds_dispatch+0x5bd/0x2160
-[40243.636034]  ? ceph_con_process_message+0x65/0x190
-[40243.636828]  ? lock_release+0xd9/0x300
-[40243.637431]  ceph_con_process_message+0x7a/0x190
-[40243.638184]  ? kfree+0x311/0x4f0
-[40243.638749]  ? kfree+0x311/0x4f0
-[40243.639268]  process_message+0x16/0x1a0
-[40243.639915]  ? sg_free_table+0x39/0x90
-[40243.640572]  ceph_con_v2_try_read+0xf58/0x2120
-[40243.641255]  ? lock_acquire+0xc8/0x300
-[40243.641863]  ceph_con_workfn+0x151/0x820
-[40243.642493]  process_one_work+0x22f/0x630
-[40243.643093]  ? process_one_work+0x254/0x630
-[40243.643770]  worker_thread+0x1e2/0x400
-[40243.644332]  ? __pfx_worker_thread+0x10/0x10
-[40243.645020]  kthread+0x109/0x140
-[40243.645560]  ? __pfx_kthread+0x10/0x10
-[40243.646125]  ret_from_fork+0x3f8/0x480
-[40243.646752]  ? __pfx_kthread+0x10/0x10
-[40243.647316]  ? __pfx_kthread+0x10/0x10
-[40243.647919]  ret_from_fork_asm+0x1a/0x30
-[40243.648556]  </TASK>
-[40243.648902] Modules linked in: overlay hctr2 libpolyval chacha libchacha adiantum libnh libpoly1305 essiv intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit kvm_intel kvm irqbypass joydev ghash_clmulni_intel aesni_intel rapl input_leds mac_hid psmouse vga16fb serio_raw vgastate floppy i2c_piix4 pata_acpi bochs qemu_fw_cfg i2c_smbus sch_fq_codel rbd dm_crypt msr parport_pc ppdev lp parport efi_pstore
-[40243.654766] ---[ end trace 0000000000000000 ]---
+Fix this by casting each byte to u64 before shifting. Also fix
+the misaligned break statement while we are here.
 
-Commit d93231a6bc8a ("ceph: prevent a client from exceeding the MDS
-maximum xattr size") moved the required_blob_size computation to before
-the __build_xattrs() call, introducing a race.
+Example of the result can be seen here:
+Link: https://godbolt.org/z/zhY8d3595
 
-__build_xattrs() releases and reacquires i_ceph_lock during execution.
-In that window, handle_cap_grant() may update i_xattrs.blob with a
-newer MDS-provided blob and bump i_xattrs.version.  When
-__build_xattrs() detects that index_version < version, it destroys and
-rebuilds the entire xattr rb-tree from the new blob, potentially
-increasing count, names_size, and vals_size.
+It maybe not a real problem, but could be a issue in future.
 
-The prealloc_blob size check that follows still uses the stale
-required_blob_size computed before the rebuild, so it passes even when
-prealloc_blob is too small for the now-larger tree. After __set_xattr()
-adds one more xattr on top, __ceph_build_xattrs_blob() is called from
-the cap flush path and hits:
-
-    BUG_ON(need > ci->i_xattrs.prealloc_blob->alloc_len);
-
-Fix this by recomputing required_blob_size after __build_xattrs()
-returns, using the current tree state. Also re-validate against
-m_max_xattr_size to fall back to the sync path if the rebuilt tree now
-exceeds the MDS limit.
-
-Cc: stable@vger.kernel.org
-Fixes: d93231a6bc8a ("ceph: prevent a client from exceeding the MDS maximum xattr size")
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d499e9627d70 ("arm64/scs: Fix handling of advance_loc4")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/xattr.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/kernel/patch-scs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ceph/xattr.c
-+++ b/fs/ceph/xattr.c
-@@ -1256,6 +1256,22 @@ retry:
- 	      ceph_vinop(inode), name, ceph_cap_string(issued));
- 	__build_xattrs(inode);
+diff --git a/arch/arm64/kernel/patch-scs.c b/arch/arm64/kernel/patch-scs.c
+index 6d656179ea03b..d6e8ad142f75c 100644
+--- a/arch/arm64/kernel/patch-scs.c
++++ b/arch/arm64/kernel/patch-scs.c
+@@ -175,9 +175,9 @@ static int noinstr scs_handle_fde_frame(const struct eh_frame *frame,
+ 			loc += *opcode++ * code_alignment_factor;
+ 			loc += (*opcode++ << 8) * code_alignment_factor;
+ 			loc += (*opcode++ << 16) * code_alignment_factor;
+-			loc += (*opcode++ << 24) * code_alignment_factor;
++			loc += ((u64)*opcode++ << 24) * code_alignment_factor;
+ 			size -= 4;
+-		break;
++			break;
  
-+	/*
-+	 * __build_xattrs() may have released and reacquired i_ceph_lock,
-+	 * during which handle_cap_grant() could have replaced i_xattrs.blob
-+	 * with a newer MDS-provided blob and bumped i_xattrs.version. If that
-+	 * caused __build_xattrs() to rebuild the rb-tree from the new blob,
-+	 * count/names_size/vals_size may now be larger than when
-+	 * required_blob_size was computed above. Recompute it here so the
-+	 * prealloc_blob size check below reflects the current tree state.
-+	 */
-+	required_blob_size = __get_required_blob_size(ci, name_len, val_len);
-+	if (required_blob_size > mdsc->mdsmap->m_max_xattr_size) {
-+		doutc(cl, "sync (size too large): %d > %llu\n",
-+		      required_blob_size, mdsc->mdsmap->m_max_xattr_size);
-+		goto do_sync;
-+	}
-+
- 	if (!ci->i_xattrs.prealloc_blob ||
- 	    required_blob_size > ci->i_xattrs.prealloc_blob->alloc_len) {
- 		struct ceph_buffer *blob;
+ 		case DW_CFA_def_cfa:
+ 		case DW_CFA_offset_extended:
+-- 
+2.53.0
+
 
 
 
