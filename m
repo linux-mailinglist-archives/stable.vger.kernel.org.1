@@ -1,184 +1,182 @@
-Return-Path: <stable+bounces-251032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB8hHZr2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:54 +0200
+	id YOF5NXfuDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A7059510C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E4F593995
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 24E2D31086E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E29B30CB53A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7938C3EF647;
-	Wed, 20 May 2026 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A951F3F076F;
+	Wed, 20 May 2026 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xi7x7vKx"
+	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="kgOTCnr4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EA13EEAC6;
-	Wed, 20 May 2026 17:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255A03A7850
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 17:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296924; cv=none; b=rcFLofntyctofTZ3yhaspG4tQsQcvZwUf9vrihNR2Jjw5N+ibTeRpJrkaHXuBEp07yCJfbjRk36v2dIxWB9Lh+dnBumzJ0Ewe0KheFdx5kyr1fds//7CvAY80POuV0L02oxcWTopzZeTR13TiV5JatG7dA+YMB8m29W0j96miDc=
+	t=1779297019; cv=none; b=NPR+JDPAhyoPe/RvIUwjPAn2ft9xoJx7ROfhZAI+3hlO1pt0HOE39gsrdDxqoRcYMr7JTcZ5vq5NMLCSRilk7tNkjh3Yt/wBCLvsqI4duJKSCPavc7adiexb5THe38ymU6y2HRzZBYt/zqzmzOIn0K17Plfn2ONvmsncSf3kxb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296924; c=relaxed/simple;
-	bh=nwOAuvb9zdiYLA1YDYM2y4sndnfc6us2hnD3d795oSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNLZbBvGleoOYE10bgziCHdrC6Znq2ZH63SRQeiD3TAhaHwG1ph9iLVq0tzi0hhdquCua1E0ETRO/Ig0cgQ+9Ebfaqj11zQzWj+PIThZ4yily48nqQ0egcUDTiDMCxrY4WVWWAdVpKr6uBLE5v8EyCSJ5iFCOXIJRMPhTFtfzXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xi7x7vKx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145321F00893;
-	Wed, 20 May 2026 17:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779296922;
-	bh=w9HP9QD1bStPE0a/AIdK4vgeSA4PyhKoCISFxCkq/EA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Xi7x7vKx6d/U9gU4hRoHNvQNx2to1raVwGm6/dLWTfJ8aK3INMxwBu1qHHfqbn/Ag
-	 ZCljK3d9wEbBsKWV5leqAnNjvnmbcGQ4GVWM7PbNp8Bnv+UZUPVlF5+hrB636jFLe2
-	 AN5EkFP/wk/p/ky7uWkCa6FvAI4FraKwCg9dBE5uNRrC6gSVMj4VhjRsQEbBEJ45Zl
-	 jNS0K1uRVQUrOxH4AcAFejNkEOIagO7mqolBtVk2hrQggyqp1dMVvSxhg/iZp9zLtB
-	 rapjGhoZrL5rXx1+f84eV5/ubQkCo4FErTbXCA+I+lbmjvBx2cbzihUDy2Yx++jk9l
-	 9U2FPK2iiOprg==
-Date: Thu, 21 May 2026 01:08:36 +0800
-From: Gao Xiang <xiang@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 7.0 0013/1146] erofs: verify metadata accesses for
- file-backed mounts
-Message-ID: <ag3qlMOcTYM2FBUQ@debian>
-References: <20260520162148.390695140@linuxfoundation.org>
- <20260520162148.691068692@linuxfoundation.org>
+	s=arc-20240116; t=1779297019; c=relaxed/simple;
+	bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
+	 References:In-Reply-To; b=ZNiBaQNFzTBYe3xYIiI2Y7MEmJl6hKjd7JhMA6KEf+RyhIKWVaoZnqbp2tmE0uZnbVDzFIkUnn5Sn07JsbAHqjfWlAE9mnshBj0sD6gqi8tEARmm1RBLK+fROXrML5/pZlgGLE/d7E7Knzu9RpZWCnxhJaoIzwTQkSKLEMJoiAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=kgOTCnr4; arc=none smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1357c851a48so5574983c88.1
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 10:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexthop.ai; s=google; t=1779297017; x=1779901817; darn=vger.kernel.org;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
+        b=kgOTCnr4iddIuKdp+BhE9fK9Mt2bZ3S3aRzEufl6VclCT6WQtDrrHJfXV4ylSnT/DP
+         p2tClAHROUpnRwN2haiaCqw+Z6RELm3JvNYSD/X96OOPV3//cYAfxYFbjb1anueF55d9
+         /4x9oyv5mAMU7NG0lN/mhqcpIkjiJNZCPd3iUsB0bLVv2Rhw8XdsstEGPgRwwHCTMxaQ
+         MF5IwEaekIEZbTBawcb2d3f3iuciQYU489ZUNWyNUWg0Ez5PeIRSGjd42jxUQdX10Hso
+         PLZZv0U2C91V+3R4gyRlfp0Ziu/jF4jokg1K/X+TO662jk53gvw3g0gurppH+E7989Su
+         kSHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779297017; x=1779901817;
+        h=in-reply-to:references:content-transfer-encoding:mime-version:to
+         :from:subject:cc:message-id:date:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
+        b=Ww1CPnt3EvasBWpmCkPs5Jns+mLnSuaRXn8ABZbeudlb22rTD3o16OvmZ2Zr2Ymyg7
+         T3KNcpMOUT02+SUy7ggcMrTrk1n1Ey2bLW1BTtIfBUypFC7yHQatf4aysM6B4pkGrPES
+         L7ZserkIg5FnjfPlozyipw5Y0hOXfV9d3KhLGhy3yxRyS0cnRoNUZCjL58XPI5oWRPFR
+         XNvNJ4z5i5NxamRAuVpyaTAQWFeVb5TM0BQWfLrqyLWPZUHMjuH1LtZMaEIoM3Advunf
+         zZup42ZpEg0De9Fu0wIhg4EmLryxX3Q8lLP1p7Ed1VHoG0id+w2h5rN/w3BDtY6UbKiZ
+         Yi0g==
+X-Forwarded-Encrypted: i=1; AFNElJ9wg7NJrz3hkAChgOKh3WM/Jjnj5q9AttxiN+jm3FYY/vCbVXHHvm8lEhOYh4ZTkFLglknMxyM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1K3xZZUe71H+rfIClfNdKCALheyZoWDo409fTidWCC+oqYYno
+	Y9dAoG3qaYhhMUsFglshp7rlVkXcK991OV8OmtzdMarEKvkaeFj1Ff4GpeLuZWI+gmtXnKFTtwX
+	aDhB3Kq4=
+X-Gm-Gg: Acq92OHa2qYUJKEJSGoOmpJ96IND3sJM+eyYI3m4YjdNCf8T1k8RNMF7mnme5CWt9Vh
+	miUa6XRB9KfvZkulfnPFMVXZceP3wtkSFYybhD7etkk3tTcdsSNxfV+5+SgR7gTTwL+3+VItI+b
+	a8oCr2bu44AmyabiZE6mzhs/vMevAbeaS+86VHXo+wBXV7MGYUEOOT/XikuMYT6ecdaGjavvTGC
+	o3ein162WJY2FXHxO3elRPM7Q987atGXBGKX1XxwvGK3qC6ko2YuCfthy+2LDG4undQoL4LZUO2
+	mBmPqhKAIwMaMgiO5d7Wz3EJAep3orMYOlaisjnowfRfFdMFzPqOU+/vrFYEQqEdRHNUBx7rPV0
+	Aq167O96heTTG879nhUUJhDvA2uC+eMDzu2jtkUv+W7gIBZ8Wqmcigfqn9r6T7Rvqg3FS5WRJ+Q
+	/LaLOgMs01gT0cCeGr8ZtOYzo=
+X-Received: by 2002:a05:7022:40d:b0:135:31e7:4e62 with SMTP id a92af1059eb24-13531e75045mr8225611c88.13.1779297016998;
+        Wed, 20 May 2026 10:10:16 -0700 (PDT)
+Received: from localhost ([50.145.100.174])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ef5sm26085229c88.2.2026.05.20.10.10.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 May 2026 10:10:16 -0700 (PDT)
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 May 2026 10:10:15 -0700
+Message-Id: <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
+Cc: <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>, "Guenter Roeck" <groeck7@gmail.com>
+Subject: Re: [PATCH v4 0/3] hwmon: (pmbus/adm1266) add clear_blackbox and
+ powerup_counter debugfs entries
+From: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>
+To: "Guenter Roeck" <linux@roeck-us.net>, "Abdurrahman Hussain"
+ <abdurrahman@nexthop.ai>, "Alexandru Tachici"
+ <alexandru.tachici@analog.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260520162148.691068692@linuxfoundation.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0
+References: <20260516-adm1266-v4-0-1f8df4797258@nexthop.ai>
+ <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
+In-Reply-To: <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251032-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiang@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251069-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nexthop.ai:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,alibaba.com:email,vivo.com:email]
-X-Rspamd-Queue-Id: 70A7059510C
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 52E4F593995
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
+On Wed May 20, 2026 at 7:10 AM PDT, Guenter Roeck wrote:
+> Hi,
+>
+> On 5/16/26 18:18, Abdurrahman Hussain wrote:
+>> This is what remains of the v3 series after Guenter applied patches
+>> 1/5 (firmware_revision) and 5/5 (GPIO line label) to hwmon-next, and
+>> asked for patch 4/5 (rtc_class) to be dropped.
+>>=20
+>> Patch 1 adds a write-only clear_blackbox debugfs file. Devices
+>> configured for single-recording mode (BLACKBOX_CONFIG[0] =3D 0) need
+>> an explicit clear once the 32-record buffer fills; the documented
+>> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
+>> from userspace. The patch also acquires pmbus_lock at the
+>> adm1266_nvmem_read() callback boundary so the memset of
+>> data->dev_mem, the blackbox refill, and the memcpy to userspace run
+>> as a single critical section -- the nvmem core does not serialize
+>> concurrent reg_read calls.
+>>=20
+>> Patch 2 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
+>> The same value is embedded in every blackbox record, so the live
+>> value lets userspace match a captured record back to the boot it
+>> came from when correlating logs. The block-read is taken under
+>> pmbus_lock to serialise against any pmbus_core PAGE+register
+>> sequence on the device.
+>>=20
+>> Patch 3 takes pmbus_lock in adm1266_state_read() (the pre-existing
+>> sequencer_state debugfs handler) for the same defensive-locking
+>> reason that motivates the new debugfs files in patches 1 and 2:
+>> any direct device access from outside pmbus_core should be ordered
+>> with respect to pmbus_core's own PAGE+register sequences.
+>>=20
+>> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+>
+> The series no longer applies after applying the bug fix series.
+> Please rebase it on top of the hwmon-next branch of
+> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
+> and resubmit.
+>
+> Sorry for the trouble, and thanks a lot for fixing all the problems
+> with the driver.
+>
+> Guenter
 
-On Wed, May 20, 2026 at 06:04:23PM +0200, Greg Kroah-Hartman wrote:
-> 7.0-stable review patch.  If anyone has any objections, please let me know.
-> 
+Will do, thank you for your support!
 
-As I said in
-https://lore.kernel.org/r/75e6d1c8-e989-4eb7-aca3-37a40318e888@linux.alibaba.com
+Abdurrahman
 
-and
-https://lore.kernel.org/r/5a4afec4-fe39-419e-8b2b-4e9901eb93be@linux.alibaba.com
-
-
-Please help dropping this patch from auto-backporting flow
-since this fix commit needs another fix, but Christoph
-doesn't like that fix so it never gets upstream:
-
-https://lore.kernel.org/all/agF0wJSFRAEcRP8M@infradead.org/T/#u
-
-Since it impacts Android use cases (SELinux), I will
-backport this manually later, and for now not backporting
-this won't impact any.
-
-Thanks,
-Gao Xiang
-
-> ------------------
-> 
-> From: Gao Xiang <hsiangkao@linux.alibaba.com>
-> 
-> [ Upstream commit 307210c262a29f41d7177851295ea1703bd04175 ]
-> 
-> For file-backed mounts, metadata is fetched via the page cache of
-> backing inodes to avoid double caching and redundant copy ops out
-> of RO uptodate folios, which is used by Android APEXes, ComposeFS,
-> containerd.  However, rw_verify_area() was missing prior to
-> metadata accesses.
-> 
-> Similar to vfs_iocb_iter_read(), fix this by:
->  - Enabling fanotify pre-content hooks on metadata accesses;
->  - security_file_permission() for security modules.
-> 
-> Verified that fanotify pre-content hooks now works correctly.
-> 
-> Fixes: fb176750266a ("erofs: add file-backed mount support")
-> Acked-by: Amir Goldstein <amir73il@gmail.com>
-> Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
-> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/erofs/data.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-> index f79ee80627d95..132a27deb2f3b 100644
-> --- a/fs/erofs/data.c
-> +++ b/fs/erofs/data.c
-> @@ -30,6 +30,20 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
->  {
->  	pgoff_t index = (buf->off + offset) >> PAGE_SHIFT;
->  	struct folio *folio = NULL;
-> +	loff_t fpos;
-> +	int err;
-> +
-> +	/*
-> +	 * Metadata access for file-backed mounts reuses page cache of backing
-> +	 * fs inodes (only folio data will be needed) to prevent double caching.
-> +	 * However, the data access range must be verified here in advance.
-> +	 */
-> +	if (buf->file) {
-> +		fpos = index << PAGE_SHIFT;
-> +		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
-> +		if (err < 0)
-> +			return ERR_PTR(err);
-> +	}
->  
->  	if (buf->page) {
->  		folio = page_folio(buf->page);
-> -- 
-> 2.53.0
-> 
-> 
-> 
 
