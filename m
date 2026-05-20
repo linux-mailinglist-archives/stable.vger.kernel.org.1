@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-251103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKyTIWTtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:36 +0200
+	id 0G8eBogHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED39593613
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3407F597EDB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDBB831ADD87
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0AB41311D1F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E8F3EEAC6;
-	Wed, 20 May 2026 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6468E2C11FE;
+	Wed, 20 May 2026 18:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1xmaDhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG9/3zQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D1E34B40F;
-	Wed, 20 May 2026 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E609348C55;
+	Wed, 20 May 2026 18:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297105; cv=none; b=fTKquR4w7Ilnx2+x64Q84qLVePoNHzznMiZSwDZYwu0kac+w4SKslYmGMw7JqXV11hfYt+l5MGMExrmk6mdzaLw3jhq94pOktBio6snQl2c0ot0DhEpNwfb1MkMrqGsxMR1lzXBtoXsLkeSptNcwJliX09xv4tKSAoV1PaD4WBA=
+	t=1779301271; cv=none; b=At0BNwD8grqpKUsHpXoh3+L75ezVqsyyE1SoXKWL68MzJFFaW4DcYW/fbWfQMf3U87V7y9heeJuBOQ1SYehn6bT2J+BG/+U7RZr4Bkz90Vn1nitzcfSiQ+1TkFNhC03puSvtBIg5QErXgloKDhXKD0U/0tesVT7bfO3zSJT5f4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297105; c=relaxed/simple;
-	bh=IWWYsu1Hv7KLqaWq7NrknnMkNcDX41cRd+kmCbKmcNw=;
+	s=arc-20240116; t=1779301271; c=relaxed/simple;
+	bh=SyWXhLy0TE3UspBn92qQnp4NM9N5wJdOYpV666kc/vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIWSrilLELzrUgWW/zC1M1W4bZkUcjxMs1b9uX+hq72QAgODxV5AQTub1Fz3aKq9aYsyw+A405TMp0p+GS2PWkFVguLT/Yu1ETbm6rLRosEVy7ncSGp8uVV/kjJw+pUHxymE4K1/nrYU6J3ZlYO+eSf9xU4NAHEu4+xBdsbVsQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1xmaDhG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AC91F000E9;
-	Wed, 20 May 2026 17:11:43 +0000 (UTC)
+	 MIME-Version; b=ik1oc+wmKzKc25y9vOlBcpnUNdzmPnCLtWcbeW17fJa5I1G3R0VDYZ2pLzEr6Hq/QkT4YczjZtprhSTB7n4Smj7lPOPCN7LZ6L3XwvZzy2eJyU3U99vWbaOcUNT2gcUCG0T8QJyIfCxSaAZRAEP1GZ1iFikct2yFaCsfJ71WdfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG9/3zQB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997F81F000E9;
+	Wed, 20 May 2026 18:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297104;
-	bh=MaS4Pc+uF+E5JkWkPpX4x7p3fcDgg2Dx9KU4iv80fiY=;
+	s=korg; t=1779301270;
+	bh=JWdtBCzCdCk4J6dIQUXRxV3Y1KFq+waCRv5iiEk2qXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q1xmaDhGFFBIFoduReLNKxMmnqFqnB9Zxg1aFi3midJRCbinsw9lYSSHYvMxhMFNK
-	 JihQkBaihSQt+g5CagGMwiD+Jfh/FPP8ttJYBxgLDHj3mMP5oUlzdfNrjP/bjz9Eb3
-	 MBdC9G7eqyAU4AfrHuk2dUNDng/ouxhecflYYpZY=
+	b=qG9/3zQBIrZS1kjOEXyQIzo8OBMUL8CWqcboK1mplmO9n9cErQhBq2TK+CWYUSenR
+	 J8xh1/AkhAWFX4Yk/NqgBRKz5PX0ol3LsIHLq5zthXx/ACUeYa0b5D0uOUsXkD0ah2
+	 BDmIyk7h9xndVtpcT+CZg0fhpydkqV3jL8HhsJLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 7.0 1053/1146] netfilter: nft_ct: fix missing expect put in obj eval
+	Jason Wang <jasowang@redhat.com>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 492/666] virtio_net: Split struct virtio_net_rss_config
 Date: Wed, 20 May 2026 18:21:43 +0200
-Message-ID: <20260520162212.066451219@linuxfoundation.org>
+Message-ID: <20260520162121.927113263@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +72,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252665-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251103-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 1ED39593613
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,alibaba.com:email,daynix.com:email]
+X-Rspamd-Queue-Id: 3407F597EDB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-commit 19f94b6fee75b3ef7fbc06f3745b9a771a8a19a4 upstream.
+[ Upstream commit 976c2696b71da376d42e63ca3802eb2aafc164eb ]
 
-nft_ct_expect_obj_eval() allocates an expectation and may call
-nf_ct_expect_related(), but never drops its local reference.
+struct virtio_net_rss_config was less useful in actual code because of a
+flexible array placed in the middle. Add new structures that split it
+into two to avoid having a flexible array in the middle.
 
-Add nf_ct_expect_put(exp) before return to balance allocation.
-
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20250321-virtio-v2-1-33afb8f4640b@daynix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3bc06da858ef ("virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/uapi/linux/virtio_net.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1381,6 +1381,8 @@ static void nft_ct_expect_obj_eval(struc
+diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+index ac9174717ef13..963540deae66a 100644
+--- a/include/uapi/linux/virtio_net.h
++++ b/include/uapi/linux/virtio_net.h
+@@ -327,6 +327,19 @@ struct virtio_net_rss_config {
+ 	__u8 hash_key_data[/* hash_key_length */];
+ };
  
- 	if (nf_ct_expect_related(exp, 0) != 0)
- 		regs->verdict.code = NF_DROP;
++struct virtio_net_rss_config_hdr {
++	__le32 hash_types;
++	__le16 indirection_table_mask;
++	__le16 unclassified_queue;
++	__le16 indirection_table[/* 1 + indirection_table_mask */];
++};
 +
-+	nf_ct_expect_put(exp);
- }
++struct virtio_net_rss_config_trailer {
++	__le16 max_tx_vq;
++	__u8 hash_key_length;
++	__u8 hash_key_data[/* hash_key_length */];
++};
++
+  #define VIRTIO_NET_CTRL_MQ_RSS_CONFIG          1
  
- static const struct nla_policy nft_ct_expect_policy[NFTA_CT_EXPECT_MAX + 1] = {
+ /*
+-- 
+2.53.0
+
 
 
 
