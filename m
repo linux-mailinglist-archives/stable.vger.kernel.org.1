@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-251159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LFcId4XDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:50 +0200
+	id 6DwpAkMXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10AC5997C3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075A65996E9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85BC8319B0E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 95C0A329F4EE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4606328DC4;
-	Wed, 20 May 2026 17:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668B43FC5AB;
+	Wed, 20 May 2026 18:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUeU6+nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzedYavV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8F33D5642;
-	Wed, 20 May 2026 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CC53FC5AD;
+	Wed, 20 May 2026 18:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297253; cv=none; b=av9HWm+aKeqEB7k1PkePli2gRJyzLjMp7KOGYJ6Ozj68NDY2XGAINDTi97lFW12fQhrFP2C973a9OjOUsfn6Ix9AISo3u0dSg33t3qgey543/8e8rPF1jJutCRclCZkec5b4WsxgghttpoGpErwttxwbwcxlTGsmAXnH9nLQvXE=
+	t=1779301419; cv=none; b=jrFgNM5Mjf0rjcztA2taMDJ/q3SXVPsDVNLAy929sOlXWSSePTYM4Fgj/3IioaqL9CI1UGDiccm/o7l7POBUhoX0t0HBBeq2d4PM2RkpkekR2hYLuIT098qB6cdKIvM2N+MSJ3kqX0CB2f68Vu/Ry6CDIalIjVAUZopHaAuNsHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297253; c=relaxed/simple;
-	bh=OZ8EJhXynZFduoznESVaUdm9XTIOYtzcDT5gFeqsZ4w=;
+	s=arc-20240116; t=1779301419; c=relaxed/simple;
+	bh=C3ZMR+EasfuYDe7JvNb/boxrNO6CUOII8qeTm7yRM60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxsppTN6R2xb5dNFa14OoWrjqJnMEH7k3/Sk2ilLYaPgOWOqQY7w5kkwj/2T+TuWC/tcGJ+4puPTunAJiyqxTuJEEFMJ5+XSmdH3OfqXeROBzkzfzR7GkbL/hYNV9FbHWuWsNCeo4GiFPRgVpS3vvdBIezEq0ca0mni/ubFWRJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUeU6+nh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8D21F000E9;
-	Wed, 20 May 2026 17:14:11 +0000 (UTC)
+	 MIME-Version; b=l1/OUs+nJLVIPRvcCHNIJf9/CQ0Yb2EZNTKKjuLEpv3A02PHMOsNGldPCALts3kxDXyN3nGE7LPD95GPoi62utbdR5/7zzUfJlfKWAYgi8ZauxIoBAbVtbPTaD5VlHlX4aPkPk7aLtYtVrNEEwWR/tx34AfCyceSumt90Zpptug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzedYavV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218341F000E9;
+	Wed, 20 May 2026 18:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297251;
-	bh=67vgx+gec97GFNHwjVog4DRw+DCGUZNJaXpFXn4sMFQ=;
+	s=korg; t=1779301417;
+	bh=V7EKHY8dNMJQlpaO6aL/kRRhjcGEb2lY6gw1RHiU/jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cUeU6+nhPIHDscNHYVyMioTJ5BRZWRtkYlKQdg8QZH6BsvyZI220gLLBtYgUTE+lJ
-	 3WOs7EpkUJxzUq7BKvZ0kwvIObyeSiczXVjWkevcUexaDFbEWNor+7ej+Q3VKEyBYL
-	 C3tp/19fsOIvnsnblCgbvebjc4e++JWZc6c2P0BA=
+	b=tzedYavVOq4eYH1QWvp/vhd7DhLNoeomXEKo2DlttzkVpmLZzRB5poq8tABm2dNdE
+	 r8bTyLw7/lKcDuBQdISVyJ5/Lh9csEVfK/n+AlO7bHx2RhARN8ZmH7l2mvtMCyyo6D
+	 pa8L7xM5ZoJp5PkJZEAQSBQdGdr0s5glZ9RbvXw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 7.0 1108/1146] nfsd: update mtime/ctime on COPY in presence of delegated attributes
+	Uday Shankar <ushankar@purestorage.com>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 547/666] netconsole: allow selection of egress interface via MAC address
 Date: Wed, 20 May 2026 18:22:38 +0200
-Message-ID: <20260520162213.320869970@linuxfoundation.org>
+Message-ID: <20260520162123.126715973@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +68,249 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251159-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-252722-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: E10AC5997C3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 075A65996E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-commit 4183cf383b6faec17a0882b84cd2d901dba62b16 upstream.
+[ Upstream commit f8a10bed32f5fbede13a5f22fdc4ab8740ea213a ]
 
-When delegated attributes are given on open, the file is opened with
-NOCMTIME and modifying operations do not update mtime/ctime as to not get
-out-of-sync with the client's delegated view. However, for COPY operation,
-the server should update its view of mtime/ctime and reflect that in any
-GETATTR queries.
+Currently, netconsole has two methods of configuration - module
+parameter and configfs. The former interface allows for netconsole
+activation earlier during boot (by specifying the module parameter on
+the kernel command line), so it is preferred for debugging issues which
+arise before userspace is up/the configfs interface can be used. The
+module parameter syntax requires specifying the egress interface name.
+This requirement makes it hard to use for a couple reasons:
+- The egress interface name can be hard or impossible to predict. For
+  example, installing a new network card in a system can change the
+  interface names assigned by the kernel.
+- When constructing the module parameter, one may have trouble
+  determining the original (kernel-assigned) name of the interface
+  (which is the name that should be given to netconsole) if some stable
+  interface naming scheme is in effect. A human can usually look at
+  kernel logs to determine the original name, but this is very painful
+  if automation is constructing the parameter.
 
-Fixes: e5e9b24ab8fa ("nfsd: freeze c/mtime updates with outstanding WRITE_ATTRS delegation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For these reasons, allow selection of the egress interface via MAC
+address when configuring netconsole using the module parameter. Update
+the netconsole documentation with an example of the new syntax.
+Selection of egress interface by MAC address via configfs is far less
+interesting (since when this interface can be used, one should be able
+to easily convert between MAC address and interface name), so it is left
+unimplemented.
+
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Tested-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250312-netconsole-v6-2-3437933e79b8@purestorage.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3bc179bc7146 ("netpoll: fix IPv6 local-address corruption")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |   11 ++++++++++-
- fs/nfsd/xdr4.h     |    1 +
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ Documentation/networking/netconsole.rst |  6 ++-
+ include/linux/netpoll.h                 |  6 +++
+ net/core/netpoll.c                      | 51 +++++++++++++++++++------
+ 3 files changed, 50 insertions(+), 13 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2121,8 +2121,10 @@ do_callback:
+diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
+index d55c2a22ec7af..56578486ff7e8 100644
+--- a/Documentation/networking/netconsole.rst
++++ b/Documentation/networking/netconsole.rst
+@@ -45,7 +45,7 @@ following format::
+ 	r             if present, prepend kernel version (release) to the message
+ 	src-port      source for UDP packets (defaults to 6665)
+ 	src-ip        source IP to use (interface address)
+-	dev           network interface (eth0)
++	dev           network interface name (eth0) or MAC address
+ 	tgt-port      port for logging agent (6666)
+ 	tgt-ip        IP address for logging agent
+ 	tgt-macaddr   ethernet MAC address for logging agent (broadcast)
+@@ -62,6 +62,10 @@ or using IPv6::
  
- 	set_bit(NFSD4_COPY_F_COMPLETED, &copy->cp_flags);
- 	trace_nfsd_copy_async_done(copy);
--	nfsd4_send_cb_offload(copy);
- 	atomic_dec(&copy->cp_nn->pending_async_copies);
-+	if (copy->cp_res.wr_bytes_written > 0 && copy->attr_update)
-+		nfsd_update_cmtime_attr(copy->nf_dst->nf_file, 0);
-+	nfsd4_send_cb_offload(copy);
- 	return 0;
- }
+  insmod netconsole netconsole=@/,@fd00:1:2:3::1/
  
-@@ -2182,6 +2184,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 		memcpy(&result->cb_stateid, &copy->cp_stateid.cs_stid,
- 			sizeof(result->cb_stateid));
- 		dup_copy_fields(copy, async_copy);
-+		if ((READ_ONCE(copy->nf_dst->nf_file->f_mode) &
-+			       FMODE_NOCMTIME) != 0)
-+			async_copy->attr_update = true;
- 		memcpy(async_copy->cp_cb_offload.co_referring_sessionid.data,
- 		       cstate->session->se_sessionid.data,
- 		       NFS4_MAX_SESSIONID_LEN);
-@@ -2200,6 +2205,10 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 	} else {
- 		status = nfsd4_do_copy(copy, copy->nf_src->nf_file,
- 				       copy->nf_dst->nf_file, true);
-+		if ((READ_ONCE(copy->nf_dst->nf_file->f_mode) &
-+			       FMODE_NOCMTIME) != 0 &&
-+				copy->cp_res.wr_bytes_written > 0)
-+			nfsd_update_cmtime_attr(copy->nf_dst->nf_file, 0);
++or using a MAC address to select the egress interface::
++
++   linux netconsole=4444@10.0.0.1/22:33:44:55:66:77,9353@10.0.0.2/12:34:56:78:9a:bc
++
+ It also supports logging to multiple remote agents by specifying
+ parameters for the multiple agents separated by semicolons and the
+ complete string enclosed in "quotes", thusly::
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index b34301650c479..ca88b1b87059f 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -25,7 +25,13 @@ union inet_addr {
+ struct netpoll {
+ 	struct net_device *dev;
+ 	netdevice_tracker dev_tracker;
++	/*
++	 * Either dev_name or dev_mac can be used to specify the local
++	 * interface - dev_name is used if it is a nonempty string, else
++	 * dev_mac is used.
++	 */
+ 	char dev_name[IFNAMSIZ];
++	u8 dev_mac[ETH_ALEN];
+ 	const char *name;
+ 
+ 	union inet_addr local_ip, remote_ip;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 11b2a841b7488..a38b239cd7db6 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -506,7 +506,8 @@ void netpoll_print_options(struct netpoll *np)
+ 		np_info(np, "local IPv6 address %pI6c\n", &np->local_ip.in6);
+ 	else
+ 		np_info(np, "local IPv4 address %pI4\n", &np->local_ip.ip);
+-	np_info(np, "interface '%s'\n", np->dev_name);
++	np_info(np, "interface name '%s'\n", np->dev_name);
++	np_info(np, "local ethernet address '%pM'\n", np->dev_mac);
+ 	np_info(np, "remote port %d\n", np->remote_port);
+ 	if (np->ipv6)
+ 		np_info(np, "remote IPv6 address %pI6c\n", &np->remote_ip.in6);
+@@ -575,11 +576,18 @@ int netpoll_parse_options(struct netpoll *np, char *opt)
+ 	cur++;
+ 
+ 	if (*cur != ',') {
+-		/* parse out dev name */
++		/* parse out dev_name or dev_mac */
+ 		if ((delim = strchr(cur, ',')) == NULL)
+ 			goto parse_failed;
+ 		*delim = 0;
+-		strscpy(np->dev_name, cur, sizeof(np->dev_name));
++
++		np->dev_name[0] = '\0';
++		eth_broadcast_addr(np->dev_mac);
++		if (!strchr(cur, ':'))
++			strscpy(np->dev_name, cur, sizeof(np->dev_name));
++		else if (!mac_pton(cur, np->dev_mac))
++			goto parse_failed;
++
+ 		cur = delim;
  	}
- out:
- 	trace_nfsd_copy_done(copy, status);
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -752,6 +752,7 @@ struct nfsd4_copy {
+ 	cur++;
+@@ -684,27 +692,45 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ }
+ EXPORT_SYMBOL_GPL(__netpoll_setup);
  
- 	struct nfsd_file        *nf_src;
- 	struct nfsd_file        *nf_dst;
-+	bool			attr_update;
++/*
++ * Returns a pointer to a string representation of the identifier used
++ * to select the egress interface for the given netpoll instance. buf
++ * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
++ */
++static char *egress_dev(struct netpoll *np, char *buf)
++{
++	if (np->dev_name[0])
++		return np->dev_name;
++
++	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
++	return buf;
++}
++
+ int netpoll_setup(struct netpoll *np)
+ {
++	struct net *net = current->nsproxy->net_ns;
++	char buf[MAC_ADDR_STR_LEN + 1];
+ 	struct net_device *ndev = NULL;
+ 	bool ip_overwritten = false;
+ 	struct in_device *in_dev;
+ 	int err;
  
- 	copy_stateid_t		cp_stateid;
+ 	rtnl_lock();
+-	if (np->dev_name[0]) {
+-		struct net *net = current->nsproxy->net_ns;
++	if (np->dev_name[0])
+ 		ndev = __dev_get_by_name(net, np->dev_name);
+-	}
++	else if (is_valid_ether_addr(np->dev_mac))
++		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
++
+ 	if (!ndev) {
+-		np_err(np, "%s doesn't exist, aborting\n", np->dev_name);
++		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
+ 		err = -ENODEV;
+ 		goto unlock;
+ 	}
+ 	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
  
+ 	if (netdev_master_upper_dev_get(ndev)) {
+-		np_err(np, "%s is a slave device, aborting\n", np->dev_name);
++		np_err(np, "%s is a slave device, aborting\n",
++		       egress_dev(np, buf));
+ 		err = -EBUSY;
+ 		goto put;
+ 	}
+@@ -712,7 +738,8 @@ int netpoll_setup(struct netpoll *np)
+ 	if (!netif_running(ndev)) {
+ 		unsigned long atmost;
+ 
+-		np_info(np, "device %s not up yet, forcing it\n", np->dev_name);
++		np_info(np, "device %s not up yet, forcing it\n",
++			egress_dev(np, buf));
+ 
+ 		err = dev_open(ndev, NULL);
+ 
+@@ -746,7 +773,7 @@ int netpoll_setup(struct netpoll *np)
+ 			if (!ifa) {
+ put_noaddr:
+ 				np_err(np, "no IP address for %s, aborting\n",
+-				       np->dev_name);
++				       egress_dev(np, buf));
+ 				err = -EDESTADDRREQ;
+ 				goto put;
+ 			}
+@@ -777,13 +804,13 @@ int netpoll_setup(struct netpoll *np)
+ 			}
+ 			if (err) {
+ 				np_err(np, "no IPv6 address for %s, aborting\n",
+-				       np->dev_name);
++				       egress_dev(np, buf));
+ 				goto put;
+ 			} else
+ 				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
+ #else
+ 			np_err(np, "IPv6 is not supported %s, aborting\n",
+-			       np->dev_name);
++			       egress_dev(np, buf));
+ 			err = -EINVAL;
+ 			goto put;
+ #endif
+-- 
+2.53.0
+
 
 
 
