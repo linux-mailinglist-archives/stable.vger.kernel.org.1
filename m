@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4K/aIZTsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:08 +0200
+	id iKbdILH3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F225933DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BE7595384
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C295730F64C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1F2F3157729
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F573EFD22;
-	Wed, 20 May 2026 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADEE3A4526;
+	Wed, 20 May 2026 17:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9zyY/IA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DD+pbkAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7C3ED5C5;
-	Wed, 20 May 2026 16:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9CA3D75C7;
+	Wed, 20 May 2026 17:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296243; cv=none; b=tPH+c3Gcs3LCVzWTzfV8sfsKHH7vf/aN09TLD+wqhgrTWdlSsY1jyGf+s5/kB50KjL9UHtScrLcn2ttUCtTOoHf645lb3kor/5lAzwxpG385Fzk2c1VhmngmCit1XaxJG7akHMh/cP4Q8NelxrIjXVsEM5xGNSd/1zrpkTiCpyA=
+	t=1779298760; cv=none; b=Fz2F9vcWuKsbJ1LJAJCyw/m5IPmVhgMSrqvMiJPq0Ru6oJWpXYpzp+nfdNixzvyrB/AtHjiVNAUSIMNoH+h9jJKYyGZ8bmYNK4oZHGJcFLG+C+mlV0Dp0dS+5oN5xtcc2R8hUOi/NHjTgp4zhy2xyK8/z2I42ucZH1/8uKJ8QN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296243; c=relaxed/simple;
-	bh=bbj0Lv3ym0lQVKUBado6majT/KqKHwABVi3E5cD/efk=;
+	s=arc-20240116; t=1779298760; c=relaxed/simple;
+	bh=qXJ2DMtLVvRnhaiCQmZMbsVLg6Y8z2FyFk1cIC6dHlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bAzfLU2vonG/VvTtzXfEWVNOSDWjHUxi8/wQL26BM3vZKzE8tOCTxpAxFN+jsvJcWx3mjKBe6rE8nLBW3YCalLme6ei0gl3I4ZmWnFRaKj4kG9z/Aij3L02gcjY31QO6yz0gXGoEhKROtzp6ILVJiye8EUlyF1ErGrSD4dZuxAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9zyY/IA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BA41F000E9;
-	Wed, 20 May 2026 16:57:21 +0000 (UTC)
+	 MIME-Version; b=QCSGGC0dk5kyCNw93h/f4Ol1FjQN5Zvv+NvUNskWUgg6ss8r9HejKU/coEelckFe9+iLOZaAqmYzisNZ3wq9+6UoXladyg4cdyf6FVn6k9UNd2StMpe56l2DoZYmkHZulbgj0/BV0u202t660ymoQfCXqPMhl/z125wt/cd1ses=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DD+pbkAD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AC11F000E9;
+	Wed, 20 May 2026 17:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296242;
-	bh=8PU+8avh1XnwlTNNIKYUHItERGgSFFBYeTvpIPGktG4=;
+	s=korg; t=1779298759;
+	bh=x2zGGaTRoYAXYMO4q9XJ7Er0Ay1PaGrUops47JeC/GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o9zyY/IACapNSJE8PBleg1cL4jsx+Mxr2E0+3v7ebMm1ngHqZ4M7TjkNeYafaKetN
-	 1k1E5VHq0EkNeFGcYudB1eC+TQ01PxytqNgn8O9L2Uj18Ccypi3vmWPSc6TSDHUi+N
-	 sbE0lr6XS/saG7gWUFoyl16OOVgqq2r0E3SADTiA=
+	b=DD+pbkAD5JNhXLs7d7hn0lDyXN7iaPbuHzsaU8SbgeVnS2h0MlFZyMp9bHX4Ob50d
+	 zcZftYzSNHEzdblabBpKzNWILBMIp1+PJwPbS4dsnjQPcNnVIOHxOGq6MpifK5g7H6
+	 /4Y/J6DjdCFZfAvlCdnM5nmKVQFEVwFHyAdRmdZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0724/1146] x86/um: fix vDSO installation
+Subject: [PATCH 6.18 491/957] bpf: Fix precedence bug in convert_bpf_ld_abs alignment check
 Date: Wed, 20 May 2026 18:16:14 +0200
-Message-ID: <20260520162204.588899682@linuxfoundation.org>
+Message-ID: <20260520162145.174475329@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250759-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251737-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,weissschuh.net:email]
-X-Rspamd-Queue-Id: 37F225933DC
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iogearbox.net:email]
+X-Rspamd-Queue-Id: 47BE7595384
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit d1895c15fc7d90a615bc8c455feb02acaf08ef1e ]
+[ Upstream commit e5f635edd393aeaa7cad9e42831d397e6e2e1eed ]
 
-The generic vDSO installation logic used by 'make vdso_install' requires
-that $(vdso-install-y) is defined by the top-level architecture Makefile
-and that it contains a path relative to the root of the tree.
-For UML neither of these is satisfied.
+Fix an operator precedence issue in convert_bpf_ld_abs() where the
+expression offset + ip_align % size evaluates as offset + (ip_align % size)
+due to % having higher precedence than +. That latter evaluation does
+not make any sense. The intended check is (offset + ip_align) % size == 0
+to verify that the packet load offset is properly aligned for direct
+access.
 
-Move the definition of $(vdso-install-y) to a place which is included by
-the arch/um/Makefile and use the full relative path.
+With NET_IP_ALIGN == 2, the bug causes the inline fast-path for direct
+packet loads to almost never be taken on !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+platforms. This forces nearly all cBPF BPF_LD_ABS packet loads through
+the bpf_skb_load_helper slow path on the affected archs.
 
-Fixes: f1c2bb8b9964 ("um: implement a x86_64 vDSO")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20260318-um-vdso-install-v1-1-26a4ca5c4210@weissschuh.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e0cea7ce988c ("bpf: implement ld_abs/ld_ind in native bpf")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260416122719.661033-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Makefile.um      | 2 ++
- arch/x86/um/vdso/Makefile | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/core/filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-index c86cbd9cbba38..19c13afa474e9 100644
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -60,4 +60,6 @@ ELF_FORMAT := elf64-x86-64
- LINK-$(CONFIG_LD_SCRIPT_DYN_RPATH) += -Wl,-rpath,/lib64
- LINK-y += -m64
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 7fc01474c3781..ae6d0453cf123 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -508,7 +508,7 @@ static bool convert_bpf_ld_abs(struct sock_filter *fp, struct bpf_insn **insnp)
+ 	    ((unaligned_ok && offset >= 0) ||
+ 	     (!unaligned_ok && offset >= 0 &&
+ 	      offset + ip_align >= 0 &&
+-	      offset + ip_align % size == 0))) {
++	      (offset + ip_align) % size == 0))) {
+ 		bool ldx_off_ok = offset <= S16_MAX;
  
-+vdso-install-y += arch/x86/um/vdso/vdso.so.dbg
-+
- endif
-diff --git a/arch/x86/um/vdso/Makefile b/arch/x86/um/vdso/Makefile
-index 8a7c8b37cb6eb..7664cbedbe30f 100644
---- a/arch/x86/um/vdso/Makefile
-+++ b/arch/x86/um/vdso/Makefile
-@@ -3,8 +3,6 @@
- # Building vDSO images for x86.
- #
- 
--vdso-install-y += vdso.so
--
- # files to link into the vdso
- vobjs-y := vdso-note.o um_vdso.o
- 
+ 		*insn++ = BPF_MOV64_REG(BPF_REG_TMP, BPF_REG_H);
 -- 
 2.53.0
 
