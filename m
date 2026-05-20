@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SN0cIkL1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-250657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:10 +0200
+	id oCLVF232DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8437594E19
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A01F59507E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5F9C37BD410
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 24CC130FD0D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5754A3C198D;
-	Wed, 20 May 2026 16:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0355359A6F;
+	Wed, 20 May 2026 17:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQ3BFy1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbmSx5La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACC33A3E90;
-	Wed, 20 May 2026 16:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D806369D67;
+	Wed, 20 May 2026 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295981; cv=none; b=VeJLHUAl9PM+6p1KW5yZ/SOZR/ZzyVqBLyCuUBs5Iyyl0hcEGN9Sg29GtBepXE/EXTdM2kqHVsBzgeS6MmoX3/xaSuuPpvTFTbxJpQzIE7kUukqYDAXyPOO09IOx5TLPBcwfVzkaCg++ihvA1eCi+zQHZwkEQM9fMP12W187igc=
+	t=1779298395; cv=none; b=jvSaSzY1Ts4McIguivGy89KI75R9gfFXQHOZW1P6++1t9t7y/jZ5aSvRnV56vA6agYFwe7giRxcHADfFxp5MtVz4zIZXsVt4xX2kjuxtIYOEuXCIJEZeF0cwyplTqkB6VIYd7czZJbaVg3GpF3K2VFIgnXsXuIbsrE6MKk3xAlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295981; c=relaxed/simple;
-	bh=lkKOAUIaMZLg9R4DnfUpy1lq5c+l17ZFYI+/41sotw0=;
+	s=arc-20240116; t=1779298395; c=relaxed/simple;
+	bh=7yNiLhe2PRS4TPNI+qRyPAfZ85t/fsa9NJ7sFdYpTQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgX73GW3p1KKR7nlOuVWvmZZa6p/1YU90fMnvSEkp4ZKtp1T5XQtHmgckVikmswlEIEN6dKaKr7iVdQ0vGFpKax0UZyCyutKuL8gzv/Z3EradvMU9RS3sb8Xcoptjxt9phAbYZYZqxrKWsT91pKRML3kA+s3rBpX05Q4bQixYa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQ3BFy1z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3545F1F00894;
-	Wed, 20 May 2026 16:52:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jOj9WFNDu86o3je2lmLsYjKwHHgigDmLxTTZuMGcnC0WD20krOGnabjkMXKVtssGRarpWliNV8BwoIl6SbV+vlTi/Pd6Xb3zN0kucju2mFH5zWY71QLdqsSocSP9p7zrHpz5JrN++sG4yzZBLknIbSrkcTZ9Rxk24S/0OAff/E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbmSx5La; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37681F000E9;
+	Wed, 20 May 2026 17:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295978;
-	bh=gq8OkOyXSdQuewQS+OjAmZUmZQW8mFA2U9hKcJW6aBg=;
+	s=korg; t=1779298394;
+	bh=W4lce2/IFuNypEsc47zB8viRUw8DoDvAt8ekf+GJZT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tQ3BFy1zriUpF6Jh2OdmtWLxDiiPknKTVCDXdbT53UTe8sNPE8brhnuEGt9v3x7Q9
-	 YsMmLUb8CzlPt2+EfaZVTmZwulsBm6ys6rtQOdS/EYUnvn7ZhWQbgU64mf6BX4E+wt
-	 gcWm7BWggVK48PTfJ9urnvzmNMplKgGapp+69dho=
+	b=hbmSx5LaWKXCxF1h3vVaW53EAHCFHwpADkMFVXDzbz6e8D31S+cjVQmvWMDUQWAI9
+	 pjoD2rDn+pe14mtOLAABOPkwpbYC/ZgDuyC6VBmNVHuTgB/9JOTyFyeoCPGYXzAkom
+	 U0Yq8NA/opJe7Mhqphk0qg8xU7x3Y6cEv2Fbldy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0625/1146] perf trace: Avoid an ERR_PTR in syscall_stats
+Subject: [PATCH 6.18 392/957] arm64: dts: rockchip: Fix RK3562 EVB2 model name
 Date: Wed, 20 May 2026 18:14:35 +0200
-Message-ID: <20260520162202.327796329@linuxfoundation.org>
+Message-ID: <20260520162143.028951879@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250657-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251597-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E8437594E19
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sntech.de:email,msgid.link:url,red54.com:email]
+X-Rspamd-Queue-Id: 0A01F59507E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit d05073adda0f047e9b2115a2932bcb2797eab238 ]
+[ Upstream commit ede6a05606892bab4f6d785ffcfc124150c2eb32 ]
 
-hashmap__new may return an ERR_PTR and previously this would be
-assigned to syscall_stats meaning all use of syscall_stats needs to
-test for NULL (uninitialized) or an ERR_PTR. Given the only reason
-hashmap__new can fail is ENOMEM, just use NULL to indicate the
-allocation failure and avoid the code having to test for NULL and
-IS_ERR.
+The model name should be "Rockchip RK3562 EVB2 V10 Board".
 
-Fixes: 96f202eab813 (perf trace: Fix IS_ERR() vs NULL check bug)
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: ceb6ef1ea900 ("arm64: dts: rockchip: Add RK3562 evb2 devicetree")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Link: https://patch.msgid.link/tencent_78E7E3F6991FB4403D5ADC9E6A6BC3BF8307@qq.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 295b272c6c299..7ff85fa90d988 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -1565,7 +1565,9 @@ static bool syscall_id_equal(long key1, long key2, void *ctx __maybe_unused)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts b/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+index 6a84db154a7d5..387062eea5208 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+@@ -13,7 +13,7 @@
+ #include "rk3562.dtsi"
  
- static struct hashmap *alloc_syscall_stats(void)
- {
--	return hashmap__new(syscall_id_hash, syscall_id_equal, NULL);
-+	struct hashmap *result = hashmap__new(syscall_id_hash, syscall_id_equal, NULL);
-+
-+	return IS_ERR(result) ? NULL : result;
- }
+ / {
+-	model = "Rockchip RK3562 EVB V20 Board";
++	model = "Rockchip RK3562 EVB2 V10 Board";
+ 	compatible = "rockchip,rk3562-evb2-v10", "rockchip,rk3562";
  
- static void delete_syscall_stats(struct hashmap *syscall_stats)
-@@ -1573,7 +1575,7 @@ static void delete_syscall_stats(struct hashmap *syscall_stats)
- 	struct hashmap_entry *pos;
- 	size_t bkt;
- 
--	if (IS_ERR(syscall_stats))
-+	if (!syscall_stats)
- 		return;
- 
- 	hashmap__for_each_entry(syscall_stats, pos, bkt)
-@@ -1589,7 +1591,7 @@ static struct thread_trace *thread_trace__new(struct trace *trace)
- 		ttrace->files.max = -1;
- 		if (trace->summary) {
- 			ttrace->syscall_stats = alloc_syscall_stats();
--			if (IS_ERR(ttrace->syscall_stats))
-+			if (!ttrace->syscall_stats)
- 				zfree(&ttrace);
- 		}
- 	}
-@@ -4464,7 +4466,7 @@ static int trace__run(struct trace *trace, int argc, const char **argv)
- 
- 	if (trace->summary_mode == SUMMARY__BY_TOTAL && !trace->summary_bpf) {
- 		trace->syscall_stats = alloc_syscall_stats();
--		if (IS_ERR(trace->syscall_stats))
-+		if (!trace->syscall_stats)
- 			goto out_delete_evlist;
- 	}
- 
-@@ -4771,7 +4773,7 @@ static int trace__replay(struct trace *trace)
- 
- 	if (trace->summary_mode == SUMMARY__BY_TOTAL) {
- 		trace->syscall_stats = alloc_syscall_stats();
--		if (IS_ERR(trace->syscall_stats))
-+		if (!trace->syscall_stats)
- 			goto out;
- 	}
- 
+ 	chosen: chosen {
 -- 
 2.53.0
 
