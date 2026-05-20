@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-253094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MAE3AfUFDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-253094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:25 +0200
+	id yNRULJD8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432C0597B6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 751D7596166
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3D26253EA5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 263C130C7C77
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA2D400DEB;
-	Wed, 20 May 2026 18:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604743CCFB0;
+	Wed, 20 May 2026 18:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1yASaUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9HHPxYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D23A3F9280;
-	Wed, 20 May 2026 18:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4663F23C5;
+	Wed, 20 May 2026 18:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302389; cv=none; b=RDdqeCENg96HViXi1x+j2uCY3djoBVgv/rFBDpVKX2OTvlQl4EV4ZA+o4IiVpy1qtJI5tdZAyBwQAUEwKhIzb4xfjaZZWWVJiuM9Bo7xnymu3XYlt2AO47k+BKUIFaV4jHH17sZVpWWWcbOVYJSW06kZkN/D6CXwcjgaoirdYn0=
+	t=1779301187; cv=none; b=X9Y3i76nBN1hBxxRP7yP38OfUROjrqRkFnaS2dI61FMD+Q3iAoVKLs6JKwniqnyvg3l/jXA/liaw9T+z0XTrY8udrfvQ8V2zCfRYaXo1rezlqkAmypWTAOIe2AZeWc3dkQ+yvRChdiFt1PUXN3doXplKNhIZHo4iuFlmPm9g+aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302389; c=relaxed/simple;
-	bh=9UiEWQjUpqq+1CuJJJ1jFTUfj16JU3rwX7qOngI3waM=;
+	s=arc-20240116; t=1779301187; c=relaxed/simple;
+	bh=0kV9jellMsyRPmZiwB0j08RUC17mJiydXpWHLphfdoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9v0lqqFu5GyvZINI8OBXWea0GEND3AUU4tiDJgMSHHi0HdsI9QdTEs4zm3uPJwwO8t3dGM0n5fd6yM6VVYrAEYGWoeVzwm3wlbm5Tm3NmULm9cPZDKzMNg9P6xByApaVvZ9zUhELkg8xKu87gBcX+zl+MV3TA1g/ObN8ow0vW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1yASaUL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C6F1F00893;
-	Wed, 20 May 2026 18:39:47 +0000 (UTC)
+	 MIME-Version; b=mux1l+fjtSZiGekpQf34K19hU9mgK87vuP9GMswOQlnslz/5Xu2rq4L0AfV+Ey1/ppG1MUSOf+UBNYe5wSGCBXVokWULt3VygTPVWFJZfnn6LB9G8lK4D+fPAj1VOcaaaIFhdQDopPuDwKRYRKDjYFLIjjWq7uFzDLKPsQhzlf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9HHPxYN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B661F000E9;
+	Wed, 20 May 2026 18:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302388;
-	bh=hrLETxwTmBWnB/1rTas//a3eMSmvgqYlaq1eFOWGGk0=;
+	s=korg; t=1779301186;
+	bh=V1QRENEsE6x3gv+pqZ+sEOwR83QUMCopj2dU7PVGWNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T1yASaUL259inL8ytnep0kkGZI1k52UZX7l6zkOM0oG0Q1ZxvSl7Q6WEev6S9cRHO
-	 +iX6Fz09uQyr1KY4n4qvrOTUmxx5sabmIA4oygW6lZ7Z9tksmi0bcF81KcUkZJch44
-	 X8Vwr3LT+Drc9lkQM+iIo7SUheHCpbubcdiCSKS8=
+	b=Z9HHPxYNYQGe2nTbXn948LgVf29NMRISQEfcENQ09WMoIS06hkeRoybw9r83tgKZS
+	 EhoaUNMXzkW26irtfk2zxpKxxXUJ6tPudCm6GuAs94pTy93Bm0J2fVkdgQP1cnennR
+	 FA9+oL+xyjibEWi5U3/f14Pl+DcbJZCmzmXnyI1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/508] pinctrl: cy8c95x0: Avoid returning positive values to user space
+Subject: [PATCH 6.12 459/666] ice: fix ICE_AQ_LINK_SPEED_M for 200G
 Date: Wed, 20 May 2026 18:21:10 +0200
-Message-ID: <20260520162104.002802625@linuxfoundation.org>
+Message-ID: <20260520162121.218010743@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +72,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253094-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252633-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 432C0597B6E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 751D7596166
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-[ Upstream commit 5ad32c3607cf241a1a2680cabd64cbcd757227aa ]
+[ Upstream commit 4a3a940059e98539de293a6e36e464094c2e875b ]
 
-When probe fails due to unclear interrupt status register, it returns
-a positive number instead of the proper error code. Fix this accordingly.
+When setting PHY configuration during driver initialization, 200G link
+speed is not being advertised even when the PHY is capable. This is
+because the get PHY capabilities link speed response is being masked by
+ICE_AQ_LINK_SPEED_M, which does not include the 200G link speed bit.
 
-Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202602271847.vVWkqLBD-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+ICE_AQ_LINK_SPEED_200GB is defined as BIT(11), but the mask 0x7FF only
+covers bits 0-10. Fix ICE_AQ_LINK_SPEED_M to use GENMASK(11, 0) so
+that it covers all defined link speed bits including 200G.
+
+Fixes: 24407a01e57c ("ice: Add 200G speed/phy type use")
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-6-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
+ drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 1432b6714dc69..727f3c5605ced 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1263,7 +1263,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- 	/* Read IRQ status register to clear all pending interrupts */
- 	ret = cy8c95x0_irq_pending(chip, pending_irqs);
- 	if (ret)
--		return dev_err_probe(dev, ret, "failed to clear irq status register\n");
-+		return dev_err_probe(dev, -EBUSY, "failed to clear irq status register\n");
- 
- 	/* Mask all interrupts */
- 	bitmap_fill(chip->irq_mask, MAX_LINE);
+diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+index 66ae0352c6bca..d8013818da960 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+@@ -1347,7 +1347,7 @@ struct ice_aqc_get_link_status_data {
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_3	2
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_4	3
+ 	__le16 link_speed;
+-#define ICE_AQ_LINK_SPEED_M		0x7FF
++#define ICE_AQ_LINK_SPEED_M		GENMASK(11, 0)
+ #define ICE_AQ_LINK_SPEED_10MB		BIT(0)
+ #define ICE_AQ_LINK_SPEED_100MB		BIT(1)
+ #define ICE_AQ_LINK_SPEED_1000MB	BIT(2)
 -- 
 2.53.0
 
