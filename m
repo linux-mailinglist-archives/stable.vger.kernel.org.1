@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FCDKqP2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251614-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:03 +0200
+	id 4IjNBYD7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792CC595128
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD60595DAD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF94030A4744
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 47D9E30750A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B0D369D67;
-	Wed, 20 May 2026 17:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B353F6619;
+	Wed, 20 May 2026 18:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Al300R/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6RxKDMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6594528DC4;
-	Wed, 20 May 2026 17:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471151B7910;
+	Wed, 20 May 2026 18:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298440; cv=none; b=eFWDdWY98hS1urucUGT5RCt3jIqgYd5n+J4L77Pjd6YmCDsnneXFQiyN+uVEu3NDvaTyBqK/w67Uww/bKfn10nHRiwMuTi3DvPcl5zXxvOQElCSJTyFmp6zO7NBvcmw+EGxjdSnpKhTA6UL4N5IylJArButBdbZEQ/KkmErBBOo=
+	t=1779300199; cv=none; b=OCwEdz9HAUmVPmY5Rzxh2WtuWtUzxheWIt7OzH1B+lm69h/fVLM6skYBTYr9LDqT9kuMY/kYc5fophuPDmkmhKCZpdm1Amp11C3wJ5zKoHJiewkE14PNyyucoEz0b5xzJgf/nde5nVLNzIYrM4+W7U48OasGjWvN4oy/5q2jX8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298440; c=relaxed/simple;
-	bh=2QGj792C7JUca4IvCNyhetC72CdpQysw2qCwra6Nl4s=;
+	s=arc-20240116; t=1779300199; c=relaxed/simple;
+	bh=hzNYH8serR8wnquNFPmf3h9jzNrnAZybP0pjH6Y1mfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K22b6XzXyDuAHeKFEPLTvByCV5SwuEX/It65PhiXDy9WEkMLbTjDZLnqv2NdbvrGIHcvYuzt628Ngo4d6d+Hn2LVtaZ8n9DceC6sp7XYqVkPVr1MGNpT+toV41mxFi2IIwqijPD8D9d4mJA1DTT/bV3wtTdTYAOzTHz27eMshfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Al300R/C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42341F000E9;
-	Wed, 20 May 2026 17:33:58 +0000 (UTC)
+	 MIME-Version; b=JGPg71pQrdRreCzRkttSKaSjbCOX1W0o6M841yN16xMNPFXRgfugBb23lcNdBX7OAcn+eOalZEcQSgcUZw+63dXDzDzQL5IP1y0OOke/DUcnU9IhKIo4SVgXmR/ZhWvMKmunFwbyWjpD9JyzwO0a/5Nc3CmyYgYR3l+kfqGm3Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6RxKDMH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC63E1F000E9;
+	Wed, 20 May 2026 18:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298439;
-	bh=5VnF2b7/1OljUYfuB5RYr/Jrs7SnQze8N+L21wG3NPA=;
+	s=korg; t=1779300198;
+	bh=QATEgzemGvzAPdb1MBVbQ6b7/u/+e8XIkRrvnBcN8LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Al300R/Cl1kc1eZzvO1P9oBLCyIY4dIPdGpxc3OoTvAgQptEfvA2+455WwS1sZuQw
-	 ez7XyBKWPVQCZOFblkfbT0EI9JWZxqujlMsj0uMBTUymd+eGU7K9gx7gfGBC7/l6ET
-	 rWlbuKUE7Np4cA/cs//MKUC/aHf8KvOnEVJ5Cjlw=
+	b=r6RxKDMHU9mQ70JhPAY/Jbm3eW96oja4eOF7yQHd5x8hPkLk0W5/abxNyCOYN6UOO
+	 vzM2C/2EsqrBehCDcLBy2Kiu0G1j2msKYUiCdvKEhooXrgzefrH9S38zn8han2qfoc
+	 mIYNTxTrJd8lOqxQxj/0D2BJ4czLI/ofIk7MnyA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 412/957] arm64: dts: qcom: msm8917-xiaomi-riva: Fix board-id for all bootloader
-Date: Wed, 20 May 2026 18:14:55 +0200
-Message-ID: <20260520162143.458741888@linuxfoundation.org>
+Subject: [PATCH 6.12 085/666] bpf: Fix RCU stall in bpf_fd_array_map_clear()
+Date: Wed, 20 May 2026 18:14:56 +0200
+Message-ID: <20260520162113.071483402@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +64,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251614-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252255-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 792CC595128
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DDD60595DAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit a49cd243503c528ea99e31a7853cf438ccc9032d ]
+[ Upstream commit 4406942e65ca128c56c67443832988873c21d2e9 ]
 
-Redmi 5A comes with multiple bootloader versions where the expected
-board-id is different.
-Change the board-id to unified form what works on both bootloader
-version.
+Add a missing cond_resched() in bpf_fd_array_map_clear() loop.
 
-Fixes: 26633b582056 ("arm64: dts: qcom: Add Xiaomi Redmi 5A")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260315-riva-common-v3-1-897f130786ed@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+For PROG_ARRAY maps with many entries this loop calls
+prog_array_map_poke_run() per entry which can be expensive, and
+without yielding this can cause RCU stalls under load:
+
+  rcu: Stack dump where RCU GP kthread last ran:
+  CPU: 0 UID: 0 PID: 30932 Comm: kworker/0:2 Not tainted 6.14.0-13195-g967e8def1100 #2 PREEMPT(undef)
+  Workqueue: events prog_array_map_clear_deferred
+  RIP: 0010:write_comp_data+0x38/0x90 kernel/kcov.c:246
+  Call Trace:
+   <TASK>
+   prog_array_map_poke_run+0x77/0x380 kernel/bpf/arraymap.c:1096
+   __fd_array_map_delete_elem+0x197/0x310 kernel/bpf/arraymap.c:925
+   bpf_fd_array_map_clear kernel/bpf/arraymap.c:1000 [inline]
+   prog_array_map_clear_deferred+0x119/0x1b0 kernel/bpf/arraymap.c:1141
+   process_one_work+0x898/0x19d0 kernel/workqueue.c:3238
+   process_scheduled_works kernel/workqueue.c:3319 [inline]
+   worker_thread+0x770/0x10b0 kernel/workqueue.c:3400
+   kthread+0x465/0x880 kernel/kthread.c:464
+   ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:153
+   ret_from_fork_asm+0x19/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
+
+Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
+Fixes: da765a2f5993 ("bpf: Add poke dependency tracking for prog array maps")
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Link: https://lore.kernel.org/r/20260407103823.3942156-1-rhkrqnwk98@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/arraymap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-index 9db503e218886..1bfb16f90ddd5 100644
---- a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-@@ -18,7 +18,7 @@ / {
- 	chassis-type = "handset";
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 6cdbb4c33d31d..7ec69545fe056 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -998,8 +998,10 @@ static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+ 	int i;
  
- 	qcom,msm-id = <QCOM_ID_MSM8917 0>;
--	qcom,board-id = <0x1000b 2>, <0x2000b 2>;
-+	qcom,board-id = <0x1000b 1>, <0x1000b 2>;
+-	for (i = 0; i < array->map.max_entries; i++)
++	for (i = 0; i < array->map.max_entries; i++) {
+ 		__fd_array_map_delete_elem(map, &i, need_defer);
++		cond_resched();
++	}
+ }
  
- 	pwm_backlight: backlight {
- 		compatible = "pwm-backlight";
+ static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
 -- 
 2.53.0
 
