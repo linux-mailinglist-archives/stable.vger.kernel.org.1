@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPuqB+j3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:28 +0200
+	id UEieMmT6DWrh5AUAu9opvQ
+	(envelope-from <stable+bounces-252363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF15C595425
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6399D595B01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5872130B98D3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0569308B2C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F0F3D75D3;
-	Wed, 20 May 2026 17:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503393F871A;
+	Wed, 20 May 2026 18:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpxFynvR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnP8Z7pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20853E6385;
-	Wed, 20 May 2026 17:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106C93DCD96;
+	Wed, 20 May 2026 18:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298721; cv=none; b=RokK7gMEKZyah7bwshSmei10sm4VmQyafBVAk96vyqHa6AWR4nkbx282s0EgEE7X3H+603cwxiZ2URAmrRJFjZPdX2gjY3OY4wrX4Bl1aBXiDxEOiREuVVs6ZrkjcntOwb17qqoA/se1CGQjwqzC9+ZtAfI7Uda7dfz3TjKjde0=
+	t=1779300479; cv=none; b=rsFM30eRwDD+skvvUSOV2G7nP6PVkqLI4rSwCkSblhk9W5bJPvuao3dr2/xjiZdqWyS+pHCkSC3pPPHza1wp1nAcfK69/poLNfqM6yt3aPemP6xNeITsb/bGfysCw1qIhSR9hsL0EK6eXV11d1niB8PQkN48wYG66J2noODQ/pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298721; c=relaxed/simple;
-	bh=enNNM2/WnxkIbQ4lbg/vxBEnY6wdM2XblBgt+qy9hEE=;
+	s=arc-20240116; t=1779300479; c=relaxed/simple;
+	bh=kfqlA85cFlSUhRM2dLeKE+nIv0ZmVabeUvx0puGhkgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh/xaDKWbxRjqIsi9nqXo4inw+1kdDmTJWlBIx99WozJUhGaQJMmUMQB8e3RyReGIGVaeXl7l/opvt1npEqNH8wr6yw5TObFgo4Vi/r8HTQHSjK7CAXG/Ra7pYnEQngF7KJsso7IY1HGDjnzRCnMi+jUJSjBlysS0R3KBzSXjeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpxFynvR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224911F000E9;
-	Wed, 20 May 2026 17:38:38 +0000 (UTC)
+	 MIME-Version; b=fRQxBwYDeyLL7rKRc4sYVQOlIKcM84AztwlhtL4FzliduNgF54WqMq44HL96mzjWDrdXTo4LQlhNZbjjwPWYAJHBxXzgu5fNz+iZzrDcNLq3tVWsXFPerHwhQh/6ORpoU/frS9TkDjJsfDFVtFhjzD8l0wIL34d7EjuXBDyvf0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnP8Z7pt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D2B1F000E9;
+	Wed, 20 May 2026 18:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298719;
-	bh=zaYJs6iB7YCTQdP0Gxv4IKRwA7w8nyRUeHAYn9Ee8kc=;
+	s=korg; t=1779300478;
+	bh=hbwwRDZTt8pFwKjngXT+sM9n5A9KjGxHZN3WBnOr6Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kpxFynvRALBSSNg6oo85h5Sp3w4XFO8IY7eUmAew8tsZwBCamZqqa5+ts+NvVtDJa
-	 yRaVxvNgf/CyOgYnWHjMDBgLXo0ZQDbLnRYG7hANUM4qGsX82Ezp34XQgAROVNcD96
-	 Mnkdm9andIYiMXcj7kp6V6I752rAKfjockGrMQX8=
+	b=hnP8Z7ptyfvgbvjV44g9lyF2mhcye8OtEgLXfd/YZWq2JBO4FIFREaufYAgEISq6P
+	 +qT8MuVqbPJrzW7GlwGQ8pYb+LYxaHTHYrvNNTf9gm50Va5zJ+gWGqTYo61Hmr0/j0
+	 J9j2C13ENPdGebQeZfNSr96BnGHFUXdJ3Zy8ZLgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 517/957] perf cgroup: Update metric leader in evlist__expand_cgroup
-Date: Wed, 20 May 2026 18:16:40 +0200
-Message-ID: <20260520162145.745754181@linuxfoundation.org>
+Subject: [PATCH 6.12 190/666] ASoC: SOF: Intel: hda: Place check before dereference
+Date: Wed, 20 May 2026 18:16:41 +0200
+Message-ID: <20260520162115.320135280@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +64,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252363-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251722-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EF15C595425
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6399D595B01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit c9ef786c0970991578397043f1c819229e2b7197 ]
+[ Upstream commit 6cbc8360f51a3df2ea16a786b262b9fe44d4c68c ]
 
-When the evlist is expanded the metric leader wasn't being updated. As
-the original evsel is deleted this creates a use-after-free in
-stat-shadow's prepare_metric. This was detected running the "perf stat
---bpf-counters --for-each-cgroup test" with sanitizers.
+The struct hext_stream is dereferenced before it is checked for NULL.
+Although it can never be NULL due to a check prior to
+hda_dsp_iccmax_stream_hw_params() being called, this change clears any
+confusion regarding hext_stream possibly being NULL.
 
-The change itself puts the copied evsel into the priv field (known
-unused because of evsel__clone use) and then in a second pass over the
-list updates the copied values using the priv pointer.
+Check hext_stream for NULL and then assign its members.
 
-Fixes: d1c5a0e86a4e ("perf stat: Add --for-each-cgroup option")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Sun Jian <sun.jian.kdev@gmail.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Detected by Smatch:
+sound/soc/sof/intel/hda-stream.c:488 hda_dsp_iccmax_stream_hw_params() warn:
+variable dereferenced before check 'hext_stream' (see line 486)
+
+Fixes: aca961f196e5d ("ASoC: SOF: Intel: hda: Add helper function to program ICCMAX stream")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Link: https://patch.msgid.link/20260324173830.17563-1-ethantidmore06@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/cgroup.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
-index 25e2769b5e74f..0038d2ac647c4 100644
---- a/tools/perf/util/cgroup.c
-+++ b/tools/perf/util/cgroup.c
-@@ -416,7 +416,6 @@ static bool has_pattern_string(const char *str)
- int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgroup)
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 2be0d02f9cf9b..d6a0e78b5ce73 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -419,16 +419,20 @@ int hda_dsp_iccmax_stream_hw_params(struct snd_sof_dev *sdev, struct hdac_ext_st
+ 				    struct snd_dma_buffer *dmab,
+ 				    struct snd_pcm_hw_params *params)
  {
- 	struct evlist *orig_list, *tmp_list;
--	struct evsel *pos, *evsel, *leader;
- 	struct rblist orig_metric_events;
- 	struct cgroup *cgrp = NULL;
- 	struct cgroup_name *cn;
-@@ -451,6 +450,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
- 		goto out_err;
+-	struct hdac_stream *hstream = &hext_stream->hstream;
+-	int sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	struct hdac_stream *hstream;
++	int sd_offset;
+ 	int ret;
+-	u32 mask = 0x1 << hstream->index;
++	u32 mask;
  
- 	list_for_each_entry(cn, &cgroup_list, list) {
-+		struct evsel *pos;
- 		char *name;
+ 	if (!hext_stream) {
+ 		dev_err(sdev->dev, "error: no stream available\n");
+ 		return -ENODEV;
+ 	}
  
- 		if (!cn->used)
-@@ -466,21 +466,37 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
- 		if (cgrp == NULL)
- 			continue;
- 
--		leader = NULL;
-+		/* copy the list and set to the new cgroup. */
- 		evlist__for_each_entry(orig_list, pos) {
--			evsel = evsel__clone(/*dest=*/NULL, pos);
-+			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
++	hstream = &hext_stream->hstream;
++	sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	mask = 0x1 << hstream->index;
 +
- 			if (evsel == NULL)
- 				goto out_err;
- 
-+			/* stash the copy during the copying. */
-+			pos->priv = evsel;
- 			cgroup__put(evsel->cgrp);
- 			evsel->cgrp = cgroup__get(cgrp);
- 
--			if (evsel__is_group_leader(pos))
--				leader = evsel;
--			evsel__set_leader(evsel, leader);
--
- 			evlist__add(tmp_list, evsel);
- 		}
-+		/* update leader information using stashed pointer to copy. */
-+		evlist__for_each_entry(orig_list, pos) {
-+			struct evsel *evsel = pos->priv;
-+
-+			if (evsel__leader(pos))
-+				evsel__set_leader(evsel, evsel__leader(pos)->priv);
-+
-+			if (pos->metric_leader)
-+				evsel->metric_leader = pos->metric_leader->priv;
-+
-+			if (pos->first_wildcard_match)
-+				evsel->first_wildcard_match = pos->first_wildcard_match->priv;
-+		}
-+		/* the stashed copy is no longer used. */
-+		evlist__for_each_entry(orig_list, pos)
-+			pos->priv = NULL;
-+
- 		/* cgroup__new() has a refcount, release it here */
- 		cgroup__put(cgrp);
- 		nr_cgroups++;
+ 	if (!dmab) {
+ 		dev_err(sdev->dev, "error: no dma buffer allocated!\n");
+ 		return -ENODEV;
 -- 
 2.53.0
 
