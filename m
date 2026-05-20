@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBB5IFjwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:12 +0200
+	id gN7RM88aDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84611593EC9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC1B599C9B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D58333088179
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 756FB32D2FBA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7809933AD9D;
-	Wed, 20 May 2026 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2043F4124;
+	Wed, 20 May 2026 17:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/B6EfKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XUziq6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B47A34041C;
-	Wed, 20 May 2026 16:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B430BF68;
+	Wed, 20 May 2026 17:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295683; cv=none; b=cii8Vcu/RHM82BTvAFh4/bVnWUTn3lABr8n/SYKi89lP4XFmCSCGoU3WFzV5f9bEOfP8hO+zcbigjsCwNM8V/7v2rvOklQhvJEwKPcABN3FMHp7LLLAygxXw6us+zxmu8iaisQhPuTRfbJeGRkwKk65v3Wcqm76JIY84U9fFWeo=
+	t=1779297997; cv=none; b=OKwEhJY4xH36ux9K5ukYl0vP94RknsQouHSq1cKoReiJHYoB5NAkYGlXUlHXSPNjCZ5Y45R4kjGhSnp2LQwnOdr5cboKAR8CdFEgKTHHcWOAlXuOGrErXazPeqQkX0fsH/uQglQDxyFAQD/cHOY2KPGzOk57emyoG6LTrpX6a1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295683; c=relaxed/simple;
-	bh=JTP/+OZ6BmUVkn56hTndvYsna4Qdz+TqcbfwcRfOBVs=;
+	s=arc-20240116; t=1779297997; c=relaxed/simple;
+	bh=HvpujqBfulUjRidpgCbDzQbU6uIoee0Y/ANg3Q6KS/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK5jz40Zvu0PrAGzdyYyN5RkCZGVEMVM13vIoCu2x2382Ov2KBMAMV5SAzF4EKe2qCf8Z1ZkcZuX4wRqV/ZoUhZwZYYOGLXOEq6pvM57AZsPdE8Coo+qnSvlvyJZdqjFsjjohYdnaLktukMHYgHlHtW4rX1q+OnFlMp/92kvHtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/B6EfKs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BCE91F000E9;
-	Wed, 20 May 2026 16:48:01 +0000 (UTC)
+	 MIME-Version; b=kxvRsLYPWEIgyqbqJvlr0siT/xQ0nFMfz6pNt1AxiT6HDhL53ZFtwsg6Toozj4yBtvbPau8NNaqchA8DQlJWpi5MJuFlmIKtfmNsKLh1JAJYiKsWySeOcTKvrY04EiiZJX//1hw40yHWnhNmXtvgYmi1ooQhehSXXsD5TOA/dhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XUziq6v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF41D1F000E9;
+	Wed, 20 May 2026 17:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295682;
-	bh=PX/UXr9MgHqMbxbYsQeJaVvdlSxym0WgukytLFzQUSA=;
+	s=korg; t=1779297996;
+	bh=CF1SMEErsPMbNb3PISXdw2fh1DF98BNKAZKNYkYvSZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b/B6EfKsSkkJNXBFyy4v60v3ZsEiyLA+7T9XLoHxxpk2Uh92ow8dTfQKQlv47hCtZ
-	 7bUiW8W3sFI7mPHeZt40PruacyJBPjFVg0TFdyE20Bg0gxLExz/rRCedDRBA0k61l3
-	 L19KvHJbPmeExcvgCw7MXdpCs7pzY/x/jFe8oY0o=
+	b=2XUziq6vpRqnUI0jdAy9mIrWjVpwgWJ9rgUTM8G2UPw1nh37cnoOfFqmHH/6Esi5P
+	 McnJP0y1bfrgHcp1It2436Swci8iPInncVIn3hdFKPeXY58GzmFVjkJ1CTp15o6gnw
+	 5kx0ap7XMqHJvO1cLVFcQDkcfp62sqfDjojf0JVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	kernel test robot <lkp@intel.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0475/1146] arm64: dts: imx8mp-evk: Enable pull select bit for PCIe regulator GPIO (M.2 W_DISABLE1)
-Date: Wed, 20 May 2026 18:12:05 +0200
-Message-ID: <20260520162158.943513208@linuxfoundation.org>
+Subject: [PATCH 6.18 243/957] drm/msm/dsi: add the missing parameter description
+Date: Wed, 20 May 2026 18:12:06 +0200
+Message-ID: <20260520162139.812949786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251444-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,oss.qualcomm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250542-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 84611593EC9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 3DC1B599C9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit d1e7eab6033f9885a02c4b4e8f09e34d8e9d21ab ]
+[ Upstream commit 958adefc4c0fddee3b12269da5dd7cb49bac953f ]
 
-The current pin configuration for MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06
-sets the weak pull-up but does not enable the pull select field.
-Bit 8 in the IOMUX register must be set in order for the weak pull-up
-to actually take effect.
+Add a description for is_bonded_dsi in dsi_adjust_pclk_for_compression
+to match the existing kernel-doc comment.
 
-Update the pinctrl setting from 0x40 to 0x140 to enable both the pull
-select and the weak pull-up, ensuring the line behaves as expected.
-
-Fixes: d50650500064 ("arm64: dts: imx8mp-evk: Add PCIe support")
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603080314.XeqyRZ7A-lkp@intel.com/
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/710112/
+Link: https://lore.kernel.org/r/20260309100254.877801-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-index b256be710ea12..31f03436137dc 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-@@ -1064,7 +1064,7 @@ MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07	0x40
- 
- 	pinctrl_pcie0_reg: pcie0reggrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x40
-+			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x140
- 		>;
- 	};
- 
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index db6da99375a18..6cb634590e7a7 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -569,6 +569,7 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
+  * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
+  * @mode: The selected mode for the DSI output
+  * @dsc: DRM DSC configuration for this DSI output
++ * @is_bonded_dsi: True if two DSI controllers are bonded
+  *
+  * Adjust the pclk rate by calculating a new hdisplay proportional to
+  * the compression ratio such that:
 -- 
 2.53.0
 
