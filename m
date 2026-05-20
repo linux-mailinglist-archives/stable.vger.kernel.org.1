@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPv7IRz1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:32 +0200
+	id QF5EJ8wADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E592594D78
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC90597142
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 269A630A92C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5DE73077364
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C033F1AB8;
-	Wed, 20 May 2026 17:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DFA3F9F2D;
+	Wed, 20 May 2026 18:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/29LeOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOXENG7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327B136405A;
-	Wed, 20 May 2026 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A75270545;
+	Wed, 20 May 2026 18:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299210; cv=none; b=GhlXdX302XUWRoTdEdpgNkEo6mNhIMoBNrgh1xVZ42UchIMWylmP0MQsaxAK2rdWmAVeRAXPzcihvfE/JN95QgBZTUtOHAdpspYheyQ8I7CbwNePJkXwAliQajZy4P+pJd82aeW4k0lfRpnQ5ADK+9CPAmkQAN0+3Jhia8GHIzU=
+	t=1779302168; cv=none; b=um+5ZbhjNKzYQUw0OpEWDU+2URl/7JaH5kUzCenR7jr9fubjOgfjzHBHK5bpUBpQyJbdCFwIM+wAgK2nRZiB9Y12CrM+giJriuDaabQFiaaIHoXhHpeS53jDTe1y7upBAG1PbvLggBsikBAQl1q2+//DxFdM1W2XrJhO4lCZ0NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299210; c=relaxed/simple;
-	bh=lHp8xG8w1UouWNS1bnC0uQuq1G+P+s93QKS9oC99Jc0=;
+	s=arc-20240116; t=1779302168; c=relaxed/simple;
+	bh=tv3u/n/WKU6KCq/3gQn8AT5595Mael8hZCBu+QKeX7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrTvBrjSzO9QVCr57JwFvZJSiSxE2CJRewQXrbE7i8zVjUsGyMsnnTR5uFVuTuwgHvxT/KFNLCCXbR6Iux56XtHwWsZkSpZH0HK4vNK82Jth/FeMnEkWIcQkx8lNiZzuemoUwxyGb8T9bW6dZsMHsXrHTY2XAWxXn3Tr9y9as5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/29LeOS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9843E1F000E9;
-	Wed, 20 May 2026 17:46:48 +0000 (UTC)
+	 MIME-Version; b=shm3vEozDwWgaNloFIdBrhZOqqSAt4B4alZ1DlX2STaO3zxKI1hKZrYczh20AvkPJgn3/x6EfLhEuwCRo4oMHTCQChco6DNy2I7QPcGfcWmf2UAGRL5pf0cdhxiyZoESJFvGJKo1kQW4grR6LN8Lv2grs2k79CksEs5TXXjcKa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOXENG7M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D151F000E9;
+	Wed, 20 May 2026 18:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299209;
-	bh=PHfZK+qFn4GNKYHiaPQ3uGQAN4vvW5Voloqt7YbLzPU=;
+	s=korg; t=1779302167;
+	bh=v8tjQV/xmaEcVGk2TlQ9Bpbrf9bCnpP3yAG9lP2jPxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s/29LeOStnxGIBAhG3wBJdI93+xKMNcXb2ykNZ4oFKqh3EFQijq54s8L+3/QB636s
-	 SEDm+YTV91WgZjvS5Kpdq+tSc+ZpLEQYcGbJvN113+mW5gEJRQzUNEO3GTKB5UTjrv
-	 UerrnF8TChr7olmVMubYM/RRhqVsFcOZZipuoBks=
+	b=MOXENG7MlpoVWlXRFReDFY4tPiP49BKdMhmgEIB3HmwDuz3O7sB1UtkS5b5qMdAYo
+	 LsqF9Tdk5bMVzYL2k3ve21QYzGBtr9VNAlKpd21CeOwFpkI2094QGFPbGjHp0QDURO
+	 FtkZdaDr3G4x89k9uCWx8HoDoDacLiVkML0uJtTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 702/957] net: mana: Guard mana_remove against double invocation
+Subject: [PATCH 6.6 162/508] PCI: tegra194: Use devm_gpiod_get_optional() to parse "nvidia,refclk-select"
 Date: Wed, 20 May 2026 18:19:45 +0200
-Message-ID: <20260520162149.763435339@linuxfoundation.org>
+Message-ID: <20260520162102.148371272@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +71,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251912-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253010-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0E592594D78
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3CC90597142
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 50271d7ec95144d26808025b508f463780517d3c ]
+[ Upstream commit f62bc7917de1374dce86a852ffba8baf9cb7a56a ]
 
-If PM resume fails (e.g., mana_attach() returns an error), mana_probe()
-calls mana_remove(), which tears down the device and sets
-gd->gdma_context = NULL and gd->driver_data = NULL.
+The GPIO DT property "nvidia,refclk-select", to select the PCIe reference
+clock is optional. Use devm_gpiod_get_optional() to get it.
 
-However, a failed resume callback does not automatically unbind the
-driver. When the device is eventually unbound, mana_remove() is invoked
-a second time. Without a NULL check, it dereferences gc->dev with
-gc == NULL, causing a kernel panic.
-
-Add an early return if gdma_context or driver_data is NULL so the second
-invocation is harmless. Move the dev = gc->dev assignment after the
-guard so it cannot dereference NULL.
-
-Fixes: 635096a86edb ("net: mana: Support hibernation and kexec")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Link: https://patch.msgid.link/20260420124741.1056179-4-ernis@linux.microsoft.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-7-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index cd3a435485a19..d90be4142e257 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3568,11 +3568,16 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
- 	struct gdma_context *gc = gd->gdma_context;
- 	struct mana_context *ac = gd->driver_data;
- 	struct mana_port_context *apc;
--	struct device *dev = gc->dev;
-+	struct device *dev;
- 	struct net_device *ndev;
- 	int err;
- 	int i;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index ed0d12ab579d8..dba73a0ea4210 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1197,9 +1197,9 @@ static int tegra_pcie_dw_parse_dt(struct tegra_pcie_dw *pcie)
+ 		return err;
+ 	}
  
-+	if (!gc || !ac)
-+		return;
-+
-+	dev = gc->dev;
-+
- 	disable_work_sync(&ac->link_change_work);
- 
- 	/* adev currently doesn't support suspending, always remove it */
+-	pcie->pex_refclk_sel_gpiod = devm_gpiod_get(pcie->dev,
+-						    "nvidia,refclk-select",
+-						    GPIOD_OUT_HIGH);
++	pcie->pex_refclk_sel_gpiod = devm_gpiod_get_optional(pcie->dev,
++							     "nvidia,refclk-select",
++							     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pcie->pex_refclk_sel_gpiod)) {
+ 		int err = PTR_ERR(pcie->pex_refclk_sel_gpiod);
+ 		const char *level = KERN_ERR;
 -- 
 2.53.0
 
