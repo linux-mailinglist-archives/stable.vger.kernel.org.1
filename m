@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE50NlP0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:11 +0200
+	id mOGkIo3/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A6A594B0B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07646596D10
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A1FA3077552
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA69F30F5E96
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4603E123F;
-	Wed, 20 May 2026 17:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C546D30DEAC;
+	Wed, 20 May 2026 18:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+pqpHS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xa0h6a4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D0033BBCF;
-	Wed, 20 May 2026 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8D33CEA2;
+	Wed, 20 May 2026 18:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298963; cv=none; b=jcEhtZmCCVvyYfAw5oaYR+3XJw+H5pC9Gg2Uv7AR9jH0uL+BZL2n9QYOGPrSyT2lUBMRPMkhnvo4FKkLsZzlrWLF0cIdrwZRupBU76SfL0nhwzdo9ir5kNDfLm6VMf4DAg5REc4hA90o2T46YBLgCVBSQuWtmKMuNZgy6hzi1c4=
+	t=1779301920; cv=none; b=aUQq7We6asQH6V7zEracjb4EWJvWBUZA5/dA6mHyeluNPqgRHRZ7CBkdpX0sjrxY2XQ8p9QobD6tGl1n70e+R3pKdVcB58IVFGTep+be2804l0M8TlghBU62LoBZslbhhPJIl3WEO6EQ+AAJB5niTDd00LCQlVOxL3/O01NEJu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298963; c=relaxed/simple;
-	bh=v0fydRtPRrVQIAzKHqocwd1XUDfc1jPO6MLpAYvtYAc=;
+	s=arc-20240116; t=1779301920; c=relaxed/simple;
+	bh=h28VAqGpvvL8dCfZD/llXLL2K0/yqDyGfLZusNgfI9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUufSbJMfC/URBBArzuElYabLYPCtovrxFV28L+DrSjs02EbOZX+ir+5MZiI03rl8sHf46E7YHJbEhcM+ggopYlazEz3HjIeIMu/8aFyViK8b7u5ggdMyKgTNWCfChBkCzayGP6nCGoyoCsa2GMoPT9uP6mxeuVkcMLuwAhSO9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+pqpHS2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628941F000E9;
-	Wed, 20 May 2026 17:42:41 +0000 (UTC)
+	 MIME-Version; b=ruXKptQ+FUWbPbMcl45YfLF4X5m5eFMJsLD7tUp+neEVcZghwhaxqWhOimD+aDY0+ZcLpBeHUi2ty8BkP+rXWdBS6+73ngY2vEL5EdLXJFvxVEztOOWgHi+edFn3CeBeR1uybI7I8ngTgG0hQSdBQBFa75ye8eKH+Ev2dtY+bH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xa0h6a4e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D963A1F000E9;
+	Wed, 20 May 2026 18:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298961;
-	bh=FXKeEhpXrZ9zCcRA2hAT0+Sb2ohiqiGduMvm1yHmbIg=;
+	s=korg; t=1779301919;
+	bh=UL6rYaGuhcN6baKYFAzT8P88IKqAP+fB8I4Bw1dnxcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W+pqpHS2ZAXMrkFoclZzLlX3KWMpno4mVRGCOgAavVgLbeFTAu5ferj8F3qNnvbpM
-	 PIdWDR2ULzvVYUHJWnwUBPMhu9cCmwYGfE9kn7AMj7JY/JiLFJx67z3uQQslfnga5s
-	 q40AU7BF5cfUutV5RTlR2ckJa/TCsbh4lYwMlOIs=
+	b=Xa0h6a4eoZl/sTV5BH/CMvIe2OPPd0MzhQg8iahzyxAr2VILmRySfXM4cp1wlGtpa
+	 nxqKYFaZoZgwxdQ0fxj+fIpsUdoLJek5/PmZOLhDWmS+cs1IvIQeG0CnplbJuf+dq/
+	 +h0cpgylNKTb2F82cEr5Qe0rrXWmEYoA2qRMsl/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Kaiyan Mei <kaiyanm@hust.edu.cn>,
+	Lang Xu <xulang@uniontech.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 609/957] reset: amlogic: t7: Fix null reset ops
+Subject: [PATCH 6.6 069/508] bpf: Fix OOB in pcpu_init_value
 Date: Wed, 20 May 2026 18:18:12 +0200
-Message-ID: <20260520162147.742375248@linuxfoundation.org>
+Message-ID: <20260520162100.101457804@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252914-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251815-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,aliel.fr:email]
-X-Rspamd-Queue-Id: 63A6A594B0B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email,hust.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 07646596D10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
+From: Lang Xu <xulang@uniontech.com>
 
-[ Upstream commit 9797524ef2b69c6b187b55bd844eb72a8c1cbd99 ]
+[ Upstream commit 576afddfee8d1108ee299bf10f581593540d1a36 ]
 
-Fix missing reset ops causing kernel null pointer dereference.
-This SOC's reset is currently not used yet.
+An out-of-bounds read occurs when copying element from a
+BPF_MAP_TYPE_CGROUP_STORAGE map to another pcpu map with the
+same value_size that is not rounded up to 8 bytes.
 
-Signed-off-by: Ronald Claveau <linux-kernel-dev@aliel.fr>
-Fixes: fb4c31587adf ("reset: amlogic: add auxiliary reset driver support")
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+The issue happens when:
+1. A CGROUP_STORAGE map is created with value_size not aligned to
+   8 bytes (e.g., 4 bytes)
+2. A pcpu map is created with the same value_size (e.g., 4 bytes)
+3. Update element in 2 with data in 1
+
+pcpu_init_value assumes that all sources are rounded up to 8 bytes,
+and invokes copy_map_value_long to make a data copy, However, the
+assumption doesn't stand since there are some cases where the source
+may not be rounded up to 8 bytes, e.g., CGROUP_STORAGE, skb->data.
+the verifier verifies exactly the size that the source claims, not
+the size rounded up to 8 bytes by kernel, an OOB happens when the
+source has only 4 bytes while the copy size(4) is rounded up to 8.
+
+Fixes: d3bec0138bfb ("bpf: Zero-fill re-used per-cpu map element")
+Reported-by: Kaiyan Mei <kaiyanm@hust.edu.cn>
+Closes: https://lore.kernel.org/all/14e6c70c.6c121.19c0399d948.Coremail.kaiyanm@hust.edu.cn/
+Link: https://lore.kernel.org/r/420FEEDDC768A4BE+20260402074236.2187154-1-xulang@uniontech.com
+Signed-off-by: Lang Xu <xulang@uniontech.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/amlogic/reset-meson.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/hashtab.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/reset/amlogic/reset-meson.c b/drivers/reset/amlogic/reset-meson.c
-index 84610365a823c..c303e8590dd68 100644
---- a/drivers/reset/amlogic/reset-meson.c
-+++ b/drivers/reset/amlogic/reset-meson.c
-@@ -42,6 +42,7 @@ static const struct meson_reset_param meson_s4_param = {
- };
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 8bac6ae1204dc..934fdc688d7c1 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -991,7 +991,7 @@ static void pcpu_init_value(struct bpf_htab *htab, void __percpu *pptr,
  
- static const struct meson_reset_param t7_param = {
-+	.reset_ops	= &meson_reset_ops,
- 	.reset_num      = 224,
- 	.reset_offset	= 0x0,
- 	.level_offset   = 0x40,
+ 		for_each_possible_cpu(cpu) {
+ 			if (cpu == current_cpu)
+-				copy_map_value_long(&htab->map, per_cpu_ptr(pptr, cpu), value);
++				copy_map_value(&htab->map, per_cpu_ptr(pptr, cpu), value);
+ 			else /* Since elem is preallocated, we cannot touch special fields */
+ 				zero_map_value(&htab->map, per_cpu_ptr(pptr, cpu));
+ 		}
 -- 
 2.53.0
 
