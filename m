@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAdtJGEfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:53 +0200
+	id +Ei/CcTqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC08F59A45F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE00592FE5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF4853720C49
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C313E30967B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6421C3BFC;
-	Wed, 20 May 2026 17:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5575A3F54DB;
+	Wed, 20 May 2026 17:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIGM0/7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HScTJVkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3903036405A;
-	Wed, 20 May 2026 17:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5D3F0773;
+	Wed, 20 May 2026 17:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299068; cv=none; b=SjhFYqRd7B2D3FwCfRz5FYugcY+up2nWVi+urUDkanNFZqDDxr5KMGauT1ubEzRcD4AC4EU9YYQ0S5NvpKsbQKNJOUfh7nXMJncQvTyUVblh1+NSlaaWAnrbZdpteXay/VJgQ2eEBpT4N+apN7m3U7tGGpXOork7nFFbk509OOs=
+	t=1779296655; cv=none; b=hS5GF6KQhxsB9oUFNf0WKJo/ZvzX744xsZdczo1VaWbptD5jl5MlP6GsU9SQamD1w/OQc6/zjvEzMW+5OBreLb8v8mHxuUB+ahmJ7RhCQTD2NR+nQ9//O1QiNIXVWMj9MkoZYB379/z8SoOHXgrkQfQGo/RwBgXClLW2WaOajWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299068; c=relaxed/simple;
-	bh=oZQRMgEnYEJwvMtiAfubwSkrGf+D0aJisEkVAZa5sNw=;
+	s=arc-20240116; t=1779296655; c=relaxed/simple;
+	bh=UE8jsOts6OgcflGg8nN6XdrNp6PtFizQUPcH/E4BtRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9mkwYw6UtJUq6UY4mamkkt/Aohik4+hbfT/jlDsmMghNwZu6JoacZTU+PwSNnr6rpsY9Ld5LUm9E1wly39ANI0tep1jFGYenWaPVul3Zf843dHJd4b8DoR7LP6LtRTVcJp6JUg/aLb4R8C2eT1ZXCsPtGG/Dse22snrDBjeIEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIGM0/7n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0EF1F000E9;
-	Wed, 20 May 2026 17:44:26 +0000 (UTC)
+	 MIME-Version; b=RRK7EBZ8y0xtAXVC79Y37Ztcrtb/SjpuAWqZZz7wlCBImufo//xsV9h1cqBPRcGpgBXpLcDhg7IoQU41ZdOvw6myFwM3KuXRxtjd9Rlv924VfmBZ0nr2X2XWLATlgMIBYIN6+SNJ1ZGWRMnDwL4sg3X68rgMi9vfuixZ4hYgZr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HScTJVkH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E71F000E9;
+	Wed, 20 May 2026 17:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299067;
-	bh=DZ3Tiw+ekTmu02V9IidQRy4nJW3czdHZaSBwgzjbqLE=;
+	s=korg; t=1779296653;
+	bh=DRMi9S+6rnurRxIdgJ2NghaIPtqUwfaLlFn6SzhCnzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VIGM0/7nkrWjMMvKKRVqnO8ZVaCyFgqXPvGCSGEksMcqJ9dJCHH7/OZBa4bgRvXfK
-	 7G/63AlGtk7vWAQGZ3sdH254KUuY6h5Ronf8JLB1eof/gP3cULOViTVpl79U/EUer1
-	 m0RI6dEnsIE4iVrPP1wNpl/8WCLh5+XrwHCLZeuQ=
+	b=HScTJVkHcDL4DZ9wbCBkcxb8fIMaF4vTr6tDJvyr5htASYetJtz9lSOhq4xsUukFr
+	 yPbg7cOxXKQI1/dT+Ypt+xDG6wl8LHAwiBxD45VShgeTlkpOOA+Gvluo1c5A5ANzAu
+	 IM5HZ4TyG6J404cY4LBMVa39gW23Ybz7GDnrxmy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 649/957] ice: fix double-free of tx_buf skb
+Subject: [PATCH 7.0 0882/1146] cgroup/cpuset: record DL BW alloc CPU for attach rollback
 Date: Wed, 20 May 2026 18:18:52 +0200
-Message-ID: <20260520162148.604993708@linuxfoundation.org>
+Message-ID: <20260520162208.199307138@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +69,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251857-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250924-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: DC08F59A45F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email]
+X-Rspamd-Queue-Id: CEE00592FE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-[ Upstream commit 1a303baa715e6b78d6a406aaf335f87ff35acfcd ]
+[ Upstream commit 41d701ddc36d5301b44ea79529f3cf03c541c1e1 ]
 
-If ice_tso() or ice_tx_csum() fail, the error path in
-ice_xmit_frame_ring() frees the skb, but the 'first' tx_buf still points
-to it and is marked as valid (ICE_TX_BUF_SKB).
-'next_to_use' remains unchanged, so the potential problem will
-likely fix itself when the next packet is transmitted and the tx_buf
-gets overwritten. But if there is no next packet and the interface is
-brought down instead, ice_clean_tx_ring() -> ice_unmap_and_free_tx_buf()
-will find the tx_buf and free the skb for the second time.
+cpuset_can_attach() allocates DL bandwidth only when migrating
+deadline tasks to a disjoint CPU mask, but cpuset_cancel_attach()
+rolls back based only on nr_migrate_dl_tasks. This makes the DL
+bandwidth alloc/free paths asymmetric: rollback can call dl_bw_free()
+even when no dl_bw_alloc() was done.
 
-The fix is to reset the tx_buf type to ICE_TX_BUF_EMPTY in the error
-path, so that ice_unmap_and_free_tx_buf().
-Move the initialization of 'first' up, to ensure it's already valid in
-case we hit the linearization error path.
+Rollback also needs to undo the reservation against the same CPU/root
+domain that was charged. Record the CPU used by dl_bw_alloc() and use
+that state in cpuset_cancel_attach(). If no allocation happened,
+dl_bw_cpu stays at -1 and rollback skips dl_bw_free(). If allocation
+did happen, bandwidth is returned to the same CPU/root domain.
 
-The bug was spotted by AI while I had it looking for something else.
-It also proposed an initial version of the patch.
+Successful attach paths are unchanged. This only fixes failed attach
+rollback accounting.
 
-I reproduced the bug and tested the fix by adding code to inject
-failures, on a build with KASAN.
-
-I looked for similar bugs in related Intel drivers and did not find any.
-
-Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
-Assisted-by: Claude:claude-4.6-opus-high Cursor
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-4-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/cgroup/cpuset-internal.h |  5 +++++
+ kernel/cgroup/cpuset.c          | 13 +++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 90dbe5266ce78..e0774a640955d 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2594,6 +2594,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+diff --git a/kernel/cgroup/cpuset-internal.h b/kernel/cgroup/cpuset-internal.h
+index fd7d19842ded7..bb4e692bea300 100644
+--- a/kernel/cgroup/cpuset-internal.h
++++ b/kernel/cgroup/cpuset-internal.h
+@@ -168,6 +168,11 @@ struct cpuset {
+ 	int nr_deadline_tasks;
+ 	int nr_migrate_dl_tasks;
+ 	u64 sum_migrate_dl_bw;
++	/*
++	 * CPU used for temporary DL bandwidth allocation during attach;
++	 * -1 if no DL bandwidth was allocated in the current attach.
++	 */
++	int dl_bw_cpu;
  
- 	ice_trace(xmit_frame_ring, tx_ring, skb);
+ 	/* Invalid partition error code, not lock protected */
+ 	enum prs_errcode prs_err;
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 1335e437098e8..e3a081a07c6d5 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -288,6 +288,7 @@ struct cpuset top_cpuset = {
+ 	.flags = BIT(CS_CPU_EXCLUSIVE) |
+ 		 BIT(CS_MEM_EXCLUSIVE) | BIT(CS_SCHED_LOAD_BALANCE),
+ 	.partition_root_state = PRS_ROOT,
++	.dl_bw_cpu = -1,
+ };
  
-+	/* record the location of the first descriptor for this packet */
-+	first = &tx_ring->tx_buf[tx_ring->next_to_use];
+ /**
+@@ -579,6 +580,8 @@ static struct cpuset *dup_or_alloc_cpuset(struct cpuset *cs)
+ 	if (!trial)
+ 		return NULL;
+ 
++	trial->dl_bw_cpu = -1;
 +
- 	count = ice_xmit_desc_count(skb);
- 	if (ice_chk_linearize(skb, count)) {
- 		if (__skb_linearize(skb))
-@@ -2619,8 +2622,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 
- 	offload.tx_ring = tx_ring;
- 
--	/* record the location of the first descriptor for this packet */
--	first = &tx_ring->tx_buf[tx_ring->next_to_use];
- 	first->skb = skb;
- 	first->type = ICE_TX_BUF_SKB;
- 	first->bytecount = max_t(unsigned int, skb->len, ETH_ZLEN);
-@@ -2685,6 +2686,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- out_drop:
- 	ice_trace(xmit_frame_ring_drop, tx_ring, skb);
- 	dev_kfree_skb_any(skb);
-+	first->type = ICE_TX_BUF_EMPTY;
- 	return NETDEV_TX_OK;
+ 	/* Setup cpumask pointer array */
+ 	cpumask_var_t *pmask[4] = {
+ 		&trial->cpus_allowed,
+@@ -2980,6 +2983,7 @@ static void reset_migrate_dl_data(struct cpuset *cs)
+ {
+ 	cs->nr_migrate_dl_tasks = 0;
+ 	cs->sum_migrate_dl_bw = 0;
++	cs->dl_bw_cpu = -1;
  }
  
+ /* Called by cgroups to determine if a cpuset is usable; cpuset_mutex held */
+@@ -3056,6 +3060,8 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
+ 			reset_migrate_dl_data(cs);
+ 			goto out_unlock;
+ 		}
++
++		cs->dl_bw_cpu = cpu;
+ 	}
+ 
+ out_success:
+@@ -3080,12 +3086,11 @@ static void cpuset_cancel_attach(struct cgroup_taskset *tset)
+ 	mutex_lock(&cpuset_mutex);
+ 	dec_attach_in_progress_locked(cs);
+ 
+-	if (cs->nr_migrate_dl_tasks) {
+-		int cpu = cpumask_any(cs->effective_cpus);
++	if (cs->dl_bw_cpu >= 0)
++		dl_bw_free(cs->dl_bw_cpu, cs->sum_migrate_dl_bw);
+ 
+-		dl_bw_free(cpu, cs->sum_migrate_dl_bw);
++	if (cs->nr_migrate_dl_tasks)
+ 		reset_migrate_dl_data(cs);
+-	}
+ 
+ 	mutex_unlock(&cpuset_mutex);
+ }
 -- 
 2.53.0
 
