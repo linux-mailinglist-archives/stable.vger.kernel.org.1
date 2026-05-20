@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-251855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INjVLC/3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-251855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:23 +0200
+	id CCvCAG8ZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-252953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0AB595293
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C566599A29
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 284F6307EFCE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C367730D4B04
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507983F20F9;
-	Wed, 20 May 2026 17:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258C630DEAC;
+	Wed, 20 May 2026 18:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+Zlm7ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysgQuzAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4153F20FA;
-	Wed, 20 May 2026 17:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099EC369D7A;
+	Wed, 20 May 2026 18:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299063; cv=none; b=LT1QPPCYgJ0wGvCrDCXcgBhQrsyqmM1Og8zgWk2cGVR39IXJKNa9K4hgEAjJ65UWqi0L/SzWOJOBwkWK2Pfyx5j+96MjeQOKrlxBD5MOKL6VQaImWsVeuj1b1NMskX3FXqqVRLiu/XnW2dvA9pfjPoUyMj6yxTk2eRfVhBwqm+8=
+	t=1779302022; cv=none; b=L1RRpgLQdpSByCO8v00PrOSh2lcUIs+F62/syQty8REJlleSbCu5qoSa7isCpM3xdNuw1VKtn6MYdFa/cAZQwjnHRo6/16EBtNA8XNvYHdD+LKFeEpGhAqEb2JpAjh9FVyjUoPGC0E9tB7AczFNtE7ogtv2gPWgBfBijaIDGAHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299063; c=relaxed/simple;
-	bh=h3Osl3BhJ+l/U1EvODaO/14qVQHg0tuOKY8TZuuhNiA=;
+	s=arc-20240116; t=1779302022; c=relaxed/simple;
+	bh=eLwCcuhVx/K3C5hUFjRYDDYP1GI8B6qaxEaE3BFRa7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSfOgs85scgmlObjBwRYWcpQyi0W57aKbh03SxNVIFCrQwffrKIdAY7SWezqJuUoR4xr/wgZR1qsAnUqPjcpUpr6hRHfz6VVDKepZ4ht3273jeSifBajGXLyLyFlEB4NM/NdFtjEuSRYW6byLPs4RJFqcDeESWXMWR76LeiQdvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+Zlm7ph; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631331F000E9;
-	Wed, 20 May 2026 17:44:21 +0000 (UTC)
+	 MIME-Version; b=XfEuOPRiLatT/edZh6LfOB/wUBeQcaZ5s/WQNHI8QTdV0S54OjLJw7+ajNr9IfB5o4ev6VHrupe0au7rGPEJOaXMwpuL/buZ1ikx2kvr4iJvccw/z2moFcyq7ccRAJKX7agfMqq1p96jMOGyTqtTVG2r9l9elaovyUA7qj+q3OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysgQuzAe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FF31F000E9;
+	Wed, 20 May 2026 18:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299061;
-	bh=R+v1zywOEu99Zu+hO4/xf0n8t7buynTbNVJ8V6sSGbc=;
+	s=korg; t=1779302019;
+	bh=qMVAmlOibqfRsvM51s13j5XvEred1xHLM+s1ixZfgVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X+Zlm7phGIqA/o6T02Zdgm5AW87IaxG52wMT0IMwtkOGrnYJj592K0X6q+UWOmp9U
-	 cmaFodYeAYozQoN1rBKlKKZRMC7Qc2XqPyKxjp4R7RIqox2JAWuCxpPAZeSpi3MaAU
-	 0AdKpOBD8wIFD9o1QV/ol5tSvORBzgdmgm42AXc4=
+	b=ysgQuzAeSXHNGOWyUV+Zz20c3E1s9kCdVai/DAEwd5q6kd1YfZqcIgR8FimkjE6ZR
+	 m+p1ROB716U7XO7Lom+ZwR+JBYIvO6m4cj7MrJJG7289+lYnqL27XSdJIzh4/2ra0Y
+	 hYIuClKjMFfs8ziN4gSDJKypYuiZ0s6WkH+9R+T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan Fodor <zoltan.fodor@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guillaume Gonnet <ggonnet.linux@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 647/957] ice: update PCS latency settings for E825 10G/25Gb modes
+Subject: [PATCH 6.6 107/508] dm init: ensure device probing has finished in dm-mod.waitfor=
 Date: Wed, 20 May 2026 18:18:50 +0200
-Message-ID: <20260520162148.560056009@linuxfoundation.org>
+Message-ID: <20260520162100.940667378@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +64,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251855-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252953-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5E0AB595293
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2C566599A29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Guillaume Gonnet <ggonnet.linux@gmail.com>
 
-[ Upstream commit 05567e4052732d70c7ff9655217b3d14d25f639a ]
+[ Upstream commit 99a2312f69805f4ba92d98a757625e0300a747ab ]
 
-Update MAC Rx/Tx offset registers settings (PHY_MAC_[RX|TX]_OFFSET
-registers) with the data obtained with the latest research. It applies
-to PCS latency settings for the following speeds/modes:
-* 10Gb NO-FEC
-        - TX latency changed from 71.25 ns to 73 ns
-        - RX latency changed from -25.6 ns to -28 ns
-* 25Gb NO-FEC
-	- TX latency changed from 28.17 ns to 33 ns
-        - RX latency changed from -12.45 ns to -12 ns
-* 25Gb RS-FEC
-        - TX latency changed from 64.5 ns to 69 ns
-        - RX latency changed from -3.6 ns to -3 ns
+The early_lookup_bdev() function returns successfully when the disk
+device is present but not necessarily its partitions. In this situation,
+dm_early_create() fails as the partition block device does not exist
+yet.
 
-The original data came from simulation and pre-production hardware.
-The new data measures the actual delays and as such is more accurate.
+In my case, this phenomenon occurs quite often because the device is
+an SD card with slow reading times, on which kernel takes time to
+enumerate available partitions.
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Co-developed-by: Zoltan Fodor <zoltan.fodor@intel.com>
-Signed-off-by: Zoltan Fodor <zoltan.fodor@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-2-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fortunately, the underlying device is back to "probing" state while
+enumerating partitions. Waiting for all probing to end is enough to fix
+this issue.
+
+That's also the reason why this problem never occurs with rootwait=
+parameter: the while loop inside wait_for_root() explicitly waits for
+probing to be done and then the function calls async_synchronize_full().
+These lines were omitted in 035641b, even though the commit says it's
+based on the rootwait logic...
+
+Anyway, calling wait_for_device_probe() after our while loop does the
+job (it both waits for probing and calls async_synchronize_full).
+
+Fixes: 035641b01e72 ("dm init: add dm-mod.waitfor to wait for asynchronously probed block devices")
+Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/md/dm-init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-index 19dddd9b53ddd..4d298c27bfb27 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-@@ -78,14 +78,14 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
- 		.blktime = 0x666, /* 3.2 */
- 		.tx_offset = {
- 			.serdes = 0x234c, /* 17.6484848 */
--			.no_fec = 0x8e80, /* 71.25 */
-+			.no_fec = 0x93d9, /* 73 */
- 			.fc = 0xb4a4, /* 90.32 */
- 			.sfd = 0x4a4, /* 2.32 */
- 			.onestep = 0x4ccd /* 38.4 */
- 		},
- 		.rx_offset = {
- 			.serdes = 0xffffeb27, /* -10.42424 */
--			.no_fec = 0xffffcccd, /* -25.6 */
-+			.no_fec = 0xffffc7b6, /* -28 */
- 			.fc = 0xfffc557b, /* -469.26 */
- 			.sfd = 0x4a4, /* 2.32 */
- 			.bs_ds = 0x32 /* 0.0969697 */
-@@ -118,17 +118,17 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
- 		.mktime = 0x147b, /* 10.24, only if RS-FEC enabled */
- 		.tx_offset = {
- 			.serdes = 0xe1e, /* 7.0593939 */
--			.no_fec = 0x3857, /* 28.17 */
-+			.no_fec = 0x4266, /* 33 */
- 			.fc = 0x48c3, /* 36.38 */
--			.rs = 0x8100, /* 64.5 */
-+			.rs = 0x8a00, /* 69 */
- 			.sfd = 0x1dc, /* 0.93 */
- 			.onestep = 0x1eb8 /* 15.36 */
- 		},
- 		.rx_offset = {
- 			.serdes = 0xfffff7a9, /* -4.1697 */
--			.no_fec = 0xffffe71a, /* -12.45 */
-+			.no_fec = 0xffffe700, /* -12 */
- 			.fc = 0xfffe894d, /* -187.35 */
--			.rs = 0xfffff8cd, /* -3.6 */
-+			.rs = 0xfffff8cc, /* -3 */
- 			.sfd = 0x1dc, /* 0.93 */
- 			.bs_ds = 0x14 /* 0.0387879, RS-FEC 0 */
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index b37bbe7625003..423269cbdd2bb 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -303,8 +303,10 @@ static int __init dm_init_init(void)
  		}
+ 	}
+ 
+-	if (waitfor[0])
++	if (waitfor[0]) {
++		wait_for_device_probe();
+ 		DMINFO("all devices available");
++	}
+ 
+ 	list_for_each_entry(dev, &devices, list) {
+ 		if (dm_early_create(&dev->dmi, dev->table,
 -- 
 2.53.0
 
