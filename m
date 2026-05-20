@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBxpCwgVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:44 +0200
+	id ALneAxX1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41390599328
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABEE594D48
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0DF1932207FC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C45413131E4E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E43F9296;
-	Wed, 20 May 2026 18:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949203D7D67;
+	Wed, 20 May 2026 17:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIB+5Gyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBlzR0N2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AA52F363F;
-	Wed, 20 May 2026 18:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FEA37D101;
+	Wed, 20 May 2026 17:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300849; cv=none; b=Dog+YrZiQfxkF+/YZw4MEYuaZVvMTVSGHanV8pmzcVQ8Eb733epedsloc4ceQ4cUJcM8G3dwHx0+dgpw/RSSw+E/Gc+iUvKwlFdMFFQ1s2K4sVhdR0JoGItTDBPC4TVMd1NXAzdXIRgc+TOHU/T05J0s5rLz6j5TerMBun8Dx00=
+	t=1779296681; cv=none; b=G5WoewcfQlKjq06HpoPn4g8smNxtheCJr7eaIkwcgjwCoK4ZKeoTindMewtSr2CzqxqXWNjc87aIkDcG3eduWI8jA2zVcC4rXYqvLUxBJSVIT7M2BNO2Xae98rTRzZ93dK7RKQf3jYhBRc/IAbt10QW6IKlFmc7dYdX/meRXT6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300849; c=relaxed/simple;
-	bh=MlK+VbtkMGHHk9Md7q0q0yjecTY1YbWWwtFzaWhQiHU=;
+	s=arc-20240116; t=1779296681; c=relaxed/simple;
+	bh=Pa4Vo5omwQw93kEAXBrKnpQkBYU7XbsNY9r40ZSdwBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNkv6VtuJIQ8Ojj+3ztBLIETfu/udtDwLiN1CLpCIQyKkf1ivHqwxTyaVK1CRBxjiHxSTm30ZEKVv9XIBLqMb+40va2u4UYKcHYLW06sWMRQCX5LtLyaF1nSSrcrG/ybBiHlxENwuVSDBfJn7/tpPCH4eQ+ESqv/XOd0hR0YzCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIB+5Gyz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994AE1F00893;
-	Wed, 20 May 2026 18:14:07 +0000 (UTC)
+	 MIME-Version; b=stvQTVILv0eN9E0BmUygoUgtfwOW1EVceZ/+7Sx/mMoOOeSa6XKoi4NJJJOU/5Qs/SjFLEKWxI81TU0V3pSsmJKFuVzF9wnKBje5S9vb9ugFr/QkMb4MTKmclS1EffZl23ESw7MvPMU6vNRQBSXTgPUx2/WWYBepGk5P0ZORw0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBlzR0N2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF9F1F000E9;
+	Wed, 20 May 2026 17:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300848;
-	bh=6fJM+WokW1dgw5dIXVp5mqLajrU9GiQSwmdat0w0dkI=;
+	s=korg; t=1779296680;
+	bh=ZKZwMcIB2K3fbLhY5vmYsuXxGMtqBHjhzoyPsFgUL+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CIB+5Gyzs1Yw53G6mRqerDmFoSqLcYNaMPpPsQ2NkpCFyHW2XS2iBBLhoUgg0v0h0
-	 ygJyZGo1hqoOvEJzX6GscLM5761zYJuch5PvLppmhagp3mvyaOSSrJGMrBfNDtPO4R
-	 9x3S1q9Q+EFJGWRUo81m784bE2QHIJoQJ6k7ZhJY=
+	b=FBlzR0N2mk/xdqGLWaCgI2/JHf46nQkfqOdSmPrn3eBvMqlEesVrINiksBFUME9Aq
+	 UXthrfyDNKvv7VluSbd6530lkPBhvrKVWR+339MltR6sF3WlRwmhIbcavGhXT/1zJ+
+	 2hhfRJcvxtPotcEPAESsnWI2lDPom5gvglJinePk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/666] ima_fs: dont bother with removal of files in directory well be removing
+Subject: [PATCH 7.0 0891/1146] btrfs: dont clobber errors in add_remap_tree_entries()
 Date: Wed, 20 May 2026 18:19:01 +0200
-Message-ID: <20260520162118.381657216@linuxfoundation.org>
+Message-ID: <20260520162208.400896996@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,174 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252505-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250938-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.org.uk:email]
-X-Rspamd-Queue-Id: 41390599328
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,harmstone.com:email]
+X-Rspamd-Queue-Id: 0ABEE594D48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit 22260a99d791163f7697a240dfc48e4e5a91ecfe ]
+[ Upstream commit 44366af74061793ee5ceef455a4f0e465892d0de ]
 
-removal of parent takes all children out
+In add_remap_tree_entries(), we only process a certain number of entries
+at a time, meaning we may need to loop.
 
-Acked-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Stable-dep-of: d7bd8cf0b348 ("ima_fs: Correctly create securityfs files for unsupported hash algos")
+But because we weren't checking the return value of btrfs_insert_empty_items()
+within the loop, this meant that if the last iteration of the loop
+succeeded but a previous iteration failed, we were erroneously returning
+0.
+
+Fix this by breaking the loop early if btrfs_insert_empty_items() fails.
+
+Fixes: b56f35560b82 ("btrfs: handle setting up relocation of block group with remap-tree")
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_fs.c | 57 +++++++++++----------------------
- 1 file changed, 18 insertions(+), 39 deletions(-)
+ fs/btrfs/relocation.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
-index e4a79a9b2d588..88421e8895c44 100644
---- a/security/integrity/ima/ima_fs.c
-+++ b/security/integrity/ima/ima_fs.c
-@@ -396,11 +396,6 @@ static ssize_t ima_write_policy(struct file *file, const char __user *buf,
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index a6965abbab719..d8cd04fe9a4cd 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -3884,7 +3884,7 @@ static int add_remap_tree_entries(struct btrfs_trans_handle *trans, struct btrfs
+ 		ret = btrfs_insert_empty_items(trans, fs_info->remap_root, path, &batch);
+ 		btrfs_release_path(path);
  
- static struct dentry *ima_dir;
- static struct dentry *ima_symlink;
--static struct dentry *binary_runtime_measurements;
--static struct dentry *ascii_runtime_measurements;
--static struct dentry *runtime_measurements_count;
--static struct dentry *violations;
--static struct dentry *ima_policy;
+-		if (num_entries <= max_items)
++		if (ret || num_entries <= max_items)
+ 			break;
  
- enum ima_fs_flags {
- 	IMA_FS_BUSY,
-@@ -419,14 +414,7 @@ static const struct seq_operations ima_policy_seqops = {
- 
- static void __init remove_securityfs_measurement_lists(struct dentry **lists)
- {
--	int i;
--
--	if (lists) {
--		for (i = 0; i < securityfs_measurement_list_count; i++)
--			securityfs_remove(lists[i]);
--
--		kfree(lists);
--	}
-+	kfree(lists);
- }
- 
- static int __init create_securityfs_measurement_lists(void)
-@@ -533,8 +521,7 @@ static int ima_release_policy(struct inode *inode, struct file *file)
- 
- 	ima_update_policy();
- #if !defined(CONFIG_IMA_WRITE_POLICY) && !defined(CONFIG_IMA_READ_POLICY)
--	securityfs_remove(ima_policy);
--	ima_policy = NULL;
-+	securityfs_remove(file->f_path.dentry);
- #elif defined(CONFIG_IMA_WRITE_POLICY)
- 	clear_bit(IMA_FS_BUSY, &ima_fs_flags);
- #elif defined(CONFIG_IMA_READ_POLICY)
-@@ -553,6 +540,7 @@ static const struct file_operations ima_measure_policy_ops = {
- 
- int __init ima_fs_init(void)
- {
-+	struct dentry *dentry;
- 	int ret;
- 
- 	ascii_securityfs_measurement_lists = NULL;
-@@ -573,54 +561,45 @@ int __init ima_fs_init(void)
- 	if (ret != 0)
- 		goto out;
- 
--	binary_runtime_measurements =
--	    securityfs_create_symlink("binary_runtime_measurements", ima_dir,
-+	dentry = securityfs_create_symlink("binary_runtime_measurements", ima_dir,
- 				      "binary_runtime_measurements_sha1", NULL);
--	if (IS_ERR(binary_runtime_measurements)) {
--		ret = PTR_ERR(binary_runtime_measurements);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto out;
- 	}
- 
--	ascii_runtime_measurements =
--	    securityfs_create_symlink("ascii_runtime_measurements", ima_dir,
-+	dentry = securityfs_create_symlink("ascii_runtime_measurements", ima_dir,
- 				      "ascii_runtime_measurements_sha1", NULL);
--	if (IS_ERR(ascii_runtime_measurements)) {
--		ret = PTR_ERR(ascii_runtime_measurements);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto out;
- 	}
- 
--	runtime_measurements_count =
--	    securityfs_create_file("runtime_measurements_count",
-+	dentry = securityfs_create_file("runtime_measurements_count",
- 				   S_IRUSR | S_IRGRP, ima_dir, NULL,
- 				   &ima_measurements_count_ops);
--	if (IS_ERR(runtime_measurements_count)) {
--		ret = PTR_ERR(runtime_measurements_count);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto out;
- 	}
- 
--	violations =
--	    securityfs_create_file("violations", S_IRUSR | S_IRGRP,
-+	dentry = securityfs_create_file("violations", S_IRUSR | S_IRGRP,
- 				   ima_dir, NULL, &ima_htable_violations_ops);
--	if (IS_ERR(violations)) {
--		ret = PTR_ERR(violations);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto out;
- 	}
- 
--	ima_policy = securityfs_create_file("policy", POLICY_FILE_FLAGS,
-+	dentry = securityfs_create_file("policy", POLICY_FILE_FLAGS,
- 					    ima_dir, NULL,
- 					    &ima_measure_policy_ops);
--	if (IS_ERR(ima_policy)) {
--		ret = PTR_ERR(ima_policy);
-+	if (IS_ERR(dentry)) {
-+		ret = PTR_ERR(dentry);
- 		goto out;
- 	}
- 
- 	return 0;
- out:
--	securityfs_remove(ima_policy);
--	securityfs_remove(violations);
--	securityfs_remove(runtime_measurements_count);
--	securityfs_remove(ascii_runtime_measurements);
--	securityfs_remove(binary_runtime_measurements);
- 	remove_securityfs_measurement_lists(ascii_securityfs_measurement_lists);
- 	remove_securityfs_measurement_lists(binary_securityfs_measurement_lists);
- 	securityfs_measurement_list_count = 0;
+ 		num_entries -= max_items;
 -- 
 2.53.0
 
