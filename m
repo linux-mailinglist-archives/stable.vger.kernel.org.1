@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PmcApPsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:07 +0200
+	id EAodNxInDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56B95933D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437E759ADA2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D578308C9C7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBBBC3324908
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA02C3F39D1;
-	Wed, 20 May 2026 17:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6EB37DE8A;
+	Wed, 20 May 2026 18:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnH1xMvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW+yejku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF7D3EC2DB;
-	Wed, 20 May 2026 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B6D29B78D;
+	Wed, 20 May 2026 18:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296910; cv=none; b=nNw7JorQKc5eGIVkI8j+jmmO+pZfKkF2BWX3pV1Owr6fO3Hpkh0OEgSxSR/NAyOVfVfsf+j9ZTd3Jc5lQuFs6CQl3JJAmOXs6gnyQCRrwFIk3+vest8sVfkKKKbO/9huYQoLkq5u114OcFd/N0IcOr0oPBO0sgeV+yTmQvYsMSM=
+	t=1779301079; cv=none; b=istQDXt5IR/NvQEWzQD1gQlMGo3hjndKl4M0wirZiHYcabJD1dQ6YuDniilRLroLo55kzvpJmSo14xtjjX3YZH8Wd7AjT4mmsILN0+f01et1jqnAAD0IW9Y2pl8n6QEGvqwOjatlRdcwDRF3QyIf2+Vcj9F/pLyVG3+U1sQLipg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296910; c=relaxed/simple;
-	bh=INHp4XD99RSU5vufhIV66vXYt/EVVdi16/GpKFY07lY=;
+	s=arc-20240116; t=1779301079; c=relaxed/simple;
+	bh=l8AuJuOthgaPCRG+2cHQuLsuq5GKXJJXJJrQPO91s5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KXVL6jtzKrqsUpyw/xy3SIzEc1pVmnE9wT1UnruJtpSPdWpOm+NVLkhlzDLTF2oT+SoXbfhuqfTgSgj8cS2vNTnyryR3p+lskpxs/9Xyi6A7cx9Od0yXXZcHRrHIbMPaFVx7An7t9b2Y595+tjbRWcdmaOKYG+I+GV4LzZVmiO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnH1xMvy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE46B1F000E9;
-	Wed, 20 May 2026 17:08:28 +0000 (UTC)
+	 MIME-Version; b=aQOiXa5RydrP1nmkmS7RLfs4NbVUjPgMNsQ3YIDflV9tG4rY/qK9jjAyFdG/b3FRVhgMQri8RMqCvbQvZUr8K1pPcLdSEq3INOUhVAdfLb9ISL8Xd4rrwiXqnil3vhv72AqqFyq19S5WOAL0Vu6wbeNKmoE/nLHbHEYvAZfs/ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW+yejku; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0A01F000E9;
+	Wed, 20 May 2026 18:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296909;
-	bh=6VL6E518d9lplk0N2r8le5rQCQDchsbQSnHC6LqpoNo=;
+	s=korg; t=1779301077;
+	bh=GmlxSOOpep6cKv7nyU/gVKOWt9uzBvUM0G48rs5W/jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tnH1xMvy4LHBYADcftPAolAnH1sbRVwwO7UmDo1/gW6cD5Uy4K5hWLCNR6xvI+LWW
-	 SNPNdlZQdz08pD5AR8QqLMI8yeLH1AokJWsxYA9ByOaW5n9UejVgvRlgL5mgLB73+8
-	 coiFa5dkDfWB3VIzBwwzzBnfmlo9Olvtn+dHpmOs=
+	b=bW+yejkutx9Ji0szRDMUMK23liJjamKEIhPNQEBKW+eHsZVKwhhSyayiQ1BzSQVzM
+	 0vqmcfAfqZ6mQIOBtMHDJJmSVvfvnsmdIsjdrdS5MBmLRYiN8phpHgi2nNmdCmJ8FK
+	 BME4SP55b6lSTLgck+9Fx7seQaj23x1GBQUTi6EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <kees@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0978/1146] drm/amdgpu/jpeg: set no_user_fence for JPEG v5.0.1 ring
+Subject: [PATCH 6.12 417/666] clk: qoriq: avoid format string warning
 Date: Wed, 20 May 2026 18:20:28 +0200
-Message-ID: <20260520162210.365305890@linuxfoundation.org>
+Message-ID: <20260520162120.304367704@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251026-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252592-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B56B95933D5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,arndb.de:email]
+X-Rspamd-Queue-Id: 437E759ADA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2f8e3da71a1b469b6e157aa3972f1448b3157840 ]
+[ Upstream commit 096abbb6682ee031a0f5ce9f4c71ead9fa63d31e ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+clang-22 warns about the use of non-variadic format arguments passed into
+snprintf():
 
-Fixes: b8f57b69942b ("drm/amdgpu: Add JPEG5_0_1 support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 742a98e2e81702df8fe1b1eccee5223220a03dc2)
+drivers/clk/clk-qoriq.c:925:39: error: diagnostic behavior may be improved by adding the
+      'format(printf, 7, 8)' attribute to the declaration of 'create_mux_common' [-Werror,-Wmissing-format-attribute]
+  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+      | __attribute__((format(printf, 7, 8)))
+  911 |                                              struct mux_hwclock *hwc,
+  912 |                                              const struct clk_ops *ops,
+  913 |                                              unsigned long min_rate,
+  914 |                                              unsigned long max_rate,
+  915 |                                              unsigned long pct80_rate,
+  916 |                                              const char *fmt, int idx)
+  917 | {
+  918 |         struct clk_init_data init = {};
+  919 |         struct clk *clk;
+  920 |         const struct clockgen_pll_div *div;
+  921 |         const char *parent_names[NUM_MUX_PARENTS];
+  922 |         char name[32];
+  923 |         int i, j;
+  924 |
+  925 |         snprintf(name, sizeof(name), fmt, idx);
+      |                                              ^
+drivers/clk/clk-qoriq.c:910:28: note: 'create_mux_common' declared here
+  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+
+Rework this to pass the 'int idx' as a varargs argument, allowing the
+format string to be verified at the caller location.
+
+Fixes: 0dfc86b3173f ("clk: qoriq: Move chip-specific knowledge into driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk-qoriq.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-index edecbfe66c79a..250316704dfac 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-@@ -884,6 +884,7 @@ static const struct amd_ip_funcs jpeg_v5_0_1_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v5_0_1_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v5_0_1_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v5_0_1_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v5_0_1_dec_ring_set_wptr,
+diff --git a/drivers/clk/clk-qoriq.c b/drivers/clk/clk-qoriq.c
+index 4dcde305944c4..318acd176a2ef 100644
+--- a/drivers/clk/clk-qoriq.c
++++ b/drivers/clk/clk-qoriq.c
+@@ -906,13 +906,11 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
+ 	return &cg->pll[pll].div[div];
+ }
+ 
+-static struct clk * __init create_mux_common(struct clockgen *cg,
+-					     struct mux_hwclock *hwc,
+-					     const struct clk_ops *ops,
+-					     unsigned long min_rate,
+-					     unsigned long max_rate,
+-					     unsigned long pct80_rate,
+-					     const char *fmt, int idx)
++static struct clk * __init __printf(7, 8)
++create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
++		  const struct clk_ops *ops, unsigned long min_rate,
++		  unsigned long max_rate, unsigned long pct80_rate,
++		  const char *fmt, ...)
+ {
+ 	struct clk_init_data init = {};
+ 	struct clk *clk;
+@@ -920,8 +918,11 @@ static struct clk * __init create_mux_common(struct clockgen *cg,
+ 	const char *parent_names[NUM_MUX_PARENTS];
+ 	char name[32];
+ 	int i, j;
++	va_list args;
+ 
+-	snprintf(name, sizeof(name), fmt, idx);
++	va_start(args, fmt);
++	vsnprintf(name, sizeof(name), fmt, args);
++	va_end(args);
+ 
+ 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
+ 		unsigned long rate;
 -- 
 2.53.0
 
