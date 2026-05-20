@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG4fBcvyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:39 +0200
+	id oObvKZLlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49FE594667
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4362C5926E8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3683A305399E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 59E4F30AE9F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC37035C1A0;
-	Wed, 20 May 2026 17:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A61D36F40C;
+	Wed, 20 May 2026 16:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4rCFKL6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biZgWiaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B840B33D4E9;
-	Wed, 20 May 2026 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CF3369D64;
+	Wed, 20 May 2026 16:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297434; cv=none; b=srdEHorkT/QKMJj62bIS+1BRZbM/AuR3V0chaZU09+kGIkngxoiobRoQyEEeUCnmYejR7OeK0UGU7tmIV8JMF5iDoECslXYedbyv2b+vdnAEtSPTYQqZlw8fzJsBzHQQEGPRyLtFHWhSjJB07yNOBVaJYGKknDP2+FV7ifFZyVc=
+	t=1779294957; cv=none; b=JuqthXWZqNJngGkGHMxndQUaOz63kx7c9pE87flHUEmdBp/RN4DJQqIgskA4QCzgd2Rey2acqvuyaaI5nmtAbxTrDsQQjjWTy9FKoQqH26VhSUO+Z8IWLjsmSdJzKo5w6gNhKaTxtPbYnzTZP+/W3BzIKDXAFXhDvwaiCJeN2JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297434; c=relaxed/simple;
-	bh=9OwUhgg+3CUIgEiISb2XdPsq0KepqQ37VV2c+PSBENw=;
+	s=arc-20240116; t=1779294957; c=relaxed/simple;
+	bh=PwVev8MQ5Yj5SjItCSjbEnRHr1F5yp2t6biU87xDsmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=squFRhKnQ1RYlEtAo4dRb1h5oiEnTlozbqFaWeS5HwBhLQ9+0SS7ZFIlC4GOiGgwt0xnNETAXW0T46Z5KzxrEN+VTf448M2oWgH4Jp5O5c8cSmmjZctwMiCnfTigPC5zR20eWMtcQhEAsD0pmiW5KcoDxxll2Zx2c+S1SCX1B1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4rCFKL6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1331F000E9;
-	Wed, 20 May 2026 17:17:13 +0000 (UTC)
+	 MIME-Version; b=lTZG9/Sex1t9/p9xbFAm1d9CANus8e19Rqf3RvYqgEWddm/TN88BEOin6Hhej/k0lToG8fdTeOn11P3ITEaQwKTIjEPM6FAret5L7sIuV2SjPXazm5jddZoK8StGoZbNXomLxdRdnOapn4Ap040H95Zv/L6ELQHM/KnkuEbnEG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biZgWiaS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528091F000E9;
+	Wed, 20 May 2026 16:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297433;
-	bh=7IvGxWyNWsiu3tOBHIyhYDdCCX5hTcLeUOcnwF7xpJg=;
+	s=korg; t=1779294955;
+	bh=d3qbTJe3iXplJ2BLBDzzp2NNF9Uu5KXyL0BAfSW2Hfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s4rCFKL6xKSYuqBwVlJ9AaSPSqgO4nQKGqPdb+UbTNXUcAW+n73K+fTwKmrWkDszp
-	 dlSgeATnY0GA9e0Jj66HrnEL2cRQdVSYNMruAGUTStJPe0fWcLvD3pe8NOAYKWwkdE
-	 sbJ+TpaDtCHZ6xZo+7sfYt/6c9SL4XQ+0miur2g8=
+	b=biZgWiaSATufTdllOzFeoPFzzfZQ7SZ7HJUfnhzAOcj3z3uMIgrXtFqMGD6aqy21s
+	 9lBvBYKN7i4Bl/jjYCbA5FS/ep8xbU4lZqiPV5adcBhUtFX/BOGxzHO1k4rjweLUce
+	 GRhZ8Wk1KxRg5QLSUNelwpV6s1ZrwMs6AsWC1CJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyungjung Joo <jhj140711@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 003/957] fs/mbcache: cancel shrink work before destroying the cache
+Subject: [PATCH 7.0 0236/1146] drm/sun4i: mixer: Fix layer init code
 Date: Wed, 20 May 2026 18:08:06 +0200
-Message-ID: <20260520162134.633525500@linuxfoundation.org>
+Message-ID: <20260520162153.586929564@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251228-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250264-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E49FE594667
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4362C5926E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyungJung Joo <jhj140711@gmail.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit d227786ab1119669df4dc333a61510c52047cce4 ]
+[ Upstream commit 744629904c68bde847c31819f23482d09152f810 ]
 
-mb_cache_destroy() calls shrinker_free() and then frees all cache
-entries and the cache itself, but it does not cancel the pending
-c_shrink_work work item first.
+Code refactoring dropped extra NULL sentinel entry at the end of the drm
+planes array.
 
-If mb_cache_entry_create() schedules c_shrink_work via schedule_work()
-and the work item is still pending or running when mb_cache_destroy()
-runs, mb_cache_shrink_worker() will access the cache after its memory
-has been freed, causing a use-after-free.
+Add it back.
 
-This is only reachable by a privileged user (root or CAP_SYS_ADMIN)
-who can trigger the last put of a mounted ext2/ext4/ocfs2 filesystem.
-
-Cancel the work item with cancel_work_sync() before calling
-shrinker_free(), ensuring the worker has finished and will not be
-rescheduled before the cache is torn down.
-
-Fixes: c2f3140fe2ec ("mbcache2: limit cache size")
-Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
-Link: https://patch.msgid.link/20260317054556.1821600-1-jhj140711@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Chen-Yu Tsai <wens@kernel.org>
+Closes: https://lore.kernel.org/linux-sunxi/CAGb2v65wY2pF6sR+0JgnpLa4ysvjght5hAKDa1RUyo=zEKXreg@mail.gmail.com/
+Fixes: 4fa45b04a47d ("drm/sun4i: layer: move num of planes calc out of layer code")
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260218183454.7881-1-jernej.skrabec@gmail.com
+[wens@kernel.org: Fix "Fixes" commit hash]
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/mbcache.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/sun4i/sun8i_mixer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/mbcache.c b/fs/mbcache.c
-index e60a840999aa9..90b0564c62d0b 100644
---- a/fs/mbcache.c
-+++ b/fs/mbcache.c
-@@ -408,6 +408,7 @@ void mb_cache_destroy(struct mb_cache *cache)
- {
- 	struct mb_cache_entry *entry, *next;
+diff --git a/drivers/gpu/drm/sun4i/sun8i_mixer.c b/drivers/gpu/drm/sun4i/sun8i_mixer.c
+index ce9c155bfad7f..02acc7cbdb979 100644
+--- a/drivers/gpu/drm/sun4i/sun8i_mixer.c
++++ b/drivers/gpu/drm/sun4i/sun8i_mixer.c
+@@ -321,7 +321,7 @@ static struct drm_plane **sun8i_layers_init(struct drm_device *drm,
+ 	unsigned int phy_index;
+ 	int i;
  
-+	cancel_work_sync(&cache->c_shrink_work);
- 	shrinker_free(cache->c_shrink);
+-	planes = devm_kcalloc(drm->dev, plane_cnt, sizeof(*planes), GFP_KERNEL);
++	planes = devm_kcalloc(drm->dev, plane_cnt + 1, sizeof(*planes), GFP_KERNEL);
+ 	if (!planes)
+ 		return ERR_PTR(-ENOMEM);
  
- 	/*
 -- 
 2.53.0
 
