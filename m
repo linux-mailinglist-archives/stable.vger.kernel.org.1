@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOY3I533DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:13 +0200
+	id UNQjEtf8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CC959536C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F51596263
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D220E31A6081
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F3A0930FDBD1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855BA3A6EE0;
-	Wed, 20 May 2026 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970A33F8896;
+	Wed, 20 May 2026 18:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvBDsUy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXfkjXHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2511835F619;
-	Wed, 20 May 2026 17:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9729B78D;
+	Wed, 20 May 2026 18:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297100; cv=none; b=pO3gkIbMbnsLgh7bQsg0wytEDHjOLb4+AFvaj+LDFfSbxc+1THAwADvowXLe6VeGzIUwjV8ikglqM2BFXiIDesZ46PVA8dUl4jnRaKtssjeM6DfTZxbymLIilN+vNzc9mHkU4Zrjqh9ukYWuzVw5PlhWDp8qdb2l219AGhqKdA0=
+	t=1779301242; cv=none; b=uLLBM2U5tNnWUtsFPkd8jBh73F9GW+wOexBrs0f5Dr2nvJJG2LJllp85G5BBekNNCUj4mb9+ZOXt9/9Ks09iVhYFpLROxaipuZUO58pi6grM1tv+TcJCnhJTEKrvn60oz4crfZftecEAicI5o9vyryWJkDZrzjOGg5aEw4Dg2Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297100; c=relaxed/simple;
-	bh=27VzVqbrDIOSxFFexTo4J2S7DfSyAqNnPa2v7OUj8mw=;
+	s=arc-20240116; t=1779301242; c=relaxed/simple;
+	bh=Y8fsoxJeAAHUI5WPshNioffQXlFDgCme+MpcKC0Scfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFz1fcOQyv9yD+IIHkI/klnekY2W6YSR0Td9TW9hlUNf9LBx8LITsdW/ldGjm7GUYgFzkb2/gDJlI9axOWC2HCjxiN08jt5aiQyiM0m6ROs/wZU87JizOxrbz0w+dZxMOQXpJjm/8J1VdDp9fRGwIL2AhE/MeGIXP23T0TYeOMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvBDsUy8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81AF81F000E9;
-	Wed, 20 May 2026 17:11:38 +0000 (UTC)
+	 MIME-Version; b=qmG3bkuiGJoki9afmPiB8FzNwnOn3TAp8dcQxF3gQpE6FXK1tLtr5giFpgpFPl3g2DIwG1A6+ndA0Qv6uSlUxBPCvsXR05aREa7SwwpYjAdDZDY6tiO0XIqKWjmeW/0TvFiQlpVjyd5rp7s3IiA5a9CEE6E4zbz7JyaPg5TxUgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXfkjXHg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66551F000E9;
+	Wed, 20 May 2026 18:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297099;
-	bh=BXb/NPV6r3Ml67Z4FQtix86Ny5yjQD/c5FHh1Q0qvro=;
+	s=korg; t=1779301241;
+	bh=y07pQSOxGNYorDjZ5dQ6RL1QqNbPWOGGo/yMOTO/zYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zvBDsUy8pMm2gmLlCvGO+wXVJ9kXv45cdBxrdPw8far/YsHAJ8oPQNShc6mxm5KYh
-	 ws8mgh2AvrJa4Uqy++9aAmRPM1OiFKRjUCw/aahpT/sX8vej/ypVa49maotcd3eoQF
-	 a3+V5V/qcYbUuMGnyLqZNhpshJIqPbSwhcC8VG7w=
+	b=RXfkjXHgRLedcJb+aymyPAiRkfxHMmVzSdbxoBOLZXT0Z+HISuAWt7RrCZRHvx4F7
+	 9T/E4FE0s1hgfSqzT9b+x7iBiGQgpagdy4mZBsWQLGm6CFbPkNgnHIi7AkPaybVtCL
+	 Ik6T80xygPSZvGJ6O+Injv8o7u0QMlg/Iv808wtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0999/1146] ALSA: hda: cs35l56: Fix uninitialized value in cs35l56_hda_read_acpi()
+Subject: [PATCH 6.12 438/666] arm64: dts: imx8mp-data-modul-edm-sbc: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:20:49 +0200
-Message-ID: <20260520162210.844163439@linuxfoundation.org>
+Message-ID: <20260520162120.767006472@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,123 +68,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,opensource.cirrus.com,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251101-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-252654-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: B2CC959536C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E7F51596263
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 90df4957a3271adf391b3432cd76a40887cf3273 ]
+[ Upstream commit 8ff145577e93f312ff398cb950ee3bd44835f5be ]
 
-Eliminate the uninitialized 'nval' in cs35l56_hda_read_acpi() if a
-system-specific quirk overrides processing of the dev-index property.
-The value is now stored in a new 'num_amps' member of struct cs35l56_hda
-so that the quirk handler can set the value.
+PMIC_nINT is low level triggered, but the current PAD settings is
+PE=0,PUE=0,FSEL_1_FAST_SLEW_RATE=1,SION=1. So PAD needs to be configured
+as PULL UP with PULL Enable, no need SION. Correct it.
 
-The quirk for the Lenovo Yoga Book 9i GenX  replaces the values from the
-dev-index property with hardcoded indexes. So cs35l56_hda_read_acpi() would
-then skip reading the property. But this left the 'nval' local variable
-uninitialized when it is later passed to cirrus_scodec_get_speaker_id().
-
-Fixes: 40b1c2f9b299 ("ALSA: hda/cs35l56: Workaround bad dev-index on Lenovo Yoga Book 9i GenX")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/linux-sound/aenFesLAStjrVNy8@stanley.mountain/T/#u
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260428130531.169600-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 562d222f23f0f ("arm64: dts: imx8mp: Add support for Data Modul i.MX8M Plus eDM SBC")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/cs35l56_hda.c | 12 +++++++-----
- sound/hda/codecs/side-codecs/cs35l56_hda.h |  1 +
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.c b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-index dc25960a4f231..4c8d01799931c 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-@@ -976,6 +976,7 @@ static int cs35l56_hda_system_resume(struct device *dev)
- static int cs35l56_hda_fixup_yoga9(struct cs35l56_hda *cs35l56, int *bus_addr)
- {
- 	/* The cirrus,dev-index property has the wrong values */
-+	cs35l56->num_amps = 2;
- 	switch (*bus_addr) {
- 	case 0x30:
- 		cs35l56->index = 1;
-@@ -1025,7 +1026,6 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 	char hid_string[8];
- 	struct acpi_device *adev;
- 	const char *property, *sub;
--	size_t nval;
- 	int i, ret;
- 
- 	/*
-@@ -1061,13 +1061,14 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 			ret = -EINVAL;
- 			goto err;
- 		}
--		nval = ret;
-+		cs35l56->num_amps = ret;
- 
--		ret = device_property_read_u32_array(cs35l56->base.dev, property, values, nval);
-+		ret = device_property_read_u32_array(cs35l56->base.dev, property, values,
-+						     cs35l56->num_amps);
- 		if (ret)
- 			goto err;
- 
--		for (i = 0; i < nval; i++) {
-+		for (i = 0; i < cs35l56->num_amps; i++) {
- 			if (values[i] == id) {
- 				cs35l56->index = i;
- 				break;
-@@ -1090,7 +1091,8 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 			 "Read ACPI _SUB failed(%ld): fallback to generic firmware\n",
- 			 PTR_ERR(sub));
- 	} else {
--		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index, nval, -1);
-+		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index,
-+						   cs35l56->num_amps, -1);
- 		if (ret == -ENOENT) {
- 			cs35l56->system_name = sub;
- 		} else if (ret >= 0) {
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.h b/sound/hda/codecs/side-codecs/cs35l56_hda.h
-index cb4b5e7356a35..3705af7c186b3 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.h
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.h
-@@ -26,6 +26,7 @@ struct cs35l56_hda {
- 	struct work_struct dsp_work;
- 
- 	int index;
-+	int num_amps;
- 	const char *system_name;
- 	const char *amp_name;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+index 16078ff60ef08..fa13662ca3667 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+@@ -900,7 +900,7 @@ MX8MP_IOMUXC_SAI3_RXFS__AUDIOMIX_PDM_BIT_STREAM00	0x0
+ 	pinctrl_pmic: pmic-grp {
+ 		fsl,pins = <
+ 			/* PMIC_nINT */
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40000090
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
+ 		>;
+ 	};
  
 -- 
 2.53.0
