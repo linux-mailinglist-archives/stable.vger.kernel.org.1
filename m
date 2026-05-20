@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBwKK4/nDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:43 +0200
+	id uNp7BWMbDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:36:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25544592A9A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28548599D55
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 680E9305D5BA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B61BC315D45C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB02E37269C;
-	Wed, 20 May 2026 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF8D3D5642;
+	Wed, 20 May 2026 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuUzNe3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eL5d0/pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A26B352C52;
-	Wed, 20 May 2026 16:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BB7346E5E;
+	Wed, 20 May 2026 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295738; cv=none; b=PpJYE0Vop6dpWlgBVwNEJnIYLV1JYm1WTq7lhpl6w6GUdCljEr5A+r2nJwy58ZAGSp1Zf4mLXG71cPsPYhHm842u6JokWhptS4lvCwG+lrVfam7SatDG9Y1UgHEvnjthMje++t3G3Bpi6YvfqI6RZ664fm/ZLT9Rxf7USYe14Gk=
+	t=1779298155; cv=none; b=FSicJayv6Nn3D25pNDX7CcyW0SU5jA6GctY06t240R2Yeh5t7y1PofA6Ap+KskegbUz57zEX9AXSkSG/8BZws8scNR6qqL+jHNFO+Z0tH5BLKTuyeL3g2ub4S+79+0FtSgYScd/fWxBEzvY845cOa0FTXdilYHhp3vTt3wM5Qx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295738; c=relaxed/simple;
-	bh=xOMHaHGJsmq4zkziv4R6gq8Fdqs0LyUnO0U8qITtFR4=;
+	s=arc-20240116; t=1779298155; c=relaxed/simple;
+	bh=Y6j/u1ZTe86WsOoFOVBjZJBj0WRL6bfx9V0jmV5kAwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USSgeEG/KiorJUBdG86zypLcR2fe9UDHu+JJ5VkaseTlPf9qsRWBAJiAWDVFCP6A8zaCoNvc/1Eiq3qP0706TFxwzDPdai0HLBeOJiXPQfrqshoFXlXDRSRglSW8j15ByCald0/8zyjZRD0rao7lQIgWgKXqoMyVCm3H2hyHr54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuUzNe3w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C4F1F00893;
-	Wed, 20 May 2026 16:48:57 +0000 (UTC)
+	 MIME-Version; b=E8jU9DijbC/sgAl8KEMG8KNhM9XBUA+XuPcE18J69Uo64XVprOJRTO2nrcuMFQcpU8/RkqhQgjVOKLHMTWJ06uG7KH1c86dRhIPIi65fB35AGX0kuVDWEhWAnjxgymwymfItriLzkBgNBbGymA2SHmgLSBnWOtqHPOQoyCG+fa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eL5d0/pd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0CF1F000E9;
+	Wed, 20 May 2026 17:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295737;
-	bh=Pj8DUqnasxKPY3MR7vbUUkpgzH/f1OL7R2vvc8Ur1n8=;
+	s=korg; t=1779298154;
+	bh=68EkbYuGXE/6Alm0pszvdjcmAhEVFmdohEmVTqsMaYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TuUzNe3w7VL57CJaEBpyeWe1kT0edB2E0WYyrjKn1D/3SJ7eOCJlOuf+RMjKcTu8a
-	 8fNfWBrBC4mO+mngH6eo7+8APx1cJ7Gu/3rMxz5WqcMbz3xCIN4B+AQGTietmk372g
-	 MNyrDWpeJnTPFQCSPaW7dKugj0Fo6CFHVLGg2oXE=
+	b=eL5d0/pd4nagGpEYW4v2hMGdAPK+SP1z+oj6sAZd27GCFpjiOsoTiGlHL5FbKLHA8
+	 kloY01rDYptlu5qaWkbFikwfftDXvfuF50qVZKLaUMMe9n/IS+GIyUBGxTmQnRrSnm
+	 bUge04LiE6m3cPhVaQLcMqI22P9OikhAqIrTXOUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Moteen Shah <m-shah@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0534/1146] arm64: dts: ti: k3-am62-lp-sk: Enable internal pulls for MMC0 data pins
+Subject: [PATCH 6.18 301/957] crypto: qat - fix type mismatch in RAS sysfs show functions
 Date: Wed, 20 May 2026 18:13:04 +0200
-Message-ID: <20260520162200.265876091@linuxfoundation.org>
+Message-ID: <20260520162141.060328276@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +70,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250563-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251505-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:url,ti.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 25544592A9A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 28548599D55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit ee2a9d9c9e6c9643fb7e45febcaedfbc038e483a ]
+[ Upstream commit ec23d75c4b77ae42af0777ea59599b1d4f611371 ]
 
-AM62 LP SK board does not have external pullups on MMC0 DAT1-DAT7
-pins [0]. Enable internal pullups on DAT1-DAT7 considering:
-- without a host-side pullup, these lines rely solely on the eMMC
-  device's internal pullup (R_int, 10-150K per JEDEC), which may
-  exceed the recommended 50K max for 1.8V VCCQ
-- JEDEC JESD84-B51 Table 200 requires host-side pullups (R_DAT,
-  10K-100K) on all data lines to prevent bus floating
+ADF_RAS_ERR_CTR_READ() expands to atomic_read(), which returns int.
+The local variable 'counter' was declared as 'unsigned long', causing
+a type mismatch on the assignment. The format specifier '%ld' was
+consequently wrong in two ways: wrong length modifier and wrong
+signedness.
 
-[0] https://www.ti.com/lit/zip/SPRR471
+Use int to match the return type of atomic_read() and update the
+format specifier to '%d' accordingly.
 
-Fixes: a0b8da04153e ("arm64: dts: ti: k3-am62*: Move eMMC pinmux to top level board file")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Moteen Shah <m-shah@ti.com>
-Link: https://patch.msgid.link/20260223233731.2690472-4-jm@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Fixes: 532d7f6bc458 ("crypto: qat - add error counters")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ .../intel/qat/qat_common/adf_sysfs_ras_counters.c    | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-index 3e2d8f6695351..8a556fbbe08b7 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk.dts
-@@ -88,13 +88,13 @@ main_mmc0_pins_default: main-mmc0-default-pins {
- 			AM62X_IOPAD(0x220, PIN_INPUT, 0) /* (V3) MMC0_CMD */
- 			AM62X_IOPAD(0x218, PIN_INPUT, 0) /* (Y1) MMC0_CLK */
- 			AM62X_IOPAD(0x214, PIN_INPUT, 0) /* (V2) MMC0_DAT0 */
--			AM62X_IOPAD(0x210, PIN_INPUT, 0) /* (V1) MMC0_DAT1 */
--			AM62X_IOPAD(0x20c, PIN_INPUT, 0) /* (W2) MMC0_DAT2 */
--			AM62X_IOPAD(0x208, PIN_INPUT, 0) /* (W1) MMC0_DAT3 */
--			AM62X_IOPAD(0x204, PIN_INPUT, 0) /* (Y2) MMC0_DAT4 */
--			AM62X_IOPAD(0x200, PIN_INPUT, 0) /* (W3) MMC0_DAT5 */
--			AM62X_IOPAD(0x1fc, PIN_INPUT, 0) /* (W4) MMC0_DAT6 */
--			AM62X_IOPAD(0x1f8, PIN_INPUT, 0) /* (V4) MMC0_DAT7 */
-+			AM62X_IOPAD(0x210, PIN_INPUT_PULLUP, 0) /* (V1) MMC0_DAT1 */
-+			AM62X_IOPAD(0x20c, PIN_INPUT_PULLUP, 0) /* (W2) MMC0_DAT2 */
-+			AM62X_IOPAD(0x208, PIN_INPUT_PULLUP, 0) /* (W1) MMC0_DAT3 */
-+			AM62X_IOPAD(0x204, PIN_INPUT_PULLUP, 0) /* (Y2) MMC0_DAT4 */
-+			AM62X_IOPAD(0x200, PIN_INPUT_PULLUP, 0) /* (W3) MMC0_DAT5 */
-+			AM62X_IOPAD(0x1fc, PIN_INPUT_PULLUP, 0) /* (W4) MMC0_DAT6 */
-+			AM62X_IOPAD(0x1f8, PIN_INPUT_PULLUP, 0) /* (V4) MMC0_DAT7 */
- 		>;
- 	};
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_sysfs_ras_counters.c b/drivers/crypto/intel/qat/qat_common/adf_sysfs_ras_counters.c
+index e97c67c87b3cf..6abb57bfd3285 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_sysfs_ras_counters.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_sysfs_ras_counters.c
+@@ -13,14 +13,14 @@ static ssize_t errors_correctable_show(struct device *dev,
+ 				       char *buf)
+ {
+ 	struct adf_accel_dev *accel_dev;
+-	unsigned long counter;
++	int counter;
  
+ 	accel_dev = adf_devmgr_pci_to_accel_dev(to_pci_dev(dev));
+ 	if (!accel_dev)
+ 		return -EINVAL;
+ 
+ 	counter = ADF_RAS_ERR_CTR_READ(accel_dev->ras_errors, ADF_RAS_CORR);
+-	return scnprintf(buf, PAGE_SIZE, "%ld\n", counter);
++	return scnprintf(buf, PAGE_SIZE, "%d\n", counter);
+ }
+ 
+ static ssize_t errors_nonfatal_show(struct device *dev,
+@@ -28,14 +28,14 @@ static ssize_t errors_nonfatal_show(struct device *dev,
+ 				    char *buf)
+ {
+ 	struct adf_accel_dev *accel_dev;
+-	unsigned long counter;
++	int counter;
+ 
+ 	accel_dev = adf_devmgr_pci_to_accel_dev(to_pci_dev(dev));
+ 	if (!accel_dev)
+ 		return -EINVAL;
+ 
+ 	counter = ADF_RAS_ERR_CTR_READ(accel_dev->ras_errors, ADF_RAS_UNCORR);
+-	return scnprintf(buf, PAGE_SIZE, "%ld\n", counter);
++	return scnprintf(buf, PAGE_SIZE, "%d\n", counter);
+ }
+ 
+ static ssize_t errors_fatal_show(struct device *dev,
+@@ -43,14 +43,14 @@ static ssize_t errors_fatal_show(struct device *dev,
+ 				 char *buf)
+ {
+ 	struct adf_accel_dev *accel_dev;
+-	unsigned long counter;
++	int counter;
+ 
+ 	accel_dev = adf_devmgr_pci_to_accel_dev(to_pci_dev(dev));
+ 	if (!accel_dev)
+ 		return -EINVAL;
+ 
+ 	counter = ADF_RAS_ERR_CTR_READ(accel_dev->ras_errors, ADF_RAS_FATAL);
+-	return scnprintf(buf, PAGE_SIZE, "%ld\n", counter);
++	return scnprintf(buf, PAGE_SIZE, "%d\n", counter);
+ }
+ 
+ static ssize_t reset_error_counters_store(struct device *dev,
 -- 
 2.53.0
 
