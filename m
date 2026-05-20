@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qANdAe3tDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:53 +0200
+	id WNjcH4n6DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-251377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267365937B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27532595B42
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 929AE3148570
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D02632F0E26
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5415336B05E;
-	Wed, 20 May 2026 16:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0363F23C2;
+	Wed, 20 May 2026 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC1CcrDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDI+2mJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2093B372B31;
-	Wed, 20 May 2026 16:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192C3F0762;
+	Wed, 20 May 2026 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295302; cv=none; b=JKKOcWiS/T3EvCxIKloUftRviEjT+NJMMKbrah/iIDIkhj3X5EtOUzr+BKutUE4pQiRYjIn2rL0BtSPjP6GMpPCFigT7gtUibGVraGTT3VejsPV6asndoms2zPlGC8gTH8QZUKbR3Fm8YrL9sNt2L0YDdoCIi5ZqP3cAnn1DswY=
+	t=1779297821; cv=none; b=p4ifJ7grXxcDdSSKmV2bT9M965qqKUcrUUtqkeG2u1RkucvZ0WKwSbFwXD1aIjR/ktP7k+3jRg8DZ4eNj/4Qemo17Eh2KJ1mGyDLuPO4sKhVIYN6A014Hwl8yiWlrhqfC43OfBTHfwDAuM/aIb2Iv5FfwcyqIT5z7F6mz3A7RDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295302; c=relaxed/simple;
-	bh=YxEOQOa4RXeY+T+j6TnTqE9DcfazC/DXAleTkog/Zyc=;
+	s=arc-20240116; t=1779297821; c=relaxed/simple;
+	bh=elYrbd3YWPuACsCrycB3lSIM+W8JLVxhxpnyqJYMmhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJr9FGYYDNq4XOuj9/j9yUxRkUeaElVGunQViGr+vTMT5ynx02siUHBntVdC22JChK9RZGB0xnjwZWI1IarBlwFuLdQO5ZfJJmmasYN8TqsPL2OdUyvSYGZBTiJZptHv830FzIRayjFcTeMda1xpCcpr8ZMq1aOnONOCYfQg3E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DC1CcrDV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856CB1F000E9;
-	Wed, 20 May 2026 16:41:40 +0000 (UTC)
+	 MIME-Version; b=XkZX0nGtybU7US45/SpoEAfHM7BfzIIZmzGA5DqCMUjnkJVOKOR+mc6gF9SC30L9UxgqiyVFt/GYU9DWeOqsmMMab5i3/+NiWhkZXo2CXZg5nD5cV6+ks5KXmNDLLT0Jj0jztQfrChKEQaqtYUSA8TwVJC3Bf5eCglMJs8K7QKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDI+2mJ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B97E1F000E9;
+	Wed, 20 May 2026 17:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295301;
-	bh=SiFLcBE92zEM0RKj3TSDU/N/MulLnyBnRhY3R0Hbp+o=;
+	s=korg; t=1779297820;
+	bh=1I2MHsJsdDzL6Pwv3XfwI74a0TM7MMZm5VCCf7FgefQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DC1CcrDVyFQCI/SzTX6iwB3QYR+lv4mSh8k5fVqr2yCpzOgfBOYiILPiFanBu4Tyx
-	 5h3cQQBk2J6fIn8QtSmoUiPfDfXAg7HSuOB71BIFz8JN0NArw9qYIK5F1A31IU4HTt
-	 1gkFLlMPKRVceKBY8038xMFAym4XawXrJaw9lNNg=
+	b=oDI+2mJ+3tywATJ0yquaKSp1pDYEWqjktdcyGfyLfL3rOPHewismv9J0lk0nm7/a+
+	 85Qavhiq2FIs/yfHhTbjy/Vke2xVMCv1cs2Zk0xyiOuJlu/AD13FLgm6pgspySCVf9
+	 uQAPtNVaetjRphf8idFtnYK99WhkcHb/KH0v1duU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0367/1146] PM: domains: De-constify fields in struct dev_pm_domain_attach_data
-Date: Wed, 20 May 2026 18:10:17 +0200
-Message-ID: <20260520162156.506665171@linuxfoundation.org>
+Subject: [PATCH 6.18 135/957] macsec: Support VLAN-filtering lower devices
+Date: Wed, 20 May 2026 18:10:18 +0200
+Message-ID: <20260520162137.482801659@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +69,219 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251377-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250395-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 267365937B8
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 27532595B42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 1877d3f258cbb57d64e275754fb9b18b089ce72d ]
+[ Upstream commit a363b1c8be879c79a688eaf93ba01b63f8b0e63c ]
 
-It doesn't really make sense to keep u32 fields to be marked as const.
-Having the const fields prevents their modification in the driver. Instead
-the whole struct can be defined as const, if it is constant.
+VLAN-filtering is done through two netdev features
+(NETIF_F_HW_VLAN_CTAG_FILTER and NETIF_F_HW_VLAN_STAG_FILTER) and two
+netdev ops (ndo_vlan_rx_add_vid and ndo_vlan_rx_kill_vid).
 
-Fixes: 161e16a5e50a ("PM: domains: Add helper functions to attach/detach multiple PM domains")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Implement these and advertise the features if the lower device supports
+them. This allows proper VLAN filtering to work on top of MACsec
+devices, when the lower device is capable of VLAN filtering.
+As a concrete example, having this chain of interfaces now works:
+vlan_filtering_capable_dev(1) -> macsec_dev(2) -> macsec_vlan_dev(3)
+
+Before the mentioned commit this used to accidentally work because the
+MACsec device (and thus the lower device) was put in promiscuous mode
+and the VLAN filter was not used. But after commit [1] correctly made
+the macsec driver expose the IFF_UNICAST_FLT flag, promiscuous mode was
+no longer used and VLAN filters on dev 1 kicked in. Without support in
+dev 2 for propagating VLAN filters down, the register_vlan_dev ->
+vlan_vid_add -> __vlan_vid_add -> vlan_add_rx_filter_info call from dev
+3 is silently eaten (because vlan_hw_filter_capable returns false and
+vlan_add_rx_filter_info silently succeeds).
+
+For MACsec, VLAN filters are only relevant for offload, otherwise
+the VLANs are encrypted and the lower devices don't care about them. So
+VLAN filters are only passed on to lower devices in offload mode.
+Flipping between offload modes now needs to offload/unoffload the
+filters with vlan_{get,drop}_rx_*_filter_info().
+
+To avoid the back-and-forth filter updating during rollback, the setting
+of macsec->offload is moved after the add/del secy ops. This is safe
+since none of the code called from those requires macsec->offload.
+
+In case adding the filters fails, the added ones are rolled back and an
+error is returned to the operation toggling the offload state.
+
+Fixes: 0349659fd72f ("macsec: set IFF_UNICAST_FLT priv flag")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20260408115240.1636047-5-cratiu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm_domain.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/macsec.c | 71 +++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 63 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index 93ba0143ca476..38d1814ab8a5e 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -49,8 +49,8 @@
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 5200fd5a10e5c..5d820ef619469 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -2584,7 +2584,9 @@ static void macsec_inherit_tso_max(struct net_device *dev)
+ 		netif_inherit_tso_max(dev, macsec->real_dev);
+ }
  
- struct dev_pm_domain_attach_data {
- 	const char * const *pd_names;
--	const u32 num_pd_names;
--	const u32 pd_flags;
-+	u32 num_pd_names;
-+	u32 pd_flags;
- };
+-static int macsec_update_offload(struct net_device *dev, enum macsec_offload offload)
++static int macsec_update_offload(struct net_device *dev,
++				 enum macsec_offload offload,
++				 struct netlink_ext_ack *extack)
+ {
+ 	enum macsec_offload prev_offload;
+ 	const struct macsec_ops *ops;
+@@ -2616,14 +2618,35 @@ static int macsec_update_offload(struct net_device *dev, enum macsec_offload off
+ 	if (!ops)
+ 		return -EOPNOTSUPP;
  
- struct dev_pm_domain_list {
+-	macsec->offload = offload;
+-
+ 	ctx.secy = &macsec->secy;
+ 	ret = offload == MACSEC_OFFLOAD_OFF ? macsec_offload(ops->mdo_del_secy, &ctx)
+ 					    : macsec_offload(ops->mdo_add_secy, &ctx);
+-	if (ret) {
+-		macsec->offload = prev_offload;
++	if (ret)
+ 		return ret;
++
++	/* Remove VLAN filters when disabling offload. */
++	if (offload == MACSEC_OFFLOAD_OFF) {
++		vlan_drop_rx_ctag_filter_info(dev);
++		vlan_drop_rx_stag_filter_info(dev);
++	}
++	macsec->offload = offload;
++	/* Add VLAN filters when enabling offload. */
++	if (prev_offload == MACSEC_OFFLOAD_OFF) {
++		ret = vlan_get_rx_ctag_filter_info(dev);
++		if (ret) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "adding ctag VLAN filters failed, err %d",
++					   ret);
++			goto rollback_offload;
++		}
++		ret = vlan_get_rx_stag_filter_info(dev);
++		if (ret) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "adding stag VLAN filters failed, err %d",
++					   ret);
++			vlan_drop_rx_ctag_filter_info(dev);
++			goto rollback_offload;
++		}
+ 	}
+ 
+ 	macsec_set_head_tail_room(dev);
+@@ -2633,6 +2656,12 @@ static int macsec_update_offload(struct net_device *dev, enum macsec_offload off
+ 
+ 	netdev_update_features(dev);
+ 
++	return 0;
++
++rollback_offload:
++	macsec->offload = prev_offload;
++	macsec_offload(ops->mdo_del_secy, &ctx);
++
+ 	return ret;
+ }
+ 
+@@ -2673,7 +2702,7 @@ static int macsec_upd_offload(struct sk_buff *skb, struct genl_info *info)
+ 	offload = nla_get_u8(tb_offload[MACSEC_OFFLOAD_ATTR_TYPE]);
+ 
+ 	if (macsec->offload != offload)
+-		ret = macsec_update_offload(dev, offload);
++		ret = macsec_update_offload(dev, offload, info->extack);
+ out:
+ 	rtnl_unlock();
+ 	return ret;
+@@ -3486,7 +3515,8 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
+ }
+ 
+ #define MACSEC_FEATURES \
+-	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
++	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST | \
++	 NETIF_F_HW_VLAN_STAG_FILTER | NETIF_F_HW_VLAN_CTAG_FILTER)
+ 
+ #define MACSEC_OFFLOAD_FEATURES \
+ 	(MACSEC_FEATURES | NETIF_F_GSO_SOFTWARE | NETIF_F_SOFT_FEATURES | \
+@@ -3707,6 +3737,29 @@ static int macsec_set_mac_address(struct net_device *dev, void *p)
+ 	return err;
+ }
+ 
++static int macsec_vlan_rx_add_vid(struct net_device *dev,
++				  __be16 proto, u16 vid)
++{
++	struct macsec_dev *macsec = netdev_priv(dev);
++
++	if (!macsec_is_offloaded(macsec))
++		return 0;
++
++	return vlan_vid_add(macsec->real_dev, proto, vid);
++}
++
++static int macsec_vlan_rx_kill_vid(struct net_device *dev,
++				   __be16 proto, u16 vid)
++{
++	struct macsec_dev *macsec = netdev_priv(dev);
++
++	if (!macsec_is_offloaded(macsec))
++		return 0;
++
++	vlan_vid_del(macsec->real_dev, proto, vid);
++	return 0;
++}
++
+ static int macsec_change_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct macsec_dev *macsec = macsec_priv(dev);
+@@ -3748,6 +3801,8 @@ static const struct net_device_ops macsec_netdev_ops = {
+ 	.ndo_set_rx_mode	= macsec_dev_set_rx_mode,
+ 	.ndo_change_rx_flags	= macsec_dev_change_rx_flags,
+ 	.ndo_set_mac_address	= macsec_set_mac_address,
++	.ndo_vlan_rx_add_vid	= macsec_vlan_rx_add_vid,
++	.ndo_vlan_rx_kill_vid	= macsec_vlan_rx_kill_vid,
+ 	.ndo_start_xmit		= macsec_start_xmit,
+ 	.ndo_get_stats64	= macsec_get_stats64,
+ 	.ndo_get_iflink		= macsec_get_iflink,
+@@ -3912,7 +3967,7 @@ static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		offload = nla_get_u8(data[IFLA_MACSEC_OFFLOAD]);
+ 		if (macsec->offload != offload) {
+ 			macsec_offload_state_change = true;
+-			ret = macsec_update_offload(dev, offload);
++			ret = macsec_update_offload(dev, offload, extack);
+ 			if (ret)
+ 				goto cleanup;
+ 		}
 -- 
 2.53.0
 
