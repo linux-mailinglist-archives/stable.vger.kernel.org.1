@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHakBAn0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:57 +0200
+	id cLSPCnwYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776EA594A5A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDD45998A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56AB930F5E2F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F27131AFF66
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7173D7D66;
-	Wed, 20 May 2026 17:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EB93F39EE;
+	Wed, 20 May 2026 18:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+wIOKRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTrmE17H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24891376A0C;
-	Wed, 20 May 2026 17:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FC53563E1;
+	Wed, 20 May 2026 18:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298839; cv=none; b=kDhDhdTuXers+hlrVKgsMJP7w6/j0JZ2xLUq7Vju5SqyFnxWXwdlIP8Yk/jcnvMIzIXPAnipdr1atewRJaqFZ37hFJ4IT4bCIWVV0mVef/Rtdy4mtQcxGECVpOCQJtPbmsFHIwGEQprWviblgC5VtE9LbrYJdnNONRlqeT35bsA=
+	t=1779301796; cv=none; b=n6sI6O7kXlIbdNi++GdYKmYHdp/cTOQXharJYvDO1RTZRyrLPnzKLKnHqEmhecWyWQosmf8ROjWkT/ZpDaM0YC+NwrOsqTVlA7YybEqS1x72ZtRP8TKDnYJFazA4BXG1TnSAtAWyX5zngPXXeN22lyAX/qdXboH1UxJaWsApwzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298839; c=relaxed/simple;
-	bh=py8ytkshYJSb239qkuu0wEEwWUEvkvjaxixfL2vI0Mc=;
+	s=arc-20240116; t=1779301796; c=relaxed/simple;
+	bh=V3awu4NbF9Mbz0fNesogh4Q6zRqKLC1UacLtE/D/m4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTU/8S/ksw7PkhYRnfTuSc8wtj2ldOfUGmwi/zb7y5AXl/lkeuItZjTFp9n0oW1ArkIw2R4Zn5xNEbWndNMQOS1ZM3vXgn0V2JpxnuS4mAgjDAnJnuUz+K+75tZsXAR2wdP3rQX6aI/9D7uy89ufCM43mUf1evottKgRaHFCQgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+wIOKRW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE861F00893;
-	Wed, 20 May 2026 17:40:37 +0000 (UTC)
+	 MIME-Version; b=qhh0HtUuN0GuFYjXp66r72cWPqv5edaIaAdTxr3GtJmI6uOWr+P0hdJcDvgJ10ojkgxkv94zxlUh58D4F6bXyBH91WjFgNfyvipfWsmvzKPVjSmt8/5l0XWUWZM9fQ8m0n3SnSQELhCEMNZEwG5PmdGPEdoajN8+ovmvuxVncPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTrmE17H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9A81F000E9;
+	Wed, 20 May 2026 18:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298838;
-	bh=7EOYsbD1UiPzsoLQjVYbF7/eqEqBfzP5gV2d6DfQbag=;
+	s=korg; t=1779301795;
+	bh=VRA7HqknC73juWiN51bGo/oz1ME8CVm1GsmjulZCLlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y+wIOKRWh3II+VxZUER6sh6fVdFUFnkMerki8FTvo8rz1oWD08TEc9/ZPn+dvuiOV
-	 Ymm0387MetRNlsVJB3peFxfKlq3T9y/Dq6r5ClT8dEs0VRJ0l8bp4Q6DwtXYl5tJE7
-	 F4aARZRRwDrfdP0okWotZbSjQ7qX1hREQKwTsjm0=
+	b=NTrmE17HhmYGpObmHxbxxLzaNZXXT7qCN9hq5vkdKFpgBenezy6JtLcmH9Vppp1rm
+	 hgi6laklNBBraTereCJMoFYte3r70FnUSJq9z/mf4kcGdjyYbS7pPi+6qxvYdZAZfy
+	 Cm0VlrGP+voA0va3XC368eKSr2bbz+5SwoNHF9aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 562/957] clk: renesas: r9a09g057: Remove entries for WDT{0,2,3}
-Date: Wed, 20 May 2026 18:17:25 +0200
-Message-ID: <20260520162146.717992745@linuxfoundation.org>
+Subject: [PATCH 6.6 023/508] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
+Date: Wed, 20 May 2026 18:17:26 +0200
+Message-ID: <20260520162059.091900620@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +65,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251767-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252867-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,renesas.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email]
-X-Rspamd-Queue-Id: 776EA594A5A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 2BDD45998A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 1b4f047dc4010d51821694cc4ed73b52b3040a5c ]
+[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
 
-The HW user manual for the Renesas RZ/V2H(P) SoC specifies
-that only the WDT1 IP is supposed to be used by Linux,
-while the WDT{0,2,3} IPs are supposed to be used by the CM33
-and CR8 cores.
+In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
+mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
+the function currently returns -1 immediately without freeing the
+previously allocated skb_aggr, causing a memory leak.
 
-Remove the clock and reset entries for WDT{0,2,3} to prevent
-interfering with the CM33 and CR8 cores.
+Since skb_aggr has not yet been queued via skb_queue_tail(), no other
+references to this memory exist. Therefore, it has to be freed locally
+before returning the error.
 
-This change is harmless as only WDT1 is used by Linux, there
-are no users for the WDT{0,2,3} cores.
+Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
+returning the error status.
 
-Fixes: 3aeccbe08171 ("clk: renesas: r9a09g057: Add clock and reset entries for GTM/RIIC/SDHI/WDT")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260203124247.7320-4-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a09g057-cpg.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/renesas/r9a09g057-cpg.c b/drivers/clk/renesas/r9a09g057-cpg.c
-index 647e394727f6b..5d799dd9fbfc1 100644
---- a/drivers/clk/renesas/r9a09g057-cpg.c
-+++ b/drivers/clk/renesas/r9a09g057-cpg.c
-@@ -229,22 +229,10 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
- 						BUS_MSTOP(11, BIT(15))),
- 	DEF_MOD("gtm_7_pclk",			CLK_PLLCLN_DIV16, 4, 10, 2, 10,
- 						BUS_MSTOP(12, BIT(0))),
--	DEF_MOD("wdt_0_clkp",			CLK_PLLCM33_DIV16, 4, 11, 2, 11,
--						BUS_MSTOP(3, BIT(10))),
--	DEF_MOD("wdt_0_clk_loco",		CLK_QEXTAL, 4, 12, 2, 12,
--						BUS_MSTOP(3, BIT(10))),
- 	DEF_MOD("wdt_1_clkp",			CLK_PLLCLN_DIV16, 4, 13, 2, 13,
- 						BUS_MSTOP(1, BIT(0))),
- 	DEF_MOD("wdt_1_clk_loco",		CLK_QEXTAL, 4, 14, 2, 14,
- 						BUS_MSTOP(1, BIT(0))),
--	DEF_MOD("wdt_2_clkp",			CLK_PLLCLN_DIV16, 4, 15, 2, 15,
--						BUS_MSTOP(5, BIT(12))),
--	DEF_MOD("wdt_2_clk_loco",		CLK_QEXTAL, 5, 0, 2, 16,
--						BUS_MSTOP(5, BIT(12))),
--	DEF_MOD("wdt_3_clkp",			CLK_PLLCLN_DIV16, 5, 1, 2, 17,
--						BUS_MSTOP(5, BIT(13))),
--	DEF_MOD("wdt_3_clk_loco",		CLK_QEXTAL, 5, 2, 2, 18,
--						BUS_MSTOP(5, BIT(13))),
- 	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
- 						BUS_MSTOP(3, BIT(11) | BIT(12))),
- 	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
-@@ -505,10 +493,7 @@ static const struct rzv2h_reset r9a09g057_resets[] __initconst = {
- 	DEF_RST(7, 2, 3, 3),		/* GTM_5_PRESETZ */
- 	DEF_RST(7, 3, 3, 4),		/* GTM_6_PRESETZ */
- 	DEF_RST(7, 4, 3, 5),		/* GTM_7_PRESETZ */
--	DEF_RST(7, 5, 3, 6),		/* WDT_0_RESET */
- 	DEF_RST(7, 6, 3, 7),		/* WDT_1_RESET */
--	DEF_RST(7, 7, 3, 8),		/* WDT_2_RESET */
--	DEF_RST(7, 8, 3, 9),		/* WDT_3_RESET */
- 	DEF_RST(8, 1, 3, 18),		/* RSCI0_PRESETN */
- 	DEF_RST(8, 2, 3, 19),		/* RSCI0_TRESETN */
- 	DEF_RST(8, 3, 3, 20),		/* RSCI1_PRESETN */
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+index 34b4b34276d6d..042b1fe5f0d67 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+@@ -203,6 +203,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
+ 
+ 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
+ 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
++			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
+ 			return -1;
+ 		}
+ 
 -- 
 2.53.0
 
