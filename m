@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNyEJH0iDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252116-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:09 +0200
+	id MGTtFAEvDmpo7wUAu9opvQ
+	(envelope-from <stable+bounces-253212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7CD59A76B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D4959B94A
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6E6837D90DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F4EF397B9D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23813F39C9;
-	Wed, 20 May 2026 17:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25403FD15E;
+	Wed, 20 May 2026 18:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shBXNPvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/4NDRCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26D130675C;
-	Wed, 20 May 2026 17:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F5D3FD15C;
+	Wed, 20 May 2026 18:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299832; cv=none; b=mRskVB8gCq8egjXc9wniI1oBJPdotzDcu2IfF66+zxdKfTo/F56pvBUoFbU1mPQJyIqqiO5SF+425g6tQXDRSrZ54hJinINefzC5rEASF+oqyE9vIdl5Dj9tBfYle0Z7qTMQp3JmRbsz0nH8EVq3iQOPTTB6K1Yz0UpNjxF6Ov8=
+	t=1779302694; cv=none; b=QVJtoNIj38sjldwg59i8P7JxBaDPymNqq8AEw29wmUwOU4Kt0oXHcvgouAAy/kfwRFzfCTVrVVHuPcuoAKP5weYYyvDeB8MHi6pmNKYXxpZ1i5yUx7Ykp8V0G5PFdTED+/KityQSfVkgmsO3Iz9ZQRNhZNOBnhASQSyJ08Ks+1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299832; c=relaxed/simple;
-	bh=KuSUU0F7CuaRJ43thU6y6ou6ia/P8coa/VJtVBePVVI=;
+	s=arc-20240116; t=1779302694; c=relaxed/simple;
+	bh=3qB2aD0QKTcl2cnJGq6l2D3b4IoD3e8jxrq3DIlUmWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRLW5Sw6dzaHQeM6hWsQGx5NraUhMfnmfdJzzgNycysV7Y50gRl7wjgX3PlxJS0qYob4l6Mkgp0f+LyZ0jHmkSu1pfNNpDc5OCa6lico8mf1spFwGwNsA4vlxqpSwAmAn/9gxYDTc6NlzgICIT8D9m7QAltC+TWuvW0MN5l59Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shBXNPvf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81E31F000E9;
-	Wed, 20 May 2026 17:57:10 +0000 (UTC)
+	 MIME-Version; b=tZL7z+HdW5es3jxN0e5+RgndEe2u4dHuvMBfiszCnznSwagrrlHGipioUncMoLP+xlNHOBa+yZ/52naeQvjk/1z2224/Ft/vICJbD0njvoXR1LL61LaJoFckHHDVlzaGnAtYlZzxr//wY4fNTv2vgXbsyW60QmFLfzZV9kWvEOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/4NDRCF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE491F000E9;
+	Wed, 20 May 2026 18:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299831;
-	bh=MDb3Oa7JGAmW8yztL9sWuVGYUljKkugAzGnQtlHHcjo=;
+	s=korg; t=1779302693;
+	bh=70q0sn0o59vxUvMWvOItLCs3OrIgs+9J57feTurCkH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=shBXNPvfoGvTBI/YOsKVyRoEw0D6thrUtnPAQixr4zoDl9Oz64H4MOg7G0xbXqmfb
-	 r1u0Yvyds3QkGqGi7Zt+i5QPN6LpNdkrtg/lfpQytnlo3piL5ZJ8lwiAd4xY18iX1I
-	 m8/n/h2fay2LgWBQVe9Wz0OyNhrIvsRpj7D1txq8=
+	b=e/4NDRCFZi0mZ7PvbKXCT0ATIWsXtYb9mcNjth6t7Q/6g2kvZqHwi+3+mxBIu3J1A
+	 4c/uyeGTtGJ+80ZdlQM4WbCafwa88LsZVucIh2EdSzjnSuj1LzIrcNVsF/BoBQRg13
+	 qh43sjrL7pJnasSg2yFf18Js0Jyv4+kSYSc1V8lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Ye Bin <yebin10@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 903/957] smb/client: fix possible infinite loop and oob read in symlink_data()
-Date: Wed, 20 May 2026 18:23:06 +0200
-Message-ID: <20260520162154.158183498@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 364/508] mailbox: mailbox-test: make data_ready a per-instance variable
+Date: Wed, 20 May 2026 18:23:07 +0200
+Message-ID: <20260520162106.516723730@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252116-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253212-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: ED7CD59A76B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 04D4959B94A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 7d9a7f1f96cd617ee9e75bb22217c709038e26b8 upstream.
+[ Upstream commit 6e937f4e769e60947909e3525965f0137b9039e8 ]
 
-On 32-bit architectures, the infinite loop is as follows:
+While not the default case, multiple tests can be run simultaneously.
+Then, data_ready being a global variable will be overwritten and the
+per-instance lock will not help. Turn the global variable into a
+per-instance one to avoid this problem.
 
-  len = p->ErrorDataLength == 0xfffffff8
-  u8 *next = p->ErrorContextData + len
-  next == p
-
-On 32-bit architectures, the out-of-bounds read is as follows:
-
-  len = p->ErrorDataLength == 0xfffffff0
-  u8 *next = p->ErrorContextData + len
-  next == (u8 *)p - 8
-
-Reported-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Fixes: 76894f3e2f71 ("cifs: improve symlink handling for smb2+")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e339c80af95e ("mailbox: mailbox-test: don't rely on rx_buffer content to signal data ready")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mailbox/mailbox-test.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -49,6 +49,9 @@ static struct smb2_symlink_err_rsp *syml
- 				 __func__, le32_to_cpu(p->ErrorId));
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 2c98c300ba33b..f2ed7f884a575 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -28,8 +28,6 @@
+ #define MBOX_HEXDUMP_MAX_LEN	(MBOX_HEXDUMP_LINE_LEN *		\
+ 				 (MBOX_MAX_MSG_LEN / MBOX_BYTES_PER_LINE))
  
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
-+			if (len > end - ((u8 *)p + sizeof(*p)))
-+				return ERR_PTR(-EINVAL);
-+
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
- 		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+-static bool mbox_data_ready;
+-
+ struct mbox_test_device {
+ 	struct device		*dev;
+ 	void __iomem		*tx_mmio;
+@@ -42,6 +40,7 @@ struct mbox_test_device {
+ 	spinlock_t		lock;
+ 	struct mutex		mutex;
+ 	wait_queue_head_t	waitq;
++	bool			data_ready;
+ 	struct fasync_struct	*async_queue;
+ 	struct dentry		*root_debugfs_dir;
+ };
+@@ -162,7 +161,7 @@ static bool mbox_test_message_data_ready(struct mbox_test_device *tdev)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&tdev->lock, flags);
+-	data_ready = mbox_data_ready;
++	data_ready = tdev->data_ready;
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+ 	return data_ready;
+@@ -227,7 +226,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
+ 	*(touser + l) = '\0';
+ 
+ 	memset(tdev->rx_buffer, 0, MBOX_MAX_MSG_LEN);
+-	mbox_data_ready = false;
++	tdev->data_ready = false;
+ 
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+@@ -297,7 +296,7 @@ static void mbox_test_receive_message(struct mbox_client *client, void *message)
+ 				     message, MBOX_MAX_MSG_LEN);
+ 		memcpy(tdev->rx_buffer, message, MBOX_MAX_MSG_LEN);
+ 	}
+-	mbox_data_ready = true;
++	tdev->data_ready = true;
+ 	spin_unlock_irqrestore(&tdev->lock, flags);
+ 
+ 	wake_up_interruptible(&tdev->waitq);
+-- 
+2.53.0
+
 
 
 
