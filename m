@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-250083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGAXAGbjDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:58 +0200
+	id qMZRCL0MDmo35wUAu9opvQ
+	(envelope-from <stable+bounces-250082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:34:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B422759227B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88846598701
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F6DE30AF6DB
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9AF4329EE51
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A89F31F9BE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C3B36CDE9;
 	Wed, 20 May 2026 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uw8L91lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9Np7pO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1146633B97A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748543A3E79;
 	Wed, 20 May 2026 16:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294503; cv=none; b=WW2YHp/9lpZXfQ2NT8eT3KdCkMZ/KzDcqMFioXICocVI0EQoAOP9amGvQ6TrMWXZt6J70GNoXVboN8uXCiyaK9U7gTLBcYlh4xzKWX5q/VQniZZIXt5RY5VumIT66tjKCzn+cIBY+xN5teDgb1Qj90dBmQt6LHDySJnBu6PkCqU=
+	t=1779294502; cv=none; b=NLK9eAEh+DCoyi+5PNUuXJGjRQE3fM6rOjK/yhDC4uGgtqLyA2P9EC0076Na/iXwi+b+oFYlnNaOCz35wjDF/Wm6JE596KI4jxbccQugegMs/0BzeGP5WA8anPtjemw4LTUvhT0HNDRvgc4O3sud+rUMw1cixN7R8WPm2iiUMkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294503; c=relaxed/simple;
-	bh=5NvwIpqhPqq0CSlDH2O789GLeYGwKvCKzX/qPW2eZDI=;
+	s=arc-20240116; t=1779294502; c=relaxed/simple;
+	bh=i+bVDtFSsbxDnA3MmBnwTbm3mwg0d45MW6rnKZhUx1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eILW/Yfl0JtpNr3BuK8f9hnetbHJa7SP0NFVM6y+e4pFDCR5wsxp4aUCVldZzWUw6ykc49UPl5RChYTm+S11+lkhkLr9qU9DWCFPp9lL+fkUeYJTuOznRAfStEtYhkXxSeRTrM0clvlpBUxSyz5//iHbJbHWJo3KSwmjYOssaMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uw8L91lh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FE21F00893;
-	Wed, 20 May 2026 16:28:14 +0000 (UTC)
+	 MIME-Version; b=KDCtqDITUAA5kSbmP2Frc7+MyIGLCdBxenUztguvtmU4+3xFLn6jZCdmjRz6BCDgNR17xlnEDP67x6Zjaus2g+z/9rgFnXn2piQUYyQcv/FQoHhDXoOWA65jhjKOlV6zjgzjPyiW2cP1QzfwARWyNm66C83IYOuZMG8JW5meNps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9Np7pO5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761411F00894;
+	Wed, 20 May 2026 16:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294495;
-	bh=gDBAdVM5IuKNh0LAc25TjftXikvqC03btjjAKE6WDHA=;
+	s=korg; t=1779294498;
+	bh=yiDG/VDZw06dnWRYf2cQSQs0O1/65pUD1qBE3QWQQ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Uw8L91lhwNfrd94Cs1oVV5Y6bnQK81ZZ5TvcjAzr0RGkdMirJl6A47gWzMJsOfHt5
-	 TlUk21TH7RjFXrEt2G1gZMCTPEp+2cNQsmFDw95A6HJ69QQ0J8rKoMC06IQvuANEa3
-	 BZNEcTqKfCgSsW0jjoMQ/3UdLidaDPrsMzHJEEkk=
+	b=k9Np7pO5QZcvwzMGhxJB/A2LdQdqBeFUaOG3ksKcjgKlreIeey77OY/veyVxXDw4w
+	 6pj8WDIeSxGwJ9IyAGKcviL3LF51ZVAbt3FyNs+tCKduKVLJqo9V+BoMs9FCNClgid
+	 VOWCQjIOTwh62UzGM7xJGwk5pvbIz400a782v9dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0061/1146] sched/topology: Fix sched_domain_span()
-Date: Wed, 20 May 2026 18:05:11 +0200
-Message-ID: <20260520162149.749283551@linuxfoundation.org>
+Subject: [PATCH 7.0 0062/1146] irqchip/renesas-rzg2l: Fix error path in rzg2l_irqc_common_probe()
+Date: Wed, 20 May 2026 18:05:12 +0200
+Message-ID: <20260520162149.771080898@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250082-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250083-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,msgid.link:url,infradead.org:email,intel.com:email,gnu.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B422759227B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,renesas.com:email]
+X-Rspamd-Queue-Id: 88846598701
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,90 +100,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit e379dce8af11d8d6040b4348316a499bfd174bfb ]
+[ Upstream commit fb74e35f78105efd8635c89b39f4389f567edbdc ]
 
-Commit 8e8e23dea43e ("sched/topology: Compute sd_weight considering
-cpuset partitions") ends up relying on the fact that structure
-initialization should not touch the flexible array.
+Replace pm_runtime_put() with pm_runtime_put_sync() when
+irq_domain_create_hierarchy() fails to ensure the device suspends
+synchronously before devres cleanup disables runtime PM via
+pm_runtime_disable().
 
-However, the official GCC specification for "Arrays of Length Zero"
-[*] says:
+[ tglx: Fix up subject and change log to be precise ]
 
-  Although the size of a zero-length array is zero, an array member of
-  this kind may increase the size of the enclosing type as a result of
-  tail padding.
-
-Additionally, structure initialization will zero tail padding. With
-the end result that since offsetof(*type, member) < sizeof(*type),
-array initialization will clobber the flex array.
-
-Luckily, the way flexible array sizes are calculated is:
-
-  sizeof(*type) + count * sizeof(*type->member)
-
-This means we have the complete size of the flex array *outside* of
-sizeof(*type), so use that instead of relying on the broken flex array
-definition.
-
-[*] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-
-Fixes: 8e8e23dea43e ("sched/topology: Compute sd_weight considering cpuset partitions")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Debugged-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Chen Yu <yu.c.chen@intel.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260323093627.GY3738010@noisy.programming.kicks-ass.net
+Fixes: 7de11369ef30 ("irqchip/renesas-rzg2l: Use devm_pm_runtime_enable()")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260325192451.172562-4-biju.das.jz@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/topology.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 45c0022b91ced..6f8a4ae860da8 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -141,18 +141,30 @@ struct sched_domain {
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index e73d426cea6d3..eb01d4c5aca75 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -577,7 +577,7 @@ static int rzg2l_irqc_common_probe(struct platform_device *pdev, struct device_n
+ 	irq_domain = irq_domain_create_hierarchy(parent_domain, 0, IRQC_NUM_IRQ, dev_fwnode(dev),
+ 						 &rzg2l_irqc_domain_ops, rzg2l_irqc_data);
+ 	if (!irq_domain) {
+-		pm_runtime_put(dev);
++		pm_runtime_put_sync(dev);
+ 		return -ENOMEM;
+ 	}
  
- 	unsigned int span_weight;
- 	/*
--	 * Span of all CPUs in this domain.
-+	 * See sched_domain_span(), on why flex arrays are broken.
- 	 *
--	 * NOTE: this field is variable length. (Allocated dynamically
--	 * by attaching extra space to the end of the structure,
--	 * depending on how many CPUs the kernel has booted up with)
--	 */
- 	unsigned long span[];
-+	 */
- };
- 
- static inline struct cpumask *sched_domain_span(struct sched_domain *sd)
- {
--	return to_cpumask(sd->span);
-+	/*
-+	 * Turns out that C flexible arrays are fundamentally broken since it
-+	 * is allowed for offsetof(*sd, span) < sizeof(*sd), this means that
-+	 * structure initialzation *sd = { ... }; which writes every byte
-+	 * inside sizeof(*type), will over-write the start of the flexible
-+	 * array.
-+	 *
-+	 * Luckily, the way we allocate sched_domain is by:
-+	 *
-+	 *   sizeof(*sd) + cpumask_size()
-+	 *
-+	 * this means that we have sufficient space for the whole flex array
-+	 * *outside* of sizeof(*sd). So use that, and avoid using sd->span.
-+	 */
-+	unsigned long *bitmap = (void *)sd + sizeof(*sd);
-+	return to_cpumask(bitmap);
- }
- 
- extern void partition_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
 -- 
 2.53.0
 
