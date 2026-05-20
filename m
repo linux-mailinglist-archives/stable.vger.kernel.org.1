@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOX+BSj1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:44 +0200
+	id AEYFGX0EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987F8594DAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5C9597869
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1235A314DF14
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11D5830E9D16
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355C436A352;
-	Wed, 20 May 2026 16:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5CC3F7A85;
+	Wed, 20 May 2026 18:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiXyRPYV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLt+ep/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F091834216C;
-	Wed, 20 May 2026 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E1E3F789B;
+	Wed, 20 May 2026 18:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295964; cv=none; b=E7aRbQvvx6eCCJ8ZuKWXe8CuQnnGJp/RFy7VK39rVCp2q8LcgCd3YL9LuZCwmGzGodk20l5tALQSqS1JNCplXAghmx3zWBDcrrUPfAk9EGIUKZjU2kR5pfdKqmA803b511Rx5Rmd0CaeAldaqsBHoUnCgZpS4XVB4g8/hHba6cY=
+	t=1779300136; cv=none; b=oVnvZJaWzQLvvlYpN6dHdSY0+g5rxR5vI/mDy/KyUdtVUX55deyMF4wIWORvut9rhqJt8eV/KraMwCweRaQ51SxqDPsdYer78wKyao5B6jiETLNIpXQ1Jkl3j8S/rGCnrtA1sZbC49apKETh2fsvyRo+VARNnAWc/RGgoVwZWro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295964; c=relaxed/simple;
-	bh=sdn621/DKpaig8m/n+nzHoGJ8Rx8NaekHPA+mooyYII=;
+	s=arc-20240116; t=1779300136; c=relaxed/simple;
+	bh=LhesVR2EKtNly4oFEEZNNi9GANZDMUCTABdMx+HYcrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVTXHHaRD0iuM/9B+chKZTmJbaR5iPmtgnh4tskOqzrXPA4AaVzKVehaGwPKw8UYU+3eQOLP0GnvNtYz/WdMIYsSL4yHwCh6bPtK1Xu9qHKiKEnGLL9cvLJov1E+2bLK3ea6itXOdnIQ8U9oF8CinrW8fXm/YnuHhfBVKMsjGLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiXyRPYV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C931F000E9;
-	Wed, 20 May 2026 16:52:42 +0000 (UTC)
+	 MIME-Version; b=b43WpjD6XIrH9WWcG8E3uPq8GX+PBp4Jum8HBwnKQQ1lK3H+KnJkvxDdj5qDo2bsgdB5t8QBGAZauQgywCTkNkBYxSUMxcBJ4qr/8iTWFzYq5D6KxT3bV2ht9ZWBzIaHB6x9RfC20BwTLbgb5feA8u1cVMwHHRP/llT43BDKwV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLt+ep/m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AA21F000E9;
+	Wed, 20 May 2026 18:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295962;
-	bh=s3yhkyL5ESWBRFRB2F0ftY5i8dOqijlcBLNnPNTmIVY=;
+	s=korg; t=1779300134;
+	bh=BvUgZkG6TwCYQ97n+mWTHkuqUtAjAreJzeTuHwjoAyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EiXyRPYVvk0HjIbejAH2lKfGzzhhDPsRTMIXkXPEqmqyrJCRRPI1ZyosG9rO7wc2k
-	 0vVMnDjN5Us135yEqyWHibKe9AVS3x0YpvhtSpBpyrNnhhA+sQ1lVy4XyGLo139w3X
-	 39xYyTWVGuZRJjWcFqxc1FSvWcCrvFaxO+Go7keI=
+	b=VLt+ep/m4d9X1NC9Nd7F9q2fF+F52yfcOkz3ROZluWRuw4lbhNNKntlQqph5mNhlv
+	 TPa+m3c3jjiGsj0nrwpe9Go6xTFh86N9xWO81yp/Vwef2E+Zu6rIke4vyGIrjsb70K
+	 hearSKDVY3yBbAptRAv5RaThC9H9I9p6b2jmWAv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0620/1146] bpf: Validate node_id in arena_alloc_pages()
+Subject: [PATCH 6.12 059/666] r8152: fix incorrect register write to USB_UPHY_XTAL
 Date: Wed, 20 May 2026 18:14:30 +0200
-Message-ID: <20260520162202.217568853@linuxfoundation.org>
+Message-ID: <20260520162112.514178391@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250650-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252231-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,etsalapatis.com:email]
-X-Rspamd-Queue-Id: 987F8594DAF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,realtek.com:email]
+X-Rspamd-Queue-Id: 8B5C9597869
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-[ Upstream commit 2845989f2ebaf7848e4eccf9a779daf3156ea0a5 ]
+[ Upstream commit 48afd5124fd6129c46fd12cb06155384b1c4a0c4 ]
 
-arena_alloc_pages() accepts a plain int node_id and forwards it through
-the entire allocation chain without any bounds checking.
+The old code used ocp_write_byte() to clear the OOBS_POLLING bit
+(BIT(8)) in the USB_UPHY_XTAL register, but this doesn't correctly
+clear a bit in the upper byte of the 16-bit register.
 
-Validate node_id before passing it down the allocation chain in
-arena_alloc_pages().
+Fix this by using ocp_write_word() instead.
 
-Fixes: 317460317a02 ("bpf: Introduce bpf_arena.")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Link: https://lore.kernel.org/r/20260417152135.1383754-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+Link: https://patch.msgid.link/20260326073925.32976-454-nic_swsd@realtek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arena.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/r8152.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 9c68c9b0b24ad..523c3a61063bf 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -562,6 +562,10 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
- 	u32 uaddr32;
- 	int ret, i;
- 
-+	if (node_id != NUMA_NO_NODE &&
-+	    ((unsigned int)node_id >= nr_node_ids || !node_online(node_id)))
-+		return 0;
-+
- 	if (page_cnt > page_cnt_max)
- 		return 0;
- 
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 6ce25673e4cc8..1c36816405f13 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -3894,7 +3894,7 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 		case RTL_VER_15:
+ 			ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL);
+ 			ocp_data &= ~OOBS_POLLING;
+-			ocp_write_byte(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
++			ocp_write_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
+ 			break;
+ 		default:
+ 			break;
 -- 
 2.53.0
 
