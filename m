@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBOiBvrvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:38 +0200
+	id ULY/I7onDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775C6593DED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1563A59AEAD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A85C631C72A0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 181703643DE2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892F43F7ABB;
-	Wed, 20 May 2026 17:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC43D2D7386;
+	Wed, 20 May 2026 18:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1gYVA0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3mhxKBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E2F3A3833;
-	Wed, 20 May 2026 17:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95731372B31;
+	Wed, 20 May 2026 18:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297179; cv=none; b=mbgHbLd2h6eXimcElo4cfcTs4Ior5oKMzOMrjErkllzzmxAhEln/zxNCYrsiefgkdtl62qN0EX+9FZ4vPiwiz9J+z/YWIawpSnEi6QBR9LqDQGZTAyfEZPcuCD9yXlpSoefTd/GcI4uyqldhZXjxsRYdhk1+v8UrH/a8xTBXA/c=
+	t=1779301347; cv=none; b=fPrZycEaFqtqsaYKoJiivylYEnP5sLjPHBW1BL8uYIbo39+WC5InNKGV4W4EaGapVAdCPaMc1dIJgK+oXCQhVAcG2l0G5yR8ICFJKy/JnvaZt6XmEYfWW7n/3bbAeKXjORIJklS+/Qp+Gellg0zudRqAT2ojZMQ95C9ESI915ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297179; c=relaxed/simple;
-	bh=gZIKCQqQgzt7E4yE2sXnKVSYRt6KU0C+Rwki9vhGbhA=;
+	s=arc-20240116; t=1779301347; c=relaxed/simple;
+	bh=mEJH8QLCVF2Gn2xD3FTgsaHMX1qsB8veIuS0MWKZFYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TcLdERWxPQABT8wT+doU3lvqN4BTxqvvQDyjMGQXH/k7uouuJWwiIN8456sRCc/VsqbuaZf22//NA7OpHauSX/tAHWnuu48byfCTcGbd+2ailH8q/hSO95eifAnLwEpdFY9yxxkLiBpgvtgtHdVcswdQ9aK9LSd9UglMkNgiMjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1gYVA0c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96ADE1F00893;
-	Wed, 20 May 2026 17:12:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uRodQQ9eZFenF95wYUZMnGTceUulluowkIk9pIhFoKuwSu4OvjLPlj4XXmp8O5GQE0yf/LdK/7oocm2YjVLEGZZoV5T+L9/TeCCSnorQ3cbIDoQepaC39l+ojRmCB/qc6vgoWJ+MnJ+9iSQYD1xFLAZ2Vr4TNY/xK1+H1TI9jiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3mhxKBH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16A71F000E9;
+	Wed, 20 May 2026 18:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297178;
-	bh=kjdT9FCRu4N70/GBmBuRsBmCD5fYFEN4EZe8Y7zzFoM=;
+	s=korg; t=1779301346;
+	bh=OMxIy8zKKlwbni1dLSftLiWC4z3zRJ+qo127/+mpMfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1gYVA0cN5nLFf23BcsArm37Z6bLtANTPo6gy5gdp7a1rfkfjPDBmhQs2PvkHJpdE
-	 XMnunsQkGJfpwVspUM/PhdAvYGohaYZWHDWxzdosJTIwA6QOb+zhW07MrJ5F1uHZHV
-	 3Bi9EjEgNEDqmhaFkSxg4lh6R2Xk8rQdx5oNU08w=
+	b=O3mhxKBH7u1OBz2ywBdGynxDTgnx2RiZkcihZJN+NE9lxZOiR5DiNZcM9bernxSrR
+	 1pcT4006m8+HWgKvKKJKuOnpCus3j7PcJ7t2afF4Gdf2EcFSsyniZaI52XaLtOHtmz
+	 1iqBc78p2gdCdgjSJ4Fa/HtM/1iLJwh4VkUGA4tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Rong Zhang <i@rong.moe>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 7.0 1079/1146] platform/x86: lenovo-wmi-helpers: Move gamezone enums to wmi-helpers
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 518/666] drm/amdgpu/gmc: Fix AMDGPU_GART_PLACEMENT_LOW to not overlap with VRAM
 Date: Wed, 20 May 2026 18:22:09 +0200
-Message-ID: <20260520162212.657271239@linuxfoundation.org>
+Message-ID: <20260520162122.490528698@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,149 +70,84 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-251131-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252695-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[squebb.ca:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,rong.moe:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 775C6593DED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 1563A59AEAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek J. Clark <derekjohn.clark@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit 7e27896e16a1c450085c3fe020eeb1b223880f37 upstream.
+[ Upstream commit 36d65da7570bf72ce28504fa9a81abfc728e6d96 ]
 
-In a later patch in the series the thermal mode enum will be accessed
-across three separate drivers (wmi-capdata, wmi-gamezonem and wmi-other).
-An additional patch in the series will also add a function prototype that
-needs to reference this enum in wmi-helpers.h. To avoid having all these
-drivers begin to import each others headers, and to avoid declaring an
-opaque enum to hande the second case, move the thermal mode enum to
-helpers where it can be safely accessed by everything that needs it from
-a single import.
+When the GART placement is set to AMDGPU_GART_PLACEMENT_LOW:
+Make sure that GART does not overlap with VRAM when
+VRAM is configured to be in the low address space.
 
-While at it, since the gamezone_events_type enum is the only remaining
-item in the header, move that as well and remove the gamezone header
-entirely.
+Solve this according to the following logic:
+- When GART fits before VRAM, use zero address for GART
+- Otherwise, put GART after the end of VRAM, aligned to 4 GiB
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Rong Zhang <i@rong.moe>
-Tested-by: Rong Zhang <i@rong.moe>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-8-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Previously, I had assumed this was not possible
+so it was OK to not handle it, but now we got a report
+from a user who has a board that is configured this way.
+
+Fixes: 917f91d8d8e8 ("drm/amdgpu/gmc: add a way to force a particular placement for GART")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3d9de5d86a1658cadb311461b001eb1df67263ad)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo/wmi-events.c   |    2 +-
- drivers/platform/x86/lenovo/wmi-gamezone.c |    1 -
- drivers/platform/x86/lenovo/wmi-gamezone.h |   20 --------------------
- drivers/platform/x86/lenovo/wmi-helpers.h  |   13 +++++++++++++
- drivers/platform/x86/lenovo/wmi-other.c    |    1 -
- 5 files changed, 14 insertions(+), 23 deletions(-)
- delete mode 100644 drivers/platform/x86/lenovo/wmi-gamezone.h
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/lenovo/wmi-events.c
-+++ b/drivers/platform/x86/lenovo/wmi-events.c
-@@ -17,7 +17,7 @@
- #include <linux/wmi.h>
- 
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
-+#include "wmi-helpers.h"
- 
- #define THERMAL_MODE_EVENT_GUID "D320289E-8FEA-41E0-86F9-911D83151B5F"
- 
---- a/drivers/platform/x86/lenovo/wmi-gamezone.c
-+++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
-@@ -21,7 +21,6 @@
- #include <linux/wmi.h>
- 
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
- #include "wmi-helpers.h"
- #include "wmi-other.h"
- 
---- a/drivers/platform/x86/lenovo/wmi-gamezone.h
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--
--/* Copyright (C) 2025 Derek J. Clark <derekjohn.clark@gmail.com> */
--
--#ifndef _LENOVO_WMI_GAMEZONE_H_
--#define _LENOVO_WMI_GAMEZONE_H_
--
--enum gamezone_events_type {
--	LWMI_GZ_GET_THERMAL_MODE = 1,
--};
--
--enum thermal_mode {
--	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
--	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
--	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
--	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
--	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
--};
--
--#endif /* !_LENOVO_WMI_GAMEZONE_H_ */
---- a/drivers/platform/x86/lenovo/wmi-helpers.h
-+++ b/drivers/platform/x86/lenovo/wmi-helpers.h
-@@ -14,6 +14,19 @@ struct wmi_method_args_32 {
- 	u32 arg1;
- };
- 
-+enum lwmi_event_type {
-+	LWMI_GZ_GET_THERMAL_MODE = 0x01,
-+};
-+
-+enum thermal_mode {
-+	LWMI_GZ_THERMAL_MODE_NONE =	   0x00,
-+	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
-+	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
-+	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
-+	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
-+	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
-+};
-+
- int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
- 			  unsigned char *buf, size_t size, u32 *retval);
- 
---- a/drivers/platform/x86/lenovo/wmi-other.c
-+++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -47,7 +47,6 @@
- 
- #include "wmi-capdata.h"
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
- #include "wmi-helpers.h"
- #include "wmi-other.h"
- #include "../firmware_attributes_class.h"
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 564c68c9277b3..cf41ef9e3ad83 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -297,7 +297,10 @@ void amdgpu_gmc_gart_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,
+ 		mc->gart_start = max_mc_address - mc->gart_size + 1;
+ 		break;
+ 	case AMDGPU_GART_PLACEMENT_LOW:
+-		mc->gart_start = 0;
++		if (size_bf >= mc->gart_size)
++			mc->gart_start = 0;
++		else
++			mc->gart_start = ALIGN(mc->fb_end, four_gb);
+ 		break;
+ 	case AMDGPU_GART_PLACEMENT_BEST_FIT:
+ 	default:
+-- 
+2.53.0
+
 
 
 
