@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNU2NdwTDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:44 +0200
+	id ILV0ELEFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49210599185
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A207597AB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD934357ED35
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0A6B31C8E43
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598DA3A3833;
-	Wed, 20 May 2026 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392A63FB07B;
+	Wed, 20 May 2026 18:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VawPBAso"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ6QE8d1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D763337D101;
-	Wed, 20 May 2026 16:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AE93A6B6D;
+	Wed, 20 May 2026 18:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296212; cv=none; b=CJjtKC3PHRpAQwAFMKuL7BXrAWFu2ybiMFbwVpTzGOv5scIPahaBL6jfcOzcRa2efVUe3WJYp/zuESgjRsbj3973eqT0YRG6gZmiomiW745boPaMBPa13H5VQyvdR4Cc1Ybbn0AfaC7Sy4MS3//OWdZo2FPGVwAgnj0bkQc/rgs=
+	t=1779300384; cv=none; b=tgRHTsCXklrS/jHguJbiuz2FHa/MYCUyh9/hb6iR0nRrXfgLz2T4ivaskh1ljR/JchfufePm8ts1Qmdrq8R9Rb8WXb47JNbvLQYh8p2Jzh4JuamRuwiPv/SbrlXJ8rjlciePQfuC6Vf5qQmBzZpcJDHFgrQVY5W3xCZIJsahH5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296212; c=relaxed/simple;
-	bh=3H0fiKbj9vONXRvP+r9CUo1Q20nivkqkbGLasd7Z6hs=;
+	s=arc-20240116; t=1779300384; c=relaxed/simple;
+	bh=goh9VmUUjftiy42HmTNSvsyeyv8opUs9HfuhU6N0g7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ap/Ukhoc5U08n1u1dUD7aUx/iE71qCAYjU7pmdqhGOxdtMkZuVXWnEhTZivOvjYGlid29yfkNyLSg1+EG7Vn96q3SxDP0fjP9KpN1BN5C8IH/jVPMdt0o3/shMBRTaXZidFSXSwYTKcOfU4XeppeERpf8g/t+oZOnkEN9AWK2vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VawPBAso; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116211F00893;
-	Wed, 20 May 2026 16:56:49 +0000 (UTC)
+	 MIME-Version; b=HyD8uSgq3Td7zkAUqyNY/1516mCTD8RWBM0Xo5lWzSA20+HnfoWnBr0Yg56L7eUl4JrTaRnzLsK6zqAMuHLmqb9nceBp3dqawpXxe8knhpmn2CsV/li0fsEPy9dSxmCxxbKVpbnA3JhfdHPmIzz2s7CUe8RmSdC5rO/1d/LBHpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJ6QE8d1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468F91F000E9;
+	Wed, 20 May 2026 18:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296210;
-	bh=mY/4iBIGhL558igHASboCTeh0I5apaOldj2h6pM+sZE=;
+	s=korg; t=1779300382;
+	bh=MTf0AwSvPNRsoyNFFvrQ8F9qz1KZpOOe9jOLNIkZMdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VawPBAsorevLaUCTRa9XK+OZuETk9VqItMyFPN31hRj1n1M+SVkbKP/XT+IMfyE7T
-	 1l1WQdh5pkeHM3vaGt8O53BdRlJBbKvWIhS51QYbtuM1nFgiBwu5TbzcMf7IYShLsR
-	 BPN9PjN5Gqv7sbiG5MSTgfP2G2IbtSnQb7QtBWhQ=
+	b=DJ6QE8d1+/eO4x9xbke4HP0h7EtJvMLvIpptloHkVD+/BknFih3/B1WN1YI5al3SO
+	 87ae6245Y+tiyRIPpIHDWLuFtOlABM31Nl9FChS+vbio1kG+cv/myiKF8nDy0BTyt5
+	 Cs8irNrCED1/98gd8ijMuU/AmUUak6M6txGgeezI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0713/1146] scsi: ufs: rockchip,rk3576-ufshc: dt-bindings: Add new mphy reset item
-Date: Wed, 20 May 2026 18:16:03 +0200
-Message-ID: <20260520162204.324244037@linuxfoundation.org>
+Subject: [PATCH 6.12 153/666] crypto: tegra - finalize crypto req on error
+Date: Wed, 20 May 2026 18:16:04 +0200
+Message-ID: <20260520162114.525086490@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +66,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250747-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252326-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 49210599185
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 2A207597AB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit bdce3a69c578090dd5e3c77bcdaaca10c3a41e34 ]
+[ Upstream commit 1e245948ca0c252f561792fabb45de5518301d97 ]
 
-Add the mphy reset property to the devicetree bindings for the Rockchip
-RK3576 UFS host controller. The mphy reset signal is used to reset the
-physical adapter. Resetting other components while leaving the mphy unreset
-may occasionally prevent the UFS controller from successfully linking up
-with the device.
+Call the crypto finalize function before exiting *do_one_req() functions.
+This allows the driver to take up further requests even if the previous
+one fails.
 
-This addresses an intermittent hardware bug where the UFS link fails to
-establish under specific timing conditions with certain chips. While
-difficult to reproduce initially, this issue was consistently observed in
-downstream testing and requires explicit mphy reset control for full
-stability.
-
-Although this change increases the maxItems for resets and adds a new entry
-(which technically alters the binding ABI), it does not break compatibility
-for existing Linux systems. The driver uses
-devm_reset_control_array_get_exclusive() to manage resets, allowing it to
-function correctly with both older Device Trees (without the mphy entry)
-and newer ones.
-
-Fixes: d90e92023771 ("scsi: ufs: dt-bindings: Document Rockchip UFS host controller")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/1773368467-109650-1-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 2aeec9af775f ("crypto: tegra - Disable softirqs before finalizing request")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/ufs/rockchip,rk3576-ufshc.yaml     | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c | 28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/ufs/rockchip,rk3576-ufshc.yaml b/Documentation/devicetree/bindings/ufs/rockchip,rk3576-ufshc.yaml
-index c7d17cf4dc42b..e738153a309c8 100644
---- a/Documentation/devicetree/bindings/ufs/rockchip,rk3576-ufshc.yaml
-+++ b/Documentation/devicetree/bindings/ufs/rockchip,rk3576-ufshc.yaml
-@@ -41,7 +41,7 @@ properties:
-     maxItems: 1
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index 073431a110bdf..2af5d86856bb1 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -275,8 +275,10 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 	rctx->datbuf.size = rctx->len;
+ 	rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->datbuf.size,
+ 					      &rctx->datbuf.addr, GFP_KERNEL);
+-	if (!rctx->datbuf.buf)
+-		return -ENOMEM;
++	if (!rctx->datbuf.buf) {
++		ret = -ENOMEM;
++		goto out_finalize;
++	}
  
-   resets:
--    maxItems: 4
-+    maxItems: 5
+ 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->src, 0, req->cryptlen, 0);
  
-   reset-names:
-     items:
-@@ -49,6 +49,7 @@ properties:
-       - const: sys
-       - const: ufs
-       - const: grf
-+      - const: mphy
+@@ -292,6 +294,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
+ 			  rctx->datbuf.buf, rctx->datbuf.addr);
  
-   reset-gpios:
-     maxItems: 1
-@@ -98,8 +99,8 @@ examples:
-             interrupts = <GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH>;
-             power-domains = <&power RK3576_PD_USB>;
-             resets = <&cru SRST_A_UFS_BIU>, <&cru SRST_A_UFS_SYS>, <&cru SRST_A_UFS>,
--                     <&cru SRST_P_UFS_GRF>;
--            reset-names = "biu", "sys", "ufs", "grf";
-+                     <&cru SRST_P_UFS_GRF>, <&cru SRST_MPHY_INIT>;
-+            reset-names = "biu", "sys", "ufs", "grf", "mphy";
-             reset-gpios = <&gpio4 RK_PD0 GPIO_ACTIVE_LOW>;
-         };
-     };
++out_finalize:
+ 	crypto_finalize_skcipher_request(se->engine, req, ret);
+ 
+ 	return 0;
+@@ -1153,21 +1156,21 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
+ 
+ 	ret = tegra_ccm_crypt_init(req, se, rctx);
+ 	if (ret)
+-		return ret;
++		goto out_finalize;
+ 
+ 	/* Allocate buffers required */
+ 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
+ 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
+ 					     &rctx->inbuf.addr, GFP_KERNEL);
+ 	if (!rctx->inbuf.buf)
+-		return -ENOMEM;
++		goto out_finalize;
+ 
+ 	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
+ 	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
+ 					      &rctx->outbuf.addr, GFP_KERNEL);
+ 	if (!rctx->outbuf.buf) {
+ 		ret = -ENOMEM;
+-		goto outbuf_err;
++		goto out_free_inbuf;
+ 	}
+ 
+ 	if (rctx->encrypt) {
+@@ -1196,10 +1199,11 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
+ 			  rctx->outbuf.buf, rctx->outbuf.addr);
+ 
+-outbuf_err:
++out_free_inbuf:
+ 	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
+ 			  rctx->inbuf.buf, rctx->inbuf.addr);
+ 
++out_finalize:
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
+ 
+ 	return 0;
+@@ -1230,15 +1234,17 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
+ 	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
+ 					     &rctx->inbuf.addr, GFP_KERNEL);
+-	if (!rctx->inbuf.buf)
+-		return -ENOMEM;
++	if (!rctx->inbuf.buf) {
++		ret = -ENOMEM;
++		goto out_finalize;
++	}
+ 
+ 	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
+ 	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
+ 					      &rctx->outbuf.addr, GFP_KERNEL);
+ 	if (!rctx->outbuf.buf) {
+ 		ret = -ENOMEM;
+-		goto outbuf_err;
++		goto out_free_inbuf;
+ 	}
+ 
+ 	/* If there is associated data perform GMAC operation */
+@@ -1267,11 +1273,11 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
+ 	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
+ 			  rctx->outbuf.buf, rctx->outbuf.addr);
+ 
+-outbuf_err:
++out_free_inbuf:
+ 	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
+ 			  rctx->inbuf.buf, rctx->inbuf.addr);
+ 
+-	/* Finalize the request if there are no errors */
++out_finalize:
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
+ 
+ 	return 0;
 -- 
 2.53.0
 
