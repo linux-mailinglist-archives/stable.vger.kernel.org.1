@@ -1,213 +1,252 @@
-Return-Path: <stable+bounces-249792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCnDEq2EDWonygUAu9opvQ
-	(envelope-from <stable+bounces-249792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:53:49 +0200
+	id aLGEGy6EDWoTygUAu9opvQ
+	(envelope-from <stable+bounces-249793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:51:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BA958B256
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:53:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E0458B1D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF8F1306A891
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:42:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB6B53030EA9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA52B3B3890;
-	Wed, 20 May 2026 09:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11C53D2FFC;
+	Wed, 20 May 2026 09:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AUrMyMOx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a5pZCmDG"
 X-Original-To: stable@vger.kernel.org
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011025.outbound.protection.outlook.com [52.101.70.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50893CFF7E;
-	Wed, 20 May 2026 09:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B4A3D16F9
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 09:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779270087; cv=fail; b=ROZ7tBr5srpgfznmTK4l3ZHb7dNKR+ED48cIyWO63AO5dCWJZa3pTaK1sr7Otpmfv3xdMhOvC5Au+1A088HjO9Ldp7UnSjfEht+6xin1Ge8LSCMqla/Kzli236Y8KOkFxGdJjiMwcycx76lv0MYePi2p2RSGI9HL1cOMQ89OEDc=
+	t=1779270676; cv=pass; b=NY9CbhCJgAzDJMwOe+OExBKKF1Mv5s/ddiKkJv1yX1LTUrkhraC2Jw7ZNmBF/ftZ2j4E6y2n9ufT3Q2ZY58LZL6JrbfgleUxE4pAcFNWYHYXHfddnnh81kVhRyboKNz3Amu3tCi6yMK0/LxazT6RzmNiIuYXJcf6mShCUSfojXE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779270087; c=relaxed/simple;
-	bh=eUszgNfvg+TV0q1yMHsg+qXwob9SUFi5ua1XlMQzqn4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ndChGFHzyohQbc9/KovG04IfS8t5t8jHknuBALDRc3UO8Mm9DwtLgUysu/1Hjs4C7lfc3U0ootAbJjL+fd3sNv8I7oq9dEvzihdTjCKwwcyzEAarVECTtA6+b/HcqMUaInScxmqMi00/9r5Yfme5WjuRbdN5b0ISrtNcaP+8iwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AUrMyMOx; arc=fail smtp.client-ip=52.101.70.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ymg7Z9y1WZklL+VTMlga4gnHsUTu4/W6mzV3kotd2Tg14Qb00tSpEUZ79fCytXm12r4nITgoiyuVAQJBClkfsP4mPTYN+gZAv0gDQFPGeYa/HN7a/utYXu5QAeHyNUjRimTZY/eJIWEmVGuWSN5JYowpjEoMU15M0yaC9V1a2fhDfI985lOnSZOA1rrV9taKCn735Rpy9XtpRxOpaB+adKaBumDdd7GPYVuydGjcIngOceKkVPpHnk31psawcCw/RjMQUR1sIq+nQy53TSa6bt5bbs1gseySIWOtYNzhPtkqebrj4ZRzaPHUS0iEIm4kfmao08wrItUlW5oVqmMPKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=08pRR6fBUm3OEqKTRX3ApiG/BBLOhDiex9gg/EHM7l4=;
- b=UuxCTlvNfEOGRKBNAXDawoWA6Z98Rguzj1610SNULVAA61Ze8UbbbQO0afP9LNugiHjihEnBeCRIIGA0XB5mIrH42ZuGdNgNVDupk27eEQgQVC/z6KWWIz33F/l6AToywZo/IBdu/bTUZodliWDgQeLQQ4tEJzMRxEVDD1fUP9xC05Tt1PJF1m+OdZPUX4ziHjMpN8qSDm4aps14UYyOBtBEZskLlCfugWHDrqc3uTLKVZ2FfCjcoOxU2+P84dxDUeyTwDQFbBSOn56mDGrgG4m8VFUMQVUF3mYCEqb63cYXebZl5I/qfYNjx7WnXp1V2in97bHeJaDcoTpx56q9wg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=08pRR6fBUm3OEqKTRX3ApiG/BBLOhDiex9gg/EHM7l4=;
- b=AUrMyMOx1ypsp7FdqLsG5ubH8KK6mZoDQjATobLdhjQGUPnoxtLXl/VKr2QJujgA8I7hRTLPc81LGuR1GMV24vz0CV+0KBbj+bLr/SmPhZT2lynmBjZAWfgvx8KvtPh9zn+UxcC54ig4V6/Aw6cZE7UfltL7o4NZwBwXfbgAHbx3OmGqbh7UEK4CvjFVE21vBHWZOO/KTrg6DMC0HTTzE4sGfqEHvObL6YAP7pPqiKX3mvNVhuNmkFpr0ZmbIUTCIZ3Lz6wIBbkukZ5kNo/VNsCFgQSVgTj8rdTdPC9uEul63+7vfgEeWma/zSPa6nFPkGaRZeRD0XJVdhk6bp0Lfw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com (2603:10a6:208:184::17)
- by AS8PR04MB8531.eurprd04.prod.outlook.com (2603:10a6:20b:422::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 09:41:18 +0000
-Received: from AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51]) by AM0PR04MB6802.eurprd04.prod.outlook.com
- ([fe80::dc36:17b6:e5b1:fa51%4]) with mapi id 15.21.0048.013; Wed, 20 May 2026
- 09:41:18 +0000
-From: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-To: Frank.Li@nxp.com,
-	broonie@kernel.org,
-	xiaoning.wang@nxp.com,
-	Fugang.duan@nxp.com
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Carlos Song <carlos.song@nxp.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] spi: fsl-lpspi: fix missing RX DMA termination on TX prepare failure
-Date: Wed, 20 May 2026 17:43:08 +0800
-Message-ID: <20260520094308.2882892-3-carlos.song@oss.nxp.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260520094308.2882892-1-carlos.song@oss.nxp.com>
-References: <20260520094308.2882892-1-carlos.song@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0448.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c6::15) To AM0PR04MB6802.eurprd04.prod.outlook.com
- (2603:10a6:208:184::17)
+	s=arc-20240116; t=1779270676; c=relaxed/simple;
+	bh=2Eft/LCNyTaq855jfgYvAJS34v9zNa2hjVZWhbopFbc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GjJRBXE+M2x2Dji/wyC/hE10gJ+fFuqpBDAX5wttJc7t42jidqA9NW6cDgckthO/LJ911QllB4cjiikeoVZt8kJN523VCy8n5/woBHnp2mgHa0eBcw3yJcxvcYBUnfBOEa1oYMQz9Z5Sz3CjkMotqJkOlWcshx0TmL7PmDyCvu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a5pZCmDG; arc=pass smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-47c35be031dso3302345b6e.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 02:51:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779270674; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fp/zqmhxmFtLQmFtpMFtBdyag5l//j8mF9EweW53GofJw0PnNUje+euRPZTVi9XQ18
+         Zk6bYz9pc4R9mc1ur+ra9e5Y931z+YSjVgVBlbzzFbor+hkbzTtF7ILhXYG4hnWTtMGA
+         ClC+BQe+CCkooxKEBEjrmDXHY2Of/89yh+AJQCdsNKhopLIuIdoc07hoUl/4K1P8Kl7w
+         urk1zpD7t0oli59oOjnUCg8yC7vRe+CEWYoAhlSPYWOawHoQmi1jG1hPVb7Vl4kD7toE
+         g1X9fTepgd9PFlhqT56eojFJCVTnJ2LgKBnAqFOycucEnNSmHuzY+Z/JyKXEVcLjqyGZ
+         dAEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MZlXLFzzeId8tlIqW5oSoFq5M2aS9QNPvTSGjdbnVzw=;
+        fh=HiIM5VrfA9adDQCXG5RhvpFRBpQ6q3tVqa6nbNF+jAc=;
+        b=JH3KOKA6S4705vc41SPMZXLopA5Z2XyaXISIC2iivvLtyi1hZEZvV0IJcDW9EWLeBN
+         VwL2RzoJRFFT9oG2Jyv5/sEMu4Epn0CF5jK5ZnyqYOUZ00m/uzHqyGEsHPqDMghpUZFq
+         si+mPWivZZ5sdVL/dOZ+NFMvseZFKAjf4i8ziRCCS92scnYT89NdkoZXVtUosEgdTIgi
+         L46qwgP7mjIaKOL50iraZ1k7NAoKbDr3bkOF4zjU1qZl6l+aW3ccy+49GF0WalSxm+a0
+         ZYTpSCzbu9zyHGnS2cRyl5P+e2Eb0zkZBFELUrySAWDcRWrkulxdl162zrFnyLtNTX3Q
+         HiTw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779270674; x=1779875474; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MZlXLFzzeId8tlIqW5oSoFq5M2aS9QNPvTSGjdbnVzw=;
+        b=a5pZCmDG3sM5KQzvnDCbhPwbrRoNdIEZpAsldNL9N8ymI0mJHAvZO++lM9ag2QjKWq
+         Y/mpAvZ+Wg4Y5HqOA0ScdpahfU80hONu22jV3u7c+bwcu7p29ctvwmR1E8a+do9Dwwdg
+         1oELqIizPqyMQU+dJAyzWHYeU1vgRYeLXuFEGKuXNYVryphtZBYB491lduCg4SweOF8v
+         jlHJ72PA/trt9dT88isqHhKd8Miou2bd/aPIkeVKEigu5CRKcXZ+kyjrSEUBH/yRF1kS
+         KjscsXgPKLT7piRCv3XAR/tLjqaeSRNpjcVC++ydr5Z2QcmBuQ3Of42ZbewLQFP7gSgn
+         7hYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779270674; x=1779875474;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MZlXLFzzeId8tlIqW5oSoFq5M2aS9QNPvTSGjdbnVzw=;
+        b=LgN/J9qg1Hs8NJimWgsUbepquYD5UgrFyF+3zwvJeGvxq6EKA6B+dC1g4iltG9D6ae
+         wLmXj25f7b/J5cJ9NH94Ju1p3oG5XYNHkqjehMupJ89+NxC+0itu04ef7SmyEzn+2bfv
+         o57ML/xGXkHjiJNwW3429TT4crWl9J/YzLgE0z11iprikaO60bXeLG9R4uMsffkjXCo+
+         H6z0K98YYi0PpAo1LpQi/t+0HW75wz1oeHRpv+/DlMriHpgMeoPN4BnjXhT9vNGAhZwp
+         2b1RRqkAuFh09hYiQC286QF33+E8n9m15dVPU4aqx/H6qNsXaGv7PM106A419rpuNiBv
+         q7SQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/R0EI4szORTMlCbSeJA/HnuxYBVmn7z2HcK9VcObKIDxk/QsuB1OaLuCNJdLLBcm0uq+Qtnkk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzK4bWpBd4BemCGhU98fxIlwbUkKGOrStI1thh5RrqIhTzXSZd5
+	3LUiJ/8DmDb8ZyOJRl2LSCtW3CFBZSDY5Wulb0zwBn7WIrD1ceuTjjy/kKdzubY9ORr1vR2faOn
+	7jB96vk9rxUDtbnd1zYNWXxLj05/C/GNpVIHZNElR/g==
+X-Gm-Gg: Acq92OGHD4IZhgxMndJspvh2CBMmuFfiaxQExSxTgmqyDORQo1SNg6VAjgm6w4hNWJ4
+	LLfY/Tf95XqndpnZrIP7qhulUxoY6FNcqXixi9IAWhIrudgsU5an9uSskq424pOg9ffdQ+BGAi/
+	SR3GnPN0gjqbA3vnFSooVyxmMBxZFhrbAfVrqV9pfUbsVbRaHgotMaAr5SdaN+vE/wBCposVOnq
+	yMu2Do9w6RQXpMX9wlrSe3HAsQYRVp1g10uAXRTeaSMJASP1lYB0YZab0HfFcEDkHepwWaH2Y4X
+	7XTkXm+b
+X-Received: by 2002:a05:6808:3029:b0:462:aa0f:4375 with SMTP id
+ 5614622812f47-482e5789699mr14575015b6e.39.1779270673811; Wed, 20 May 2026
+ 02:51:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6802:EE_|AS8PR04MB8531:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1f1b505-19a3-4620-37a8-08deb653f109
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|19092799006|38350700014|18002099003|56012099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	wodxcNN5SA2Q/DFBgrPOssGaRDU4+JCJowhdyTwgN0XFzOLO0+BP/CrngyUxCQdlKBgVojYqVrdPflDMJqzgiI9R9JKjzCk1syretHicl85rFqxuynsVy3ESFIHM+LnQCYEsOeQlpMrrz7nucOyeos37uJR9rIcQdicz3fG5Wy0hudXTpMlE+UGPi+XlpkU5BwaEovwZeRbgguE47G1cCUMmiSOc1qaOnAPBXDMNX83qFcnspaGQ53J0QQUE+dGIP2itpVW1dRmi+kHBjgvMZgfF9PSgaZRVdBBL4EL6U6AnophI4WODuZFszmUSf7ZVd9EcyCCtHj1kVxEx3l3Ww9WH20J1ho/DGlhXzbcAhBG+wbVmXo21mScuwTc/Q29OeLF2msya70NvzozhrFWdXSTeKJKEneFpeWJo5lPGynC7YVsRxhE+JmLgY1v/ygAKxuZKpjKY463t4Ft1fiecGFG+vBBTbupEykzgNPWUH3WXIibkkWkIGJo1Jq4XZn2df28O7K07z2PIoNDSI+0dRA6cVgdvYJwT2+OuA8KcyrxkuoG0x5Efm7O1t/fDl5Xh6zfBt5+KnqVudVblw0iSHTFck54QWyUCUcx2LgFcf1Dx1MXAfuRMojdnA8UTBayfGTgflhmHAQxeZH45gT39fNuxzYTaayFTsgzoB7j588q2ogrCkqQ60EOl6+fuRUpPmppFg0sXXFD0dy10rKnpBEq3oS1nxMs8j4G9oSs1r8iQbZV+Z4fjERHBdGXept8W
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6802.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(19092799006)(38350700014)(18002099003)(56012099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bakefi+/sV6oY1fA5EQvxPoQgD9LnBxgNJ2xGT8yMLHUEB7hg6sDRZ5pQ286?=
- =?us-ascii?Q?hz4ML+qIts0YeFnY0ZJReE5nYs6iHeaFx+MbQ6+9oIsRASqnNaJRQb+JnWGo?=
- =?us-ascii?Q?/jLAGY+H+dgMMkKbRSo/5Ojsl4cy3Q1xxc+lxH858jVUoSzmbz8/MQxJPFJj?=
- =?us-ascii?Q?8ECgKaI8XALZ/ifNJEC111xD03BVfsuieHBldaN+YRMnWKTYvnrbC6z8ynKk?=
- =?us-ascii?Q?U8qkGn4HYImYc9hvRFdOzhPcK0RdTa0RE73mGqEbbrpAg8ej2KxK3HN+Cfa0?=
- =?us-ascii?Q?fqHQBEJ6K59sjTDvYXH93c1qqN0C2uD6EJ60E/a40VFVyb25JxtXpGjmfik5?=
- =?us-ascii?Q?L6xBKVegKjXRjIuvassUdHGl1naug9uvO12UxbGsDJ+7Xb9orECssJCHFAns?=
- =?us-ascii?Q?+maGZacH0remlkPsmB5xwbPTuNE+8AUDp9haiAaeXfpcyPU7qExGaR4uSGxe?=
- =?us-ascii?Q?W0N8gVKjcHlqAP8hoqJltKVAhT2zo2wLg5CppG9r0+R9fdnHmFgjOFCCTkVr?=
- =?us-ascii?Q?o3FusUN/JeBkGhwKjZ7eySIO+qIEI/di6UyjIbSstZ1mclCaqKC+zxtQZiCc?=
- =?us-ascii?Q?3GIva91k8/QQnn7k7DrrizAdMTXr0Ofak+Y7SM1ruLYtcZl7Iit4oAelSpUA?=
- =?us-ascii?Q?TeAqwcNrpz0I9l5ZJStHDefWsSw4E/Yfy/phJH4CuwVtrjejppVoGfnuMz42?=
- =?us-ascii?Q?+B2pYo3v1l9M1oCgPfmrGYbiW5m6HmKe75hSLAdjElxhMZ6WwV441ZVYJGVu?=
- =?us-ascii?Q?InO0WqSGlOm4HCf4E/nmzFBA2miS96GW72nOgTWSA4WUdHe7Adthh5XxiTBo?=
- =?us-ascii?Q?CuGNmDg9LwGRDTx+H31mDVcKp3tWBBrlR+CiyiejVUv4d0hA2x6Sf/JY6t2+?=
- =?us-ascii?Q?mYA7dL6YKbPuQR1WYExx3ytVDuYux/YbXnsuIPSJRd5eQcgxu+ceDc2sbhxD?=
- =?us-ascii?Q?U0294R/q43IB2X92AXB1jvDpZWLcE1qRdmmJtQl0/hwt89IqzXXpCjDK8ysZ?=
- =?us-ascii?Q?AKUIt+V5PslGD7X/0IQoW3U3AdTiYG0rHTycckenkXLUwW4v8qcpPvcYbFoi?=
- =?us-ascii?Q?UPdN2TLgEu0HB1ZZBqLUFXHTxrlI/tVO1gm8epHGHtYy0DomnRjL+Coq5lBF?=
- =?us-ascii?Q?iBfy72OOF3esRmMlmOujD1bt7sHgVvon4T7BaU+kg2Kzas5wWaA6Zy6U4Cgl?=
- =?us-ascii?Q?i7I01H5JDYEyxkTylDvRvDf7Ai8qJ3qaCBFAp63bDmc7SKepAJT/0XNVAYwN?=
- =?us-ascii?Q?ornOnyoihH/sWjIT9dQQIH8YBIjzAHK3FnMBE+CWSzp8R7he/CRVm8M0daww?=
- =?us-ascii?Q?T6Q6sIbc4Z/XEjSMqzBhCyJxibenxdKKgPG1jNpZYwXOrW2QqEwGGE7z16x/?=
- =?us-ascii?Q?BZl6FMN0t2KNn47PWVlPquVTf/ucVrDEqZ6v22/4Q/NQSuSrAuN8IdMUFQEH?=
- =?us-ascii?Q?8NAEU4nGpWKOc3iKqjDqkrA9S0iS47QE4KflQu/sSin47aLSlxEMekxnebid?=
- =?us-ascii?Q?/A5CIZG9PNZk0h3NKiy/hXPcHWSE262BoOIogJZUzxh9GWaMRfCFYZlAWvOq?=
- =?us-ascii?Q?8y66VNpu3i2DIU+zt4MofKJfMw07F3oQCSt/GfFW8qYA7vT2PDgHe12s8Y41?=
- =?us-ascii?Q?w1z5APBMq5n06VJtgfjxTtVm1l7Pp9Lp//ymsARRplW/LJcoJMi4lgX6/oXH?=
- =?us-ascii?Q?chh+LiBLmzviMNFufTMYI2IKrq7POg7G9c/nkZqyyB3A76tPzMRRg9ErL7+1?=
- =?us-ascii?Q?x6RD7COFaw=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1f1b505-19a3-4620-37a8-08deb653f109
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6802.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 09:41:17.9744
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JUIX0kylZjlnZYmViKR3/EmxIh10DSdrD2WsqQuOzFJzd8CaCTjHF9MpJO/sD8HFGCCtpKoJ6ydYzVV7MA5uxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8531
-X-Spamd-Result: default: False [1.94 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
+References: <20260518170147.13885-1-lucid_duck@justthetip.ca>
+ <20260519235713.49109-1-lucid_duck@justthetip.ca> <20260519235713.49109-2-lucid_duck@justthetip.ca>
+ <CA+bbHrUcwtNhatzV+ufa8O3Wrku2_W4-UL=3XMy4-kg9qiOdXw@mail.gmail.com>
+ <a36b5712dd420da4090bfa8868e78b1b2b90c916.camel@sipsolutions.net>
+ <CA+bbHrV3fFHWevyDGPtAS=2M2mc+LxP6=xA-5fXaiTKTD=R31g@mail.gmail.com> <739ba20fa3c88e92bf034d80383015b8bc78ebfe.camel@sipsolutions.net>
+In-Reply-To: <739ba20fa3c88e92bf034d80383015b8bc78ebfe.camel@sipsolutions.net>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Wed, 20 May 2026 11:51:03 +0200
+X-Gm-Features: AVHnY4KURUo3g9b9wuzddRfCmeBmlTt3UJPt-BOHJwYs63Ib6XGnntkDentAHQQ
+Message-ID: <CA+bbHrUqh+nu_eKBMVaPH6Q8YxuKS=S0kON2Zsb+gRZHU=SBPA@mail.gmail.com>
+Subject: Re: [PATCH v4] wifi: mac80211: fix monitor mode frame capture for
+ real chanctx drivers
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Devin Wittmayer <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org, 
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, fjhhz1997@gmail.com, 
+	Brite <brite.airgeddon@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.10 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MIXED_CHARSET(0.56)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249793-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249792-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[justthetip.ca,vger.kernel.org,nbd.name,kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carlos.song@oss.nxp.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.nxp.com:mid,NXP1.onmicrosoft.com:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: A5BA958B256
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 15E0458B1D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Carlos Song <carlos.song@nxp.com>
+Ok, let me do one final test using Johannes=E2=80=99 v2 patch. The expected
+behavior is as follows:
 
-When dmaengine_prep_slave_sg() fails for the TX channel, the error path
-only terminates the TX DMA channel but leaves the RX channel running.
-Since the RX channel was already submitted and issued prior to preparing
-the TX descriptor, returning -EINVAL causes the SPI core to unmap the
-DMA buffers while the RX DMA engine continues writing to them, leading
-to potential memory corruption or use-after-free.
+6.18 or lower: no need to test, it will not work. It=E2=80=99s clear now th=
+at
+this does not matter, since the goal is only to fix newer kernel
+versions.
 
-Fix this by also terminating the RX channel before returning on the TX
-prepare failure path.
+6.19: some versions of the 6.19 will crash and others will not. The
+crash was fixed at some point between 6.18.12 and 6.19.12. No need to
+test.
 
-Fixes: 09c04466ce7e ("spi: lpspi: add dma mode support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-change for v2:
-  - Add fix missing RX DMA termination on TX prepare failure.
----
- drivers/spi/spi-fsl-lpspi.c | 1 +
- 1 file changed, 1 insertion(+)
+7.0, or 7.1: the expected result is that there will be no crash, and
+VIF + deauth will work only on 2.4 GHz. It will not work on 5 GHz
+(I'll test both, normal DoS and VIF+DoS). There should be no crash,
+but it will not work.
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 1a94a42fac31..906892453a84 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -647,6 +647,7 @@ static int fsl_lpspi_dma_transfer(struct spi_controller *controller,
- 				tx->sgl, tx->nents, DMA_MEM_TO_DEV,
- 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc_tx) {
-+		dmaengine_terminate_sync(controller->dma_rx);
- 		dmaengine_terminate_sync(controller->dma_tx);
- 		return -EINVAL;
- 	}
--- 
-2.43.0
+So I'll focus my testing on 7.0 and 7.1 and I'll get back to you with
+the results. I'll be testing this patch (v2):
+https://patchwork.kernel.org/project/linux-wireless/patch/20251216111909.25=
+076-2-johannes@sipsolutions.net/
 
+Give me some time to do these tests. I'll test it on both 7.0 and 7.1 kerne=
+ls.
+
+Thanks and regards.
+--
+Oscar
+
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
+
+El mi=C3=A9, 20 may 2026 a las 10:58, Johannes Berg
+(<johannes@sipsolutions.net>) escribi=C3=B3:
+>
+> On Wed, 2026-05-20 at 10:02 +0200, =C3=93scar Alfonso D=C3=ADaz wrote:
+> > I tested it on 6.18.12
+> >
+> > Let me know if you need me to test it again or whatever. I remember
+> > during my testing with the Brite's different patches that is not the
+> > same testing it on 6.18.x than 6.19 . Some stuff changed and the patch
+> > needed to be different. I've added Brite to the thread, he can add
+> > more useful data for you.
+>
+> I guess I don't really care about 6.18.x or 6.19.x, only about 7.1-rcX
+> at this point. We'll want to explicitly _not_ backport this fix to older
+> kernel versions since it caused driver crashes.
+>
+> > Regarding the approach of fixing the bug on the driver side... I've
+> > emailed and contacted by IRC to Lorenzo explaining the problem... but
+> > I got no response. So if we feel yet like this is something that needs
+> > to be fixed from the "driver side"... how to say it softly... we are
+> > f***ed up :) . Maybe the "hack" way dealing with the vif null var is
+> > not bad idea after all as it seems the only way to move forward.
+>
+> I feel I've tried to say this before, but maybe it helps if I summarise:
+>
+> There's one feature and one (possible) bug here.
+>
+> The feature is:
+>  - monitor mode injection works for chanctx drivers.
+>
+> The bug is:
+>  - monitor mode injection with the feature patch crashes at least some
+>    mt76 devices, which you reported, which I consider to be a bug in the
+>    driver that needs to be fixed there.
+>
+> To me, the trade-off is crystal clear - as long as the bug exists, I'm
+> not going to apply this or a similar patch to enable the feature.
+>
+> I'm also not going to apply a patch like proposed before that hacks it
+> by redirecting the vif pointer to a (more or less random) other vif,
+> that's a lazy hack that happens to fix the problem in your _specific_
+> use case, but will almost certainly still expose the crash in other use
+> cases.
+>
+> I do think there's a chance that between 6.18/6.19 and 7.1-rcX the bug
+> in the driver has already been fixed, that's why I keep asking about
+> versions etc. But I also think there's a chance you're just testing
+> different subdrivers of mt76 with different devices, so I'm also asking
+> you to compare the specific devices.
+>
+> I'm happy to apply this patch if the people who previously reported it
+> to crash (i.e. mostly you, not sure about others) are saying that
+> against a more recent kernel it no longer causes the test to crash
+> (rather than just not work, which is clearly better than crashing.)
+>
+> You could always just claim you've tested this patch without the crash
+> and I'll apply it, but then if someone still finds a crash I'm just
+> going to have to revert it, and we'd be back to square one.
+>
+> I hope this explains what I'm thinking and going to do (and not do),
+> make of it what you will.
+>
+> johannes
 
