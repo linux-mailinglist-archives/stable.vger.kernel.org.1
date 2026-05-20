@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id p8THMyz+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:12 +0200
+	id IOs6LTwnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3D759678F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23ABF59ADF5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD7EF32E1029
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EB9D3438C29
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FF33F54D4;
-	Wed, 20 May 2026 17:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6A63F4DD6;
+	Wed, 20 May 2026 18:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8B8PCT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiDwXKhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1CD3F44D9;
-	Wed, 20 May 2026 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FF637DE8A;
+	Wed, 20 May 2026 18:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299509; cv=none; b=RwRuZrjxPpJjXeC6eS5ZMyKgUOEgcnYU1zx7ZFByTct5fXMlwwaO7pQYAOEi9fClyxwDzbSVK0lPBaVY4p6fI/IJgzdr1AcsPdn5YhYSOnBEMv354rrumfUuQK4UebWCpDcBbZ0Id5yLfUt0PPHOmT3ntzocWrduVMcx2+xZeTY=
+	t=1779301113; cv=none; b=UhlYPdKsvvo+IWsnKAlu8YsShTJQd9WPDhnCKJtGbIzLhYfZhEZYwJQkgpFXnaX1I0ddFIMFAr0I3t+e8kRvLRaKC4oWimMkLjvuRRk398VP1JXy4VfSQ8wP3wMvu7SmYqm6wxxOyiOBXDY55j30F8qawcxjK3vytAueMtNOeXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299509; c=relaxed/simple;
-	bh=wQXOG1dLEzjZtTPszMQULsQ8z3MRk720UNvsMx82TD4=;
+	s=arc-20240116; t=1779301113; c=relaxed/simple;
+	bh=zVgCDthoEY+oQU75WWxvUgrR4TtdGx8RrW+ZsAQKtz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQBJi+2Yq6ylRpbsEjbqtF+vY0qWjJEd30LqGQrPTurMS8ZFr0rtkAHakGz6mb0H5YjWJHU9YTCUQFs/CYMR32m+TUj9ar9SdV3tp8ixOEiiKb/bCM6FSn+W96LgLlFh3x9AT/1jTH3fKdGaLObVDFAXeVIF+5KgFdE42b2nYZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8B8PCT/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13DC1F000E9;
-	Wed, 20 May 2026 17:51:47 +0000 (UTC)
+	 MIME-Version; b=ZjlfKtxYMEvtYUug3De2tnW2Ccmg4a1YSyRyzIjiO/qgfUSUMB/cc5OMWqBGKHGaShIegoV+8sbhBW7sDiqwLygTDg+ALxN4LkjAyPhc+3RI6/5lEZE4uFQjAAE8+7tD9JC1ts+grC9EINLBLjQdLciKkhMc8RZ4/dVfWTmiTB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiDwXKhp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC951F000E9;
+	Wed, 20 May 2026 18:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299508;
-	bh=Tf3FoQd7phewb17z1+zUIOh2zT0WWsQmrb3aoi5A9sA=;
+	s=korg; t=1779301112;
+	bh=jiFBC7cIoMw7xbmNHxPjDZVUOm8WlwOJSISBzX0jbNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b8B8PCT/BW3ACPEUtHlES05sqb++zaxjZrrOFh+soGMBAR+yIRS29C0EhMIDicyRv
-	 8kkmUsjhx5yMnacObCxf1X3cTsWrwc9r4ZoFiP8ISgu38CcX3JiciA8iIwFq41IITE
-	 E4fKBAG0YO8sHZyXCIPIYdG75ajT2a5hyZlseWyE=
+	b=kiDwXKhprnK8+Qr9WuN/qc/zuIIWV8nzBd3S+YqAdAlNVHEFk1RiR579FhureYq77
+	 vBVK+5CTY03Nd21gS8VSex4PQOKjqd5C5vMuIks1Ftx0Fs8JqDhlJwfF4JcoLALkyE
+	 DZABe1ctyw2xw7KVd3TTdst2+GSIxLFftyox2fgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 757/957] ASoC: tas2770: Fix order of operations for temperature calculation
+Subject: [PATCH 6.12 429/666] erofs: add encoded extent on-disk definition
 Date: Wed, 20 May 2026 18:20:40 +0200
-Message-ID: <20260520162150.981996103@linuxfoundation.org>
+Message-ID: <20260520162120.569629219@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +68,379 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252010-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252605-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1C3D759678F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 23ABF59ADF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Calligeros <jcalligeros99@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit c7ecb6a61908c2604dda6e42da66724d256de7b9 ]
+[ Upstream commit efb2aef569b35b415c232c4e9fdecd0e540e1f60 ]
 
-The order of operations to derive the temperature from the temp
-register values was wrong, since 1000 / 16 is not an integer. This
-resulted in the calculated temperature value deviating from the
-value represented by the registers slightly, which was most obvious
-when the registers were zeroed (-92.265 *C vs the expected -93.000 *C).
+Previously, EROFS provided both (non-)compact compressed indexes to
+keep necessary hints for each logical block, enabling O(1) random
+indexing.  This approach was originally designed for small compression
+units (e.g., 4KiB), where compressed data is strictly block-aligned via
+fixed-sized output compression.
 
-Scale the reading before dividing the whole thing by 16 to correct
-this.
+However, EROFS now supports big pclusters up to 1MiB and many users use
+large configurations to minimize image sizes.  For such configurations,
+the total number of extents decreases significantly (e.g., only 1,024
+extents for a 1GiB file using 1MiB pclusters), then runtime metadata
+overhead becomes negligible compared to data I/O and decoding costs.
 
-Fixes: ff73e2780169 ("ASoC: tas2770: expose die temp to hwmon")
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20260425-tas27xx-hwmon-fixes-v1-3-83c13b8e8f54@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Additionally, some popular compression algorithm (mainly Zstd) still
+lacks native fixed-sized output compression support (although it's
+planned by their authors).  Instead of just waiting for compressor
+improvements, let's adopt byte-oriented extents, allowing these
+compressors to retain their current methods.
+
+For example, it speeds up Zstd compression a lot:
+Processor: Intel(R) Xeon(R) Platinum 8163 CPU @ 2.50GHz * 96
+Dataset:   enwik9
+Build time Size       Type Command Line
+3m52.339s  266653696  FO   -C524288 -zzstd,22
+3m48.549s  266174464  FO   -E48bit -C524288 -zzstd,22
+0m12.821s  272134144  FI   -E48bit -C1048576 --max-extent-bytes=1048576 -zzstd,22
+
+0m14.528s  248987648  FO   -C1048576 -zlzma,9
+0m14.605s  248504320  FO   -E48bit -C1048576 -zlzma,9
+
+Encoded extents are structured as an array of `struct z_erofs_extent`,
+sorted by logical address in ascending order:
+   __le32 plen       // encoded length, algorithm id and flags
+   __le32 pstart_lo  // physical offset LSB
+   __le32 pstart_hi  // physical offset MSB
+   __le32 lstart_lo  // logical offset
+   __le32 lstart_hi  // logical offset MSB
+   ..
+
+Note that prefixed reduced records can be used to minimize metadata for
+specific cases (e.g. lstart less than 32 bits, then 32 to 16 bytes).
+
+If the logical lengths of all encoded extents are the same, 4-byte
+(plen) and 8-byte (plen, pstart_lo) records can be used. Or, 16-byte
+(plen .. lstart_lo) and 32-byte full records have to be used instead.
+
+If 16-byte and 32-byte records are used, the total number of extents
+is kept in `struct z_erofs_map_header`, and binary search can be
+applied on them.  Note that `eytzinger order` is not considerd because
+data sequential access is important.
+
+If 4-byte records are used, 8-byte start physical offset is between
+`struct z_erofs_map_header` and the `plen` array.
+
+In addition, 64-bit physical offsets can be applied with new encoded
+extent format to match full 48-bit block addressing.
+
+Remove redundant comments around `struct z_erofs_lcluster_index` too.
+
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Acked-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20250310095459.2620647-8-hsiangkao@linux.alibaba.com
+Stable-dep-of: 2d8c7edcb661 ("erofs: unify lcn as u64 for 32-bit platforms")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2770.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/erofs_fs.h | 99 +++++++++++++++++++++------------------------
+ fs/erofs/internal.h |  2 +-
+ fs/erofs/zmap.c     | 24 +++++------
+ 3 files changed, 58 insertions(+), 67 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index 6f878b01716f7..2ce3011119bdb 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -549,7 +549,7 @@ static int tas2770_read_die_temp(struct tas2770_priv *tas2770, long *result)
- 	/*
- 	 * As per datasheet: divide register by 16 and subtract 93 to get
- 	 * degrees Celsius. hwmon requires millidegrees. Let's avoid rounding
--	 * errors by subtracting 93 * 16 then multiplying by 1000 / 16.
-+	 * errors by subtracting 93 * 16 and scaling before dividing.
- 	 *
- 	 * NOTE: The ADC registers are initialised to 0 on reset. This means
- 	 * that the temperature will read -93 *C until the chip is brought out
-@@ -558,7 +558,7 @@ static int tas2770_read_die_temp(struct tas2770_priv *tas2770, long *result)
- 	 * value read back from its registers will be the last value sampled
- 	 * before entering software shutdown.
- 	 */
--	*result = (reading - (93 * 16)) * (1000 / 16);
-+	*result = (reading - (93 * 16)) * 1000 / 16;
- 	return 0;
- }
+diff --git a/fs/erofs/erofs_fs.h b/fs/erofs/erofs_fs.h
+index c8f2ae845bd29..5b237148cb644 100644
+--- a/fs/erofs/erofs_fs.h
++++ b/fs/erofs/erofs_fs.h
+@@ -336,21 +336,20 @@ struct z_erofs_zstd_cfgs {
+ #define Z_EROFS_ZSTD_MAX_DICT_SIZE      Z_EROFS_PCLUSTER_MAX_SIZE
  
+ /*
+- * bit 0 : COMPACTED_2B indexes (0 - off; 1 - on)
+- *  e.g. for 4k logical cluster size,      4B        if compacted 2B is off;
+- *                                  (4B) + 2B + (4B) if compacted 2B is on.
+- * bit 1 : HEAD1 big pcluster (0 - off; 1 - on)
+- * bit 2 : HEAD2 big pcluster (0 - off; 1 - on)
+- * bit 3 : tailpacking inline pcluster (0 - off; 1 - on)
+- * bit 4 : interlaced plain pcluster (0 - off; 1 - on)
+- * bit 5 : fragment pcluster (0 - off; 1 - on)
++ * Enable COMPACTED_2B for EROFS_INODE_COMPRESSED_COMPACT inodes:
++ *   4B (disabled) vs 4B+2B+4B (enabled)
+  */
+ #define Z_EROFS_ADVISE_COMPACTED_2B		0x0001
++/* Enable extent metadata for EROFS_INODE_COMPRESSED_FULL inodes */
++#define Z_EROFS_ADVISE_EXTENTS			0x0001
+ #define Z_EROFS_ADVISE_BIG_PCLUSTER_1		0x0002
+ #define Z_EROFS_ADVISE_BIG_PCLUSTER_2		0x0004
+ #define Z_EROFS_ADVISE_INLINE_PCLUSTER		0x0008
+ #define Z_EROFS_ADVISE_INTERLACED_PCLUSTER	0x0010
+ #define Z_EROFS_ADVISE_FRAGMENT_PCLUSTER	0x0020
++/* Indicate the record size for each extent if extent metadata is used */
++#define Z_EROFS_ADVISE_EXTRECSZ_BIT		1
++#define Z_EROFS_ADVISE_EXTRECSZ_MASK		0x3
+ 
+ #define Z_EROFS_FRAGMENT_INODE_BIT              7
+ struct z_erofs_map_header {
+@@ -362,45 +361,24 @@ struct z_erofs_map_header {
+ 			/* indicates the encoded size of tailpacking data */
+ 			__le16  h_idata_size;
+ 		};
++		__le32 h_extents_lo;	/* extent count LSB */
+ 	};
+ 	__le16	h_advise;
+-	/*
+-	 * bit 0-3 : algorithm type of head 1 (logical cluster type 01);
+-	 * bit 4-7 : algorithm type of head 2 (logical cluster type 11).
+-	 */
+-	__u8	h_algorithmtype;
+-	/*
+-	 * bit 0-2 : logical cluster bits - 12, e.g. 0 for 4096;
+-	 * bit 3-6 : reserved;
+-	 * bit 7   : move the whole file into packed inode or not.
+-	 */
+-	__u8	h_clusterbits;
++	union {
++		struct {
++			/* algorithm type (bit 0-3: HEAD1; bit 4-7: HEAD2) */
++			__u8	h_algorithmtype;
++			/*
++			 * bit 0-3 : logical cluster bits - blkszbits
++			 * bit 4-6 : reserved
++			 * bit 7   : pack the whole file into packed inode
++			 */
++			__u8	h_clusterbits;
++		};
++		__le16 h_extents_hi;	/* extent count MSB */
++	};
+ };
+ 
+-/*
+- * On-disk logical cluster type:
+- *    0   - literal (uncompressed) lcluster
+- *    1,3 - compressed lcluster (for HEAD lclusters)
+- *    2   - compressed lcluster (for NONHEAD lclusters)
+- *
+- * In detail,
+- *    0 - literal (uncompressed) lcluster,
+- *        di_advise = 0
+- *        di_clusterofs = the literal data offset of the lcluster
+- *        di_blkaddr = the blkaddr of the literal pcluster
+- *
+- *    1,3 - compressed lcluster (for HEAD lclusters)
+- *        di_advise = 1 or 3
+- *        di_clusterofs = the decompressed data offset of the lcluster
+- *        di_blkaddr = the blkaddr of the compressed pcluster
+- *
+- *    2 - compressed lcluster (for NONHEAD lclusters)
+- *        di_advise = 2
+- *        di_clusterofs =
+- *           the decompressed data offset in its own HEAD lcluster
+- *        di_u.delta[0] = distance to this HEAD lcluster
+- *        di_u.delta[1] = distance to the next HEAD lcluster
+- */
+ enum {
+ 	Z_EROFS_LCLUSTER_TYPE_PLAIN	= 0,
+ 	Z_EROFS_LCLUSTER_TYPE_HEAD1	= 1,
+@@ -414,11 +392,7 @@ enum {
+ /* (noncompact only, HEAD) This pcluster refers to partial decompressed data */
+ #define Z_EROFS_LI_PARTIAL_REF		(1 << 15)
+ 
+-/*
+- * D0_CBLKCNT will be marked _only_ at the 1st non-head lcluster to store the
+- * compressed block count of a compressed extent (in logical clusters, aka.
+- * block count of a pcluster).
+- */
++/* Set on 1st non-head lcluster to store compressed block counti (in blocks) */
+ #define Z_EROFS_LI_D0_CBLKCNT		(1 << 11)
+ 
+ struct z_erofs_lcluster_index {
+@@ -427,19 +401,36 @@ struct z_erofs_lcluster_index {
+ 	__le16 di_clusterofs;
+ 
+ 	union {
+-		/* for the HEAD lclusters */
+-		__le32 blkaddr;
++		__le32 blkaddr;		/* for the HEAD lclusters */
+ 		/*
+-		 * for the NONHEAD lclusters
+ 		 * [0] - distance to its HEAD lcluster
+ 		 * [1] - distance to the next HEAD lcluster
+ 		 */
+-		__le16 delta[2];
++		__le16 delta[2];	/* for the NONHEAD lclusters */
+ 	} di_u;
+ };
+ 
+-#define Z_EROFS_FULL_INDEX_ALIGN(end)	\
+-	(ALIGN(end, 8) + sizeof(struct z_erofs_map_header) + 8)
++#define Z_EROFS_MAP_HEADER_END(end)	\
++	(ALIGN(end, 8) + sizeof(struct z_erofs_map_header))
++#define Z_EROFS_FULL_INDEX_START(end)	(Z_EROFS_MAP_HEADER_END(end) + 8)
++
++#define Z_EROFS_EXTENT_PLEN_PARTIAL	BIT(27)
++#define Z_EROFS_EXTENT_PLEN_FMT_BIT	28
++#define Z_EROFS_EXTENT_PLEN_MASK	((Z_EROFS_PCLUSTER_MAX_SIZE << 1) - 1)
++struct z_erofs_extent {
++	__le32 plen;		/* encoded length */
++	__le32 pstart_lo;	/* physical offset */
++	__le32 pstart_hi;	/* physical offset MSB */
++	__le32 lstart_lo;	/* logical offset */
++	__le32 lstart_hi;	/* logical offset MSB (>= 4GiB inodes) */
++	__u8 reserved[12];	/* for future use */
++};
++
++static inline int z_erofs_extent_recsize(unsigned int advise)
++{
++	return 4 << ((advise >> Z_EROFS_ADVISE_EXTRECSZ_BIT) &
++		Z_EROFS_ADVISE_EXTRECSZ_MASK);
++}
+ 
+ /* check the EROFS on-disk layout strictly at compile time */
+ static inline void erofs_check_ondisk_layout_definitions(void)
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 856463a702b2c..1c003412677ef 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -275,7 +275,7 @@ struct erofs_inode {
+ 		struct {
+ 			unsigned short z_advise;
+ 			unsigned char  z_algorithmtype[2];
+-			unsigned char  z_logical_clusterbits;
++			unsigned char  z_lclusterbits;
+ 			unsigned long  z_tailextent_headlcn;
+ 			erofs_off_t    z_fragmentoff;
+ 			unsigned short z_idata_size;
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 25a4b82c183c0..a03700cbd2c1c 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -25,7 +25,7 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	const erofs_off_t pos = Z_EROFS_FULL_INDEX_ALIGN(erofs_iloc(inode) +
++	const erofs_off_t pos = Z_EROFS_FULL_INDEX_START(erofs_iloc(inode) +
+ 			vi->inode_isize + vi->xattr_isize) +
+ 			lcn * sizeof(struct z_erofs_lcluster_index);
+ 	struct z_erofs_lcluster_index *di;
+@@ -40,7 +40,7 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+ 	advise = le16_to_cpu(di->di_advise);
+ 	m->type = advise & Z_EROFS_LI_LCLUSTER_TYPE_MASK;
+ 	if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
+-		m->clusterofs = 1 << vi->z_logical_clusterbits;
++		m->clusterofs = 1 << vi->z_lclusterbits;
+ 		m->delta[0] = le16_to_cpu(di->di_u.delta[0]);
+ 		if (m->delta[0] & Z_EROFS_LI_D0_CBLKCNT) {
+ 			if (!(vi->z_advise & (Z_EROFS_ADVISE_BIG_PCLUSTER_1 |
+@@ -55,7 +55,7 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+ 	} else {
+ 		m->partialref = !!(advise & Z_EROFS_LI_PARTIAL_REF);
+ 		m->clusterofs = le16_to_cpu(di->di_clusterofs);
+-		if (m->clusterofs >= 1 << vi->z_logical_clusterbits) {
++		if (m->clusterofs >= 1 << vi->z_lclusterbits) {
+ 			DBG_BUGON(1);
+ 			return -EFSCORRUPTED;
+ 		}
+@@ -102,9 +102,9 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+-	const erofs_off_t ebase = sizeof(struct z_erofs_map_header) +
+-		ALIGN(erofs_iloc(inode) + vi->inode_isize + vi->xattr_isize, 8);
+-	const unsigned int lclusterbits = vi->z_logical_clusterbits;
++	const erofs_off_t ebase = Z_EROFS_MAP_HEADER_END(erofs_iloc(inode) +
++			vi->inode_isize + vi->xattr_isize);
++	const unsigned int lclusterbits = vi->z_lclusterbits;
+ 	const unsigned int totalidx = erofs_iblks(inode);
+ 	unsigned int compacted_4b_initial, compacted_2b, amortizedshift;
+ 	unsigned int vcnt, lo, lobits, encodebits, nblk, bytes;
+@@ -255,7 +255,7 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
+ {
+ 	struct super_block *sb = m->inode->i_sb;
+ 	struct erofs_inode *const vi = EROFS_I(m->inode);
+-	const unsigned int lclusterbits = vi->z_logical_clusterbits;
++	const unsigned int lclusterbits = vi->z_lclusterbits;
+ 
+ 	while (m->lcn >= lookback_distance) {
+ 		unsigned long lcn = m->lcn - lookback_distance;
+@@ -304,7 +304,7 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
+ 	if ((m->headtype == Z_EROFS_LCLUSTER_TYPE_HEAD1 && !bigpcl1) ||
+ 	    ((m->headtype == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
+ 	      m->headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2) && !bigpcl2) ||
+-	    (lcn << vi->z_logical_clusterbits) >= inode->i_size)
++	    (lcn << vi->z_lclusterbits) >= inode->i_size)
+ 		m->compressedblks = 1;
+ 
+ 	if (m->compressedblks)
+@@ -354,7 +354,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
+ 	struct inode *inode = m->inode;
+ 	struct erofs_inode *vi = EROFS_I(inode);
+ 	struct erofs_map_blocks *map = m->map;
+-	unsigned int lclusterbits = vi->z_logical_clusterbits;
++	unsigned int lclusterbits = vi->z_lclusterbits;
+ 	u64 lcn = m->lcn, headlcn = map->m_la >> lclusterbits;
+ 	int err;
+ 
+@@ -398,16 +398,16 @@ static int z_erofs_do_map_blocks(struct inode *inode,
+ 	struct super_block *sb = inode->i_sb;
+ 	bool fragment = vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER;
+ 	bool ztailpacking = vi->z_idata_size;
++	unsigned int lclusterbits = vi->z_lclusterbits;
+ 	struct z_erofs_maprecorder m = {
+ 		.inode = inode,
+ 		.map = map,
+ 	};
+ 	int err = 0;
+-	unsigned int lclusterbits, endoff, afmt;
++	unsigned int endoff, afmt;
+ 	unsigned long initial_lcn;
+ 	unsigned long long ofs, end;
+ 
+-	lclusterbits = vi->z_logical_clusterbits;
+ 	ofs = flags & EROFS_GET_BLOCKS_FINDTAIL ? inode->i_size - 1 : map->m_la;
+ 	initial_lcn = ofs >> lclusterbits;
+ 	endoff = ofs & ((1 << lclusterbits) - 1);
+@@ -569,6 +569,7 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		goto done;
+ 	}
+ 	vi->z_advise = le16_to_cpu(h->h_advise);
++	vi->z_lclusterbits = sb->s_blocksize_bits + (h->h_clusterbits & 15);
+ 	vi->z_algorithmtype[0] = h->h_algorithmtype & 15;
+ 	vi->z_algorithmtype[1] = h->h_algorithmtype >> 4;
+ 	if (vi->z_advise & Z_EROFS_ADVISE_FRAGMENT_PCLUSTER)
+@@ -585,7 +586,6 @@ static int z_erofs_fill_inode_lazy(struct inode *inode)
+ 		goto out_put_metabuf;
+ 	}
+ 
+-	vi->z_logical_clusterbits = sb->s_blocksize_bits + (h->h_clusterbits & 7);
+ 	if (!erofs_sb_has_big_pcluster(EROFS_SB(sb)) &&
+ 	    vi->z_advise & (Z_EROFS_ADVISE_BIG_PCLUSTER_1 |
+ 			    Z_EROFS_ADVISE_BIG_PCLUSTER_2)) {
 -- 
 2.53.0
 
