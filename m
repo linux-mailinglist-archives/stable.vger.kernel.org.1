@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FbjOI0GDmqy5gUAu9opvQ
-	(envelope-from <stable+bounces-253149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:57 +0200
+	id WHwCOF3+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DB7597CEC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77E859686C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 355FA26A4A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6AC0F307DC19
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429B1403E9D;
-	Wed, 20 May 2026 18:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843083F9F25;
+	Wed, 20 May 2026 18:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPeULikn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPxxcAe6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BF9402BBA;
-	Wed, 20 May 2026 18:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400863F88B8;
+	Wed, 20 May 2026 18:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302534; cv=none; b=J844lsjf6ALSgPvJ99DIrR86UADEWm0P5dhEYdwst+dlVI0slRELElMiVDrR+pkc1R2elogSEy8v58O00bLcS4nvKxfdSqhvwHKkRPmt9DBxudysog81JKYgYM1W9sHEe4IzjjXH6tJPpC7TTTwSXLFwBPpzWZg5V1pX+QwxiBI=
+	t=1779301229; cv=none; b=DRgJhTHM2MJqVLukQOQMSXwlSTIdINr0fS0rDT5IBKBBlQYaefNJRvFn4ad/IShoaD8+7Z+7bDWsTSmIuYxFJ8SF4pyccMvDU4dsPLLN/cucICz1vCcM1nSX15XPEnHoEyUycDurZ7b0Rn8ry6JOlKf4FtoEwlpolfJUwwOfLFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302534; c=relaxed/simple;
-	bh=01JqyYmv8UtXKRp9x4sYgi4uxaxvPnqiCrsSHN+5zo0=;
+	s=arc-20240116; t=1779301229; c=relaxed/simple;
+	bh=tljDnLrG56J12pGirLbabnyHJwh/dC5+omd2zs7iCmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atCgOM/mqMSV4WclcN6+FWUDZU8YirWVCvPSgzGwct+7h0wN1wpa5t05bHQXMtss4U+vBhZ03MTHuHGakVFFA/syqtGSESMRki4jhyFiq/idSP9ynmUjhgAWAHGbgu8uPhMqbZrAt0ntGefoFbF+6Q8CigeeqUaHYkyfdSnYffI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPeULikn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9021F000E9;
-	Wed, 20 May 2026 18:42:12 +0000 (UTC)
+	 MIME-Version; b=Unu88BzYWmLJz/KZpvrFcNDiVTSWQSQq8NhOaCJTYYkBgf/S0PImYhvWBg/ib93oNQrwneCL1Hy9/1D0QyJZqdEmALNmvIMNgyJHsLozQHxbWbtGMnPIrKqWWDeleL0+sv6o9HkarADKMS9Jnr9eaJIaZPK6Ai1hiU97VK4SpcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPxxcAe6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63AB1F000E9;
+	Wed, 20 May 2026 18:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302532;
-	bh=EqHDXbfoFZ1q3v1wXvyujRxhlysJktB968RMYrzSZ4g=;
+	s=korg; t=1779301228;
+	bh=img2QU2Nx1mNJdHDRX81jz3/+8M+sOGZGVoaobyg65Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sPeULiknhuqQdmLr0dXl4/LBz+UBfNgVAT7Kunwhrz4iNACW9sCOEyp75+CELbUpu
-	 uHZ7GA3pOIzuWiW5V+QzGdbRrLY6l4weBFlytHJnvMRpBZMmDFSRk68nCft7l1RUTT
-	 jZqk31peYcx0uWb8trImZgRQbREaAcQxX1ogBppM=
+	b=TPxxcAe6ejCxUnn9JfflyCXt05sGsHdYevwdKx+Kz/p0LamubdjrE4mrGb1o5EiPX
+	 KukuRchRzImZpSC8e9FxAK0FMlWTITtKKyXayTAcGelt+oktoL1cr++MFAmeh7Klza
+	 r8hNs7C4FExJYktdcw+T/43bFlINid4+/A517BCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Linus Walleij <linusw@kernel.org>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/508] backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()
+Subject: [PATCH 6.12 473/666] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
 Date: Wed, 20 May 2026 18:21:24 +0200
-Message-ID: <20260520162104.300763415@linuxfoundation.org>
+Message-ID: <20260520162121.521359422@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +69,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253149-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252649-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 56DB7597CEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: A77E859686C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 797cc011ae02bda26f93d25a4442d7a1a77d84df ]
+[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
 
-The devm_gpiod_get_optional() function may return an ERR_PTR in case of
-genuine GPIO acquisition errors, not just NULL which indicates the
-legitimate absence of an optional GPIO.
+The nf_osf_ttl() function accessed skb->dev to perform a local interface
+address lookup without verifying that the device pointer was valid.
 
-Add an IS_ERR() check after the call in sky81452_bl_parse_dt(). On
-error, return the error code to ensure proper failure handling rather
-than proceeding with invalid pointers.
+Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
+loop to match the packet source address against local interface
+addresses. It assumed that packets from the same subnet should not see a
+decrement on the initial TTL. A packet might appear it is from the same
+subnet but it actually isn't especially in modern environments with
+containers and virtual switching.
 
-Fixes: e1915eec54a6 ("backlight: sky81452: Convert to GPIO descriptors")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20260203021625.578678-1-nichen@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Remove the device dereference and interface loop. Replace the logic with
+a switch statement that evaluates the TTL according to the ttl_check.
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/sky81452-backlight.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/video/backlight/sky81452-backlight.c b/drivers/video/backlight/sky81452-backlight.c
-index eb18c6eb0ff0d..6ce1c3c5f5676 100644
---- a/drivers/video/backlight/sky81452-backlight.c
-+++ b/drivers/video/backlight/sky81452-backlight.c
-@@ -204,6 +204,9 @@ static struct sky81452_bl_platform_data *sky81452_bl_parse_dt(
- 	pdata->dpwm_mode = of_property_read_bool(np, "skyworks,dpwm-mode");
- 	pdata->phase_shift = of_property_read_bool(np, "skyworks,phase-shift");
- 	pdata->gpiod_enable = devm_gpiod_get_optional(dev, NULL, GPIOD_OUT_HIGH);
-+	if (IS_ERR(pdata->gpiod_enable))
-+		return dev_err_cast_probe(dev, pdata->gpiod_enable,
-+					  "failed to get gpio\n");
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 832a973c41777..c89efb951994a 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
+ static inline int nf_osf_ttl(const struct sk_buff *skb,
+ 			     int ttl_check, unsigned char f_ttl)
+ {
+-	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
+ 	const struct iphdr *ip = ip_hdr(skb);
+-	const struct in_ifaddr *ifa;
+-	int ret = 0;
  
- 	ret = of_property_count_u32_elems(np, "led-sources");
- 	if (ret < 0) {
+-	if (ttl_check == NF_OSF_TTL_TRUE)
++	switch (ttl_check) {
++	case NF_OSF_TTL_TRUE:
+ 		return ip->ttl == f_ttl;
+-	if (ttl_check == NF_OSF_TTL_NOCHECK)
+-		return 1;
+-	else if (ip->ttl <= f_ttl)
++		break;
++	case NF_OSF_TTL_NOCHECK:
+ 		return 1;
+-
+-	in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-		if (inet_ifa_match(ip->saddr, ifa)) {
+-			ret = (ip->ttl == f_ttl);
+-			break;
+-		}
++	case NF_OSF_TTL_LESS:
++	default:
++		return ip->ttl <= f_ttl;
+ 	}
+-
+-	return ret;
+ }
+ 
+ struct nf_osf_hdr_ctx {
 -- 
 2.53.0
 
