@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-251206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NJjLm3wDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:33 +0200
+	id 4AuFEXjwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-251217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB41593F2D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC686593F52
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F7A0308DC85
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 423B731486BB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A61372B58;
-	Wed, 20 May 2026 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3653C3A3833;
+	Wed, 20 May 2026 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNqG9cka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kupyufnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBEA35AC18;
-	Wed, 20 May 2026 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16B335F619;
+	Wed, 20 May 2026 17:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297376; cv=none; b=etLp+ZugfcLEEnACXsIhWDosasNmCGrEgMg2WpO8Dxc/VCLMXGsHzrpt5jFnRY11TSfh0azzUm6Zg6epOkzwHFbhsm2GCapJjAyKLvOn+FTWMGCYzZiuvEdwNZRrl0LwEkPIK9f7xK0ER01UyFUJBnlGSC1a+hDaYYkbbeTJXQs=
+	t=1779297406; cv=none; b=QfL7qq+PcFBmNwCze4AgKx6FTUHb6G00IBd8qwSyoZSQPwqvx1+W3VeJxxs6shdw1nUVqaKl9mwUqBR97FdFeW5USbL8MAC088m8z2TO6WMOxrATt4Q2moxjxze1jmBDwnyhVWqkTCUlOgDrBOd46m65fy+l/JEawxJwnnNSvTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297376; c=relaxed/simple;
-	bh=JwafoCGgUrookpHrn7hnkAP2UvBEaHf/gDCL2G438+8=;
+	s=arc-20240116; t=1779297406; c=relaxed/simple;
+	bh=5fyaSUIMzmM57b3l6W9iLWBmN9dZONvZZp1WtVu9YHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDnA+g4HEp0K+DJQfN0onV0P028liUId9pHeOzd3Cq5VoQAAhNUDkQXR2ZG8w3VuaCUwrR5kxHzkZE30MH3WZISSciftZSEf7Wq6gmO7oCs5JgP30orddYiNWR33cjK36/l0rftRvZx8+ogzHDA+jngg8ti8W7UDxi9DqyjNOV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNqG9cka; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E191F000E9;
-	Wed, 20 May 2026 17:16:14 +0000 (UTC)
+	 MIME-Version; b=jG8o2+X58KzrbyAZQF4UWaYEW3Or/+ZExoWp8Z1Yryc5eWCkTmucFrgfjpExvrga72tFsH+1ifOBxYbcygZOO0bMQBIiMwq0rUlIuFzWn3+tlZEmnRJjLq0NSUWONkQbZiGp1R1VqxE9ZQTzywEL5sc1ibLs14wjA93638FalBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kupyufnT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CD21F000E9;
+	Wed, 20 May 2026 17:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297375;
-	bh=Pp0thGLozKi11Zp5SS4TjVFGEwnLHSqIo4NNaXFdd90=;
+	s=korg; t=1779297404;
+	bh=D9zqkVdWRamgseCAMzFGPRlwAEJn1ruFXYYOQ+auI1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pNqG9ckaQLhAWMWb4cg2jdkZFLHRIecOfXuScAZU+B0/93arueW6Dbq2uFvcjjHQk
-	 jVULIk//iyVpqIFpYE3aKTVlUhTRsENy1on8BjOy7dYM53Zl/48XeQApSZvhNhdS3h
-	 FNgPsOPakLSHC3FBkYKJHh9+mjJ6BWSAcpi6onEY=
+	b=kupyufnTarBfudMJKBJfto23DPtRKsqZJE0+aQ+lai6cTZKPvSwcQEYud8ygxOUQU
+	 UrVil/N892/KUyMERvtYFhLDYYI0IMWlXbEFbkwNIWp+TcLRiDRyxM4fuTm1u9bNe4
+	 UP9jLoUY8TnsDFIWGTk3kDIFt3iuLoxdfY7IJNQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hyungjung Joo <jhj140711@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/957] blk-cgroup: wait for blkcg cleanup before initializing new disk
-Date: Wed, 20 May 2026 18:08:04 +0200
-Message-ID: <20260520162134.591780023@linuxfoundation.org>
+Subject: [PATCH 6.18 002/957] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
+Date: Wed, 20 May 2026 18:08:05 +0200
+Message-ID: <20260520162134.613714756@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -68,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251217-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251206-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 2EB41593F2D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: DC686593F52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,73 +100,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: HyungJung Joo <jhj140711@gmail.com>
 
-[ Upstream commit 3dbaacf6ab68f81e3375fe769a2ecdbd3ce386fd ]
+[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
 
-When a queue is shared across disk rebind (e.g., SCSI unbind/bind), the
-previous disk's blkcg state is cleaned up asynchronously via
-disk_release() -> blkcg_exit_disk(). If the new disk's blkcg_init_disk()
-runs before that cleanup finishes, we may overwrite q->root_blkg while
-the old one is still alive, and radix_tree_insert() in blkg_create()
-fails with -EEXIST because the old blkg entries still occupy the same
-queue id slot in blkcg->blkg_tree. This causes the sd probe to fail
-with -ENOMEM.
+omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
+but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
 
-Fix it by waiting in blkcg_init_disk() for root_blkg to become NULL,
-which indicates the previous disk's blkcg cleanup has completed.
+Later, omfs_make_empty() uses
 
-Fixes: 1059699f87eb ("block: move blkcg initialization/destroy into disk allocation/release handler")
-Cc: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260311032837.2368714-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    sbi->s_sys_blocksize - OMFS_DIR_START
+
+as the length argument to memset().  Since s_sys_blocksize is u32,
+a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
+an unsigned underflow there, wrapping to a value near 2^32.  That drives
+a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
+memory far beyond the backing block buffer.
+
+Add the corresponding lower-bound check alongside the existing upper-bound
+check in omfs_fill_super(), so that malformed images are rejected during
+superblock validation before any filesystem data is processed.
+
+Fixes: a3ab7155ea21 ("omfs: add directory routines")
+Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/omfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 3cffb68ba5d87..890c161bee25e 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -24,6 +24,7 @@
- #include <linux/backing-dev.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/wait_bit.h>
- #include <linux/atomic.h>
- #include <linux/ctype.h>
- #include <linux/resume_user_mode.h>
-@@ -611,6 +612,8 @@ static void blkg_destroy_all(struct gendisk *disk)
+diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
+index 135c49c5d848c..31218d89b7580 100644
+--- a/fs/omfs/inode.c
++++ b/fs/omfs/inode.c
+@@ -512,6 +512,12 @@ static int omfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto out_brelse_bh;
+ 	}
  
- 	q->root_blkg = NULL;
- 	spin_unlock_irq(&q->queue_lock);
++	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
++		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
++			sbi->s_sys_blocksize);
++		goto out_brelse_bh;
++	}
 +
-+	wake_up_var(&q->root_blkg);
- }
- 
- static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
-@@ -1498,6 +1501,18 @@ int blkcg_init_disk(struct gendisk *disk)
- 	struct blkcg_gq *new_blkg, *blkg;
- 	bool preloaded;
- 
-+	/*
-+	 * If the queue is shared across disk rebind (e.g., SCSI), the
-+	 * previous disk's blkcg state is cleaned up asynchronously via
-+	 * disk_release() -> blkcg_exit_disk(). Wait for that cleanup to
-+	 * finish (indicated by root_blkg becoming NULL) before setting up
-+	 * new blkcg state. Otherwise, we may overwrite q->root_blkg while
-+	 * the old one is still alive, and radix_tree_insert() in
-+	 * blkg_create() will fail with -EEXIST because the old entries
-+	 * still occupy the same queue id slot in blkcg->blkg_tree.
-+	 */
-+	wait_var_event(&q->root_blkg, !READ_ONCE(q->root_blkg));
-+
- 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
- 	if (!new_blkg)
- 		return -ENOMEM;
+ 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
+ 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
+ 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
 -- 
 2.53.0
 
