@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-252056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFQ1HLj5DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:12 +0200
+	id GPdVGJANDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-253109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0552595954
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5C3598838
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F1B9230D69C3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23D7F3389DED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B183F39C9;
-	Wed, 20 May 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4B34014B4;
+	Wed, 20 May 2026 18:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPyABXew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUF4FfGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6E03F1AD9;
-	Wed, 20 May 2026 17:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7285401A3F;
+	Wed, 20 May 2026 18:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299630; cv=none; b=MassGFNtKq0N+IWaqM6wLlhiDg58hy2SQFZBs07v1nKFtKpNIIFZISRM+jTKDOBn1NF9j/IU1QWnWtHrxEi77d4MF9cree5Jn8KTo1qOlPRVIurbqOOpwmR00p6Pf53v2Y4QCJEr54/Ljs9eUAH9Z+FOWmmt5HnpG+GEhQBIre0=
+	t=1779302429; cv=none; b=NGs7gOFJcIfbLTpxuo2ZNFr0ZX5FcIRXpZNHoBr6okle2gMdCkSNlGEKfL4xvaRFQ8Q0wwrsa9l3FSGmidRR41vtMvz3t5Ai1Sd6hfe3GfTvwgY6/aw4DIUec1Hktz6YQzBBjVOrH8qz6od3YLNQwY7I+J079T9qDTHbDF2fJYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299630; c=relaxed/simple;
-	bh=2lxBXyGNAFhmcnYuQHtXA3An/BelaLuBK0v8NHYHZVE=;
+	s=arc-20240116; t=1779302429; c=relaxed/simple;
+	bh=lvvw6oZnMpnR8J30w8UfW8G+du6FUjiH2OPPI3Kc6RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rdzTn5P1pm6vWkbkAC1ezF+sc8CGu14O3ODrOJ2DvqA2NX/cxH5sJIrR9xNisHJGIb/gYHlxC1rWFt5RVSRo8sczWvKxarcazDkbltAzqXg6FVSLKwMaA6qYyzwMTGfYxDYrrbLQaLQpzeH25dV1m2MawrsvpWUZ+0KTSFU8uHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPyABXew; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6321F000E9;
-	Wed, 20 May 2026 17:53:48 +0000 (UTC)
+	 MIME-Version; b=YQDhk3NYVUPrHaYVT4MJqvY9QAcyGMsGEI8s1rYUH7Iyan61Sbxqti8TdW8ZT2UwnVpZHCzUJwD7FlhoSen/hthI5zXc6b85/UPqHmv5B151A7Sx0OnX9gVsJih++G8Dgoe9ucgdnCkFvALcyODhjR01XtrNHagR9ZhzzUt/fLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUF4FfGx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2380A1F000E9;
+	Wed, 20 May 2026 18:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299629;
-	bh=QVLXNUkAcRPm6dmDoiqS6tcu8KtQKDVNYinbyrJtpVQ=;
+	s=korg; t=1779302427;
+	bh=blmrmFwsQAJAOznWUjY+PALkorwW3Ybz7rNEdG6LRC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JPyABXewiNLM+/KwSAI2yE5hFuecGd/1U6xKLYCFCFPC9aeI9rX5UYJEaWR+yKl2g
-	 eeQG3tqAAN/H+CdqizkdFVX/lCmK9AO9d2J/sCnEJrjVBAINqQRRaoopG+kM6LjSUD
-	 nrXXp+IY2OtNT1ol+zVFVGaioVsqpUntjB4ySxBk=
+	b=JUF4FfGxtFUhk7sw95SeEaeAl+D2emCDjADFpkDs3ctQStN6vOFOHcyL64a0e0oZA
+	 kyxC3y4arQtqwN0n5xLaxX8/UV8akwFNPvgULgW+EFCitolhVrXTuiTV391FjCg/Wa
+	 14nZOUxJpVUGws/7OUW74UxPwlwrGjVvHYJC61kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 804/957] drm/amdgpu/vcn: set no_user_fence for VCN v5.0.0 enc ring
+Subject: [PATCH 6.6 264/508] tty: hvc_iucv: fix off-by-one in number of supported devices
 Date: Wed, 20 May 2026 18:21:27 +0200
-Message-ID: <20260520162152.004580026@linuxfoundation.org>
+Message-ID: <20260520162104.365759971@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252056-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253109-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A0552595954
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8E5C3598838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 8cae0ce77de492d7c31c1532a2e80c0c6e7e58cb ]
+[ Upstream commit f2a880e802ad12d1e38039d1334fb1475d0f5241 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+MAX_HVC_IUCV_LINES == HVC_ALLOC_TTY_ADAPTERS == 8.
+This is the number of entries in:
+  static struct hvc_iucv_private *hvc_iucv_table[MAX_HVC_IUCV_LINES];
 
-Fixes: b6d1a0632051 ("drm/amdgpu: add VCN_5_0_0 IP block support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 49b1fbbb5a071197ee71e2d70959b1cb29bdc317)
+Sometimes hvc_iucv_table[] is limited by:
+(a)	if (num > hvc_iucv_devices) // for error detection
+or
+(b)	for (i = 0; i < hvc_iucv_devices; i++) // in 2 places
+(so these 2 don't agree; second one appears to be correct to me.)
+
+hvc_iucv_devices can be 0..8. This is a counter.
+(c)	if (hvc_iucv_devices > MAX_HVC_IUCV_LINES)
+
+If hvc_iucv_devices == 8, (a) allows the code to access hvc_iucv_table[8].
+Oops.
+
+Fixes: 44a01d5ba8a4 ("[S390] s390/hvc_console: z/VM IUCV hypervisor console support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260130072939.1535869-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/hvc/hvc_iucv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-index 6109124f852e5..d5f49fa33bee4 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
-@@ -1207,6 +1207,7 @@ static const struct amdgpu_ring_funcs vcn_v5_0_0_unified_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.get_rptr = vcn_v5_0_0_unified_ring_get_rptr,
- 	.get_wptr = vcn_v5_0_0_unified_ring_get_wptr,
- 	.set_wptr = vcn_v5_0_0_unified_ring_set_wptr,
+diff --git a/drivers/tty/hvc/hvc_iucv.c b/drivers/tty/hvc/hvc_iucv.c
+index 543f35ddf523c..26953f0daa9fc 100644
+--- a/drivers/tty/hvc/hvc_iucv.c
++++ b/drivers/tty/hvc/hvc_iucv.c
+@@ -130,7 +130,7 @@ static struct iucv_handler hvc_iucv_handler = {
+  */
+ static struct hvc_iucv_private *hvc_iucv_get_private(uint32_t num)
+ {
+-	if (num > hvc_iucv_devices)
++	if (num >= hvc_iucv_devices)
+ 		return NULL;
+ 	return hvc_iucv_table[num];
+ }
 -- 
 2.53.0
 
