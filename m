@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIMTHQj4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:00 +0200
+	id cPuqB+j3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE1E595485
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF15C595425
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D219935A7015
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5872130B98D3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEC23E0C70;
-	Wed, 20 May 2026 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F0F3D75D3;
+	Wed, 20 May 2026 17:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkzY5r+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpxFynvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848C03DC857;
-	Wed, 20 May 2026 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20853E6385;
+	Wed, 20 May 2026 17:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296306; cv=none; b=WzOz33u26ZLFSWAJ99ieOGYGAQJTRxa/LYDEcXOuqGKIuEZ+skSjHSudkf8JZJkLveMj1Su7qlKMWsaM4N/GsiGg6f6DjC3aErKsaVaXu6UMEoye/o3WFIbKbGR+najYDMy3S7IFEapLtUGW8habOttJObKzgU2TXUMLS9dXjuk=
+	t=1779298721; cv=none; b=RokK7gMEKZyah7bwshSmei10sm4VmQyafBVAk96vyqHa6AWR4nkbx282s0EgEE7X3H+603cwxiZ2URAmrRJFjZPdX2gjY3OY4wrX4Bl1aBXiDxEOiREuVVs6ZrkjcntOwb17qqoA/se1CGQjwqzC9+ZtAfI7Uda7dfz3TjKjde0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296306; c=relaxed/simple;
-	bh=ZUVFfATdLLTtIT16/XWwhkkh59WToUUmingzMSaKM80=;
+	s=arc-20240116; t=1779298721; c=relaxed/simple;
+	bh=enNNM2/WnxkIbQ4lbg/vxBEnY6wdM2XblBgt+qy9hEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQFzxnfsQi4ZoHx2ccuHgO4T+nOMHcQ/v0oYzvdCSXax9dv9tTvJ5tNcdskbvtQoaVVectwIEJ/ZjNoX30Il4o3hx7O1Y31njwWMbIP507immJ0RfkT3V35S72C8skYGZBhr7W3cUOqdoevjqKED8Wbt1146D8Xv1pKH7x99j6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkzY5r+S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA941F000E9;
-	Wed, 20 May 2026 16:58:24 +0000 (UTC)
+	 MIME-Version; b=Sh/xaDKWbxRjqIsi9nqXo4inw+1kdDmTJWlBIx99WozJUhGaQJMmUMQB8e3RyReGIGVaeXl7l/opvt1npEqNH8wr6yw5TObFgo4Vi/r8HTQHSjK7CAXG/Ra7pYnEQngF7KJsso7IY1HGDjnzRCnMi+jUJSjBlysS0R3KBzSXjeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpxFynvR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224911F000E9;
+	Wed, 20 May 2026 17:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296305;
-	bh=dQqxn0a7LKjEwvqCrxT2RUbGpKGxjheaiaMh5rjOz6w=;
+	s=korg; t=1779298719;
+	bh=zaYJs6iB7YCTQdP0Gxv4IKRwA7w8nyRUeHAYn9Ee8kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UkzY5r+S6thICBvb28uTPf9eFPWjUHPU/WOIwgmqbkcUD/2g+79oHKsBY8DfFILYx
-	 JbkQuGli08jQE/F1Pz+maaMPoRqahgDsFW+ou05hOKiNmGozpEPbeOud+rI3j35lCB
-	 QEVc0FSQjtt5145nlAfoH725EeyEjapys+tn7Rso=
+	b=kpxFynvRALBSSNg6oo85h5Sp3w4XFO8IY7eUmAew8tsZwBCamZqqa5+ts+NvVtDJa
+	 yRaVxvNgf/CyOgYnWHjMDBgLXo0ZQDbLnRYG7hANUM4qGsX82Ezp34XQgAROVNcD96
+	 Mnkdm9andIYiMXcj7kp6V6I752rAKfjockGrMQX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Ian Rogers <irogers@google.com>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0750/1146] arm64: dts: imx8mp-debix-model-a: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.18 517/957] perf cgroup: Update metric leader in evlist__expand_cgroup
 Date: Wed, 20 May 2026 18:16:40 +0200
-Message-ID: <20260520162205.182776211@linuxfoundation.org>
+Message-ID: <20260520162145.745754181@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +65,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250785-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251722-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: EDE1E595485
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EF15C595425
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 3b778178997aee24537b521a8cb60970bc1ce01c ]
+[ Upstream commit c9ef786c0970991578397043f1c819229e2b7197 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there is interrupt storm for i.MX8MP DEBIX Model A. Per schematic, there
-is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
-PUE and PU together to make pull up work properly.
+When the evlist is expanded the metric leader wasn't being updated. As
+the original evsel is deleted this creates a use-after-free in
+stat-shadow's prepare_metric. This was detected running the "perf stat
+--bpf-counters --for-each-cgroup test" with sanitizers.
 
-Fixes: c86d350aae68e ("arm64: dts: Add device tree for the Debix Model A Board")
-Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Closes: https://lore.kernel.org/all/20260323105858.GA2185714@killaraus.ideasonboard.com/
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The change itself puts the copied evsel into the priv field (known
+unused because of evsel__clone use) and then in a second pass over the
+list updates the copied values using the priv pointer.
+
+Fixes: d1c5a0e86a4e ("perf stat: Add --for-each-cgroup option")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Sun Jian <sun.jian.kdev@gmail.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/cgroup.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-index 9422beee30b29..201cf7f5eb0ea 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-@@ -440,7 +440,7 @@ MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA					0x400001c3
+diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
+index 25e2769b5e74f..0038d2ac647c4 100644
+--- a/tools/perf/util/cgroup.c
++++ b/tools/perf/util/cgroup.c
+@@ -416,7 +416,6 @@ static bool has_pattern_string(const char *str)
+ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgroup)
+ {
+ 	struct evlist *orig_list, *tmp_list;
+-	struct evsel *pos, *evsel, *leader;
+ 	struct rblist orig_metric_events;
+ 	struct cgroup *cgrp = NULL;
+ 	struct cgroup_name *cn;
+@@ -451,6 +450,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
+ 		goto out_err;
  
- 	pinctrl_pmic: pmicirqgrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x1c0
- 		>;
- 	};
+ 	list_for_each_entry(cn, &cgroup_list, list) {
++		struct evsel *pos;
+ 		char *name;
  
+ 		if (!cn->used)
+@@ -466,21 +466,37 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
+ 		if (cgrp == NULL)
+ 			continue;
+ 
+-		leader = NULL;
++		/* copy the list and set to the new cgroup. */
+ 		evlist__for_each_entry(orig_list, pos) {
+-			evsel = evsel__clone(/*dest=*/NULL, pos);
++			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
++
+ 			if (evsel == NULL)
+ 				goto out_err;
+ 
++			/* stash the copy during the copying. */
++			pos->priv = evsel;
+ 			cgroup__put(evsel->cgrp);
+ 			evsel->cgrp = cgroup__get(cgrp);
+ 
+-			if (evsel__is_group_leader(pos))
+-				leader = evsel;
+-			evsel__set_leader(evsel, leader);
+-
+ 			evlist__add(tmp_list, evsel);
+ 		}
++		/* update leader information using stashed pointer to copy. */
++		evlist__for_each_entry(orig_list, pos) {
++			struct evsel *evsel = pos->priv;
++
++			if (evsel__leader(pos))
++				evsel__set_leader(evsel, evsel__leader(pos)->priv);
++
++			if (pos->metric_leader)
++				evsel->metric_leader = pos->metric_leader->priv;
++
++			if (pos->first_wildcard_match)
++				evsel->first_wildcard_match = pos->first_wildcard_match->priv;
++		}
++		/* the stashed copy is no longer used. */
++		evlist__for_each_entry(orig_list, pos)
++			pos->priv = NULL;
++
+ 		/* cgroup__new() has a refcount, release it here */
+ 		cgroup__put(cgrp);
+ 		nr_cgroups++;
 -- 
 2.53.0
 
