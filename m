@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EETNH3saDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:59 +0200
+	id oHWVDvryDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB228599C0A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CE2594728
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFAE9335FE64
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A077E3513D33
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0145B3D5642;
-	Wed, 20 May 2026 17:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C882639A05A;
+	Wed, 20 May 2026 16:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1PB2Mlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mv3UXHcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C85346E5E;
-	Wed, 20 May 2026 17:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845AD31A575;
+	Wed, 20 May 2026 16:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297902; cv=none; b=dxO3hHKNgmOTGIyzWSWea5xV7HRmEKc0iHwEICp8EXSUhcCYdNhWp52Sw0htSPjTWaBxIFu9U8lZwgqf9UkEEE0OeqKucllsn9fXjtmoBVAfRIEbZJ6KfI0Y6p39UHOQVYdVMMLM8yGb3XfSc3oN3uMotYrAt5XuqYuf55+En5E=
+	t=1779295488; cv=none; b=FpN51/wfERjpUTI77ozaPLPq1f2UNBjoiANNRyc5z0ytCHwx/LnVGxr43+pDAMH3BvMb64JA6DFNIeoLV8tHtiz14efSWnu+zw2Mq5IID7PaQjnVZkU0coT+8ayofKTYLd4ecMqiMKsuL5gkssAnZpr3UVfR9+E9IuuFoSTsdig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297902; c=relaxed/simple;
-	bh=oxoNwqNIwGUFzjs4iBtQ/34nrIHxt2C6FcvCpPDHknY=;
+	s=arc-20240116; t=1779295488; c=relaxed/simple;
+	bh=VfQzBJyCSjYxEMeLgi5cp7pVDyH3DeezVUwF9daEZyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5niLg4FStTg55vDD/H/J1YCfdp4ajhYybinULY62REZwCUH0hJqc4i3intw5HPP+G5444FHzQGM13hk3W3oDgirGL6g1INSVqji9lywQ/WihfmgpEYgy3b78+ObRc+GKymWuvUP1+3N5HpUUTb+USWmpGrkOF9wsS6drSiREM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1PB2Mlj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DC11F000E9;
-	Wed, 20 May 2026 17:25:01 +0000 (UTC)
+	 MIME-Version; b=HTnX5sw3amO9lP+Jdf9Vom3PSOBtaa7OIFGBZXd6IYKOFm4oG/p8YfIIRtq04YngRYzGmDuGCSzbNX4Oe9itRHj+PMKQLtAF/H7tXUcFmT81O+LUwD/Wvzco960JoJXTGy1nfwpAcz0LmCvhZW+V8JxTBaG907YcWt40UPbm9VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mv3UXHcy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D061F000E9;
+	Wed, 20 May 2026 16:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297901;
-	bh=TOm2ldGxirDEl9oTdCCLs22idVyYkkceerwPqt73U1s=;
+	s=korg; t=1779295487;
+	bh=PzfERCNEutF50+H2hCmT5sPpdQg3fU1pLmf7J8mZPPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B1PB2MljA1QRJb6Ld580aA8SdurXjC4SrubTYzUukcXj8uP1XJOmYUqJxf+3su4Rz
-	 arvfVlvFqWn2z9lLCZ5s4tXN6bhh6E3wFQrdK2koZyuXFMedegZqiFJ7vvB9AMrvaC
-	 5ow8u50+bifr/x5qLw66kDDmCDdVpUpE0g8LlqoE=
+	b=Mv3UXHcyXbaZl38aW2AKwwDOrz3K90LZs/dOGcw/h8mkqbbbfBIBUTI+ycCgeUGtf
+	 W5uzjiZ3MxtsDuxrFjbKIEZCSqKFWqeizdXY5ot+VJ4cjPA8XG7ofT06rocILLVfwo
+	 Mdok/EYmRxp3kaT1xN8VlFTiXZoqVufZcxxYiTNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aksh Garg <a-garg7@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 206/957] PCI: dwc: ep: Fix MSI-X Table Size configuration in dw_pcie_ep_set_msix()
+Subject: [PATCH 7.0 0439/1146] spi: cadence-qspi: Revert the filtering of certain opcodes in ODTR
 Date: Wed, 20 May 2026 18:11:29 +0200
-Message-ID: <20260520162139.010739392@linuxfoundation.org>
+Message-ID: <20260520162158.134428904@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,71 +73,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251408-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250467-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ti.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DB228599C0A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 87CE2594728
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aksh Garg <a-garg7@ti.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 271d0b1f058ae9815e75233d04b23e3558c3e4f4 ]
+[ Upstream commit 5e75c1d4d386fb7d64e2b19355e4d38dd4fd8845 ]
 
-In dw_pcie_ep_set_msix(), while updating the MSI-X Table Size value for
-individual functions, Message Control register is read from the passed
-function number register space using dw_pcie_ep_readw_dbi(), but always
-written back to the Function 0's register space using dw_pcie_writew_dbi().
-This causes incorrect MSI-X configuration for the rest of the functions,
-other than Function 0.
+I got mislead while analyzing the driver by the fact that the second
+opcode byte was in all cases smashed:
 
-Fix this by using dw_pcie_ep_writew_dbi() to write to the correct
-function's register space, matching the read operation.
+        if (op->cmd.dtr)
+                opcode = op->cmd.opcode >> 8;
+        else
+                opcode = op->cmd.opcode;
 
-Fixes: 70fa02ca1446 ("PCI: dwc: Add dw_pcie_ep_{read,write}_dbi[2] helpers")
-Signed-off-by: Aksh Garg <a-garg7@ti.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20260224083817.916782-2-a-garg7@ti.com
+While at a first glance this doesn't let a chance to the second byte to
+be shifted out on the bus, this is actually the second step of an
+initialization, where the byte being apparently "ignored" in DTR mode
+has already been written in a dedicated "extended opcode" register. As
+such, the comment and the extra check that I proposed were entirely
+wrong, remove them.
+
+Fixes: bee085476d27 ("spi: cadence-qspi: Make sure we filter out unsupported ops")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260410-winbond-6-19-rc1-oddr-v1-1-2ac4827a3868@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index e2e18beb2951d..7350a703c4d19 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -538,7 +538,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
- 	val |= nr_irqs - 1; /* encoded as N-1 */
--	dw_pcie_writew_dbi(pci, reg, val);
-+	dw_pcie_ep_writew_dbi(ep, func_no, reg, val);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 1b0d6186c7efa..057381e56a7fd 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1544,10 +1544,6 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
+ 		if (op->data.nbytes && op->data.buswidth != 8)
+ 			return false;
  
- 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
- 	val = offset | bir;
+-		/* A single opcode is supported, it will be repeated */
+-		if ((op->cmd.opcode >> 8) != (op->cmd.opcode & 0xFF))
+-			return false;
+-
+ 		if (cqspi->is_rzn1)
+ 			return false;
+ 	} else if (!all_false) {
 -- 
 2.53.0
 
