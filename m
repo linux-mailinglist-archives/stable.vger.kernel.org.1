@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDjpEfMgDmqj6QUAu9opvQ
-	(envelope-from <stable+bounces-251994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:35 +0200
+	id IBR5JeotDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CB659A604
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D20BC59B7DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9336037A982F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A7B03835F4B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11F93F23BF;
-	Wed, 20 May 2026 17:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F0D46AEDF;
+	Wed, 20 May 2026 18:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO9b9Var"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggPBqfyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965C92F83A0;
-	Wed, 20 May 2026 17:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AA5466B4B;
+	Wed, 20 May 2026 18:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299467; cv=none; b=XuYuZGXesHi3njW5LKCNUsj0lDknd1eQemhKT3h3+YzJn37mfAWRlhe7N4pbqZa3mpj39T0sMGVzWvvLb2xgTSMOZCSKBWOcpt5NS/qFuaSDPD4uJq7fZIkwGF+06M/SbqtMGXWcWpI5kIWO+0uHxbZh3xJgKSLY7NkFWV7XNpA=
+	t=1779302376; cv=none; b=m4zbDBIa9NeEW5l9mQeakfwHwh3Fi4Fy0swUjgsgGLpXs28fBSHcrYKJSRWj+H/ZXW47QguAuqkLN0/cuvMV9lho7+gjTf36/e3KQg9JxlaZqjmWs/HxkbCUxU32bnvwrk5Z0UNuns0IYFt9Fqzcuglx5CQBD40o4aIThRjT3Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299467; c=relaxed/simple;
-	bh=OBzlsAVCVSTiz8mJOdRvoYezIRcst+3JLJ7Eq6jsMWM=;
+	s=arc-20240116; t=1779302376; c=relaxed/simple;
+	bh=Ccydpor3WdaB35YomyJShcGY27Ej+KeF46ZD4aq7kFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/YjTzYTCoq3b7mRJHUTxbW0D0CwPAFbZeG8uWSXkgWqbI1hcwbd2UxIvF2IYg0rOHuke1AjTBoeOFXcdQwu6NNLCKT2+BvQcHIdoQkzD646+wrcxTGXmw4tJZVxwoFdhxWiHV3DmibjdPcuSbNp1ZYVPIhXRr+kUDpwb2HRHmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO9b9Var; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A740D1F000E9;
-	Wed, 20 May 2026 17:51:05 +0000 (UTC)
+	 MIME-Version; b=aEoEROrQZ9fEUbfyaSGtajrHfhWGzib6mFf9mU/fL34E5BtAZSZztK20H07Tq+siUY/UtAljk9koBnP9Zko5NIoYxz0cLHWtFzJU0VTgbfwSXymZxViJbxZhJ9riW7lbLB3mN1qor4s0tOOevj+CKsHy19JtfaKyOEJbx0xTn3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggPBqfyo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89AF1F00893;
+	Wed, 20 May 2026 18:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299466;
-	bh=uZj2m6m9LJVPdFIcwMmGjtGwlWIK2bgwabMplpPMuoU=;
+	s=korg; t=1779302375;
+	bh=llOrHjeIZeISPJYzBbCqGfkleeLFDmSI1lhqOpfvLbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BO9b9VarIOtZDhvqoIyOU1sk18gugoK13335aHL3YvnzaKPzpryfgDvGO9Wd1H6ZD
-	 KmOtZ/5lQJs23Rz5EvPjOzKTjKGh213dNezcRT5lPXgPqlY40JlLXvRX3HFoA2hbKl
-	 vbY9tv/WKMa8HSPBch1uwcB+Dg3zcgMpITs0g9IQ=
+	b=ggPBqfyozf8XdiXJZlGELFna2eQn+KzvV1Rabc0CqWRKWWxrKBZK+yTASWZtEejUQ
+	 1KLxvnmeM5+iYCSEFFk+ZYLHlwLgiYPRnv7Bj9GHtLXFQr3GocR/NHRq/oLGqYqgCk
+	 9aPr4YvKM4j9N0IzmLdOwfJpzJn+7MhnP1el0ahY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yihan Ding <dingyihan@uniontech.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 782/957] net/sched: taprio: fix NULL pointer dereference in class dump
+Subject: [PATCH 6.6 242/508] bpf: allow UTF-8 literals in bpf_bprintf_prepare()
 Date: Wed, 20 May 2026 18:21:05 +0200
-Message-ID: <20260520162151.519347485@linuxfoundation.org>
+Message-ID: <20260520162103.893927199@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,158 +65,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251994-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,mojatatu.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniontech.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253089-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,asu.edu:email,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E1CB659A604
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email]
+X-Rspamd-Queue-Id: D20BC59B7DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Yihan Ding <dingyihan@uniontech.com>
 
-[ Upstream commit 3d07ca5c0fae311226f737963984bd94bb159a87 ]
+[ Upstream commit b960430ea8862ef37ce53c8bf74a8dc79d3f2404 ]
 
-When a TAPRIO child qdisc is deleted via RTM_DELQDISC, taprio_graft()
-is called with new == NULL and stores NULL into q->qdiscs[cl - 1].
-Subsequent RTM_GETTCLASS dump operations walk all classes via
-taprio_walk() and call taprio_dump_class(), which calls taprio_leaf()
-returning the NULL pointer, then dereferences it to read child->handle,
-causing a kernel NULL pointer dereference.
+bpf_bprintf_prepare() only needs ASCII parsing for conversion
+specifiers. Plain text can safely carry bytes >= 0x80, so allow
+UTF-8 literals outside '%' sequences while keeping ASCII control
+bytes rejected and format specifiers ASCII-only.
 
-The bug is reachable with namespace-scoped CAP_NET_ADMIN on any kernel
-with CONFIG_NET_SCH_TAPRIO enabled. On systems with unprivileged user
-namespaces enabled, an unprivileged local user can trigger a kernel
-panic by creating a taprio qdisc inside a new network namespace,
-grafting an explicit child qdisc, deleting it, and requesting a class
-dump. The RTM_GETTCLASS dump itself requires no capability.
+This keeps existing parsing rules for format directives unchanged,
+while allowing helpers such as bpf_trace_printk() to emit UTF-8
+literal text.
 
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
- RIP: 0010:taprio_dump_class (net/sched/sch_taprio.c:2478)
- Call Trace:
-  <TASK>
-  tc_fill_tclass (net/sched/sch_api.c:1966)
-  qdisc_class_dump (net/sched/sch_api.c:2326)
-  taprio_walk (net/sched/sch_taprio.c:2514)
-  tc_dump_tclass_qdisc (net/sched/sch_api.c:2352)
-  tc_dump_tclass_root (net/sched/sch_api.c:2370)
-  tc_dump_tclass (net/sched/sch_api.c:2431)
-  rtnl_dumpit (net/core/rtnetlink.c:6864)
-  netlink_dump (net/netlink/af_netlink.c:2325)
-  rtnetlink_rcv_msg (net/core/rtnetlink.c:6959)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+Update test_snprintf_negative() in the same commit so selftests keep
+matching the new plain-text vs format-specifier split during bisection.
 
-Fix this by substituting &noop_qdisc when new is NULL in
-taprio_graft(), a common pattern used by other qdiscs (e.g.,
-multiq_graft()) to ensure the q->qdiscs[] slots are never NULL.
-This makes control-plane dump paths safe without requiring individual
-NULL checks.
-
-Since the data-plane paths (taprio_enqueue and taprio_dequeue_from_txq)
-previously had explicit NULL guards that would drop/skip the packet
-cleanly, update those checks to test for &noop_qdisc instead. Without
-this, packets would reach taprio_enqueue_one() which increments the root
-qdisc's qlen and backlog before calling the child's enqueue; noop_qdisc
-drops the packet but those counters are never rolled back, permanently
-inflating the root qdisc's statistics.
-
-After this change *old can be a valid qdisc, NULL, or &noop_qdisc.
-Only call qdisc_put(*old) in the first case to avoid decreasing
-noop_qdisc's refcount, which was never increased.
-
-Fixes: 665338b2a7a0 ("net/sched: taprio: dump class stats for the actual q->qdiscs[]")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260422161958.2517539-3-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
+Signed-off-by: Yihan Ding <dingyihan@uniontech.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260416120142.1420646-2-dingyihan@uniontech.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ kernel/bpf/helpers.c                            | 17 ++++++++++++++++-
+ .../testing/selftests/bpf/prog_tests/snprintf.c |  3 ++-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 91b85360f8091..b3481cafa6eca 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -633,7 +633,7 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	queue = skb_get_queue_mapping(skb);
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 2cfbc48b82425..885ff0710a8b9 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -849,7 +849,13 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		data->buf = buffers->buf;
  
- 	child = q->qdiscs[queue];
--	if (unlikely(!child))
-+	if (unlikely(child == &noop_qdisc))
- 		return qdisc_drop(skb, sch, to_free);
- 
- 	if (taprio_skb_exceeds_queue_max_sdu(sch, skb)) {
-@@ -716,7 +716,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
- 	int len;
- 	u8 tc;
- 
--	if (unlikely(!child))
-+	if (unlikely(child == &noop_qdisc))
- 		return NULL;
- 
- 	if (TXTIME_ASSIST_IS_ENABLED(q->flags))
-@@ -2185,6 +2185,9 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
- 	if (!dev_queue)
- 		return -EINVAL;
- 
-+	if (!new)
-+		new = &noop_qdisc;
+ 	for (i = 0; i < fmt_size; i++) {
+-		if ((!isprint(fmt[i]) && !isspace(fmt[i])) || !isascii(fmt[i])) {
++		unsigned char c = fmt[i];
 +
- 	if (dev->flags & IFF_UP)
- 		dev_deactivate(dev);
++		/*
++		 * Permit bytes >= 0x80 in plain text so UTF-8 literals can pass
++		 * through unchanged, while still rejecting ASCII control bytes.
++		 */
++		if (isascii(c) && !isprint(c) && !isspace(c)) {
+ 			err = -EINVAL;
+ 			goto out;
+ 		}
+@@ -871,6 +877,15 @@ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 		 * always access fmt[i + 1], in the worst case it will be a 0
+ 		 */
+ 		i++;
++		c = fmt[i];
++		/*
++		 * The format parser below only understands ASCII conversion
++		 * specifiers and modifiers, so reject non-ASCII after '%'.
++		 */
++		if (!isascii(c)) {
++			err = -EINVAL;
++			goto out;
++		}
  
-@@ -2198,14 +2201,14 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
- 	*old = q->qdiscs[cl - 1];
- 	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
- 		WARN_ON_ONCE(dev_graft_qdisc(dev_queue, new) != *old);
--		if (new)
-+		if (new != &noop_qdisc)
- 			qdisc_refcount_inc(new);
--		if (*old)
-+		if (*old && *old != &noop_qdisc)
- 			qdisc_put(*old);
- 	}
+ 		/* skip optional "[0 +-][num]" width formatting field */
+ 		while (fmt[i] == '0' || fmt[i] == '+'  || fmt[i] == '-' ||
+diff --git a/tools/testing/selftests/bpf/prog_tests/snprintf.c b/tools/testing/selftests/bpf/prog_tests/snprintf.c
+index 4be6fdb78c6a1..20a3c622bd28a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/snprintf.c
++++ b/tools/testing/selftests/bpf/prog_tests/snprintf.c
+@@ -114,7 +114,8 @@ static void test_snprintf_negative(void)
+ 	ASSERT_ERR(load_single_snprintf("%--------"), "invalid specifier 5");
+ 	ASSERT_ERR(load_single_snprintf("%lc"), "invalid specifier 6");
+ 	ASSERT_ERR(load_single_snprintf("%llc"), "invalid specifier 7");
+-	ASSERT_ERR(load_single_snprintf("\x80"), "non ascii character");
++	ASSERT_OK(load_single_snprintf("\x80"), "non ascii plain text");
++	ASSERT_ERR(load_single_snprintf("%\x80"), "non ascii in specifier");
+ 	ASSERT_ERR(load_single_snprintf("\x1"), "non printable character");
+ }
  
- 	q->qdiscs[cl - 1] = new;
--	if (new)
-+	if (new != &noop_qdisc)
- 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
- 
- 	if (dev->flags & IFF_UP)
 -- 
 2.53.0
 
