@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALInOkn9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:25 +0200
+	id 8PieMRkBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA0C5963F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DE0597295
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7A97352E219
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 731AA30AE9FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24FB3E5ECF;
-	Wed, 20 May 2026 17:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941DE37DE8A;
+	Wed, 20 May 2026 18:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhaaWlPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjGZctzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9224F3F20FA;
-	Wed, 20 May 2026 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F3836EA8B;
+	Wed, 20 May 2026 18:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299353; cv=none; b=jMPI+kmSIc4S/+dmGDuxDAX/iUCYSWGT+8gGp5MXOFlDFcxD0Gbem2MZZR8y1uaF++eTByt9gGAjJ1qN/2iWwWHeop13sxz1FcbfW/XT0gr4tGM212+YHzTTiYm8dYpqWPL4A4PkizL2K6tObwT0auwyCwQYkFjYgRdAk7wrXRg=
+	t=1779302260; cv=none; b=AluxTSv8puXo+p4jYRuHTG0arWwTm7lksQv0Af0vc1NbIMqLDesMAQqNF6LhWGQR2b35J1efWhH3RVyE+2ePxhnPqtaKA4kktjkY2rDjUP594SQ4b+tDHd3bs2riP+6O1zfAJ5TjtgL7APOypAH0rSztaUkHUafdG9KeMADnd2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299353; c=relaxed/simple;
-	bh=fsCbya3z+6RjHKUnDSQZznLRga0qnx01sZ+RO2PFfHU=;
+	s=arc-20240116; t=1779302260; c=relaxed/simple;
+	bh=+oom+7OEcN6hfOMTzCVw4Vc7QiTckGuD11cfKvoYv+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rx+0XRVCkaDOmY20E+VyGRt24XQFMh3Tpu7AD4Z/6bxW2IzopVEcRzx6jFj9S8snGFyY1Ma/7kdyqqViVSlCa78WPPDfhnwrxCGlLmrUFnsTh7ZYwoyxGxcxYUs0Si2vUU3W2Ty7ZZppPsxSkgE7g7g013LAubNz2K1ixzi9QF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhaaWlPk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153121F000E9;
-	Wed, 20 May 2026 17:49:09 +0000 (UTC)
+	 MIME-Version; b=BdQajwAnJMujH5pImEVIO3KZZ6MmCA8PbXzuNTsG2sLozS3Gwabve4c3PR15Bf/dr+jQggS95IQvxldfeNcxYoqQIQLnatj1MM50kzrMj+ncd0PbVQw2HTVem+85JFbkpzYgliOwOBr9FTbyTB7v7IUFapyeSqsDmp5GYAj4jTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjGZctzS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87A81F000E9;
+	Wed, 20 May 2026 18:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299350;
-	bh=CI9O1GpfPa0ODSFhN/C2QaZb+jx94c78U+OyEvm+vkc=;
+	s=korg; t=1779302259;
+	bh=OGT0uU9J1/OycRe9pKV3OAtZuZNtaOE3b814XgsYIZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QhaaWlPkgWl8At7Rr6fXdosdRWY/npCdocLxCGAvigiNRRIQMGkcDNDt2kQErYdyd
-	 Z4NKrK/OV5b5yCbjYbbcAGBwTBCZxAd3btIKPdEY/5jUTogldiuZ6SfVok9cXAJjyb
-	 vhm0FdUo9/e7K1/p7HgM6mfp7IwxiOrBldbyzSjA=
+	b=OjGZctzSoPojBZDIjGgRiixNcblxZcVYTjnXW3/UmJHfDL+eP3dQ/mXe5MZSfilCd
+	 JGfYnfkrQhKZ9/B9IscC06xNA1G3tq3723lQtp3AbZNayy+ReIJ+B0M33YHDyOo52F
+	 Ro7cehXk7//W1u58Gmwn1ftP1uOdHjzf9td/7zbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 738/957] mailbox: mailbox-test: initialize struct earlier
+Subject: [PATCH 6.6 198/508] arm64: dts: qcom: sm8450: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:20:21 +0200
-Message-ID: <20260520162150.564704819@linuxfoundation.org>
+Message-ID: <20260520162102.926591686@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +66,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251949-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253045-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 8CA0C5963F5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,0.134.86.160:email,qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 88DE0597295
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit bbcf9af68bfedb3d9cc3c7eae62f5c844d8b78b9 ]
+[ Upstream commit db0c5ef1abda6effdc5c85d6688fb6af2b351ae5 ]
 
-The waitqueue must be initialized before the debugfs files are created
-because from that time, requests from userspace can already be made.
-Similarily, drvdata and spinlock needs to be initialized before we
-request the channel, otherwise dangling irqs might run into problems
-like a NULL pointer exception.
+The reported problem of some non-working UHS-I speed modes on SM8450
+originates in commit 0a631a36f724 ("arm64: dts: qcom: Add device tree
+for Sony Xperia 1 IV"), and then it was spread to all SM8450 powered
+platforms by commit 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable
+SDHCI SDR104/SDR50 on all boards").
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+The tests show that the rootcause of the problem was related to an
+overclocking of SD cards, and it's fixed later on by commit a27ac3806b0a
+("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs").
+
+Since then both SDR50 and SDR104 speed modes are working fine on SM8450,
+tested on SM8450-HDK:
+
+SDR50 speed mode:
+
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.6254 s, 43.6 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.3266 s, 87.1 MB/s
+
+Remove the restrictions on SD card speed modes from the SM8450 platform
+dtsi file and enable UHS-I speed modes.
+
+Fixes: 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable SDHCI SDR104/SDR50 on all boards")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-5-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 210f6077f475c..a0a7908c9cc26 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -366,6 +366,12 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev)
- 		return -ENOMEM;
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index b745d8b476408..c1c62c6d34bd1 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4279,9 +4279,6 @@ sdhc_2: mmc@8804000 {
+ 			bus-width = <4>;
+ 			dma-coherent;
  
-+	tdev->dev = &pdev->dev;
-+	spin_lock_init(&tdev->lock);
-+	mutex_init(&tdev->mutex);
-+	init_waitqueue_head(&tdev->waitq);
-+	platform_set_drvdata(pdev, tdev);
-+
- 	/* It's okay for MMIO to be NULL */
- 	tdev->tx_mmio = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (PTR_ERR(tdev->tx_mmio) == -EBUSY) {
-@@ -395,12 +401,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev->rx_channel && (tdev->rx_mmio != tdev->tx_mmio))
- 		tdev->rx_channel = tdev->tx_channel;
- 
--	tdev->dev = &pdev->dev;
--	platform_set_drvdata(pdev, tdev);
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0x0>;
 -
--	spin_lock_init(&tdev->lock);
--	mutex_init(&tdev->mutex);
--
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
- 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
-@@ -414,7 +414,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_free_chans;
+ 			status = "disabled";
  
--	init_waitqueue_head(&tdev->waitq);
- 	dev_info(&pdev->dev, "Successfully registered\n");
- 
- 	return 0;
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
