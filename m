@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEzPMb0QDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:25 +0200
+	id gBb6DxL7DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-251406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24545598CD1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D57595C8E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57EB1331EBB3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72248333DD7B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3086B3191D0;
-	Wed, 20 May 2026 16:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D6D3F7ABC;
+	Wed, 20 May 2026 17:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cm0GCQ+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrjKH/6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFBD1BD9D0;
-	Wed, 20 May 2026 16:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDF43F6C4C;
+	Wed, 20 May 2026 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295591; cv=none; b=NltGoHqq1E+wfuKTiv/p59NRtY4CmySRe17LdxFA0VizgFSKC5RFiqj9BC+7R+JhMYE+rqX7g0F/+Fc+gLo+qGpPAWax1hyrKrsWQWpglYBK281qCsxinZCNyjtbonarkk7tLDQnfNjM71JCrtIYZ8GGs4XHu5qtUZSP+Jl446I=
+	t=1779297897; cv=none; b=caC14sk3AJmwrWR+7yWXe63kAd1IxAwCvHsSlocwVJrgDlFexoZDcn4dqy5UCjEoMGEVlfIYwVWzMtA+vd4ANh/bsdRiml75hra7e+l2uHJkEMTnCzVpRfhmSRoLuL4kWpuMWI2o+WvJib/9IB4kZZTeJAL+AosBrEzROmMzygk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295591; c=relaxed/simple;
-	bh=AqidraC83xNTXbib9cWyCfGTkge4lCs+Rwux8m06rPc=;
+	s=arc-20240116; t=1779297897; c=relaxed/simple;
+	bh=mJc6uT6BaPJZ/nefZuCwiMuv1BX/DAZ6t+rYoOrdYA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mya1ioQEC1cCi/hduK9G8ap4OWCiOYfmBDChk7U4TaGVp1wqe2NXueI9FbeLjm08gkmjDKMyNuIfWKMYDR+E9tXHE6khcFMH7KIzuSqXm7+G9Kl5VXI3c+QC49/GALX1420jDD5La8/m061CbPmxW2r7PxxEJ1bOgAjcolW0f1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cm0GCQ+N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FB71F000E9;
-	Wed, 20 May 2026 16:46:29 +0000 (UTC)
+	 MIME-Version; b=JDpngFku1bnYNV5OHLFyBuuAAl2ctDapTA474finhds6f1N41oSWJEPICvoiDabsMq3A1/UCl8AJ3eKG68QhcOlCilLTvN4o3h6eRtJLSKN5rOjMJxJGfG6RM/NpwqCdoK+9MMBx9Ul7Szh0/pySE7tZqt2hU4agBec7Gg4d0VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrjKH/6r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EF71F000E9;
+	Wed, 20 May 2026 17:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295589;
-	bh=xZZkADcHy9Q0CeEkda4T+NYB53tB2rDOaPej7Qq/1dA=;
+	s=korg; t=1779297896;
+	bh=aikQOXxOD2V69NnsdJAvnx02S3hhz9DBY8kPK66jZCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cm0GCQ+N+tXlQ6iGEvc47Wkta+T125Hjc8uSuPh7ug6lY9pTR3lZbovDPu5zHxWN3
-	 riUeKoC8tg5Jg6UauOq2ASdkQz4O4tMhxB8p9C/77enuv9pT7eodo1fAsCYlyp99MW
-	 TKgysEo+xmGTx52PrQ5+R41cdJIJzPzcf6MZvsDM=
+	b=nrjKH/6rGzuGFtgRIAtSZbKkwcJq9DaZtOAjySoQ7BtpYr2gxO136giq2L0Lv9yw6
+	 KOMb/WWj1SL+3myNptgp9T3ncH+M7jm5yBViCN+HHOSCaVCZpxNcCgJFKECnljgh5m
+	 Lnyi56YDkb5Mpp4YM6dJW7gdgSmcbNQsr3nGr5Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Ming-Hung Tsai <mtsai@redhat.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Martin Wilck <mwilck@suse.com>,
+	Hanna Czenczek <hreitz@redhat.com>,
 	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0436/1146] dm cache: fix missing return in invalidate_committeds error path
-Date: Wed, 20 May 2026 18:11:26 +0200
-Message-ID: <20260520162158.066273816@linuxfoundation.org>
+Subject: [PATCH 6.18 204/957] dm-mpath: dont stop probing paths at presuspend
+Date: Wed, 20 May 2026 18:11:27 +0200
+Message-ID: <20260520162138.967995407@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,77 +75,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250507-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251406-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 24545598CD1
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B6D57595C8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 8c0ee19db81f0fa1ff25fd75b22b17c0cc2acde3 ]
+[ Upstream commit 51d81e14fe6788dc6463064c7517480f2acd2724 ]
 
-In passthrough mode, dm-cache defers write submission until after
-metadata commit completes via the invalidate_committed() continuation.
-On commit error, invalidate_committed() calls invalidate_complete() to
-end the bio and free the migration struct, after which it should return
-immediately.
+Commit 5c977f102315 ("dm-mpath: Don't grab work_mutex while probing
+paths"), added code to make multipath quit probing paths early, if it
+was trying to suspend. This isn't necessary. It was just an optimization
+to try to keep path probing from delaying a suspend. However it causes
+problems with the intended user of this code, qemu. The path probing
+code was added because failed ioctls to multipath devices don't cause
+paths to fail in cases where a regular IO failure would.
 
-The patch 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-omitted this early return, causing execution to fall through into the
-success path on error. This results in use-after-free on the migration
-struct in the subsequent calls.
+If an ioctl to a path failed because the path was down, and the
+multipath device had passed presuspend, the M_MPATH_PROBE_PATHS ioctl
+would exit early, without probing the path. The caller would then retry
+the original ioctl, hoping to use a different path. But if there was
+only one path in the pathgroup, it would pick the same non-working path
+again, even if there were working paths in other pathgroups.
 
-Fix by adding the missing return after the invalidate_complete() call.
+ioctls to a suspended dm device will return -EAGAIN, notifying the
+caller that the device is suspended, but ioctls to a device that is just
+preparing to suspend won't (and in general, shouldn't). This means that
+the caller (qemu in this case) would get into a tight loop where it
+would issue an ioctl that failed, skip probing the paths because the
+device had already passed presuspend, and start over issuing the ioctl
+again. This would continue until the multipath device finally fully
+suspended, or the caller gave up and failed the ioctl.
 
-Fixes: 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/dm-devel/adjMq6T5RRjv_uxM@stanley.mountain/
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+multipath's path probing code could return -EAGAIN in this case, and the
+caller could delay a bit before retrying, but the whole purpose of
+skipping the probe after presuspend was to speed things up, and that
+would just slow them down. Instead, remove the is_suspending flag, and
+check dm_suspended() instead to decide whether to exit the probing code
+early. This means that when the probing code exits early, future ioctls
+will also be delayed, because the device is fully suspended.
+
+Fixes: 5c977f102315 ("dm-mpath: Don't grab work_mutex while probing paths")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/md/dm-mpath.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index e479ac22b97cc..af7a2571988b4 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1521,8 +1521,10 @@ static void invalidate_committed(struct work_struct *ws)
- 	struct bio *bio = mg->overwrite_bio;
- 	struct per_bio_data *pb = get_per_bio_data(bio);
+diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
+index 00df5be165759..3a25ec2993dc2 100644
+--- a/drivers/md/dm-mpath.c
++++ b/drivers/md/dm-mpath.c
+@@ -102,7 +102,6 @@ struct multipath {
+ 	struct bio_list queued_bios;
  
--	if (mg->k.input)
-+	if (mg->k.input) {
- 		invalidate_complete(mg, false);
-+		return;
-+	}
+ 	struct timer_list nopath_timer;	/* Timeout for queue_if_no_path */
+-	bool is_suspending;
+ };
  
- 	init_continuation(&mg->k, invalidate_completed);
- 	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
+ /*
+@@ -1748,9 +1747,6 @@ static void multipath_presuspend(struct dm_target *ti)
+ {
+ 	struct multipath *m = ti->private;
+ 
+-	spin_lock_irq(&m->lock);
+-	m->is_suspending = true;
+-	spin_unlock_irq(&m->lock);
+ 	/* FIXME: bio-based shouldn't need to always disable queue_if_no_path */
+ 	if (m->queue_mode == DM_TYPE_BIO_BASED || !dm_noflush_suspending(m->ti))
+ 		queue_if_no_path(m, false, true, __func__);
+@@ -1773,7 +1769,6 @@ static void multipath_resume(struct dm_target *ti)
+ 	struct multipath *m = ti->private;
+ 
+ 	spin_lock_irq(&m->lock);
+-	m->is_suspending = false;
+ 	if (test_bit(MPATHF_SAVED_QUEUE_IF_NO_PATH, &m->flags)) {
+ 		set_bit(MPATHF_QUEUE_IF_NO_PATH, &m->flags);
+ 		clear_bit(MPATHF_SAVED_QUEUE_IF_NO_PATH, &m->flags);
+@@ -2100,7 +2095,7 @@ static int probe_active_paths(struct multipath *m)
+ 		if (m->current_pg == m->last_probed_pg)
+ 			goto skip_probe;
+ 	}
+-	if (!m->current_pg || m->is_suspending ||
++	if (!m->current_pg || dm_suspended(m->ti) ||
+ 	    test_bit(MPATHF_QUEUE_IO, &m->flags))
+ 		goto skip_probe;
+ 	set_bit(MPATHF_DELAY_PG_SWITCH, &m->flags);
+@@ -2109,7 +2104,7 @@ static int probe_active_paths(struct multipath *m)
+ 
+ 	list_for_each_entry(pgpath, &pg->pgpaths, list) {
+ 		if (pg != READ_ONCE(m->current_pg) ||
+-		    READ_ONCE(m->is_suspending))
++		    dm_suspended(m->ti))
+ 			goto out;
+ 		if (!pgpath->is_active)
+ 			continue;
 -- 
 2.53.0
 
