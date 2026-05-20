@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOaaEK7yDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251203-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:10 +0200
+	id SK1tAUn+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028F759461E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B891059680C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0A343023BB9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 736E4317FDA1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5343F23BF;
-	Wed, 20 May 2026 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42BF3FBEC0;
+	Wed, 20 May 2026 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxwW+WzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw0PlVse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5673EE1DA;
-	Wed, 20 May 2026 17:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666CB332EBD;
+	Wed, 20 May 2026 18:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297369; cv=none; b=GdAp9JGl1wK7CAVnIHXsN5crvqRNpzl6hxstat//nmH+oGslIH74xrBV48WJyHSPTs6VqCScwGpVM/9bOyE67ils2Ht+JeYV641vldUuiFQKqWxAScaqb4mLpVT3IKkH5VnaxuWd2tPcmagNTQXqIiVlOUjQJh8dCZB6sDArKPU=
+	t=1779301500; cv=none; b=pd+ijKhYBhtVLhX6VDqx/MveB/7XYjG1V96OdKd+IIjvm+VXjLFrEKLAMUAhL74HKMPelCFAS5h4oU6DXE3gA3pQrKz9nZH6WF4bq5OohE6AXOuHSTYlaALgqy25o9phJ0zqbif6CUsUU0znUypRJAt/AEfeGOqjg6zOam9tnXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297369; c=relaxed/simple;
-	bh=XbhUh/3hp0pAzlq1pS7mcyxH8YzqEg4qVP+KN8i076Q=;
+	s=arc-20240116; t=1779301500; c=relaxed/simple;
+	bh=rWbL0qxiOrkdquEeAEwcr/QcbLjfuLVa4DUx1JvdMPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2gulnRe3JtJWnr/Zcico7DwxroNIpY5vQKE7dI410jGbQyTmgArJ3u6e4UkQLRpVA8BesxCQaHPeZensgyXtsYHl2pboa8YeZ17chdmf/btHH1lG/SezRiSBnv9IcptlkN/EMitG7s8gX37Xf31Olfdfw5OxS1Fv3lsWmhfGc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxwW+WzC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B371F000E9;
-	Wed, 20 May 2026 17:16:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aUwjDDnuisGXkkOmk+F8Ha/34O8R4eezDC4NIsFmS5lJ8mQw+Rf1HA+TJSybVHUZs2htJVSTir5D+G9G3TqFkoaR4eBS4+Vjb2JDT78bw91sr5OR0H843ftLk7BYgbQGSvs73qMUUk5liOcTUMPaHG+UrWQkQmNhDtNdQPCMv5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw0PlVse; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2EE1F000E9;
+	Wed, 20 May 2026 18:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297367;
-	bh=YgWrpFRj5BSZQOSjwfhvnCYs3+J04WrUcuhMMpByfWc=;
+	s=korg; t=1779301499;
+	bh=YjvST5FoyeA4yGEE8dhTEUc1ngWllgMmabSS3phnZWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mxwW+WzC/bP7gtwFiLXcZ8e6q1wBDpchvza/fbMzgGd1kBFAO4iTRrioy/cB6MQ4+
-	 +xrOdYxIMbaq7+fkdHN2A0Oao9hdKMZ0+UUQk6byLyE4GL/JAwXK5kZ29F5+isX6/c
-	 CICqCYtMlYrLrTn88cUcnQWV6peI++Q1G4YMlD4I=
+	b=dw0PlVseIzMBIVaVEqRA9Un69jOGY59eM5CY1KSvKRH7qmjRzkK5vtJRJfhp/3nfo
+	 sYMGwdUK4TVsQxjKKtofhNU0GVPxuW9osLH7LXG96GRLaN583xHhDvuEbh9m1J8o2C
+	 XAXkMHZq742QBQcNW6pkjYwHR2xejkFKVWixTwmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 7.0 1140/1146] arm_mpam: Fix false positive assert failure during mpam_disable()
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 579/666] drm/amd/display: Read EDID from VBIOS embedded panel info
 Date: Wed, 20 May 2026 18:23:10 +0200
-Message-ID: <20260520162214.053792775@linuxfoundation.org>
+Message-ID: <20260520162123.818202925@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,173 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252753-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251203-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: 028F759461E
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B891059680C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit f1caff3335ea6eab88cdc84ec8f2e3c45ca05486 upstream.
+[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
 
-mpam_assert_partid_sizes_fixed() is used to document that the caller
-doesn't expect the discovered PARTID size to change while it is walking
-a list sized by PARTID. Typically the MSC state is not written to until
-all the MSC have been discovered and this value is set.
+Some board manufacturers hardcode the EDID for the embedded
+panel in the VBIOS. This EDID should be used when the panel
+doesn't have a DDC.
 
-However, if discovering the MSC fails and schedules mpam_disable(),
-then the MSC state is written to reset it. In this case the
-discovered PARTID size may be become smaller - but only PARTID 0
-will be used once resctrl_exit() has been called.
+For reference, see the legacy non-DC display code:
+amdgpu_atombios_encoder_get_lcd_info()
 
-Skip the WARN_ON_ONCE() if mpam_disable_reason has been set.
+This is necessary to support embedded connectors without DDC.
 
-Fixes: 3bd04fe7d807 ("arm_mpam: Extend reset logic to allow devices to be reset any time")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/resctrl/mpam_devices.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
+ .../display/include/grph_object_ctrl_defs.h   |  4 ++
+ 2 files changed, 66 insertions(+)
 
---- a/drivers/resctrl/mpam_devices.c
-+++ b/drivers/resctrl/mpam_devices.c
-@@ -148,11 +148,17 @@ static void mpam_free_garbage(void)
- /*
-  * Once mpam is enabled, new requestors cannot further reduce the available
-  * partid. Assert that the size is fixed, and new requestors will be turned
-- * away.
-+ * away. This is needed when walking over structures sized by PARTID.
-+ *
-+ * During mpam_disable() these structures are not fixed, but the MSC state
-+ * is still reset using whatever sizes have been discovered so far. As only
-+ * PARTID 0 will be used after mpam_disable(), any race would be benign.
-+ * Skip the check if a mpam_disable_reason has been set.
-  */
- static void mpam_assert_partid_sizes_fixed(void)
- {
--	WARN_ON_ONCE(!partid_max_published);
-+	if (!mpam_disable_reason)
-+		WARN_ON_ONCE(!partid_max_published);
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index a523c5cfcd248..fad0129bf8b12 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -1215,6 +1215,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
+ 	return BP_RESULT_FAILURE;
  }
  
- static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
++static enum bp_result get_embedded_panel_extra_info(
++	struct bios_parser *bp,
++	struct embedded_panel_info *info,
++	const uint32_t table_offset)
++{
++	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
++	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
++	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
++
++	while (*record != ATOM_RECORD_END_TYPE) {
++		switch (*record) {
++		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
++			record += sizeof(ATOM_PATCH_RECORD_MODE);
++			break;
++		case LCD_RTS_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_RTS_RECORD);
++			break;
++		case LCD_CAP_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
++			break;
++		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
++			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
++			if (fake_edid_record->ucFakeEDIDLength) {
++				if (fake_edid_record->ucFakeEDIDLength == 128)
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength;
++				else
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength * 128;
++
++				info->fake_edid = fake_edid_record->ucFakeEDIDString;
++
++				record += struct_size(fake_edid_record,
++						      ucFakeEDIDString,
++						      info->fake_edid_size);
++			} else {
++				/* empty fake edid record must be 3 bytes long */
++				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
++			}
++			break;
++		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
++			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
++			info->panel_width_mm = panel_res_record->usHSize;
++			info->panel_height_mm = panel_res_record->usVSize;
++			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
++			break;
++		default:
++			return BP_RESULT_BADBIOSTABLE;
++		}
++	}
++
++	return BP_RESULT_OK;
++}
++
+ static enum bp_result get_embedded_panel_info_v1_2(
+ 	struct bios_parser *bp,
+ 	struct embedded_panel_info *info)
+@@ -1331,6 +1385,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
+ 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
+ 		info->lcd_timing.misc_info.API_ENABLED = true;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+@@ -1456,6 +1514,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
+ 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
+ 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+index 813463ffe15c5..8e776c90d21bf 100644
+--- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
++++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+@@ -153,6 +153,10 @@ struct embedded_panel_info {
+ 	uint32_t drr_enabled;
+ 	uint32_t min_drr_refresh_rate;
+ 	bool realtek_eDPToLVDS;
++	uint16_t panel_width_mm;
++	uint16_t panel_height_mm;
++	uint16_t fake_edid_size;
++	const uint8_t *fake_edid;
+ };
+ 
+ struct dc_firmware_info {
+-- 
+2.53.0
+
 
 
 
