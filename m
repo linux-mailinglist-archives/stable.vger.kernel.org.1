@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-251764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIKHCv4ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200
+	id cN09GqAkDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C327597203
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2DF59AA02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D6DC3090AD5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6385B380F57E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852F43E9C3D;
-	Wed, 20 May 2026 17:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1C3DC4DA;
+	Wed, 20 May 2026 18:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4rsXIhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8dUDdf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445AC36D9EA;
-	Wed, 20 May 2026 17:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6D33A6B6D;
+	Wed, 20 May 2026 18:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298831; cv=none; b=O16hKIFB7jdG7U7HkbCs+cAM73NNQWRBPHvqKROjq9ibq3QgGGUbBD7kfUjlkWwNqc7NwEm822DzpzQ3p9haHkOtpUDRJBMUTQ2FNagAOcQvAsZXMDMuKdqujMtVaR29mgfDOSmSjacK5CYfFndHwrbQKivIwqhjszVBe0bFN9M=
+	t=1779300589; cv=none; b=pL05mR9YvpdE8FL0EwgvJrJ0BZtN6dg7CHer/cVVA1/+tKk9lDgUu7j5HSdxT/AIFH0IZ90cjSUqaebSj8k3Cg9FQ67SMktqrRam8PqectQ10YUZhxXWxHabqHWTvZV9rQtDOmrZLV5m96dZ5MvBDCejp+hnFi4FdXDFPvTz2mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298831; c=relaxed/simple;
-	bh=01kQ6Aqsal/jZ8RqSaKIPgxi4cQZ9QVDNGfdQ2D+FrY=;
+	s=arc-20240116; t=1779300589; c=relaxed/simple;
+	bh=bgXaWkJkRKZJqpeJ2M75/YLQXnfX1I0p32x8O089NCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBk1VIYy3LXHdTwR8RQAG8C5YRp7L/Nbs9bwHiA7Q+ggjd7SISvsev1Vi30+VQY8MBNv+FwtbnPwJ21KqdSvoCO74nYsER+EF5mkEX5YmrzqgwOhZXuOYASd7spwGaJT9TQ/i9PQ5kJvT17IgtgHravllA8jx18XKtrAve1F49o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4rsXIhq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D247E1F00893;
-	Wed, 20 May 2026 17:40:29 +0000 (UTC)
+	 MIME-Version; b=vA/5Js6wQDMTD4aUtu4yAAsbf/WvmgPpGrNSEiw4ouOD3Eq4VMU1TFhLwbj8OXZWEbdSkpGOi/4QC7g+juvSLr2t+hQBK79R5mSIcas6686x3poG40kpsUMlyoD/tDeG6rPDVMV/l60+6T81Dxi+cvFVKLRhXukVxrHEZ+loPX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8dUDdf7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8EE1F000E9;
+	Wed, 20 May 2026 18:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298830;
-	bh=g+4MxEWO8AzMUJBTzwWjktkqBr3B+A3aAGKTv2Z2WC8=;
+	s=korg; t=1779300588;
+	bh=bb+4hzwpeBM7CFzld1Q5RxPzlwEDJ3NksGfAfQ2ayiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L4rsXIhqXng3sEirpxVSi6/6HyLkeJyr8hVZnAX4r+K/KFnJnqPYWzfS7KcP9BHZz
-	 jHf3GZHFsmPFTcc2aSqEtwWRixt38To6QP937A8p2OIxLIzChwFx5jEAyIhAzjhGjg
-	 MpG0Y2fErpAXlz1BTGoHqYY1pzEeT3TC6kRQ8UvY=
+	b=H8dUDdf7wpyTIDSpvU0yh2tX2b1yIgXy2ZP8puDsRQOSajtoJGEDq1sew8x6wjROT
+	 nGfDJA28ejQPrn0RZijk3C8Vmd2AglHAgDXtVlhOtu7iuBJ7bP0VkJFvtP+ikp0+K1
+	 4JdE1NhTYw3euoHCWzy41O1YX21otuxJAuitmras=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 559/957] clk: renesas: r9a09g057: Add clock and reset entries for RTC
-Date: Wed, 20 May 2026 18:17:22 +0200
-Message-ID: <20260520162146.654966467@linuxfoundation.org>
+Subject: [PATCH 6.12 232/666] PCI: tegra194: Fix polling delay for L2 state
+Date: Wed, 20 May 2026 18:17:23 +0200
+Message-ID: <20260520162116.241900654@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +67,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251764-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252405-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,glider.be:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4C327597203
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: EF2DF59AA02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 7a03ef9f8223434f19e19a37acc32dcb581ab475 ]
+[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
 
-Add module clock and reset entries for the RTC module on the Renesas RZ/V2H
-(R9A09G057) SoC.
+As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
+Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
+polling for 10 msec with 1 usec delay which is aggressive.  Use existing
+macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
+Since this function is used in non-atomic context only, use non-atomic poll
+function.
 
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251021080705.18116-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 1b4f047dc401 ("clk: renesas: r9a09g057: Remove entries for WDT{0,2,3}")
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a09g057-cpg.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a09g057-cpg.c b/drivers/clk/renesas/r9a09g057-cpg.c
-index 6389c4b6a5231..4e47fea3f8946 100644
---- a/drivers/clk/renesas/r9a09g057-cpg.c
-+++ b/drivers/clk/renesas/r9a09g057-cpg.c
-@@ -239,6 +239,8 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
- 						BUS_MSTOP(5, BIT(13))),
- 	DEF_MOD("wdt_3_clk_loco",		CLK_QEXTAL, 5, 2, 2, 18,
- 						BUS_MSTOP(5, BIT(13))),
-+	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
-+						BUS_MSTOP(3, BIT(11) | BIT(12))),
- 	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
- 						BUS_MSTOP(11, BIT(0))),
- 	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
-@@ -401,6 +403,8 @@ static const struct rzv2h_reset r9a09g057_resets[] __initconst = {
- 	DEF_RST(7, 6, 3, 7),		/* WDT_1_RESET */
- 	DEF_RST(7, 7, 3, 8),		/* WDT_2_RESET */
- 	DEF_RST(7, 8, 3, 9),		/* WDT_3_RESET */
-+	DEF_RST(7, 9, 3, 10),		/* RTC_0_RST_RTC */
-+	DEF_RST(7, 10, 3, 11),		/* RTC_0_RST_RTC_V */
- 	DEF_RST(7, 11, 3, 12),		/* RSPI_0_PRESETN */
- 	DEF_RST(7, 12, 3, 13),		/* RSPI_0_TRESETN */
- 	DEF_RST(7, 13, 3, 14),		/* RSPI_1_PRESETN */
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index c2d626b090e3c..8f2f60fc032eb 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -198,8 +198,6 @@
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
+ 
+-#define PME_ACK_TIMEOUT 10000
+-
+ #define LTSSM_TIMEOUT 50000	/* 50ms */
+ 
+ #define GEN3_GEN4_EQ_PRESET_INIT	5
+@@ -1570,9 +1568,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
+ 	val |= APPL_PM_XMT_TURNOFF_STATE;
+ 	appl_writel(pcie, val, APPL_RADM_STATUS);
+ 
+-	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
+-				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
+-				 1, PME_ACK_TIMEOUT);
++	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
++				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
++				  PCIE_PME_TO_L2_TIMEOUT_US/10,
++				  PCIE_PME_TO_L2_TIMEOUT_US);
+ }
+ 
+ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
 -- 
 2.53.0
 
