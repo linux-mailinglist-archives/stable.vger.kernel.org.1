@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EuiLSQRDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:08 +0200
+	id MJemFNT7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-251471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B9D598D76
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C85595E95
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DAD031A2423
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC78735986E3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F773403FA;
-	Wed, 20 May 2026 16:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC7D3D5642;
+	Wed, 20 May 2026 17:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVvSo3OP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeYqotV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D904B1CDFCA;
-	Wed, 20 May 2026 16:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A8D30BF68;
+	Wed, 20 May 2026 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295664; cv=none; b=mgKeGZzfJ7LoKd6K8g0/9AiaOnxLD6XLLwjXjvtPRi1/vkE0DW7/NCZJfgPeUJztnJTyT65zaBu5NqT89mZgl7Pri8Sk1cRsDaOrkwvHaZJeg0MZMg1v3OjqW34HyxxKYu6yqCYIYbqjskL4fLzvdhnj/qc16N1OFiBHOHz7xUI=
+	t=1779298069; cv=none; b=WjOWO9E7tFgVmhDNxrkERFqbkZIr6iYv8IfWvMGFIA9/f1Kv7UZnS0ZBmfn5Xo8pdFA8MeRRThlvlCqAG6b7/jm5QmqBIsjyc8wZ4N0onzIy9kPU32nrW2yYBQA2BcN6bQnlrD/yIPspmvF1G3HmV0szvO/gsz9LVO/dDNpCNuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295664; c=relaxed/simple;
-	bh=3OwL5JnoSqYdMAXwxPQm6/+SpJ0IMszBGAjoe8x4eXs=;
+	s=arc-20240116; t=1779298069; c=relaxed/simple;
+	bh=pOx2HXWMUHwBvENWhqeZjVFlFR77POj3JTeAoKqqBUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDpLLSfvUIgins9253nnKQ5tJ81iXhf0GIz/G/IpHi+MjSexRx8GWI0S8/JwkpSEyDVXy/PNf5N/Doa6FZSo8W0tGqS/Q2/A+M2M/KH6UP3tbLOW4H+SVV87odRymQZh/ByBRj2BkdJPegi/PgueHZPaDJPWslUzy9kAOkkEFhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVvSo3OP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D5F1F000E9;
-	Wed, 20 May 2026 16:47:42 +0000 (UTC)
+	 MIME-Version; b=kuA9jvjwRVMT+9mGhIt0ARvxSpZxPWEsVj2iNFY5ETyZay9xFyJeNpqE2pNiAE9+O7/4qFvhlVvtGNuMlNLYwzQQFEOlAuWbTN9Q2KGZcZpTZU6VwXbTWgtAL1SWzlWN2z6Y/p2RiQGhUcvLYADMcEfm9gfjSct4ebfN6NJt9Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeYqotV8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C81F00898;
+	Wed, 20 May 2026 17:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295663;
-	bh=N/ZRI+VrtTvjfqAGTajASkVDdTMSiT0InIeYtVk/3pE=;
+	s=korg; t=1779298067;
+	bh=AJkVM4y7lMsJRitPWw/+iRffwrDMmSQQU/akP9vEKKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OVvSo3OPNFdMlYwtyLKOznkyoASm98vTCBHYnE/j6HCtm/K+0SyQZMhvly0Mi3uVp
-	 icz4b86y4lNQ+8P7WctsuW8lcsBzcfVdFY+lX9UaB2GfjDkLl1IOL4XkB+ME3/3IhJ
-	 yJ9nJ8HsF3uoAC/HpFXfwfuu9NdXuj7FHi/ITQF8=
+	b=DeYqotV8lK9g9mqMsK3v2AM716RGRFtOOPr9TmhcewFl4YkNE/LsqnVI8ODdMe2qK
+	 Esk86dU29YKzC+kJy83kY1D55SOh+DI7D/I6PZcDTthrEFx1ccLloqyDDRI0QxTbuk
+	 Te3NbU/Rg25IqQ9qZ32FS6UrM1rkW2C3s6xXsXJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0504/1146] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
+Subject: [PATCH 6.18 271/957] ASoC: SOF: Intel: hda: Place check before dereference
 Date: Wed, 20 May 2026 18:12:34 +0200
-Message-ID: <20260520162159.595459634@linuxfoundation.org>
+Message-ID: <20260520162140.420791403@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +66,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250535-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251471-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 21B9D598D76
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E4C85595E95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
+[ Upstream commit 6cbc8360f51a3df2ea16a786b262b9fe44d4c68c ]
 
-If OCMEM is declared in DT, it is expected that it is present and
-handled by the driver. The GPU driver will ignore -ENODEV error, which
-typically means that OCMEM isn't defined in DT. Let ocmem return
--EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
+The struct hext_stream is dereferenced before it is checked for NULL.
+Although it can never be NULL due to a check prior to
+hda_dsp_iccmax_stream_hw_params() being called, this change clears any
+confusion regarding hext_stream possibly being NULL.
 
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
-[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Check hext_stream for NULL and then assign its members.
+
+Detected by Smatch:
+sound/soc/sof/intel/hda-stream.c:488 hda_dsp_iccmax_stream_hw_params() warn:
+variable dereferenced before check 'hext_stream' (see line 486)
+
+Fixes: aca961f196e5d ("ASoC: SOF: Intel: hda: Add helper function to program ICCMAX stream")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Link: https://patch.msgid.link/20260324173830.17563-1-ethantidmore06@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index d47ce5707fd88..96ca0b87bfc48 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -203,10 +203,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 9c3b3a9aaf83c..56faafb3dd0e5 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -445,16 +445,20 @@ int hda_dsp_iccmax_stream_hw_params(struct snd_sof_dev *sdev, struct hdac_ext_st
+ 				    struct snd_dma_buffer *dmab,
+ 				    struct snd_pcm_hw_params *params)
+ {
+-	struct hdac_stream *hstream = &hext_stream->hstream;
+-	int sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	struct hdac_stream *hstream;
++	int sd_offset;
+ 	int ret;
+-	u32 mask = 0x1 << hstream->index;
++	u32 mask;
  
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
--	if (!ocmem) {
--		dev_err(dev, "Cannot get ocmem\n");
--		return ERR_PTR(-ENODEV);
--	}
-+	if (!ocmem)
-+		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
+ 	if (!hext_stream) {
+ 		dev_err(sdev->dev, "error: no stream available\n");
+ 		return -ENODEV;
+ 	}
+ 
++	hstream = &hext_stream->hstream;
++	sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	mask = 0x1 << hstream->index;
 +
- 	return ocmem;
- }
- EXPORT_SYMBOL_GPL(of_get_ocmem);
+ 	if (!dmab) {
+ 		dev_err(sdev->dev, "error: no dma buffer allocated!\n");
+ 		return -ENODEV;
 -- 
 2.53.0
 
