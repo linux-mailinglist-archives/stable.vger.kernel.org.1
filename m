@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JkoLyz+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:12 +0200
+	id kGfJFhQBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F99596790
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0454659726A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BFA53183C98
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 886E63090CBD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399CA34DCE4;
-	Wed, 20 May 2026 18:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D375637DE8A;
+	Wed, 20 May 2026 18:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GumUzPjC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8MPQl7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9E0347515;
-	Wed, 20 May 2026 18:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B98E3EAC82;
+	Wed, 20 May 2026 18:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300990; cv=none; b=WXo3l+nLPm/bsbRDKN//KsBm3TWme5LNDWBzuokwbBxSyDmN/q6bDwXpWnAZl4IwfukmCfMYEg5AOwWZZ6v5w/AopbJIWx8toun9v6/L3Z0Za9McsokPtd7kRsD+WWRxkfOdcO6g/R8FdB7gU0jMcWUuMvmh0rhL1DKw+BoF63U=
+	t=1779302291; cv=none; b=s8gnYLTzRURRrKkVTg8LFq8WqWPCsrq33fL3B6WibGFRKliWje4KVzQyWhzuz7/a5OinqTmR1CKsQ4+p3mYWW263v6HJnu/nxM8Dj6n1PHeHLSws8XVVbZ/vG4xlFb1+98K9zviFcavQL+ZyMTe5/Iuab/W0k//j1rZ8ttOu45k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300990; c=relaxed/simple;
-	bh=dvV5beroYmAAan+vHyJp2OxGZ4RL7svroNwiW72K4vE=;
+	s=arc-20240116; t=1779302291; c=relaxed/simple;
+	bh=ppHzCBZgux5alLI5EpZejDkf1CoSZDH6QiORKTzXv9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCYlThEomhGkJjhLpey1Q8OFT7VtYKiuVEBO3gtS9ZudfPq2pK88X6egusYye7AkCMjx3TwJly82Jn42CUJ4gmKIhuSdMuCsd1zCml4cai/V4goODPXCrmFJN/Nj4lGYZ6L50Pc0fLdDN1zeFPYv6kR8gbtE66EkOz1dLFLHCAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GumUzPjC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A03C1F000E9;
-	Wed, 20 May 2026 18:16:27 +0000 (UTC)
+	 MIME-Version; b=jvbRWlS0T5lENrAyuDUUEZI4ZyBUit8C48xorJtCECqDms+PrOy25U6w+Gf4RJ3osP4jHEoGEQasopMvkkYk8JAT7kpY4YNeXuxDMdpGMIlHfqInU+ikchs5VCAVWktcuSwjKGHhhtEsUwdXCxQD7GvX65aIHwZWEvHdMR3FQgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8MPQl7x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC471F000E9;
+	Wed, 20 May 2026 18:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300988;
-	bh=Xrrfru7IZu+s35mgoofRI8Sn9nA35DZ+gUK95zWvAyc=;
+	s=korg; t=1779302290;
+	bh=W6l3a6hnRRFWgbx6qU8z3//6XrojrW0p/TIkN5pDPqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GumUzPjC4F/7X7haryGGPOen29lqNjeqmf/VbACtq69BlIKOsUFNBFEfKPZXNxegP
-	 p/DCIyu3+3sbQVAt+oNk+IHUL33IKRx0TQYMXIJdYl6DHbKcThsikz0IBOvanaCztw
-	 /AcQ9DI2oxhXFJ+OGA+w/WlZXPoR3+158xiqwQx4=
+	b=w8MPQl7x6SMJFcFpqye2MYrDo0BxM2sjPHkSFLyLw9/aV96HbQuzoRRy2bxmx72sI
+	 z8uceBB2mMlMgTLaa+GVXF1PmW+1PFICzFwWYG6tH9I/zzCge5+ByxvunWUCuZJV/5
+	 6MHEe/zqCRGqnMi1ythk8w40sOCkDt0S4HK96tdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/666] i3c: master: dw-i3c: Fix missing reset assertion in remove() callback
+Subject: [PATCH 6.6 170/508] dm cache: fix missing return in invalidate_committeds error path
 Date: Wed, 20 May 2026 18:19:53 +0200
-Message-ID: <20260520162119.532657944@linuxfoundation.org>
+Message-ID: <20260520162102.321573518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252558-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pengutronix.de,gmail.com,nxp.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253057-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,bootlin.com:email,nxp.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 76F99596790
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0454659726A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit bef1eef667186cedb0bc6d152464acb3c97d5f72 ]
+[ Upstream commit 8c0ee19db81f0fa1ff25fd75b22b17c0cc2acde3 ]
 
-The reset line acquired during probe is currently left deasserted when
-the driver is unbound.
+In passthrough mode, dm-cache defers write submission until after
+metadata commit completes via the invalidate_committed() continuation.
+On commit error, invalidate_committed() calls invalidate_complete() to
+end the bio and free the migration struct, after which it should return
+immediately.
 
-Switch to devm_reset_control_get_optional_exclusive_deasserted() to
-ensure the reset is automatically re-asserted by the devres core when
-the driver is removed.
+The patch 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
+omitted this early return, causing execution to fall through into the
+success path on error. This results in use-after-free on the migration
+struct in the subsequent calls.
 
-Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260320-dw-i3c-v3-1-477040c2e3f5@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix by adding the missing return after the invalidate_complete() call.
+
+Fixes: 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/dm-devel/adjMq6T5RRjv_uxM@stanley.mountain/
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/md/dm-cache-target.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 3453431e49a24..6c56e0b89b02d 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1566,13 +1566,11 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
- 	if (IS_ERR(master->pclk))
- 		return PTR_ERR(master->pclk);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 8db906ea3bef0..5522f8e9443f2 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1523,8 +1523,10 @@ static void invalidate_committed(struct work_struct *ws)
+ 	struct bio *bio = mg->overwrite_bio;
+ 	struct per_bio_data *pb = get_per_bio_data(bio);
  
--	master->core_rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
--								    "core_rst");
-+	master->core_rst = devm_reset_control_get_optional_exclusive_deasserted(&pdev->dev,
-+										"core_rst");
- 	if (IS_ERR(master->core_rst))
- 		return PTR_ERR(master->core_rst);
+-	if (mg->k.input)
++	if (mg->k.input) {
+ 		invalidate_complete(mg, false);
++		return;
++	}
  
--	reset_control_deassert(master->core_rst);
--
- 	spin_lock_init(&master->xferqueue.lock);
- 	INIT_LIST_HEAD(&master->xferqueue.list);
- 
-@@ -1584,7 +1582,7 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
- 			       dw_i3c_master_irq_handler, 0,
- 			       dev_name(&pdev->dev), master);
- 	if (ret)
--		goto err_assert_rst;
-+		return ret;
- 
- 	platform_set_drvdata(pdev, master);
- 
-@@ -1620,9 +1618,6 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 
--err_assert_rst:
--	reset_control_assert(master->core_rst);
--
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
+ 	init_continuation(&mg->k, invalidate_completed);
+ 	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
 -- 
 2.53.0
 
