@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDKrOsMTDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-250734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:19 +0200
+	id IAHrFnIcDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E69599142
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DC5599EE3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C6D38022DD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BB4D369513F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CA63D8138;
-	Wed, 20 May 2026 16:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB1370D54;
+	Wed, 20 May 2026 17:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnYyJmqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCKxlgEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC353F23A1;
-	Wed, 20 May 2026 16:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD483C870E;
+	Wed, 20 May 2026 17:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296177; cv=none; b=EnMkzbm4ntjwQM/hFvXZhIHblFR3BnBVHMxMc4T1pU9THIlhlhKY/qMiUoq8h/03OyIrG1eNjAoKU4G7tSyQ8NkFcpttEItiNlgcO0H3411ZE20Hz/3rczjl2gf6trq0iOB4tAfZAtCVDajHvu8PqDcoj0wi7dZSUWqzXxB/Dqg=
+	t=1779298594; cv=none; b=LLxQbXB6p7TH0c3HMrbgY3apdu9ArxTG+lbIsC7CR/73LpqVMh5lf6jeXlW28Gd4gmtFsGxhNKOG5uid7kHXVdodSY77lsxA91MjWSVKsGV6s+mbHRal1hS8zCybvEz0zyrZqEisFVOlhDHBcrH8rR17WcJDn3E0cvKvh+tPr2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296177; c=relaxed/simple;
-	bh=4wXeA+rXQ8GsWv63iLcHnpGhE6sIG1dPFUVmPp5DJkc=;
+	s=arc-20240116; t=1779298594; c=relaxed/simple;
+	bh=hQ4eXy84f6jI1hoyr9viyu6ufQ5j9dGmSpw7u7M0BKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIG0Xgb7gt3FuxKhh0jYM6cZ+hachf6yLQz1qC89F4W9gGCdz1XqwIlCfoCg/02wnkhXeQxpgHDRhyGzIxZqESwbHiA/CSLqkt4+eb96cayJ/fFG2zqsN8xbwSMT+AThJ6dLzMn1PkwptGEiOVfbtknpauZcTo/N8ZjC/lWm73U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnYyJmqA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD8A1F000E9;
-	Wed, 20 May 2026 16:56:15 +0000 (UTC)
+	 MIME-Version; b=mcFlJph7dNsFj41GsBI679z/3iJXuZLsQ/sVA2Kx025yvgrZuSyspTHi3h+ANmOajCKMe8+2X4FAx2HOORo1eYM4IGlH87z6MuAmUa+3dBhfU8HgYeM0N49OVl5hjN5nB7WVQu/88O7RbidwNhO3nU62/pr6vVkRE+JMY9lXLXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCKxlgEE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E38F1F000E9;
+	Wed, 20 May 2026 17:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296176;
-	bh=MAMo+eaYSGF3j3q9jVP7esCUq9H1emaKqeAq0DheWzQ=;
+	s=korg; t=1779298593;
+	bh=rfWhgWToEHhnvJ9AU9GiGKN4nKHfXIthBGlcBZ/g+1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XnYyJmqAFehN5pqnsaFZmuI2ZPMwcvnng4/84ewcY35ef8hRAdeFrv0t9MkRaX2UY
-	 wnJI92uRTDI02l+P2vSqt/rcDELyfk542qhZCNxaIadrtP/5S8aVBPTpmLdckDgK/B
-	 2S14BtTSB70tjuelk36mce5/FVI7J/1XdGYiFZ9k=
+	b=WCKxlgEEOEUPgicVzAFccw3qm2gb0fR5S1o4zCMi8vCM1tSBaZGnw9zCR2m0Jj1jm
+	 mVk6TSH80SNhA/qS6suwTBcKQPXZAooPWYM19ttFSDbcu/igfUYCt/RUQ5QMZWaGMh
+	 r9nQR5+90cxDJfKU2zzVzpdhB0n+0vc0dLDzX6gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0701/1146] clk: sunxi-ng: sun55i-a523-r: Add missing r-spi module clock
-Date: Wed, 20 May 2026 18:15:51 +0200
-Message-ID: <20260520162204.056175778@linuxfoundation.org>
+Subject: [PATCH 6.18 469/957] mtd: spi-nor: swp: check SR_TB flag when getting tb_mask
+Date: Wed, 20 May 2026 18:15:52 +0200
+Message-ID: <20260520162144.696096719@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +66,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251673-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,bootlin.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250734-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 54E69599142
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B3DC5599EE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@kernel.org>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit fb20ccf70cf695f178d7c32e2d33b376560df0ff ]
+[ Upstream commit 94645aa41bf9ecb87c2ce78b1c3405bfb6074a37 ]
 
-When the PRCM clk driver was added, somehow the r-spi module clock
-was skipped over.
+When the chip does not support top/bottom block protect, the tb_mask
+must be set to 0, otherwise SR1 bit5 will be unexpectedly modified.
 
-Add it so that r-spi can actually work.
-
-Fixes: 8cea339cfb81 ("clk: sunxi-ng: add support for the A523/T527 PRCM CCU")
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20260217093004.3239051-1-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Fixes: 3dd8012a8eeb ("mtd: spi-nor: add TB (Top/Bottom) protect support")
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/mtd/spi-nor/swp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c b/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-index 0339c4af0fe5b..db0e36d8838e7 100644
---- a/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-@@ -83,9 +83,22 @@ static SUNXI_CCU_MUX_DATA_WITH_GATE(r_pwmctrl_clk, "r-pwmctrl",
- static SUNXI_CCU_GATE_HW(bus_r_pwmctrl_clk, "bus-r-pwmctrl",
- 			 &r_apb0_clk.common.hw, 0x13c, BIT(0), 0);
+diff --git a/drivers/mtd/spi-nor/swp.c b/drivers/mtd/spi-nor/swp.c
+index 9b07f83aeac76..e67a81dbb6bf6 100644
+--- a/drivers/mtd/spi-nor/swp.c
++++ b/drivers/mtd/spi-nor/swp.c
+@@ -28,8 +28,10 @@ static u8 spi_nor_get_sr_tb_mask(struct spi_nor *nor)
+ {
+ 	if (nor->flags & SNOR_F_HAS_SR_TB_BIT6)
+ 		return SR_TB_BIT6;
+-	else
++	else if (nor->flags & SNOR_F_HAS_SR_TB)
+ 		return SR_TB_BIT5;
++	else
++		return 0;
+ }
  
--/* SPI clock is /M/N (same as new MMC?) */
-+static const struct clk_parent_data r_spi_parents[] = {
-+	{ .fw_name = "hosc" },
-+	{ .fw_name = "pll-periph" },
-+	{ .name = "pll-periph0-300M" },
-+	{ .name = "pll-periph1-300M" },
-+	{ .name = "pll-audio" },
-+};
-+static SUNXI_CCU_DUALDIV_MUX_GATE(r_spi_clk, "r-spi", r_spi_parents, 0x150,
-+				  0, 5,		/* M */
-+				  8, 5,		/* P */
-+				  24, 3,	/* mux */
-+				  BIT(31),	/* gate */
-+				  0);
- static SUNXI_CCU_GATE_HW(bus_r_spi_clk, "bus-r-spi",
- 			 &r_ahb_clk.common.hw, 0x15c, BIT(0), 0);
-+
- static SUNXI_CCU_GATE_HW(bus_r_spinlock_clk, "bus-r-spinlock",
- 			 &r_ahb_clk.common.hw, 0x16c, BIT(0), 0);
- static SUNXI_CCU_GATE_HW(bus_r_msgbox_clk, "bus-r-msgbox",
-@@ -138,6 +151,7 @@ static struct ccu_common *sun55i_a523_r_ccu_clks[] = {
- 	&bus_r_twd_clk.common,
- 	&r_pwmctrl_clk.common,
- 	&bus_r_pwmctrl_clk.common,
-+	&r_spi_clk.common,
- 	&bus_r_spi_clk.common,
- 	&bus_r_spinlock_clk.common,
- 	&bus_r_msgbox_clk.common,
-@@ -169,6 +183,7 @@ static struct clk_hw_onecell_data sun55i_a523_r_hw_clks = {
- 		[CLK_BUS_R_TWD]		= &bus_r_twd_clk.common.hw,
- 		[CLK_R_PWMCTRL]		= &r_pwmctrl_clk.common.hw,
- 		[CLK_BUS_R_PWMCTRL]	= &bus_r_pwmctrl_clk.common.hw,
-+		[CLK_R_SPI]		= &r_spi_clk.common.hw,
- 		[CLK_BUS_R_SPI]		= &bus_r_spi_clk.common.hw,
- 		[CLK_BUS_R_SPINLOCK]	= &bus_r_spinlock_clk.common.hw,
- 		[CLK_BUS_R_MSGBOX]	= &bus_r_msgbox_clk.common.hw,
+ static u64 spi_nor_get_min_prot_length_sr(struct spi_nor *nor)
 -- 
 2.53.0
 
