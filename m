@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-252413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEVVLZUBDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:45 +0200
+	id CCplEyQBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B76459736A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1395972AD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59FDB39530A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEF5C3229E76
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5A53F54D1;
-	Wed, 20 May 2026 18:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47183E123F;
+	Wed, 20 May 2026 17:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnjTEvfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2cFFK+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACBE331220;
-	Wed, 20 May 2026 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F43312825;
+	Wed, 20 May 2026 17:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300610; cv=none; b=cHgQ0GkLSO43Xucs4cGmWNJGzQ3/J33AQO0GAAIMRE7qJoULs82OydB2Yk7C/gB0bNxlv6u1H/EPYUlcdT+H4LPGT38pv8Cax8gs5cmEuIUtFzwRqdpAb4sz6D9oC553bCEBAcNZYM8vHCYlAx8MSKZXByEqAsp02Jdgv/XkHdI=
+	t=1779298857; cv=none; b=NwDUFfc+Hv0Zq3lL8fc2/zBZ8sGfhl1Np5cleJSXOIesDS4TEh1FS2faeSZYzuzJa4iSeDxKW+WDzzt6Vk220KzEjOC9pVcPADVFcoDL5EXGvigQI0xuezDI99IvoYWpzB2wjieufXzJYsYoaAoG3+GKvWXU291nt7jG7sVBCE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300610; c=relaxed/simple;
-	bh=Vbje/nDibAb5xoAENDNZYRPo8CFhk0HkUnLHZpBMl5k=;
+	s=arc-20240116; t=1779298857; c=relaxed/simple;
+	bh=zITMwGxhlhNq+XsSVOhx77Su+D145YbSSRpDo5n2XvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N55deYNYRzN2AyDYSC6TgOCBI4l1XG7H8ZmYjpGo0mpb77WsppH9/+r8L6xP23214hfMOEKg5xoeOGuYbBQp6kDrLyN7V5dgtwtglXiq0aI79aW4nnmOPHO8DG336mSWjuEzz00m4YqCsMyWHhu+xfWyOyS9W2KsCeX5+wvfFkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnjTEvfn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEB11F000E9;
-	Wed, 20 May 2026 18:10:08 +0000 (UTC)
+	 MIME-Version; b=PDt/lMtXVevWIUNzeR6lwpMQdgBVuDAK+AyDlY6g9bag7faqh/L3hB7qaAJNTk+Gbf5Zz+ITrQWIXS4QnHhgAO3pfyaaEB7sJdtzAupk+Tsn19lP1yLIocFiuUfHENHwA7HYXai478XopER3IZ0fX4sy4IKTL5czIN3Y0nCnpQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2cFFK+j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CC51F00893;
+	Wed, 20 May 2026 17:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300609;
-	bh=O1XKcR3AuFe+5WAShhvvfRFWANGkMDmzTX/I+yE7Dcg=;
+	s=korg; t=1779298856;
+	bh=+OaiSXdQI2emhYbVd2Elc0JVxYgifFwQmz1c7H0r+1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fnjTEvfnlIDitVAIonzSd2k592eqkujCFR2EcATkRL3iz+SrLiW2ClncWaUGqkL2A
-	 RS8BMvN/WrdJLco9t5mWeLf8Qhv4+lVeoYNdrz7CHVQmaF0hLByNtWizHVOTBeTSE9
-	 w68vp5zzAconGPGxafOrPBrL60BTlJgWOrV3nKrk=
+	b=n2cFFK+jktWLc9+JpsxPr4tmbDFC5sfA4BmKqhciVbh4SumtAzT4Im4ga5sbCxznv
+	 87XejV98AvDW136Jw/gcEVxRGXJm3t8I+mkN2V8fD0nUsAa9Ncao3GbiHlZQ+QbUZ0
+	 PjS6xCsMHwNZ3EG5opPFxUS2WPYsTlQyKFmwsJm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/666] PCI: tegra194: Disable direct speed change for Endpoint mode
-Date: Wed, 20 May 2026 18:17:30 +0200
-Message-ID: <20260520162116.395480339@linuxfoundation.org>
+Subject: [PATCH 6.18 568/957] clk: qcom: gcc-sc8180x: Use retention for PCIe power domains
+Date: Wed, 20 May 2026 18:17:31 +0200
+Message-ID: <20260520162146.847358986@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252413-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251774-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,59 +94,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3B76459736A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,packett.cool:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A1395972AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
+[ Upstream commit ccb92c78b42edd26225b4d5920847dfee3e1b093 ]
 
-Pre-silicon simulation showed the controller operating in Endpoint mode
-initiating link speed change after completing Secondary Bus Reset. Ideally,
-the Root Port or the Switch Downstream Port should initiate the link speed
-change post SBR, not the Endpoint.
+As the PCIe host controller driver does not yet support dealing with the
+loss of state during suspend, use retention for relevant GDSCs.
 
-So, as per the hardware team recommendation, disable direct speed change
-for the Endpoint mode to prevent it from initiating speed change after the
-physical layer link is up at Gen1, leaving speed change ownership with the
-host.
+This fixes the link not surviving upon resume:
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
+    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+    nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS read failed (134)
+    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+    nvme nvme0: Disabling device after reset failure: -19
+
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://lore.kernel.org/r/20260312112321.370983-5-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/qcom/gcc-sc8180x.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index fcc9f724147c4..42a8bbfee3f9a 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1830,6 +1830,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index b116a9c0b2d94..4095a1f54a099 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4199,7 +4199,7 @@ static struct gdsc pcie_0_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
- 	reset_control_deassert(pcie->core_rst);
+@@ -4226,7 +4226,7 @@ static struct gdsc pcie_1_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
-+	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	val &= ~PORT_LOGIC_SPEED_CHANGE;
-+	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
-+
- 	if (pcie->update_fc_fixup) {
- 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
- 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
+@@ -4235,7 +4235,7 @@ static struct gdsc pcie_2_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_2_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
+@@ -4253,7 +4253,7 @@ static struct gdsc pcie_3_gdsc = {
+ 	.pd = {
+ 		.name = "pcie_3_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
 -- 
 2.53.0
 
