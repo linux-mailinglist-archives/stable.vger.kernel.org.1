@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-252591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KipChAnDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:40 +0200
+	id eEfxOjkBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6357159AD99
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F985972D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 339B73318DA7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7672830FA0E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977C9368968;
-	Wed, 20 May 2026 18:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CE43D5647;
+	Wed, 20 May 2026 18:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k+DGtHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWTWsvet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA923F23C5;
-	Wed, 20 May 2026 18:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E86347514;
+	Wed, 20 May 2026 18:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301076; cv=none; b=gY8pMC4FMsjk7tnABMFkmTA27VR/1+GrcWofXTtHSrqDTyOfRtR59zBxrc1B/aPY4/L5KJEa/u9Q8ulyiP77/CseEROaZV0VO4TgpBqEF3BIqOK4z7PfcuE9FHiA3JMKhS6jzhSRF94xe2R7gpw8o1TYwx8EFbxcegyeq7Svdqk=
+	t=1779302276; cv=none; b=IEc3IK2/lVZwy6IUAyGye0xk10dikj1Y4BlOMaJ0kKl+EmBZpxUEf7DKYq9mMyugmNDrAr0MhKG0dnmoqAvdGDZBcE1xxmBA/AS0WOxKfKcm6Pb9d3TpYzefzLU2lNJtL0lB5Lk7cRWA5Z19vqItZRdVpHKFTI5H1IEk0Pan5bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301076; c=relaxed/simple;
-	bh=uEm+g9YunSQYtmpRNDKQ0uSBGWc2rvxwd+zzYVt9O+0=;
+	s=arc-20240116; t=1779302276; c=relaxed/simple;
+	bh=F/jrPL8O5o/rAN0d/j6LhA2GB9fBxS/uv445VTV2UOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UByiCEEUdy7BwFpG2vOKFRlc5YAxN4E/QTZG415MOTljx/ik9st9zMKkYxspB5fxhv3wUwNKSPlyYnOUWplLDwIKJrLXRR1dDXz5NxhG8DbtjVX60fbTLa7R6xnViFejU94ir88kwjyuqDlyYwA1S/Bn1IHrzXAlIx+pp1hb7A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k+DGtHR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31801F000E9;
-	Wed, 20 May 2026 18:17:54 +0000 (UTC)
+	 MIME-Version; b=BsnJJGKw0MWGWrGewIho5t4g9NEx3KxAZ5vWjsBoKmaKRQgnsKO4gqWazQQb2q3U+BkIMq7yGjV3aYPLQrC6l0NdCuvuvV5ONuRwyMl7IAZ1bLQkAD0dPQg6gWkYEoT8Q8Zv64fR1XDEyXevlnGCz5b/kpoa8KydM5+f2vG5/Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWTWsvet; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6420E1F000E9;
+	Wed, 20 May 2026 18:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301075;
-	bh=atJg9WthQOb7Y+yTv/wQFiBDGfYqzSv8sB14KJkJMIo=;
+	s=korg; t=1779302275;
+	bh=V8y6E0zQs10/o56Z/Ejql+Ys+jzkVg7boPtfUfU3c8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2k+DGtHR/FiYsZxBnXKktXtGZLZAXzv8bDldFgQJCX8yhlHvHHyTqUKUThU4sHUxf
-	 YEsXY2/SRq/HQAzFjUgNjJXZECQAnJVZDl1j6PDdJ35MTYnRBYsSrC5ATxc4JfE6H+
-	 dQ+xryRUQnJ1T9Y3OqpEFs8guoRyWIt240sJohw8=
+	b=tWTWsvetQGPcjZQYCVhK0Ztpig/VBNG1nOMpvsYBbOxsT+uo2Nk3xNLCXVb6U9ZSH
+	 1+z0qsFJbtFywOKGb9F+gvjYDDWwoyGzVJn0wuojPhgJAYuXfK/mAQZG7jcfZauFYn
+	 hc0Iv4uIzWfdWh+kDTB0ZcZmyMGPbs4SWr0qhcVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michal Grzedzicki <mge@meta.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 416/666] x86/um: fix vDSO installation
+Subject: [PATCH 6.6 204/508] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
 Date: Wed, 20 May 2026 18:20:27 +0200
-Message-ID: <20260520162120.281377166@linuxfoundation.org>
+Message-ID: <20260520162103.057407333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +81,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253051-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252591-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,vdso.so:url,weissschuh.net:email]
-X-Rspamd-Queue-Id: 6357159AD99
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 60F985972D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Michal Grzedzicki <mge@meta.com>
 
-[ Upstream commit d1895c15fc7d90a615bc8c455feb02acaf08ef1e ]
+[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
 
-The generic vDSO installation logic used by 'make vdso_install' requires
-that $(vdso-install-y) is defined by the top-level architecture Makefile
-and that it contains a path relative to the root of the tree.
-For UML neither of these is satisfied.
+When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
 
-Move the definition of $(vdso-install-y) to a place which is included by
-the arch/um/Makefile and use the full relative path.
+Let's call put_nsproxy() if that happens.
 
-Fixes: f1c2bb8b9964 ("um: implement a x86_64 vDSO")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://patch.msgid.link/20260318-um-vdso-install-v1-1-26a4ca5c4210@weissschuh.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
+Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
+Signed-off-by: Michal Grzedzicki <mge@meta.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexey Gladkov (Intel) <legion@kernel.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Makefile.um      | 2 ++
- arch/x86/um/vdso/Makefile | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/fork.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-index c86cbd9cbba38..19c13afa474e9 100644
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -60,4 +60,6 @@ ELF_FORMAT := elf64-x86-64
- LINK-$(CONFIG_LD_SCRIPT_DYN_RPATH) += -Wl,-rpath,/lib64
- LINK-y += -m64
- 
-+vdso-install-y += arch/x86/um/vdso/vdso.so.dbg
-+
- endif
-diff --git a/arch/x86/um/vdso/Makefile b/arch/x86/um/vdso/Makefile
-index b3dfd60619e8a..bde42fac402ca 100644
---- a/arch/x86/um/vdso/Makefile
-+++ b/arch/x86/um/vdso/Makefile
-@@ -3,8 +3,6 @@
- # Building vDSO images for x86.
- #
- 
--vdso-install-y += vdso.so
+diff --git a/kernel/fork.c b/kernel/fork.c
+index c65a70581af73..e280f02b6446a 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3443,11 +3443,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 					 new_cred, new_fs);
+ 	if (err)
+ 		goto bad_unshare_cleanup_cred;
 -
- # files to link into the vdso
- vobjs-y := vdso-note.o um_vdso.o
+ 	if (new_cred) {
+ 		err = set_cred_ucounts(new_cred);
+ 		if (err)
+-			goto bad_unshare_cleanup_cred;
++			goto bad_unshare_cleanup_nsproxy;
+ 	}
  
+ 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
+@@ -3463,8 +3462,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 			shm_init_task(current);
+ 		}
+ 
+-		if (new_nsproxy)
++		if (new_nsproxy) {
+ 			switch_task_namespaces(current, new_nsproxy);
++			new_nsproxy = NULL;
++		}
+ 
+ 		task_lock(current);
+ 
+@@ -3493,13 +3494,15 @@ int ksys_unshare(unsigned long unshare_flags)
+ 
+ 	perf_event_namespaces(current);
+ 
++bad_unshare_cleanup_nsproxy:
++	if (new_nsproxy)
++		put_nsproxy(new_nsproxy);
+ bad_unshare_cleanup_cred:
+ 	if (new_cred)
+ 		put_cred(new_cred);
+ bad_unshare_cleanup_fd:
+ 	if (new_fd)
+ 		put_files_struct(new_fd);
+-
+ bad_unshare_cleanup_fs:
+ 	if (new_fs)
+ 		free_fs_struct(new_fs);
 -- 
 2.53.0
 
