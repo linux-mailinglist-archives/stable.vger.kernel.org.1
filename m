@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-250918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOsUAJPqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:35 +0200
+	id eKc1LZz/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F229592F98
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA923596D34
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 223FC3080E20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE53E32577CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A336F421;
-	Wed, 20 May 2026 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0B13EEAC6;
+	Wed, 20 May 2026 17:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrDnKsio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHp8jKeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625932E128;
-	Wed, 20 May 2026 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6BE1C3BFC;
+	Wed, 20 May 2026 17:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296647; cv=none; b=LP7BIKmzGRLuH9mukz7ZjpUXL6o2FMrw2d6LAoAK0liIwEbRtGDw5nUSCk7BNE69Ct3Z3RUSmgq5f4qEXtT700H6Wm7vLdSOOd7LrIyrf0y0fyL2Xt1TkMt43T2Sl+fIAwvizk9ezm6+OLdYNbVECCPxBpp63Z/usQU8Z8DXZJQ=
+	t=1779299060; cv=none; b=UX2O6XPVG81/mS5M5ylLShc4SQzwdpsEVu6yYcmnCeBGKSfoSx+Ad6pdp6yt7VesvFMXKS7PqFUh7u89aGbqJpYzLcBMMw60x6vnX+DBEf6gNL0bySR+evFwEDZ14pnS4QnY9bs2qW2rIxzKMCCa6EhaL1IbZYj2VlPgNRphGQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296647; c=relaxed/simple;
-	bh=+EbRVZ8dO0FGVrvewfDmWl/GB3ThODJZBjpSdjAPDGQ=;
+	s=arc-20240116; t=1779299060; c=relaxed/simple;
+	bh=9bJ2pE/1R6VeU7MIIGGJzlKzLP/EcIp7F50mxV8Dea8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCbnKA3EUsv9u2sBUFvm3pTlLGtpQ/6L3wEMKP/0dhMqhS1GSlgVjRu1bJxBEvaja2R/z/m75PJ3rw9PYdCO17WIKffXNAuIPJ9dXtAAP3Xq/4EejQ4LBTknUO/wry2zRX8yTZY7oJx6/em5RlWHePu7Hez1XXwpIYkPQbVRS/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrDnKsio; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8591F000E9;
-	Wed, 20 May 2026 17:04:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ri+rreuFv6p8jSL2GXJPAaZQX1NKkcvcs1fGnpgq093VWxITcF7zZ7nKsnw0N63ZJ8CkbJcR0XCOghkkGa104mSbD3jEhYrdFHXoTrnP0ya7XnToN1/pkjjhjDl2DoMaSRknYTuRi0KvnC0p9qT4ffHx7QOmnVADQiwI6dpD8sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHp8jKeB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31FC1F00893;
+	Wed, 20 May 2026 17:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296646;
-	bh=P4DtDcDOXAQ/TextFQjinB26Mi70b4LpsM6lPrDK9+s=;
+	s=korg; t=1779299059;
+	bh=Sb4IwxocFjBKhO1/U4l072zp3ebjqazcet54nuRRz/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xrDnKsioujPsrp5f4943HZfg+cfi6mpdlqvMx8tDteSpRSTYgzekw8PUbC3euzvNF
-	 qi+D/ofU0gda9Zs2Km/MMx4w7PuX/v6VY41LU0Sj4LEh6VCfTGiuZt83DDlMOho6hS
-	 MufsO4YeXUpj9Yb0s12yL/Bwr4gl5ivdThSOpWSU=
+	b=EHp8jKeB+1G/WUg+mWU9QPwzrvh2wDQH3wyMXn4RacOZMLrlW4NVAY5hM0dcx/nv/
+	 FxN8Y67+Zw7tZaFKEMrOPXyH0bU3kl7tAfHu+PmMSLoDhdHbw7dWuIwI8+0zSRCHl3
+	 SOAYwyLw4a5MM8Ol65/UmQLNOA1SMfZfQN1K9ucE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0879/1146] mailbox: mailbox-test: free channels on probe error
+Subject: [PATCH 6.18 646/957] ice: fix adjust timer programming for E830 devices
 Date: Wed, 20 May 2026 18:18:49 +0200
-Message-ID: <20260520162208.131440933@linuxfoundation.org>
+Message-ID: <20260520162148.538343459@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +67,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250918-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251854-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7F229592F98
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:url,intel.com:email]
+X-Rspamd-Queue-Id: DA923596D34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
+[ Upstream commit 885c5e57924dc040b23d0ad0d8388f0e35772159 ]
 
-On probe error, free the previously obtained channels. This not only
-prevents a leak, but also UAF scenarios because the client structure
-will be removed nonetheless because it was allocated with devm.
+Fix incorrect 'adjust the timer' programming sequence for E830 devices
+series. Only shadow registers GLTSYN_SHADJ were programmed in the
+current implementation. According to the specification [1], write to
+command GLTSYN_CMD register is also required with CMD field set to
+"Adjust the Time" value, for the timer adjustment to take the effect.
 
-Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+The flow was broken for the adjustment less than S32_MAX/MIN range
+(around +/- 2 seconds). For bigger adjustment, non-atomic programming
+flow is used, involving set timer programming. Non-atomic flow is
+implemented correctly.
+
+Testing hints:
+Run command:
+	phc_ctl /dev/ptpX get adj 2 get
+Expected result:
+	Returned timestamps differ at least by 2 seconds
+
+[1] Intel® Ethernet Controller E830 Datasheet rev 1.3, chapter 9.7.5.4
+https://cdrdv2.intel.com/v1/dl/getContent/787353?explicitVersion=true
+
+Fixes: f00307522786 ("ice: Implement PTP support for E830 devices")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-1-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 3a28ab5c42e57..197cad7b3d401 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -404,18 +404,27 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
- 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
--		if (!tdev->rx_buffer)
--			return -ENOMEM;
-+		if (!tdev->rx_buffer) {
-+			ret = -ENOMEM;
-+			goto err_free_chans;
-+		}
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 35680dbe4a7f7..161a0ae8599c1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -5381,8 +5381,8 @@ int ice_ptp_write_incval_locked(struct ice_hw *hw, u64 incval)
+  */
+ int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
+ {
++	int err = 0;
+ 	u8 tmr_idx;
+-	int err;
  
- 	ret = mbox_test_add_debugfs(pdev, tdev);
- 	if (ret)
--		return ret;
-+		goto err_free_chans;
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
  
- 	init_waitqueue_head(&tdev->waitq);
- 	dev_info(&pdev->dev, "Successfully registered\n");
- 
- 	return 0;
-+
-+err_free_chans:
-+	if (tdev->tx_channel)
-+		mbox_free_channel(tdev->tx_channel);
-+	if (tdev->rx_channel)
-+		mbox_free_channel(tdev->rx_channel);
-+	return ret;
- }
- 
- static void mbox_test_remove(struct platform_device *pdev)
+@@ -5399,8 +5399,8 @@ int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
+ 		err = ice_ptp_prep_phy_adj_e810(hw, adj);
+ 		break;
+ 	case ICE_MAC_E830:
+-		/* E830 sync PHYs automatically after setting GLTSYN_SHADJ */
+-		return 0;
++		/* E830 sync PHYs automatically after setting cmd register */
++		break;
+ 	case ICE_MAC_GENERIC:
+ 		err = ice_ptp_prep_phy_adj_e82x(hw, adj);
+ 		break;
 -- 
 2.53.0
 
