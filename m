@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMB8OTzsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:40 +0200
+	id kJ/6L5gcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1A25932DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1914599F45
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 056F3315BDB3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AC44316C5E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79DC3ED3BC;
-	Wed, 20 May 2026 16:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD14336C9D2;
+	Wed, 20 May 2026 17:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcukmXEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tksvgrh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDBA3EC2D1;
-	Wed, 20 May 2026 16:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DC528DC4;
+	Wed, 20 May 2026 17:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296114; cv=none; b=E+lfNam4mUzGmyxPjpzx4la6z1esi1RfJLeecet293aqzdTuhj3ik8YBQFLON1bPi2229RaHHbwTO0RBF7ojbOeeYfPr9qMXHj3n4q4nF59ihHE/7MB0e+um5yED/wMhwaANxbmVEESUIpfXj1HE3BmUoexGleHFxUUJJXyj+4A=
+	t=1779298453; cv=none; b=sPlrcEgJ6Y9P4268LzozjcggDITqDZR9EMaAqlY0TehFDEWkPuNZmH/YZHp47diz4LFxoWga47Jaj0UI5oxn6k3b0+LktlS3IcM8rFzu68TntxfvBwWjmQDLr3Vthkd38fmSqlcpamqPTnj5Z9U0IE+U4aQMf9uQwEcTZH6bezU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296114; c=relaxed/simple;
-	bh=0P6/Jl3l41hrc/5eqhLwZtojdrS55sksI6dGZJsMVlo=;
+	s=arc-20240116; t=1779298453; c=relaxed/simple;
+	bh=yhUFuP8Q3u6+8PpmCPqL4lEX0pz267Ed6Vu4euhoTEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjucVAEayG8clsTytr9DjOm1qaNfFLGaLEuKy1UFtBUFe82xpLv4uQCrFuGR19mqq2jgCYzSxXgyrxFzDbv5gcbj2QUrKTv2T2CMF+kkYgVk4pLkhX1ow6b7ddqwzXIoC5gDKIX0W2bXDGsK+a/C4EdayWFTjhOtrZ6cIIuio+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcukmXEu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CBB1F000E9;
-	Wed, 20 May 2026 16:55:12 +0000 (UTC)
+	 MIME-Version; b=Hro1uSKn3AwAtruW/hSbiMCQt5upDHkw+Vfii7hp+YDWXJ8EahYgjMy+ESCFWO1LDn7PEiKNhR6qOgetmMGtN4qhsAwnoh2aMgfevUb4uGkuj63z3vXAV6IKirQ6jsb4KX+jOGqMGeHQwxJ2sM9xcJ0GoAXvwxHLbcYrBmqtxqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tksvgrh7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AB31F000E9;
+	Wed, 20 May 2026 17:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296113;
-	bh=jZMFD6AsnkKVgzsqX+0dC+KoQRFVkZRG3c2B/dvx2Bg=;
+	s=korg; t=1779298452;
+	bh=kSvMMRelc76AtPOMT1NvpVJyoUPLU14qlhZmpXsBal8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FcukmXEuDzg0cDd/0ACCnQxHbheKXCVB475HbBimEDE3nviHH52rnmaE+xxapd4lG
-	 b2/dxT2X/+VIFhdzfMtmODMIN2dahyfzH3lR7vcnBLQv/22jg6APM7cWjsEeN4u4xl
-	 mUi40hjuviXjVbjx0uQnlme9k5P5CPrnj/P1JTqI=
+	b=tksvgrh7GTM977L1OdTSwgqPSTbW4GbdjrlF1Kob6ccbGvks9DwQEnPKi/imiwMWY
+	 eJTD1BejJ7AOVEhSRde9twQkb/wwS8Lxpxgy5kTJiokfTkC3g6Cxi0KglDSgl9FfNF
+	 BTyfk76J2Si4Cbm7hoTSc8wXKrP3X3P9bqXXSSsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Nora Schiffer <nora.schiffer@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0649/1146] ipmi: ssif_bmc: change log level to dbg in irq callback
+Subject: [PATCH 6.18 416/957] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix UART1 RTS/CTS muxing
 Date: Wed, 20 May 2026 18:14:59 +0200
-Message-ID: <20260520162202.871461611@linuxfoundation.org>
+Message-ID: <20260520162143.544700096@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,143 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251619-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250710-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[minyard.net:email,bytedance.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BB1A25932DB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: D1914599F45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
 
-[ Upstream commit c9c99b7b7051eb7121b3224bfce181fb023b0269 ]
+[ Upstream commit b8d785a9f360abcd6a6f8f10a2adf222f8494d66 ]
 
-Long-running tests indicate that this logging can occasionally disrupt
-timing and lead to request/response corruption.
+UART1 operates in DCE mode, but the RTS/CTS pins were incorrectly
+configured using the DTE pinmux setting.
 
-Irq handler need to be executed as fast as possible,
-most I2C slave IRQ implementations are byte-level, logging here
-can significantly affect transfer behavior and timing. It is recommended
-to use dev_dbg() for these messages.
+Correct the pinmux to match DCE mode. Switching the RTS and CTS signals
+is fine for this board, as UART1 is routed to a pin header. Existing
+functionality is unaffected, as RTS/CTS could never have worked with
+the incorrect pinmux.
 
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Message-ID: <20260403090603.3988423-4-zhangjian.3032@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
+Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index ca185793cf978..a45e80d13e10e 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -569,7 +569,7 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
- 		len = ssif_bmc->request.len + part->length;
- 		/* Do the bound check here, not allow the request len exceed 254 bytes */
- 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
--			dev_warn(&ssif_bmc->client->dev,
-+			dev_dbg(&ssif_bmc->client->dev,
- 				 "Warn: Request exceeded 254 bytes, aborting");
- 			/* Request too long, aborting */
- 			ssif_bmc->aborting =  true;
-@@ -615,7 +615,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -624,7 +624,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+index a122f2ed5f531..06c865c3a8cf8 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+@@ -833,8 +833,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
+ 	pinctrl_uart1: uart1grp {
+ 		fsl,pins = <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
+ 			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
+-			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
+-			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
++			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
++			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
+ 	};
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -659,7 +659,7 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -684,7 +684,7 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	} else if (ssif_bmc->state == SSIF_START ||
- 		   ssif_bmc->state == SSIF_REQ_RECVING ||
- 		   ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -699,7 +699,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- {
- 	if (ssif_bmc->state == SSIF_READY ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -709,7 +709,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -738,7 +738,7 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
- 	    ssif_bmc->state == SSIF_ABORTING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_READY;
-@@ -805,7 +805,7 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
- 		break;
- 
- 	default:
--		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
-+		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
- 		break;
- 	}
- 
+ 	pinctrl_uart1_gpio: uart1gpiogrp {
 -- 
 2.53.0
 
