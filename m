@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKxTNTDzDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:20 +0200
+	id iIoeEMDwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAA15947A3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7DA594027
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 274C2318F763
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4EF434DA5DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA53369999;
-	Wed, 20 May 2026 17:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AE53546D9;
+	Wed, 20 May 2026 16:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/i7eFNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNJufwnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB8435AC18;
-	Wed, 20 May 2026 17:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580BF342CBA;
+	Wed, 20 May 2026 16:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297626; cv=none; b=cE6oedp/UpU3g5+ixGGl9Q3uzTTFTAOID+alb8S9korOQsnuutn75kdQDh1mx2xPmIK5jaITzntlOOPgliFhPew6S40LTYaN0iJ22QYbMjt+Z5ey0vagumKbiLmxziPLMelFDPucUpESXmH2qwky2wZjH7/eioLM3qFpF2gVlwQ=
+	t=1779295220; cv=none; b=Zi0t4gZR1uBWtcQEoB7jwcpYnEx43dpgbZ9+qxKubH1yjbPQp02aJ4TUqkemxm9vgg/1Mv8eXUbifrnQ+G1Ew7gyBRIEJ5AQJF6NhuXQ44/62JhC27QpBd3ifLEN/SEMLrAOq90XypYANdyEA7pIxBtt9JduXgAF9z3gVrE9TRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297626; c=relaxed/simple;
-	bh=DQiZP+RAqmP+A1Q10W/4Sic6RnB40VB7nh/C2qjVf6c=;
+	s=arc-20240116; t=1779295220; c=relaxed/simple;
+	bh=ONq+nB9xALGYRtZM0FT5oXAnyWuOx7h5nw78BTj7kSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9fiIWh1Xf0VCc+l4z4DO41ByGx5bKsNcl3VrVEtHkfoIM+UT1sHGopVvYYQUzI3QbmF5gjyQSfP+mrz8PKRsop09yekg4tb8WK9SSGTilm/wGFHpXyjHXqcE4L+4papxKxwQUzpc/LtYTvBDjTpTDJHrJ1lTlXcu8DxllTZFDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/i7eFNL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05D31F000E9;
-	Wed, 20 May 2026 17:20:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CmzlBHmEwZoBN9oo+LllpH7THL8fqo5/2zDXVGq0wYCwvdh/WsD/lY2SWxXgmYDvL//A/wsx1gxb4sg/SnvdbgLcQPtD1wOlnjk/zMy1B+yLw5yOsjYXzgyeEsHaBPNN1gOt+r/XQQsZ+c0MMM93+OeORge48yu3CIQ/QDPpSr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNJufwnv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BD91F000E9;
+	Wed, 20 May 2026 16:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297624;
-	bh=uW8WM/HsuP+693PXrQ0ZEudlhLxYiwW5WLlIiHywN5U=;
+	s=korg; t=1779295219;
+	bh=JaLcEumtCO1ALMvGivK2YW8Xmt5foIOIspK+XOVOCQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K/i7eFNLNduM6NI8GoxehfM/K0TtDbDxC/ByvRNeEnrKqB3g8K6zYLgdQbRCI9ZwE
-	 AhDZPhzpV7iD1g8W2kit2kSK5yB7i1wAj7LNr8vBG8eM+nwi0tHgwZOlTiXmZ+ZXTs
-	 VyRxhtq+cyd3J1OCkiZx6iWuWh4n+Ft2Hp4BYXbI=
+	b=zNJufwnvp6JBhIyTUiWghozPia1ygwGbzzPwCM2FFLddi37vOznnJw6XPN21KXgve
+	 Xumn+sLn3V517LEEV5AFbInjUMVsqrUh/b9xgFkkqM1UtURjHBCvaXcM5oLd3yAOJX
+	 85hIjXIpnz8WT86NA9P93Z1JrqTjLijHCGmx3r/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 102/957] wifi: mt76: mt7996: use correct link_id when filling TXD and TXP
+Subject: [PATCH 7.0 0335/1146] ALSA: core: Validate compress device numbers without dynamic minors
 Date: Wed, 20 May 2026 18:09:45 +0200
-Message-ID: <20260520162136.772361209@linuxfoundation.org>
+Message-ID: <20260520162155.782792295@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,205 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251301-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250364-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 7FAA15947A3
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 9F7DA594027
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 85cd5534a3f2ec93e7d88713a77df5b4255520df ]
+[ Upstream commit 796e119e9b14763be905ad0d023c71a14bc2e931 ]
 
-Obtain the correct link ID and, if needed, switch to the corresponding
-wcid before populating the TX descriptor and TX payload.
+Without CONFIG_SND_DYNAMIC_MINORS, ALSA reserves only two fixed minors
+for compress devices on each card: comprD0 and comprD1.
 
-Rules for link id:
-- For QoS data of MLD peers (excluding EAPOL), select the primary or
-  secondary wcid based on whether the TID is odd or even to meet FW/HW
-  requirements
-- For other packets, use IEEE80211_TX_CTRL_MLO_LINK if specified
-  (such as multicast and broadcast packets)
+snd_find_free_minor() currently computes the compress minor as
+type + dev without validating dev first, so device numbers greater than
+1 spill into the HWDEP minor range instead of failing registration.
 
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251106064203.1000505-8-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: e648051d52af ("wifi: mt76: mt7996: Decrement sta counter removing the link in mt7996_mac_reset_sta_iter()")
+ASoC passes rtd->id to snd_compress_new(), so this can happen on real
+non-dynamic-minor builds.
+
+Add a dedicated fixed-minor check for SNDRV_DEVICE_TYPE_COMPRESS in
+snd_find_free_minor() and reject out-of-range device numbers with
+-EINVAL before constructing the minor.
+
+Also remove the stale TODO in compress_offload.c that still claims
+multiple compress nodes are missing.
+
+Fixes: 3eafc959b32f ("ALSA: core: add support for compressed devices")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-alsa-compress-static-minors-v1-1-0628573bee1c@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 34 ++++++++++++++++---
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  9 +++++
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  4 +--
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ sound/core/compress_offload.c | 7 -------
+ sound/core/sound.c            | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 0b5194e708b3a..13a3b521437be 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1040,15 +1040,20 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 			  struct ieee80211_sta *sta,
- 			  struct mt76_tx_info *tx_info)
- {
-+	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)tx_info->skb->data;
- 	struct mt7996_dev *dev = container_of(mdev, struct mt7996_dev, mt76);
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(tx_info->skb);
- 	struct ieee80211_key_conf *key = info->control.hw_key;
- 	struct ieee80211_vif *vif = info->control.vif;
-+	struct mt7996_vif *mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
-+	struct mt7996_sta *msta = sta ? (struct mt7996_sta *)sta->drv_priv : NULL;
-+	struct mt76_vif_link *mlink = NULL;
- 	struct mt76_txwi_cache *t;
- 	int id, i, pid, nbuf = tx_info->nbuf - 1;
- 	bool is_8023 = info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP;
- 	__le32 *ptr = (__le32 *)txwi_ptr;
- 	u8 *txwi = (u8 *)txwi_ptr;
-+	u8 link_id;
+diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
+index fdba6e4b25fdc..5a0308eb4e31d 100644
+--- a/sound/core/compress_offload.c
++++ b/sound/core/compress_offload.c
+@@ -41,13 +41,6 @@
+ #define COMPR_CODEC_CAPS_OVERFLOW
+ #endif
  
- 	if (unlikely(tx_info->skb->len <= ETH_HLEN))
- 		return -EINVAL;
-@@ -1056,6 +1061,30 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	if (!wcid)
- 		wcid = &dev->mt76.global_wcid;
- 
-+	if ((is_8023 || ieee80211_is_data_qos(hdr->frame_control)) && sta->mlo &&
-+	    likely(tx_info->skb->protocol != cpu_to_be16(ETH_P_PAE))) {
-+		u8 tid = tx_info->skb->priority & IEEE80211_QOS_CTL_TID_MASK;
-+
-+		link_id = (tid % 2) ? msta->seclink_id : msta->deflink_id;
-+	} else {
-+		link_id = u32_get_bits(info->control.flags,
-+				       IEEE80211_TX_CTRL_MLO_LINK);
-+	}
-+
-+	if (link_id != wcid->link_id && link_id != IEEE80211_LINK_UNSPECIFIED) {
-+		if (msta) {
-+			struct mt7996_sta_link *msta_link =
-+				rcu_dereference(msta->link[link_id]);
-+
-+			if (msta_link)
-+				wcid = &msta_link->wcid;
-+		} else if (mvif) {
-+			mlink = rcu_dereference(mvif->mt76.link[link_id]);
-+			if (mlink && mlink->wcid)
-+				wcid = mlink->wcid;
-+		}
-+	}
-+
- 	t = (struct mt76_txwi_cache *)(txwi + mdev->drv->txwi_size);
- 	t->skb = tx_info->skb;
- 
-@@ -1162,10 +1191,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		if (!is_8023 && mt7996_tx_use_mgmt(dev, tx_info->skb))
- 			txp->fw.flags |= cpu_to_le16(MT_CT_INFO_MGMT_FRAME);
- 
--		if (vif) {
--			struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
--			struct mt76_vif_link *mlink = NULL;
+-/* TODO:
+- * - add substream support for multiple devices in case of
+- *	SND_DYNAMIC_MINORS is not used
+- * - Multiple node representation
+- *	driver should be able to register multiple nodes
+- */
 -
-+		if (mvif) {
- 			if (wcid->offchannel)
- 				mlink = rcu_dereference(mvif->mt76.offchannel_link);
- 			if (!mlink)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 32d44540605fc..af322f505f8ab 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -982,6 +982,7 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 
- 		msta_link = &msta->deflink;
- 		msta->deflink_id = link_id;
-+		msta->seclink_id = msta->deflink_id;
- 
- 		for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
- 			struct mt76_txq *mtxq;
-@@ -996,6 +997,11 @@ mt7996_mac_sta_init_link(struct mt7996_dev *dev,
- 		msta_link = kzalloc(sizeof(*msta_link), GFP_KERNEL);
- 		if (!msta_link)
- 			return -ENOMEM;
-+
-+		if (msta->seclink_id == msta->deflink_id &&
-+		    (sta->valid_links & ~BIT(msta->deflink_id)))
-+			msta->seclink_id = __ffs(sta->valid_links &
-+						 ~BIT(msta->deflink_id));
- 	}
- 
- 	INIT_LIST_HEAD(&msta_link->rc_list);
-@@ -1065,6 +1071,8 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		if (msta->deflink_id == link_id) {
- 			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
- 			continue;
-+		} else if (msta->seclink_id == link_id) {
-+			msta->seclink_id = IEEE80211_LINK_UNSPECIFIED;
- 		}
- 
- 		kfree_rcu(msta_link, rcu_head);
-@@ -1160,6 +1168,7 @@ mt7996_mac_sta_add(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 	mutex_lock(&dev->mt76.mutex);
- 
- 	msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
-+	msta->seclink_id = IEEE80211_LINK_UNSPECIFIED;
- 	msta->vif = mvif;
- 	err = mt7996_mac_sta_add_links(dev, vif, sta, links);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index c2d15128784bc..38b8743409a0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2399,8 +2399,8 @@ mt7996_mcu_sta_mld_setup_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
- 	mld_setup->primary_id = cpu_to_le16(msta_link->wcid.idx);
- 
- 	if (nlinks > 1) {
--		link_id = __ffs(sta->valid_links & ~BIT(msta->deflink_id));
--		msta_link = mt76_dereference(msta->link[link_id], &dev->mt76);
-+		msta_link = mt76_dereference(msta->link[msta->seclink_id],
-+					     &dev->mt76);
- 		if (!msta_link)
- 			return;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 6190fbcd4df7e..6793161ed198c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -243,6 +243,7 @@ struct mt7996_sta {
- 	struct mt7996_sta_link deflink; /* must be first */
- 	struct mt7996_sta_link __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
- 	u8 deflink_id;
-+	u8 seclink_id;
- 
- 	struct mt7996_vif *vif;
- };
+ struct snd_compr_file {
+ 	unsigned long caps;
+ 	struct snd_compr_stream stream;
+diff --git a/sound/core/sound.c b/sound/core/sound.c
+index 93436db24710b..8d05fe0d263b2 100644
+--- a/sound/core/sound.c
++++ b/sound/core/sound.c
+@@ -216,9 +216,16 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
+ 	case SNDRV_DEVICE_TYPE_RAWMIDI:
+ 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
+ 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
++		if (snd_BUG_ON(!card))
++			return -EINVAL;
++		minor = SNDRV_MINOR(card->number, type + dev);
++		break;
+ 	case SNDRV_DEVICE_TYPE_COMPRESS:
+ 		if (snd_BUG_ON(!card))
+ 			return -EINVAL;
++		if (dev < 0 ||
++		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
++			return -EINVAL;
+ 		minor = SNDRV_MINOR(card->number, type + dev);
+ 		break;
+ 	default:
 -- 
 2.53.0
 
