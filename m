@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IB6nJNESDmoJ6AUAu9opvQ
-	(envelope-from <stable+bounces-250679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:17 +0200
+	id mC1LIaP5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224FF598FFB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3961A595908
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 293D13214226
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47D0E30F41AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E6936B05E;
-	Wed, 20 May 2026 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1563FB05D;
+	Wed, 20 May 2026 18:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xC0mIe0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Omrgk03u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B09339844;
-	Wed, 20 May 2026 16:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67303F7ABC;
+	Wed, 20 May 2026 18:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296032; cv=none; b=SFPs+Cy0wet9LN6PxJbjMMP7olQw0Gds7eI+GxkYxLGydtSox9L1UTTTNjYFlI5yUR0a57a1g8ZWbUOQdO59qakfj1F6Ntg9fhu42VqcP0b1IjMTY13Gi0zoVV8WeLsPQUpBhw7DbEfRII2zdPnTALuQ4PpiYPqpNLBRu1fl20c=
+	t=1779300305; cv=none; b=O+aWYTbly5ilKEK7sXXIKOcnP6YcBMXOG66tYh4hkmiyRhoUIHw7N2QhSUYau4YqWKTvgFKOiA2IztMBPjaex+XSZP/i9qh5V9pp88Oq2K1OdjLSBGg/OZ66izDWwKIYWjDm6D62xamRWj7WzKRvMxQIqBcxtEOE1CPUsY63NUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296032; c=relaxed/simple;
-	bh=mRh2xq+1iw+Yh69kGSPRyMPIn+CdGgNo8lg6+CaE/Q8=;
+	s=arc-20240116; t=1779300305; c=relaxed/simple;
+	bh=D116QIVzwNJ1R9qGzLgM9iVxiXfGIs71hHQ/GePZ7w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENN+iU733NDCSkta62l124euOLMOpt/MIMs4HME26EMfNc02Uvr5mgGlQ+xOCisoejpLt02c7M+DVeqqo4UXqukoFiRA03/IqGezBbULh7YLajb8Cs0f9eFUYyyjjHBUMFCx72JPel0IgTtgq1QV6snCeNrJl3ZI82ryYB7AW4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xC0mIe0q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5A41F000E9;
-	Wed, 20 May 2026 16:53:50 +0000 (UTC)
+	 MIME-Version; b=B9Jr8W31Z28SIC/Zup41Lymq/L7E65gOrtjOm2z9uxcCrasBGxuU390Jgo07AV3jRPf52wGgb5T37QjTNu11B+RO6ULl/ikg7YECnqt407pj0SBu2Zv/OXvho8WI/VJzd2dOPPHVk8YSF1NH9JbQ/aOONIPMIGMl8BaJtjmiUEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Omrgk03u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313071F000E9;
+	Wed, 20 May 2026 18:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296031;
-	bh=zMpVlTvhWILFU5vCqpF3oUoCEPCbTuYxETtKXfqdbW8=;
+	s=korg; t=1779300303;
+	bh=WCmpAbw8RvehdQEiEJoyeDsJp9vN2Bg9JgCUSEamg6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xC0mIe0q4Ltgd7FLadpeuye8Z7KmKx6zzS236Ku9K287ogPiD1+8LhcStCN2Cq8N5
-	 c+DxCJC5KMbPIY2WXeTlF1W750Fc52bqC7dwQKKflXvX2hvm4zJvKH/Mww8xkaawBA
-	 jFEHCObGeR1CaN/e4gQOcI+kTgxRkAN0IgWa1M2Q=
+	b=Omrgk03urNEEk6QAlAL2TJPS/Ek0EBGA9Jp4aUuhWNZEQeFGZExt3e034W/LAwRx1
+	 O7eEQjudBU3RkapywlfYpgop1CsAG5Q8udrjEuAed6MArxNPuqBCK0C17cWFboX8sy
+	 mdLQVv0S0ctQbzjd771WV9WDC/CezyKtLGX91qSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Falcon <thomas.falcon@intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0643/1146] perf test: Fix ratio_to_prev event parsing test
+Subject: [PATCH 6.12 082/666] bpf: fix mm lifecycle in open-coded task_vma iterator
 Date: Wed, 20 May 2026 18:14:53 +0200
-Message-ID: <20260520162202.729277956@linuxfoundation.org>
+Message-ID: <20260520162113.008301510@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,124 +68,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250679-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252296-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 224FF598FFB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3961A595908
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Falcon <thomas.falcon@intel.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 77cb9b443b7fff2a93d78cd2e309db030046772f ]
+[ Upstream commit d8e27d2d22b6e2df3a0125b8c08e9aace38c954c ]
 
-test__ratio_to_prev() assumed the first event in a group is the leader,
-which is not the case when the event is expanded into two event groups
-on hybrid PMU's with auto counter reload support. Instead, iterate over the
-event group generated for each core PMU. Also update "wrong leader" test to
-check that the subordinate event has the correct leader instead of checking
-that it is not the group leader. Finally, do not exit immediately if a PMU
-without auto counter reload support is found.
+The open-coded task_vma iterator reads task->mm locklessly and acquires
+mmap_read_trylock() but never calls mmget(). If the task exits
+concurrently, the mm_struct can be freed as it is not
+SLAB_TYPESAFE_BY_RCU, resulting in a use-after-free.
 
-Signed-off-by: Thomas Falcon <thomas.falcon@intel.com>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 56be0fe5f62c ("perf record: Add auto counter reload parse and regression tests")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Safely read task->mm with a trylock on alloc_lock and acquire an mm
+reference. Drop the reference via bpf_iter_mmput_async() in _destroy()
+and error paths. bpf_iter_mmput_async() is a local wrapper around
+mmput_async() with a fallback to mmput() on !CONFIG_MMU.
+
+Reject irqs-disabled contexts (including NMI) up front. Operations used
+by _next() and _destroy() (mmap_read_unlock, bpf_iter_mmput_async)
+take spinlocks with IRQs disabled (pool->lock, pi_lock). Running from
+NMI or from a tracepoint that fires with those locks held could
+deadlock.
+
+A trylock on alloc_lock is used instead of the blocking task_lock()
+(get_task_mm) to avoid a deadlock when a softirq BPF program iterates
+a task that already holds its alloc_lock on the same CPU.
+
+Fixes: 4ac454682158 ("bpf: Introduce task_vma open-coded iterator kfuncs")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20260408154539.3832150-2-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/parse-events.c | 49 +++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 21 deletions(-)
+ kernel/bpf/task_iter.c | 54 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 51 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/parse-events.c b/tools/perf/tests/parse-events.c
-index 1d3cc224fbc27..05c3e899b4251 100644
---- a/tools/perf/tests/parse-events.c
-+++ b/tools/perf/tests/parse-events.c
-@@ -1796,31 +1796,38 @@ static bool test__acr_valid(void)
+diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
+index 5af9e130e500f..c37ae44bd0a53 100644
+--- a/kernel/bpf/task_iter.c
++++ b/kernel/bpf/task_iter.c
+@@ -10,6 +10,7 @@
+ #include <linux/bpf_mem_alloc.h>
+ #include <linux/btf_ids.h>
+ #include <linux/mm_types.h>
++#include <linux/sched/mm.h>
+ #include "mmap_unlock_work.h"
  
- static int test__ratio_to_prev(struct evlist *evlist)
- {
--	struct evsel *evsel;
-+	struct evsel *evsel, *leader;
+ static const char * const iter_task_type_names[] = {
+@@ -798,6 +799,15 @@ const struct bpf_func_proto bpf_find_vma_proto = {
+ 	.arg5_type	= ARG_ANYTHING,
+ };
  
- 	TEST_ASSERT_VAL("wrong number of entries", 2 * perf_pmus__num_core_pmus() == evlist->core.nr_entries);
- 
--	 evlist__for_each_entry(evlist, evsel) {
--		if (!perf_pmu__has_format(evsel->pmu, "acr_mask"))
--			return TEST_OK;
--
--		if (evsel == evlist__first(evlist)) {
--			TEST_ASSERT_VAL("wrong config2", 0 == evsel->core.attr.config2);
--			TEST_ASSERT_VAL("wrong leader", evsel__is_group_leader(evsel));
--			TEST_ASSERT_VAL("wrong core.nr_members", evsel->core.nr_members == 2);
--			TEST_ASSERT_VAL("wrong group_idx", evsel__group_idx(evsel) == 0);
--			TEST_ASSERT_EVSEL("unexpected event",
--					evsel__match(evsel, HARDWARE, HW_CPU_CYCLES),
--					evsel);
--		} else {
--			TEST_ASSERT_VAL("wrong config2", 0 == evsel->core.attr.config2);
--			TEST_ASSERT_VAL("wrong leader", !evsel__is_group_leader(evsel));
--			TEST_ASSERT_VAL("wrong core.nr_members", evsel->core.nr_members == 0);
--			TEST_ASSERT_VAL("wrong group_idx", evsel__group_idx(evsel) == 1);
--			TEST_ASSERT_EVSEL("unexpected event",
--					evsel__match(evsel, HARDWARE, HW_INSTRUCTIONS),
--					evsel);
-+	evlist__for_each_entry(evlist, evsel) {
-+		if (evsel != evsel__leader(evsel) ||
-+		    !perf_pmu__has_format(evsel->pmu, "acr_mask")) {
-+			continue;
- 		}
-+		leader = evsel;
-+		/* cycles */
-+		TEST_ASSERT_VAL("wrong config2", 0 == leader->core.attr.config2);
-+		TEST_ASSERT_VAL("wrong core.nr_members", leader->core.nr_members == 2);
-+		TEST_ASSERT_VAL("wrong group_idx", evsel__group_idx(leader) == 0);
-+		TEST_ASSERT_EVSEL("unexpected event",
-+				  evsel__match(leader, HARDWARE, HW_CPU_CYCLES),
-+				  leader);
-+		/*
-+		 * The period value gets configured within evlist__config,
-+		 * while this test executes only parse events method.
-+		 */
-+		TEST_ASSERT_VAL("wrong period", 0 == leader->core.attr.sample_period);
++static inline void bpf_iter_mmput_async(struct mm_struct *mm)
++{
++#ifdef CONFIG_MMU
++	mmput_async(mm);
++#else
++	mmput(mm);
++#endif
++}
 +
-+		 /* instructions/period=200000,ratio-to-prev=2.0/ */
-+		evsel = evsel__next(evsel);
-+		TEST_ASSERT_VAL("wrong config2", 0 == evsel->core.attr.config2);
-+		TEST_ASSERT_VAL("wrong leader", evsel__has_leader(evsel, leader));
-+		TEST_ASSERT_VAL("wrong core.nr_members", evsel->core.nr_members == 0);
-+		TEST_ASSERT_VAL("wrong group_idx", evsel__group_idx(evsel) == 1);
-+		TEST_ASSERT_EVSEL("unexpected event",
-+				  evsel__match(evsel, HARDWARE, HW_INSTRUCTIONS),
-+				  evsel);
- 		/*
- 		 * The period value gets configured within evlist__config,
- 		 * while this test executes only parse events method.
+ struct bpf_iter_task_vma_kern_data {
+ 	struct task_struct *task;
+ 	struct mm_struct *mm;
+@@ -829,6 +839,24 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+ 	BUILD_BUG_ON(sizeof(struct bpf_iter_task_vma_kern) != sizeof(struct bpf_iter_task_vma));
+ 	BUILD_BUG_ON(__alignof__(struct bpf_iter_task_vma_kern) != __alignof__(struct bpf_iter_task_vma));
+ 
++	/* bpf_iter_mmput_async() needs mmput_async() which requires CONFIG_MMU */
++	if (!IS_ENABLED(CONFIG_MMU)) {
++		kit->data = NULL;
++		return -EOPNOTSUPP;
++	}
++
++	/*
++	 * Reject irqs-disabled contexts including NMI. Operations used
++	 * by _next() and _destroy() (mmap_read_unlock, bpf_iter_mmput_async)
++	 * can take spinlocks with IRQs disabled (pi_lock, pool->lock).
++	 * Running from NMI or from a tracepoint that fires with those
++	 * locks held could deadlock.
++	 */
++	if (irqs_disabled()) {
++		kit->data = NULL;
++		return -EBUSY;
++	}
++
+ 	/* is_iter_reg_valid_uninit guarantees that kit hasn't been initialized
+ 	 * before, so non-NULL kit->data doesn't point to previously
+ 	 * bpf_mem_alloc'd bpf_iter_task_vma_kern_data
+@@ -838,7 +866,25 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+ 		return -ENOMEM;
+ 
+ 	kit->data->task = get_task_struct(task);
++	/*
++	 * Safely read task->mm and acquire an mm reference.
++	 *
++	 * Cannot use get_task_mm() because its task_lock() is a
++	 * blocking spin_lock that would deadlock if the target task
++	 * already holds alloc_lock on this CPU (e.g. a softirq BPF
++	 * program iterating a task interrupted while holding its
++	 * alloc_lock).
++	 */
++	if (!spin_trylock(&task->alloc_lock)) {
++		err = -EBUSY;
++		goto err_cleanup_iter;
++	}
+ 	kit->data->mm = task->mm;
++	if (kit->data->mm && !(task->flags & PF_KTHREAD))
++		mmget(kit->data->mm);
++	else
++		kit->data->mm = NULL;
++	spin_unlock(&task->alloc_lock);
+ 	if (!kit->data->mm) {
+ 		err = -ENOENT;
+ 		goto err_cleanup_iter;
+@@ -848,15 +894,16 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+ 	irq_work_busy = bpf_mmap_unlock_get_irq_work(&kit->data->work);
+ 	if (irq_work_busy || !mmap_read_trylock(kit->data->mm)) {
+ 		err = -EBUSY;
+-		goto err_cleanup_iter;
++		goto err_cleanup_mmget;
+ 	}
+ 
+ 	vma_iter_init(&kit->data->vmi, kit->data->mm, addr);
+ 	return 0;
+ 
++err_cleanup_mmget:
++	bpf_iter_mmput_async(kit->data->mm);
+ err_cleanup_iter:
+-	if (kit->data->task)
+-		put_task_struct(kit->data->task);
++	put_task_struct(kit->data->task);
+ 	bpf_mem_free(&bpf_global_ma, kit->data);
+ 	/* NULL kit->data signals failed bpf_iter_task_vma initialization */
+ 	kit->data = NULL;
+@@ -879,6 +926,7 @@ __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
+ 	if (kit->data) {
+ 		bpf_mmap_unlock_mm(kit->data->work, kit->data->mm);
+ 		put_task_struct(kit->data->task);
++		bpf_iter_mmput_async(kit->data->mm);
+ 		bpf_mem_free(&bpf_global_ma, kit->data);
+ 	}
+ }
 -- 
 2.53.0
 
