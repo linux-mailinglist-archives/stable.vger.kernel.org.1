@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Fq+IPkSDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:57 +0200
+	id eBmIMXcjDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED0F59903E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D8359A857
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D647437C1B09
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:54:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AA7238F45D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A87B3A382F;
-	Wed, 20 May 2026 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139D53F20FF;
+	Wed, 20 May 2026 18:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvLxvbD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHWnC9ZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE7F3B6349;
-	Wed, 20 May 2026 16:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E7736CE19;
+	Wed, 20 May 2026 18:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296051; cv=none; b=FtgIon4UOwoAtV2iWWqGXcKo6b95Xkj0fAo2etbU+0gXU9NK2CbaWnol3ev/jAqNHCb2SCj/VF0cpQk3mXIhGt2viuHJMp9azxG1ycAUNAhN2qa2f9nBHidRCgzFAWLyiyLA46Ao9MmNT44CLctVhlHBZ/41H995LCL9EAKzT8I=
+	t=1779300109; cv=none; b=ekFJzo0BVCSDLHscak8R+pZQ3pcaMdPDERSeYjKv+o6ybie9+qemasAgXzEAEmn6vK/L92ySiyrp4NjU9ti5bVO8dLl7IFV9HN6oU/SRY6CGT3F8zDmrzJK5GfrljUgwATekr2KSyNM1iKdd2K5wQi6/WhZeN1WtcWpJhIrPsO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296051; c=relaxed/simple;
-	bh=nSgHpBZBLGGzJLy2VpUxs/kkkmnVAmTU5WAp/DIWIZE=;
+	s=arc-20240116; t=1779300109; c=relaxed/simple;
+	bh=32AhLjJSvPb+agBSk1S12PpvL7piEbHtBU5nJWo4Pm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrdN05EjSrV8lJjynvS9ZtI+dJ+iIyhuabK+YeiobcQGfnlo9HEnfkSjDnOlTAl055gD3AO2nKR+QZGg6aaNzpjUYqQhkp0A+1LMZ/lML340KlqyfRlEbYQNov+rVewQ/a2iCG9PKPlvbXSuoK1/HKnhy9j2erwPvv4t9nhsgjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvLxvbD3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6411F000E9;
-	Wed, 20 May 2026 16:54:09 +0000 (UTC)
+	 MIME-Version; b=QPEn+3xGphIVwde7ayYd3Yi5Zy7Lwbi6pE0K5TM2D48tkAqXZl5ZnxA8T+Dpd/Ulu3RTv7nmpAxmKWidLJDfTLJ6T7cj8JPz7boWJbyG1A+TNDOGHnbSWHlntX4DQwBjLOGjSSstZsQe6uvdH2cuQTdShhB6+oy8i1KOVBO4BOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHWnC9ZD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398211F000E9;
+	Wed, 20 May 2026 18:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296049;
-	bh=RTFR/Yy521bQF2kB6+48Lc3xigmMqVsqOoabf/LzI80=;
+	s=korg; t=1779300108;
+	bh=ebmtBwCrPRvJZsLPfUn/Jw2E7KWlGcMxef/f3c3rGsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YvLxvbD3hBBlol6O073CftjifHsesabGW2gEupeUcJ++LNEdPa2XYTAzU8hFKEo0e
-	 KO9GzCZgvg8If/1VTO7HtjDc3F3E+b4p5TICMi6Cfw1aiNXogR29q1yTbpvgL8LIjK
-	 66PEoJ1AzfSMQi1rN/CrmxYPmHZqeHt2LYst++AI=
+	b=QHWnC9ZD9fhSJBvMayvKncAigKOPBRXm7WykstBN75EzKcduWW4F1tc+K7wk2nGoX
+	 Q6swi6soND7gS2FN8x7riXETTVIdQfm4cHAUnR35Akq0tQz2mwKs/U2IPDhdghIWqr
+	 M7F5fqssDA88ykHVX0rjaKdXgq28ABuNNvZZSS1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Colton Lewis <coltonlewis@google.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0611/1146] bpf, arm64: Remove redundant bpf_flush_icache() after pack allocator finalize
+Subject: [PATCH 6.12 050/666] arm64: cpufeature: Make PMUVer and PerfMon unsigned
 Date: Wed, 20 May 2026 18:14:21 +0200
-Message-ID: <20260520162202.009784545@linuxfoundation.org>
+Message-ID: <20260520162112.324603653@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,13 +70,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250686-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252221-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -93,82 +93,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DED0F59903E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: 67D8359A857
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: James Clark <james.clark@linaro.org>
 
-[ Upstream commit 42f18ae53011826cfd3c84d041817e7f07bc645b ]
+[ Upstream commit d1dcc20bcc40efe1f1c71639376c91dafa489222 ]
 
-bpf_flush_icache() calls flush_icache_range() to clean the data cache
-and invalidate the instruction cache for the JITed code region. However,
-since commit 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory
-management"), this flush is redundant.
+On the host, this change doesn't make a difference because the fields
+are defined as FTR_EXACT. However, KVM allows userspace to set these
+fields for a guest and overrides the type to be FTR_LOWER_SAFE. And
+while KVM used to do an unsigned comparison to validate that the new
+value is lower than what the hardware provides, since the linked commit
+it uses the generic sanitization framework which does a signed
+comparison.
 
-bpf_jit_binary_pack_finalize() copies the JITed instructions to the ROX
-region via bpf_arch_text_copy() -> aarch64_insn_copy() -> __text_poke(),
-and __text_poke() already calls flush_icache_range() on the written
-range. The subsequent bpf_flush_icache() repeats the same cache
-maintenance on an overlapping range, including an unnecessary second
-synchronous IPI to all CPUs via kick_all_cpus_sync().
+Fix it by defining these fields as unsigned. In theory, without this
+fix, userspace could set a higher PMU version than the hardware supports
+by providing any value with the top bit set.
 
-Remove the redundant bpf_flush_icache() call and its now-unused
-definition.
-
-Fixes: 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management")
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20260413191111.3426023-2-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: c118cead07a7 ("KVM: arm64: Use generic sanitisation for ID_(AA64)DFR0_EL1")
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Colton Lewis <coltonlewis@google.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/arm64/kernel/cpufeature.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 4aad9483f8a50..524b67c0867e7 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -18,7 +18,6 @@
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 5e68d65e675e5..8246015fd2d73 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -533,7 +533,7 @@ static const struct arm64_ftr_bits ftr_id_aa64dfr0[] = {
+ 	 * We can instantiate multiple PMU instances with different levels
+ 	 * of support.
+ 	 */
+-	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_EXACT, ID_AA64DFR0_EL1_DebugVer_SHIFT, 4, 0x6),
+ 	ARM64_FTR_END,
+ };
+@@ -677,7 +677,7 @@ static const struct arm64_ftr_bits ftr_id_pfr2[] = {
  
- #include <asm/asm-extable.h>
- #include <asm/byteorder.h>
--#include <asm/cacheflush.h>
- #include <asm/cpufeature.h>
- #include <asm/debug-monitors.h>
- #include <asm/insn.h>
-@@ -1961,11 +1960,6 @@ static int validate_ctx(struct jit_ctx *ctx)
- 	return 0;
- }
- 
--static inline void bpf_flush_icache(void *start, void *end)
--{
--	flush_icache_range((unsigned long)start, (unsigned long)end);
--}
--
- static void priv_stack_init_guard(void __percpu *priv_stack_ptr, int alloc_size)
- {
- 	int cpu, underflow_idx = (alloc_size - PRIV_STACK_GUARD_SZ) >> 3;
-@@ -2204,12 +2198,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
- 			prog = orig_prog;
- 			goto out_off;
- 		}
--		/*
--		 * The instructions have now been copied to the ROX region from
--		 * where they will execute. Now the data cache has to be cleaned to
--		 * the PoU and the I-cache has to be invalidated for the VAs.
--		 */
--		bpf_flush_icache(ro_header, ctx.ro_image + ctx.idx);
- 	} else {
- 		jit_data->ctx = ctx;
- 		jit_data->ro_image = ro_image_ptr;
+ static const struct arm64_ftr_bits ftr_id_dfr0[] = {
+ 	/* [31:28] TraceFilt */
+-	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MProfDbg_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MMapTrc_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_CopTrc_SHIFT, 4, 0),
 -- 
 2.53.0
 
