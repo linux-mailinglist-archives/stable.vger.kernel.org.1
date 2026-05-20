@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJilOgHxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:01 +0200
+	id 8JkoLyz+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821635940FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F99596790
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3F6731F6E7F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BFA53183C98
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5004F3F54DB;
-	Wed, 20 May 2026 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399CA34DCE4;
+	Wed, 20 May 2026 18:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkRTJvtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GumUzPjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC7C3F1AC7;
-	Wed, 20 May 2026 17:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9E0347515;
+	Wed, 20 May 2026 18:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296821; cv=none; b=sNEDlzKjxFM3s7mt8PBeNfCL4KgLy7kIcOkgysFa5LRf64qTDLZK02qSO76iR6gBBLTae8/9C1CoXJFxTnrIBqsok6OwlR5/z3cW4hZRhJagQCgWR4iIhIBbagOC6YfyIPVlSThqvkGV5OKmREZ/+T7ggOP93Y27jWVzQ2jYcB0=
+	t=1779300990; cv=none; b=WXo3l+nLPm/bsbRDKN//KsBm3TWme5LNDWBzuokwbBxSyDmN/q6bDwXpWnAZl4IwfukmCfMYEg5AOwWZZ6v5w/AopbJIWx8toun9v6/L3Z0Za9McsokPtd7kRsD+WWRxkfOdcO6g/R8FdB7gU0jMcWUuMvmh0rhL1DKw+BoF63U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296821; c=relaxed/simple;
-	bh=/xiNtXD3cCXD1xvIpBLQztu3GB0xXPvBftWgqIF8zTU=;
+	s=arc-20240116; t=1779300990; c=relaxed/simple;
+	bh=dvV5beroYmAAan+vHyJp2OxGZ4RL7svroNwiW72K4vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qq4oGDUxx0AsFKCV6XKVAiAaORQZKC0/Y/4XJWhnQQgdTJ7XX74yVxhjvGJVeedMwRywYYqGauOQyP8EoStsO2QM7x198R1zbXEC8v3mlJzR+ky7EXknpN/w7Gi8ODffLQWYyGPhWj0h3J1rzHSwIyQ4gzID1eEINRELit5oz3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkRTJvtf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E3E1F000E9;
-	Wed, 20 May 2026 17:06:59 +0000 (UTC)
+	 MIME-Version; b=GCYlThEomhGkJjhLpey1Q8OFT7VtYKiuVEBO3gtS9ZudfPq2pK88X6egusYye7AkCMjx3TwJly82Jn42CUJ4gmKIhuSdMuCsd1zCml4cai/V4goODPXCrmFJN/Nj4lGYZ6L50Pc0fLdDN1zeFPYv6kR8gbtE66EkOz1dLFLHCAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GumUzPjC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A03C1F000E9;
+	Wed, 20 May 2026 18:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296819;
-	bh=DiReyHYyoJX75Ec++qgzg7Y1xdIzb7HtirjTaKUrdT0=;
+	s=korg; t=1779300988;
+	bh=Xrrfru7IZu+s35mgoofRI8Sn9nA35DZ+gUK95zWvAyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vkRTJvtfyTHsL/uB+keCoW5XJj4qN9ubpxP+VYPogSCXufdkal1O3iG8d2hc7U4mY
-	 LNxyi39zibQCSCUBjZxlIP5nILzVub+tpwqgVcL8wtfqhju/MJuaekzMkRzU5K2KIi
-	 p1LbofSm85Rvt3MKiWhJn1uwQpviA910EZdTFh/E=
+	b=GumUzPjC4F/7X7haryGGPOen29lqNjeqmf/VbACtq69BlIKOsUFNBFEfKPZXNxegP
+	 p/DCIyu3+3sbQVAt+oNk+IHUL33IKRx0TQYMXIJdYl6DHbKcThsikz0IBOvanaCztw
+	 /AcQ9DI2oxhXFJ+OGA+w/WlZXPoR3+158xiqwQx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Morduan Zang <zhangdandan@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0943/1146] net: usb: rtl8150: free skb on usb_submit_urb() failure in xmit
+Subject: [PATCH 6.12 382/666] i3c: master: dw-i3c: Fix missing reset assertion in remove() callback
 Date: Wed, 20 May 2026 18:19:53 +0200
-Message-ID: <20260520162209.574987622@linuxfoundation.org>
+Message-ID: <20260520162119.532657944@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +66,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250992-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252558-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pengutronix.de,gmail.com,nxp.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lunn.ch:email,uniontech.com:email]
-X-Rspamd-Queue-Id: 821635940FA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,pengutronix.de:email,bootlin.com:email,nxp.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 76F99596790
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Morduan Zang <zhangdandan@uniontech.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit adbe2cdf75461891e50dbe11896ac78e9af1f874 ]
+[ Upstream commit bef1eef667186cedb0bc6d152464acb3c97d5f72 ]
 
-When rtl8150_start_xmit() fails to submit the tx URB, the URB is never
-handed to the USB core and write_bulk_callback() will not run.  The
-driver returns NETDEV_TX_OK, which tells the networking stack that the
-skb has been consumed, but nothing actually frees the skb on this
-error path:
+The reset line acquired during probe is currently left deasserted when
+the driver is unbound.
 
-  dev->tx_skb = skb;
-  ...
-  if ((res = usb_submit_urb(dev->tx_urb, GFP_ATOMIC))) {
-          ...
-          /* no kfree_skb here */
-  }
-  return NETDEV_TX_OK;
+Switch to devm_reset_control_get_optional_exclusive_deasserted() to
+ensure the reset is automatically re-asserted by the devres core when
+the driver is removed.
 
-This leaks the skb on every submit failure and also leaves dev->tx_skb
-pointing at memory that the driver itself may later free, which is
-fragile.
-
-Free the skb with dev_kfree_skb_any() in the error path and clear
-dev->tx_skb so no stale pointer is left behind.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
-Link: https://patch.msgid.link/E7D3E1C013C5A859+20260424015517.9574-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260320-dw-i3c-v3-1-477040c2e3f5@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/i3c/master/dw-i3c-master.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 1bbfdeab4d624..c880c95c41a5e 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -710,6 +710,13 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 			netdev->stats.tx_errors++;
- 			netif_start_queue(netdev);
- 		}
-+		/*
-+		 * The URB was not submitted, so write_bulk_callback() will
-+		 * never run to free dev->tx_skb.  Drop the skb here and
-+		 * clear tx_skb to avoid leaving a stale pointer.
-+		 */
-+		dev->tx_skb = NULL;
-+		dev_kfree_skb_any(skb);
- 	} else {
- 		netdev->stats.tx_packets++;
- 		netdev->stats.tx_bytes += skb_len;
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index 3453431e49a24..6c56e0b89b02d 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1566,13 +1566,11 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 	if (IS_ERR(master->pclk))
+ 		return PTR_ERR(master->pclk);
+ 
+-	master->core_rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
+-								    "core_rst");
++	master->core_rst = devm_reset_control_get_optional_exclusive_deasserted(&pdev->dev,
++										"core_rst");
+ 	if (IS_ERR(master->core_rst))
+ 		return PTR_ERR(master->core_rst);
+ 
+-	reset_control_deassert(master->core_rst);
+-
+ 	spin_lock_init(&master->xferqueue.lock);
+ 	INIT_LIST_HEAD(&master->xferqueue.list);
+ 
+@@ -1584,7 +1582,7 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 			       dw_i3c_master_irq_handler, 0,
+ 			       dev_name(&pdev->dev), master);
+ 	if (ret)
+-		goto err_assert_rst;
++		return ret;
+ 
+ 	platform_set_drvdata(pdev, master);
+ 
+@@ -1620,9 +1618,6 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 
+-err_assert_rst:
+-	reset_control_assert(master->core_rst);
+-
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
 -- 
 2.53.0
 
