@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBCOH0L8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200
+	id WNpHHIvvDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C643596045
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D27A593D19
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8279F3112045
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A862F3166C11
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DC13F4DC0;
-	Wed, 20 May 2026 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544CF3E2AAD;
+	Wed, 20 May 2026 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlDgruBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcDpgwPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B346236D4E1;
-	Wed, 20 May 2026 18:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EE03D8103;
+	Wed, 20 May 2026 16:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300576; cv=none; b=kMWjI3X3rSQ5NtdgiTIGJyZ3uFccnDiGnULl8TCB+rrtiJYbD5M97GbEnky2r03XgvmmSIP5se5NO0lBJ2pQTYhuwgwpXIhgg7vSQYp5/tAz8RD/6sfWpz7YEu4lphy/3PSp9vxRjx/myZbylro44UU9UbIDjw296/YeWqZ5CYc=
+	t=1779296371; cv=none; b=tsUAi+ZkO6Bnf3bdoItlDQPJzcDYqNqSsIfWm6cS6LechMY828ag/CPv08Rr6q/0HDh5iolA0Y16cXfD6YIp0ZVXfrayDM2MnulfGmtE71K+qpfmUS61nKzOjz0PIBP8D2nc+XNePOX36dMErxmvxU9cvL/tcz9K8I1zUmX32zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300576; c=relaxed/simple;
-	bh=/Ec0KN85S43NJ/TPXwP5Lb4unDVxkE4/HwoGumWqRhI=;
+	s=arc-20240116; t=1779296371; c=relaxed/simple;
+	bh=tQyXqC3eMGGF30iD6oZmmtjXEY1BaCaHYPR2t+Q1Fa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQSyH1dcbiXrAcfNpoiicjG9YG5vIoBTb/MAaN0ttoSpDsycRCGfJmBh85Of1aCbnlujTE8YzUr50WRbkBke0OnswI3T4yYRhpgv1og5V+WbcinIxKMEpWadibIWY2/mvelCTJSDArugzCphRHWrY2qtwHBTMuddJeDaFOQiE5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlDgruBN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7541F000E9;
-	Wed, 20 May 2026 18:09:34 +0000 (UTC)
+	 MIME-Version; b=cnA1CdFXnl9lcEbDFIyXUU9NKbtpXjvLSNjGIAD5BRM2A8tXcF/hQ1UHi8V0DaPrKo/luH+kXM5dNZ2vK8aZbIYT/pfrQm5UVwM9EdwtwJuHQdLiP7d0/xE9dQ+ZadOSQrCW58gPsN7iwTYXroejNAM3edVQoHbvdZj1O9RqddA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcDpgwPh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD501F00893;
+	Wed, 20 May 2026 16:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300575;
-	bh=pKmQwl/9z9GFDXmCGQkatvMNdQ6w24+l9VUB5ZMCF/0=;
+	s=korg; t=1779296368;
+	bh=Vp6dMVB9k0yIIyuv12o8z0MjyP2JAJ09B5ZyaU/SVmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OlDgruBNQcW3XHmxNB305iS51kDWM4Z5zDUzcANGDgYRgEadT+KPpYSHhKw9xZ+KC
-	 TyPzvzACrnqaG5l4xd+w0no6vUx4Va1n2Rwyt5h1hSVpSAIZJgXAYiMnY9vBlwXTt5
-	 +18p8w3t1nhRbAEnMTt2UjuDtiWFSUBRPpy1SR+E=
+	b=WcDpgwPhUThm36Vtd+LGEXErMD7lnjn0NSUl0+DfGXXpillzYx4P3E9Kw89kMxYhB
+	 jstPXQ98jtqjS4eedY3OnMNyGOq9QtEGt99s1JSMDw1ojsghGPc3moLsyeUfK1HKX1
+	 WUNh/Ve00VeqkYZHUp6sjrHy2RUdHWEwU2jtr/X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/666] iommu/amd: Do not detach devices in domain free path
-Date: Wed, 20 May 2026 18:17:01 +0200
-Message-ID: <20260520162115.756002484@linuxfoundation.org>
+Subject: [PATCH 7.0 0772/1146] net: airoha: Wait for NPU PPE configuration to complete in airoha_ppe_offload_setup()
+Date: Wed, 20 May 2026 18:17:02 +0200
+Message-ID: <20260520162205.689588973@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +68,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252400-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250812-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:email,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4C643596045
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1D27A593D19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 07bbd660dbd6ff03907d9ddbdfe9deabbd18ac4d ]
+[ Upstream commit f3206328bb52c2787197d80d7cbd687946047d5f ]
 
-All devices attached to a protection domain must be freed before
-calling domain free. Hence do not try to free devices in domain
-free path. Continue to throw warning if pdom->dev_list is not empty
-so that any potential issues can be fixed.
+In order to properly enable flowtable hw offloading, poll
+REG_PPE_FLOW_CFG register in airoha_ppe_offload_setup routine and
+wait for NPU PPE configuration triggered by ppe_init callback to complete
+before running airoha_ppe_hw_init().
 
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Joerg Roedel <jroedel@suse.de>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241030063556.6104-7-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
+Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260414-airoha-wait-for-npu-config-offload-setup-v2-1-5a9bf6d43aee@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 26 +-------------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ drivers/net/ethernet/airoha/airoha_ppe.c | 28 ++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index d9b296e007cc7..799e1a1adfc32 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2316,21 +2316,6 @@ static struct iommu_group *amd_iommu_device_group(struct device *dev)
-  *
-  *****************************************************************************/
- 
--static void cleanup_domain(struct protection_domain *domain)
--{
--	struct iommu_dev_data *entry;
--
--	lockdep_assert_held(&domain->lock);
--
--	while (!list_empty(&domain->dev_list)) {
--		entry = list_first_entry(&domain->dev_list,
--					 struct iommu_dev_data, list);
--		BUG_ON(!entry->domain);
--		do_detach(entry);
--	}
--	WARN_ON(!list_empty(&domain->dev_list));
--}
--
- void protection_domain_free(struct protection_domain *domain)
- {
- 	WARN_ON(!list_empty(&domain->dev_list));
-@@ -2498,16 +2483,7 @@ amd_iommu_domain_alloc_user(struct device *dev, u32 flags,
- 
- void amd_iommu_domain_free(struct iommu_domain *dom)
- {
--	struct protection_domain *domain;
--	unsigned long flags;
--
--	domain = to_pdomain(dom);
--
--	spin_lock_irqsave(&domain->lock, flags);
--
--	cleanup_domain(domain);
--
--	spin_unlock_irqrestore(&domain->lock, flags);
-+	struct protection_domain *domain = to_pdomain(dom);
- 
- 	protection_domain_free(domain);
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 62cfffb4f0e55..684c8ae9576f1 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1335,6 +1335,29 @@ static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
+ 	return npu;
  }
+ 
++static int airoha_ppe_wait_for_npu_init(struct airoha_eth *eth)
++{
++	int err;
++	u32 val;
++
++	/* PPE_FLOW_CFG default register value is 0. Since we reset FE
++	 * during the device probe we can just check the configured value
++	 * is not 0 here.
++	 */
++	err = read_poll_timeout(airoha_fe_rr, val, val, USEC_PER_MSEC,
++				100 * USEC_PER_MSEC, false, eth,
++				REG_PPE_PPE_FLOW_CFG(0));
++	if (err)
++		return err;
++
++	if (airoha_ppe_is_enabled(eth, 1))
++		err = read_poll_timeout(airoha_fe_rr, val, val, USEC_PER_MSEC,
++					100 * USEC_PER_MSEC, false, eth,
++					REG_PPE_PPE_FLOW_CFG(1));
++
++	return err;
++}
++
+ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ {
+ 	struct airoha_npu *npu = airoha_ppe_npu_get(eth);
+@@ -1348,6 +1371,11 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ 	if (err)
+ 		goto error_npu_put;
+ 
++	/* Wait for NPU PPE configuration to complete */
++	err = airoha_ppe_wait_for_npu_init(eth);
++	if (err)
++		goto error_npu_put;
++
+ 	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
+ 	if (ppe_num_stats_entries > 0) {
+ 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
 -- 
 2.53.0
 
