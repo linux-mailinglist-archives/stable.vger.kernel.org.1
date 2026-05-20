@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aI7rMRksDmr87gUAu9opvQ
-	(envelope-from <stable+bounces-253055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:48:09 +0200
+	id eDMrJCHuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3340E59B509
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:48:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0C059388F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FC9F3260953
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C867309EE2C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18453CB2F8;
-	Wed, 20 May 2026 18:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4F53C6A5C;
+	Wed, 20 May 2026 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyRNNGnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfadswAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545163EAC82;
-	Wed, 20 May 2026 18:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1D13EBF35;
+	Wed, 20 May 2026 17:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302286; cv=none; b=I5laoAiqLo1dzALt4NkSiVIN5bwyi6SWbiQQ0ZE+ajb9bc3+OmbfWmyj61JWztm3AaI/IdhKzWR2sx0LGMqpQMTpPWrQNNoDsT9SwvapY0Ej1ZcNRKcFw+kfoc8xIxFWMuubOo38b6N7dPCFlzYuCw7NbMq1/ylLrzZy7mYcW9M=
+	t=1779296915; cv=none; b=m/YhBVKF9NGks0sdx8ckB2ezjv7mpfGGIl/Wk1M4VQavIg7Kzuk6Xcgc7KkpjN5/zXEIJ8amJIG9K4iU8z1BUjqNDqNXbtVwais8eFqhDGKrmXEq+dTJMAoQWafaV0/4rox9oO+JXzJJWajvapptGyNf4yuEhvRQFX7LqqHluKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302286; c=relaxed/simple;
-	bh=KFwU9YXYUnsAyKIFlRonEMhWkOPYCHE85IWOK1aCfE0=;
+	s=arc-20240116; t=1779296915; c=relaxed/simple;
+	bh=hvgSa5zcV+hr205UfwoaQr/KWco8gMAuZ3DBjmdRBfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UihC9dVokbtxScSncuM6P9ufcWAEdolacfMekq5Vkyahy154BBK647MDxSnYtxLRCpIbOXLUVYRyU0gA1RFdGKGhSmoG8Xj0cN5XiFiMm7LvOMDFcsC2+00eOLA9JmEVBsWkKJRyBEc4ZlDzgc57e46EUuz9o0nZkp0YyKe6fb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyRNNGnJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D7F1F00893;
-	Wed, 20 May 2026 18:38:04 +0000 (UTC)
+	 MIME-Version; b=Ttnx2dn2x1+5W+sesq5Y5qoVMV8hVECb5L4KpQX1Y9xcQIeTgkEqLGEgAPGrKxUVw8ZBYyuk3ACdvXddar6JeO9oGpVKYsVSbIt29gac2l2RHXqg5VK+WmiCXmSXTc9l5c/J2GWdEVFaXn3Wv86r+9GRJYG0yx/Pe6hsx5GmknU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfadswAr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E73C1F000E9;
+	Wed, 20 May 2026 17:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302285;
-	bh=B+AKjHD+hMsgu5qpTSUkRv9nI162/8SMkG/h5IHCuXU=;
+	s=korg; t=1779296914;
+	bh=h4clyJjB2vJu6w3krgFXatOgQcLUJx/s4O2l3tYjCx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HyRNNGnJumLamgblTx96XiQwERk/myK+syfMruSV40mr1Cs34pP0vkfnNsnxTTffO
-	 JF51ms2i593N9w5MHjgGMY7njF+ki8ANmuiFEorCbdbFg6PiyiUNM7vLxFiR4lKWqV
-	 XHyYlxb4jMD3euiu2ShXyiMZwa7cQ3E9hBV3sHa8=
+	b=xfadswAr0AUwBVXGJTTI94+y2Z85YuV1DDDx7IaQ+OdYIOJ4eclvkzHio+RNNZdto
+	 kKQn5VB94L+ZK8HmWNwrwHs/cgsK1R2xTwSTfa6XrNHCNdQP76LF/o9Qlesy+3gE+g
+	 d8B8yyJ/2LV351L40yijstD1SJ2bC8rsKlx7/tSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/508] soc: qcom: llcc: fix v1 SB syndrome register offset
+Subject: [PATCH 7.0 0980/1146] drm/amd/pm: Add fine grained flag to SMU v13.0.6
 Date: Wed, 20 May 2026 18:20:30 +0200
-Message-ID: <20260520162103.121266672@linuxfoundation.org>
+Message-ID: <20260520162210.411229610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253055-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251028-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3340E59B509
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2D0C059388F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 24e7625df5ce065393249b78930781be593bc381 ]
+[ Upstream commit 47a5dfc8add4e60ff1ddc312f79998e70cbb0c09 ]
 
-The llcc_v1_edac_reg_offset table uses 0x2304c for trp_ecc_sb_err_syn0,
-which is inconsistent with the surrounding TRP ECC registers (0x2034x)
-and with llcc_v2_1_edac_reg_offset, where trp_ecc_sb_err_syn0 is 0x2034c
-adjacent to trp_ecc_error_status0/1 at 0x20344/0x20348.
+Gfx clock is fine grained on SMU v13.0.6/12 SOCs. Add the flag to report
+clock frequencies correctly.
 
-Use 0x2034c for llcc v1 so the SB syndrome register follows the expected
-+0x4 progression from trp_ecc_error_status1. This fixes EDAC reading the
-wrong register for SB syndrome reporting.
-
-Fixes: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260330095118.2657362-1-alok.a.tiwari@oracle.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7380228401c4 ("drm/amd/pm: Use generic dpm table for SMUv13 SOCs")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d4871d837bbf70173f63426a84fa80b39e408b9e)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index 03d5de759b256..191da9350ca62 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -359,7 +359,7 @@ static const struct llcc_slice_config sm8550_data[] =  {
- static const struct llcc_edac_reg_offset llcc_v1_edac_reg_offset = {
- 	.trp_ecc_error_status0 = 0x20344,
- 	.trp_ecc_error_status1 = 0x20348,
--	.trp_ecc_sb_err_syn0 = 0x2304c,
-+	.trp_ecc_sb_err_syn0 = 0x2034c,
- 	.trp_ecc_db_err_syn0 = 0x20370,
- 	.trp_ecc_error_cntr_clear = 0x20440,
- 	.trp_interrupt_0_status = 0x20480,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+index 870bcc86fd794..c62b12d672d48 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+@@ -1122,6 +1122,7 @@ static int smu_v13_0_6_set_default_dpm_table(struct smu_context *smu)
+ 	/* gfxclk dpm table setup */
+ 	dpm_table = &dpm_context->dpm_tables.gfx_table;
+ 	dpm_table->clk_type = SMU_GFXCLK;
++	dpm_table->flags = SMU_DPM_TABLE_FINE_GRAINED;
+ 	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_GFXCLK_BIT)) {
+ 		/* In the case of gfxclk, only fine-grained dpm is honored.
+ 		 * Get min/max values from FW.
 -- 
 2.53.0
 
