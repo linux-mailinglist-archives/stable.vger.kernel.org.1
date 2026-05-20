@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN0uGqskDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:27 +0200
+	id oHlfCYcADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B2859AA36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAE359708D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2217B3169F9D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0E89E3113B4F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A036A02E;
-	Wed, 20 May 2026 18:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E1C3EAC83;
+	Wed, 20 May 2026 17:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8k4jgZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMWA3RyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0DA36CE19;
-	Wed, 20 May 2026 18:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FDF3E123F;
+	Wed, 20 May 2026 17:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300455; cv=none; b=gU4UiSSZ2KoSKiU937LYMo8HTpruE1kdQSjamEk/dAp+rB5JO8hgrcShNFtm/hjhaB+gqlizdqd0fjU/swWuzqp5iwmAm186PNQhHbAG1TraJlLNAmVk3AziS7tKAbm5Y8AKo24oksYMmhDEkZjdPqofjyua8JffC1x7JSOCt/U=
+	t=1779298699; cv=none; b=KPB9yih05HQ5DC774SSjYwFmOhgk1WX60BhwFqI7doqQpreG5lj01Xxy4VTpy3Yck4CuwXBu5/UkHUONWxJhk1nkko9MoKDxNKix0+BHlgfAfVet+WdrL8APW68RKVEP1tUB9r24JRcpfcuyhlWfKckmAtO5wiHpdkJq4fIpyjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300455; c=relaxed/simple;
-	bh=MasJf8XFDPqKYjHRA7gAwNFxbkUpEWr/eynpfC6ttSo=;
+	s=arc-20240116; t=1779298699; c=relaxed/simple;
+	bh=sGq9d1SOj7p9mUArv43d6QKt/8jjWpqD5Mlb73X5ftk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fncyE+f3RhKFt5xcS22Ht22frFkUjFGpb2poDFhngEgPShcSXjH8IKtTOJoywzIOcBld6/gP84Pm/Rg+MP5vWi7fXkZGH5fqWVp9rQ3+HIGcnFP6ar+5++cOt0QwTHOf/0DNQShXivfUCx8+mu5/8CQHTzmzClZpX54hZW3cuwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8k4jgZr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CBD1F000E9;
-	Wed, 20 May 2026 18:07:33 +0000 (UTC)
+	 MIME-Version; b=nzbk0fOzuAyQ55jwEfXg+5fvuuLwvpjsKb1XvdKBaj49zkUerD5jF5/Ugq2f2fgTGkv4H24dKDQVJC3U5/ZP7pE6Q00x26H4AAeVfZ+CAD4W3Qm88gRGcxJ+5SoQtJyri0o84t7icbomlRbbK9xopZGy8nP+NyfffzeRbJvgiDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMWA3RyU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E311F000E9;
+	Wed, 20 May 2026 17:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300454;
-	bh=kw8HAijhlB+mgWk0INgyUyZyKVqLcN63ladYHIIPevU=;
+	s=korg; t=1779298698;
+	bh=eDkDZmvrCAZggG/s5eVVvRgL650h+vG79GaCrp48wZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y8k4jgZr8nAayQe9+ZcB9flKtKTCoLz7ibitSgLG140Kx37U+gRmvQ/TQFb4IlWd3
-	 kgncBBzNErfg8/q+Q+ArOE2FPbpFWUj9jS4TknthBmwUCbC+3mJD7IoCjNU2qBzN33
-	 4L2RrYPIH1kbOBH5VaIr1zwQetEv2kSavW9lepgI=
+	b=WMWA3RyUpnx6xWvcHmgl+Kb90XugFOu8siZtzPiPX30gNa8j4oGSpV+uiw4YnpxGj
+	 kBrjZReP/bSqmAv72D1unKYAdEDCS5A/ievvmV+vL9E6ZgWt3X0db4/Xw4ltpXyT1T
+	 0eIVoT4I3D53kOlV/p6tiCSpauwhURwcaQgvwdpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/666] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
+Subject: [PATCH 6.18 510/957] perf stat: Fix opt->value type for parse_cache_level
 Date: Wed, 20 May 2026 18:16:33 +0200
-Message-ID: <20260520162115.145719611@linuxfoundation.org>
+Message-ID: <20260520162145.597486000@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +63,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252353-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251713-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: E5B2859AA36
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5BAE359708D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
+[ Upstream commit 44311ae84ad9177fb311aee856027861c22f17b2 ]
 
-On a specific Radeon R9 390X board, the GPU can "randomly" hang
-while gaming. Initially I thought this was a RADV bug and tried
-to work around this in Mesa:
-commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
+Commit f5803651b4a4 ("perf stat: Choose the most disaggregate command
+line option") changed aggregation option handling for `perf stat` but
+not `perf stat report` leading to parse_cache_level being passed a
+struct in the `perf stat` case but erroneously an aggr_mode enum value
+for `perf stat report`. Change the `perf stat report` aggregation
+handling to use the same opt_aggr_mode as `perf stat`. Also, just pass
+the boolean for consistency with other boolean argument handling.
 
-However, I got some feedback from other users who are reporting
-that the above mitigation causes a significant performance
-regression for them, and they didn't experience the hang on their
-GPU in the first place.
-
-After some further investigation, it turns out that the problem
-is that the highest SCLK DPM level on this board isn't stable.
-Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
-and has a negligible impact on performance compared to the Mesa
-patch. (Note that increasing the voltage can also work around it,
-but we felt that lowering the SCLK is the safer option.)
-
-To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
-and set this field for the affected board. The capped SCLK value
-correctly appears on the sysfs interface and shows up in GUI
-tools such as LACT.
-
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: f5803651b4a4 ("perf stat: Choose the most disaggregate command line option")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ tools/perf/builtin-stat.c | 43 +++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index c8dc40197a730..80e34a7748d72 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -787,7 +787,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 		hwmgr->dyn_state.vddc_dependency_on_mclk;
- 	struct phm_cac_leakage_table *std_voltage_table =
- 		hwmgr->dyn_state.cac_leakage_table;
--	uint32_t i;
-+	uint32_t i, clk;
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index b6533dcf5465b..9eb0876633c05 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -153,7 +153,7 @@ struct opt_aggr_mode {
+ };
  
- 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
- 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
-@@ -804,10 +804,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 	data->dpm_table.sclk_table.count = 0;
+ /* Turn command line option into most generic aggregation mode setting. */
+-static enum aggr_mode opt_aggr_mode_to_aggr_mode(struct opt_aggr_mode *opt_mode)
++static enum aggr_mode opt_aggr_mode_to_aggr_mode(const struct opt_aggr_mode *opt_mode)
+ {
+ 	enum aggr_mode mode = AGGR_GLOBAL;
  
- 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
-+		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
-+
- 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
--				allowed_vdd_sclk_table->entries[i].clk) {
-+				clk) {
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
--				allowed_vdd_sclk_table->entries[i].clk;
-+				clk;
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
- 			data->dpm_table.sclk_table.count++;
- 		}
-@@ -3006,6 +3008,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
+@@ -1161,8 +1161,8 @@ static int parse_cache_level(const struct option *opt,
+ 			     int unset __maybe_unused)
+ {
+ 	int level;
+-	struct opt_aggr_mode *opt_aggr_mode = (struct opt_aggr_mode *)opt->value;
+-	u32 *aggr_level = (u32 *)opt->data;
++	bool *per_cache = opt->value;
++	u32 *aggr_level = opt->data;
+ 
+ 	/*
+ 	 * If no string is specified, aggregate based on the topology of
+@@ -1200,7 +1200,7 @@ static int parse_cache_level(const struct option *opt,
+ 		return -EINVAL;
+ 	}
+ out:
+-	opt_aggr_mode->cache = true;
++	*per_cache = true;
+ 	*aggr_level = level;
  	return 0;
  }
- 
-+static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
-+{
-+	struct amdgpu_device *adev = hwmgr->adev;
-+	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+
-+	data->sclk_cap = 0xffffffff;
-+
-+	if (hwmgr->od_enabled)
-+		return;
-+
-+	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
-+	if (adev->pdev->device == 0x67B0 &&
-+	    adev->pdev->subsystem_vendor == 0x1043)
-+		data->sclk_cap = 104000; /* 1040 MHz */
-+
-+	if (data->sclk_cap != 0xffffffff)
-+		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
-+}
-+
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+@@ -2262,24 +2262,23 @@ static struct perf_stat perf_stat = {
+ static int __cmd_report(int argc, const char **argv)
  {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -3017,6 +3038,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		return -ENOMEM;
+ 	struct perf_session *session;
++	struct opt_aggr_mode opt_mode = {};
+ 	const struct option options[] = {
+ 	OPT_STRING('i', "input", &input_name, "file", "input file name"),
+-	OPT_SET_UINT(0, "per-socket", &perf_stat.aggr_mode,
+-		     "aggregate counts per processor socket", AGGR_SOCKET),
+-	OPT_SET_UINT(0, "per-die", &perf_stat.aggr_mode,
+-		     "aggregate counts per processor die", AGGR_DIE),
+-	OPT_SET_UINT(0, "per-cluster", &perf_stat.aggr_mode,
+-		     "aggregate counts perf processor cluster", AGGR_CLUSTER),
+-	OPT_CALLBACK_OPTARG(0, "per-cache", &perf_stat.aggr_mode, &perf_stat.aggr_level,
+-			    "cache level",
+-			    "aggregate count at this cache level (Default: LLC)",
++	OPT_BOOLEAN(0, "per-thread", &opt_mode.thread, "aggregate counts per thread"),
++	OPT_BOOLEAN(0, "per-socket", &opt_mode.socket,
++		    "aggregate counts per processor socket"),
++	OPT_BOOLEAN(0, "per-die", &opt_mode.die, "aggregate counts per processor die"),
++	OPT_BOOLEAN(0, "per-cluster", &opt_mode.cluster,
++		    "aggregate counts per processor cluster"),
++	OPT_CALLBACK_OPTARG(0, "per-cache", &opt_mode.cache, &perf_stat.aggr_level,
++			    "cache level", "aggregate count at this cache level (Default: LLC)",
+ 			    parse_cache_level),
+-	OPT_SET_UINT(0, "per-core", &perf_stat.aggr_mode,
+-		     "aggregate counts per physical processor core", AGGR_CORE),
+-	OPT_SET_UINT(0, "per-node", &perf_stat.aggr_mode,
+-		     "aggregate counts per numa node", AGGR_NODE),
+-	OPT_SET_UINT('A', "no-aggr", &perf_stat.aggr_mode,
+-		     "disable CPU count aggregation", AGGR_NONE),
++	OPT_BOOLEAN(0, "per-core", &opt_mode.core,
++		    "aggregate counts per physical processor core"),
++	OPT_BOOLEAN(0, "per-node", &opt_mode.node, "aggregate counts per numa node"),
++	OPT_BOOLEAN('A', "no-aggr", &opt_mode.no_aggr,
++		    "disable aggregation across CPUs or PMUs"),
+ 	OPT_END()
+ 	};
+ 	struct stat st;
+@@ -2287,6 +2286,10 @@ static int __cmd_report(int argc, const char **argv)
  
- 	hwmgr->backend = data;
-+	smu7_set_sclk_cap(hwmgr);
- 	smu7_patch_voltage_workaround(hwmgr);
- 	smu7_init_dpm_defaults(hwmgr);
+ 	argc = parse_options(argc, argv, options, stat_report_usage, 0);
  
-@@ -3903,7 +3925,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
- 
- 	/* Performance levels are arranged from low to high. */
- 	performance_level->memory_clock = memory_clock;
--	performance_level->engine_clock = engine_clock;
-+	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
- 
- 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-index d9e8b386bd4d3..66adabeab6a3a 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-@@ -234,6 +234,7 @@ struct smu7_hwmgr {
- 	uint32_t                       pcie_gen_cap;
- 	uint32_t                       pcie_lane_cap;
- 	uint32_t                       pcie_spc_cap;
-+	uint32_t                       sclk_cap;
- 	struct smu7_leakage_voltage          vddc_leakage;
- 	struct smu7_leakage_voltage          vddci_leakage;
- 	struct smu7_leakage_voltage          vddcgfx_leakage;
++	perf_stat.aggr_mode = opt_aggr_mode_to_aggr_mode(&opt_mode);
++	if (perf_stat.aggr_mode == AGGR_GLOBAL)
++		perf_stat.aggr_mode = AGGR_UNSET; /* No option found so leave unset. */
++
+ 	if (!input_name || !strlen(input_name)) {
+ 		if (!fstat(STDIN_FILENO, &st) && S_ISFIFO(st.st_mode))
+ 			input_name = "-";
+@@ -2462,7 +2465,7 @@ int cmd_stat(int argc, const char **argv)
+ 		OPT_BOOLEAN(0, "per-die", &opt_mode.die, "aggregate counts per processor die"),
+ 		OPT_BOOLEAN(0, "per-cluster", &opt_mode.cluster,
+ 			"aggregate counts per processor cluster"),
+-		OPT_CALLBACK_OPTARG(0, "per-cache", &opt_mode, &stat_config.aggr_level,
++		OPT_CALLBACK_OPTARG(0, "per-cache", &opt_mode.cache, &stat_config.aggr_level,
+ 				"cache level", "aggregate count at this cache level (Default: LLC)",
+ 				parse_cache_level),
+ 		OPT_BOOLEAN(0, "per-core", &opt_mode.core,
 -- 
 2.53.0
 
