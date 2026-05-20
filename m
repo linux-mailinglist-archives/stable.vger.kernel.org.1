@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIr4EZkkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:09 +0200
+	id iMueJtEdDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBF359A9F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1064A59A18B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F408B35C546D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E550350177B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA47B3F8EA7;
-	Wed, 20 May 2026 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49F03E123F;
+	Wed, 20 May 2026 17:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNaiUqmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgnAanwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25EC3F8704;
-	Wed, 20 May 2026 18:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6EE1C3BFC;
+	Wed, 20 May 2026 17:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300568; cv=none; b=pHtFIeRJhLy22acQ0sE8JWMtPKw7hUAfd1SrrXwY9SYUK3eBUN7mcwNzcQSlzXVbDk72kTObSvZcwb4Sp1i9HNAlK+CwmsueBMQEz/rsG3KZJlqWVbx5n6w/9uVrfOdRxSmI55hmG32zYLO452huDRSF/rgDpP+Hb1cKa8h58I4=
+	t=1779298813; cv=none; b=bwzE4oH8pJJ/Atk6vRopuoxgPOiQX0g+Ia1X0f5H/TnW/4ZfUn/CfwwKF/kYNnLxOBxMvYseC+maF97HG8eW1VBqsf0AzFNEcVXQ0GtpgNlJYG1EDrPDiwHEFc/snHo0bQ8GtrAqGz0+UzuD9ZanbHZ2+9ajuurIgRCucmilvtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300568; c=relaxed/simple;
-	bh=h36Vc7M7K2LE1scU816rBUQGKfz488TdZ2R1N55052M=;
+	s=arc-20240116; t=1779298813; c=relaxed/simple;
+	bh=rZ2NlTDZJ1E6+8f3eDIEJ1G1rNFM+9qd1m31dX5lpDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMRJCHlFhvZ56p756qpisokx3afsD3bPw6WqyrOIZJHcgY/Z8+m7px7TMBClGffi+DwQEjjgwQi7vaWQeuOtMYl0UEGyxu11nd93PJOEeXqFXuT00cHAMo1XFe5ljlQDmZv2FEXf1UeWkMAt4UN8nA3VZUAMb3U5cADUJ/L/I1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNaiUqmL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F02B1F000E9;
-	Wed, 20 May 2026 18:09:26 +0000 (UTC)
+	 MIME-Version; b=d4JUduXjDlvjiLjhGOC8TwbTrEoLig8LcM5TBm8FxWe7ieF67SvSu9lxY49NjSrXFIf0G17+TSJ0Fp18LYnW4B4NQQYf6z4lNa5kXmVuCXcmo91PMVurOADo9NrrnpgBj7xjOBEShrf5g5DH0jkbQ2lqtT/juK5He9w2tmQZKwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgnAanwI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE511F000E9;
+	Wed, 20 May 2026 17:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300567;
-	bh=nXc/MD2xuTF8LXQMGXTB47pGSAdMR8cjPHRpf9s45Ec=;
+	s=korg; t=1779298811;
+	bh=naHq3vLIud2FNIUVucZF1fcZ7RWjOVVwvyH680QLphg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oNaiUqmLr/pgtrkLZpIlhEpkESMu2mCACi6IQRmdWK2T+6hm1g3vgI4XEsSG/fnhS
-	 wuFcfQqrcv+U4VcY8UKbaYNKNG4N6o/7x6x8LUsw8nqwLWxX1jbO99HKOUR+lMA+30
-	 IKj80wfGbaHF/QE2fU9Sgs0x0KjYNYPwdBcTZWN8=
+	b=fgnAanwImFYTtsSFhf3VWlIfcF8F2JvUqwRm0y6pQPl9GIIIO0z6rXsaXgcWOqUEL
+	 Ek3uCDD6OVTyLcYZM0inE6XS+GHS2YTSFDtKIVWSPZUuB4m1zYP5q7eM9m+rs4j1nn
+	 7aNj6tyNwlADZ20tmow0bNp+gb4ABR+hkliBxFNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/666] PCI: mediatek-gen3: Prevent leaking IRQ domains when IRQ not found
+Subject: [PATCH 6.18 553/957] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
 Date: Wed, 20 May 2026 18:17:16 +0200
-Message-ID: <20260520162116.090598378@linuxfoundation.org>
+Message-ID: <20260520162146.525260436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +67,132 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252397-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251757-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1EBF359A9F3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,acm.org:email,msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,tldp.org:url]
+X-Rspamd-Queue-Id: 1064A59A18B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 5573c44cb3fd01a9f62d569ae9ac870ef5f0e0ba ]
+[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
 
-In mtk_pcie_setup_irq(), the IRQ domains are allocated before the
-controller's IRQ is fetched. If the latter fails, the function
-directly returns an error, without cleaning up the allocated domains.
+The parameter def_reserved_size defines the default buffer size reserved
+for each Sg_fd and should be restricted to a range between 0 and 1,048,576
+(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
+function sg_proc_write_dressz enforces this limit, it is possible to bypass
+it by directly modifying the module parameter as shown below, which then
+causes a soft lockup:
 
-Hence, reverse the order so that the IRQ domains are allocated after the
-controller's IRQ is found.
+echo -1 > /sys/module/sg/parameters/def_reserved_size
+exec 4<> /dev/sg0
 
-This was flagged by Sashiko during a review of "[PATCH v6 0/7] PCI:
-mediatek-gen3: add power control support".
+watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
+Modules loaded:
+CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
+PREEMPT disabled
+Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
+1.16.1-2.fc37 dated 04/01/2014
+...
+Call Trace:
 
-Fixes: 814cceebba9b ("PCI: mediatek-gen3: Add INTx support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260324052002.4072430-1-wenst%40chromium.org
-Link: https://patch.msgid.link/20260324093542.18523-1-wenst@chromium.org
+  sg_build_reserve+0x5c/0xa0
+  sg_add_sfp+0x168/0x270
+  sg_open+0x16e/0x340
+  chrdev_open+0xbe/0x230
+  do_dentry_open+0x175/0x480
+  vfs_open+0x34/0xf0
+  do_open+0x265/0x3d0
+  path_openat+0x110/0x290
+  do_filp_open+0xc3/0x170
+  do_sys_openat2+0x71/0xe0
+  __x64_sys_openat+0x6d/0xa0
+  do_syscall_64+0x62/0x310
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The fix is to use module_param_cb to validate and reject invalid values
+assigned to def_reserved_size.
+
+Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek-gen3.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
-index 66ce4b5d309bb..b373ece9542c4 100644
---- a/drivers/pci/controller/pcie-mediatek-gen3.c
-+++ b/drivers/pci/controller/pcie-mediatek-gen3.c
-@@ -794,14 +794,14 @@ static int mtk_pcie_setup_irq(struct mtk_gen3_pcie *pcie)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	int err;
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index c93cc9323f563..21c3962ee1cb5 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1621,10 +1621,35 @@ sg_remove_device(struct device *cl_dev)
+ }
  
--	err = mtk_pcie_init_irq_domains(pcie);
--	if (err)
--		return err;
--
- 	pcie->irq = platform_get_irq(pdev, 0);
- 	if (pcie->irq < 0)
- 		return pcie->irq;
+ module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
+-module_param_named(def_reserved_size, def_reserved_size, int,
+-		   S_IRUGO | S_IWUSR);
+ module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
  
-+	err = mtk_pcie_init_irq_domains(pcie);
-+	if (err)
-+		return err;
++static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
++{
++	int size, ret;
 +
- 	irq_set_chained_handler_and_data(pcie->irq, mtk_pcie_irq_handler, pcie);
- 
- 	return 0;
++	if (!val)
++		return -EINVAL;
++
++	ret = kstrtoint(val, 0, &size);
++	if (ret)
++		return ret;
++
++	/* limit to 1 MB */
++	if (size < 0 || size > 1048576)
++		return -ERANGE;
++
++	def_reserved_size = size;
++	return 0;
++}
++
++static const struct kernel_param_ops def_reserved_size_ops = {
++	.set	= def_reserved_size_set,
++	.get	= param_get_int,
++};
++
++module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
++		   S_IRUGO | S_IWUSR);
++
+ MODULE_AUTHOR("Douglas Gilbert");
+ MODULE_DESCRIPTION("SCSI generic (sg) driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
