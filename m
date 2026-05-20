@@ -1,59 +1,69 @@
-Return-Path: <stable+bounces-250722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEN7G07sDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:58 +0200
+	id YGeCKQkdDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155D7593316
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054A159A041
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CBC3300CB04
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA5BB3724246
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B383EF0DA;
-	Wed, 20 May 2026 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627C3370AC3;
+	Wed, 20 May 2026 17:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh6uqtE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct6gkvQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2E3372EDE;
-	Wed, 20 May 2026 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D529D26E;
+	Wed, 20 May 2026 17:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296145; cv=none; b=cH3cldXTBjIs2zmUf8Dn77ZdwA1kvn1xoemarZeaDMJONnt8Cr9Qf4zvdRq4GRBv2aAj556rt2BEJXBm0fqL44c9k9wFGyzyYCOvFoLrX1GUh/qte3dK9hDfcRrC2qq0v7ma781xCu0VKZktcxTAdP1klRijZj3WkXnXCn9xvr4=
+	t=1779298548; cv=none; b=Kt/WsQcA8FrYXPJ91EeKTe3lJdOWVwrKjy1gf3Bwoc2srRax4TfX40uLxsHz8wUkxqWE5HhKfl0gDBZAatIh3WoiYDSh8DR7ugEK+mdqAoD8z/PWmS5t11wjk7U6UweS6cqCFtXtz8Z86XvWSWF//+9dPrM0YwrJ5FHMf/mnMoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296145; c=relaxed/simple;
-	bh=CFwTchjEbKNlTYp9pWPCgu0c7xtHGATFuN0rl3wNIbE=;
+	s=arc-20240116; t=1779298548; c=relaxed/simple;
+	bh=0h1a5w366f6WlhCgeDrLvZGX3V8XcLgqX4/O2cKaNmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L1sRXg6TQOP7B6Xpbf+CDupdEOVgIhrebZyLBpETTAUay4pawz6buqtmKHGFzkAe39sx01qJo323aRgLy/WajUZLGC2IPVVL8q3q3PrYPOdyR3t1yH2/8OZWe4BN6T/0yh6FoSc/lDsUR7oaJCaXtTDKZMjmR+WgzPesVOmlp0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh6uqtE7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDB71F000E9;
-	Wed, 20 May 2026 16:55:44 +0000 (UTC)
+	 MIME-Version; b=DRcA6xBLw8x5spFsCoYediZWMS7So5TR4alzjPiguE+WW7GVS8lgHhL6RW6RZ23/AshhLHWjm+6RtDr1IP8s/m87cE0E5/bsFQ6QlUKuYjpjCO0wAALd/m7rcH/M8+i4RTxcWUYLFPa3mvewcId+fCVjgf9we6CkpgJt9U9Z1ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct6gkvQa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB27A1F00893;
+	Wed, 20 May 2026 17:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296144;
-	bh=SXKi89bsWlJoaKnovl/EvKuNIYHi6mwMS9+Xaw5Tjys=;
+	s=korg; t=1779298546;
+	bh=ejqpwc8nNyWSVB5zI0yGf9AuSHVHfp2M+iA31LMV1r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Eh6uqtE7X+DCOEgpdjRMqoKvLQPpjNJ9f0rX+4YZTe9AHzl+ZKVayS+ANgVpqIEt5
-	 K+M9sxVKqywvfHvpUjXtauGHKPqZaj6gfWyhgD9PHG6hGr8/Evts5hztRfo36pbUUO
-	 3Z7O5aNSEi1EFD9/1mzdJ7Mklu4FuF+NZjQxNMWY=
+	b=ct6gkvQa5gRPSjSTXZ1DLEq5BR1UFYxfp5CRbI0NWAgxXAuvWV49wiyuMrhSAYfQJ
+	 Qj5GmXjtyS6dUVKHM+6dqhEZhuzcFAIrNhsAUhvTFeuWfG1w54N1IErJQ6v4e3oNQw
+	 vVO6iZCx38n29SdOwVPo5mkV/pQKGb0f+BNpi/lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emre Cecanpunar <emreleno@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0686/1146] platform/x86: hp-wmi: fix ignored return values in fan settings
+Subject: [PATCH 6.18 453/957] tracing: move __printf() attribute on __ftrace_vbprintk()
 Date: Wed, 20 May 2026 18:15:36 +0200
-Message-ID: <20260520162203.715965123@linuxfoundation.org>
+Message-ID: <20260520162144.345455475@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +73,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250722-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251655-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 155D7593316
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 054A159A041
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emre Cecanpunar <emreleno@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7265b57fbc32782d02bdb8d865ba0d8efa209c8c ]
+[ Upstream commit 473e470f16f98569d59adc11c4a318780fb68fe9 ]
 
-hp_wmi_get_fan_count_userdefine_trigger() can fail, but its return
-value was silently ignored in hp_wmi_apply_fan_settings() for
-PWM_MODE_MAX/AUTO. Propagate these errors consistently.
+The sunrpc change to use trace_printk() for debugging caused
+a new warning for every instance of dprintk() in some configurations,
+when -Wformat-security is enabled:
 
-Additionally, handle the return value of hp_wmi_apply_fan_settings()
-in its callers by adding appropriate warnings on failure, and remove an
-unreachable "return 0" at the end of the function.
+fs/nfs/getroot.c: In function 'nfs_get_root':
+fs/nfs/getroot.c:90:17: error: format not a string literal and no format arguments [-Werror=format-security]
+   90 |                 nfs_errorf(fc, "NFS: Couldn't getattr on root");
 
-Fixes: 46be1453e6e6 ("platform/x86: hp-wmi: add manual fan control for Victus S models")
-Signed-off-by: Emre Cecanpunar <emreleno@gmail.com>
-Link: https://patch.msgid.link/20260407142515.20683-2-emreleno@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+I've been slowly chipping away at those warnings over time with the
+intention of enabling them by default in the future. While I could not
+figure out why this only happens for this one instance, I see that the
+__trace_bprintk() function is always called with a local variable as
+the format string, rather than a literal.
+
+Move the __printf(2,3) annotation on this function from the declaration
+to the caller. As this is can only be validated for literals, the
+attribute on the declaration causes the warnings every time, but
+removing it entirely introduces a new warning on the __ftrace_vbprintk()
+definition.
+
+The format strings still get checked because the underlying literal keeps
+getting passed into __trace_printk() in the "else" branch, which is not
+taken but still evaluated for compile-time warnings.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yury Norov <ynorov@nvidia.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260203164545.3174910-1-arnd@kernel.org
+Fixes: ec7d8e68ef0e ("sunrpc: add a Kconfig option to redirect dfprintk() output to trace buffer")
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ include/linux/trace_printk.h | 1 -
+ kernel/trace/trace_printk.c  | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 62fd2fe0d8d0e..c9fe740d8933e 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -2358,8 +2358,11 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
+diff --git a/include/linux/trace_printk.h b/include/linux/trace_printk.h
+index bb5874097f24e..2670ec7f42629 100644
+--- a/include/linux/trace_printk.h
++++ b/include/linux/trace_printk.h
+@@ -107,7 +107,6 @@ do {									\
+ 		__trace_printk(_THIS_IP_, fmt, ##args);			\
+ } while (0)
  
- 	switch (priv->mode) {
- 	case PWM_MODE_MAX:
--		if (is_victus_s_thermal_profile())
--			hp_wmi_get_fan_count_userdefine_trigger();
-+		if (is_victus_s_thermal_profile()) {
-+			ret = hp_wmi_get_fan_count_userdefine_trigger();
-+			if (ret < 0)
-+				return ret;
-+		}
- 		ret = hp_wmi_fan_speed_max_set(1);
- 		if (ret < 0)
- 			return ret;
-@@ -2377,7 +2380,9 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
- 		return 0;
- 	case PWM_MODE_AUTO:
- 		if (is_victus_s_thermal_profile()) {
--			hp_wmi_get_fan_count_userdefine_trigger();
-+			ret = hp_wmi_get_fan_count_userdefine_trigger();
-+			if (ret < 0)
-+				return ret;
- 			ret = hp_wmi_fan_speed_max_reset(priv);
- 		} else {
- 			ret = hp_wmi_fan_speed_max_set(0);
-@@ -2390,8 +2395,6 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
- 		/* shouldn't happen */
- 		return -EINVAL;
- 	}
--
--	return 0;
- }
+-extern __printf(2, 3)
+ int __trace_bprintk(unsigned long ip, const char *fmt, ...);
  
- static umode_t hp_wmi_hwmon_is_visible(const void *data,
-@@ -2533,6 +2536,7 @@ static void hp_wmi_hwmon_keep_alive_handler(struct work_struct *work)
+ extern __printf(2, 3)
+diff --git a/kernel/trace/trace_printk.c b/kernel/trace/trace_printk.c
+index 29f6e95439b67..48c085fcae7aa 100644
+--- a/kernel/trace/trace_printk.c
++++ b/kernel/trace/trace_printk.c
+@@ -197,6 +197,7 @@ struct notifier_block module_trace_bprintk_format_nb = {
+ 	.notifier_call = module_trace_bprintk_format_notify,
+ };
+ 
++__printf(2, 3)
+ int __trace_bprintk(unsigned long ip, const char *fmt, ...)
  {
- 	struct delayed_work *dwork;
- 	struct hp_wmi_hwmon_priv *priv;
-+	int ret;
- 
- 	dwork = to_delayed_work(work);
- 	priv = container_of(dwork, struct hp_wmi_hwmon_priv, keep_alive_dwork);
-@@ -2540,7 +2544,10 @@ static void hp_wmi_hwmon_keep_alive_handler(struct work_struct *work)
- 	 * Re-apply the current hwmon context settings.
- 	 * NOTE: hp_wmi_apply_fan_settings will handle the re-scheduling.
- 	 */
--	hp_wmi_apply_fan_settings(priv);
-+	ret = hp_wmi_apply_fan_settings(priv);
-+	if (ret)
-+		pr_warn_ratelimited("keep-alive failed to refresh fan settings: %d\n",
-+				    ret);
- }
- 
- static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
-@@ -2602,7 +2609,9 @@ static int hp_wmi_hwmon_init(void)
- 
- 	INIT_DELAYED_WORK(&priv->keep_alive_dwork, hp_wmi_hwmon_keep_alive_handler);
- 	platform_set_drvdata(hp_wmi_platform_dev, priv);
--	hp_wmi_apply_fan_settings(priv);
-+	ret = hp_wmi_apply_fan_settings(priv);
-+	if (ret)
-+		dev_warn(dev, "Failed to apply initial fan settings: %d\n", ret);
- 
- 	return 0;
- }
+ 	int ret;
 -- 
 2.53.0
 
