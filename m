@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-250108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIU7ATbsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:34 +0200
+	id mK9ZIgzkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267135932BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF40592361
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C15EC31DCB44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 279393070905
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFD23F5BDF;
-	Wed, 20 May 2026 16:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8A0372EF7;
+	Wed, 20 May 2026 16:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFeJ1O5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC+eD83h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D1369D75;
-	Wed, 20 May 2026 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031E370D43;
+	Wed, 20 May 2026 16:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294565; cv=none; b=U7JF5vejmyqro9wF1dESRhC5Ze8gtUWyz7pF5HLxyTlueGXFJDLTviOgUMPZImiRbxst2QHWGTKOWHwLeyAzuC0Jr86/u409n7Nj9jNrn/40BzMdBwpDk+bGhXEIuKYuaxgMgVC//IWEm112YOn9/AYctR8LAJXZ27kM3Qdip+Q=
+	t=1779294594; cv=none; b=eibVjh0KFmPovSH/rJ+EK5awB7SXX2QfWWVgEt1DARr0/3AvEAaxKvxKJdJvmIz7hOQSozJRwzSYNXMuS1zGL2b/sA3EURB0QDaLc/F8N/qwsbxRvZI5MmmIotuF5JKRPlK9REpPhIUf+W2MDEkB4R/b8Y5/bi9iJLNviGaw7/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294565; c=relaxed/simple;
-	bh=8dv+fPHKEanIGB/jeuekh456UKLoJSlmIllgiwQatVo=;
+	s=arc-20240116; t=1779294594; c=relaxed/simple;
+	bh=5LtLX3zo8mn+fOnvXi+n8RnKLrBWRL8bAT7jc0H2xlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLIgrlSS+YWW5Sfbba3Duv3b18jrU9Ly6pXmLAHY0I7g4KaL7L/XqoZjm8MY0kbKxh26yk/M8GTgQ4xdXJULHTilBzJ7JM/9fh+4drzmXSTqfx86NQ2l+d45YF4UwpiRCcAz9LojvQvpc6raMBIeHbiteZe/tCTjt4VH/hYJP9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFeJ1O5y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0A11F00893;
-	Wed, 20 May 2026 16:29:23 +0000 (UTC)
+	 MIME-Version; b=NegDN4LUXo7Ro6NVFnr1jMaY0YNZJG6DfN/C9Tt4rT+ZkiIF47tlcKGfiasxQxxzElvhsEDQYQ3f3734I2gQ3OxNfen/1HWmvDlDa7trV2/vNYb96wYl/FPYjBXDDbQFdqItHz2FRl+Gqb5a6O8Icm6pe/WSCVurWWwKmCsQEug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC+eD83h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313A41F000E9;
+	Wed, 20 May 2026 16:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294563;
-	bh=dVZS8q5Se7ZM2klkUdrzc9tGk1pguj+T5Sa/85bSIQE=;
+	s=korg; t=1779294592;
+	bh=ESaPmnV34o7FfFAxOx8RNUCxu48WKIuCMan89RG0TBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CFeJ1O5yiBCVcjsduN7gmWmgZAidWZ2sTTZGSZIyJyy048q2lMSXIfZu9i890pWqN
-	 lbSd/8Qxs+mg6Q11DhL4YUeunN+9cnEP6rQTw32EOx8kiqzkeUxUsucNQMOLyqCZtx
-	 vi0+Q2kcx/i1Dvdulas1x0c3xyoaNvVokiiuRTNQ=
+	b=IC+eD83hwvLq0lSU/p7kto3GQ2aZ1haguuB4cDrN0y7DSC5XG+G+ZwcQtOrUUHprw
+	 p5S5cvjj2PfENb4RLkm4M/qfjLpS8j1Jw4dAfqSqGToa8l6PDXQj8sdWGZBXcoFmD5
+	 BkoLGbXRpFODLzgE/5k8lAMqr211tjodAz1Hlwog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0080/1146] s390/bpf: Zero-extend bpf prog return values and kfunc arguments
-Date: Wed, 20 May 2026 18:05:30 +0200
-Message-ID: <20260520162150.164723565@linuxfoundation.org>
+Subject: [PATCH 7.0 0081/1146] powerpc/pgtable-frag: Fix bad page state in pte_frag_destroy
+Date: Wed, 20 May 2026 18:05:31 +0200
+Message-ID: <20260520162150.186043004@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -66,34 +66,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250108-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-250119-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.ibm.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 267135932BC
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2FF40592361
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,101 +103,87 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 202e42e4aa890172366354b233c42c73107a3f59 ]
+[ Upstream commit fda4d71651f71c44b35829d13f3c8bf920032f77 ]
 
-s390x ABI requires callers to zero-extend unsigned arguments and
-sign-extend signed arguments, and callees to zero-extend unsigned
-return values and sign-extend signed return values.
+powerpc uses pt_frag_refcount as a reference counter for tracking it's
+pte and pmd page table fragments. For PTE table, in case of Hash with
+64K pagesize, we have 16 fragments of 4K size in one 64K page.
 
-s390 BPF JIT currently implements only sign extension. Fix this
-omission and implement zero extension too.
+Patch series [1] "mm: free retracted page table by RCU"
+added pte_free_defer() to defer the freeing of PTE tables when
+retract_page_tables() is called for madvise MADV_COLLAPSE on shmem
+range.
+[1]: https://lore.kernel.org/all/7cd843a9-aa80-14f-5eb2-33427363c20@google.com/
 
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Reported-by: Hari Bathini <hbathini@linux.ibm.com>
-Closes: https://lore.kernel.org/bpf/20260312080113.843408-1-hbathini@linux.ibm.com/
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Link: https://lore.kernel.org/r/20260313174807.581826-1-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+pte_free_defer() sets the active flag on the corresponding fragment's
+folio & calls pte_fragment_free(), which reduces the pt_frag_refcount.
+When pt_frag_refcount reaches 0 (no active fragment using the folio), it
+checks if the folio active flag is set, if set, it calls call_rcu to
+free the folio, it the active flag is unset then it calls pte_free_now().
+
+Now, this can lead to following problem in a corner case...
+
+[  265.351553][  T183] BUG: Bad page state in process a.out  pfn:20d62
+[  265.353555][  T183] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x20d62
+[  265.355457][  T183] flags: 0x3ffff800000100(active|node=0|zone=0|lastcpupid=0x7ffff)
+[  265.358719][  T183] raw: 003ffff800000100 0000000000000000 5deadbeef0000122 0000000000000000
+[  265.360177][  T183] raw: 0000000000000000 c0000000119caf58 00000000ffffffff 0000000000000000
+[  265.361438][  T183] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+[  265.362572][  T183] Modules linked in:
+[  265.364622][  T183] CPU: 0 UID: 0 PID: 183 Comm: a.out Not tainted 6.18.0-rc3-00141-g1ddeaaace7ff-dirty #53 VOLUNTARY
+[  265.364785][  T183] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
+[  265.364908][  T183] Call Trace:
+[  265.364955][  T183] [c000000011e6f7c0] [c000000001cfaa18] dump_stack_lvl+0x130/0x148 (unreliable)
+[  265.365202][  T183] [c000000011e6f7f0] [c000000000794758] bad_page+0xb4/0x1c8
+[  265.365384][  T183] [c000000011e6f890] [c00000000079c020] __free_frozen_pages+0x838/0xd08
+[  265.365554][  T183] [c000000011e6f980] [c0000000000a70ac] pte_frag_destroy+0x298/0x310
+[  265.365729][  T183] [c000000011e6fa30] [c0000000000aa764] arch_exit_mmap+0x34/0x218
+[  265.365912][  T183] [c000000011e6fa80] [c000000000751698] exit_mmap+0xb8/0x820
+[  265.366080][  T183] [c000000011e6fc30] [c0000000001b1258] __mmput+0x98/0x300
+[  265.366244][  T183] [c000000011e6fc80] [c0000000001c81f8] do_exit+0x470/0x1508
+[  265.366421][  T183] [c000000011e6fd70] [c0000000001c95e4] do_group_exit+0x88/0x148
+[  265.366602][  T183] [c000000011e6fdc0] [c0000000001c96ec] pid_child_should_wake+0x0/0x178
+[  265.366780][  T183] [c000000011e6fdf0] [c00000000003a270] system_call_exception+0x1b0/0x4e0
+[  265.366958][  T183] [c000000011e6fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+
+The bad page state error occurs when such a folio gets freed (with
+active flag set), from do_exit() path in parallel.
+
+... this can happen when the pte fragment was allocated from this folio,
+but when all the fragments get freed, the pte_frag_refcount still had some
+unused fragments. Now, if this process exits, with such folio as it's cached
+pte_frag in mm->context, then during pte_frag_destroy(), we simply call
+pagetable_dtor() and pagetable_free(), meaning it doesn't clear the
+active flag. This, can lead to the above bug. Since we are anyway in
+do_exit() path, then if the refcount is 0, then I guess it should be
+ok to simply clear the folio active flag before calling pagetable_dtor()
+& pagetable_free().
+
+Fixes: 32cc0b7c9d50 ("powerpc: add pte_free_defer() for pgtables sharing page")
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/ee13e7f99b8f258019da2b37655b998e73e5ef8b.1773078178.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 39 ++++++++++++++++++++++--------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+ arch/powerpc/mm/pgtable-frag.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index bf92964246eb1..10ab247e1994c 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -830,25 +830,34 @@ static int bpf_jit_probe_post(struct bpf_jit *jit, struct bpf_prog *fp,
- }
- 
- /*
-- * Sign-extend the register if necessary
-+ * Sign- or zero-extend the register if necessary
-  */
--static int sign_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
-+static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
- {
--	if (!(flags & BTF_FMODEL_SIGNED_ARG))
--		return 0;
--
- 	switch (size) {
- 	case 1:
--		/* lgbr %r,%r */
--		EMIT4(0xb9060000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lgbr %r,%r */
-+			EMIT4(0xb9060000, r, r);
-+		else
-+			/* llgcr %r,%r */
-+			EMIT4(0xb9840000, r, r);
- 		return 0;
- 	case 2:
--		/* lghr %r,%r */
--		EMIT4(0xb9070000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lghr %r,%r */
-+			EMIT4(0xb9070000, r, r);
-+		else
-+			/* llghr %r,%r */
-+			EMIT4(0xb9850000, r, r);
- 		return 0;
- 	case 4:
--		/* lgfr %r,%r */
--		EMIT4(0xb9140000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lgfr %r,%r */
-+			EMIT4(0xb9140000, r, r);
-+		else
-+			/* llgfr %r,%r */
-+			EMIT4(0xb9160000, r, r);
- 		return 0;
- 	case 8:
- 		return 0;
-@@ -1798,9 +1807,9 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 				return -1;
- 
- 			for (j = 0; j < m->nr_args; j++) {
--				if (sign_extend(jit, BPF_REG_1 + j,
--						m->arg_size[j],
--						m->arg_flags[j]))
-+				if (sign_zero_extend(jit, BPF_REG_1 + j,
-+						     m->arg_size[j],
-+						     m->arg_flags[j]))
- 					return -1;
- 			}
- 		}
-@@ -2555,7 +2564,7 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
- 	EMIT6_PCREL_RILB_PTR(0xc0050000, REG_14, p->bpf_func);
- 	/* stg %r2,retval_off(%r15) */
- 	if (save_ret) {
--		if (sign_extend(jit, REG_2, m->ret_size, m->ret_flags))
-+		if (sign_zero_extend(jit, REG_2, m->ret_size, m->ret_flags))
- 			return -1;
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
+diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
+index 77e55eac16e42..ae742564a3d56 100644
+--- a/arch/powerpc/mm/pgtable-frag.c
++++ b/arch/powerpc/mm/pgtable-frag.c
+@@ -25,6 +25,7 @@ void pte_frag_destroy(void *pte_frag)
+ 	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
+ 	/* We allow PTE_FRAG_NR fragments from a PTE page */
+ 	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
++		folio_clear_active(ptdesc_folio(ptdesc));
+ 		pagetable_dtor(ptdesc);
+ 		pagetable_free(ptdesc);
+ 	}
 -- 
 2.53.0
 
