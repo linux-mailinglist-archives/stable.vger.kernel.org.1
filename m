@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CozNj4ADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-251691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:02 +0200
+	id iKJJHdUFDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE222596FC7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FFA597B31
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF3C73061591
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92CEB328CEAC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1BF3D75D3;
-	Wed, 20 May 2026 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7496A3A6B6D;
+	Wed, 20 May 2026 18:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJfvxvko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8lsGh3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC45A370D54;
-	Wed, 20 May 2026 17:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9AF331220;
+	Wed, 20 May 2026 18:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298642; cv=none; b=lUt/+PdCfcRQ9dZj5usuYXHn91FtsPK7gwdyqN2ZK+9etPJClILmCej8AJVxiQlNyShOhKZ+nrfNJyyD69j0SAcVB9ycJMemikox+uGz6FpDryksKlvqnf/yGWdT5QAb5kN/yBT3eiOPL0UTCihS/DTnInTvpHUvQDKwrNq8hL0=
+	t=1779300426; cv=none; b=EkMuES1AjbBxEeylHtv2qkEPMk8FAZzm8iRuHhJde/q+w2kk0HgmcCS3wmH5KY9rLdO46U/UUzMPI4o3eB2Xki5j7TUQvBD5tCsUkz7xLLm8Iw6HpLhU4wwubvGEIlqXFmeRppCHXANC1zaVlep5UXWMbg0aPfu30qhIJAQHJ5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298642; c=relaxed/simple;
-	bh=p6mzNPQKOBmi2aLJUGyOHMxsTVtG2INhqySY0kSXlxs=;
+	s=arc-20240116; t=1779300426; c=relaxed/simple;
+	bh=G0ttr6sph585/H5ALdAlRYWr0m1Qn8z87cyLMQZHyz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkW30O6syOsAxgWYMazy2XFDMAFBT/KKxGBNeAxD4EqZNjheZtLnms/YibvUjaSWvVwca1teP/ijAcKgWXVNYurEa8SbcVD0wsALTks8mImi2XmddtiKCBwVc6obzDBPsH52nM9Mh/ehIycDVw+NCCyOsrlYDa/jkAGkR68UBeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJfvxvko; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218471F000E9;
-	Wed, 20 May 2026 17:37:19 +0000 (UTC)
+	 MIME-Version; b=A7rP3p3i9wrD78yIfRpPnk7jrBMsnGYIZqW09/P7ptTo7YTSNsIPQ8Ln6n3fVEgK6FclqvrlvDXEmvlpoj6K0CId0AdjI+fIZcVLpwmFB16QRdhBRcat71faK8kVbiHwdc1hqXMpRyDtBh7V/zA5P5Iog9bNuMS7+v/jxT9CHNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8lsGh3W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9113C1F000E9;
+	Wed, 20 May 2026 18:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298640;
-	bh=HRj2Ea3sF/upNIr094TF8BviJZR0EhZAfD9MlLUCFuI=;
+	s=korg; t=1779300425;
+	bh=jMgY1cGEvZ4Suz03RLADJHlnmgC2HaPG3apLtUiOj6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oJfvxvkoY3HfQ4+zdIdyhzfQ1lg/XNQ6588XDQP93owQbS6IiMXO0kEybjLF6u3Ar
-	 lSvxALjdjeoD4LcWNOV1Jz99k81Ukt2X/zU3CIlnMYysbZy5IsaNl5TG2YD2JLAddm
-	 73LPQ9lYC0sxIs/ZbH3wLAWYyGHmMIshwHo/rQ/E=
+	b=n8lsGh3WUd8uleE2wOQGrH9hsYg3RhuU4YK4oEZvhOngU7tI28i7xQ7bTbetnZ7pv
+	 BS2O5SWtloBA6ikzOCLNKHdefsODXh0y0f7fTuQkl4Wuq4jVDTvDPGAp/yP3AJginb
+	 GKMuuoW9oFzkdocOy0tai7iEmaTfClsh7IjMSH9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cole Leavitt <cole@unwrap.rs>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 447/957] soundwire: bus: demote UNATTACHED state warnings to dev_dbg()
+Subject: [PATCH 6.12 119/666] ASoC: SOF: ipc3: Use standard dev_dbg API
 Date: Wed, 20 May 2026 18:15:30 +0200
-Message-ID: <20260520162144.214283823@linuxfoundation.org>
+Message-ID: <20260520162113.797102020@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251691-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252342-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,unwrap.rs:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cirrus.com:email]
-X-Rspamd-Queue-Id: DE222596FC7
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 87FFA597B31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cole Leavitt <cole@unwrap.rs>
+From: Daniel Baluta <daniel.baluta@nxp.com>
 
-[ Upstream commit 2c96956fe764f8224f9ec93b2a9160a578949a7a ]
+[ Upstream commit 55c39835ee0ef94593a78f6ea808138d476f3b81 ]
 
-The dev_warn() messages in sdw_handle_slave_status() for UNATTACHED
-transitions were added in commit d1b328557058 ("soundwire: bus: add
-dev_warn() messages to track UNATTACHED devices") to debug attachment
-failures with dynamic debug enabled.
+Use standard dev_dbg API because it gives better debugging
+information and allows dynamic control of prints.
 
-These warnings fire during normal operation -- for example when a codec
-driver triggers a hardware reset after firmware download, causing the
-device to momentarily go UNATTACHED before re-attaching -- producing
-misleading noise on every boot.
-
-Demote the messages to dev_dbg() so they remain available via dynamic
-debug for diagnosing real attachment failures without alarming users
-during expected initialization sequences.
-
-Fixes: d1b328557058 ("soundwire: bus: add dev_warn() messages to track UNATTACHED devices")
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260218180210.9263-1-cole@unwrap.rs
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/20240926090252.106040-1-daniel.baluta@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 07c774dd64ba ("ASoC: soc-compress: use function to clear symmetric params")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/sof/ipc3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index 55c1db8165340..14e1351a3f8ae 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -1899,8 +1899,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
- 
- 		if (status[i] == SDW_SLAVE_UNATTACHED &&
- 		    slave->status != SDW_SLAVE_UNATTACHED) {
--			dev_warn(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
--				 i, slave->status);
-+			dev_dbg(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
-+			i, slave->status);
- 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
- 
- 			/* Ensure driver knows that peripheral unattached */
-@@ -1951,8 +1951,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
- 			if (slave->status == SDW_SLAVE_UNATTACHED)
- 				break;
- 
--			dev_warn(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
--				 i, slave->status);
-+			dev_dbg(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
-+			i, slave->status);
- 
- 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
- 			break;
+diff --git a/sound/soc/sof/ipc3.c b/sound/soc/sof/ipc3.c
+index 83c22d4a48304..7de5e3d285e73 100644
+--- a/sound/soc/sof/ipc3.c
++++ b/sound/soc/sof/ipc3.c
+@@ -226,7 +226,7 @@ static inline void ipc3_log_header(struct device *dev, u8 *text, u32 cmd)
+ static void sof_ipc3_dump_payload(struct snd_sof_dev *sdev,
+ 				  void *ipc_data, size_t size)
+ {
+-	printk(KERN_DEBUG "Size of payload following the header: %zu\n", size);
++	dev_dbg(sdev->dev, "Size of payload following the header: %zu\n", size);
+ 	print_hex_dump_debug("Message payload: ", DUMP_PREFIX_OFFSET,
+ 			     16, 4, ipc_data, size, false);
+ }
 -- 
 2.53.0
 
