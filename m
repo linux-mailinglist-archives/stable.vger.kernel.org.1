@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LOYEMn4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-250810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:13 +0200
+	id wCq9FnH8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37F5595678
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C54F5960F0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F705332729A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7335230B681A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346D5369D6E;
-	Wed, 20 May 2026 16:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A6E4F5E0;
+	Wed, 20 May 2026 18:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPyReckV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+uLHBoA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82A93A382F;
-	Wed, 20 May 2026 16:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86EB3F58D6;
+	Wed, 20 May 2026 18:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296365; cv=none; b=jLyAnQOWiiq6QYTVX/e8feWWb+SMGwFkiO0xp1JsWN0xb3Naiz6a+olJX9c8RW6c8GOd9KTfLYIsrw2qK2QoRodEetyubWK9s0BynWdcJrzxjrvPmm4jOuI3RfNtsFBlbgWFyLimYSvdFACxUo1CqqOxrH7ST/Ls9N5xb+BzQqg=
+	t=1779300548; cv=none; b=oXHca/jHF9Zpnyzi6uX+JqJvqKCIh2VD2ZoYfIHWvLYeCaZjd32yG/E3xpB16h71a/DNwCcO8pdHvxIRqPO/yB08wRGpPMoMevbEUw4DOwx3w1oVYQImI94bARdvlmkKCRlgB2njKM+OHJv7VEIIk78atH0KiY7QjQ1IN+Dy6Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296365; c=relaxed/simple;
-	bh=Zr0WlZRttywWaE0Mw7B1AbLFbPyj8MNhGgz9o8RBQQE=;
+	s=arc-20240116; t=1779300548; c=relaxed/simple;
+	bh=H7BhpQqReDgP+OLZsDU5LOxt/+umZGBIlyM9hyhUR4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D5pqrvqn3rVei81O5KoWlW7DQU9cB3DGuZ1wNnDod41L6oKRnbtXJmhD/sQkbpbKccSuk9/4OwNiI2wv5tBYzZJT3BjfKnRjixJKdEZa0Nd8X8p0neFcLJQMBvQFP3TMLgiChvOQseZXyg8SUPfqChxgn4lcCScOnhSw9fJBVs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPyReckV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083F61F000E9;
-	Wed, 20 May 2026 16:59:22 +0000 (UTC)
+	 MIME-Version; b=BTLwP6Mzf8uvJsSZdSsB5Kadx8nvXS9lT08a2kdqWupNk4KbwUPXxFj8uE94XUCkeMWgeQnutahozfJTkIK67OGkAzWnQavHxU6C8f4ftV2WbDiEKhC4e6MbGvbjMpaKUuhIQZuCoViTx8/y4MZ80Cimiep+lUUNrQ2qDWoxPSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+uLHBoA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031771F00893;
+	Wed, 20 May 2026 18:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296363;
-	bh=eJFeav8ZDQBo6aiuB64qeeNVnrHISGtPitV8Nx3Ov5s=;
+	s=korg; t=1779300546;
+	bh=6z4tPKn0zEXwKcG3VF+ax3JdnjOl3IG6XW4wc6vatgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bPyReckV2nzzBQPPwd8dhjTtIY3VqzcChDlf0Qqjm33YAs/cjQucLORD+rzvTy7h2
-	 SwHsP4TDp91aij7ut+Mk52lZhh9vloy5+SvA4B5Ha1n6razBiBG2zU34wo3aPV7VeH
-	 HHfPrRbCY+b3NmuUBLMHACXVh8+B/ZdYJ3SsEeqY=
+	b=A+uLHBoAhU6o3RgEQYM/Qmy5hqtCz4kEU+CNAA1pnRxlibzbo9bzHHt2TZCFAOfpI
+	 XOQbSnzloxmMb3FzjKgN8Ga40nfm1KiZhTpeMR7+2UgumydhGLGPf6Ysn4yQaOd/IK
+	 BwpyytUDJbXyKixh+O9SIWxOh5CF2vc9Mz8Akrs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0770/1146] net/sched: sch_cake: fix NAT destination port not being updated in cake_update_flowkeys
+Subject: [PATCH 6.12 209/666] iommu/amd: xarray to track protection_domain->iommu list
 Date: Wed, 20 May 2026 18:17:00 +0200
-Message-ID: <20260520162205.642780104@linuxfoundation.org>
+Message-ID: <20260520162115.734755864@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,245 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,toke.dk,redhat.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250810-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252389-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A37F5595678
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 1C54F5960F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit f9e40664706927d7ae22a448a3383e23c38a4c0b ]
+[ Upstream commit d16041124de1dea4389b5e6b330657f34f8c0492 ]
 
-cake_update_flowkeys() is supposed to update the flow dissector keys
-with the NAT-translated addresses and ports from conntrack, so that
-CAKE's per-flow fairness correctly identifies post-NAT flows as
-belonging to the same connection.
+Use xarray to track IOMMU attached to protection domain instead of
+static array of MAX_IOMMUS. Also add lockdep assertion.
 
-For the source port, this works correctly:
-    keys->ports.src = port;
-
-But for the destination port, the assignment is reversed:
-    port = keys->ports.dst;
-
-This means the NAT destination port is never updated in the flow keys.
-As a result, when multiple connections are NATed to the same destination,
-CAKE treats them as separate flows because the original (pre-NAT)
-destination ports differ. This breaks CAKE's NAT-aware flow isolation
-when using the "nat" mode.
-
-The bug was introduced in commit b0c19ed6088a ("sch_cake: Take advantage
-of skb->hash where appropriate") which refactored the original direct
-assignment into a compare-and-conditionally-update pattern, but wrote
-the destination port update backwards.
-
-Fix by reversing the assignment direction to match the source port
-pattern.
-
-Fixes: b0c19ed6088a ("sch_cake: Take advantage of skb->hash where appropriate")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20260413110041.44704-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Joerg Roedel <jroedel@suse.de>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241030063556.6104-5-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/amd_iommu_types.h |  8 ++-
+ drivers/iommu/amd/iommu.c           | 89 +++++++++++++++++++++++------
+ 2 files changed, 77 insertions(+), 20 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 9efe23f8371b3..4ac6c36ca6e41 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -619,7 +619,7 @@ static bool cake_update_flowkeys(struct flow_keys *keys,
- 		}
- 		port = rev ? tuple.src.u.all : tuple.dst.u.all;
- 		if (port != keys->ports.dst) {
--			port = keys->ports.dst;
-+			keys->ports.dst = port;
- 			upd = true;
- 		}
+diff --git a/drivers/iommu/amd/amd_iommu_types.h b/drivers/iommu/amd/amd_iommu_types.h
+index d5a689a4f4397..f99a4b1349287 100644
+--- a/drivers/iommu/amd/amd_iommu_types.h
++++ b/drivers/iommu/amd/amd_iommu_types.h
+@@ -567,6 +567,12 @@ struct pdom_dev_data {
+ 	struct list_head list;
+ };
+ 
++/* Keeps track of the IOMMUs attached to protection domain */
++struct pdom_iommu_info {
++	struct amd_iommu *iommu; /* IOMMUs attach to protection domain */
++	u32 refcnt;	/* Count of attached dev/pasid per domain/IOMMU */
++};
++
+ /*
+  * This structure contains generic data for  IOMMU protection domains
+  * independent of their use.
+@@ -580,7 +586,7 @@ struct protection_domain {
+ 	u16 id;			/* the domain id written to the device table */
+ 	enum protection_domain_mode pd_mode; /* Track page table type */
+ 	bool dirty_tracking;	/* dirty tracking is enabled in the domain */
+-	unsigned dev_iommu[MAX_IOMMUS]; /* per-IOMMU reference count */
++	struct xarray iommu_array;	/* per-IOMMU reference count */
+ 
+ 	struct mmu_notifier mn;	/* mmu notifier for the SVA domain */
+ 	struct list_head dev_data_list; /* List of pdom_dev_data */
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index cf03fe0e8b083..d9b296e007cc7 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1290,18 +1290,17 @@ static int iommu_completion_wait(struct amd_iommu *iommu)
+ 
+ static void domain_flush_complete(struct protection_domain *domain)
+ {
+-	int i;
++	struct pdom_iommu_info *pdom_iommu_info;
++	unsigned long i;
+ 
+-	for (i = 0; i < amd_iommu_get_num_iommus(); ++i) {
+-		if (domain && !domain->dev_iommu[i])
+-			continue;
++	lockdep_assert_held(&domain->lock);
+ 
+-		/*
+-		 * Devices of this domain are behind this IOMMU
+-		 * We need to wait for completion of all commands.
+-		 */
+-		iommu_completion_wait(amd_iommus[i]);
+-	}
++	/*
++	 * Devices of this domain are behind this IOMMU
++	 * We need to wait for completion of all commands.
++	 */
++	 xa_for_each(&domain->iommu_array, i, pdom_iommu_info)
++		iommu_completion_wait(pdom_iommu_info->iommu);
+ }
+ 
+ static int iommu_flush_dte(struct amd_iommu *iommu, u16 devid)
+@@ -1483,21 +1482,22 @@ static int domain_flush_pages_v2(struct protection_domain *pdom,
+ static int domain_flush_pages_v1(struct protection_domain *pdom,
+ 				 u64 address, size_t size)
+ {
++	struct pdom_iommu_info *pdom_iommu_info;
+ 	struct iommu_cmd cmd;
+-	int ret = 0, i;
++	int ret = 0;
++	unsigned long i;
++
++	lockdep_assert_held(&pdom->lock);
+ 
+ 	build_inv_iommu_pages(&cmd, address, size,
+ 			      pdom->id, IOMMU_NO_PASID, false);
+ 
+-	for (i = 0; i < amd_iommu_get_num_iommus(); ++i) {
+-		if (!pdom->dev_iommu[i])
+-			continue;
+-
++	xa_for_each(&pdom->iommu_array, i, pdom_iommu_info) {
+ 		/*
+ 		 * Devices of this domain are behind this IOMMU
+ 		 * We need a TLB flush
+ 		 */
+-		ret |= iommu_queue_command(amd_iommus[i], &cmd);
++		ret |= iommu_queue_command(pdom_iommu_info->iommu, &cmd);
  	}
+ 
+ 	return ret;
+@@ -1536,6 +1536,8 @@ static void __domain_flush_pages(struct protection_domain *domain,
+ void amd_iommu_domain_flush_pages(struct protection_domain *domain,
+ 				  u64 address, size_t size)
+ {
++	lockdep_assert_held(&domain->lock);
++
+ 	if (likely(!amd_iommu_np_cache)) {
+ 		__domain_flush_pages(domain, address, size);
+ 
+@@ -2051,6 +2053,50 @@ static void destroy_gcr3_table(struct iommu_dev_data *dev_data,
+ 	free_gcr3_table(gcr3_info);
+ }
+ 
++static int pdom_attach_iommu(struct amd_iommu *iommu,
++			     struct protection_domain *pdom)
++{
++	struct pdom_iommu_info *pdom_iommu_info, *curr;
++
++	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
++	if (pdom_iommu_info) {
++		pdom_iommu_info->refcnt++;
++		return 0;
++	}
++
++	pdom_iommu_info = kzalloc(sizeof(*pdom_iommu_info), GFP_ATOMIC);
++	if (!pdom_iommu_info)
++		return -ENOMEM;
++
++	pdom_iommu_info->iommu = iommu;
++	pdom_iommu_info->refcnt = 1;
++
++	curr = xa_cmpxchg(&pdom->iommu_array, iommu->index,
++			  NULL, pdom_iommu_info, GFP_ATOMIC);
++	if (curr) {
++		kfree(pdom_iommu_info);
++		return -ENOSPC;
++	}
++
++	return 0;
++}
++
++static void pdom_detach_iommu(struct amd_iommu *iommu,
++			      struct protection_domain *pdom)
++{
++	struct pdom_iommu_info *pdom_iommu_info;
++
++	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
++	if (!pdom_iommu_info)
++		return;
++
++	pdom_iommu_info->refcnt--;
++	if (pdom_iommu_info->refcnt == 0) {
++		xa_erase(&pdom->iommu_array, iommu->index);
++		kfree(pdom_iommu_info);
++	}
++}
++
+ static int do_attach(struct iommu_dev_data *dev_data,
+ 		     struct protection_domain *domain)
+ {
+@@ -2067,13 +2113,17 @@ static int do_attach(struct iommu_dev_data *dev_data,
+ 		cfg->amd.nid = dev_to_node(dev_data->dev);
+ 
+ 	/* Do reference counting */
+-	domain->dev_iommu[iommu->index] += 1;
++	ret = pdom_attach_iommu(iommu, domain);
++	if (ret)
++		return ret;
+ 
+ 	/* Setup GCR3 table */
+ 	if (pdom_is_sva_capable(domain)) {
+ 		ret = init_gcr3_table(dev_data, domain);
+-		if (ret)
++		if (ret) {
++			pdom_detach_iommu(iommu, domain);
+ 			return ret;
++		}
+ 	}
+ 
+ 	return ret;
+@@ -2099,7 +2149,7 @@ static void do_detach(struct iommu_dev_data *dev_data)
+ 	list_del(&dev_data->list);
+ 
+ 	/* decrease reference counters - needs to happen after the flushes */
+-	domain->dev_iommu[iommu->index] -= 1;
++	pdom_detach_iommu(iommu, domain);
+ }
+ 
+ /*
+@@ -2307,6 +2357,7 @@ struct protection_domain *protection_domain_alloc(unsigned int type, int nid)
+ 	spin_lock_init(&domain->lock);
+ 	INIT_LIST_HEAD(&domain->dev_list);
+ 	INIT_LIST_HEAD(&domain->dev_data_list);
++	xa_init(&domain->iommu_array);
+ 	domain->iop.pgtbl.cfg.amd.nid = nid;
+ 
+ 	switch (type) {
 -- 
 2.53.0
 
