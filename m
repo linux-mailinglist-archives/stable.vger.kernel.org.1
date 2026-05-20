@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMfBLHYdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:42 +0200
+	id +CR4AaQFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E9659A111
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDDB597AA6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF4C637365E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3964530EB91E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190093D75D3;
-	Wed, 20 May 2026 17:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ADC3F9F2D;
+	Wed, 20 May 2026 18:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY9hTPgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ntJJdy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B403E3C62;
-	Wed, 20 May 2026 17:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15ECA3A6B6D;
+	Wed, 20 May 2026 18:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298615; cv=none; b=DUJs2LxAbUo54gb22C2AEJvAqvYkPl4nwcP7PVmmBtJkAgWJ2oAPPeVN2JOCC+BKJvrW4kKjiEJZM4Fo2XdRIXxSzlxLz/uNSjJo0c+zOAhRj/t9LzvFfLdF9TuSSn5sEtGDILvUI5pXZ7kCV5t1j87pwHrbX59pz+7wggZK3ro=
+	t=1779300368; cv=none; b=Us5Av78H9uupvF7Qq10PuNukQfjvLgR/6Eh4E23vR05dZU1O5w0iOVmKMA/xLSm9Tu9+q1WpOERAkI0odEYsp7kmNVvS6P3HT6wsCp+Wv9gkxQZ9tfgVlANF7sAwrhij/aQtC+tHaMIJuVa8q+Yq19rdq9nQAQODqaVaB6eyjBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298615; c=relaxed/simple;
-	bh=wm1oBipnRs51xEmGbGeeZjTTgoyuZG6SlJpuMnNi1sU=;
+	s=arc-20240116; t=1779300368; c=relaxed/simple;
+	bh=elli8Cl7h58DqJ8YFtXPG0MBn1oKFtbuToVkCWYSmTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/TnV887ff9q/Sx1UT2bP5iMbjfBYMYBjaYDv0cSIrJnY8AfYcL0d/8Tr+v64c/jZzWPQhjGcsuByuDXN0dHL+ijJFsgzaA5vrhHwO6niWhyvQ8rHQ8GOrxgfmqtMmmgkCyvihSGyGvLLlExhsI1lniJx+hrFAyoKsvHM+jMdOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY9hTPgx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BA51F000E9;
-	Wed, 20 May 2026 17:36:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZWNCoR8GsXuWqnBkrd51IoVrOKMatjx6BHMv4MEQvOTNXkSaeajGoTinEkmypdx9ZDReeNSataC0JdtMST7ARHaKJpTKDX7poQsdX4CnUNPn62HnuNUsD0QYg7pzv2vlx2955dQGTU6nqOV4CcHB09r9DNepn+60z9ctLC7Bvbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ntJJdy1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAA21F000E9;
+	Wed, 20 May 2026 18:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298612;
-	bh=lHpWKS5Ru9/ZPMqy2TDcrCeAagN9VS6y1hnEKeb9EBY=;
+	s=korg; t=1779300367;
+	bh=StLKibK//ohnSNXAuN7LyvQw3Uvd3meHgwvL6On+o9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PY9hTPgxwnkttdUq6QNuOkmtWgOpp10oes9HB/LDIuittNlGk6r2VM9q23NqE6I1W
-	 rR3pADmhfx3qzYFY/5r2y6TEiTKa0FZAAPMr8fPUwfioj8p/rr5OCqE3oTnS9cBKq5
-	 luqVmubzpAP3FkqkK7f8c2d0vdJkZKvjMee8Y2jY=
+	b=0ntJJdy10EOxd/8y7ifx7563Wz181IHGzJQ9/xfJyOKfynODwkPZnteVV0hE7tuOk
+	 9bdxqDu6FL1iPLz8EbUhfZ/zFoDSGlY9DnAX2orl+olRHuHsLJVpuk3YViHuHGCtT/
+	 CaioTeM8XHbS/yB84MEKnx/E1u2RAHR1U6MdjFmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 476/957] mtd: spinand: Create an array of operation templates
+Subject: [PATCH 6.12 148/666] drm/v3d: Handle error from drm_sched_entity_init()
 Date: Wed, 20 May 2026 18:15:59 +0200
-Message-ID: <20260520162144.850084517@linuxfoundation.org>
+Message-ID: <20260520162114.417039096@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,280 +63,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251680-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252320-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 55E9659A111
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,igalia.com:email]
+X-Rspamd-Queue-Id: CCDDB597AA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 408015023294958407925bc50cdd85718d12a335 ]
+[ Upstream commit 8cf1bec37b27846ad3169744c9f1a89a06dcb3fa ]
 
-Currently, the SPI NAND core implementation directly calls macros to get
-the various operations in shape. These macros are specific to the bus
-interface, currently only supporting the single SDR interface (any
-command following the 1S-XX-XX pattern).
+drm_sched_entity_init() can fail but its return value is currently being
+ignored in v3d_open(). Check the return value and properly unwind
+on failure by destroying any already-initialized scheduler entities.
 
-Introducing support for other bus interfaces (such as octal DTR) would
-mean that every user of these macros should become aware of the current
-bus interface and act accordingly, picking up and adapting to the
-current configuration. This would add quite a bit of boilerplate, be
-repetitive as well as error prone in case we miss one occurrence.
-
-Instead, let's create a table with all SPI NAND memory operations that
-are currently supported. We initialize them with the same single SDR _OP
-macros as before. This opens the possibility for users of the individual
-macros to make use of these templates instead. This way, when we will add
-another bus interface, we can just switch to another set of templates
-and all users will magically fill in their spi_mem_op structures with
-the correct ops.
-
-The existing read, write and update cache variants are also moved in
-this template array, which is barely noticeable by callers as we also
-add a structure member pointing to it.
-
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patch.msgid.link/20260306-v3d-reset-locking-improv-v3-1-49864fe00692@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c    | 38 ++++++++++++++++++++++--------
- drivers/mtd/nand/spi/winbond.c |  4 ++--
- include/linux/mtd/spinand.h    | 43 +++++++++++++++++++++++++++-------
- 3 files changed, 64 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/v3d/v3d_drv.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index d3029ce2fe9ae..5c1797946a047 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -184,9 +184,9 @@ static int spinand_init_quad_enable(struct spinand_device *spinand)
- 	if (!(spinand->flags & SPINAND_HAS_QE_BIT))
- 		return 0;
+diff --git a/drivers/gpu/drm/v3d/v3d_drv.c b/drivers/gpu/drm/v3d/v3d_drv.c
+index f45fdd7d542f6..e0272acad2a89 100644
+--- a/drivers/gpu/drm/v3d/v3d_drv.c
++++ b/drivers/gpu/drm/v3d/v3d_drv.c
+@@ -109,7 +109,7 @@ v3d_open(struct drm_device *dev, struct drm_file *file)
+ 	struct v3d_dev *v3d = to_v3d_dev(dev);
+ 	struct v3d_file_priv *v3d_priv;
+ 	struct drm_gpu_scheduler *sched;
+-	int i;
++	int i, ret;
  
--	if (spinand->op_templates.read_cache->data.buswidth == 4 ||
--	    spinand->op_templates.write_cache->data.buswidth == 4 ||
--	    spinand->op_templates.update_cache->data.buswidth == 4)
-+	if (spinand->op_templates->read_cache->data.buswidth == 4 ||
-+	    spinand->op_templates->write_cache->data.buswidth == 4 ||
-+	    spinand->op_templates->update_cache->data.buswidth == 4)
- 		enable = true;
+ 	v3d_priv = kzalloc(sizeof(*v3d_priv), GFP_KERNEL);
+ 	if (!v3d_priv)
+@@ -119,9 +119,11 @@ v3d_open(struct drm_device *dev, struct drm_file *file)
  
- 	return spinand_upd_cfg(spinand, CFG_QUAD_ENABLE,
-@@ -1162,7 +1162,7 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
- 	info.offset = plane << fls(nand->memorg.pagesize);
+ 	for (i = 0; i < V3D_MAX_QUEUES; i++) {
+ 		sched = &v3d->queue[i].sched;
+-		drm_sched_entity_init(&v3d_priv->sched_entity[i],
+-				      DRM_SCHED_PRIORITY_NORMAL, &sched,
+-				      1, NULL);
++		ret = drm_sched_entity_init(&v3d_priv->sched_entity[i],
++					    DRM_SCHED_PRIORITY_NORMAL, &sched,
++					    1, NULL);
++		if (ret)
++			goto err_sched;
  
- 	info.length = nanddev_page_size(nand) + nanddev_per_page_oobsize(nand);
--	info.op_tmpl = *spinand->op_templates.update_cache;
-+	info.op_tmpl = *spinand->op_templates->update_cache;
- 	desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
- 					  spinand->spimem, &info);
- 	if (IS_ERR(desc))
-@@ -1170,7 +1170,7 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
+ 		memset(&v3d_priv->stats[i], 0, sizeof(v3d_priv->stats[i]));
+ 		seqcount_init(&v3d_priv->stats[i].lock);
+@@ -131,6 +133,12 @@ v3d_open(struct drm_device *dev, struct drm_file *file)
+ 	file->driver_priv = v3d_priv;
  
- 	spinand->dirmaps[plane].wdesc = desc;
- 
--	info.op_tmpl = *spinand->op_templates.read_cache;
-+	info.op_tmpl = *spinand->op_templates->read_cache;
- 	desc = spinand_create_rdesc(spinand, &info);
- 	if (IS_ERR(desc))
- 		return PTR_ERR(desc);
-@@ -1185,7 +1185,7 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
- 	}
- 
- 	info.length = nanddev_page_size(nand) + nanddev_per_page_oobsize(nand);
--	info.op_tmpl = *spinand->op_templates.update_cache;
-+	info.op_tmpl = *spinand->op_templates->update_cache;
- 	info.op_tmpl.data.ecc = true;
- 	desc = devm_spi_mem_dirmap_create(&spinand->spimem->spi->dev,
- 					  spinand->spimem, &info);
-@@ -1194,7 +1194,7 @@ static int spinand_create_dirmap(struct spinand_device *spinand,
- 
- 	spinand->dirmaps[plane].wdesc_ecc = desc;
- 
--	info.op_tmpl = *spinand->op_templates.read_cache;
-+	info.op_tmpl = *spinand->op_templates->read_cache;
- 	info.op_tmpl.data.ecc = true;
- 	desc = spinand_create_rdesc(spinand, &info);
- 	if (IS_ERR(desc))
-@@ -1330,6 +1330,22 @@ static void spinand_manufacturer_cleanup(struct spinand_device *spinand)
- 		return spinand->manufacturer->ops->cleanup(spinand);
+ 	return 0;
++
++err_sched:
++	for (i--; i >= 0; i--)
++		drm_sched_entity_destroy(&v3d_priv->sched_entity[i]);
++	kfree(v3d_priv);
++	return ret;
  }
  
-+static void spinand_init_ssdr_templates(struct spinand_device *spinand)
-+{
-+	struct spinand_mem_ops *tmpl = &spinand->ssdr_op_templates;
-+
-+	tmpl->reset = (struct spi_mem_op)SPINAND_RESET_1S_0_0_OP;
-+	tmpl->readid = (struct spi_mem_op)SPINAND_READID_1S_1S_1S_OP(0, 0, NULL, 0);
-+	tmpl->wr_en = (struct spi_mem_op)SPINAND_WR_EN_1S_0_0_OP;
-+	tmpl->wr_dis = (struct spi_mem_op)SPINAND_WR_DIS_1S_0_0_OP;
-+	tmpl->set_feature = (struct spi_mem_op)SPINAND_SET_FEATURE_1S_1S_1S_OP(0, NULL);
-+	tmpl->get_feature = (struct spi_mem_op)SPINAND_GET_FEATURE_1S_1S_1S_OP(0, NULL);
-+	tmpl->blk_erase = (struct spi_mem_op)SPINAND_BLK_ERASE_1S_1S_0_OP(0);
-+	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_1S_1S_0_OP(0);
-+	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_1S_1S_0_OP(0);
-+	spinand->op_templates = &spinand->ssdr_op_templates;
-+}
-+
- static const struct spi_mem_op *
- spinand_select_op_variant(struct spinand_device *spinand,
- 			  const struct spinand_op_variants *variants)
-@@ -1425,21 +1441,21 @@ int spinand_match_and_init(struct spinand_device *spinand,
- 		if (!op)
- 			return -ENOTSUPP;
- 
--		spinand->op_templates.read_cache = op;
-+		spinand->ssdr_op_templates.read_cache = op;
- 
- 		op = spinand_select_op_variant(spinand,
- 					       info->op_variants.write_cache);
- 		if (!op)
- 			return -ENOTSUPP;
- 
--		spinand->op_templates.write_cache = op;
-+		spinand->ssdr_op_templates.write_cache = op;
- 
- 		op = spinand_select_op_variant(spinand,
- 					       info->op_variants.update_cache);
- 		if (!op)
- 			return -ENOTSUPP;
- 
--		spinand->op_templates.update_cache = op;
-+		spinand->ssdr_op_templates.update_cache = op;
- 
- 		return 0;
- 	}
-@@ -1554,6 +1570,8 @@ static int spinand_init(struct spinand_device *spinand)
- 	if (!spinand->scratchbuf)
- 		return -ENOMEM;
- 
-+	spinand_init_ssdr_templates(spinand);
-+
- 	ret = spinand_detect(spinand);
- 	if (ret)
- 		goto err_free_bufs;
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index af377b917a107..b389c9ee58508 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -291,7 +291,7 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand)
- 	u8 sr4;
- 	int ret;
- 
--	op = spinand->op_templates.read_cache;
-+	op = spinand->op_templates->read_cache;
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		hs = false;
- 	else if (op->cmd.buswidth == 1 && op->addr.buswidth == 1 &&
-@@ -355,7 +355,7 @@ static int w35n0xjw_vcr_cfg(struct spinand_device *spinand)
- 	u8 io_mode;
- 	int ret;
- 
--	op = spinand->op_templates.read_cache;
-+	op = spinand->op_templates->read_cache;
- 
- 	single = (op->cmd.buswidth == 1 && op->addr.buswidth == 1 && op->data.buswidth == 1);
- 	dtr = (op->cmd.dtr || op->addr.dtr || op->data.dtr);
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index c74c9ba0cd0a4..3825fe9e759a6 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -604,6 +604,36 @@ struct spinand_dirmap {
- 	struct spi_mem_dirmap_desc *rdesc_ecc;
- };
- 
-+/**
-+ * struct spinand_mem_ops - SPI NAND memory operations
-+ * @reset: reset op template
-+ * @readid: read ID op template
-+ * @wr_en: write enable op template
-+ * @wr_dis: write disable op template
-+ * @set_feature: set feature op template
-+ * @get_feature: get feature op template
-+ * @blk_erase: blk erase op template
-+ * @page_read: page read op template
-+ * @prog_exec: prog exec op template
-+ * @read_cache: read cache op template
-+ * @write_cache: write cache op template
-+ * @update_cache: update cache op template
-+ */
-+struct spinand_mem_ops {
-+	struct spi_mem_op reset;
-+	struct spi_mem_op readid;
-+	struct spi_mem_op wr_en;
-+	struct spi_mem_op wr_dis;
-+	struct spi_mem_op set_feature;
-+	struct spi_mem_op get_feature;
-+	struct spi_mem_op blk_erase;
-+	struct spi_mem_op page_read;
-+	struct spi_mem_op prog_exec;
-+	const struct spi_mem_op *read_cache;
-+	const struct spi_mem_op *write_cache;
-+	const struct spi_mem_op *update_cache;
-+};
-+
- /**
-  * struct spinand_device - SPI NAND device instance
-  * @base: NAND device instance
-@@ -611,10 +641,8 @@ struct spinand_dirmap {
-  * @lock: lock used to serialize accesses to the NAND
-  * @id: NAND ID as returned by READ_ID
-  * @flags: NAND flags
-- * @op_templates: various SPI mem op templates
-- * @op_templates.read_cache: read cache op template
-- * @op_templates.write_cache: write cache op template
-- * @op_templates.update_cache: update cache op template
-+ * @ssdr_op_templates: Templates for all single SDR SPI mem operations
-+ * @op_templates: Templates for all SPI mem operations
-  * @select_target: select a specific target/die. Usually called before sending
-  *		   a command addressing a page or an eraseblock embedded in
-  *		   this die. Only required if your chip exposes several dies
-@@ -648,11 +676,8 @@ struct spinand_device {
- 	struct spinand_id id;
- 	u32 flags;
- 
--	struct {
--		const struct spi_mem_op *read_cache;
--		const struct spi_mem_op *write_cache;
--		const struct spi_mem_op *update_cache;
--	} op_templates;
-+	struct spinand_mem_ops ssdr_op_templates;
-+	struct spinand_mem_ops *op_templates;
- 
- 	struct spinand_dirmap *dirmaps;
- 
+ static void
 -- 
 2.53.0
 
