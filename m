@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iICtMPgmDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:16 +0200
+	id gH4FLpgaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD8B59AD74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C94599C3F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2510E31BD08B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE0D13240002
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4863937DE8A;
-	Wed, 20 May 2026 18:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE9937DE8A;
+	Wed, 20 May 2026 18:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrbf97Yw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xt+PpUgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1273368968;
-	Wed, 20 May 2026 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF76347514;
+	Wed, 20 May 2026 18:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301053; cv=none; b=FBpTq/IrnmXiFOzzZolJpdu3nP52OKBk6IRvQC4biaZfN4vQQrAKZvkCFLgHEWJec+bBr56YzpRc+vbwR8hcZ1xibOlZy9B+kcRaM95/eDavL90bne+O8vqr5eOE4EwWWCwKT/n3BQw7s9tWA/N/9BoDIxLI485uVUw2zZTNbHQ=
+	t=1779302255; cv=none; b=PZZsS7L1Enk4BCeOpyHPziG+mF+eSklXSpNd+pFCbmnHgT8BGlOS+3go+GTf1u/1FOyd//el/bSibXYK+sNo/olhr42X93xeLcdb5/ClPykNSU8Ep9frtOFpLZTOq+8rSb1gFTObD6ZqUjv+Xz4fyhNIcplCURbBCraIpJDj91I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301053; c=relaxed/simple;
-	bh=Mr/kEujjJZlDZ5RxNhcwoTpUlvlksU0NICfKvNs7jpI=;
+	s=arc-20240116; t=1779302255; c=relaxed/simple;
+	bh=b5aBCH2XDi3Muc5ljrLNu01rUr5EjYSh5h9hqEz3RuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSyT9L1lyn5yQ/E3PSiCOANcqlpTaRoMzxpwcA61JdasyRrDbhLRq8UwZRqyiTAMqOudE0V9g7Tt7QCf7bfTj7a9pZZNL0UnBbUCUh/uxYM2repQxFeS3EXyPicCnMyvOmcXiTzMPcAigr98SJBCOHKzvQ2NYzqgg4kJ3jMVuYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrbf97Yw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191ED1F000E9;
-	Wed, 20 May 2026 18:17:30 +0000 (UTC)
+	 MIME-Version; b=bwS34rEnbyLxx+aG3Pnboxi/ZnNjrTJx+NZcurlQwiASCFkZkCvI6+O/Nx1OdhA/w9+ujEOV2nc9dvDFpKnHWtJczLSJCbC78qvGVGqDtW1wP3prCpC9O++zY+9HYbGhND/AZeHDQt+vRtlkxrnPrH8SBx2F/0MA+PgtQby2Lss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xt+PpUgK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7370B1F000E9;
+	Wed, 20 May 2026 18:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301051;
-	bh=RUkejvdApAAM+VVU/pup1lLJ6LFaEw4gWniE5GRxMss=;
+	s=korg; t=1779302253;
+	bh=Pu2MxgPdCZD1r6JWd6cAiBxYEexwjSQzmFBnqupNuZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mrbf97YwhNgUVUYOhfOC7nXCg63OXSLfBtYocM1anLazMtK9IPv7Lcy2UxXMEWbm4
-	 /spMXUbjTZdIXj6SqVbmrAwQhvfDwFuoFzMa3GBUYB/8iI2F8e3AnAJCeVFlq1ONWA
-	 cl/jCP4fOTHijIX8wYeXxYyzQ0/lZZ40jZk0qn5Y=
+	b=Xt+PpUgKEbkdKJfzMHfJCswUpnD1FLr6nPIdv+OyVrEEVmGRN0qGS7QdcPiLlcPhM
+	 UeSEjAD4IGmD3vegZPGAd2EyDQ2B12Xlnac6/ILEyrmSfWXwZjCeMQtJacwJfDbvYK
+	 YACIZsFBPDVp736KjVUSAyGR0te1UK+gGeyY3y2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 408/666] clk: qcom: gcc-sc8180x: Use retention for USB power domains
+Subject: [PATCH 6.6 196/508] arm64: dts: qcom: sm8550: Fix GIC_ITS range length
 Date: Wed, 20 May 2026 18:20:19 +0200
-Message-ID: <20260520162120.105035315@linuxfoundation.org>
+Message-ID: <20260520162102.883147479@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,13 +70,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252582-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253043-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -93,72 +93,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5AD8B59AD74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,1.4.236.224:email,1.5.137.32:email]
+X-Rspamd-Queue-Id: C5C94599C3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
+[ Upstream commit 357c559e386705609b6b9dc0544c420e3f91f3a0 ]
 
-The USB subsystem does not expect to lose its state on suspend:
+Currently, the GITS_SGIR register is cut off. Fix it up.
 
-    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
-    usb usb1: root hub lost power or was reset
-
-(The reinitialization usually succeeds, but it does slow down resume.)
-
-To maintain state during suspend, the relevant GDSCs need to stay in
-retention mode, like they do on other similar SoCs. Change the mode to
-PWRSTS_RET_ON to fix.
-
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260317-topic-its_range_fixup-v1-4-49be8076adb1@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index 55dabf6259b29..b116a9c0b2d94 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4172,7 +4172,7 @@ static struct gdsc usb30_sec_gdsc = {
- 	.pd = {
- 		.name = "usb30_sec_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 2f0f1c2ab7391..beab9fd10da87 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3830,7 +3830,7 @@ intc: interrupt-controller@17100000 {
  
-@@ -4190,7 +4190,7 @@ static struct gdsc usb30_prim_gdsc = {
- 	.pd = {
- 		.name = "usb30_prim_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
-@@ -4262,7 +4262,7 @@ static struct gdsc usb30_mp_gdsc = {
- 	.pd = {
- 		.name = "usb30_mp_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
+ 			gic_its: msi-controller@17140000 {
+ 				compatible = "arm,gic-v3-its";
+-				reg = <0 0x17140000 0 0x20000>;
++				reg = <0 0x17140000 0 0x40000>;
+ 				msi-controller;
+ 				#msi-cells = <1>;
+ 			};
 -- 
 2.53.0
 
