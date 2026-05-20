@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-251901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCLpMPv0DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-251901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:59 +0200
+	id cPcQBXoADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-253000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2B1594D00
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA87F59704F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 156133077567
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48C8C3152C57
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E123F1AB8;
-	Wed, 20 May 2026 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A4318ED6;
+	Wed, 20 May 2026 18:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZQ0MX0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhK19Eoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC573B0AD6;
-	Wed, 20 May 2026 17:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7ECA3F9F2A;
+	Wed, 20 May 2026 18:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299184; cv=none; b=d3mBKCDoEbH3QhwD0Ly1wI8NQWEbbO3VZ0EeRsZYRsk6qGGnIm2MxXMqzeKvvwnRNH12BfbT10crCa+ZeqpF3fEotS1i8CNuQSpTtGDG4CPZraR6X+9gLkRUh+qUzd8vJqPCTO9OS8Oia649GpvTG2tVg1qcP6MtGxqCTB6QuUg=
+	t=1779302142; cv=none; b=FViAzlD+pg1x94mpb9k8CbjujRK6dZAjaVL3VMbclOOeLRZ9PHs77pnJKhwkAKdPDcimjSywb24CbbVjQH3Vt7jd8GOlPwNhxImKcE56lKQ3RyJz++sXz8yh7w7te+A3UHV2uUNmpqdJ0YvSpKl6zJQguONDQ/RzxaxLuU0XvP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299184; c=relaxed/simple;
-	bh=fIe5icaW4wZazARoa9BQwfRBMugR3UTnkXh0dRbQXDI=;
+	s=arc-20240116; t=1779302142; c=relaxed/simple;
+	bh=1ewLHPqEqLs+ip3bqcqETpWdQqfFMrwWSZIe87bkCV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irzSINFDvzMCODzzViQmmvTjDGm0j5ZuLDMF5+6GrYjkt/dIp8nLcp8aAJ6hYJrUzcAO5ZtP12PlIrDIgUeyByNOzbyPlyel89yjyKBhecRFCMc/zBl+14fjGjGnYXT5p1ck1+xDfcsfjlkf4l0ZwYCZet1KUl+QYftKpQjxw+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZQ0MX0N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEA61F000E9;
-	Wed, 20 May 2026 17:46:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NgwAbB9IL2LQ4vh3Dsdj6j8POkBNhGrqwAkj1degxxdEvhgjKXQM+cdYDInfKmpizRS4ZsBCFCvKAPlblXBzCJ85Fo1+BIoOAm6WkxL2ZXW23m0/32dQtEx60FMqeQvizwVDhdf1wAF0nBDppixixDsST6MZ2GneqWhT/OV2rNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhK19Eoj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4B01F000E9;
+	Wed, 20 May 2026 18:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299182;
-	bh=o5BhEAJLt4uQeFxdKAGT8C/TFQ+aS4O85FrgR/OBJb4=;
+	s=korg; t=1779302140;
+	bh=J543V7KthOuJVr5Tr+wQyZs1IpYzGsUSLVNQGtiivFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fZQ0MX0N0sjsMG5GwzmLW+lN3RoRO9DuY274RiD2bbmiWVRdmMHB2dF4TTgR811Xy
-	 gI+/h8G7ZgqzCMTAswUFx7NLF7XPnQnVjaTpAJ4s//Z4GZyJdxlEAfFINBgPB1RTMa
-	 7YnjWcRlfVBrx81dwSlxSAAFap5369xwe4BHKW44=
+	b=YhK19EojAMff3WOIntE89To6vu+hqITAiOusangvynR0+XHmEVaUBgqdoffe21Nqe
+	 XtS77t6kAK4AgZAh6+dQkbrGfDmQgUTfYHJ/N9LbJnaN9+9R0w/AQRXRGSQ97h4CXO
+	 r5WsZ+1n6I7TiOnEkDy+u4YkOkxPAofpjOYzGevI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 693/957] net: airoha: Refactor src port configuration in airhoha_set_gdm2_loopback
+Subject: [PATCH 6.6 153/508] selftest: memcg: skip memcg_sock test if address family not supported
 Date: Wed, 20 May 2026 18:19:36 +0200
-Message-ID: <20260520162149.569805151@linuxfoundation.org>
+Message-ID: <20260520162101.951481120@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,250 +72,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251901-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253000-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 4B2B1594D00
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cmpxchg.org:email]
+X-Rspamd-Queue-Id: AA87F59704F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 9d5b5219f672c80bed4d4e15f0068e648cdca43b ]
+[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
 
-AN7583 chipset relies on different definitions for source-port
-identifier used for hw offloading. In order to support hw offloading
-in AN7583 controller, refactor src port configuration in
-airhoha_set_gdm2_loopback routine and introduce get_src_port_id
-callback.
+The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
+data over it to consume memory and verify that memory.stat.sock and
+memory.current values are close.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-11-f28319666667@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3309965fe44c ("net: airoha: Add missing bits in airoha_qdma_cleanup_tx_queue()")
+On systems where IPv6 isn't enabled or not configured to support
+SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
+call fails, there is no way we can test the memory consumption and verify
+the above claim.  I believe it is better to just skip the test in this
+case instead of reporting a test failure hinting that there may be
+something wrong with the memcg code.
+
+Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
+Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c  | 82 ++++++++++++++++-------
- drivers/net/ethernet/airoha/airoha_eth.h  | 18 +++--
- drivers/net/ethernet/airoha/airoha_regs.h |  6 +-
- 3 files changed, 73 insertions(+), 33 deletions(-)
+ tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index f8db324b141fe..6e7f816cd7edb 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1751,13 +1751,17 @@ static int airoha_dev_set_macaddr(struct net_device *dev, void *p)
- 	return 0;
- }
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index b462416b38061..6efa26a8383e1 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -940,8 +940,11 @@ static int tcp_server(const char *cgroup, void *arg)
+ 	saddr.sin6_port = htons(srv_args->port);
  
--static void airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
-+static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
- {
--	u32 pse_port = port->id == 3 ? FE_PSE_PORT_GDM3 : FE_PSE_PORT_GDM4;
-+	u32 val, pse_port, chan = port->id == AIROHA_GDM3_IDX ? 4 : 0;
- 	struct airoha_eth *eth = port->qdma->eth;
--	u32 chan = port->id == 3 ? 4 : 0;
-+	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
-+	u32 nbq = port->id == AIROHA_GDM3_IDX ? 4 : 0;
-+	int src_port;
- 
- 	/* Forward the traffic to the proper GDM port */
-+	pse_port = port->id == AIROHA_GDM3_IDX ? FE_PSE_PORT_GDM3
-+					       : FE_PSE_PORT_GDM4;
- 	airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(2), pse_port);
- 	airoha_fe_clear(eth, REG_GDM_FWD_CFG(2), GDM_STRIP_CRC);
- 
-@@ -1778,29 +1782,25 @@ static void airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
- 	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(2));
- 	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(2));
- 
--	if (port->id == 3) {
--		/* FIXME: handle XSI_PCE1_PORT */
--		airoha_fe_rmw(eth, REG_FE_WAN_PORT,
--			      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
--			      FIELD_PREP(WAN0_MASK, HSGMII_LAN_PCIE0_SRCPORT));
--		airoha_fe_rmw(eth,
--			      REG_SP_DFT_CPORT(HSGMII_LAN_PCIE0_SRCPORT >> 3),
--			      SP_CPORT_PCIE0_MASK,
--			      FIELD_PREP(SP_CPORT_PCIE0_MASK,
--					 FE_PSE_PORT_CDM2));
--	} else {
--		/* FIXME: handle XSI_USB_PORT */
-+	src_port = eth->soc->ops.get_src_port_id(port, nbq);
-+	if (src_port < 0)
-+		return src_port;
-+
-+	airoha_fe_rmw(eth, REG_FE_WAN_PORT,
-+		      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
-+		      FIELD_PREP(WAN0_MASK, src_port));
-+	val = src_port & SP_CPORT_DFT_MASK;
-+	airoha_fe_rmw(eth,
-+		      REG_SP_DFT_CPORT(src_port >> fls(SP_CPORT_DFT_MASK)),
-+		      SP_CPORT_MASK(val),
-+		      FE_PSE_PORT_CDM2 << __ffs(SP_CPORT_MASK(val)));
-+
-+	if (port->id != AIROHA_GDM3_IDX)
- 		airoha_fe_rmw(eth, REG_SRC_PORT_FC_MAP6,
- 			      FC_ID_OF_SRC_PORT24_MASK,
- 			      FIELD_PREP(FC_ID_OF_SRC_PORT24_MASK, 2));
--		airoha_fe_rmw(eth, REG_FE_WAN_PORT,
--			      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
--			      FIELD_PREP(WAN0_MASK, HSGMII_LAN_ETH_SRCPORT));
--		airoha_fe_rmw(eth,
--			      REG_SP_DFT_CPORT(HSGMII_LAN_ETH_SRCPORT >> 3),
--			      SP_CPORT_ETH_MASK,
--			      FIELD_PREP(SP_CPORT_ETH_MASK, FE_PSE_PORT_CDM2));
--	}
-+
-+	return 0;
- }
- 
- static int airoha_dev_init(struct net_device *dev)
-@@ -1815,8 +1815,13 @@ static int airoha_dev_init(struct net_device *dev)
- 	case 3:
- 	case 4:
- 		/* If GDM2 is active we can't enable loopback */
--		if (!eth->ports[1])
--			airhoha_set_gdm2_loopback(port);
-+		if (!eth->ports[1]) {
-+			int err;
-+
-+			err = airhoha_set_gdm2_loopback(port);
-+			if (err)
-+				return err;
-+		}
- 		fallthrough;
- 	case 2:
- 		if (airoha_ppe_is_enabled(eth, 1)) {
-@@ -3135,11 +3140,38 @@ static const char * const en7581_xsi_rsts_names[] = {
- 	"xfp-mac",
- };
- 
-+static int airoha_en7581_get_src_port_id(struct airoha_gdm_port *port, int nbq)
-+{
-+	switch (port->id) {
-+	case 3:
-+		/* 7581 SoC supports PCIe serdes on GDM3 port */
-+		if (nbq == 4)
-+			return HSGMII_LAN_7581_PCIE0_SRCPORT;
-+		if (nbq == 5)
-+			return HSGMII_LAN_7581_PCIE1_SRCPORT;
-+		break;
-+	case 4:
-+		/* 7581 SoC supports eth and usb serdes on GDM4 port */
-+		if (!nbq)
-+			return HSGMII_LAN_7581_ETH_SRCPORT;
-+		if (nbq == 1)
-+			return HSGMII_LAN_7581_USB_SRCPORT;
-+		break;
-+	default:
-+		break;
+ 	sk = socket(AF_INET6, SOCK_STREAM, 0);
+-	if (sk < 0)
++	if (sk < 0) {
++		/* Pass back errno to the ctl_fd */
++		write(ctl_fd, &errno, sizeof(errno));
+ 		return ret;
 +	}
+ 
+ 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
+ 		goto cleanup;
+@@ -1071,6 +1074,12 @@ static int test_memcg_sock(const char *root)
+ 			goto cleanup;
+ 		close(args.ctl[0]);
+ 
++		/* Skip if address family not supported by protocol */
++		if (err == EAFNOSUPPORT) {
++			ret = KSFT_SKIP;
++			goto cleanup;
++		}
 +
-+	return -EINVAL;
-+}
-+
- static const struct airoha_eth_soc_data en7581_soc_data = {
- 	.version = 0x7581,
- 	.xsi_rsts_names = en7581_xsi_rsts_names,
- 	.num_xsi_rsts = ARRAY_SIZE(en7581_xsi_rsts_names),
- 	.num_ppe = 2,
-+	.ops = {
-+		.get_src_port_id = airoha_en7581_get_src_port_id,
-+	},
- };
- 
- static const struct of_device_id of_airoha_match[] = {
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 8d121d12dc120..8a2c68781e94b 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -67,10 +67,10 @@ enum {
- };
- 
- enum {
--	HSGMII_LAN_PCIE0_SRCPORT = 0x16,
--	HSGMII_LAN_PCIE1_SRCPORT,
--	HSGMII_LAN_ETH_SRCPORT,
--	HSGMII_LAN_USB_SRCPORT,
-+	HSGMII_LAN_7581_PCIE0_SRCPORT	= 0x16,
-+	HSGMII_LAN_7581_PCIE1_SRCPORT,
-+	HSGMII_LAN_7581_ETH_SRCPORT,
-+	HSGMII_LAN_7581_USB_SRCPORT,
- };
- 
- enum {
-@@ -99,6 +99,13 @@ enum {
- 	CRSN_25 = 0x19,
- };
- 
-+enum airoha_gdm_index {
-+	AIROHA_GDM1_IDX = 1,
-+	AIROHA_GDM2_IDX = 2,
-+	AIROHA_GDM3_IDX = 3,
-+	AIROHA_GDM4_IDX = 4,
-+};
-+
- enum {
- 	FE_PSE_PORT_CDM1,
- 	FE_PSE_PORT_GDM1,
-@@ -556,6 +563,9 @@ struct airoha_eth_soc_data {
- 	const char * const *xsi_rsts_names;
- 	int num_xsi_rsts;
- 	int num_ppe;
-+	struct {
-+		int (*get_src_port_id)(struct airoha_gdm_port *port, int nbq);
-+	} ops;
- };
- 
- struct airoha_eth {
-diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
-index 69c5a143db8c0..ebcce00d9bc6f 100644
---- a/drivers/net/ethernet/airoha/airoha_regs.h
-+++ b/drivers/net/ethernet/airoha/airoha_regs.h
-@@ -383,10 +383,8 @@
- #define REG_MC_VLAN_DATA		0x2108
- 
- #define REG_SP_DFT_CPORT(_n)		(0x20e0 + ((_n) << 2))
--#define SP_CPORT_PCIE1_MASK		GENMASK(31, 28)
--#define SP_CPORT_PCIE0_MASK		GENMASK(27, 24)
--#define SP_CPORT_USB_MASK		GENMASK(7, 4)
--#define SP_CPORT_ETH_MASK		GENMASK(7, 4)
-+#define SP_CPORT_DFT_MASK		GENMASK(2, 0)
-+#define SP_CPORT_MASK(_n)		GENMASK(3 + ((_n) << 2), ((_n) << 2))
- 
- #define REG_SRC_PORT_FC_MAP6		0x2298
- #define FC_ID_OF_SRC_PORT27_MASK	GENMASK(28, 24)
+ 		if (!err)
+ 			break;
+ 		if (err != EADDRINUSE)
 -- 
 2.53.0
 
