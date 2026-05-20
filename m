@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-253204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAeNLOkuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:09 +0200
+	id cBrjI+zuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDEA59B928
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB20C593B17
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 712C63979A83
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 909A4306C0A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69DF40961E;
-	Wed, 20 May 2026 18:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6B73403F4;
+	Wed, 20 May 2026 17:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR9BtaNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCnRP8IN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE6E3FD147;
-	Wed, 20 May 2026 18:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA13F6619;
+	Wed, 20 May 2026 17:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302673; cv=none; b=P/B99RLWTjhph3Euo36DeHP3TfFF0qNXapjohxGuAFGwEcGaaYhjOREfTiFdS8+GEIwptox5UXA5yGs7qmpnMv+RvvUVpIF8v75vj6A2VyCZU9JbSv8NWe9z14CJVzLTvNqt4IPqiSo3Utwn+G+5HDpZHxvpnVQKZX4d9Rpx0Pw=
+	t=1779297316; cv=none; b=e/PCgP6y81ANrUVBN1uHcoeohAU2m9MaZ3mj5WTO+AFtzb+qatCI8fAPy8Kn+JX+MUtQGESGVXcovodYCliBkfr4V+ZFPDTLqfV85SWMYp7qJEhprvd42yC27AjfDIQoFMQCErhBUvPSiFhocgqK3eoIeYWl2KaITkXeWXtU3wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302673; c=relaxed/simple;
-	bh=2j8sE05NPC3V6DgOFk1yq/1DpmIF9rYLoUVI6mJo7wM=;
+	s=arc-20240116; t=1779297316; c=relaxed/simple;
+	bh=F3Wx2a3e5NVgw7TYVCGtczjq26zoUQOJix7wMlfx72Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcBQ2FgVE+HPs7nu+HnvM8oyNMAJUki5EjxKKGXKRFYyHtGK7SUVw3nzyPHEekQwXmuG+5SNjxqVT0n5Zir3AvvNz7ui5WZEsKFLVSOMung1PqFSScBiQlGfsb/8hnPr2t3yn2zfe+GzdRSZErO1a/krxbBmgWSdhNDkAmD/3v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR9BtaNv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ADC1F000E9;
-	Wed, 20 May 2026 18:44:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FspcNXLuh1LiGGvPDDbKN6Xq2qU0t0nYnuMcfOlDOUObb1DnYI9ogDCMfgokq4texOeiR6Tj5euHmbTX70ebEyTvFNyHETGKEW1pc+SExlbNdjB84SQp9P8xI/DG38l+vnU8RgxidF+8c2WGGw666K+L3URnjcY/GLQMx9OwJTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCnRP8IN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C3E1F000E9;
+	Wed, 20 May 2026 17:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302672;
-	bh=sKTScCBgWsMdJ8tumms2yoeNTlz/LKQ5Nwj11mWcpOs=;
+	s=korg; t=1779297314;
+	bh=lVRZRT2h0RFtM4tYXlts/WE7q4gaPEuyAipjoiTgiX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vR9BtaNv1WN0CDt3k43Ps6LM2g0Yso6SBuY3mnbqcQ+hA46QOC34mGPchxgXgBBot
-	 GLHl+NP7k1eo8KZOfbhWwb1aJ+KcEhCx+5Zl0rVDLDQNhzqwmrR80q3y/Ev+ktOLbK
-	 vR32caFnl/ubyM9S2Dw6rS2euE0cCDpHX51kYN5E=
+	b=aCnRP8INrcvv9KqXG+nDgWqIUBBKUnc7TeW2Aj0Dh8H2dW57nU7phmUylJUFyWI5C
+	 aos/UAUsYkJRHQX7fSYjI6fmsqVWHp+ovuLVZC82Vho7B/5nG0o4dWwHUC52rD7vjq
+	 3J/k/5C8U/PGiB6RrWxbyP8VGENU9Z3dOCuQT/FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>,
-	Taegyu Kim <tmk5904@psu.edu>,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 357/508] fbdev: offb: fix PCI device reference leak on probe failure
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 7.0 1130/1146] drm/xe/dma-buf: handle empty bo and UAF races
 Date: Wed, 20 May 2026 18:23:00 +0200
-Message-ID: <20260520162106.367669869@linuxfoundation.org>
+Message-ID: <20260520162213.821536193@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +64,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251183-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253204-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,gmx.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email,psu.edu:email]
-X-Rspamd-Queue-Id: 1FDEA59B928
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gitlab.freedesktop.org:url,msgid.link:url]
+X-Rspamd-Queue-Id: EB20C593B17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 869b93ba04088713596e68453c1146f52f713290 ]
+commit 981bedbbe61364fcc3a3b87ebaf648a66cd07108 upstream.
 
-offb_init_nodriver() gets a referenced PCI device with pci_get_device().
-If pci_enable_device() fails, the function returns without dropping that
-reference.
+There look to be some nasty races here when triggering the
+invalidate_mappings hook:
 
-Release the PCI device reference before returning from the
-pci_enable_device() failure path.
+1) We do xe_bo_alloc() followed by the attach, before the actual full bo
+   init step in xe_dma_buf_init_obj(). However the bo is visible on the
+   attachments list after the attach.  This is bad since exporter driver,
+   say amdgpu, can at any time call back into our invalidate_mappings hook,
+   with an empty/bogus bo, leading to potential bugs/crashes.
 
-Fixes: 5bda8f7b5468 ("video: fbdev: offb: Call pci_enable_device() before using the PCI VGA device")
-Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2) Similar to 1) but here we get a UAF, when the invalidate_mappings
+   hook is triggered. For example, we get as far as xe_bo_init_locked()
+   but this fails in some way. But here the bo will be freed on error, but
+   we still have it attached from dma-buf pov, so if the
+   invalidate_mappings is now triggered then the bo we access is gone and
+   we trigger UAF and more bugs/crashes.
+
+To fix this, move the attach step until after we actually have a fully
+set up buffer object. Note that the bo is not published to userspace
+until later, so not sure what the comment "Don't publish the bo
+until we have a valid attachment", is referring to.
+
+We have at least two different customers reporting hitting a NULL ptr
+deref in evict_flags when importing something from amdgpu, followed by
+triggering the evict flow. Hit rate is also pretty low, which would
+hint at some kind of race, so something like 1) or 2) might explain
+this.
+
+v2:
+  - Shuffle the order of the ops slightly (no functional change)
+  - Improve the comment to better explain the ordering (Matt B)
+
+Assisted-by: Gemini:gemini-3 #debug
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7903
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/4055
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20260508102635.149172-3-matthew.auld@intel.com
+(cherry picked from commit af1f2ad0c59fe4e2f924c526f66e968289d77971)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/offb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_dma_buf.c |   31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index dcb1b81d35db5..0e81d68378935 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -643,8 +643,13 @@ static void offb_init_nodriver(struct platform_device *parent, struct device_nod
- 			vid = be32_to_cpup(vidp);
- 			did = be32_to_cpup(didp);
- 			pdev = pci_get_device(vid, did, NULL);
--			if (!pdev || pci_enable_device(pdev))
-+			if (!pdev)
- 				return;
-+
-+			if (pci_enable_device(pdev)) {
-+				pci_dev_put(pdev);
-+				return;
-+			}
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -337,15 +337,25 @@ struct drm_gem_object *xe_gem_prime_impo
  		}
- #endif
- 		/* kludge for valkyrie */
--- 
-2.53.0
-
+ 	}
+ 
+-	/*
+-	 * Don't publish the bo until we have a valid attachment, and a
+-	 * valid attachment needs the bo address. So pre-create a bo before
+-	 * creating the attachment and publish.
+-	 */
+ 	bo = xe_bo_alloc();
+ 	if (IS_ERR(bo))
+ 		return ERR_CAST(bo);
+ 
++	/*
++	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so do not touch
++	 * on fail, since it will already take care of cleanup. On success we
++	 * still need to drop the ref, if something later fails.
++	 *
++	 * In addition this needs to happen before the attach, since
++	 * it will create a new attachment for this, and add it to the list of
++	 * attachments, at which point it is globally visible, and at any point
++	 * the export side can call into on invalidate_mappings callback, which
++	 * require a working object.
++	 */
++	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
++	if (IS_ERR(obj))
++		return obj;
++
+ 	attach_ops = &xe_dma_buf_attach_ops;
+ #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+ 	if (test)
+@@ -358,21 +368,12 @@ struct drm_gem_object *xe_gem_prime_impo
+ 		goto out_err;
+ 	}
+ 
+-	/*
+-	 * xe_dma_buf_init_obj() takes ownership of bo on both success
+-	 * and failure, so we must not touch bo after this call.
+-	 */
+-	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
+-	if (IS_ERR(obj)) {
+-		dma_buf_detach(dma_buf, attach);
+-		return obj;
+-	}
+ 	get_dma_buf(dma_buf);
+ 	obj->import_attach = attach;
+ 	return obj;
+ 
+ out_err:
+-	xe_bo_free(bo);
++	xe_bo_put(bo);
+ 
+ 	return obj;
+ }
 
 
 
