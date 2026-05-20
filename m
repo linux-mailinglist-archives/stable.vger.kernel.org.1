@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGfJFhQBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:36 +0200
+	id sHdzLSz+DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0454659726A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8875A596791
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 886E63090CBD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D571C30AB1CE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D375637DE8A;
-	Wed, 20 May 2026 18:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA763BE64B;
+	Wed, 20 May 2026 18:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8MPQl7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+1to6LK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B98E3EAC82;
-	Wed, 20 May 2026 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F011347515;
+	Wed, 20 May 2026 18:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302291; cv=none; b=s8gnYLTzRURRrKkVTg8LFq8WqWPCsrq33fL3B6WibGFRKliWje4KVzQyWhzuz7/a5OinqTmR1CKsQ4+p3mYWW263v6HJnu/nxM8Dj6n1PHeHLSws8XVVbZ/vG4xlFb1+98K9zviFcavQL+ZyMTe5/Iuab/W0k//j1rZ8ttOu45k=
+	t=1779300992; cv=none; b=D0ON7jSt1FSTmDZr7eLSRlWiHprTkkTtMMcYAtFaJJf/+JeHVAdQZgYgoCR2Wt+Hz+I69ENWSkDIQOSgWFVf+W5w6T3unPoGv6+2RwDnnABp5MvM2iYk2v1htoDMivjHzMnY3n73DB6waPKvHQmZk+nS8SPq5UWubbyOgzAtqaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302291; c=relaxed/simple;
-	bh=ppHzCBZgux5alLI5EpZejDkf1CoSZDH6QiORKTzXv9U=;
+	s=arc-20240116; t=1779300992; c=relaxed/simple;
+	bh=3B40NH6CQrPAVTZgAcff0HbWiqjLWkBL+kBZlfPw/es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvbRWlS0T5lENrAyuDUUEZI4ZyBUit8C48xorJtCECqDms+PrOy25U6w+Gf4RJ3osP4jHEoGEQasopMvkkYk8JAT7kpY4YNeXuxDMdpGMIlHfqInU+ikchs5VCAVWktcuSwjKGHhhtEsUwdXCxQD7GvX65aIHwZWEvHdMR3FQgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8MPQl7x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC471F000E9;
-	Wed, 20 May 2026 18:38:09 +0000 (UTC)
+	 MIME-Version; b=MkalfWl7RG7eMWiGyMjRosP/YhgdgF94cyPpHCPkhWfJs4wTEAYbw514KTwLXZb8GGCmEOoGFvItX31/e8RXd15kgW2OYxZjKXcL7NMNCEXeiXTtutf5vycAyDqiwjOQdH3DXXy0b7eA7Ffg42Er/J+Ot4hiOKVzXXZzzar5id0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+1to6LK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A479C1F000E9;
+	Wed, 20 May 2026 18:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302290;
-	bh=W6l3a6hnRRFWgbx6qU8z3//6XrojrW0p/TIkN5pDPqU=;
+	s=korg; t=1779300991;
+	bh=Uy+TCOlmAtOYgIdEC+F5zrNiDvErBW6Czt+hhuIFyEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w8MPQl7x6SMJFcFpqye2MYrDo0BxM2sjPHkSFLyLw9/aV96HbQuzoRRy2bxmx72sI
-	 z8uceBB2mMlMgTLaa+GVXF1PmW+1PFICzFwWYG6tH9I/zzCge5+ByxvunWUCuZJV/5
-	 6MHEe/zqCRGqnMi1ythk8w40sOCkDt0S4HK96tdM=
+	b=Z+1to6LKYaIsbmWcbkBQ6F65EyHaCWaUY9l21ZNhWEP3hg9JRUMY4nHBZhBlaPIny
+	 GFgHo+ITqwdC09O+GlA6j/LNJxREDAh3xPB/vPD3OiFYGmqUxtWmmvF4tKi0Gz12NP
+	 90cGchLY/vYaPE2jKl1pSm2Lq7QME16+n3DTF6yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/508] dm cache: fix missing return in invalidate_committeds error path
-Date: Wed, 20 May 2026 18:19:53 +0200
-Message-ID: <20260520162102.321573518@linuxfoundation.org>
+Subject: [PATCH 6.12 383/666] i3c: dw: Fix memory leak in dw_i3c_master_i3c_xfers()
+Date: Wed, 20 May 2026 18:19:54 +0200
+Message-ID: <20260520162119.554667901@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253057-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252559-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0454659726A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,nxp.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8875A596791
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 8c0ee19db81f0fa1ff25fd75b22b17c0cc2acde3 ]
+[ Upstream commit 256cc1f1305a8e5dcadf8ca208d04a3acadd26f1 ]
 
-In passthrough mode, dm-cache defers write submission until after
-metadata commit completes via the invalidate_committed() continuation.
-On commit error, invalidate_committed() calls invalidate_complete() to
-end the bio and free the migration struct, after which it should return
-immediately.
+The dw_i3c_master_i3c_xfers() function allocates memory for the xfer
+structure using dw_i3c_master_alloc_xfer(). If pm_runtime_resume_and_get()
+fails, the function returns without freeing the allocated xfer, resulting
+in a memory leak.
 
-The patch 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-omitted this early return, causing execution to fall through into the
-success path on error. This results in use-after-free on the migration
-struct in the subsequent calls.
+Since dw_i3c_master_free_xfer() is a thin wrapper around kfree(), use
+the __free(kfree) cleanup attribute to handle the free automatically on
+all exit paths.
 
-Fix by adding the missing return after the invalidate_complete() call.
-
-Fixes: 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/dm-devel/adjMq6T5RRjv_uxM@stanley.mountain/
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260404-dw-i3c-2-v3-1-8f7d146549c1@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i3c/master/dw-i3c-master.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 8db906ea3bef0..5522f8e9443f2 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1523,8 +1523,10 @@ static void invalidate_committed(struct work_struct *ws)
- 	struct bio *bio = mg->overwrite_bio;
- 	struct per_bio_data *pb = get_per_bio_data(bio);
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index 6c56e0b89b02d..a60eb86bddba8 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -6,6 +6,7 @@
+  */
  
--	if (mg->k.input)
-+	if (mg->k.input) {
- 		invalidate_complete(mg, false);
-+		return;
-+	}
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/err.h>
+@@ -912,7 +913,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+ 	struct dw_i3c_master *master = to_dw_i3c_master(m);
+ 	unsigned int nrxwords = 0, ntxwords = 0;
+-	struct dw_i3c_xfer *xfer;
+ 	int i, ret = 0;
  
- 	init_continuation(&mg->k, invalidate_completed);
- 	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
+ 	if (!i3c_nxfers)
+@@ -932,7 +932,7 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	    nrxwords > master->caps.datafifodepth)
+ 		return -ENOTSUPP;
+ 
+-	xfer = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
++	struct dw_i3c_xfer *xfer __free(kfree) = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
+ 	if (!xfer)
+ 		return -ENOMEM;
+ 
+@@ -983,7 +983,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	}
+ 
+ 	ret = xfer->ret;
+-	dw_i3c_master_free_xfer(xfer);
+ 
+ 	pm_runtime_mark_last_busy(master->dev);
+ 	pm_runtime_put_autosuspend(master->dev);
 -- 
 2.53.0
 
