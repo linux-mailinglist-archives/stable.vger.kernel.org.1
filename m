@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIc1LrwCDmra5QUAu9opvQ
-	(envelope-from <stable+bounces-252709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:40 +0200
+	id uFssLvMDDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AFE597528
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2B659770A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2BCD399A522
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB1D2306C4D3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFAB3F88B8;
-	Wed, 20 May 2026 18:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23111407CC5;
+	Wed, 20 May 2026 18:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOMr92Ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHtrS/gS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBEB3F7ABC;
-	Wed, 20 May 2026 18:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A3D407CC0;
+	Wed, 20 May 2026 18:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301384; cv=none; b=OcMDy0os+CHMLcQQQ//r4wTMjLNGz/AgAecEF4e+AmmlvJp9Dphur+hC7jPhYk67yNu9GMllZ0iIgWwU5cBZ25KDNTpz7BBaEwtUeaz/nD0SqB8KqW6BGJ80Vgi0iG+wZUsMvj6Nl+XsjFxeJuXYxQL63gt4RXrz8zbsaz+geMw=
+	t=1779302586; cv=none; b=kZGGZHEsQGL8kW4MT1zaiocznwjx9vzKvQFcNkrKXHtPOlaFViG8+R/YEc6SQ/GcAPqigUCrN1qmyNc31yoiz+cdPvXnJpdWB6Xam/3WHEyA9UlWrrqihPcngN1+oDjpZwKMBt460PSHTrnaniEXItsyNoVsIjgmhzaOvH52rGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301384; c=relaxed/simple;
-	bh=+B+9UTsvXuwXhwCwBL5hK6fmfbx2spUVzBy6Y3YqdkU=;
+	s=arc-20240116; t=1779302586; c=relaxed/simple;
+	bh=PXphoamng6rowQbkL8aMQYhAl8NRvkB1nfz87/MnSQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gU8AA8SqcnZCezb1IYxECupPfRYewyeHlU3MV/NSAErxGziITxKJ0h03hiW/CG0bFXojGCR+e23hgF6CohRv4nKyH4E4fIf5nwJSmyAbpkZZl49ArcXzVuaMzRoTuysKaRR063DVtU9BZWlSOcHqKXUwmvXoM6RbacXQwTMjLnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOMr92Ks; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47D71F000E9;
-	Wed, 20 May 2026 18:23:02 +0000 (UTC)
+	 MIME-Version; b=ITuZsfZdzq6Tp+5PrGCopI6Dg6mmfOLH29jVhEuaY3DFboMMjxWBthB0lrdjzK7eOVpFmEGXKKRSaG2LUSB/3xfh2gMhQRU/1zsNkWHE5Qdp7b2x+t28EBeaUn55bR3cB8pOSY2rihwDwHjRnEUHEG/ZD4Sn4ywRCJ3siIXr1Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHtrS/gS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0B41F000E9;
+	Wed, 20 May 2026 18:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301383;
-	bh=eISfA8kVgIj04bvP413hGyGeAelFb97IRG/tko1lFmw=;
+	s=korg; t=1779302585;
+	bh=pd5xRjxV4rPYcpGPomUF+gbN9xjKel6lRNvf0xKMs6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vOMr92KsX7kTaACGryjDVrPOf14muRP2Qi8cqU3rOUjDg+cDLsKLWhwI/YZENoXgu
-	 8GpUTJ4Z6e6Ap1EsPYwG2LSb0pnt8mz9JFFlurffGWPaxSAPyiPib2IcIss8N6Y35U
-	 iuAWAX7M1Wug48RNIxKkmSG2YZE1fpDYBBrXKlVg=
+	b=gHtrS/gS4nZgHmpBdiAYHTui7MTf9GaQZUzyv3zJO0gf1iDG5uCBejonmjSNuIxKO
+	 3tPrvmA1JqeEG6b+m6/FTxFnXHuDF1/FQNZN915aRW5wSqLUo2UfH0+vFsGOjepA8P
+	 2Xzkzp8WiZnhUq2QRYyO0Rd+qqsnQBzobbUEyp14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 535/666] net/sched: netem: fix slot delay calculation overflow
+Subject: [PATCH 6.6 323/508] i40e: dont advertise IFF_SUPP_NOFCS
 Date: Wed, 20 May 2026 18:22:26 +0200
-Message-ID: <20260520162122.867717011@linuxfoundation.org>
+Message-ID: <20260520162105.634760706@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +71,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252709-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253169-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,67 +85,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 07AFE597528
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,enjuk.jp:email,intel.com:email]
+X-Rspamd-Queue-Id: 3A2B659770A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 51e94e1e2fef351c74d69eb53666df808d26af95 ]
+[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
 
-get_slot_next() computes a random delay between min_delay and
-max_delay using:
+i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
+socket option. However, this option is silently ignored, as the driver
+does not check skb->no_fcs, and always enables FCS insertion offload.
 
-  get_random_u32() * (max_delay - min_delay) >> 32
+Fix this by removing the advertisement of IFF_SUPP_NOFCS.
 
-This overflows signed 64-bit arithmetic when the delay range exceeds
-approximately 2.1 seconds (2^31 nanoseconds), producing a negative
-result that effectively disables slot-based pacing. This is a
-realistic configuration for WAN emulation (e.g., slot 1s 5s).
+This behavior can be reproduced with a simple AF_PACKET socket:
 
-Use mul_u64_u32_shr() which handles the widening multiply without
-overflow.
+  import socket
+  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
+  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
+  s.bind(("eth0", 0))
+  s.send(b'\xff' * 64)
 
-Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-6-stephen@networkplumber.org
+Previously, send() succeeds but the driver ignores SO_NOFCS.
+With this change, send() fails with -EPROTONOSUPPORT, as expected.
+
+Fixes: 41c445ff0f48 ("i40e: main driver core")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 330d4ff7324d1..543a043f84f41 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -657,9 +657,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 9bcd32d31da77..24879ddd603e5 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -13940,7 +13940,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
+ 	netdev->neigh_priv_len = sizeof(u32) * 4;
  
- 	if (!q->slot_dist)
- 		next_delay = q->slot_config.min_delay +
--				(get_random_u32() *
--				 (q->slot_config.max_delay -
--				  q->slot_config.min_delay) >> 32);
-+			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
-+					get_random_u32(), 32);
- 	else
- 		next_delay = tabledist(q->slot_config.dist_delay,
- 				       (s32)(q->slot_config.dist_jitter),
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+-	netdev->priv_flags |= IFF_SUPP_NOFCS;
+ 	/* Setup netdev TC information */
+ 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+ 
 -- 
 2.53.0
 
