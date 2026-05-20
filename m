@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHn6LpcHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:23 +0200
+	id mHY2H24EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C92E597EE9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD681597838
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A9BF399CBBB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A377F39EBBBE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F354E427A1F;
-	Wed, 20 May 2026 18:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EAA3FA5D5;
+	Wed, 20 May 2026 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNb7NCMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDvQ7mka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A130D400E0E;
-	Wed, 20 May 2026 18:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777F8371048;
+	Wed, 20 May 2026 18:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302839; cv=none; b=RXmE3gAf9HVwQXHqZuONMh9wMpo9Gmw/QjZXg9Nx1PX6VsIyb3nedMbFdJ5JAs9vx7tgW1YZV+uwUOjQPtB2eTJGGFuiQisW6rLpC7EePww6vQrDeHmLncsiXy5n1sHmtklYGuBa8IAgF02nX0auHfvbPGhIF8ZYUmIx3qKXIp0=
+	t=1779301637; cv=none; b=N+QE1TjPsaKslLeKah48kSM3AD1TBI9bB8JRaXhhf/ykcreG65avO1uSgdISVZyzF7r3lauOlrmEE6RxEwJr3SjymVZF/Dz46bPe28OAlkIzfxPwfWbNaXG6enoK/CxIGaqijGuCP/H7Bfd0rg3pnLhutMjgtsY9DcCzKwtqukA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302839; c=relaxed/simple;
-	bh=6dlPH9MioAO+uphQE8FAY90CneWtEWAtEJpc/X9io4k=;
+	s=arc-20240116; t=1779301637; c=relaxed/simple;
+	bh=jqpLElEc1/QSFT01qyOcl0qEdgBllX7Jhk2WqUCHp7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHuZgxNzrXTSL/wGSGvGMyuQJXl4WBd68zGCHPXeA6LN0p8TGtLoqKzEBRE32YTWk1U9sfh30BHnvdfT2I7Co2qGpK82QDFKHj0dEF3ijuxrv2gpozwZrB3tThP21ckBpbylzUDL35h7kUs+X58mqjeV80Pks2PvZ4gZ6Sum3RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNb7NCMF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1111F000E9;
-	Wed, 20 May 2026 18:47:17 +0000 (UTC)
+	 MIME-Version; b=sYZTtAgLrGXsQwf3qGFkhniSh/XUWJ6xlA46AVa1RZqnhBrcwDb81cesFjx/0Q0Oww7zVgO6xilSbIOwt87055vFTRwmYkc65yYCQmQNOd36u9RUDqBpMoY6T045g+boMzek3X8cYftmuwWLxf6FUW7YnR16axCe+FzzrRkzCiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDvQ7mka; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46331F000E9;
+	Wed, 20 May 2026 18:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302838;
-	bh=Hm8dPmmWWtuPpMSUBYb1KQ25XAewV9ucF1SlgcD3b7s=;
+	s=korg; t=1779301636;
+	bh=RPStHpe4x/yHulS2LpKBE+JRFd8UEnQqLlD2oytvHRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tNb7NCMFp3vkqPDe1RTPoPw2sDva6NW4NkCR+bjM2V7gzZqAx1pIDJyjxy1SuZ8XQ
-	 tQ5fisqP6XvugAQxz3u0Ia2UDcqa4CoKvDiiqNcIQk5tf81mO9DXNpZI0JfDdK84ef
-	 avFRzU4S8YgcRduJwX9Uvq8p/Qiu17dN4HM9/Gac=
+	b=KDvQ7mka7a8brelXkUm/UaXqY9KbZYZRat/FB2yU2vlTF9YsWQjmeChtBGKlcxbG/
+	 i1VPDmjkp84nZ7ACAOWyW0kf9+x4U2fhXHNcpmzWT+3xwbk77PLXuKIqbP7BTK1npB
+	 GXdt/hO2jZnNOru8hVx6w/rJhcRsGLZC90CbdVdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 418/508] netconsole: propagate device name truncation in dev_name_store()
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 630/666] ceph: fix a buffer leak in __ceph_setxattr()
 Date: Wed, 20 May 2026 18:24:01 +0200
-Message-ID: <20260520162107.663803973@linuxfoundation.org>
+Message-ID: <20260520162124.930972193@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +68,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253270-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252806-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0C92E597EE9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DD681597838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 92ceb7bff62c2606f664c204750eca0b85d44112 ]
+commit 5d3cc36b4e77a27ce7b686b7c59c7072bcb3fa8e upstream.
 
-dev_name_store() calls strscpy(nt->np.dev_name, buf, IFNAMSIZ) without
-checking the return value. If userspace writes an interface name longer
-than IFNAMSIZ - 1, strscpy() silently truncates and returns -E2BIG, but
-the function ignores it and reports a fully successful write back to
-userspace.
+The old_blob in __ceph_setxattr() can store
+ci->i_xattrs.prealloc_blob value during the retry.
+However, it is never called the ceph_buffer_put()
+for the old_blob object. This patch fixes the issue of
+the buffer leak.
 
-If a real interface happens to match the truncated name, netconsole will
-bind to the wrong device on the next enable, sending kernel logs and
-panic output to an unintended network segment with no indication to
-userspace that anything was rewritten.
-
-Reject writes whose length cannot fit in nt->np.dev_name up front:
-
-	if (count >= IFNAMSIZ)
-		return -ENAMETOOLONG;
-
-This is not a big deal of a problem, but, it is still the correct
-approach.
-
-Fixes: 0bcc1816188e57 ("[NET] netconsole: Support dynamic reconfiguration using configfs")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-3-59965f29d9cc@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netconsole.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ceph/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 2045872de5328..f58643bdafc5c 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -476,6 +476,13 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
- 		size_t count)
- {
- 	struct netconsole_target *nt = to_target(item);
-+	size_t len = count;
-+
-+	/* Account for a trailing newline appended by tools like echo */
-+	if (len && buf[len - 1] == '\n')
-+		len--;
-+	if (len >= IFNAMSIZ)
-+		return -ENAMETOOLONG;
+--- a/fs/ceph/xattr.c
++++ b/fs/ceph/xattr.c
+@@ -1296,6 +1296,7 @@ retry:
  
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	if (nt->enabled) {
--- 
-2.53.0
-
+ do_sync:
+ 	spin_unlock(&ci->i_ceph_lock);
++	ceph_buffer_put(old_blob);
+ do_sync_unlocked:
+ 	if (lock_snap_rwsem)
+ 		up_read(&mdsc->snap_rwsem);
 
 
 
