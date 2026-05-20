@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gK/pGGMHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:31 +0200
+	id yLOgAQPuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F781597E87
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF7F59381A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB42C3277051
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C7B2D3111975
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC123C140F;
-	Wed, 20 May 2026 18:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB733F0762;
+	Wed, 20 May 2026 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAd8LjoE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgO2LYgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC6037DE8A;
-	Wed, 20 May 2026 18:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C61D28DC4;
+	Wed, 20 May 2026 17:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300963; cv=none; b=Jj3o5GtdAiehb0Aij5FVlbFblRfr+X3sI/R5ot7PbNbecSoj4LFq0ZcaH9YZ5txMtKN+jWizZ8Uh0i6gGk3i0g095MCWmEFxx4OddewzUCYAEN9ypmY6YZLvzJr9d9V4xCcFqU0l2SDvrJuXxWLm5pJaMnWau82NLyXB/amWsb8=
+	t=1779296794; cv=none; b=LSF7mLrW1XAhk5IpcXOYqT2kJdU6ttpk9srW8/bcNYQTCIqPvchWwtU+cwoTpCFrjY/aBKO8eRO4EYtPMkcXgb/W4OSx0uN4tyBFWTJdcUIrGXgFG09wQkGSvJvrmt0ItC3E4qfRRA0n/BfAm0cskNCVZf+pZzZF5//lri3MXFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300963; c=relaxed/simple;
-	bh=Q+it4GRThT+b+Lz+ahmtDVrm+t3RweSwXgXuCmockNE=;
+	s=arc-20240116; t=1779296794; c=relaxed/simple;
+	bh=y20OK16J2SIOBUue0Jd3DncTICFE3aU+imEX2RImsbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYNI9N0IjlAcWbZMe15olaGoG1ajVCJfTqxptoFO2sSUvEpwA5XzHLGHfKC+L0K+dYGjB5oMXXbgL77n9gW9aj7/Xs9aoGeEaikQ398rmV1unJqlw0al1qWC0jIGTdX8Vh7fDDB88gzLt8chONRwJifMHvnpatVtZpG5ZCgCiQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAd8LjoE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE251F000E9;
-	Wed, 20 May 2026 18:16:01 +0000 (UTC)
+	 MIME-Version; b=dUG3jOTscXpLIRbpSl8lHEuidy41mf9UFLiz4zTZHw1EG9ARRgtec7SH7yrtopY2MvFj8sChyhV4BNS6PMOEt+J5Hgf5NFJdTIht4AYT5i9hANIs0K1QtcIMJaqanPlur2eZE/wKBI7fl6OnTRC8zrYBUdzLEcUM4KV7Ot+8/B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgO2LYgi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C6B1F000E9;
+	Wed, 20 May 2026 17:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300961;
-	bh=N3Rt2qGThyQXN5tT4qP1zDTsEjM0FSw7ttqX0tnPZlg=;
+	s=korg; t=1779296793;
+	bh=L8EvwecYNzHovF4tkl2MA4E0kJ0b66ebMiASLpRqrdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BAd8LjoErmXlIlnEIDrma/RM5iqLZ8ey9UaqSvaP+Vq48uM0aK2U6OnU77LIfmY8B
-	 /WCokGqRoWr9jOGdg9Rvzah92+klPCIALn1yG1+YInva1cT04O4NNwXrKgGTNYfYLg
-	 ffADyro62XewMsVnvalE24lQydlOX+DUM3M17+Gg=
+	b=hgO2LYgiTVOXqkig6wgOfsnOmkY3IYi6PVLWBrJbxLki9XNot4rL8UhVlTQMdNDjl
+	 0AfjzAkhgA61SxB7FN55WLIuFNe+iIgq5cfgzKj0/cf1w1iaxW8kjPuXnEzYkNoiLa
+	 5XPZuildR4BzC871tM0ks3kdoc3A63gcEx2yffhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/666] ipmi: ssif_bmc: change log level to dbg in irq callback
+Subject: [PATCH 7.0 0934/1146] net: airoha: fix BQL imbalance in TX path
 Date: Wed, 20 May 2026 18:19:44 +0200
-Message-ID: <20260520162119.328796856@linuxfoundation.org>
+Message-ID: <20260520162209.372261798@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,146 +66,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252548-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250982-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,minyard.net:email]
-X-Rspamd-Queue-Id: 6F781597E87
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: ACF7F59381A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit c9c99b7b7051eb7121b3224bfce181fb023b0269 ]
+[ Upstream commit 2d9f5a118205da2683ffcec78b9347f1f01a820e ]
 
-Long-running tests indicate that this logging can occasionally disrupt
-timing and lead to request/response corruption.
+Fix a possible BQL imbalance in airoha_dev_xmit(), where inflight
+packets are accounted only for the AIROHA_NUM_TX_RING netdev TX
+queues. The queue index is computed as:
 
-Irq handler need to be executed as fast as possible,
-most I2C slave IRQ implementations are byte-level, logging here
-can significantly affect transfer behavior and timing. It is recommended
-to use dev_dbg() for these messages.
+    qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx)
+    txq = netdev_get_tx_queue(dev, qid);
 
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Message-ID: <20260403090603.3988423-4-zhangjian.3032@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+However, airoha_qdma_tx_napi_poll() accounts completions across all
+netdev TX queues (num_tx_queues), leading to inconsistent BQL
+accounting.
+
+Also reset all netdev TX queues in the ndo_stop callback.
+
+Fixes: 1d304174106c ("net: airoha: Implement BQL support")
+Fixes: c9f947769b77 ("net: airoha: Reset BQL stopping the netdevice")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260421-airoha-fix-bql-v1-1-f135afe4275b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index d3a088d758fce..c5492e17ae573 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -568,7 +568,7 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
- 		len = ssif_bmc->request.len + part->length;
- 		/* Do the bound check here, not allow the request len exceed 254 bytes */
- 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
--			dev_warn(&ssif_bmc->client->dev,
-+			dev_dbg(&ssif_bmc->client->dev,
- 				 "Warn: Request exceeded 254 bytes, aborting");
- 			/* Request too long, aborting */
- 			ssif_bmc->aborting =  true;
-@@ -614,7 +614,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -623,7 +623,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 1bdf90b311060..a73c224d65755 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -929,10 +929,9 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
+ 		q->queued--;
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
+ 		if (skb) {
+-			u16 queue = skb_get_queue_mapping(skb);
+ 			struct netdev_queue *txq;
+ 
+-			txq = netdev_get_tx_queue(skb->dev, queue);
++			txq = skb_get_tx_queue(skb->dev, skb);
+ 			netdev_tx_completed_queue(txq, 1, skb->len);
+ 			dev_kfree_skb_any(skb);
  		}
-@@ -658,7 +658,7 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -683,7 +683,7 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	} else if (ssif_bmc->state == SSIF_START ||
- 		   ssif_bmc->state == SSIF_REQ_RECVING ||
- 		   ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -698,7 +698,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- {
- 	if (ssif_bmc->state == SSIF_READY ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -708,7 +708,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+@@ -1735,7 +1734,7 @@ static int airoha_dev_stop(struct net_device *dev)
+ 	if (err)
+ 		return err;
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -737,7 +737,7 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
- 	    ssif_bmc->state == SSIF_ABORTING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_READY;
-@@ -804,7 +804,7 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
- 		break;
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++)
++	for (i = 0; i < dev->num_tx_queues; i++)
+ 		netdev_tx_reset_subqueue(dev, i);
  
- 	default:
--		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
-+		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
- 		break;
- 	}
+ 	if (atomic_dec_and_test(&qdma->users)) {
+@@ -2037,7 +2036,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
  
+ 	spin_lock_bh(&q->lock);
+ 
+-	txq = netdev_get_tx_queue(dev, qid);
++	txq = skb_get_tx_queue(dev, skb);
+ 	nr_frags = 1 + skb_shinfo(skb)->nr_frags;
+ 
+ 	if (q->queued + nr_frags >= q->ndesc) {
 -- 
 2.53.0
 
