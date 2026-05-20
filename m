@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOiWIcLzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:46 +0200
+	id QHR7Odb4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-250815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2381594962
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F685956A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4DE1304200D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6601E33F0D8A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6A43A4526;
-	Wed, 20 May 2026 17:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7943BED1E;
+	Wed, 20 May 2026 16:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3y1RTvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulCbSytt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04095363C6F;
-	Wed, 20 May 2026 17:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569503AE6E6;
+	Wed, 20 May 2026 16:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298776; cv=none; b=ckdaPvL5qKzNJKpZd3cImOTF28WilzEeIpEiBol7im7KRJq+1QyBtIcC/IeQuPCzKFmoIohjRjydP/EzmReXnR2W/USqH5HIUt7sEalg+y1NNOhrxE07gygZ/5MEHAbGblWJRd1Qi1luSRf7TNvGsJvO4aYHjP7f+bGprhKcgYA=
+	t=1779296379; cv=none; b=cFHRsyHDd2FJmmW/NTh7q6Ukx5SnpqL+SFw/4Rfmz2Q0cpuonFZTEhTAA1Aq8shH/6bbVBwy/lo0n0BCYWKxdeLGo6zL2zUM1nJGyZaPUmExz4kNmiGwNA/WHCWDpNNAyPQLUm+d+cl5Pj57vBFqpgoZ23JcwP+jGt4I9sRKM7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298776; c=relaxed/simple;
-	bh=uXIArvkE/ZLW4+cOeQP6mDbH/f2bWqxovowTe/N0D+M=;
+	s=arc-20240116; t=1779296379; c=relaxed/simple;
+	bh=Lt4wVlloakOAjWAuzM4Yw+9d/f29QngZ+nzQ+w+ulzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkWtNXw3I0w5eLc1BdcbdqHqxEvZTY+kHRR5Qv1aoxg59wr2oZdtGGVcgItD98i6ySGf4zRo/Id4jd9CWgV93iNuDA6rznK10ztUi8X7gA6VcVjyNRgajf+8poZMWp+kBBVMI54i2uhG92Id4R6NzJJNvTFoccoM+RrQ2ss5F00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3y1RTvQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A16D1F000E9;
-	Wed, 20 May 2026 17:39:34 +0000 (UTC)
+	 MIME-Version; b=L1+5w+RvKNteaVXw0MP0Ly3ctMfOtvW595y08GY/7lzL0jKnQWSFauISviuXMJ+PXnkQBtt2nRLMO2PLszfzLKd1BoIaKUE7259YWs08FNMBFuFz1WDRgsxpWyFjzfXoDcuoJbt9bXy6FnTAG/NK4/hjfpovWuMlvHpcWb+kHOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulCbSytt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6681F000E9;
+	Wed, 20 May 2026 16:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298774;
-	bh=AxivU0wFHk9LcRdYZzO3i3cG/mh+H61dOhIQm+ZGVFk=;
+	s=korg; t=1779296376;
+	bh=schnMygN1FyymYTy2KbcIG0dUJTiN3HhiyXbpF6yw8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m3y1RTvQpRZk0CwNuqO/e64M1A26s2AIMlviQ56HpfypsxyWLSPkpS7nTxVRW207B
-	 uTBwXkbdS4Q2L3+NB8TA0klKWE8Bj3TPqNqs9kXoONbPE1Qz2BVYIgIREnBkYqkWO8
-	 YQwNKED8o8i8O5/kcsXuH64ZcsOv3zGBia6sR9+w=
+	b=ulCbSyttmIth1uH1dX1Lqw04woQgkdt7qiToW/rpBUmKQ2U6h8CzDSDNP+8zT8ApB
+	 6erTNfBNluSukRINpGjkFXG4igqGQ7rWo2sBcmbENnauKsPDORLaYjqhDQllBqVr6Q
+	 K2DyvPt1eP3KcOdHhbSD/ekvTKJndE1B7eR1qymI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Luke Jones <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 540/957] platform/x86: asus-wmi: adjust screenpad power/brightness handling
-Date: Wed, 20 May 2026 18:17:03 +0200
-Message-ID: <20260520162146.244633320@linuxfoundation.org>
+Subject: [PATCH 7.0 0774/1146] net: dsa: remove redundant netdev_lock_ops() from conduit ethtool ops
+Date: Wed, 20 May 2026 18:17:04 +0200
+Message-ID: <20260520162205.733770778@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +64,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251743-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250815-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ljones.dev:email]
-X-Rspamd-Queue-Id: F2381594962
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fomichev.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 35F685956A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
 
-[ Upstream commit 130d29c5627cd50e786e926ad7ef66322c5a0c09 ]
+[ Upstream commit 0f99e0c3e19badaf3fdced0d3feba623e59eed41 ]
 
-Fix illogical screen off control by hardcoding 0 and 1 depending on the
-requested brightness and also do not rely on the last screenpad power
-state to issue screen brightness commands.
+DSA replaces the conduit (master) device's ethtool_ops with its own
+wrappers that aggregate stats from both the conduit and DSA switch
+ports. Taking the lock again inside the DSA wrappers causes a deadlock.
 
-Fixes: 2c97d3e55b70 ("platform/x86: asus-wmi: add support for ASUS screenpad")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Luke Jones <luke@ljones.dev>
-Link: https://patch.msgid.link/20260302174431.349816-2-denis.benato@linux.dev
-Link: https://patch.msgid.link/20260326231154.856729-2-ethantidmore06@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stumbled upon this when booting qemu with fbnic and CONFIG_NET_DSA_LOOP=y
+(which looks like some kind of testing device that auto-populates the ports
+of eth0). `ethtool -i` is enough to deadlock. This means we have basically zero
+coverage for DSA stuff with real ops locked devs.
+
+Remove the redundant netdev_lock_ops()/netdev_unlock_ops() calls from
+the DSA conduit ethtool wrappers.
+
+Fixes: 2bcf4772e45a ("net: ethtool: try to protect all callback with netdev instance lock")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260414231035.1917035-1-sdf@fomichev.me
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 34 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ net/dsa/conduit.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 8e3300f5c2943..e6fe6ed6a63da 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -4154,32 +4154,24 @@ static int read_screenpad_brightness(struct backlight_device *bd)
+diff --git a/net/dsa/conduit.c b/net/dsa/conduit.c
+index a1b044467bd6f..8398d72d7e4d3 100644
+--- a/net/dsa/conduit.c
++++ b/net/dsa/conduit.c
+@@ -27,9 +27,7 @@ static int dsa_conduit_get_regs_len(struct net_device *dev)
+ 	int len;
  
- static int update_screenpad_bl_status(struct backlight_device *bd)
- {
--	struct asus_wmi *asus = bl_get_data(bd);
--	int power, err = 0;
--	u32 ctrl_param;
-+	u32 ctrl_param = bd->props.brightness;
-+	int err = 0;
+ 	if (ops && ops->get_regs_len) {
+-		netdev_lock_ops(dev);
+ 		len = ops->get_regs_len(dev);
+-		netdev_unlock_ops(dev);
+ 		if (len < 0)
+ 			return len;
+ 		ret += len;
+@@ -60,15 +58,11 @@ static void dsa_conduit_get_regs(struct net_device *dev,
+ 	int len;
  
--	power = read_screenpad_backlight_power(asus);
--	if (power < 0)
--		return power;
-+	if (bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 1, NULL);
-+		if (err < 0)
-+			return err;
- 
--	if (bd->props.power != power) {
--		if (power != BACKLIGHT_POWER_ON) {
--			/* Only brightness > 0 can power it back on */
--			ctrl_param = asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT,
--						    ctrl_param, NULL);
--		} else {
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
+ 	if (ops && ops->get_regs_len && ops->get_regs) {
+-		netdev_lock_ops(dev);
+ 		len = ops->get_regs_len(dev);
+-		if (len < 0) {
+-			netdev_unlock_ops(dev);
++		if (len < 0)
+ 			return;
 -		}
--	} else if (power == BACKLIGHT_POWER_ON) {
--		/* Only set brightness if powered on or we get invalid/unsync state */
--		ctrl_param = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
- 		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT, ctrl_param, NULL);
-+		if (err < 0)
-+			return err;
+ 		regs->len = len;
+ 		ops->get_regs(dev, regs, data);
+-		netdev_unlock_ops(dev);
+ 		data += regs->len;
  	}
  
--	/* Ensure brightness is stored to turn back on with */
--	if (err == 0)
--		asus->driver->screenpad_brightness = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
-+	if (!bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
-+		if (err < 0)
-+			return err;
-+	}
+@@ -115,10 +109,8 @@ static void dsa_conduit_get_ethtool_stats(struct net_device *dev,
+ 	int count, mcount = 0;
  
- 	return err;
- }
+ 	if (ops && ops->get_sset_count && ops->get_ethtool_stats) {
+-		netdev_lock_ops(dev);
+ 		mcount = ops->get_sset_count(dev, ETH_SS_STATS);
+ 		ops->get_ethtool_stats(dev, stats, data);
+-		netdev_unlock_ops(dev);
+ 	}
+ 
+ 	list_for_each_entry(dp, &dst->ports, list) {
+@@ -149,10 +141,8 @@ static void dsa_conduit_get_ethtool_phy_stats(struct net_device *dev,
+ 		if (count >= 0)
+ 			phy_ethtool_get_stats(dev->phydev, stats, data);
+ 	} else if (ops && ops->get_sset_count && ops->get_ethtool_phy_stats) {
+-		netdev_lock_ops(dev);
+ 		count = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
+ 		ops->get_ethtool_phy_stats(dev, stats, data);
+-		netdev_unlock_ops(dev);
+ 	}
+ 
+ 	if (count < 0)
+@@ -176,13 +166,11 @@ static int dsa_conduit_get_sset_count(struct net_device *dev, int sset)
+ 	struct dsa_switch_tree *dst = cpu_dp->dst;
+ 	int count = 0;
+ 
+-	netdev_lock_ops(dev);
+ 	if (sset == ETH_SS_PHY_STATS && dev->phydev &&
+ 	    (!ops || !ops->get_ethtool_phy_stats))
+ 		count = phy_ethtool_get_sset_count(dev->phydev);
+ 	else if (ops && ops->get_sset_count)
+ 		count = ops->get_sset_count(dev, sset);
+-	netdev_unlock_ops(dev);
+ 
+ 	if (count < 0)
+ 		count = 0;
+@@ -239,7 +227,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+ 	struct dsa_switch_tree *dst = cpu_dp->dst;
+ 	int count, mcount = 0;
+ 
+-	netdev_lock_ops(dev);
+ 	if (stringset == ETH_SS_PHY_STATS && dev->phydev &&
+ 	    !ops->get_ethtool_phy_stats) {
+ 		mcount = phy_ethtool_get_sset_count(dev->phydev);
+@@ -253,7 +240,6 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+ 			mcount = 0;
+ 		ops->get_strings(dev, stringset, data);
+ 	}
+-	netdev_unlock_ops(dev);
+ 
+ 	list_for_each_entry(dp, &dst->ports, list) {
+ 		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
 -- 
 2.53.0
 
