@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIlnEfLtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:58 +0200
+	id UIzoCEAaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0928E5937DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EB8599BA2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3443931EDBD9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C0A703037501
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682523FA5EB;
-	Wed, 20 May 2026 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720D53FBEC5;
+	Wed, 20 May 2026 18:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMG6LuFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvLfhqcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1467B34A3BF;
-	Wed, 20 May 2026 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B174331A41;
+	Wed, 20 May 2026 18:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296776; cv=none; b=BxuMbfD9u2pvY2HJNOwhVgu3LoEJrZ9uiqBqnMQ+fmCiEEFEhuwgD2/aqrwaKwG8CYrPIgH5KWnEi0Epx4TsP1kUVjhHyHtXxokGVFqDA6t+pTZwWL9AFlDja/GgoY+AX3ZMDxP3wkf8M7DZGb7bbaXpl03Ys6O6ViDhp87RJC0=
+	t=1779302147; cv=none; b=aeZ9xRicR4h0UIHrHyQ7/bP31zDxV8d1Fxim3dJLpttmsmpPKwisHZIkgn3Bt4QFGRVhtDD5ocJZ/GF7/Ce6SMZ3H1MMcszL64GCyNtLa+RpmUrqZ1q58TEHyZ5h3A4bLu5n4NOIk9zWCvVYALjIrhcgQvNxkNV7cailYihHrfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296776; c=relaxed/simple;
-	bh=4Af15NsI/T9PUPFSqXOC61iT8kotuBWD5Xuqdz+2jNM=;
+	s=arc-20240116; t=1779302147; c=relaxed/simple;
+	bh=hiMKw4OvvQi9isMPthQy0qGpBKMB1uiwVJwaSmdJgrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7feKElDq8VYgqkYrtu8v4K5AbqfoN7mWCG1EjDzsbJA4SZBR/b/g+/dwMKzPEwIYvXZTGK1KgSosb3QbiSbwTMDzI4cVOPqdTXBtMKpV3SQ9Gov8nn7X5qfpfEsNTY+w7OPl5CGY1LqrGPx9H9J6FF2+OrS6Svu5FAcPKf1QZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMG6LuFl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768FA1F00896;
-	Wed, 20 May 2026 17:06:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fA5wRw8VU+AAKexm98t+eybfiXk24qFOh1oHrht9ZfSkGU1Xkk+voWIzDF/Rj0n5ECiNWwZwgNOMKuTzZ4pcQLr73BcdMSG5+9SDxQsPywH6FRz7Zox4nxlZB3ldg1UP9kjanTGcrI99IMsdYcYHggTtCmh7GaJphkRe2HsnS28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvLfhqcR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807331F000E9;
+	Wed, 20 May 2026 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296775;
-	bh=l12dWRZ7n/hYZfkuTC4x7MWxrJhpDQt7UeyO4SD0fjw=;
+	s=korg; t=1779302146;
+	bh=CQz7Emw5MzTDUJBaU/KphRlnyQILjhQDtpWhuO3Jr8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kMG6LuFlGhTRB35sv5eCkkrZKS+hszQNKQReUGnzDiBGJw+Ld3wKm4L6XGvtsbEkP
-	 F24aCY/bcFTl214RuxdPJMtidzNneY72x62Ol29IUPRBLLZBCmMULF2OqbfMt9kli+
-	 l8k9LjWhBML1S7XLop/biiHyDq7tIAWCotLVBmsU=
+	b=dvLfhqcRh2KI0bcBsCckbJOTCogdDiBzym+Xk1VCy6r6LxUsiUvbATa09VRlvuvWh
+	 JleZTzfuD0W4lzQQ04akvu+rs8Dx3oE6eJ8n14ytexQAzXNfWDgQ4TiJphpq9tBtgY
+	 EwAorKOUaUTDAwL2g97U8yD9r5F+Ua9ibts2KwPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0928/1146] net/sched: netem: fix probability gaps in 4-state loss model
+Subject: [PATCH 6.6 155/508] ASoC: SOF: compress: return the configured codec from get_params
 Date: Wed, 20 May 2026 18:19:38 +0200
-Message-ID: <20260520162209.238194348@linuxfoundation.org>
+Message-ID: <20260520162101.995726500@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250974-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253002-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0928E5937DC
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 55EB8599BA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 732b463449fd0ef90acd13cda68eab1c91adb00c ]
+[ Upstream commit 2c4fdd055f92a2fc8602dcd88bcea08c374b7e8b ]
 
-The 4-state Markov chain in loss_4state() has gaps at the boundaries
-between transition probability ranges. The comparisons use:
+The SOF compressed offload path accepts codec parameters in
+sof_compr_set_params() and forwards them to firmware as
+extended data in the SOF IPC stream params message.
 
-  if (rnd < a4)
-  else if (a4 < rnd && rnd < a1 + a4)
+However, sof_compr_get_params() still returns success without
+filling the snd_codec structure. Since the compress core allocates
+that structure zeroed and copies it back to userspace on success,
+SNDRV_COMPRESS_GET_PARAMS returns an all-zero codec description
+even after the stream has been configured successfully.
 
-When rnd equals a boundary value exactly, neither branch matches and
-no state transition occurs. The redundant lower-bound check (a4 < rnd)
-is already implied by being in the else branch.
+The stale TODO in this callback conflates get_params() with capability
+discovery. Supported codec enumeration belongs in get_caps() and
+get_codec_caps(). get_params() should report the current codec settings.
 
-Remove the unnecessary lower-bound comparisons so the ranges are
-contiguous and every random value produces a transition, matching
-the GI (General and Intuitive) loss model specification.
+Cache the codec accepted by sof_compr_set_params() in the per-stream SOF
+compress state and return it from sof_compr_get_params().
 
-This bug goes back to original implementation of this model.
-
-Fixes: 661b79725fea ("netem: revised correlated loss generator")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-2-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6324cf901e14 ("ASoC: SOF: compr: Add compress ops implementation")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-sof-compr-get-params-v1-1-0758815f13c7@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/sof/compress.c | 8 +++++---
+ sound/soc/sof/sof-priv.h | 2 ++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 20df1c08b1e9d..8ee72cac1faf0 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -227,10 +227,10 @@ static bool loss_4state(struct netem_sched_data *q)
- 		if (rnd < clg->a4) {
- 			clg->state = LOST_IN_GAP_PERIOD;
- 			return true;
--		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
-+		} else if (rnd < clg->a1 + clg->a4) {
- 			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
--		} else if (clg->a1 + clg->a4 < rnd) {
-+		} else {
- 			clg->state = TX_IN_GAP_PERIOD;
- 		}
+diff --git a/sound/soc/sof/compress.c b/sound/soc/sof/compress.c
+index c469bb706e4a4..b64a5d99fe608 100644
+--- a/sound/soc/sof/compress.c
++++ b/sound/soc/sof/compress.c
+@@ -247,6 +247,7 @@ static int sof_compr_set_params(struct snd_soc_component *component,
+ 	sstream->sampling_rate = params->codec.sample_rate;
+ 	sstream->channels = params->codec.ch_out;
+ 	sstream->sample_container_bytes = pcm->params.sample_container_bytes;
++	sstream->codec_params = params->codec;
  
-@@ -247,9 +247,9 @@ static bool loss_4state(struct netem_sched_data *q)
- 	case LOST_IN_BURST_PERIOD:
- 		if (rnd < clg->a3)
- 			clg->state = TX_IN_BURST_PERIOD;
--		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
-+		else if (rnd < clg->a2 + clg->a3) {
- 			clg->state = TX_IN_GAP_PERIOD;
--		} else if (clg->a2 + clg->a3 < rnd) {
-+		} else {
- 			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
- 		}
+ 	spcm->prepared[cstream->direction] = true;
+ 
+@@ -259,9 +260,10 @@ static int sof_compr_set_params(struct snd_soc_component *component,
+ static int sof_compr_get_params(struct snd_soc_component *component,
+ 				struct snd_compr_stream *cstream, struct snd_codec *params)
+ {
+-	/* TODO: we don't query the supported codecs for now, if the
+-	 * application asks for an unsupported codec the set_params() will fail.
+-	 */
++	struct sof_compr_stream *sstream = cstream->runtime->private_data;
++
++	*params = sstream->codec_params;
++
+ 	return 0;
+ }
+ 
+diff --git a/sound/soc/sof/sof-priv.h b/sound/soc/sof/sof-priv.h
+index d4f6702e93dcb..6bf461506ce37 100644
+--- a/sound/soc/sof/sof-priv.h
++++ b/sound/soc/sof/sof-priv.h
+@@ -17,6 +17,7 @@
+ #include <sound/sof/info.h>
+ #include <sound/sof/pm.h>
+ #include <sound/sof/trace.h>
++#include <sound/compress_params.h>
+ #include <uapi/sound/sof/fw.h>
+ #include <sound/sof/ext_manifest.h>
+ 
+@@ -119,6 +120,7 @@ struct sof_compr_stream {
+ 	u32 sampling_rate;
+ 	u16 channels;
+ 	u16 sample_container_bytes;
++	struct snd_codec codec_params;
+ 	size_t posn_offset;
+ };
+ 
 -- 
 2.53.0
 
