@@ -1,216 +1,277 @@
-Return-Path: <stable+bounces-249925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPY3EMG7DWpT2wUAu9opvQ
-	(envelope-from <stable+bounces-249925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:48:49 +0200
+	id SHk0BYe/DWr32wUAu9opvQ
+	(envelope-from <stable+bounces-249926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:04:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8CF58F0ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:48:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6354F58F45E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F7543014FD6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:48:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C776300CE53
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B7344DA4;
-	Wed, 20 May 2026 13:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FD939B94C;
+	Wed, 20 May 2026 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QcSJHfK+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLuaInrL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83BC369D6C
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284916; cv=pass; b=WAt/Q9FT3veXikkBahSTHka4j5iBzzOXNb8XkWyOuRIdOcCldJMNX7iN7XwxZTIgmnkCrfAKivdD3DIdIZlRD2XsXEgjaGTKAPdNtRJ8j4lGWdRzeVk5BL4/ct7mNJ+37Fs9801HTBoTaiXTE/xySyA1COL34dxUiwzE403D5Lk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284916; c=relaxed/simple;
-	bh=Ux4DsBH/b+Hxghz4BUeS5WLTOtBGR43EC7jTFpvlaU4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mRjL6xvxlOFyoFjzHbjKVZSsknBCC472nEpIEcAVlAK428wrKfhS43wsOf7XiVBpO9RKuhpulhzuUBZoCijq3L3LnP+aktIUwIS8CBHUZ6zY2A6GLcPBu5pDvOX6f3gdy7j/1OsfpakR3h0LF7jI1ioUvesmmTGPE+6eqeMab8Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QcSJHfK+; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-50d6b9bca48so74542561cf.2
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:48:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779284914; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hFxwvSyAwBxB9V3S3zl+ZRdyP6yJZKE97ivlH/j7SYVtuKJhQjkBXtaIYldGzQNc81
-         Tnjp+FqoHiDyI0tTVNyjOWMuYAQUUXMmkhkS+/0My+Z9kl4lvhbCDzOxhSldcl2EgmwG
-         kTCCrt8Ksf1m6uYyHyELEG6RqhgQUJEYSl6UFp//4yMKwYO2E1ezMrupPY4V23MATDa2
-         Dl8o7hZS6ScwE44MesPeDe71YNu4oTp9vdUsqm4ldrV0WqabtfYKQZxv24WpwcEwg6nP
-         Ipc37Fdq0Rlzo7SKFp3uXyqv3SjzDQgFl3/sWKePOJZGDjYHI/VOlzHhe15BMVCm3T/5
-         SW6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
-        fh=OUmln7uQPoMg7n+j8MbPAIjeQNqzvEHCgWtqs+OJIls=;
-        b=CzUyNAys+l+NSLxrzZkCVMzC5yghI4e4oSI94y0eLmFPMMw183xgOm/VlZQsHVQdmk
-         6PA4Z/WAn615ojznYIIiicHITOkIgZsg1JGUdv5n2YWy0d2qY1IO8lUR5o+/V60BzGzG
-         lhRqKJBCUGmgVrnIp/6/Oo0QEqIim0B4jZwKpUb+Ir5d7EXSrHUe6azZz7pLEmRZbPY2
-         /y4N5Vt/KeR82ubB3VlEqm0EsSjF38pvkQsHQQf+TyI841nMZORHCLCL0szHbMf0aXiV
-         m/E2VxxtSM88UfYsWgCHunCq11shL8Nyz7Npymz3LXHVKw3QADjimIU6LWu8evv6JSfv
-         Bn9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0059C23C39A
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779285050; cv=none; b=ohHBN72WRKyGgLOUY4QaL1FTxHR+m/CjdNGSs/0pwa5x6/Z6IyHvxGhBr5bpITZJjbm93vUOkRG4g6Y6m/zPE3394jSzpw9BhAly1Z8amGNUpbkflfIp8vGxkY8zLHQvJQn33al0n9Tuk/9DdemJB0iterRKwDb/emZpq/wOIPs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779285050; c=relaxed/simple;
+	bh=V8kEWX7aacPDgr69xJjI766tL4M9rqVYuHze2pOIrps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0dNbEJx1epHdDJ438cKQTA5GIMRzPrnxGIBY9clnC81g58FFHy30toYOH2LTzFLTux12OaaZNhfP1hDlrl0k/Phlc4YU1b329hpnsI5A0cggKXtrjMFwyOqyTUWlCjMetOmdR03TIdNZataXVc5yRsrWo/DZCf9hNdSMPx5Eis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLuaInrL; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50e614fdb42so39107301cf.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:50:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779284914; x=1779889714; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
-        b=QcSJHfK+rzABe8aOKmyPao+xrndA/F3g68EBf41o3MWqnF/hXuyGtMqfYsMc96xpAl
-         Av93s+gBb8Nw9AtUSbC2iBfOxMpG3t9JHJ1ZPkJLGYz7veu6m2sUsl/kuUo2W15Jlvgm
-         GpaVjVZ1qFOlAQd9d0rQD/cku9z87UO2wM3q6pqNENKw+vs0dlkwKp3T63lRfxM0xvBj
-         3jJARN+7HkAQk0hhhkEZDpt3xcZhur6o7lR3pT5RdK6fIDx0znwY9SuWWvmess8ogUsf
-         KgZKcbMpMU6LaxCvRYhLOq+irndB3rKZNhCW/0fRXHaUJMwtqTbnDtKCL1QkJWnHeuH+
-         dRcw==
+        d=gmail.com; s=20251104; t=1779285048; x=1779889848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VWLZlw1o5rrWsIR88B5vFwajJpqsIVjTgSharoBZII8=;
+        b=NLuaInrLfwbvjbCjfPE90t+InoopK+JcVVBlyiccs6vKFaHPeSIApxcHagNnO3F6OF
+         NYdPJZXRllw3Y6x6c+aSDSnw2ywYjdbkGJpiasB8VtZPqxb24w4NHA1yIw2cN0iDIEc9
+         UpjuGI3JRjCPZ4helqTCseWKnzUB5Ki5OYdv5u77m4T29aJ6sj8aHu5j+TeDa+XEYnGA
+         +WkgqPiT3hBkEky6shAe1QlDSOhMQ46JPSm0fgmSVtwMS4jfWIDy2pqAYG6AbMmeUjao
+         4issY2+GGYBsVGtcwk/4VM6ufzEdQ4Ug1+SQy1mtNlCyYHKWU2HLGF3NuqEG/YDR1Yuo
+         QSHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779284914; x=1779889714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1cDlDwz3hMGqwA/Q8tdCQU22JoDf/l7QLUPLiALNk5o=;
-        b=hraWlLyHel8+wkbQwTV3Ha0NquzJEamK1QleF5gUa2XHS+ZjyFdKe5U4p0WJ5LeNtX
-         j0Mc0LxdInxP0Ci+s7PWN1VqDVJJSzMbrEcD4gPArUgDDtb7DaFGggYoaey7tlpJO1vX
-         +cU+dqCRjf99H1DRXGrb6poGo9F0/HgrZwK7+A//KAiKf3DuvCf4eDmAV87QJ1rgwOx2
-         iLnP0og/G373N9q4baDjbKEiHBfcHOEV3ba+9lokzOcrhf/LXhUh1TMAuthziQfM5ROU
-         ioC7nb4B1xajr3jpgAxY9jobzyMyyi+7sHhMpJ7MbBAEz0ndBinmew4ekW6KuOJ3/ufu
-         nt9A==
-X-Forwarded-Encrypted: i=1; AFNElJ/bpY0AkweZxNx9Pjed6GE3LP6Dp9glRPfkdZjnLHBp2dQwXD1U/Fn7BIprrOWKDf/jLpAe4M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyK53+X2Qkf0+mHd3r0zhYXzXg+L7SZaHjMucOri+YMmkGVCZvn
-	F7FITObviFXssOcir1eZpp7PyglfVeQ8230Mk5EJzlXiOxX4tFW9LTNk9Sn8dWvNuo3bqnhiJiG
-	mMNG9eYpJllg5PAVYQ2jk4kqVpuKh5KD5Serd0yFT
-X-Gm-Gg: Acq92OEYITwIsYrl3ygCPuDXtNvNpf24URA4N6hR1gc+LFa3dtDnISTu8TLXHU+THlH
-	oIa9Gh+AlXNSkDVbOTqlInBVGnoII9NWizn6mc+FMKIzGwzxd2PgSD0ruOCetUhoVeS57ReHcrj
-	d3RdfyLo4n3pUuFsSKXcFIcES8DYsKqwFGgTvyPQflg8WOgGFMmbLdnPFx6KMJIea8u1i1v9q3N
-	BTQc2O2zCtddH9jbBn7Ib5AXCLinFqu2l6KeRYfHv9amWLUHnmM8nOdZ7ad+iDwGvXOipKdZond
-	nI5hxWMdNR3RWQnIkapR2Ui6No3ZPwlsfAAjzX+lKQareB8zW4lLbSeY1cG8V6ULSzwna0FT2f9
-	HJC7FGFXuBQI3PPfo6r81hZ4/j9O6eGo47ZIFl1qhOEvYYJCxLPXKuAYsctjFH2GL
-X-Received: by 2002:a05:622a:1e89:b0:509:30b0:8323 with SMTP id
- d75a77b69052e-5165a0a4269mr339397951cf.31.1779284913096; Wed, 20 May 2026
- 06:48:33 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779285048; x=1779889848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VWLZlw1o5rrWsIR88B5vFwajJpqsIVjTgSharoBZII8=;
+        b=iKIlQqdQ4FRfOj3J6vzXp7RMF5c7EamakAYq2AJCeYTQoz4PrdMVTnfnAVKqwtDl7f
+         ifIKIrxNBYmhrCqrVq1pArRZL0h4TTxOS+rlXWIg1yaItiUfbwL17LyIla8Ndc5t5DjG
+         0xzZpLFLVgpSYDaKYjzGgEcIrdSpvb/WkfG51h89bWAKoYK3++Xug6D2ROgsP1k3AxP0
+         MT/Rie8RQEhgXfb3Gh5cmt3WFPczZ9AbwTNCBXNnR4KsEpUI3uwnIoKuFQXh8yrRuh3H
+         LltNtZEewcKpTPL2xuNzTjvzRMfWHHHWasA1Kp/7v83y3o7PE4EhFnBIdFKtKn79g889
+         twHA==
+X-Forwarded-Encrypted: i=1; AFNElJ9zsEi6CSBKFF/KN8vjD/8fmE+EFBQs+BqPwSWwHri+eauc61T10URt6DXrdOYWip+lEG96MZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAelx3w3NvXhw5hoWTltFU9r2wCFCwhldVKqccEpNtGeR8qdX0
+	gDpCAd40DSGmCeCplg14tRKA+ik+IYIH0dF5Cd0eaqHN1sLryNxL2pQs
+X-Gm-Gg: Acq92OH2I29VpswCJtlJpZPPwCHCagBkHhI7iyHU14SwCLXLVa1nSUgVQoOw3Ztejeo
+	YLAH2KD4CLyZCBNlBxtFHiPB3s5kJScFzAxop2iNKGx9k8k3ZNFtBAjZc2k8ufqHJlU7aDKhvbp
+	5iVEUR5EPf9kBh1bwvO9MpdazRHHjY4qM/Vxv/3lxAkGtmCg8EEFRhhocPziB+dBEAgPxra3vq4
+	TfaNIzNxtWIyaZ4FtsbC1p7XTfbGmFojcmWndQRhPni/sOvb96QIl76Hy91TpLyh+/mhHKI6GyD
+	XJAkGjxz4295WXchHPE+BIAfcpE82RpSsyK6N+7NCGZy8xPeSSy5A5d6JCIP3hZAWzpv0mGunis
+	BfcJEbs9gmF4AflMHVRBUyk57DYm7sKLey2PsgZ1nKuStQ6Cx8gHaWZ8AxPXwYAkX+d4ScG87yJ
+	lLt6J5wYLxzIOlEI0FMMV8sGXOYXGiAa9ykzfTHEu2ufgVdMQpqkLlGVBo8eiSMZ/ahXDymKnaT
+	9BfosURrC50T4mwGEZFSqaABMsHKes=
+X-Received: by 2002:ac8:5cd0:0:b0:50e:60b7:bb40 with SMTP id d75a77b69052e-51659ede9c0mr359598541cf.0.1779285047670;
+        Wed, 20 May 2026 06:50:47 -0700 (PDT)
+Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516456889dcsm202159561cf.2.2026.05.20.06.50.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 06:50:46 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
+Date: Wed, 20 May 2026 09:50:34 -0400
+Message-ID: <20260520135034.1060859-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519172635.86304-1-yzjaurora@gmail.com> <4172DA29-330F-42FE-91FE-C247D67F852A@remlab.net>
-In-Reply-To: <4172DA29-330F-42FE-91FE-C247D67F852A@remlab.net>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 20 May 2026 06:48:20 -0700
-X-Gm-Features: AVHnY4I1HxtwYRIMQmpaAedNn2XzP1Myd4LGPNWE-JvWR-mVw8CYeoBpVMex7PQ
-Message-ID: <CANn89iLrG5axgET0_gsTKM0mM1v8aMUzGBLcPgo0icDJB2VuZw@mail.gmail.com>
-Subject: Re: [PATCH net] phonet/pep: disable BH around forwarded sk_receive_skb()
-To: =?UTF-8?Q?R=C3=A9mi_Denis=2DCourmont?= <remi@remlab.net>
-Cc: Zijing Yin <yzjaurora@gmail.com>, Remi Denis-Courmont <courmisch@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-249925-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249926-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,remlab.net:email,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DA8CF58F0ED
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6354F58F45E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 5:03=E2=80=AFAM R=C3=A9mi Denis-Courmont <remi@reml=
-ab.net> wrote:
->
->
->
-> Le 19 mai 2026 20:26:33 GMT+03:00, Zijing Yin <yzjaurora@gmail.com> a =C3=
-=A9crit :
-> >The networking receive path is usually run from softirq context, but
-> >protocols that take the socket lock may have packets stored in the
-> >backlog and processed later from process context. In that case
-> >release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
-> >and then calls sk->sk_backlog_rcv() with bottom halves enabled.
-> >
-> >Typical sk_backlog_rcv handlers process the socket whose backlog is
-> >being drained, so the BH state at entry is irrelevant for the slocks
-> >they touch. pep_do_rcv() is different: when the inbound skb targets an
-> >existing PEP pipe, it forwards the skb to a different *child* socket
-> >via sk_receive_skb(). That helper takes the child slock with
-> >bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
-> >is already off. The same child slock therefore ends up acquired with
-> >BH on (process path) and with BH off (softirq path):
-> >
-> >  process context                   softirq context
-> >  ---------------                   ---------------
-> >  release_sock(listener)            __netif_receive_skb()
-> >   __release_sock()                  phonet_rcv()
-> >    spin_unlock_bh()                  __sk_receive_skb(listener)
-> >    [BH now ENABLED]                  [BH already disabled]
-> >    sk_backlog_rcv:                   sk_backlog_rcv:
-> >     pep_do_rcv()                      pep_do_rcv()
-> >      sk_receive_skb(child)             sk_receive_skb(child)
-> >       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
-> >       =3D> SOFTIRQ-ON-W                   =3D> IN-SOFTIRQ-W
-> >
-> >Lockdep flags this as inconsistent lock state, and it can become a real
-> >self-deadlock if a softirq on the same CPU tries to receive to the same
-> >child socket while its slock is held in the BH-enabled path:
-> >
-> >  WARNING: inconsistent lock state
-> >  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
-> >   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
-> >    __sk_receive_skb              net/core/sock.c:563
-> >    sk_receive_skb                include/net/sock.h:2022 [inline]
-> >    pep_do_rcv                    net/phonet/pep.c:675
-> >    sk_backlog_rcv                include/net/sock.h:1190
-> >    __release_sock                net/core/sock.c:3216
-> >    release_sock                  net/core/sock.c:3815
-> >    pep_sock_accept               net/phonet/pep.c:879
-> >
-> >Wrap the forwarded sk_receive_skb() in local_bh_disable() /
-> >local_bh_enable() so the child slock is always acquired with BH off.
-> >local_bh_disable() nests safely on the softirq path.
-> >
-> >Discovered via in-house syzkaller fuzzing; the same root cause also
-> >on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
-> >Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
-> >https://pastebin.com/A3t8xzCR
-> >
-> >Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-> >Link: https://syzkaller.appspot.com/bug?extid=3D44f0626dd6284f02663c
-> >Cc: stable@vger.kernel.org
-> >Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
->
-> Acked-by: R=C3=A9mi Denis-Courmont <remi@remlab.net>
+net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
+signaling packets up to the channel MTU and dispatches each command
+without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
+within radio range can send a fixed-channel CID 0x0001 packet that is
+larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
+pairing.
 
-Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+In a real-radio stock-kernel run, one 681-byte signaling
+packet containing 168 zero-length ECHO_REQ commands made the target
+transmit 168 ECHO_RSP frames over about 220 ms.
 
-Thanks!
+Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
+reject larger signaling packets before dispatching their commands. When
+the over-MTUsig packet contains a request command, send one
+L2CAP_COMMAND_REJECT_RSP with L2CAP_REJ_MTU_EXCEEDED and the first
+request identifier; packets for which no valid request command is found
+are dropped.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-5-xhigh
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+I reproduced the stock behavior with a real-radio BR/EDR ACL link and a
+harness that sends a single fixed-channel signaling packet containing
+packed zero-length ECHO_REQ commands. The patched code builds for
+net/bluetooth/l2cap_core.o on x86_64 defconfig. There are no in-tree
+Bluetooth selftests that reference l2cap_sig_channel(), L2CAP_SIG_MTU,
+or L2CAP_ECHO_REQ.
+
+The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
+trace to the initial git import; no later introducing commit is
+available for a Fixes tag.
+
+Changes in v2:
+- Replace the per-PDU echo-count cap with the MTUsig direction from
+  review.
+- Reject the whole over-MTUsig signaling packet with one
+  L2CAP_REJ_MTU_EXCEEDED command reject.
+- Add L2CAP_SIG_MTU and drop over-MTUsig packets when no valid request
+  command identifier is found.
+
+v1: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
+---
+ include/net/bluetooth/l2cap.h |  1 +
+ net/bluetooth/l2cap_core.c    | 60 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
+
+diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
+index 5172afee54943..e0a1f2293679a 100644
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -33,6 +33,7 @@
+ /* L2CAP defaults */
+ #define L2CAP_DEFAULT_MTU		672
+ #define L2CAP_DEFAULT_MIN_MTU		48
++#define L2CAP_SIG_MTU			48	/* BR/EDR signaling MTU */
+ #define L2CAP_DEFAULT_FLUSH_TO		0xFFFF
+ #define L2CAP_EFS_DEFAULT_FLUSH_TO	0xFFFFFFFF
+ #define L2CAP_DEFAULT_TX_WINDOW		63
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 77dec104a9c36..5417e3cb0636d 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5626,6 +5626,55 @@ static inline void l2cap_sig_send_rej(struct l2cap_conn *conn, u16 ident)
+ 	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
+ }
+ 
++static bool l2cap_sig_cmd_is_req(u8 code)
++{
++	switch (code) {
++	case L2CAP_CONN_REQ:
++	case L2CAP_CONF_REQ:
++	case L2CAP_DISCONN_REQ:
++	case L2CAP_ECHO_REQ:
++	case L2CAP_INFO_REQ:
++	case L2CAP_CONN_PARAM_UPDATE_REQ:
++	case L2CAP_LE_CONN_REQ:
++	case L2CAP_ECRED_CONN_REQ:
++	case L2CAP_ECRED_RECONF_REQ:
++		return true;
++	}
++
++	return false;
++}
++
++static u8 l2cap_sig_first_req_ident(const struct sk_buff *skb)
++{
++	const u8 *data = skb->data;
++	unsigned int len = skb->len;
++
++	while (len >= L2CAP_CMD_HDR_SIZE) {
++		const struct l2cap_cmd_hdr *cmd = (const void *)data;
++		u16 cmd_len = le16_to_cpu(cmd->len);
++
++		if (cmd->ident && l2cap_sig_cmd_is_req(cmd->code))
++			return cmd->ident;
++
++		if (cmd_len > len - L2CAP_CMD_HDR_SIZE)
++			break;
++
++		data += L2CAP_CMD_HDR_SIZE + cmd_len;
++		len -= L2CAP_CMD_HDR_SIZE + cmd_len;
++	}
++
++	return 0;
++}
++
++static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 ident)
++{
++	struct l2cap_cmd_rej_mtu rej;
++
++	rej.reason = cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
++	rej.max_mtu = cpu_to_le16(L2CAP_SIG_MTU);
++	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
++}
++
+ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 				     struct sk_buff *skb)
+ {
+@@ -5638,6 +5687,17 @@ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 	if (hcon->type != ACL_LINK)
+ 		goto drop;
+ 
++	if (skb->len > L2CAP_SIG_MTU) {
++		u8 ident = l2cap_sig_first_req_ident(skb);
++
++		BT_DBG("signaling packet exceeds MTU");
++
++		if (ident)
++			l2cap_sig_send_mtu_rej(conn, ident);
++
++		goto drop;
++	}
++
+ 	while (skb->len >= L2CAP_CMD_HDR_SIZE) {
+ 		u16 len;
+ 
+-- 
+2.53.0
+
 
