@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-252205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO3sNrX4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:53 +0200
+	id CAvkF/b1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61C4259563B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066AB594F75
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8843B313C03D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B2084314FB52
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA143ED3B8;
-	Wed, 20 May 2026 18:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8501730675C;
+	Wed, 20 May 2026 17:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qazUUJxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+M/V5E6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DFB3F44D9;
-	Wed, 20 May 2026 18:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BC52046BA;
+	Wed, 20 May 2026 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300067; cv=none; b=RiePEKUaOlqmTEKmi/z35LbraYHl86t6JQdIRxIad0qGI2T6sz4ePqr+oVl8dw27XemSCfh/+GOTIGc18i+vH38tzxBcBu4tGqXL+McsiCrcQM6914PmTmY7lL+lr8OTz4+Mp+VBw2Pged3sbUt+9vpQwXBkQ+/c3sv/DgT2ZqQ=
+	t=1779298245; cv=none; b=TXWSg5dZRs5FSNKhNITM4DmCaLs5F+rvxrAX5VLS6ug2+v9cDc0SrRWxw1IJmj1idzBXg4f4/9eoTFiyMBitk+hYT/u+7ylvcjnBuSz8Qrw7z2Wfh5MiSCIO4G/AvWhjpUxfFEOM11cTu2n0N0XQIeAs7eBuH9vZcHiLnsz4krw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300067; c=relaxed/simple;
-	bh=bGjTyzBxSpuWwxImEefA8tr5X2kyVIdKuS1WDiv328s=;
+	s=arc-20240116; t=1779298245; c=relaxed/simple;
+	bh=bdOJgVzMgdmGRz3rNfGPACoU/FzVhCiCmFRvmHT5now=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olLcpgJwkktSb0NNAl5lQTQXfuJuRrWfHUVHw/ed5t1OCy+DPGyHeNLAr9cKxz9EeZfadyA08R50Bs7C7ONusNASYs1XtliD8Fbo8J0G3Ep+IAujq678GIHydPCPlMmWfjp08hWG4AKb5z0rZThH6uYMNuhjtRCdAFbhuG/bf2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qazUUJxQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3AE1F000E9;
-	Wed, 20 May 2026 18:01:05 +0000 (UTC)
+	 MIME-Version; b=JH3sDRZ3pdtZCQV0JDOlU3jCTt2HZjC7H9bSUVa+F5U0d+AaYCK//uNeR7ydhFK+VutZLA+zhhnb3D80ZTEoVlL9zJxt9sBY4oOB8iGVF5khVXbjRyWdFsMI1U1HbB+76+BfhoPTroeCO6CY9LgK0XrmTxRRl2ES6QOOjleZoRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+M/V5E6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67821F000E9;
+	Wed, 20 May 2026 17:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300066;
-	bh=/bxNeQ8xx4bWO7oFcgJmz9o0PSVPzdX7aGWojL6NFmc=;
+	s=korg; t=1779298244;
+	bh=0rq3EVaPQywBPOkjaBqeQQP3cN5fm6NK/j1owxVO98c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qazUUJxQiK5U6OGloRZoAdLs3s6DvVma2lfw/aY4tehBbHwQv2iOqVRW1DH1pUX2b
-	 p3CwmdeF2X0/IR/3H+SiAUN8AHZUNp2o2wldtBMerOrY4FuBUR8/mTjconexkB4xc0
-	 sS9SFNH/8d/JFrpuDc+eDBRVU9dZqNMVEwsBY5ZM=
+	b=B+M/V5E6Ujx9x3KzAwEFF6BohxLYBPFeD0RESc1J2cKCwzNYW/mwlePxzRCOKAxG4
+	 5lGcqxY2JYF0qhx3g45XdD3STeD88piRt+6r6NBm78jdNoxNTwPCa6+5zC6EQc5pjC
+	 ASm8X6cGVhR8sLDonBVfD7g5QQWHLFbskgmiptnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+98a040252119df0506f8@syzkaller.appspotmail.com,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com,
-	Junjie Cao <junjie.cao@linux.dev>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/666] nilfs2: reject zero bd_oblocknr in nilfs_ioctl_mark_blocks_dirty()
+Subject: [PATCH 6.18 336/957] sched_ext: Track @ps rq lock across set_cpus_allowed_scx -> ops.set_cpumask
 Date: Wed, 20 May 2026 18:13:39 +0200
-Message-ID: <20260520162111.412715629@linuxfoundation.org>
+Message-ID: <20260520162141.818928393@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +64,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252205-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,linux.dev,dubeyko.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251540-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,98a040252119df0506f8,466a45fcfb0562f5b9a0];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,dubeyko.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 61C4259563B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 066AB594F75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit be3e5d10643d3be1cbac9d9939f220a99253f980 ]
+[ Upstream commit 9fb457074f6d118b30458624223abef985725a88 ]
 
-nilfs_ioctl_mark_blocks_dirty() uses bd_oblocknr to detect dead blocks
-by comparing it with the current block number bd_blocknr. If they differ,
-the block is considered dead and skipped.
+The SCX_CALL_OP_TASK call site passes rq=NULL incorrectly, leaving
+scx_locked_rq() unset. Pass task_rq(p) instead so update_locked_rq()
+reflects reality.
 
-However, bd_oblocknr should never be 0 since block 0 typically stores the
-primary superblock and is never a valid GC target block. A corrupted ioctl
-request with bd_oblocknr set to 0 causes the comparison to incorrectly
-match when the lookup returns -ENOENT and sets bd_blocknr to 0, bypassing
-the dead block check and calling nilfs_bmap_mark() on a non-existent
-block. This causes nilfs_btree_do_lookup() to return -ENOENT, triggering
-the WARN_ON(ret == -ENOENT).
+v2: Add Fixes: tag (Andrea Righi).
 
-Fix this by rejecting ioctl requests with bd_oblocknr set to 0 at the
-beginning of each iteration.
-
-[ryusuke: slightly modified the commit message and comments for accuracy]
-
-Fixes: 7942b919f732 ("nilfs2: ioctl operations")
-Reported-by: syzbot+98a040252119df0506f8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=98a040252119df0506f8
-Suggested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
-Cc: Junjie Cao <junjie.cao@linux.dev>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 18853ba782be ("sched_ext: Track currently locked rq")
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/ioctl.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
-index fa77f78df6817..4c66f6f99b2b2 100644
---- a/fs/nilfs2/ioctl.c
-+++ b/fs/nilfs2/ioctl.c
-@@ -765,6 +765,12 @@ static int nilfs_ioctl_mark_blocks_dirty(struct the_nilfs *nilfs,
- 	int ret, i;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 177bbf31116d0..17905ad77598c 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2606,7 +2606,7 @@ static void set_cpus_allowed_scx(struct task_struct *p,
+ 	 * designation pointless. Cast it away when calling the operation.
+ 	 */
+ 	if (SCX_HAS_OP(sch, set_cpumask))
+-		SCX_CALL_OP_TASK(sch, SCX_KF_REST, set_cpumask, NULL,
++		SCX_CALL_OP_TASK(sch, SCX_KF_REST, set_cpumask, task_rq(p),
+ 				 p, (struct cpumask *)p->cpus_ptr);
+ }
  
- 	for (i = 0; i < nmembs; i++) {
-+		/*
-+		 * bd_oblocknr must never be 0 as block 0
-+		 * is never a valid GC target block
-+		 */
-+		if (unlikely(!bdescs[i].bd_oblocknr))
-+			return -EINVAL;
- 		/* XXX: use macro or inline func to check liveness */
- 		ret = nilfs_bmap_lookup_at_level(bmap,
- 						 bdescs[i].bd_offset,
 -- 
 2.53.0
 
