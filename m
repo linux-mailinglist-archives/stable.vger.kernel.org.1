@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEo/D/DoDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:36 +0200
+	id kCWYID37DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A14C592D42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661D0595D13
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1423430D7FB1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:54:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E10E53110A87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41E9367F58;
-	Wed, 20 May 2026 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F153F54D1;
+	Wed, 20 May 2026 18:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMHCxnX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs9Kn/Vs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FBA34EF05;
-	Wed, 20 May 2026 16:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B703370D54;
+	Wed, 20 May 2026 18:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296040; cv=none; b=exa/6FI5PxDla3eCQt+S6DJp80gLgNBaH+BvTH9pV/AIXUvBDgutbiqOQCSWfI+CLLOslXldBZBPPPgMWXD+yTS975xeqRLMu1gU/S1KowhfWCSAkePFhsmBggstf12IgubRRaAuc7ocXhcChNt2IgkfB/aWQN9F9z5wuXj2eBE=
+	t=1779300099; cv=none; b=f0UuSVrYKSol9FhtHwkDeYDEN/j7W5q4Bu8CWZku0WcMRrdDN7gk4KzBkBlzrg6VPOX7aRn9cBJRs/1whXDpXupCauTG65ioW60gJMycaEu97v9H3WhKMJf8II9xc7RWdL2YB+HlgL2Jfvb4BWnU0OOKEAK8f7XeKSwp3zEAd90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296040; c=relaxed/simple;
-	bh=34eSHC/IuNfmRxmI2JkZW+YLKVX6RqI+3+VTnu2rjBs=;
+	s=arc-20240116; t=1779300099; c=relaxed/simple;
+	bh=rbzqTV2OUoyweVcqSPcAVweRjBx6JfIO+lAgg8Hwbkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osi/sRslYG3xwWozXYKBK6YYPw29gksiN/NfWRnUnE61QcUKo6kHUEW+mifDQmRSTke9LnNsylOp+4Adm2C5o5OSkpdeodZeP4eXEusyr/oYNx84/U3uOPnWYJraz32IVG5KY0W/PCYMpTneCK0o4HNXXP+Tf6TOnamJBv/WnHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMHCxnX/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDE41F000E9;
-	Wed, 20 May 2026 16:53:58 +0000 (UTC)
+	 MIME-Version; b=OCusZwcEdC0nBYTsWZYlXmOiTKgPl5M/oB8+KcIZeF/Cn/xZuz0TU8jiIo6KB4kfG5LQ8bgWdvOYcnG+3B2yHXgwayIYFsihc0dR8EFnzdJnANFiuI1wfa5DhN5gMv/JkBcn85vC0LrMa0Lr5mVAS5L/sj1hLdxp6KpWwgBORh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs9Kn/Vs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14CF1F000E9;
+	Wed, 20 May 2026 18:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296039;
-	bh=TZBINoxmHAh2cPCADfs9vy+jb9eGzTJOWZdF5jEPglc=;
+	s=korg; t=1779300098;
+	bh=cTpMtFOpl+X2jHjqCVZ6e0o7vvz/Fy1G2Xasz+eSI30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aMHCxnX/lSQcwRg94BGA4YNzfZttCkB8msqGz967Nt8FiFO/w3Lq6XbKW/kUnvZxa
-	 BI+qY9lT91IHGL2CZ6CGAGMcRk2/6XrxXDkxRhfdCD+kSd5RWpowQck0t5xMSH5v0W
-	 6ZcNBLWKDnRtURwgxTPTgHtN807j8D7eF72LgBX4=
+	b=zs9Kn/VsB6Gv6ohc7StYJwVVGRjkh0cXRgYob/786DQqQfixT0Q9MBEP9tYHc+vrI
+	 w2YUrboJ8ld/RL7I6zzOXDmYLP6/93vQ7TRi0Zq0LBBgEFKFk6wgue/1NBSs/rybqA
+	 Fmbje4On9OQDsZJNjQzIGSD5u9q82qd/RhY4NgSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0607/1146] ext4: fix possible null-ptr-deref in extents_kunit_exit()
-Date: Wed, 20 May 2026 18:14:17 +0200
-Message-ID: <20260520162201.917760489@linuxfoundation.org>
+Subject: [PATCH 6.12 047/666] wifi: mt76: mt7925: prevent NULL vif dereference in mt7925_mac_write_txwi
+Date: Wed, 20 May 2026 18:14:18 +0200
+Message-ID: <20260520162112.259821368@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +64,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250682-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,linux.ibm.com,gmail.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252217-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2A14C592D42
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mediatek.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 661D0595D13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit ca78c31af467ffe94b15f6a2e4e1cc1c164db19b ]
+[ Upstream commit 962eb04e67552be406c906c83099c1d736aae3b6 ]
 
-There's issue as follows:
-KASAN: null-ptr-deref in range [0x00000000000002c0-0x00000000000002c7]
-Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
-RIP: 0010:extents_kunit_exit+0x2e/0xc0 [ext4_test]
-Call Trace:
- <TASK>
- kunit_try_run_case_cleanup+0xbc/0x100 [kunit]
- kunit_generic_run_threadfn_adapter+0x89/0x100 [kunit]
- kthread+0x408/0x540
- ret_from_fork+0xa76/0xdf0
- ret_from_fork_asm+0x1a/0x30
+Check for a NULL `vif` before accessing `ieee80211_vif_is_mld(vif)` to
+avoid a potential kernel panic in scenarios where `vif` might not be
+initialized.
 
-Above issue happens as extents_kunit_init() init testcase failed.
-So test if testcase is inited success.
-
-Fixes: cb1e0c1d1fad ("ext4: kunit tests for extent splitting and conversion")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://patch.msgid.link/20260330133035.287842-5-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: ebb1406813c6 ("wifi: mt76: mt7925: add link handling to txwi")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250904030649.655436-3-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents-test.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents-test.c b/fs/ext4/extents-test.c
-index 4042bc8a95e2f..6b53a3f39fcd6 100644
---- a/fs/ext4/extents-test.c
-+++ b/fs/ext4/extents-test.c
-@@ -142,9 +142,12 @@ static struct file_system_type ext_fs_type = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index e308c97b574b8..e5de05a91aee7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -807,8 +807,8 @@ mt7925_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
+ 	txwi[5] = cpu_to_le32(val);
  
- static void extents_kunit_exit(struct kunit *test)
- {
--	struct super_block *sb = k_ctx.k_ei->vfs_inode.i_sb;
--	struct ext4_sb_info *sbi = sb->s_fs_info;
-+	struct ext4_sb_info *sbi;
- 
-+	if (!k_ctx.k_ei)
-+		return;
-+
-+	sbi = k_ctx.k_ei->vfs_inode.i_sb->s_fs_info;
- 	ext4_es_unregister_shrinker(sbi);
- 	deactivate_super(sbi->s_sb);
- 	kfree(sbi);
+ 	val = MT_TXD6_DAS | FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
+-	if (!ieee80211_vif_is_mld(vif) ||
+-	    (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0))
++	if (vif && (!ieee80211_vif_is_mld(vif) ||
++	    (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0)))
+ 		val |= MT_TXD6_DIS_MAT;
+ 	txwi[6] = cpu_to_le32(val);
+ 	txwi[7] = 0;
 -- 
 2.53.0
 
