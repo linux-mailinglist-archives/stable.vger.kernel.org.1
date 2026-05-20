@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-251179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFqvBePuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251179-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:59 +0200
+	id yFBsAjzwDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC91593B07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712C6593E7F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDF3B306E14C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B7033074024
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7433EC2DB;
-	Wed, 20 May 2026 17:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C403F54DB;
+	Wed, 20 May 2026 17:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWwP5IPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4qkW4KX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A093EF0D7;
-	Wed, 20 May 2026 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6543EF0D7;
+	Wed, 20 May 2026 17:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297305; cv=none; b=Y/6Gej652CoiV7wILlKMN+WnO8/sJFhozZsB6oIqzlzMlv/Qhd6tfsdATgYlU8kF/N6HqMA8BD84rsvpFv9VExNMT1G9uyltYR0Vp9XZnnNOqHNIXZ45IVJmKu82vbIXubrUEdrUyUU69lW9mTkTZS1NrabYlAGiLHdxeep3NMk=
+	t=1779297310; cv=none; b=VU4pMRqU+CIAl8ekqr3/LLkXpqTScoJBw64/6o5JmOxr3xoWfAYZ3KCdDEuIad6r0L1uJV/VAJ4/2HJKgiFMwauND490vKbbv16qF8W8KQadugSPQK4241Xq80Z1/fr7F2H0mNwDl65HsRM7PJqeBeBZRe88HdgedKmDOQzBVdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297305; c=relaxed/simple;
-	bh=4O30pmPPLYn84alshYSnU7Ad9CPgEHZC391sffbukhA=;
+	s=arc-20240116; t=1779297310; c=relaxed/simple;
+	bh=iAF9K/iuJfGkw6l1QuE9lt8+seLWSw95GO3PmNYFiRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvrzSqax4qbLe4xDqXPZBYXxHUmkjkeDEVHOUFkbm376R5qMfvt2f3ENJUnMV0QnWAD2Y7bPh4swuHTXGdvJzA3J+AnVxdhF3Tzpb0JbdXaZrSudGmzhB2/sZA4iVF+wMuNZoZb/Of78PJPRWoMy5ISOnesaA7H3DQjfnXZo5kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWwP5IPo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC451F00893;
-	Wed, 20 May 2026 17:15:03 +0000 (UTC)
+	 MIME-Version; b=ele5zKluiY5ZONTmbJyGi7OZoR4Q0SW9+kZBDb/+eJZ4thBLdeGYVnjKEhls0jY25qsizQ3qsUXskGrMOcPFi8ltNycPbbtYfLYBD3VLWvxBQkqKEyAuDjDyHkKxWwbAZiJtTKjCS/9g62T/UDLmjIZcg5eIWssqUb3uyNwQB6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4qkW4KX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1E71F00893;
+	Wed, 20 May 2026 17:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297304;
-	bh=7hwb/SeGtPZ7z8xBRQYYTHiV6THWJvlxFp+IuWrHDDA=;
+	s=korg; t=1779297309;
+	bh=outF5B6ST84TYQz6FRVbS0CoCwEZcFhf62jFbtasy7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TWwP5IPoaCBKfjffIbDRAj1yTs5WuJrG0G9Uk6t1fl/lQTFRazhZYPiTAPfTI7bH4
-	 K2Bi0RIDOqiqyvLVJKsgk+snosvVXmZEnV5e2gzITtbgWkgLYnXrZ+pwqOk5Ex3Cth
-	 hY7hlDKzNc+kh6GcxFbpe7n8dCVWIeHOmu0cwxrQ=
+	b=B4qkW4KXACZLBtOiPXbRw0BBVUhlfxG74cTc9L8TwZhUFT440FdArkCQXwthtXhle
+	 kPI3HT3exLX/Qrd22H/ByVP/EljtxduWsYSaTpO3DdNnA/SIG6EZgrxqQuBHAwTdp9
+	 f+k8f73xh/IK1bLhHfkBI2FN21diahfkLpUK9+5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 7.0 1127/1146] iommu: Fix ATS invalidation timeouts during __iommu_remove_group_pasid()
-Date: Wed, 20 May 2026 18:22:57 +0200
-Message-ID: <20260520162213.750845117@linuxfoundation.org>
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 7.0 1128/1146] drm/i915: skip __i915_request_skip() for already signaled requests
+Date: Wed, 20 May 2026 18:22:58 +0200
+Message-ID: <20260520162213.774560734@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251179-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251181-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: CAC91593B07
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 712C6593E7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,44 +100,62 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-commit fc3523b16d2b4b88e61e69504b0ae0b18b869c8f upstream.
+commit 4cfe4c0efbdcde742a47813180cc69b132d7598e upstream.
 
-If a device is blocked, its PASID domains are already detached. Repeating
-iommu_remove_dev_pasid() is unnecessary and might trigger ATS invalidation
-timeouts.
+After a GPU reset the HWSP is zeroed, so previously completed
+requests appear incomplete. If such a request is picked up during
+reset_rewind() and marked guilty, i915_request_set_error_once()
+returns early (fence already signaled), leaving fence.error without
+a fatal error code. The subsequent __i915_request_skip() then hits:
+```
+GEM_BUG_ON(!fatal_error(rq->fence.error))
+```
 
-Skip the iommu_remove_dev_pasid() call upon gdev->blocked.
+Fixes a kernel BUG observed on Sandy Bridge (Gen6) during
+heartbeat-triggered engine resets.
+```
+kernel BUG at drivers/gpu/drm/i915/i915_request.c:556!
+RIP: __i915_request_skip+0x15e/0x1d0 [i915]
+...
+__i915_request_reset+0x212/0xa70 [i915]
+reset_rewind+0xe4/0x280 [i915]
+intel_gt_reset+0x30d/0x5b0 [i915]
+heartbeat+0x516/0x530 [i915]
+```
 
-Fixes: c279e83953d9 ("iommu: Introduce pci_dev_reset_iommu_prepare/done()")
-Cc: stable@vger.kernel.org
-Closes: https://sashiko.dev/#/patchset/20260407194644.171304-1-nicolinc%40nvidia.com
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Guard __i915_request_skip() with i915_request_signaled(), if the
+fence is already signaled, the ring content is committed and there
+is nothing left to skip.
+
+Fixes: 36e191f0644b ("drm/i915: Apply i915_request_skip() on submission")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/13729
+Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: stable@vger.kernel.org # v5.7+
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://lore.kernel.org/r/fe76921d35b6ae85aa651822726d0d9815aa5362.1776339012.git.sebastian.brzezinka@intel.com
+(cherry picked from commit 5ba54393dcd7adf75a9f39f5a933b1538349cad5)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommu.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_reset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3572,7 +3572,12 @@ static void __iommu_remove_group_pasid(s
- 	struct group_device *device;
- 
- 	for_each_group_device(group, device) {
--		if (device->dev->iommu->max_pasids > 0)
-+		/*
-+		 * A group-level detach cannot fail, even if there is a blocked
-+		 * device. In fact, blocked devices must be already detached for
-+		 * a pending device recovery.
-+		 */
-+		if (!device->blocked && device->dev->iommu->max_pasids > 0)
- 			iommu_remove_dev_pasid(device->dev, pasid, domain);
- 	}
- }
+--- a/drivers/gpu/drm/i915/gt/intel_reset.c
++++ b/drivers/gpu/drm/i915/gt/intel_reset.c
+@@ -132,7 +132,8 @@ void __i915_request_reset(struct i915_re
+ 	rcu_read_lock(); /* protect the GEM context */
+ 	if (guilty) {
+ 		i915_request_set_error_once(rq, -EIO);
+-		__i915_request_skip(rq);
++		if (!i915_request_signaled(rq))
++			__i915_request_skip(rq);
+ 		banned = mark_guilty(rq);
+ 	} else {
+ 		i915_request_set_error_once(rq, -EAGAIN);
 
 
 
