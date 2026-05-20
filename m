@@ -1,146 +1,226 @@
-Return-Path: <stable+bounces-250028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Fu4KRHgDWrb4QUAu9opvQ
-	(envelope-from <stable+bounces-250028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:45 +0200
+	id sGVZHfsdDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B23591D30
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A551159A1DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE458300360A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:23:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C79283282294
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABAE368941;
-	Wed, 20 May 2026 16:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790A83FFAAD;
+	Wed, 20 May 2026 18:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlTTQaxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uohkppqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B3636655C;
-	Wed, 20 May 2026 16:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9993401483;
+	Wed, 20 May 2026 18:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294221; cv=none; b=hhIFlt20V8YqLB2k70/lxHpZKVQYOh24Ul7cds6FUdTFt07BoYicVNQPXx7+lJR9h7bQuziT4qkAQNA9/uXNBeZqLxvwNbJxLyLMJjemcLZzt9is5+I5QRdRUzn3bTfpEIPviRsk3VE4Puo9ODU9q/l64vAuj0fXmEzy9KPSQIU=
+	t=1779302883; cv=none; b=krmpUzDo4Hp7fGPUSfCBoWE0kLXSlTH0ygx3h52oBbqLDCugCUvNfKPg7iu6RHSlXJnCEQfiLt+MdAZucjAQkWCED+FbhEYOcrCwwdp+rZc529X3Vw5QhGHjEaaN8yYRQxO+X18e4oIQ4nB43HWmLy33k0duIbB/QEzae76c22c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294221; c=relaxed/simple;
-	bh=u/KaO83SHVe6c5S4taIdYCoZPJKYBkzrlFkFaB3LDIE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l1eIY4uPMetQ4W9lFom19nsV2qKfBNh4+BNnDOi65Ap02KL8grMCbf7HHf3HQ9W1cjoH0PG9zJG9wnREOnQzKB6HEQPx16G3Ygqqq27MwROL3nPiki1FU7L56myD2vxBh88lLgt+Cq3eeqyz49vvka7U1fGF3HFnLoA7EZRnS9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlTTQaxU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4591F000E9;
-	Wed, 20 May 2026 16:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779294219;
-	bh=JQ3Y7Pc2yJ25rdUSOQrD2jMUXpcIdISfmKHryk524Do=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BlTTQaxUpjQveA7qLIdW+1aPFhhjjmxI9BIlColQpuokMH0nu4PJ/v/UaZzIbLRUL
-	 RNg1g5O+RuG28gCef6ogyujH6zmikGiXvNKL9uWUznzJ/L2ljTMj9T+nSBkw7A/ZtC
-	 9fng/gKakmcN9cdWSxXxRjViw+DgtC4wwibtfC7Y1xF7scT57F/jI0dukfz5bwr5wP
-	 2bFKQSU3yBULEia6vCvWyYNEXkzweVdrWzD1NhuZLpni53zqXW3QekYYlA4Tx9l9sb
-	 DzECsdi4VYnsM6M2dz7CaVATrKjKo/47xnYDdNZFZL5qeHox8Dc9JMuG0a/RnaWHhx
-	 QLcDf0eGxRwZg==
-Date: Wed, 20 May 2026 17:23:36 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Dmitry Osipenko <digetx@gmail.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: max77620: Avoid regmap mutex deadlock in power-off
- handler
-Message-ID: <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
-References: <20260520-max77620_poweroff-v1-1-9186a3bcbe9e@tecnico.ulisboa.pt>
- <c8d16352-63a3-4512-b90c-a79e7e96dd3c@gmail.com>
- <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
- <20260520161900.GM2767592@google.com>
+	s=arc-20240116; t=1779302883; c=relaxed/simple;
+	bh=FAIXU3Mnuw9VhU6jnCaMmct0e2S0VxqNg3OhVvN6csY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SX3CgOiJyKyVDPOTFflKamavk07Cs/08nAg8+1YUFtA6UYJaL593k1kqECLdUlXvAmyMW2nOLCeemJavjxbIq+kcjBcl30rFTrhrq4Mn48Pmdakf0L7eWQ8gc/94Qmqymizs0RuGcFNnpo/eIbpW5P0DjHI9ef2LGeAWLB/SoAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uohkppqJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C892B1F00893;
+	Wed, 20 May 2026 18:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779302880;
+	bh=TLP6TA6PI/WzDtqSWrDdbrH+FeobmhsZ9qh6Prp55fA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=uohkppqJ+7FakM4Gb1O13dpT5QOXMhXjea+ifuHoUtx+kK3W2oIm1Cc2wFWD5Hrzf
+	 0gnj5noL7xKMwtdZTfoBGp9JPbnvkBbmCq3Ck+yTb8t4PDjN0YH8PHJs7YnyXTdy3G
+	 rAK29KklUSlwQ2LpvKt5IIVw0FYLRZuIGktJAUt8=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 393/508] net/sched: taprio: fix NULL pointer dereference in class dump
+Date: Wed, 20 May 2026 18:23:36 +0200
+Message-ID: <20260520162107.130102951@linuxfoundation.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7jdFGGanP92EQ6XD"
-Content-Disposition: inline
-In-Reply-To: <20260520161900.GM2767592@google.com>
-X-Cookie: Natural laws have no pity.
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[tecnico.ulisboa.pt,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-250028-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253286-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,mojatatu.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 53B23591D30
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,asu.edu:email,mojatatu.com:email]
+X-Rspamd-Queue-Id: A551159A1DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
---7jdFGGanP92EQ6XD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------------------
 
-On Wed, May 20, 2026 at 05:19:00PM +0100, Lee Jones wrote:
-> On Wed, 20 May 2026, Diogo Ivo wrote:
+From: Weiming Shi <bestswngs@gmail.com>
 
-> > This patch was motivated by the Sashiko review I got in [1]. Its point
-> > here is that there is a possibility for a deadlock scenario in which
-> > a secondary CPU obtains the mutex for the regmap and then smp_send_stop=
-()
-> > is called before this secondary CPU gets a chance to release the mutex,
-> > making it so that when the primary CPU tries to acquire it to issue the
-> > write it hangs. Is there something that I am misunderstanding here?
-> >=20
+[ Upstream commit 3d07ca5c0fae311226f737963984bd94bb159a87 ]
 
-> It's my understanding that using the Regmap wrappers _prevents_ locking
-> issues, rather than causes them.
+When a TAPRIO child qdisc is deleted via RTM_DELQDISC, taprio_graft()
+is called with new == NULL and stores NULL into q->qdiscs[cl - 1].
+Subsequent RTM_GETTCLASS dump operations walk all classes via
+taprio_walk() and call taprio_dump_class(), which calls taprio_leaf()
+returning the NULL pointer, then dereferences it to read child->handle,
+causing a kernel NULL pointer dereference.
 
-In the case where the CPU is being powered off during a regmap write
-there is a potential issue - as Diogo says if we're in the middle of
-holding the lock and we power off the CPU that owns the lock then it
-will never be able to release the lock.  I would expect the same issue
-to apply to a bus like I2C or SPI though, they'll hold a lock while
-they're in the middle of doing bus I/O unless you use some special API.
+The bug is reachable with namespace-scoped CAP_NET_ADMIN on any kernel
+with CONFIG_NET_SCH_TAPRIO enabled. On systems with unprivileged user
+namespaces enabled, an unprivileged local user can trigger a kernel
+panic by creating a taprio qdisc inside a new network namespace,
+grafting an explicit child qdisc, deleting it, and requesting a class
+dump. The RTM_GETTCLASS dump itself requires no capability.
 
---7jdFGGanP92EQ6XD
-Content-Type: application/pgp-signature; name="signature.asc"
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:taprio_dump_class (net/sched/sch_taprio.c:2478)
+ Call Trace:
+  <TASK>
+  tc_fill_tclass (net/sched/sch_api.c:1966)
+  qdisc_class_dump (net/sched/sch_api.c:2326)
+  taprio_walk (net/sched/sch_taprio.c:2514)
+  tc_dump_tclass_qdisc (net/sched/sch_api.c:2352)
+  tc_dump_tclass_root (net/sched/sch_api.c:2370)
+  tc_dump_tclass (net/sched/sch_api.c:2431)
+  rtnl_dumpit (net/core/rtnetlink.c:6864)
+  netlink_dump (net/netlink/af_netlink.c:2325)
+  rtnetlink_rcv_msg (net/core/rtnetlink.c:6959)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
 
------BEGIN PGP SIGNATURE-----
+Fix this by substituting &noop_qdisc when new is NULL in
+taprio_graft(), a common pattern used by other qdiscs (e.g.,
+multiq_graft()) to ensure the q->qdiscs[] slots are never NULL.
+This makes control-plane dump paths safe without requiring individual
+NULL checks.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoN4AcACgkQJNaLcl1U
-h9AtEwf/SjiouU51+7i5JE9Hob+eT0GLACNgc+RVWCzqslyuCwJpEWO811M5HPSb
-HQnVLdxXjchQ2ONToXretikUumZ6Rb+TKnEp7e5Pt/cubqIKWG+oJZlWV+CLsOW/
-P1vcxF/Zy3l10GRNAkiNZAHarvsAUDrD+5Lo4+LLmwkT5o3qr8qWnHROrgTQigFv
-zX7ASnbLJBWcAZ487yDSoQoHrjIEJlPLV4gNtrzjRQi5E8q0chUCZeKV1KXizvl2
-b3LYMfAKxD23TC2xWmpXuTuNFNmiBOUhNt79+IY38wEgR+WpR4mY/JDa4baSBkTQ
-F8LP5GFPw7IklOOElv5b7yZgtGdtIg==
-=QtbP
------END PGP SIGNATURE-----
+Since the data-plane paths (taprio_enqueue and taprio_dequeue_from_txq)
+previously had explicit NULL guards that would drop/skip the packet
+cleanly, update those checks to test for &noop_qdisc instead. Without
+this, packets would reach taprio_enqueue_one() which increments the root
+qdisc's qlen and backlog before calling the child's enqueue; noop_qdisc
+drops the packet but those counters are never rolled back, permanently
+inflating the root qdisc's statistics.
 
---7jdFGGanP92EQ6XD--
+After this change *old can be a valid qdisc, NULL, or &noop_qdisc.
+Only call qdisc_put(*old) in the first case to avoid decreasing
+noop_qdisc's refcount, which was never increased.
+
+Fixes: 665338b2a7a0 ("net/sched: taprio: dump class stats for the actual q->qdiscs[]")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260422161958.2517539-3-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/sched/sch_taprio.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 6df93d5c2e9d9..c14f9e2d8dc51 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -644,7 +644,7 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	queue = skb_get_queue_mapping(skb);
+ 
+ 	child = q->qdiscs[queue];
+-	if (unlikely(!child))
++	if (unlikely(child == &noop_qdisc))
+ 		return qdisc_drop(skb, sch, to_free);
+ 
+ 	if (taprio_skb_exceeds_queue_max_sdu(sch, skb)) {
+@@ -727,7 +727,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
+ 	int len;
+ 	u8 tc;
+ 
+-	if (unlikely(!child))
++	if (unlikely(child == &noop_qdisc))
+ 		return NULL;
+ 
+ 	if (TXTIME_ASSIST_IS_ENABLED(q->flags))
+@@ -2214,6 +2214,9 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	if (!dev_queue)
+ 		return -EINVAL;
+ 
++	if (!new)
++		new = &noop_qdisc;
++
+ 	if (dev->flags & IFF_UP)
+ 		dev_deactivate(dev);
+ 
+@@ -2227,14 +2230,14 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	*old = q->qdiscs[cl - 1];
+ 	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
+ 		WARN_ON_ONCE(dev_graft_qdisc(dev_queue, new) != *old);
+-		if (new)
++		if (new != &noop_qdisc)
+ 			qdisc_refcount_inc(new);
+-		if (*old)
++		if (*old && *old != &noop_qdisc)
+ 			qdisc_put(*old);
+ 	}
+ 
+ 	q->qdiscs[cl - 1] = new;
+-	if (new)
++	if (new != &noop_qdisc)
+ 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+ 
+ 	if (dev->flags & IFF_UP)
+-- 
+2.53.0
+
+
+
 
