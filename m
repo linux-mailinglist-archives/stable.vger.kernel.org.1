@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-250096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFsTByjtDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:36 +0200
+	id YLFpOT3tDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA77059357A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E04F5935AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45821358CB13
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9CC23594D4E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB797363C79;
-	Wed, 20 May 2026 16:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591053C3458;
+	Wed, 20 May 2026 16:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Udv0Tf53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcwZxq50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1C22F0C62;
-	Wed, 20 May 2026 16:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E796369992;
+	Wed, 20 May 2026 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294533; cv=none; b=LjrrZkqo6ummjyqQ5V8fZPq7GW2bbMLt0O7cfrvET6gTl6m4nVAfVuCXYoTnvbbTEjNWmefEZWN2ng5JlFLSbge2Q8lB0q2vtbECijNul0cfA42D8F708FjR4xCGTesemjB1xI70ds8Cr21iNv37tT/wFD6j7sV82LDDdsW6MXQ=
+	t=1779294539; cv=none; b=gg6mgtdpnsPIcGCs1NSNq+4G7MZHzPLl5BIxC9KIw8KIAAaoSiK9Yw3n4AGoQLz483rkT83dGpkvR/hdSr04ZuoEHiqLGJ1zXEKSjhhiRBpgzrEwErg39NeN6oWalQXRcKP/CPAEeWhpC/OasutNbVUXgrfSz75DE/lEes25iMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294533; c=relaxed/simple;
-	bh=/xUh0bIj6reN96g8YS7lIMTurLBYQXqilVq6aVcmpLI=;
+	s=arc-20240116; t=1779294539; c=relaxed/simple;
+	bh=/LDZCSEqALBFYJrj7RCPgRjnXyxn6cJ/fDlrns7ysvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsGas3KL4hXkdzOIZdNEs6xons0J0ZBlaYSG8bhU0MmG7wjB//YHL8PC5hDpUKuqghr7bR1Mslc5Xbyw8CkO6QMwb7LEUgDgrXoxIDzY5SV+y8RftEWPM9LVAtB97YKqHlEm5qlZ4Q2Ko9lKZPO06soyQ75D3AlCyY+Lqkq4Myk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Udv0Tf53; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B186F1F000E9;
-	Wed, 20 May 2026 16:28:51 +0000 (UTC)
+	 MIME-Version; b=qf5X/hb4oyetp53uutUxLRSFcfK45rC+BPfIR7jJ1DGCdRtTgwVypxRhSpxZHNiZ4xEzfSyxB1sBXyFNB9Yvi7YZ0cSDuPeJp3r39/pxKpglN8Aj293VYJcdT37+it6PEulTH886GGVS1RlXP7V00XIr/RJz1gQeJgP/Dd/asfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcwZxq50; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0609D1F000E9;
+	Wed, 20 May 2026 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294532;
-	bh=8PgoReTN2XLYEa2rhyDguwxWGnViR/nWpk1Bz90qRi4=;
+	s=korg; t=1779294537;
+	bh=JaND/aFhodRI/yvdOzgqS4RCF3zMNbyEOn0DvnCz5ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Udv0Tf532qG2V9mgY9rB++aDeChkkMBg+bC/tgFMd3N3Y4HubOQROnmXpjbtDxOqv
-	 oGhIzopLrJDffxIz1g5JIStJXcE6fD8BQL1CnCO1c+j0GF03+LftH/9Lrktv0AJicb
-	 UyY9DDAAR3I/Pm0c4Mg/i15el6QX/Y6AWU6SLRCY=
+	b=vcwZxq50tVVatV6LIY9rEByIjfSHQ8yj36y/1nf3rZONC1jgLYK6mHYGznrKaH2Zk
+	 59hTkA79fbsDQ0pOZjC0MVh/8FUV3zG4Cr303RmXJixBusLJpSZ3fvmRHd9PMO+Y5P
+	 QX/W401HnFGt57ySwIzeKrobqWxhxXyVkW8wKLHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <sarika.sharma@oss.qualcomm.com>,
+	P Praneesh <praneesh.p@oss.qualcomm.com>,
+	Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>,
 	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0074/1146] wifi: ath12k: account TX stats only when ACK/BA status is present
-Date: Wed, 20 May 2026 18:05:24 +0200
-Message-ID: <20260520162150.031011930@linuxfoundation.org>
+Subject: [PATCH 7.0 0075/1146] wifi: ath12k: Fix legacy rate mapping for monitor mode capture
+Date: Wed, 20 May 2026 18:05:25 +0200
+Message-ID: <20260520162150.052763988@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250096-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250098-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,11 +90,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: AA77059357A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 5E04F5935AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,82 +102,332 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+From: P Praneesh <praneesh.p@oss.qualcomm.com>
 
-[ Upstream commit 1635ecc61a24597f893d057d004051a535c1c643 ]
+[ Upstream commit 616217a989e09c55398db8555e5ef0c64504cb66 ]
 
-The fields tx_retry_failed, tx_retry_count, and tx_duration are
-currently updated outside the HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS
-flag check. In certain scenarios, firmware delivers multiple PPDU
-statistics for the same PPDU, first without BA/ACK information, and
-later with BA/ACK status once it becomes available. As the same PPDU
-is processed again, these counters are updated a second time,
-resulting in duplicate TX statistics.
+The current implementation incorrectly reports legacy CCK and OFDM rates
+in monitor mode radiotap headers. The rate field displays wrong values,
+for example showing 11 Mbps when the actual rate is 1 Mbps. This occurs
+because the HAL layer uses a unified enum for both CCK and OFDM rates
+without distinguishing between long/short preamble variants and proper
+rate mapping to hardware rate indices.
 
-To address this, move the accounting of tx_retry_failed and
-tx_retry_count under the ACK/BA status flag check, and similarly gate
-tx_duration on the same path. This ensures that each PPDU contributes
-to these counters exactly once, avoids double counting, and provides
-consistent reporting in userspace tools such as station dump.
+The root cause is threefold:
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01243-QCAHKSWPL_SILICONZ-1
+1. The hal_rx_legacy_rate enum conflates CCK and OFDM rates into a
+   single enumeration, making it impossible to differentiate between
+   802.11b CCK rates (with long/short preamble variants) and 802.11a/g
+   OFDM rates.
 
-Fixes: a0b963e1da5b ("wifi: ath12k: fetch tx_retry and tx_failed from htt_ppdu_stats_user_cmpltn_common_tlv")
-Signed-off-by: Sarika Sharma <sarika.sharma@oss.qualcomm.com>
+2. The L-SIG-B parsing function maps hardware rate values to the wrong
+   enum values. For CCK rates, it incorrectly combines long and short
+   preamble cases (e.g., cases 2 and 5 both map to 2 Mbps), losing
+   preamble information critical for proper rate identification.
+
+3. The mac layer's rate-to-index conversion function does not properly
+   handle the precedence between long preamble, short preamble, and
+   OFDM rates when matching hardware rate values.
+
+Split the hal_rx_legacy_rate enum into two separate enumerations:
+hal_rx_legacy_rate for CCK rates with explicit long preamble (LP) and
+short preamble (SP) variants, and hal_rx_legacy_rates_ofdm for OFDM
+rates. This separation allows proper identification of rate types and
+preamble modes.
+
+Introduce a new mapping ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate()
+that converts HAL CCK rate enums to hardware rate indices defined in
+ath12k_hw_rate_cck. This ensures the rate field in ppdu_info contains
+the correct hardware rate index that matches the mac layer's expectations.
+
+Update the L-SIG-B parsing to map each hardware rate value (1-7) to its
+corresponding CCK rate enum with proper preamble designation:
+- Cases 1-4: Long preamble (1, 2, 5.5, 11 Mbps)
+- Cases 5-7: Short preamble (2, 5.5, 11 Mbps)
+
+Update the L-SIG-A parsing to use the new OFDM-specific enum values,
+maintaining the existing rate mapping for 802.11a/g OFDM rates.
+
+Refactor the mac layer's ath12k_mac_hw_rate_to_idx() function to
+implement proper matching precedence:
+1. First match OFDM rates using the IEEE80211_RATE_MANDATORY_A flag
+2. Then match CCK short preamble rates
+3. Finally match CCK long preamble rates as fallback
+
+Add helper macros ATH12K_MAC_RATE_A_M and ATH12K_MAC_RATE_B to improve
+readability of the rate table initialization and ensure the mandatory
+flag is set for OFDM rates.
+
+This fix ensures monitor mode captures display accurate rate information
+in the radiotap header, correctly distinguishing between 1 Mbps and
+11 Mbps, and properly identifying preamble types for CCK rates.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.6-01181-QCAHKSWPL_SILICONZ-1
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: P Praneesh <praneesh.p@oss.qualcomm.com>
+Signed-off-by: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
 Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260226051947.1379716-1-sarika.sharma@oss.qualcomm.com
+Link: https://patch.msgid.link/20260209054924.2713072-1-thiraviyam.mariyappan@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_htt.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal.h         | 31 +++++---
+ drivers/net/wireless/ath/ath12k/mac.c         | 51 +++++++------
+ .../net/wireless/ath/ath12k/wifi7/dp_mon.c    | 76 +++++++++++++++----
+ 3 files changed, 108 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_htt.c b/drivers/net/wireless/ath/ath12k/dp_htt.c
-index e71bb71a6020e..9c19d9707abfb 100644
---- a/drivers/net/wireless/ath/ath12k/dp_htt.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_htt.c
-@@ -205,16 +205,9 @@ ath12k_update_per_peer_tx_stats(struct ath12k_pdev_dp *dp_pdev,
- 	if (!(usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_RATE)))
- 		return;
+diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
+index 43e3880f82579..bf4f7dbae8669 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.h
++++ b/drivers/net/wireless/ath/ath12k/hal.h
+@@ -268,21 +268,28 @@ enum hal_rx_reception_type {
+ };
  
--	if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON)) {
-+	if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON))
- 		is_ampdu =
- 			HTT_USR_CMPLTN_IS_AMPDU(usr_stats->cmpltn_cmn.flags);
--		tx_retry_failed =
--			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_tried) -
--			__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_success);
--		tx_retry_count =
--			HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
--			HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
--	}
+ enum hal_rx_legacy_rate {
+-	HAL_RX_LEGACY_RATE_1_MBPS,
+-	HAL_RX_LEGACY_RATE_2_MBPS,
+-	HAL_RX_LEGACY_RATE_5_5_MBPS,
+-	HAL_RX_LEGACY_RATE_6_MBPS,
+-	HAL_RX_LEGACY_RATE_9_MBPS,
+-	HAL_RX_LEGACY_RATE_11_MBPS,
+-	HAL_RX_LEGACY_RATE_12_MBPS,
+-	HAL_RX_LEGACY_RATE_18_MBPS,
+-	HAL_RX_LEGACY_RATE_24_MBPS,
+-	HAL_RX_LEGACY_RATE_36_MBPS,
+-	HAL_RX_LEGACY_RATE_48_MBPS,
+-	HAL_RX_LEGACY_RATE_54_MBPS,
++	HAL_RX_LEGACY_RATE_LP_1_MBPS,
++	HAL_RX_LEGACY_RATE_LP_2_MBPS,
++	HAL_RX_LEGACY_RATE_LP_5_5_MBPS,
++	HAL_RX_LEGACY_RATE_LP_11_MBPS,
++	HAL_RX_LEGACY_RATE_SP_2_MBPS,
++	HAL_RX_LEGACY_RATE_SP_5_5_MBPS,
++	HAL_RX_LEGACY_RATE_SP_11_MBPS,
+ 	HAL_RX_LEGACY_RATE_INVALID,
+ };
  
- 	if (usr_stats->tlv_flags &
- 	    BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_ACK_BA_STATUS)) {
-@@ -223,10 +216,19 @@ ath12k_update_per_peer_tx_stats(struct ath12k_pdev_dp *dp_pdev,
- 					  HTT_PPDU_STATS_ACK_BA_INFO_NUM_MSDU_M);
- 		tid = le32_get_bits(usr_stats->ack_ba.info,
- 				    HTT_PPDU_STATS_ACK_BA_INFO_TID_NUM);
--	}
- 
--	if (common->fes_duration_us)
--		tx_duration = le32_to_cpu(common->fes_duration_us);
-+		if (usr_stats->tlv_flags & BIT(HTT_PPDU_STATS_TAG_USR_COMPLTN_COMMON)) {
-+			tx_retry_failed =
-+				__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_tried) -
-+				__le16_to_cpu(usr_stats->cmpltn_cmn.mpdu_success);
-+			tx_retry_count =
-+				HTT_USR_CMPLTN_LONG_RETRY(usr_stats->cmpltn_cmn.flags) +
-+				HTT_USR_CMPLTN_SHORT_RETRY(usr_stats->cmpltn_cmn.flags);
-+		}
++enum hal_rx_legacy_rates_ofdm {
++	HAL_RX_LEGACY_RATE_OFDM_48_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_24_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_12_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_6_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_54_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_36_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_18_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_9_MBPS,
++	HAL_RX_LEGACY_RATE_OFDM_INVALID,
++};
 +
-+		if (common->fes_duration_us)
-+			tx_duration = le32_to_cpu(common->fes_duration_us);
-+	}
+ enum hal_ring_type {
+ 	HAL_REO_DST,
+ 	HAL_REO_EXCEPTION,
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index b253d1e3f4052..fa36e984c74b2 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -164,30 +164,31 @@ static const struct ieee80211_channel ath12k_6ghz_channels[] = {
+ 	CHAN6G(233, 7115, 0),
+ };
  
- 	user_rate = &usr_stats->rate;
- 	flags = HTT_USR_RATE_PREAMBLE(user_rate->rate_flags);
++#define ATH12K_MAC_RATE_A_M(bps, code) \
++	{ .bitrate = (bps), .hw_value = (code),\
++	  .flags = IEEE80211_RATE_MANDATORY_A }
++
++#define ATH12K_MAC_RATE_B(bps, code, code_short) \
++	{ .bitrate = (bps), .hw_value = (code), .hw_value_short = (code_short),\
++	  .flags = IEEE80211_RATE_SHORT_PREAMBLE }
++
+ static struct ieee80211_rate ath12k_legacy_rates[] = {
+ 	{ .bitrate = 10,
+ 	  .hw_value = ATH12K_HW_RATE_CCK_LP_1M },
+-	{ .bitrate = 20,
+-	  .hw_value = ATH12K_HW_RATE_CCK_LP_2M,
+-	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_2M,
+-	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
+-	{ .bitrate = 55,
+-	  .hw_value = ATH12K_HW_RATE_CCK_LP_5_5M,
+-	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_5_5M,
+-	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
+-	{ .bitrate = 110,
+-	  .hw_value = ATH12K_HW_RATE_CCK_LP_11M,
+-	  .hw_value_short = ATH12K_HW_RATE_CCK_SP_11M,
+-	  .flags = IEEE80211_RATE_SHORT_PREAMBLE },
+-
+-	{ .bitrate = 60, .hw_value = ATH12K_HW_RATE_OFDM_6M },
+-	{ .bitrate = 90, .hw_value = ATH12K_HW_RATE_OFDM_9M },
+-	{ .bitrate = 120, .hw_value = ATH12K_HW_RATE_OFDM_12M },
+-	{ .bitrate = 180, .hw_value = ATH12K_HW_RATE_OFDM_18M },
+-	{ .bitrate = 240, .hw_value = ATH12K_HW_RATE_OFDM_24M },
+-	{ .bitrate = 360, .hw_value = ATH12K_HW_RATE_OFDM_36M },
+-	{ .bitrate = 480, .hw_value = ATH12K_HW_RATE_OFDM_48M },
+-	{ .bitrate = 540, .hw_value = ATH12K_HW_RATE_OFDM_54M },
++	ATH12K_MAC_RATE_B(20, ATH12K_HW_RATE_CCK_LP_2M,
++			  ATH12K_HW_RATE_CCK_SP_2M),
++	ATH12K_MAC_RATE_B(55, ATH12K_HW_RATE_CCK_LP_5_5M,
++			  ATH12K_HW_RATE_CCK_SP_5_5M),
++	ATH12K_MAC_RATE_B(110, ATH12K_HW_RATE_CCK_LP_11M,
++			  ATH12K_HW_RATE_CCK_SP_11M),
++	ATH12K_MAC_RATE_A_M(60, ATH12K_HW_RATE_OFDM_6M),
++	ATH12K_MAC_RATE_A_M(90, ATH12K_HW_RATE_OFDM_9M),
++	ATH12K_MAC_RATE_A_M(120, ATH12K_HW_RATE_OFDM_12M),
++	ATH12K_MAC_RATE_A_M(180, ATH12K_HW_RATE_OFDM_18M),
++	ATH12K_MAC_RATE_A_M(240, ATH12K_HW_RATE_OFDM_24M),
++	ATH12K_MAC_RATE_A_M(360, ATH12K_HW_RATE_OFDM_36M),
++	ATH12K_MAC_RATE_A_M(480, ATH12K_HW_RATE_OFDM_48M),
++	ATH12K_MAC_RATE_A_M(540, ATH12K_HW_RATE_OFDM_54M),
+ };
+ 
+ static const int
+@@ -732,11 +733,17 @@ u8 ath12k_mac_hw_rate_to_idx(const struct ieee80211_supported_band *sband,
+ 		if (ath12k_mac_bitrate_is_cck(rate->bitrate) != cck)
+ 			continue;
+ 
+-		if (rate->hw_value == hw_rate)
++		/* To handle 802.11a PPDU type */
++		if ((!cck) && (rate->hw_value == hw_rate) &&
++		    (rate->flags & IEEE80211_RATE_MANDATORY_A))
+ 			return i;
++		/* To handle 802.11b short PPDU type */
+ 		else if (rate->flags & IEEE80211_RATE_SHORT_PREAMBLE &&
+ 			 rate->hw_value_short == hw_rate)
+ 			return i;
++		/* To handle 802.11b long PPDU type */
++		else if (rate->hw_value == hw_rate)
++			return i;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c b/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
+index c9cea597a92eb..77f5d23be78d6 100644
+--- a/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/wifi7/dp_mon.c
+@@ -405,6 +405,42 @@ ath12k_wifi7_dp_mon_hal_rx_parse_user_info(const struct hal_receive_user_info *r
+ 	}
+ }
+ 
++static __always_inline u8
++ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(u8 rate)
++{
++	u8 ath12k_rate;
++
++	/* Map hal_rx_legacy_rate to ath12k_hw_rate_cck */
++	switch (rate) {
++	case HAL_RX_LEGACY_RATE_LP_1_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_LP_1M;
++		break;
++	case HAL_RX_LEGACY_RATE_LP_2_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_LP_2M;
++		break;
++	case HAL_RX_LEGACY_RATE_LP_5_5_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_LP_5_5M;
++		break;
++	case HAL_RX_LEGACY_RATE_LP_11_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_LP_11M;
++		break;
++	case HAL_RX_LEGACY_RATE_SP_2_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_SP_2M;
++		break;
++	case HAL_RX_LEGACY_RATE_SP_5_5_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_SP_5_5M;
++		break;
++	case HAL_RX_LEGACY_RATE_SP_11_MBPS:
++		ath12k_rate = ATH12K_HW_RATE_CCK_SP_11M;
++		break;
++	default:
++		ath12k_rate = rate;
++		break;
++	}
++
++	return ath12k_rate;
++}
++
+ static void
+ ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
+ 				  struct hal_rx_mon_ppdu_info *ppdu_info)
+@@ -415,25 +451,32 @@ ath12k_wifi7_dp_mon_parse_l_sig_b(const struct hal_rx_lsig_b_info *lsigb,
+ 	rate = u32_get_bits(info0, HAL_RX_LSIG_B_INFO_INFO0_RATE);
+ 	switch (rate) {
+ 	case 1:
+-		rate = HAL_RX_LEGACY_RATE_1_MBPS;
++		rate = HAL_RX_LEGACY_RATE_LP_1_MBPS;
+ 		break;
+ 	case 2:
+-	case 5:
+-		rate = HAL_RX_LEGACY_RATE_2_MBPS;
++		rate = HAL_RX_LEGACY_RATE_LP_2_MBPS;
+ 		break;
+ 	case 3:
+-	case 6:
+-		rate = HAL_RX_LEGACY_RATE_5_5_MBPS;
++		rate = HAL_RX_LEGACY_RATE_LP_5_5_MBPS;
+ 		break;
+ 	case 4:
++		rate = HAL_RX_LEGACY_RATE_LP_11_MBPS;
++		break;
++	case 5:
++		rate = HAL_RX_LEGACY_RATE_SP_2_MBPS;
++		break;
++	case 6:
++		rate = HAL_RX_LEGACY_RATE_SP_5_5_MBPS;
++		break;
+ 	case 7:
+-		rate = HAL_RX_LEGACY_RATE_11_MBPS;
++		rate = HAL_RX_LEGACY_RATE_SP_11_MBPS;
+ 		break;
+ 	default:
+ 		rate = HAL_RX_LEGACY_RATE_INVALID;
++		break;
+ 	}
+ 
+-	ppdu_info->rate = rate;
++	ppdu_info->rate = ath12k_wifi7_hal_mon_map_legacy_rate_to_hw_rate(rate);
+ 	ppdu_info->cck_flag = 1;
+ }
+ 
+@@ -447,31 +490,32 @@ ath12k_wifi7_dp_mon_parse_l_sig_a(const struct hal_rx_lsig_a_info *lsiga,
+ 	rate = u32_get_bits(info0, HAL_RX_LSIG_A_INFO_INFO0_RATE);
+ 	switch (rate) {
+ 	case 8:
+-		rate = HAL_RX_LEGACY_RATE_48_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_48_MBPS;
+ 		break;
+ 	case 9:
+-		rate = HAL_RX_LEGACY_RATE_24_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_24_MBPS;
+ 		break;
+ 	case 10:
+-		rate = HAL_RX_LEGACY_RATE_12_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_12_MBPS;
+ 		break;
+ 	case 11:
+-		rate = HAL_RX_LEGACY_RATE_6_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_6_MBPS;
+ 		break;
+ 	case 12:
+-		rate = HAL_RX_LEGACY_RATE_54_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_54_MBPS;
+ 		break;
+ 	case 13:
+-		rate = HAL_RX_LEGACY_RATE_36_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_36_MBPS;
+ 		break;
+ 	case 14:
+-		rate = HAL_RX_LEGACY_RATE_18_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_18_MBPS;
+ 		break;
+ 	case 15:
+-		rate = HAL_RX_LEGACY_RATE_9_MBPS;
++		rate = HAL_RX_LEGACY_RATE_OFDM_9_MBPS;
+ 		break;
+ 	default:
+-		rate = HAL_RX_LEGACY_RATE_INVALID;
++		rate = HAL_RX_LEGACY_RATE_OFDM_INVALID;
++		break;
+ 	}
+ 
+ 	ppdu_info->rate = rate;
 -- 
 2.53.0
 
