@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-251609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sB5QHYMcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:39 +0200
+	id sBPSGcISDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17409599F0B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F1C598FE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B60AA337238A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5631C31F91F3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BCD369D67;
-	Wed, 20 May 2026 17:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312DC339844;
+	Wed, 20 May 2026 16:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgnUJ1PF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ccdO5sM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DFA36405A;
-	Wed, 20 May 2026 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059E22F0C62;
+	Wed, 20 May 2026 16:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298427; cv=none; b=nCz+i3AlvnK1rPLG9kqX+1Oqp6CsC3CZVyhN8Iu6jp6sxejwjChcYrwUFLiff+tdyFYGrQBxwt7VOt2lnRmPv9LvbGJ1BVKYDjnvr5fmCcxkKoDxqaNi9AI5BZjTxM0x73Wqs8RtX79qli5Ws3daBKMmnef18Uvedo5Y1bJm1Bc=
+	t=1779296022; cv=none; b=bgdcRIPIcdc7gsvdrnwRtPDix8NCmndBX5tAX5A2Vv4OzwBCRburquZAAaNkd9QoBcO4OsTQlywyq20FoFp3wDt8Alq9l+Ja2liP2t+vpcAmJ2RkSdGWkriS7zP55OXWSPRWW2i3F37rIIfj29f83nS6h4x/Q7QqZ+OQ6wRFDUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298427; c=relaxed/simple;
-	bh=QX5P5W8BgauGRngB8Z+v6JlwrTpGMWeg3Rjjv2ohF/Q=;
+	s=arc-20240116; t=1779296022; c=relaxed/simple;
+	bh=wvmQN88uUlW0rDGpKP/iG05QXMQDt7gxsQhUduc7n4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpIF+1iGO+LjKYsnAvyUYLZd02NPk1Y2M6RPYejmKNj1hgh4tHuwPvzDPW24bdEz7s4eJ2RNRu0p9JWtSW3r9mgtEUHT0bnRHEY2XYnL35ckF/ZEvXmPXBZQ4Uou3TqfO+LhLZfJLXeV53mU4aGJ0z8d1qHX985okbQLaAcrHCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgnUJ1PF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E05F1F000E9;
-	Wed, 20 May 2026 17:33:45 +0000 (UTC)
+	 MIME-Version; b=pnObe295OoO9/dRc9WNhTK8IYAwiDigaa5cOzwNKVDUQvZ1QK0J0uyUM0Z3VYz8nOI0Z3LGtOvAt9fuFbC1wp/faSkEmAvN0ji1TEOnO4VLZVKfCNxAQ3nxQKqv5g+Z61KZkPCKhH3Bha1sQUJjFHLfwsZRrBaDKdbdYKKeE1sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ccdO5sM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BB41F000E9;
+	Wed, 20 May 2026 16:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298426;
-	bh=twJc5opPoHXzxN9lnMo+o+BI1MsN72H94EJkgBtof4M=;
+	s=korg; t=1779296020;
+	bh=Q/vUjfT5GU8Sdc7PJa3erTv9HHIqZC1X0iqRqTBFjBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mgnUJ1PFdmmtdKenAteYL7CSaLm3SHOzHdRb0A5sjQc8aC6N7gWvngXFB1PiIrz3f
-	 mYZuajMm+gPhD0rWbOcEjMJReCSq4dQ7Ak9hexTfuphewZV5VVgbaMhycUefjUuhP5
-	 rT/f+uF9i20ZQMP87TDIvzm6mBHywEPRX2TUq+BA=
+	b=0ccdO5sM8+IHB0InmhFbbHwrZ8m0Lh7fYM0QFvIOMZVgPHXmv12+loZ7+GVpVgnMZ
+	 VVDzVb66s+v4PKn+aqKCPFEhk62+nWQDYhI9ZOThndcTF4Dtx5Ctl7/l8gXN/Csbi5
+	 vqDJHBUa+1CWDuuFNM3Di7mQ8uzY3nFPWB2cM10E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 407/957] arm64: dts: qcom: sm8450: Enable UHS-I SDR50 and SDR104 SD card modes
+Subject: [PATCH 7.0 0640/1146] memblock: reserve_mem: fix end caclulation in reserve_mem_release_by_name()
 Date: Wed, 20 May 2026 18:14:50 +0200
-Message-ID: <20260520162143.350577119@linuxfoundation.org>
+Message-ID: <20260520162202.664655882@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,107 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251609-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250675-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,0.134.86.160:email]
-X-Rspamd-Queue-Id: 17409599F0B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C0F1C598FE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit db0c5ef1abda6effdc5c85d6688fb6af2b351ae5 ]
+[ Upstream commit c12c3e1507809ad1fc0448f51c933f52e17d13cd ]
 
-The reported problem of some non-working UHS-I speed modes on SM8450
-originates in commit 0a631a36f724 ("arm64: dts: qcom: Add device tree
-for Sony Xperia 1 IV"), and then it was spread to all SM8450 powered
-platforms by commit 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable
-SDHCI SDR104/SDR50 on all boards").
+free_reserved_area() expects end parameter to point to the first address
+after the area, but reserve_mem_release_by_name() passes it the last
+address inside the area.
 
-The tests show that the rootcause of the problem was related to an
-overclocking of SD cards, and it's fixed later on by commit a27ac3806b0a
-("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs").
+Remove subtraction of one in calculation of the area end.
 
-Since then both SDR50 and SDR104 speed modes are working fine on SM8450,
-tested on SM8450-HDK:
-
-SDR50 speed mode:
-
-    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
-    mmcblk0: mmc0:0001 00000 14.6 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.6254 s, 43.6 MB/s
-
-SDR104 speed mode:
-
-    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
-    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.3266 s, 87.1 MB/s
-
-Remove the restrictions on SD card speed modes from the SM8450 platform
-dtsi file and enable UHS-I speed modes.
-
-Fixes: 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable SDHCI SDR104/SDR50 on all boards")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-5-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 74e2498ccf7b ("mm/memblock: Add reserved memory release function")
+Link: https://patch.msgid.link/20260323074836.3653702-2-rppt@kernel.org
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ mm/memblock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 68f5e7bca7cde..6c00390010f1f 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -5404,9 +5404,6 @@ sdhc_2: mmc@8804000 {
- 			bus-width = <4>;
- 			dma-coherent;
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a809..d4a02f1750e91 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2434,7 +2434,7 @@ int reserve_mem_release_by_name(const char *name)
+ 		return 0;
  
--			/* Forbid SDR104/SDR50 - broken hw! */
--			sdhci-caps-mask = <0x3 0x0>;
--
- 			status = "disabled";
- 
- 			sdhc2_opp_table: opp-table {
+ 	start = phys_to_virt(map->start);
+-	end = start + map->size - 1;
++	end = start + map->size;
+ 	snprintf(buf, sizeof(buf), "reserve_mem:%s", name);
+ 	free_reserved_area(start, end, 0, buf);
+ 	map->size = 0;
 -- 
 2.53.0
 
