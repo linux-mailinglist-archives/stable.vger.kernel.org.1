@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKFKLqz5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:00 +0200
+	id cOJFHPImDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF50595925
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B152059AD5C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 101FE30DAA6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7709C398AEDF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84953F44CD;
-	Wed, 20 May 2026 17:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308873E5ECF;
+	Wed, 20 May 2026 18:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Us6G3qBL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUODhMGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912223F0A83;
-	Wed, 20 May 2026 17:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10E92D7386;
+	Wed, 20 May 2026 18:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299609; cv=none; b=h26el/rrxSUYuVxHRoWjh3MFRKda20xDSehAq6WBXd7twXJPAQNOsQ6F+mavP+Fe5UHDvwLQJLYHX1yWnFa8NictSKcDZgUpN20cmTapgJq2t1/kyUBgGanMZSVgL3jkwlYsMpYqpZMQ9infC82wLgaHIibBD8SxEC4Bc11E1Hg=
+	t=1779301316; cv=none; b=tF2umhUwuCwXcYFHRLczOT1jpVv90cUYhk3/wobhcyDUrY8PUqD32MDOwEzZUzVHrFd+RKxgn+oTv8/Z7Egwy12WBaJApoO8o9LalQZTNYfff1foAaCpbyDqyFGIg8pkzSl0i+7nc0EA090CeZnmlo8GjKT8IE8Mm68onti7mWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299609; c=relaxed/simple;
-	bh=Sd7Dvc9rvbQNh5/mbTqiLhR48g62d1gGw5esoGV0oXY=;
+	s=arc-20240116; t=1779301316; c=relaxed/simple;
+	bh=TDo+bd0QADoRQ984tNFjtE/J6Qfgne6JECkNYgRPlqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paMa2GhpgHbDdaW+b26MmbWUw1cIDbnJloTVSySxopSW2BM0z2dQR4EZRjb4kftkDNmebziyzIaAvEnfTicwfPtvYHAnNwAyui3p9gy5JtZQo1sWOTILajdTmUkCfftzkmqLJvidVJfuIWdFtWZXWZqlWg1zfcJtORtxH7D1hYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Us6G3qBL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C6F1F00893;
-	Wed, 20 May 2026 17:53:27 +0000 (UTC)
+	 MIME-Version; b=H5/TUk+GppyURaXmFZvZIkQANjFvPmz8ojOR+COxZR+mvNY5a6GpmFSnGdkjiLq7XRPQYDhe0yQA4HEYa2lJ1/5Db6oq9t66Qf87CuahKHWyST3QnCA7kzARAaK6TEG4u9Y+VupKN8u4Roy3ZcCTbmqZYXXIUbD/XO3i9xRB6kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUODhMGf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620D81F00896;
+	Wed, 20 May 2026 18:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299608;
-	bh=nPlSxMS3WNYI+CTv9NRObhh8rjfxvxPDrtDLn46J4Zs=;
+	s=korg; t=1779301314;
+	bh=rVVJIZOnws6mdVmRVMaa2Fcoy+FgdLwsYKdTHAO86/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Us6G3qBL7SrcXZbc2zWKa37pgIB233EBwE/CKelBVIskdty1cmQlQtLRdARsoZv/M
-	 aIrFIYjHgkMCCIYbFC6ZJj7SNbuEvdF805MfJmxyqF2Qx5hHGclviWaVoAJJtjs7iM
-	 dHxknUMQ/ET+cAWCOev/90V/CR6tJfZDwixiXQ8w=
+	b=rUODhMGfMJLKKxHaUPP6HLWT8zRl4lOR/I89+N0EoEN6cCvdC7PKQLTMH8OEXxWGF
+	 42Dd2wq5msy2eK/s6UcJWa6D36F1Z1s2+gy3zqvQGJYfnzBYpB3ZIAiDHesQJiuy3t
+	 /np8Caz903vflT0bGVlAASaR99Fu2g1Q7jyNuc48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 835/957] drm/xe/gsc: Fix BO leak on error in query_compatibility_version()
+Subject: [PATCH 6.12 507/666] mailbox: add sanity check for channel array
 Date: Wed, 20 May 2026 18:21:58 +0200
-Message-ID: <20260520162152.672323119@linuxfoundation.org>
+Message-ID: <20260520162122.253555435@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252048-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252683-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: BFF50595925
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email,sang-engineering.com:email]
+X-Rspamd-Queue-Id: B152059AD5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 3762d6c36549accea7068c4a175483fafdd03657 ]
+[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
 
-When xe_gsc_read_out_header() fails, query_compatibility_version()
-returns directly instead of jumping to the out_bo label. This skips
-the xe_bo_unpin_map_no_vm() call, leaving the BO pinned and mapped
-with no remaining reference to free it.
+Fail gracefully if there is no channel array attached to the mailbox
+controller. Otherwise the later dereference will cause an OOPS which
+might not be seen because mailbox controllers might instantiate very
+early. Remove the comment explaining the obvious while here.
 
-Fix by using goto out_bo so the error path properly cleans up the BO,
-consistent with the other error handling in the same function.
-
-Fixes: 0881cbe04077 ("drm/xe/gsc: Query GSC compatibility version")
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://patch.msgid.link/20260417163308.3416147-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 8de86d0a843c32ca9d36864bdb92f0376a830bce)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mailbox.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gsc.c b/drivers/gpu/drm/xe/xe_gsc.c
-index 83d61bf8ec62e..8371ec002e4ed 100644
---- a/drivers/gpu/drm/xe/xe_gsc.c
-+++ b/drivers/gpu/drm/xe/xe_gsc.c
-@@ -166,7 +166,7 @@ static int query_compatibility_version(struct xe_gsc *gsc)
- 				     &rd_offset);
- 	if (err) {
- 		xe_gt_err(gt, "HuC: invalid GSC reply for version query (err=%d)\n", err);
--		return err;
-+		goto out_bo;
- 	}
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index b4d52b814055b..39269359e3a64 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -520,8 +520,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
+ {
+ 	int i, txdone;
  
- 	compat->major = version_query_rd(xe, &bo->vmap, rd_offset, proj_major);
+-	/* Sanity check */
+-	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
++	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
+ 		return -EINVAL;
+ 
+ 	if (mbox->txdone_irq)
 -- 
 2.53.0
 
