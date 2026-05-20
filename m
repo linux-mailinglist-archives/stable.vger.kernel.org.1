@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBGWKhDxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:16 +0200
+	id WBTwLwfuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513A759414B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0065593828
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3276313160E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 60CAF315B954
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1436F421;
-	Wed, 20 May 2026 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD7B3EE1DA;
+	Wed, 20 May 2026 16:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViNgDK9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPIJyWKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7C1331220;
-	Wed, 20 May 2026 17:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC83EA979;
+	Wed, 20 May 2026 16:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297787; cv=none; b=BHJMtxG9lLRakUjfcJ5uFMCu8Bc6K7V+97Yiek51D069BwnBaX9crlASap+j974AzpXb2aBEpnfT0E6G7PVtqB1UyIfz7Qz4U9fL7Asj6CliRyaQgf0a85gKjbzIHhKiD+YasPCW92L+y8WhyJPLm3lxu5lZzAcVyQaycdypufk=
+	t=1779295373; cv=none; b=q3NTS76gqrQyyCPW14GntOdofrls8jPeGvxQGdWRL1+qsgRr5nzO5iRYrvGnFnWPqxi++7A7WPGQBPNfT7u6wZ9eeJkbmZHlko6ukQI3w7rlGoMDy/O4QKZI9LXKznN4lrru7tadBkfOi6NyJu25Uit8FA60MB9IWSkZQllsDSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297787; c=relaxed/simple;
-	bh=wXLhrMfOsRKPW+CpQ9UcdptGztlRGAwJLC4+5hcqKVc=;
+	s=arc-20240116; t=1779295373; c=relaxed/simple;
+	bh=3JKni8L0VzZOPZBU/jNib6NgUVFwyf2ID4GYD7+/6ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVYRDSwDtIP0O8RzypIwvzqhkk4QPabvchcQ/lmtFOnr5atHpnZIT7u1YOs6Ip1UW51oif6xv8t7/ImH6lTDOtgIi/+MZjPqvwgPvGQabc7M3qHCwUBUFyF391guni+2KmHVpvlcXq7Qjtx3bMu0HPgRPYIr1FPkEGPS4d6+pQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViNgDK9D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311A11F000E9;
-	Wed, 20 May 2026 17:23:05 +0000 (UTC)
+	 MIME-Version; b=Q/VVn9ONp7Ne5JzrHf0DEx7LWJVyJr15AmG/PPnb2D073YhkC4j3f+lH/qvOZ+JmwnNeuldq+BTyfRLnmug+QDI05XSalBTjlGhRdH6Jn0HSmA90V95N9flgCabMrhCb6XoYBvnRQ3hVBfLYvpqBaY/4sLY8EUGZhwZVprCEFkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPIJyWKK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEF01F00894;
+	Wed, 20 May 2026 16:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297785;
-	bh=cn6jrxJh90gAdR8T9tTRuDE0GsXqWN43QeNIKp40BtU=;
+	s=korg; t=1779295372;
+	bh=1P/oXBvN7gre2lojiCd9RoYDKeQkf6O9il5vJE3P5jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ViNgDK9DhcS+BJOM+oSCq9umGQ33uON1GuyC17WVL3h6hkIminektMV9GWeLq7vHU
-	 4LLyAIN1Kxxlyir+Aty8gFNTPmUbltFK5EXQphoPfxYvWLSpesX3Pju4QZOTlUwMtF
-	 79NSOU+zlDXtz9kKaV49fUs5gWUe/u6c9ORHa0eU=
+	b=qPIJyWKKw8HtAK3gyooi/t30pv05ZkOQ5wsfqbeeKGAeEnBk88H3tMq2p3No8PArh
+	 pRnnsK2uXQBRXxua1YzpxMMVGRUDDDTdcv41sCvW+j4pwD/35UiIED9e5kiELdVPAf
+	 ULHz/byHopXH8IY9lFoUq5XUn5IvuuBN/jtVWnQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 162/957] selftests/bpf: Fix reg_bounds to match new tnum-based refinement
+Subject: [PATCH 7.0 0395/1146] dt-bindings: PCI: imx6q-pcie: Fix maxItems of clocks and clock-names
 Date: Wed, 20 May 2026 18:10:45 +0200
-Message-ID: <20260520162138.061905999@linuxfoundation.org>
+Message-ID: <20260520162157.138857237@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,188 +65,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251364-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250422-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 513A759414B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,nxp.com:email]
+X-Rspamd-Queue-Id: E0065593828
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 2fefa9c81a25534464911447d51ddb44b04a8e5b ]
+[ Upstream commit 401359ef44af43b6b775dc01bb7b31396db67aab ]
 
-Commit efc11a667878 ("bpf: Improve bounds when tnum has a single
-possible value") improved the bounds refinement to detect when the tnum
-and u64 range overlap in a single value (and the bounds can thus be set
-to that value).
+Commit 1352f58d7c8d ("dt-bindings: PCI: pci-imx6: Add external reference
+clock input") that added reference clock to the binding was incomplete.
 
-Eduard then noticed that it broke the slow-mode reg_bounds selftests
-because they don't have an equivalent logic and are therefore unable to
-refine the bounds as much as the verifier. The following test case
-illustrates this.
+The constraints for "clocks" and "clock-names" still enforce an incorrect
+number of items. Update maxItems for both properties to 6 to match the
+actual hardware configuration.
 
-  ACTUAL   TRUE1:  scalar(u64=0xffffffff00000000,u32=0,s64=0xffffffff00000000,s32=0)
-  EXPECTED TRUE1:  scalar(u64=[0xfffffffe00000001; 0xffffffff00000000],u32=0,s64=[0xfffffffe00000001; 0xffffffff00000000],s32=0)
-  [...]
-  #323/1007 reg_bounds_gen_consts_s64_s32/(s64)[0xfffffffe00000001; 0xffffffff00000000] (s32)<op> S64_MIN:FAIL
-
-with the verifier logs:
-
-  [...]
-  19: w0 = w6                 ; R0=scalar(smin=0,smax=umax=0xffffffff,
-                                          var_off=(0x0; 0xffffffff))
-                                R6=scalar(smin=0xfffffffe00000001,smax=0xffffffff00000000,
-                                          umin=0xfffffffe00000001,umax=0xffffffff00000000,
-                                          var_off=(0xfffffffe00000000; 0x1ffffffff))
-  20: w0 = w7                 ; R0=0 R7=0x8000000000000000
-  21: if w6 == w7 goto pc+3
-  [...]
-  from 21 to 25: [...]
-  25: w0 = w6                 ; R0=0 R6=0xffffffff00000000
-                              ;         ^
-                              ;         unexpected refined value
-  26: w0 = w7                 ; R0=0 R7=0x8000000000000000
-  27: exit
-
-When w6 == w7 is true, the verifier can deduce that the R6's tnum is
-equal to (0xfffffffe00000000; 0x100000000) and then use that information
-to refine the bounds: the tnum only overlap with the u64 range in
-0xffffffff00000000. The reg_bounds selftest doesn't know about tnums
-and therefore fails to perform the same refinement.
-
-This issue happens when the tnum carries information that cannot be
-represented in the ranges, as otherwise the selftest could reach the
-same refined value using just the ranges. The tnum thus needs to
-represent non-contiguous values (ex., R6's tnum above, after the
-condition). The only way this can happen in the reg_bounds selftest is
-at the boundary between the 32 and 64bit ranges. We therefore only need
-to handle that case.
-
-This patch fixes the selftest refinement logic by checking if the u32
-and u64 ranges overlap in a single value. If so, the ranges can be set
-to that value. We need to handle two cases: either they overlap in
-umin64...
-
-  u64 values
-  matching u32 range:     xxx        xxx        xxx        xxx
-                      |--------------------------------------|
-  u64 range:          0                xxxxx                 UMAX64
-
-or in umax64:
-
-  u64 values
-  matching u32 range:     xxx        xxx        xxx        xxx
-                      |--------------------------------------|
-  u64 range:          0          xxxxx                       UMAX64
-
-To detect the first case, we decrease umax64 to the maximum value that
-matches the u32 range. If that happens to be umin64, then umin64 is the
-only overlap. We proceed similarly for the second case, increasing
-umin64 to the minimum value that matches the u32 range.
-
-Note this is similar to how the verifier handles the general case using
-tnum, but we don't need to care about a single-value overlap in the
-middle of the range. That case is not possible when comparing two
-ranges.
-
-This patch also adds two test cases reproducing this bug as part of the
-normal test runs (without SLOW_TESTS=1).
-
-Fixes: efc11a667878 ("bpf: Improve bounds when tnum has a single possible value")
-Reported-by: Eduard Zingerman <eddyz87@gmail.com>
-Closes: https://lore.kernel.org/bpf/4e6dd64a162b3cab3635706ae6abfdd0be4db5db.camel@gmail.com/
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/ada9UuSQi2SE2IfB@mail.gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 1352f58d7c8d ("dt-bindings: PCI: pci-imx6: Add external reference clock input")
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260324023036.784466-2-hongxing.zhu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/reg_bounds.c     | 35 +++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ .../devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml        | 4 ++--
+ Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml     | 3 ++-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-index 04938d0d431b3..5f57d3c923801 100644
---- a/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-+++ b/tools/testing/selftests/bpf/prog_tests/reg_bounds.c
-@@ -500,6 +500,39 @@ static struct range range_refine(enum num_t x_t, struct range x, enum num_t y_t,
- 	    (s64)x.a >= S32_MIN && (s64)x.b <= S32_MAX)
- 		return range_intersection(x_t, x, y_cast);
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
+index cddbe21f99f2b..0488c942092d6 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
+@@ -17,11 +17,11 @@ description:
+ properties:
+   clocks:
+     minItems: 3
+-    maxItems: 5
++    maxItems: 6
  
-+	if (y_t == U32 && x_t == U64) {
-+		u64 xmin_swap, xmax_swap, xmin_lower32, xmax_lower32;
-+
-+		xmin_lower32 = x.a & 0xffffffff;
-+		xmax_lower32 = x.b & 0xffffffff;
-+		if (xmin_lower32 < y.a || xmin_lower32 > y.b) {
-+			/* The 32 lower bits of the umin64 are outside the u32
-+			 * range. Let's update umin64 to match the u32 range.
-+			 * We want to *increase* the umin64 to the *minimum*
-+			 * value that matches the u32 range.
-+			 */
-+			xmin_swap = swap_low32(x.a, y.a);
-+			/* We should always only increase the minimum, so if
-+			 * the new value is lower than before, we need to
-+			 * increase the 32 upper bits by 1.
-+			 */
-+			if (xmin_swap < x.a)
-+				xmin_swap += 0x100000000;
-+			if (xmin_swap == x.b)
-+				return range(x_t, x.b, x.b);
-+		} else if (xmax_lower32 < y.a || xmax_lower32 > y.b) {
-+			/* Same for the umax64, but we want to *decrease*
-+			 * umax64 to the *maximum* value that matches the u32
-+			 * range.
-+			 */
-+			xmax_swap = swap_low32(x.b, y.b);
-+			if (xmax_swap > x.b)
-+				xmax_swap -= 0x100000000;
-+			if (xmax_swap == x.a)
-+				return range(x_t, x.a, x.a);
-+		}
-+	}
-+
- 	/* the case when new range knowledge, *y*, is a 32-bit subregister
- 	 * range, while previous range knowledge, *x*, is a full register
- 	 * 64-bit range, needs special treatment to take into account upper 32
-@@ -2143,6 +2176,8 @@ static struct subtest_case crafted_cases[] = {
- 	{U64, S64, {0x7fffffff00000001ULL, 0xffffffff00000000ULL}, {0, 0}},
- 	{U64, S64, {0, 0xffffffffULL}, {1, 1}},
- 	{U64, S64, {0, 0xffffffffULL}, {0x7fffffff, 0x7fffffff}},
-+	{U64, S32, {0xfffffffe00000001, 0xffffffff00000000}, {S64_MIN, S64_MIN}},
-+	{U64, U32, {0xfffffffe00000000, U64_MAX - 1}, {U64_MAX, U64_MAX}},
+   clock-names:
+     minItems: 3
+-    maxItems: 5
++    maxItems: 6
  
- 	{U64, U32, {0, 0x100000000}, {0, 0}},
- 	{U64, U32, {0xfffffffe, 0x300000000}, {0x80000000, 0x80000000}},
+   num-lanes:
+     const: 1
+diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+index 12a01f7a57443..21dda80660147 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+@@ -40,7 +40,8 @@ properties:
+       - description: PCIe PHY clock.
+       - description: Additional required clock entry for imx6sx-pcie,
+            imx6sx-pcie-ep, imx8mq-pcie, imx8mq-pcie-ep.
+-      - description: PCIe reference clock.
++      - description: PCIe internal reference clock.
++      - description: PCIe additional external reference clock.
+ 
+   clock-names:
+     minItems: 3
 -- 
 2.53.0
 
