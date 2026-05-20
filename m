@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBWREkomDmpZ6gUAu9opvQ
-	(envelope-from <stable+bounces-252627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:22 +0200
+	id aDjpEfMgDmqj6QUAu9opvQ
+	(envelope-from <stable+bounces-251994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28B259AC7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CB659A604
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACC81360702B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9336037A982F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D2D3CCFB0;
-	Wed, 20 May 2026 18:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11F93F23BF;
+	Wed, 20 May 2026 17:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twF+K6AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO9b9Var"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525CB29B78D;
-	Wed, 20 May 2026 18:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965C92F83A0;
+	Wed, 20 May 2026 17:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301171; cv=none; b=trFzXqVFUjjfEIyKJ7Zk8wO4K+QzI2aEUnBkQOofOFnxTd2BcrPpMPdb2yF++s0J9Drv8fV/AGBCkR9BWR+pCm6KiIi6g+85Bs4TOv8pqxoEUIIIYkEMvOFBnf5xugekyeWk5ujQ7oqSp7sUTWJ2Rib698y9z1Cq/OsVIuyyM6E=
+	t=1779299467; cv=none; b=XuYuZGXesHi3njW5LKCNUsj0lDknd1eQemhKT3h3+YzJn37mfAWRlhe7N4pbqZa3mpj39T0sMGVzWvvLb2xgTSMOZCSKBWOcpt5NS/qFuaSDPD4uJq7fZIkwGF+06M/SbqtMGXWcWpI5kIWO+0uHxbZh3xJgKSLY7NkFWV7XNpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301171; c=relaxed/simple;
-	bh=/blbL7zM5Tse0UKVRW1r3Tg/N1rgToV0doq8gHnIZDc=;
+	s=arc-20240116; t=1779299467; c=relaxed/simple;
+	bh=OBzlsAVCVSTiz8mJOdRvoYezIRcst+3JLJ7Eq6jsMWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFxUvFefbTcwVXMy43VUodPTtUGHmsDy4QA+2iFgRtOAak+p4HR9tEjXhK7Pcw49ZUaeYiVzWqMcUKi/B4JR2QbEhBFtiFzRW4jTYzriCqERW/GymY0511ArWOTZNNUb3wXvt3xfj4GwscDhLv95NGcGjXmkGjmyq6CwcBdKUg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twF+K6AZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93FF1F000E9;
-	Wed, 20 May 2026 18:19:29 +0000 (UTC)
+	 MIME-Version; b=X/YjTzYTCoq3b7mRJHUTxbW0D0CwPAFbZeG8uWSXkgWqbI1hcwbd2UxIvF2IYg0rOHuke1AjTBoeOFXcdQwu6NNLCKT2+BvQcHIdoQkzD646+wrcxTGXmw4tJZVxwoFdhxWiHV3DmibjdPcuSbNp1ZYVPIhXRr+kUDpwb2HRHmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO9b9Var; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A740D1F000E9;
+	Wed, 20 May 2026 17:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301170;
-	bh=kseyyzjTh0qML2iAZrZPN31tiCFQhKawuqAHBfokSyc=;
+	s=korg; t=1779299466;
+	bh=uZj2m6m9LJVPdFIcwMmGjtGwlWIK2bgwabMplpPMuoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=twF+K6AZyeXnaVveh1rvk9xp48ReFgj6z8eRlCRzN0lkOlTVu56KP5Nm+JhUHUVl5
-	 WHcW9j/ek6HjBNu349ap6suMn5kpBZAMKMxl2cvqTvatwkLrwFoOJLNpV6/SLHDu7B
-	 AqHdq/Dw1Rjb3G2vjMXhVupXPaA/vp49rcrP8pdY=
+	b=BO9b9VarIOtZDhvqoIyOU1sk18gugoK13335aHL3YvnzaKPzpryfgDvGO9Wd1H6ZD
+	 KmOtZ/5lQJs23Rz5EvPjOzKTjKGh213dNezcRT5lPXgPqlY40JlLXvRX3HFoA2hbKl
+	 vbY9tv/WKMa8HSPBch1uwcB+Dg3zcgMpITs0g9IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 453/666] tcp: annotate data-races around tp->dsack_dups
-Date: Wed, 20 May 2026 18:21:04 +0200
-Message-ID: <20260520162121.089400627@linuxfoundation.org>
+Subject: [PATCH 6.18 782/957] net/sched: taprio: fix NULL pointer dereference in class dump
+Date: Wed, 20 May 2026 18:21:05 +0200
+Message-ID: <20260520162151.519347485@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +68,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252627-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251994-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,mojatatu.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A28B259AC7D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,asu.edu:email,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E1CB659A604
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit a984705ca88b976bf1087978fd98b7f3993da88c ]
+[ Upstream commit 3d07ca5c0fae311226f737963984bd94bb159a87 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+When a TAPRIO child qdisc is deleted via RTM_DELQDISC, taprio_graft()
+is called with new == NULL and stores NULL into q->qdiscs[cl - 1].
+Subsequent RTM_GETTCLASS dump operations walk all classes via
+taprio_walk() and call taprio_dump_class(), which calls taprio_leaf()
+returning the NULL pointer, then dereferences it to read child->handle,
+causing a kernel NULL pointer dereference.
 
-Fixes: 7e10b6554ff2 ("tcp: add dsack blocks received stats")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-10-edumazet@google.com
+The bug is reachable with namespace-scoped CAP_NET_ADMIN on any kernel
+with CONFIG_NET_SCH_TAPRIO enabled. On systems with unprivileged user
+namespaces enabled, an unprivileged local user can trigger a kernel
+panic by creating a taprio qdisc inside a new network namespace,
+grafting an explicit child qdisc, deleting it, and requesting a class
+dump. The RTM_GETTCLASS dump itself requires no capability.
+
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
+ RIP: 0010:taprio_dump_class (net/sched/sch_taprio.c:2478)
+ Call Trace:
+  <TASK>
+  tc_fill_tclass (net/sched/sch_api.c:1966)
+  qdisc_class_dump (net/sched/sch_api.c:2326)
+  taprio_walk (net/sched/sch_taprio.c:2514)
+  tc_dump_tclass_qdisc (net/sched/sch_api.c:2352)
+  tc_dump_tclass_root (net/sched/sch_api.c:2370)
+  tc_dump_tclass (net/sched/sch_api.c:2431)
+  rtnl_dumpit (net/core/rtnetlink.c:6864)
+  netlink_dump (net/netlink/af_netlink.c:2325)
+  rtnetlink_rcv_msg (net/core/rtnetlink.c:6959)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
+
+Fix this by substituting &noop_qdisc when new is NULL in
+taprio_graft(), a common pattern used by other qdiscs (e.g.,
+multiq_graft()) to ensure the q->qdiscs[] slots are never NULL.
+This makes control-plane dump paths safe without requiring individual
+NULL checks.
+
+Since the data-plane paths (taprio_enqueue and taprio_dequeue_from_txq)
+previously had explicit NULL guards that would drop/skip the packet
+cleanly, update those checks to test for &noop_qdisc instead. Without
+this, packets would reach taprio_enqueue_one() which increments the root
+qdisc's qlen and backlog before calling the child's enqueue; noop_qdisc
+drops the packet but those counters are never rolled back, permanently
+inflating the root qdisc's statistics.
+
+After this change *old can be a valid qdisc, NULL, or &noop_qdisc.
+Only call qdisc_put(*old) in the first case to avoid decreasing
+noop_qdisc's refcount, which was never increased.
+
+Fixes: 665338b2a7a0 ("net/sched: taprio: dump class stats for the actual q->qdiscs[]")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260422161958.2517539-3-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c       | 2 +-
- net/ipv4/tcp_input.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_taprio.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 291db82518b03..cacb298147d4b 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4306,7 +4306,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 			  TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
- 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
--	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
-+	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
- 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
- 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 39463842231c0..60c42d612d186 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1059,7 +1059,7 @@ static u32 tcp_dsack_seen(struct tcp_sock *tp, u32 start_seq,
- 	else if (tp->tlp_high_seq && tp->tlp_high_seq == end_seq)
- 		state->flag |= FLAG_DSACK_TLP;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 91b85360f8091..b3481cafa6eca 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -633,7 +633,7 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	queue = skb_get_queue_mapping(skb);
  
--	tp->dsack_dups += dup_segs;
-+	WRITE_ONCE(tp->dsack_dups, tp->dsack_dups + dup_segs);
- 	/* Skip the DSACK if dup segs weren't retransmitted by sender */
- 	if (tp->dsack_dups > tp->total_retrans)
- 		return 0;
+ 	child = q->qdiscs[queue];
+-	if (unlikely(!child))
++	if (unlikely(child == &noop_qdisc))
+ 		return qdisc_drop(skb, sch, to_free);
+ 
+ 	if (taprio_skb_exceeds_queue_max_sdu(sch, skb)) {
+@@ -716,7 +716,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
+ 	int len;
+ 	u8 tc;
+ 
+-	if (unlikely(!child))
++	if (unlikely(child == &noop_qdisc))
+ 		return NULL;
+ 
+ 	if (TXTIME_ASSIST_IS_ENABLED(q->flags))
+@@ -2185,6 +2185,9 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	if (!dev_queue)
+ 		return -EINVAL;
+ 
++	if (!new)
++		new = &noop_qdisc;
++
+ 	if (dev->flags & IFF_UP)
+ 		dev_deactivate(dev);
+ 
+@@ -2198,14 +2201,14 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
+ 	*old = q->qdiscs[cl - 1];
+ 	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
+ 		WARN_ON_ONCE(dev_graft_qdisc(dev_queue, new) != *old);
+-		if (new)
++		if (new != &noop_qdisc)
+ 			qdisc_refcount_inc(new);
+-		if (*old)
++		if (*old && *old != &noop_qdisc)
+ 			qdisc_put(*old);
+ 	}
+ 
+ 	q->qdiscs[cl - 1] = new;
+-	if (new)
++	if (new != &noop_qdisc)
+ 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+ 
+ 	if (dev->flags & IFF_UP)
 -- 
 2.53.0
 
