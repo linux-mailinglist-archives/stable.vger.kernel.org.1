@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ub4LC4L4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-251519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:02 +0200
+	id MJBpDcbqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B57E5955AC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1D5593003
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7247831E5CD3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 700C53176016
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23573E0C70;
-	Wed, 20 May 2026 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3F93D7D7B;
+	Wed, 20 May 2026 16:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMDfbFJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNyFNyGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC7F3C6A5C;
-	Wed, 20 May 2026 17:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6098F3D8100;
+	Wed, 20 May 2026 16:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298192; cv=none; b=MGWGzurkyS1hzKPL5GbqWnJkVJTSzkQQwK3jt1blusgLl4gYB23YmiTwo7BPC3JN3yfBkAPROV6Z93DmhV9tNzv3u+VKcjATZnB5E3Zu64IQTZS3ZdRLUYKhyKfLdq0el4IaoKiv7QMPh/A1dSt3Jq8B69zqfxINw8spJwSGIDg=
+	t=1779295791; cv=none; b=ebeMZSaeXGYFRGUgYzEJ3eL4UcFxWddIgYT7yoTk00Ipob10YLZusqxfINJV3E0sWw8HUoYAaon3SIjsMQOsEgvzIzg94lgDs7C3cDnuOSaVa4tDB6vJCP90QIflfIVsj5+uJ2fWelD9bmLke8fkVH7Ni44wwzXEK6rF4RbylTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298192; c=relaxed/simple;
-	bh=2ugaQbucOyPtOAMkUNF7HoNnjNNxlYqwBqMQTEXMAm4=;
+	s=arc-20240116; t=1779295791; c=relaxed/simple;
+	bh=bqsnaQiKtR5Jm1hAXsXW0alvdvYmfMLmDzHZfoj3Bao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYlX4trTeB9MD3jc07Q1xl2vFwTAMuQSk9eYs7qUTs3jxLR8yYOpi9uudnJES5+G54dlRG+8MqnHMc3wj9nrh+MLEMW6axkCI9w7zCCAPbqw6G+MUfzXobUjJF4BusP8OkKFi6RV76jVbo923KKj9SPduyTA136ZYGijfwsPjEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMDfbFJJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2431A1F000E9;
-	Wed, 20 May 2026 17:29:50 +0000 (UTC)
+	 MIME-Version; b=EiOPkd/dYYvE5WymjASTFyNEQaJKGLGsxMKA9WECSXZ/WudkXRZ0FZKgUFw/zxdmRLBbSyjk9x6/yQA+xxhSutiDG4w+O4drjr8CEPndCkqhrFzNmTa27ch9K59QxSZUuL3ke/cExBjbwrsXe1v6yEfoM1rOF8UXK5j+a3RDf2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNyFNyGj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DE91F000E9;
+	Wed, 20 May 2026 16:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298191;
-	bh=JTK7tlvDJ4jDUi2SBilYt+NyMgDW7AIifRY9788l+/Q=;
+	s=korg; t=1779295787;
+	bh=fdYvc0iU91yjyMPQRt/n/tLtrCpSyXi0XzA6Y17bUeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XMDfbFJJBFX0b4aIvh4R7wMKGmNZkfvm0zPwoKYcHwUxD3oaQEWV8rh7Xdipc5BYT
-	 ctwAsTEPuLFisXzTOCHDhX8thXPF65Onyx2U3Ythk3ATQvdLHmbX4JJ+5muNrrCDLf
-	 G1DMBxflUicxMg+F8ZGbbzIxbirnEjzvP1dgiMl0=
+	b=lNyFNyGjtnvLL1BFxY8PB+TcYeMasOP5R6kCDQ5m3HxFnmG920f9SYATn/molfjZK
+	 4AvEcBjhUwq0ansZmA9zb1pijMVBrG8OA/Xp/p9qaXoSs0sdwBGY5esysmkKqswso2
+	 6D90p4fjf5iBEkxHTVLH4vndTUlkDRBXm3Oet/iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 318/957] PCI: tegra194: Fix polling delay for L2 state
+Subject: [PATCH 7.0 0551/1146] soc/tegra: cbb: Fix cross-fabric target timeout lookup
 Date: Wed, 20 May 2026 18:13:21 +0200
-Message-ID: <20260520162141.428592931@linuxfoundation.org>
+Message-ID: <20260520162200.648534286@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,88 +68,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251519-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250582-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4B57E5955AC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1D1D5593003
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
+[ Upstream commit a5f51b04cbb3ae0f9cb2c4488952b775ebb0ccbf ]
 
-As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
-Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
-polling for 10 msec with 1 usec delay which is aggressive.  Use existing
-macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
-Since this function is used in non-atomic context only, use non-atomic poll
-function.
+When a fabric receives an error interrupt, the error may have
+occurred on a different fabric. The target timeout lookup was using
+the wrong base address (cbb->regs) with offsets from a different
+fabric's target map, causing a kernel page fault.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
+  Unable to handle kernel paging request at virtual address ffff80000954cc00
+  pc : tegra234_cbb_get_tmo_slv+0xc/0x28
+  Call trace:
+   tegra234_cbb_get_tmo_slv+0xc/0x28
+   print_err_notifier+0x6c0/0x7d0
+   tegra234_cbb_isr+0xe4/0x1b4
+
+Add tegra234_cbb_get_fabric() to look up the correct fabric device
+using fab_id, and use its base address for accessing target timeout
+registers.
+
+Fixes: 25de5c8fe0801 ("soc/tegra: cbb: Improve handling for per SoC fabric data")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 3934757baa30c..d2d3139e81d36 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -198,8 +198,6 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
- 
--#define PME_ACK_TIMEOUT 10000
--
- #define LTSSM_TIMEOUT 50000	/* 50ms */
- 
- #define GEN3_GEN4_EQ_PRESET_INIT	5
-@@ -1582,9 +1580,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
- 	val |= APPL_PM_XMT_TURNOFF_STATE;
- 	appl_writel(pcie, val, APPL_RADM_STATUS);
- 
--	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
--				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
--				 1, PME_ACK_TIMEOUT);
-+	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
-+				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
-+				  PCIE_PME_TO_L2_TIMEOUT_US/10,
-+				  PCIE_PME_TO_L2_TIMEOUT_US);
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index 626e0e820329b..7e387fc54c6b1 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -313,12 +313,37 @@ static void tegra234_cbb_lookup_apbslv(struct seq_file *file, const char *target
+ 	}
  }
  
- static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
++static struct tegra234_cbb *tegra234_cbb_get_fabric(u8 fab_id)
++{
++	struct tegra_cbb *entry;
++
++	list_for_each_entry(entry, &cbb_list, node) {
++		struct tegra234_cbb *priv = to_tegra234_cbb(entry);
++
++		if (priv->fabric->fab_id == fab_id)
++			return priv;
++	}
++
++	return NULL;
++}
++
+ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegra234_cbb *cbb,
+ 					      u8 target_id, u8 fab_id)
+ {
+ 	const struct tegra234_target_lookup *map = cbb->fabric->fab_list[fab_id].target_map;
++	struct tegra234_cbb *target_cbb = NULL;
+ 	void __iomem *addr;
+ 
++	if (fab_id == cbb->fabric->fab_id)
++		target_cbb = cbb;
++	else
++		target_cbb = tegra234_cbb_get_fabric(fab_id);
++
++	if (!target_cbb) {
++		dev_err(cbb->base.dev, "could not find fabric for fab_id:%d\n", fab_id);
++		return;
++	}
++
+ 	if (target_id >= cbb->fabric->fab_list[fab_id].max_targets) {
+ 		tegra_cbb_print_err(file, "\t  Invalid target_id:%d\n", target_id);
+ 		return;
+@@ -341,7 +366,7 @@ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegr
+ 	 *	e) Goto step-a till all bits are set.
+ 	 */
+ 
+-	addr = cbb->regs + map[target_id].offset;
++	addr = target_cbb->regs + map[target_id].offset;
+ 
+ 	if (strstr(map[target_id].name, "AXI2APB")) {
+ 		addr += APB_BLOCK_TMO_STATUS_0;
 -- 
 2.53.0
 
