@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBXSBOvvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:23 +0200
+	id gB6fFxn1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26423593DC8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:22 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C710594D64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8278D3089B7B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DD7D3148CB5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA9A34041C;
-	Wed, 20 May 2026 16:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9263E3BBA0E;
+	Wed, 20 May 2026 17:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0ALc/c0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRhTOdAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156701BD9D0;
-	Wed, 20 May 2026 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470FD36A36A;
+	Wed, 20 May 2026 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295604; cv=none; b=h9BQGqJyqgmAmfZfCEhNG4v8tt09kj66Ca6pzSUrlEdg7AT6svFweHo68hCy/Wi3VThH8iny1bBEZZB16QAvCQQTN0ww7G3bszRTyeVzt7/AvFUUn0a3uDQ2gebD0EpMjtW8MPAvR/YsXLAHbozB3QOADImCzzadx63iT+T48XM=
+	t=1779298021; cv=none; b=tVC24Jd05f9LPyRSY18FsFpHEb6bXxmeCJoAtcB+HTLsJzOE1d8Xr4PmKZd/ucIBeDTkOhJe8JtQo+hlGc50jcVdQFouXsNUI6Brfsk63/xYWrhRXf9tq0EJnafbnlyrwTUqro7SarsiqWJVenPfpAlvTiwYylzNMertN10bww8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295604; c=relaxed/simple;
-	bh=scMK+Lf5TpW9IV9lmqsgTBg/38MYqBnN2nyFCigTkEE=;
+	s=arc-20240116; t=1779298021; c=relaxed/simple;
+	bh=mMxckD/xDQfEksanxQN9/fjfLWZbp1CcLO/qR00nDbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qt+j4KGrCzQTP4zHn8O82g4fNIG81mraHmCC6xD08rKmk9/+mrn9QWd9O7HtZxzwO3jRIpNYXCLdPmiPUswYcO+bMed1anGorUL3Ks+Ff+sucJiZYu++I9xUbBFL1uguFwOK8s3OOwwf7GS0c8FcZUzLSR+5fJmS7Lf1mNT3vvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0ALc/c0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3D61F000E9;
-	Wed, 20 May 2026 16:46:42 +0000 (UTC)
+	 MIME-Version; b=F/kIEbmAPTyKN9mFIc6M/Xt3V9h7vKPgmLLklGNei0P2qR/8nN0g4Wg64chn+HDkT+4F5+MHGE90/ujG/fTgdlSfSKje+NtaKLQUaRw6j68OYXQCelXALyy90ODwD78S2pYuI6F+HV5cvXTFTBxDOULRvrnoDsYvLK5IGrAVei8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRhTOdAf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4751F000E9;
+	Wed, 20 May 2026 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295603;
-	bh=weJlc/0Y1ZlOjJnoGdSaer1FfXaKxlTgCylG7Cv7vXA=;
+	s=korg; t=1779298020;
+	bh=SdIqvwLfgvVJUUjp6/MiFkPMx55VuExvcviUd054AhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c0ALc/c0vczLRWeY9VrOcwJL75wdwxY0fQ8nYmYr0Heq/JHghPjW51iTSxv95f6go
-	 TxZv1iaXbgVdEEEZBHBO4+gdic5QJDRRdOcJnAxD7r/r1sSxzai+m0fsBAxIeG3Wj6
-	 T2v006ssytXw1db+eBvJTrz71pGHRQbs0c085PBI=
+	b=GRhTOdAfdsQgLAelrryNtoBE+CUq83X+P2myO7p24aVvY2voqQOSXjXxsPEI3MFyp
+	 88jecDbkT20u19Xr4owvX+sYkKSsOAd5JWhgqn6uf5xKSJi538Pv9ZDVb4XeDTlm6i
+	 kXomYTRoxnTAQ2XKFDTizBM2wvDafI/J2ZfjrVTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhruva Gole <d-gole@ti.com>,
-	Kendall Willis <k-willis@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0483/1146] arm64: dts: ti: k3-am62l: include WKUP_UART0 in wakeup peripheral window
-Date: Wed, 20 May 2026 18:12:13 +0200
-Message-ID: <20260520162159.122827722@linuxfoundation.org>
+Subject: [PATCH 6.18 251/957] PCI: qcom: Advertise Hotplug Slot Capability with no Command Completion support
+Date: Wed, 20 May 2026 18:12:14 +0200
+Message-ID: <20260520162139.985954015@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250512-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251453-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,60 +86,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,f0000:email,ti.com:email]
-X-Rspamd-Queue-Id: 26423593DC8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2C710594D64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kendall Willis <k-willis@ti.com>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
-[ Upstream commit e5452968a4b04f93bf9b778ccfd00f79e4d4f529 ]
+[ Upstream commit 33a76fc3c3e61386524479b99f35423bd3d9a895 ]
 
-WKUP_UART0 is apart of the wakeup peripherals and has a range from
-0x002B300000 to 0x002B3001FF. Expand the wakeup peripheral window to
-include WKUP_UART0.
+Qcom PCIe Root Ports advertise hotplug capability in hardware, but do not
+support hotplug command completion. As a result, the hotplug commands
+issued by the pciehp driver never gets completion notification, leading to
+repeated timeout warnings and multi-second delays during boot and
+suspend/resume.
 
-Fixes: 5f016758b0ab ("arm64: dts: ti: k3-am62l: add initial infrastructure")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Kendall Willis <k-willis@ti.com>
-Link: https://patch.msgid.link/20260219-v6-19-wkup-uart-wakeup-v4-1-eda09dce5623@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Commit a54db86ddc153 ("PCI: qcom: Do not advertise hotplug capability for
+IPs v2.7.0 and v1.9.0") mistakenly assumed that the Root Ports doesn't
+support Hotplug due to timeouts and disabled the Hotplug functionality
+altogether. But the Root Ports does support reporting Hotplug events like
+DL_Up/Down events.
+
+So to fix the command completion timeout issues, just set the No Command
+Completed Support (NCCS) bit and enable Hotplug in Slot Capability field
+back.
+
+Fixes: a54db86ddc153 ("PCI: qcom: Do not advertise hotplug capability for IPs v2.7.0 and v1.9.0")
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+[mani: renamed function, commit log and added comment]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # Hamoa CRD, tunneled link
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260314-hotplug-v1-1-96ac87d93867@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62l.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62l.dtsi b/arch/arm64/boot/dts/ti/k3-am62l.dtsi
-index 23acdbb301fe3..e01e342c26daa 100644
---- a/arch/arm64/boot/dts/ti/k3-am62l.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62l.dtsi
-@@ -92,7 +92,7 @@ cbass_main: bus@f0000 {
- 			 <0x00 0x00b00000 0x00 0x00b00000 0x00 0x00001400>, /* VTM */
- 			 <0x00 0x04080000 0x00 0x04080000 0x00 0x00008000>, /* PDCFG */
- 			 <0x00 0x04201000 0x00 0x04201000 0x00 0x00000100>, /* GPIO */
--			 <0x00 0x2b100000 0x00 0x2b100000 0x00 0x00100100>, /* Wakeup Peripheral Window */
-+			 <0x00 0x2b100000 0x00 0x2b100000 0x00 0x00200200>, /* Wakeup Peripheral Window */
- 			 <0x00 0x40800000 0x00 0x40800000 0x00 0x00014000>, /* DMA */
- 			 <0x00 0x43000000 0x00 0x43000000 0x00 0x00080000>; /* CTRL MMRs */
- 		#address-cells = <2>;
-@@ -104,7 +104,7 @@ cbass_wakeup: bus@a80000 {
- 				 <0x00 0x00b00000 0x00 0x00b00000 0x00 0x00001400>, /* VTM */
- 				 <0x00 0x04080000 0x00 0x04080000 0x00 0x00008000>, /* PDCFG */
- 				 <0x00 0x04201000 0x00 0x04201000 0x00 0x00000100>, /* GPIO */
--				 <0x00 0x2b100000 0x00 0x2b100000 0x00 0x00100100>, /* Wakeup Peripheral Window */
-+				 <0x00 0x2b100000 0x00 0x2b100000 0x00 0x00200200>, /* Wakeup Peripheral Window */
- 				 <0x00 0x40800000 0x00 0x40800000 0x00 0x00014000>, /* DMA */
- 				 <0x00 0x43000000 0x00 0x43000000 0x00 0x00080000>; /* CTRL MMRs */
- 			#address-cells = <2>;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 789cc0e3c10da..43555ad9e5dcf 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -341,15 +341,20 @@ static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+ }
+ 
+-static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
++static void qcom_pcie_set_slot_nccs(struct dw_pcie *pci)
+ {
+ 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	u32 val;
+ 
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
++	/*
++	 * Qcom PCIe Root Ports do not support generating command completion
++	 * notifications for the Hot-Plug commands. So set the NCCS field to
++	 * avoid waiting for the completions.
++	 */
+ 	val = readl(pci->dbi_base + offset + PCI_EXP_SLTCAP);
+-	val &= ~PCI_EXP_SLTCAP_HPC;
++	val |= PCI_EXP_SLTCAP_NCCS;
+ 	writel(val, pci->dbi_base + offset + PCI_EXP_SLTCAP);
+ 
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+@@ -549,7 +554,7 @@ static int qcom_pcie_post_init_2_1_0(struct qcom_pcie *pcie)
+ 	writel(CFG_BRIDGE_SB_INIT,
+ 	       pci->dbi_base + AXI_MSTR_RESP_COMP_CTRL1);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -629,7 +634,7 @@ static int qcom_pcie_post_init_1_0_0(struct qcom_pcie *pcie)
+ 		writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT);
+ 	}
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -722,7 +727,7 @@ static int qcom_pcie_post_init_2_3_2(struct qcom_pcie *pcie)
+ 	val |= EN;
+ 	writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT_V2);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -1028,7 +1033,7 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
+ 		writel(WR_NO_SNOOP_OVERRIDE_EN | RD_NO_SNOOP_OVERRIDE_EN,
+ 				pcie->parf + PARF_NO_SNOOP_OVERRIDE);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
