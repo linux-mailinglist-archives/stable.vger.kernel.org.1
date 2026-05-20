@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKecOtP9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:43 +0200
+	id iO5IIpT3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F881596666
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5C8595355
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1281935AFA3E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A877631AABF0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5997B3F44C9;
-	Wed, 20 May 2026 17:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36D23FBB4E;
+	Wed, 20 May 2026 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11GtN+5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtDe89Vu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104453F23CC;
-	Wed, 20 May 2026 17:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6D83A3E9C;
+	Wed, 20 May 2026 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299441; cv=none; b=onpvt7c+zsaDlQCzpF/jil/V0dHYT4QbFdvwBd4dqgF5OzVNLGF2ZnwApz1TegJtK2ttV9C5YN3+yMWzz45x8DYG138VEx66wCplaKTgS2TqoqMBljN0eRbbuLPRfY5RREvfM88vX3PxywqAewX089uB/QB20CcwdZ1/hjQJ0Ck=
+	t=1779297092; cv=none; b=Vnsi3FAG3scsRQ1zm7CGmBkgNTw6OMxJQBtFqaUHcYfP8L36tkCndSJ1Wd38jPI6aHcayfIdvjkxsA0D+3kxoO2+cWnhuhFxvHHMxu/C4GF6YUt4JG2zojOOg0wWP/qTTWuW42oFh3pzbykkeLLk22uObZidyKbtdVaEN9v5Pac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299441; c=relaxed/simple;
-	bh=eJR4pG3vQBGrcZBUk5nV9QyE5J/9HNo339xQaFGSRX4=;
+	s=arc-20240116; t=1779297092; c=relaxed/simple;
+	bh=vIbxgXd3ZSUlcnKTeIE2H0u+pxnO/r9sr+kNtg+3G1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuLDXC3AraFBcx4QIBhTIQywM7iByBsWGRYjh58py68y+4YDNC8EJv8hQEdlYgsqnH54Q45lFkwVIg8cCpdXwpE2B2NOacC9LTLDWQTjCXz6ezd4tXNo8/GVfq1imJMUm6qG06EYMjdN0nN7QFQIsMffGrd/xzRwyEgKCQQOCy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11GtN+5W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751B21F000E9;
-	Wed, 20 May 2026 17:50:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BmudrkJ0MrXbAJLRJpa7PuVyFPKdHBye0aPfEvsnXhtp4edTCB1YKxmZfI8AC3U31XFhh0G4T30RJxtGH6AOulT66IwRSAyB2GF5KY+++OSni9m4D2/ArhOVdhofDg6SEWGau2Ce7gG/lN35E+XK90HBhAuih6M7gELE4L/BU08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtDe89Vu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CAF1F000E9;
+	Wed, 20 May 2026 17:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299440;
-	bh=oPwj3EicaAZDDOokecdaoTQQvlG4Vm4DOtUujVW1ucM=;
+	s=korg; t=1779297091;
+	bh=g+i8/F+pfm84AR0xGU8jEjQuKsb/+U5QK30zQHPje80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=11GtN+5WNbulQ55xlJnAt+5n526bZOuSgpfXrZgGu81mEGvv+Tt1+m5WHV2X1peQi
-	 A7xzJcCgA1d4oUuf7rBXcvv7445x1rfGfH3YwvEkCVCd7k6jN2FKQgpdPX/Kz5PXPG
-	 3w6LXVlwSSAHylxNwRN+8GmuZY48CY3ba6b2gG+E=
+	b=KtDe89VuOsJAAb8PVZfDNotNjlpqxb6aepU4L88aJHABCLYgIIqAgqpUYsT/zwsSY
+	 kMIMYbBzQ7RhvsWX+r4yfvQP32XKTAgs6o6gKe0v8aRc3unDLZzELl+x9aKZbXZXx6
+	 Ncsd93ik4txiE7tWABOrMpuPBB3JowvKyPbqWiSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 773/957] net: airoha: Do not wake all netdev TX queues in airoha_qdma_wake_netdev_txqs()
+Subject: [PATCH 7.0 1006/1146] drm/amd/display: Read EDID from VBIOS embedded panel info
 Date: Wed, 20 May 2026 18:20:56 +0200
-Message-ID: <20260520162151.325337538@linuxfoundation.org>
+Message-ID: <20260520162211.000955989@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +63,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251098-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251984-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7F881596666
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,amd.com:email]
+X-Rspamd-Queue-Id: 8A5C8595355
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit e070aac63b42bf81f4dc565f9f841ff47e6c992f ]
+[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
 
-Do not wake every netdev TX queue across all ports sharing the QDMA
-running netif_tx_wake_all_queues routine in airoha_qdma_wake_netdev_txqs()
-but only the ones that are mapped the specific QDMA stopped hw TX queue.
-This patch can potentially avoid waking already stopped netdev TX queues
-that are mapped to a different QDMA hw TX queue.
-Introduce airoha_qdma_get_txq utility routine.
+Some board manufacturers hardcode the EDID for the embedded
+panel in the VBIOS. This EDID should be used when the panel
+doesn't have a DDC.
 
-Fixes: b94769eb2f30 ("net: airoha: Fix possible TX queue stall in airoha_qdma_tx_napi_poll()")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260421-airoha-wake_netdev_txqs-optmization-v1-1-e0be95115d53@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For reference, see the legacy non-DC display code:
+amdgpu_atombios_encoder_get_lcd_info()
+
+This is necessary to support embedded connectors without DDC.
+
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 19 +++++++++++++++----
- drivers/net/ethernet/airoha/airoha_eth.h |  5 +++++
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
+ .../display/include/grph_object_ctrl_defs.h   |  4 ++
+ 2 files changed, 66 insertions(+)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 9691b4134285f..7d7f2bf6172a3 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -878,13 +878,24 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
- {
- 	struct airoha_qdma *qdma = q->qdma;
- 	struct airoha_eth *eth = qdma->eth;
--	int i;
-+	int i, qid = q - &qdma->q_tx[0];
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-+		int j;
-+
-+		if (!port)
-+			continue;
- 
--		if (port && port->qdma == qdma)
--			netif_tx_wake_all_queues(port->dev);
-+		if (port->qdma != qdma)
-+			continue;
-+
-+		for (j = 0; j < port->dev->num_tx_queues; j++) {
-+			if (airoha_qdma_get_txq(qdma, j) != qid)
-+				continue;
-+
-+			netif_wake_subqueue(port->dev, j);
-+		}
- 	}
- 	q->txq_stopped = false;
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 73e3c45eeeba6..bbd8d52330b55 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -1295,6 +1295,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
+ 	return BP_RESULT_FAILURE;
  }
-@@ -2018,7 +2029,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 	u16 index;
- 	u8 fport;
  
--	qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx);
-+	qid = airoha_qdma_get_txq(qdma, skb_get_queue_mapping(skb));
- 	tag = airoha_get_dsa_tag(skb, dev);
- 
- 	msg0 = FIELD_PREP(QDMA_ETH_TXMSG_CHAN_MASK,
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index abd996492cb7f..33277cc577990 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -627,6 +627,11 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 mask, u32 val);
- #define airoha_qdma_clear(qdma, offset, val)			\
- 	airoha_rmw((qdma)->regs, (offset), (val), 0)
- 
-+static inline u16 airoha_qdma_get_txq(struct airoha_qdma *qdma, u16 qid)
++static enum bp_result get_embedded_panel_extra_info(
++	struct bios_parser *bp,
++	struct embedded_panel_info *info,
++	const uint32_t table_offset)
 +{
-+	return qid % ARRAY_SIZE(qdma->q_tx);
++	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
++	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
++	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
++
++	while (*record != ATOM_RECORD_END_TYPE) {
++		switch (*record) {
++		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
++			record += sizeof(ATOM_PATCH_RECORD_MODE);
++			break;
++		case LCD_RTS_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_RTS_RECORD);
++			break;
++		case LCD_CAP_RECORD_TYPE:
++			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
++			break;
++		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
++			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
++			if (fake_edid_record->ucFakeEDIDLength) {
++				if (fake_edid_record->ucFakeEDIDLength == 128)
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength;
++				else
++					info->fake_edid_size =
++						fake_edid_record->ucFakeEDIDLength * 128;
++
++				info->fake_edid = fake_edid_record->ucFakeEDIDString;
++
++				record += struct_size(fake_edid_record,
++						      ucFakeEDIDString,
++						      info->fake_edid_size);
++			} else {
++				/* empty fake edid record must be 3 bytes long */
++				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
++			}
++			break;
++		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
++			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
++			info->panel_width_mm = panel_res_record->usHSize;
++			info->panel_height_mm = panel_res_record->usVSize;
++			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
++			break;
++		default:
++			return BP_RESULT_BADBIOSTABLE;
++		}
++	}
++
++	return BP_RESULT_OK;
 +}
 +
- static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
- {
- 	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
+ static enum bp_result get_embedded_panel_info_v1_2(
+ 	struct bios_parser *bp,
+ 	struct embedded_panel_info *info)
+@@ -1411,6 +1465,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
+ 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
+ 		info->lcd_timing.misc_info.API_ENABLED = true;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+@@ -1536,6 +1594,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
+ 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
+ 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
+ 
++	if (lvds->usExtInfoTableOffset)
++		return get_embedded_panel_extra_info(bp, info,
++			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
++
+ 	return BP_RESULT_OK;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+index 38a77fa9b4afd..a0f03fb67605e 100644
+--- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
++++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+@@ -153,6 +153,10 @@ struct embedded_panel_info {
+ 	uint32_t drr_enabled;
+ 	uint32_t min_drr_refresh_rate;
+ 	bool realtek_eDPToLVDS;
++	uint16_t panel_width_mm;
++	uint16_t panel_height_mm;
++	uint16_t fake_edid_size;
++	const uint8_t *fake_edid;
+ };
+ 
+ struct dc_firmware_info {
 -- 
 2.53.0
 
