@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-251080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIyBLqz6DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:16 +0200
+	id 8HM1IDH+DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD847595B80
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B49B5967A2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B24AC30CB789
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20206387BEB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73A934B40F;
-	Wed, 20 May 2026 17:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDEF3F23A4;
+	Wed, 20 May 2026 17:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnAeCdX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMnpeIXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A3836A352;
-	Wed, 20 May 2026 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466893F20F9;
+	Wed, 20 May 2026 17:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297047; cv=none; b=tr79CBDxW7MwVUTdkGEmBXQ+LbHewXAqB1Sa30+o4j95zBxRPxRi3M4kL82ZwrM8ZEiDQS/Km/uIC3fUzDET+v0YLKpUx5ZpWNLkc27coopseTJ9qqFrmjM4FvlcwC85pulHsw7u4SZO23iGUvmGjD28elAlRiegNGAyeKXAq/Q=
+	t=1779299520; cv=none; b=EpVFSp28b5SNmpAXpkUcOcR05pbS7IkBDfngSSFTVbsBzTIg8S421NMzCn9TYKl4Q0dWQkaPiT9ifsLJk7tdHSKBIk2c4d80rxwm0FnSF+2N/Tiy/MBmvZX/fO2ixoVGfKXLUME2wfFKdw6PqAH2xc/9mr/NdbCuiAVFUD700xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297047; c=relaxed/simple;
-	bh=AvMrL5rk8IlChiulO2CEIPAU/0GmPoqExXxbiguM0lk=;
+	s=arc-20240116; t=1779299520; c=relaxed/simple;
+	bh=LcLIJ66I2ORGiE5+xL/Ci8EGerrn1ANbUTdig14MbyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UuU5sSA+A9G4e3jVfEqdp/GtUGBAa3t2R6HhoFuHtyOR14oTwIubqsvfu8oRghtRAIqQNtLx4Cl6kN5adNzgtKtMJtukF8URR8rfyUTudQq6j/dZu57BW/uQamzjLy/CYJRPdZmDisZHqDQAvmAlGWD1JkAVKiPHNK/FRdmXBa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnAeCdX6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B361F000E9;
-	Wed, 20 May 2026 17:10:45 +0000 (UTC)
+	 MIME-Version; b=YQPZ3VQtLs8Wow87CVthpbFSy/auts4Fyn6XHNzPhEfW8EpJKUodBN13vAbtTCesFThvYIc02gSOgRIzl7nPmZ96yFrpTosuc4hA/6r9423/Yjs05nfk09tw4aYu4mpRMRMazpFdLHFdI/rvqGgJPz29So5S6LI8IUQwnVypNKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMnpeIXZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647241F000E9;
+	Wed, 20 May 2026 17:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297046;
-	bh=gR8Q2h3VEI2L+Ua2GYAdkkrDfnAni00GLLZozOjZgP8=;
+	s=korg; t=1779299518;
+	bh=97Cg3YdxLbzj2dJfBXuMkACRO/kWmDuiHUovQaLz+BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UnAeCdX605XocOW6f9Ij8LmFXInUBL+G/JYw+i29LPdZYgPtPk4OUzNCGvIl6el5M
-	 1A8UO2fw6eRRQW6sanOp+T5rxrHd/RXaZwFqziuh1DoLN0nhRFlC5a64x2vrlgTU5t
-	 J4o1Tf3MX8igv8Vp06Aog8vjlTnuiPzpa76SqitU=
+	b=QMnpeIXZJbAkvM31cSD2D5tJEoCMbAqh0aSNvHkcQapExlBzjb2elEZhUtiY5MXqL
+	 5fHh/ld+b42QUcSSZLBS7b5OQzJGk6PTKb55MqDV8pA46Eveui115EHSQNxe92K4lF
+	 2Z/UAsyV+yxKArbJuHDlTzWaecBcAUXXc/OZhTRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1029/1146] dpll: export __dpll_pin_change_ntf() for use under dpll_lock
+Subject: [PATCH 6.18 796/957] s390/mm: Fix phys_to_folio() usage in do_secure_storage_access()
 Date: Wed, 20 May 2026 18:21:19 +0200
-Message-ID: <20260520162211.517271918@linuxfoundation.org>
+Message-ID: <20260520162151.825492172@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251080-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252014-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,95 +87,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: BD847595B80
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5B49B5967A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 620055cb1036a6125fd912e7a14b47a6572b809b ]
+[ Upstream commit b95e0e792822bad8fc9eb33ea3a90005e29e75e9 ]
 
-Export __dpll_pin_change_ntf() so that drivers can send pin change
-notifications from within pin callbacks, which are already called
-under dpll_lock. Using dpll_pin_change_ntf() in that context would
-deadlock.
+In case of a Secure-Storage-Access exception the effective aka virtual
+address which caused the exception is contained within the TEID.
 
-Add lockdep_assert_held() to catch misuse without the lock held.
+do_secure_storage_access() incorrectly uses phys_to_folio() instead of
+virt_to_folio() to translate the virtual address to the corresponding
+folio.
 
-Acked-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-9-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
+Fix this by using virt_to_folio() instead of phys_to_folio().
+
+Fixes: 084ea4d611a3 ("s390/mm: add (non)secure page access exceptions handlers")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_netlink.c | 10 ++++++++++
- drivers/dpll/dpll_netlink.h |  2 --
- include/linux/dpll.h        |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ arch/s390/mm/fault.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index 83cbd64abf5a4..95ae786e98aab 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -842,11 +842,21 @@ int dpll_pin_delete_ntf(struct dpll_pin *pin)
- 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
- }
- 
-+/**
-+ * __dpll_pin_change_ntf - notify that the pin has been changed
-+ * @pin: registered pin pointer
-+ *
-+ * Context: caller must hold dpll_lock. Suitable for use inside pin
-+ *          callbacks which are already invoked under dpll_lock.
-+ * Return: 0 if succeeds, error code otherwise.
-+ */
- int __dpll_pin_change_ntf(struct dpll_pin *pin)
- {
-+	lockdep_assert_held(&dpll_lock);
- 	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
- 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
- }
-+EXPORT_SYMBOL_GPL(__dpll_pin_change_ntf);
- 
- /**
-  * dpll_pin_change_ntf - notify that the pin has been changed
-diff --git a/drivers/dpll/dpll_netlink.h b/drivers/dpll/dpll_netlink.h
-index dd28b56d27c56..a9cfd55f57fc4 100644
---- a/drivers/dpll/dpll_netlink.h
-+++ b/drivers/dpll/dpll_netlink.h
-@@ -11,5 +11,3 @@ int dpll_device_delete_ntf(struct dpll_device *dpll);
- int dpll_pin_create_ntf(struct dpll_pin *pin);
- 
- int dpll_pin_delete_ntf(struct dpll_pin *pin);
--
--int __dpll_pin_change_ntf(struct dpll_pin *pin);
-diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-index 2ce295b46b8cd..8f97120ee7b37 100644
---- a/include/linux/dpll.h
-+++ b/include/linux/dpll.h
-@@ -276,6 +276,7 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
- 
- int dpll_device_change_ntf(struct dpll_device *dpll);
- 
-+int __dpll_pin_change_ntf(struct dpll_pin *pin);
- int dpll_pin_change_ntf(struct dpll_pin *pin);
- 
- int register_dpll_notifier(struct notifier_block *nb);
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index d1f165048055b..069f72703a915 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -433,7 +433,7 @@ void do_secure_storage_access(struct pt_regs *regs)
+ 		panic("Unexpected PGM 0x3d with TEID bit 61=0");
+ 	}
+ 	if (is_kernel_fault(regs)) {
+-		folio = phys_to_folio(addr);
++		folio = virt_to_folio((void *)addr);
+ 		if (unlikely(!folio_try_get(folio)))
+ 			return;
+ 		rc = uv_convert_from_secure(folio_to_phys(folio));
 -- 
 2.53.0
 
