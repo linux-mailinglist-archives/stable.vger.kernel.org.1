@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEBYAs7tDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:22 +0200
+	id AJK3Fc39DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D19B59373B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA2B596641
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D4E5316E13C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE57B3144539
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098B63F58F5;
-	Wed, 20 May 2026 17:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339083F7ABC;
+	Wed, 20 May 2026 18:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iduPcOA1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGjL9Nu/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97563F54C9;
-	Wed, 20 May 2026 17:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9A0331220;
+	Wed, 20 May 2026 18:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296715; cv=none; b=kFJWc28RHC1JS1pDgT8NdRkeNj8Melqf5uQdZplDPBJVn8BdNhu3OSdvgwjzWjBYEL6umqmtaGc282xyRc6RY53JVuxHVhazxAg9BK/qRrOuIhFEatw2S9hykxpY7zoWMlg35ms5Oj1wfHEupuejYcm4F/54pQdzho5NWP+JTew=
+	t=1779300897; cv=none; b=PMlj+46l7MMJMqPrr++0h1nliaXv9AK+3hOE68E9zC6ipFVm72OIUfOOibuPOfplKHbyjgjXkLJ9Hc+3JdMEb6/qguD06j5ZWtat4TPOYPqGUxnA8YGE8E8tLiEPBssSnuPtRCYjDA3XojlT1EHk1NHDgb+Xlr3gNpaFKmiSZUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296715; c=relaxed/simple;
-	bh=n9rUwghuiVQbL7/BInnZ3lRqrmyOshzdF/YWf3ddepA=;
+	s=arc-20240116; t=1779300897; c=relaxed/simple;
+	bh=kDy6nyMtC+5JzrJ725qhMXNDLNv2QVyM2PPJdMgof08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HkMiNA/szfcQqh88rOsHXokCHiqPH7DKLqn8WGHUVvvrwXMAsFGR+3hxEKSP9b4Tbm6AyYAOVi//4XoJ7uhGuleXPy5dSTN5KH9iPZmTYYM0DCqCcATQ8pStup3YIQI/6PBH/mikxrrjOqkWLYOq7RleAg5k/G/RyNQ7IIVorHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iduPcOA1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054AE1F000E9;
-	Wed, 20 May 2026 17:05:13 +0000 (UTC)
+	 MIME-Version; b=WORAmklRHQjYD/41Fd/+qqTPtCQ4fKwF54QPzy0vmk2e/URhtpFeErgjQzLfExHyi6Nc2umevaf4GkGYTZFxCB94rnnq6d9UCHhdhaDmJRAiwXOJnW1od8Qv07t7k3ZzIPI1U3sz/10fYYRSTMC5pV7n4EhdeLL8iG1e+Q3/52Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGjL9Nu/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA1E1F000E9;
+	Wed, 20 May 2026 18:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296714;
-	bh=Sbc1H3MQJVO0HWRah+wkI6Yq6J5SrKBdH3ruvYUZd7Q=;
+	s=korg; t=1779300895;
+	bh=0KviNMcfaAd+ZHzQzEHMoX47biJsDPMpxtHPd1Uzjvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iduPcOA1sbCwOB2jq/nUjT2eHHJQHp78ul+UoOj0GopMDuTuE1INjWdSQ30yekxVB
-	 VsGLKDl1CWi5pcqm9N+Se9IlAuNHYKhn485O9BW+86OTfIwoIGvHEA5E+Rq+q2Ez49
-	 rEjkSzeeg8bCSmpH5oYGAA/enePFxbdg1CKBWKfU=
+	b=UGjL9Nu/N99CgKeA0IyZnS8c73wnQg5XLdHNwhDDISq0ABTPIhYcBszwjKtFT4n/7
+	 pmolyMBJ4RPacmdyyV9Pl3mFf01/cbPEpnHFXpzdjb1XrbHbxl2Am0QxefC2rctjQC
+	 7qMgGtQ7SkEQimrysm8qPrLd5YaTZ6E1CermN88U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0903/1146] drm/amd/pm: fix missing fine-grained dpm table flag on aldebaran
+Subject: [PATCH 6.12 342/666] mtd: rawnand: sunxi: fix sunxi_nfc_hw_ecc_read_extra_oob
 Date: Wed, 20 May 2026 18:19:13 +0200
-Message-ID: <20260520162208.672373011@linuxfoundation.org>
+Message-ID: <20260520162118.645972030@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250951-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252523-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 9D19B59373B
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EBA2B596641
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Richard Genoud <richard.genoud@bootlin.com>
 
-[ Upstream commit ccf8932ed8cf4fbfdcd4df2c6b524913691ee700 ]
+[ Upstream commit 848c13996c55fe4ea6bf5acc3ce6c8c5c944b5f6 ]
 
-Add the missing SMU_DPM_TABLE_FINE_GRAINED flag to aldebaran DPM table.
-This fixes the pp_dpm_sclk node issue caused by missing flag configuration.
+When dumping the OOB, the bytes at the end where actually copied from
+the beginning of the OOB instead of current_offset.
 
-Fixes: 7ea1c722fe1d ("drm/amd/pm: Use common helper for aldebaran dpm table")
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3427dea3a48ebddb491a26093f3627384b3cb2c2)
+That leads to something like:
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+instead of:
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+(example with BCH16, user data [8,0], no scrambling)
+
+*cur_off (offset from the beginning of the page) was compared to offset
+(offset from the beginning of the OOB), and then, the
+nand_change_read_column_op() sets the current position to the beginning
+of the OOB instead of OOB+offset
+
+Fixes: 15d6f118285f ("mtd: rawnand: sunxi: Stop supporting ECC_HW_SYNDROME mode")
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/sunxi_nand.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-index 2b4faab376930..23c9f14bb2086 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -425,6 +425,7 @@ static int aldebaran_set_default_dpm_table(struct smu_context *smu)
- 		dpm_table->dpm_levels[0].enabled = true;
- 		dpm_table->dpm_levels[1].value = pptable->GfxclkFmax;
- 		dpm_table->dpm_levels[1].enabled = true;
-+		dpm_table->flags |= SMU_DPM_TABLE_FINE_GRAINED;
- 	} else {
- 		dpm_table->count = 1;
- 		dpm_table->dpm_levels[0].value = smu->smu_table.boot_values.gfxclk / 100;
+diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
+index ac887754b98e2..136d67af97178 100644
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -886,9 +886,9 @@ static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
+ 	if (len <= 0)
+ 		return;
+ 
+-	if (!cur_off || *cur_off != offset)
+-		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
+-					   false);
++	if (!cur_off || *cur_off != (offset + mtd->writesize))
++		nand_change_read_column_op(nand, mtd->writesize + offset,
++					   NULL, 0, false);
+ 
+ 	if (!randomize)
+ 		sunxi_nfc_read_buf(nand, oob + offset, len);
 -- 
 2.53.0
 
