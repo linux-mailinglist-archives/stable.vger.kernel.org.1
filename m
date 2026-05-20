@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGAkKk8ADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-252976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:19 +0200
+	id yJsDB9j7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E98F596FDD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01C3595EAC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C05B301A307
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E12E302FA3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A1C370AEE;
-	Wed, 20 May 2026 18:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D19B37DE8A;
+	Wed, 20 May 2026 18:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqA6uNl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2Ir5Qsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFFA333441;
-	Wed, 20 May 2026 18:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7BC348C55;
+	Wed, 20 May 2026 18:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302081; cv=none; b=NLMq0ptZDEnNfRvCGp6GwLxeI5GxJfRYQFjv4qwgT8XOVp0GYcXrGCaFGAxijrkR8NLuee/532E3NBj4bt50O9+7ZNFEOg0ya5Ks6WuBLs3onkQf6mcD92YaYYiWJA941iXnw1Lir+C3iZPHgcRlu2+Mmm4r0fdHzGJeJG1Zc2s=
+	t=1779300955; cv=none; b=YuqY8DcSfHsrSWnMcl4afpdp/FIJ8soQUW1OLeG2MsaJj2tA7EcBBUlLKonrAkxQiQIqo3OWt50ZOL++JjFeGnJnlGJyQF1zs2PzAlf/PkpoKCNZAUX7bJJNWyxPXRtoDZV58EjqkInSWvzUFq39EOPo27lrQ3LjVgheLxo6Msg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302081; c=relaxed/simple;
-	bh=4QNrLGrNwAi8Fhar7xy+j6bgd6DXgAL1Vh+1aURjZDE=;
+	s=arc-20240116; t=1779300955; c=relaxed/simple;
+	bh=SE+N8FXNexoxcK33g4eua+1TG9J+/uFuHEEszQewsC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gywWI/N3tVreJDVrVfZlLUtxItv30ZH53pKg2O4Omdqxwwid36yOqPc7wLJQzVmuDgMTeUXzhv5exJTC44p62QaySR9UxAE/9qsDKlwncuCDx0+Y74IZQUepjJmbXA0g3IhYhgLyFjEneVZDypgKtJGQ905AOgEp2Cchw2Ko994=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqA6uNl9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16F01F000E9;
-	Wed, 20 May 2026 18:34:39 +0000 (UTC)
+	 MIME-Version; b=TqIhmVB7VJ4BhLWIB5BfNESGZnU+Lqgktz5iO03fyboi+OKHEH9XDQJg53oU0ZKPWb8m/xC+XNCVdsl/BA1siQDiUQGDHzKyyzJKNP8mSUcOHKwr7sRfYxRYA7YsU01g/OZRVbWZnWIgeIfazQA8cewV0/iq4ENrXHyv93gvsM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2Ir5Qsc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699091F000E9;
+	Wed, 20 May 2026 18:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302080;
-	bh=gvrKOTVKj40buxbrdO/TIVK0Rk3+moAcd22NC86cPqE=;
+	s=korg; t=1779300953;
+	bh=ial+xNQLzw/2gnsc0Ut6+Kh9p1nopb/eHuanZixLyeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fqA6uNl9rh9StpgVNq7omGK61Mz3EVtP7x7Pbclr3sRbc+eX3lMMGyGxEnL9E5d7F
-	 Wa0w36A1VzaCJgJB9i8La7qz3A5OeuIATgjMHTZwBRv+VqmgKLNuIkgf22U31iWNLV
-	 de0oe2AKbxdRAwgiM3vuuScyuiKLmyO78wtvOKl0=
+	b=V2Ir5Qscpq1+5bFRm57SyLyIzIubr8NEIIfFdsqBJ0PHy1+kTZmHvtsFgZAY5vOZD
+	 VB/iH/CVNd2FbLPSNzLvJ+DrL6uxe2aai8xuzk9/7YO746HFOCZYFkZGaMBVYOqi0m
+	 wmvnXQQK4JLrN5DPTebfMiDrlsiG7Z24inZbiUvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Ye Bin <yebin10@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/508] drm/msm/shrinker: Fix can_block() logic
+Subject: [PATCH 6.12 344/666] ext4: fix possible null-ptr-deref in mbt_kunit_exit()
 Date: Wed, 20 May 2026 18:19:15 +0200
-Message-ID: <20260520162101.488717644@linuxfoundation.org>
+Message-ID: <20260520162118.688420432@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +66,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252976-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252545-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,linux.ibm.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url,gitlab.freedesktop.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5E98F596FDD
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B01C3595EAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
+[ Upstream commit 22f53f08d9eb837ce69b1a07641d414aac8d045f ]
 
-The intention here was to allow blocking if DIRECT_RECLAIM or if called
-from kswapd and KSWAPD_RECLAIM is set.
+There's issue as follows:
+    # test_new_blocks_simple: failed to initialize: -12
+KASAN: null-ptr-deref in range [0x0000000000000638-0x000000000000063f]
+Tainted: [E]=UNSIGNED_MODULE, [N]=TEST
+RIP: 0010:mbt_kunit_exit+0x5e/0x3e0 [ext4_test]
+Call Trace:
+ <TASK>
+ kunit_try_run_case_cleanup+0xbc/0x100 [kunit]
+ kunit_generic_run_threadfn_adapter+0x89/0x100 [kunit]
+ kthread+0x408/0x540
+ ret_from_fork+0xa76/0xdf0
+ ret_from_fork_asm+0x1a/0x30
 
-Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
+If mbt_kunit_init() init testcase failed will lead to null-ptr-deref.
+So add test if 'sb' is inited success in mbt_kunit_exit().
 
-Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
-Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714238/
-Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
+Fixes: 7c9fa399a369 ("ext4: add first unit test for ext4_mb_new_blocks_simple in mballoc")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20260330133035.287842-6-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ext4/mballoc-test.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-index 0641f5bb8649a..5d5cf51cde65a 100644
---- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-+++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-@@ -26,9 +26,8 @@ static bool can_swap(void)
+diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
+index 0f81094fc0db1..6f506118d18ee 100644
+--- a/fs/ext4/mballoc-test.c
++++ b/fs/ext4/mballoc-test.c
+@@ -362,7 +362,6 @@ static int mbt_kunit_init(struct kunit *test)
+ 		return ret;
+ 	}
  
- static bool can_block(struct shrink_control *sc)
- {
--	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
--		return false;
--	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
-+	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
-+	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+-	test->priv = sb;
+ 	kunit_activate_static_stub(test,
+ 				   ext4_read_block_bitmap_nowait,
+ 				   ext4_read_block_bitmap_nowait_stub);
+@@ -383,6 +382,8 @@ static int mbt_kunit_init(struct kunit *test)
+ 		return -ENOMEM;
+ 	}
+ 
++	test->priv = sb;
++
+ 	return 0;
  }
  
- static unsigned long
+@@ -390,6 +391,9 @@ static void mbt_kunit_exit(struct kunit *test)
+ {
+ 	struct super_block *sb = (struct super_block *)test->priv;
+ 
++	if (!sb)
++		return;
++
+ 	mbt_mb_release(sb);
+ 	mbt_ctx_release(sb);
+ 	mbt_ext4_free_super_block(sb);
 -- 
 2.53.0
 
