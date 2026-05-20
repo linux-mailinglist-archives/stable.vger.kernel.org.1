@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDAXGPghDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:56 +0200
+	id wH44FasVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE04F59A6DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F68A599431
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EB4D330CA21
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC1F031A419B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB32369D75;
-	Wed, 20 May 2026 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371DD3F44C9;
+	Wed, 20 May 2026 17:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qChvUZbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+xrWLpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992461684BE;
-	Wed, 20 May 2026 17:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C263F44CD;
+	Wed, 20 May 2026 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299721; cv=none; b=VGtbRYW8I852guyYJt2K4SihNMnhxUiACmyB+1NQiOFwTdXEjRRAOKQrhAuqDgvqCQshRCkOxj2s8Q9n4T70ybYWSKlPluH4QVkcIPGCyQxdM8Vk0qssbok+1I2Z55wjU77wB98J8yg9XdPlN3tz8henaeFRP3twV3T5at9t1/4=
+	t=1779297264; cv=none; b=Uwx3TL9ys8hLrwOiAfWSZ7Q9YHTLpuSlRzs4/lLSgs9urGZTRklB4u/Lg/WCZFrvrLaxdGc8h1FxSgzedyBow4AMedJbjnjLJUQI3gDOVODN/BClWRjSOEO2EG/+cOI92pOGB9VLHvVd36af10HNXYHEPPSPuKuyu4omhxtW1GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299721; c=relaxed/simple;
-	bh=46s7SEVn5HJjpETEpt15TKkhMawQ6EUV7VQhTiu52pQ=;
+	s=arc-20240116; t=1779297264; c=relaxed/simple;
+	bh=R0QsV5Lm/F3PW5CSI5UVzETlMLhEs0sfy8sHzUhG3pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwXUpj6ST/5wIZoZHQ4B4s1r9d1kqwYtypUJ2bXtnVETGlUxCTAaql/e2YfuqcWKvaTdS/O1WeMZF934aIlh7DwMzwvtEAkk2xPqJEqaB2Fwmcapfdez3CAeTGP6bwVjJlDH53HZ8J1Dk31yBP/qmosjWNI/dbDJqEhclN0mvBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qChvUZbv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4751F000E9;
-	Wed, 20 May 2026 17:55:18 +0000 (UTC)
+	 MIME-Version; b=I1p5F4QHrSx0L7hdN2LB9M3sFNhaoa6K8OlujWQzWmxl3u+dFLObuRAP7AHkR+qBLDE7v126IexJ2H+6ON3Vq1r7gB10OUpTvBqANd7gUxrloUqkQjJeJBU//24XSqemg6NuDYRZ09CVt4SEn5xzyFdEB4xu5IClJuiXYrstdHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+xrWLpz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55F21F000E9;
+	Wed, 20 May 2026 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299719;
-	bh=7wbXXvAf6Z/g9f81aQXvpL7dPDiSipuB89js93U0mbU=;
+	s=korg; t=1779297262;
+	bh=bxHQnnKzRzNA5V6GTH8duCGYrmhi3bW2X4SqflXMCss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qChvUZbvf+VMgHDHBzWB44/b3ZXpDVLBBRQz9tnmK1MZnQBGpZVEaHHKbjLYl4qr/
-	 slxzAzcsfOfT3egTsPx79jdzC+jAuztkJV265vvNF3mQYVln0X/Js7vjZxH/Ciq+f5
-	 G9FkyEdO4c64ZntQ2b8RGPawRQp6IxU3uPWQhZB0=
+	b=F+xrWLpzVdJ//dT21E105AWRYXYDUdiUyssR/1W5w0/bRRtwYqYU43nedFaRS0PxE
+	 c/1qBGG9LHCutmwfzj0sM/HPrcKRlEu0QPUTAvp6EDdSN1xGjuOCMHWwLcJ1EmUG/j
+	 b5tVfuoXpsiD5jBmzEoevo091m4/Qu6wndQGvHGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 878/957] sched/fair: Revert force wakeup preemption
-Date: Wed, 20 May 2026 18:22:41 +0200
-Message-ID: <20260520162153.606016702@linuxfoundation.org>
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 7.0 1112/1146] irqchip/gic-v5: Support range allocation for LPIs
+Date: Wed, 20 May 2026 18:22:42 +0200
+Message-ID: <20260520162213.411382716@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +67,196 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252090-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251163-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: AE04F59A6DC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 6F68A599431
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-[ Upstream commit 15257cc2f905dbf5813c0bfdd3c15885f28093c4 ]
+commit eb6f6d523813ead9dc2799194a2839d42c049734 upstream.
 
-This agressively bypasses run_to_parity and slice protection with the
-assumpiton that this is what waker wants but there is no garantee that
-the wakee will be the next to run. It is a better choice to use
-yield_to_task or WF_SYNC in such case.
+The per-IPI parent allocation loop returns immediately on failure and leaks
+any parent interrupts allocated by earlier iterations.
 
-This increases the number of resched and preemption because a task becomes
-quickly "ineligible" when it runs; We update the task vruntime periodically
-and before the task exhausted its slice or at least quantum.
+The GICv5 LPI domain now owns LPI allocation and teardown internally,
+but its irq_domain callbacks still reject requests where nr_irqs is
+greater than one. This forces child domains to allocate and free LPIs
+one at a time even when the interrupt core requests a contiguous
+range.
 
-Example:
-2 tasks A and B wake up simultaneously with lag = 0. Both are
-eligible. Task A runs 1st and wakes up task C. Scheduler updates task
-A's vruntime which becomes greater than average runtime as all others
-have a lag == 0 and didn't run yet. Now task A is ineligible because
-it received more runtime than the other task but it has not yet
-exhausted its slice nor a min quantum. We force preemption, disable
-protection but Task B will run 1st not task C.
+Handle multi-interrupt allocation and teardown in the LPI domain by
+iterating over the requested range and unwinding any partially
+allocated state on failure.
 
-Sidenote, DELAY_ZERO increases this effect by clearing positive lag at
-wake up.
+Allocate the parent LPIs for the IPI domain with a single range
+request as well, which cures the leakage problem.
 
-Fixes: e837456fdca8 ("sched/fair: Reimplement NEXT_BUDDY to align with EEVDF goals")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260123102858.52428-1-vincent.guittot@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260506093634.382062-3-sascha.bischoff@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/irqchip/irq-gic-v5.c |   77 +++++++++++++++++++++++--------------------
+ 1 file changed, 42 insertions(+), 35 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 58f535cc64215..7e0e2044d840b 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8943,16 +8943,6 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- 	if ((wake_flags & WF_FORK) || pse->sched_delayed)
- 		return;
+--- a/drivers/irqchip/irq-gic-v5.c
++++ b/drivers/irqchip/irq-gic-v5.c
+@@ -783,15 +783,14 @@ static void gicv5_irq_lpi_domain_free(st
+ {
+ 	struct irq_data *d;
  
--	/*
--	 * If @p potentially is completing work required by current then
--	 * consider preemption.
--	 *
--	 * Reschedule if waker is no longer eligible. */
--	if (in_task() && !entity_eligible(cfs_rq, se)) {
--		preempt_action = PREEMPT_WAKEUP_RESCHED;
--		goto preempt;
--	}
+-	if (WARN_ON_ONCE(nr_irqs != 1))
+-		return;
++	for (unsigned int i = 0; i < nr_irqs; i++, virq++) {
++		d = irq_domain_get_irq_data(domain, virq);
+ 
+-	d = irq_domain_get_irq_data(domain, virq);
++		release_lpi(d->hwirq);
+ 
+-	release_lpi(d->hwirq);
 -
- 	/* Prefer picking wakee soon if appropriate. */
- 	if (sched_feat(NEXT_BUDDY) &&
- 	    set_preempt_buddy(cfs_rq, wake_flags, pse, se)) {
--- 
-2.53.0
-
+-	irq_set_handler(virq, NULL);
+-	irq_domain_reset_irq_data(d);
++		irq_set_handler(virq, NULL);
++		irq_domain_reset_irq_data(d);
++	}
+ }
+ 
+ static int gicv5_irq_lpi_domain_alloc(struct irq_domain *domain, unsigned int virq,
+@@ -799,32 +798,39 @@ static int gicv5_irq_lpi_domain_alloc(st
+ {
+ 	irq_hw_number_t hwirq;
+ 	struct irq_data *irqd;
++	unsigned int i;
+ 	int ret;
+ 
+-	if (WARN_ON_ONCE(nr_irqs != 1))
+-		return -EINVAL;
+-
+-	ret = alloc_lpi();
+-	if (ret < 0)
+-		return ret;
+-	hwirq = ret;
++	for (i = 0; i < nr_irqs; i++) {
++		ret = alloc_lpi();
++		if (ret < 0)
++			goto out_free_lpis;
++		hwirq = ret;
++
++		ret = gicv5_irs_iste_alloc(hwirq);
++		if (ret < 0) {
++			/* Undo partial state first, then clean up the rest */
++			release_lpi(hwirq);
++			goto out_free_lpis;
++		}
+ 
+-	irqd = irq_domain_get_irq_data(domain, virq);
++		irqd = irq_domain_get_irq_data(domain, virq + i);
+ 
+-	irq_domain_set_info(domain, virq, hwirq, &gicv5_lpi_irq_chip, NULL,
+-			    handle_fasteoi_irq, NULL, NULL);
+-	irqd_set_single_target(irqd);
++		irq_domain_set_info(domain, virq + i, hwirq, &gicv5_lpi_irq_chip,
++				    NULL, handle_fasteoi_irq, NULL, NULL);
++		irqd_set_single_target(irqd);
+ 
+-	ret = gicv5_irs_iste_alloc(hwirq);
+-	if (ret < 0) {
+-		release_lpi(hwirq);
+-		return ret;
++		gicv5_hwirq_init(hwirq, GICV5_IRQ_PRI_MI, GICV5_HWIRQ_TYPE_LPI);
++		gicv5_lpi_config_reset(irqd);
+ 	}
+ 
+-	gicv5_hwirq_init(hwirq, GICV5_IRQ_PRI_MI, GICV5_HWIRQ_TYPE_LPI);
+-	gicv5_lpi_config_reset(irqd);
+-
+ 	return 0;
++
++out_free_lpis:
++	if (i)
++		gicv5_irq_lpi_domain_free(domain, virq, i);
++
++	return ret;
+ }
+ 
+ static const struct irq_domain_ops gicv5_irq_lpi_domain_ops = {
+@@ -850,21 +856,21 @@ static int gicv5_irq_ipi_domain_alloc(st
+ 				      unsigned int nr_irqs, void *arg)
+ {
+ 	struct irq_data *irqd;
+-	int ret, i;
++	int ret;
+ 
+-	for (i = 0; i < nr_irqs; i++) {
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
+-		if (ret)
+-			return ret;
++	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, arg);
++	if (ret)
++		return ret;
+ 
+-		irqd = irq_domain_get_irq_data(domain, virq + i);
++	for (unsigned int i = 0; i < nr_irqs; i++, virq++) {
++		irqd = irq_domain_get_irq_data(domain, virq);
+ 
+-		irq_domain_set_hwirq_and_chip(domain, virq + i, i,
+-				&gicv5_ipi_irq_chip, NULL);
++		irq_domain_set_hwirq_and_chip(domain, virq, i,
++					      &gicv5_ipi_irq_chip, NULL);
+ 
+ 		irqd_set_single_target(irqd);
+ 
+-		irq_set_handler(virq + i, handle_percpu_irq);
++		irq_set_handler(virq, handle_percpu_irq);
+ 	}
+ 
+ 	return 0;
+@@ -884,8 +890,9 @@ static void gicv5_irq_ipi_domain_free(st
+ 
+ 		irq_set_handler(virq + i, NULL);
+ 		irq_domain_reset_irq_data(d);
+-		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
++
++	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+ }
+ 
+ static const struct irq_domain_ops gicv5_irq_ipi_domain_ops = {
 
 
 
