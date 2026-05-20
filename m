@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-250687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC0HDGrrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:10 +0200
+	id cCMfORD1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80CE593106
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF9594D38
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98D8330DDDE7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:54:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 792523152B03
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46353E0C70;
-	Wed, 20 May 2026 16:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BA5372EED;
+	Wed, 20 May 2026 16:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXati9+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Itgo6hx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B7F3D75CB;
-	Wed, 20 May 2026 16:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D8F34216C;
+	Wed, 20 May 2026 16:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296053; cv=none; b=c5SlJ7mHld9cQwYK8MAfG/GTR96q98o96hL1f6m2AOclmBdC/hZxsRpe07RdLcmHT7k6FeV0aiHu1uRFQBDBBXVlXWM/kXWYXd7zragrLEC3DLjtNjIi9kDzArQhzcFvz0fL2YwakZxuknNxyKNwqcdrlHifVdVNnUsP3ZbmxxI=
+	t=1779295940; cv=none; b=GNVdi+mAo9OtK7kJRO/LGd3VNg0IV/1EIXHF9ex5hAOZkE9whfFe+5c/5gK06hXljJzk2A2eFyaOENcISf7RtQ6lVdCA6H3oL0WPlq7ozBMm/eybbT4cC9guzn6vgCdyTuowhD6M8Pe8yLbrMDNn+v0j2BTpAWvevawpwGpG0BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296053; c=relaxed/simple;
-	bh=lxKtf5Ar/6lK2dQCXGBOyBp+NP9ZE9qi/lPA4YiId6w=;
+	s=arc-20240116; t=1779295940; c=relaxed/simple;
+	bh=uzGnTqgWxVpZdo9KuIZj0XHRrwFapXHlUsVrvFaBgik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1ZynEf/CNdFvQQkj5NIevOhzxr2azGd48tzvL6ldIuDmC2yiH0R++wCxDNhL2fv0p1UNoS3S+3jA8A2JY+lu0BfRkEkAPfP+mB/O3Sc4ubq6Bf31DbcfGn7qI9btbFJK1RGntw4r0VwcFL5Q6Y7M3P7yOXDEXwa6N9YXtm68yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXati9+F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ED51F000E9;
-	Wed, 20 May 2026 16:54:11 +0000 (UTC)
+	 MIME-Version; b=qtj8H7mDJY7FFuXanvNua55mXvIhaqw5NLXtf4Lj4BagDT+RWkNG4Q7HksCUunkU+d8sRKR5cyEJ4dSn0/JaLuTqGlMPaa46q8h4DWrflNLZFuRimpt21OKCcf7UeLOTyzqUgBRoCHafFeBb2+G4jqDMRPSvT7ORWIb5EPfMplA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Itgo6hx2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A001F000E9;
+	Wed, 20 May 2026 16:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296052;
-	bh=VXMuArV/7JTV6ioeBjqrii2EADH2IaAiCroiMMtsCyY=;
+	s=korg; t=1779295939;
+	bh=Mj/VG0c1zd0FsA2Ce+l7x+qpWxjcTewRRCN/E66rib0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gXati9+FsddIEKh6coR+yP0sKIav0v7xueYJJAmIkftpT5FhDkiEEsd3fpE90n9rf
-	 bvqS9mbM0qGmnRbbpKELa+O2FVRer0hV6bru+EmqpP7a05UKXVeN0L8Q3VynVG7SFF
-	 qu265eks1Z49dIcoukpRg1BGWYKsrE31/KXvLoWM=
+	b=Itgo6hx2M2af/JWpLez7xM7rBVAWw9wtY+zpzHLUixivIpxY9x/CUCvyA5hMHeM6f
+	 1fFzqBdnNQTAWwNcECxYT85qNFwcMrJ5zHC8jqZNmJv5IyqorHdZVvlJ8rz1/9cQaK
+	 bnapi7pSW2eGXMnqrFLz9MJd8LATV9mh+BiAkuoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0602/1146] mtd: spinand: winbond: Clarify when to enable the HS bit
-Date: Wed, 20 May 2026 18:14:12 +0200
-Message-ID: <20260520162201.802560067@linuxfoundation.org>
+Subject: [PATCH 7.0 0603/1146] HID: usbhid: fix deadlock in hid_post_reset()
+Date: Wed, 20 May 2026 18:14:13 +0200
+Message-ID: <20260520162201.826732610@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250687-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250641-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,11 +87,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:email]
-X-Rspamd-Queue-Id: C80CE593106
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 6ADF9594D38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,52 +99,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 25a915fad503c2678902075565d47ddc2aa45db9 ]
+[ Upstream commit 8df2c1b47ee3cd50fd454f75c7a7e2ae8a6adf72 ]
 
-Above 104MHz when in fast dual or quad I/O reads, the delay between
-address and data cycles is too short. It is possible to reach higher
-frequencies, up to 166MHz, by adding a few more dummy cycles through the
-setting of the HS bit. Improve the condition for enabling this bit, and
-also make sure we set it at soon as we go over 104MHz.
+You can build a USB device that includes a HID component
+and a storage or UAS component. The components can be reset
+only together. That means that hid_pre_reset() and hid_post_reset()
+are in the block IO error handling. Hence no memory allocation
+used in them may do block IO because the IO can deadlock
+on the mutex held while resetting a device and calling the
+interface drivers.
+Use GFP_NOIO for all allocations in them.
 
-Fixes: f1a91175faaa ("mtd: spinand: winbond: Enable high-speed modes on w25n0xjw")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: dc3c78e434690 ("HID: usbhid: Check HID report descriptor contents after device reset")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/winbond.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/hid/usbhid/hid-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 4f9f1854e0cfe..ad22774096e61 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -337,16 +337,19 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
- 	if (iface != SSDR)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index ddd5d77fb5a5e..fd3e1aedc5cbc 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -1552,7 +1552,7 @@ static int hid_post_reset(struct usb_interface *intf)
+ 	 * configuration descriptors passed, we already know that
+ 	 * the size of the HID report descriptor has not changed.
+ 	 */
+-	rdesc = kmalloc(hid->dev_rsize, GFP_KERNEL);
++	rdesc = kmalloc(hid->dev_rsize, GFP_NOIO);
+ 	if (!rdesc)
+ 		return -ENOMEM;
  
-+	/*
-+	 * SDR dual and quad I/O operations over 104MHz require the HS bit to
-+	 * enable a few more dummy cycles.
-+	 */
- 	op = spinand->op_templates->read_cache;
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		hs = false;
--	else if (op->cmd.buswidth == 1 && op->addr.buswidth == 1 &&
--		 op->dummy.buswidth == 1 && op->data.buswidth == 1)
-+	else if (op->cmd.buswidth != 1 || op->addr.buswidth == 1)
- 		hs = false;
--	else if (!op->max_freq)
--		hs = true;
--	else
-+	else if (op->max_freq && op->max_freq <= 104 * HZ_PER_MHZ)
- 		hs = false;
-+	else
-+		hs = true;
- 
- 	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
- 	if (ret)
 -- 
 2.53.0
 
