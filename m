@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GETULofvDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:43 +0200
+	id gFByK+YhDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-252086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441A0593D11
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 204EC59A6D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6138C312096A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B77538A3D38
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180253E2AAD;
-	Wed, 20 May 2026 17:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DEF3F44D9;
+	Wed, 20 May 2026 17:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z/92upq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFwbxFZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87023EE1FD;
-	Wed, 20 May 2026 17:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982033F39C9;
+	Wed, 20 May 2026 17:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297247; cv=none; b=kyPBp7oQFZbdHkcx0kU90sPhq54o8ZgznGc+djn86bYN8HrQrh0CyzIbXaI+O1zq81QiHFWNUa8wztK0IeFN/4JKd5s2ctFjqs/He4fk+m/qtL3kjoYZ7j96BfeVey7CcINrRnnCysVdztY7ItmZL5VPg85gFAG0auQ2mLTm/rU=
+	t=1779299709; cv=none; b=gdfxJ/uQHcq74zt1IYuZQlQ89UbypsgINUmHD0yITF4suZH/qHHF1GenGUriBcrKjQLDd72A++jewKwYrSnmbWTjFcERvtyM9GCnf/j5PDrTurVAkY9hTBj6Zr0kPimyMDpEnZ8YlYk6S4EvNhd669PlGNRA27J6R+AwM3McSFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297247; c=relaxed/simple;
-	bh=INvXKMtqUd4gos2h2JapjZipHRuBjBPO/SgdFz5nA4k=;
+	s=arc-20240116; t=1779299709; c=relaxed/simple;
+	bh=MLOVqot1GJJf/qwtFolYPs9KYWjzwE4LZ2swWw5WkSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEXwG6YhCdNo4+/1xbu4eSJr9fQRKShgRLkK339Xw4IRje4QQACnBC3pUQXXcs/S4Y++KAhdDQsOaS0bB3GTo9DNXKsjsRm8dIOeUhMrCYy4BpD1RhIGjUZpTXY+sJ9jmtnBljy8tfPFQ+xCLYBHYcl64BLhA7Ixt2rvznTr+W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z/92upq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4701F000E9;
-	Wed, 20 May 2026 17:14:05 +0000 (UTC)
+	 MIME-Version; b=V3oTt12044/6Ib/kj4zHYA0Cf1JRhp4E8wlzW1oeI47LEqafbPIaGlWBuLsSWCNtOmxiJUwAOP/FlHmQSpJpEsTi7BjYVyGl5MLmky5BDwfYoW0p0Izn/XzWwMzkFY+90I/HXXR/LGTkJJ3YcUedx6ga066CSazqzbyR1dR8Bok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFwbxFZ5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096B91F000E9;
+	Wed, 20 May 2026 17:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297246;
-	bh=CtK4SItDllRjhRhdPLBjoYwsem5+S+1yPE+WPbiXkL8=;
+	s=korg; t=1779299708;
+	bh=EMvgdC7W/31ht/o0XFvnCF2OSnGxPGvV/9muVvlOrQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2Z/92upqaSGanMAKQK+zNhkMMp4Qzv/J+2I0aO3U9OCB846sJ4fs4Aizq9mfDM+EO
-	 zLGWJ38k/CWbrBoozg9VBXuRXMlXKf99aSrPlODQgVCwDmhBUhyPAUYdNWelBTQWt0
-	 CCVFb/7uUYc7MSfj/b5y934QElylNV/o7/E1MOes=
+	b=hFwbxFZ5brcTmfbKfU2EkFw/2wzjiNDB/jC1IzUZKGXhGTlkDiHM+qs/pvkypXcTz
+	 OgAB+JKUKATFCk0j7y1j79xo0StsHhex1LM24wEg8SdxnX+JTnsuZgrXh3wIj+r3k8
+	 2btdL8dZCg81NYY82/7XQo7E7Onwd78eQT27eiv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 7.0 1107/1146] nfsd: update mtime/ctime on CLONE in presense of delegated attributes
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 874/957] net: airoha: Fix VIP configuration for AN7583 SoC
 Date: Wed, 20 May 2026 18:22:37 +0200
-Message-ID: <20260520162213.297865000@linuxfoundation.org>
+Message-ID: <20260520162153.520125955@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,146 +66,211 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252086-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251157-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 441A0593D11
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 204EC59A6D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit 2863bac7f49c4acd80a048ce52506a2b9c8db015 upstream.
+[ Upstream commit 1acdfbdb516b32165a8ecd1d5f8c68e4eac64637 ]
 
-When delegated attributes are given on open, the file is opened with
-NOCMTIME and modifying operations do not update mtime/ctime as to not get
-out-of-sync with the client's delegated view. However, for CLONE operation,
-the server should update its view of mtime/ctime and reflect that in any
-GETATTR queries.
+EN7581 and AN7583 SoCs have different VIP definitions. Introduce
+get_vip_port callback in airoha_eth_soc_data struct in order to take
+into account EN7581 and AN7583 VIP register layout and definition
+differences.
+Introduce nbq parameter in airoha_gdm_port struct. At the moment nbq
+is set statically to value previously used in airhoha_set_gdm2_loopback
+routine and it will be read from device tree in subsequent patches.
 
-Fixes: e5e9b24ab8fa ("nfsd: freeze c/mtime updates with outstanding WRITE_ATTRS delegation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e4e5ce823bdd ("net: airoha: Add AN7583 SoC support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260412-airoha-7583-vip-fix-v1-1-c35e02b054bb@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c  |    3 +++
- fs/nfsd/nfs4state.c |   44 +++++++++++++++++++++++++++++---------------
- fs/nfsd/state.h     |    1 +
- 3 files changed, 33 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 66 ++++++++++++++++++------
+ drivers/net/ethernet/airoha/airoha_eth.h |  2 +
+ 2 files changed, 51 insertions(+), 17 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1413,6 +1413,9 @@ nfsd4_clone(struct svc_rqst *rqstp, stru
- 			dst, clone->cl_dst_pos, clone->cl_count,
- 			EX_ISSYNC(cstate->current_fh.fh_export));
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index c5f509cd52e63..27d62acfcc39c 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -107,19 +107,7 @@ static int airoha_set_vip_for_gdm_port(struct airoha_gdm_port *port,
+ 	struct airoha_eth *eth = port->qdma->eth;
+ 	u32 vip_port;
  
-+	if (!status && (READ_ONCE(dst->nf_file->f_mode) & FMODE_NOCMTIME) != 0)
-+		nfsd_update_cmtime_attr(dst->nf_file, 0);
-+
- 	nfsd_file_put(dst);
- 	nfsd_file_put(src);
- out:
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1226,10 +1226,6 @@ static void put_deleg_file(struct nfs4_f
- 
- static void nfsd4_finalize_deleg_timestamps(struct nfs4_delegation *dp, struct file *f)
- {
--	struct iattr ia = { .ia_valid = ATTR_ATIME | ATTR_CTIME | ATTR_MTIME | ATTR_DELEG };
--	struct inode *inode = file_inode(f);
--	int ret;
--
- 	/* don't do anything if FMODE_NOCMTIME isn't set */
- 	if ((READ_ONCE(f->f_mode) & FMODE_NOCMTIME) == 0)
- 		return;
-@@ -1247,17 +1243,7 @@ static void nfsd4_finalize_deleg_timesta
- 		return;
- 
- 	/* Stamp everything to "now" */
--	inode_lock(inode);
--	ret = notify_change(&nop_mnt_idmap, f->f_path.dentry, &ia, NULL);
--	inode_unlock(inode);
--	if (ret) {
--		struct inode *inode = file_inode(f);
--
--		pr_notice_ratelimited("nfsd: Unable to update timestamps on inode %02x:%02x:%lu: %d\n",
--					MAJOR(inode->i_sb->s_dev),
--					MINOR(inode->i_sb->s_dev),
--					inode->i_ino, ret);
+-	switch (port->id) {
+-	case AIROHA_GDM3_IDX:
+-		/* FIXME: handle XSI_PCIE1_PORT */
+-		vip_port = XSI_PCIE0_VIP_PORT_MASK;
+-		break;
+-	case AIROHA_GDM4_IDX:
+-		/* FIXME: handle XSI_USB_PORT */
+-		vip_port = XSI_ETH_VIP_PORT_MASK;
+-		break;
+-	default:
+-		return 0;
 -	}
-+	nfsd_update_cmtime_attr(f, ATTR_ATIME);
+-
++	vip_port = eth->soc->ops.get_vip_port(port, port->nbq);
+ 	if (enable) {
+ 		airoha_fe_set(eth, REG_FE_VIP_PORT_EN, vip_port);
+ 		airoha_fe_set(eth, REG_FE_IFC_PORT_EN, vip_port);
+@@ -1809,7 +1797,7 @@ static int airoha_dev_set_macaddr(struct net_device *dev, void *p)
+ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ {
+ 	struct airoha_eth *eth = port->qdma->eth;
+-	u32 val, pse_port, chan, nbq;
++	u32 val, pse_port, chan;
+ 	int src_port;
+ 
+ 	/* Forward the traffic to the proper GDM port */
+@@ -1839,9 +1827,7 @@ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(AIROHA_GDM2_IDX));
+ 	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(AIROHA_GDM2_IDX));
+ 
+-	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
+-	nbq = port->id == AIROHA_GDM3_IDX && airoha_is_7581(eth) ? 4 : 0;
+-	src_port = eth->soc->ops.get_src_port_id(port, nbq);
++	src_port = eth->soc->ops.get_src_port_id(port, port->nbq);
+ 	if (src_port < 0)
+ 		return src_port;
+ 
+@@ -3034,6 +3020,8 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+ 	port->qdma = qdma;
+ 	port->dev = dev;
+ 	port->id = id;
++	/* XXX: Read nbq from DTS */
++	port->nbq = id == AIROHA_GDM3_IDX && airoha_is_7581(eth) ? 4 : 0;
+ 	eth->ports[p] = port;
+ 
+ 	return airoha_metadata_dst_alloc(port);
+@@ -3229,6 +3217,28 @@ static int airoha_en7581_get_src_port_id(struct airoha_gdm_port *port, int nbq)
+ 	return -EINVAL;
  }
  
- static void nfs4_unlock_deleg_lease(struct nfs4_delegation *dp)
-@@ -9550,3 +9536,31 @@ out_delegees:
- 	put_nfs4_file(fp);
- 	return ERR_PTR(status);
- }
-+
-+/**
-+ * nfsd_update_cmtime_attr - update file's delegated ctime/mtime,
-+ *                           and optionally other attributes (ie ATTR_ATIME).
-+ * @f: pointer to an opened file
-+ * @flags: any additional flags that should be updated
-+ *
-+ * Given upon opening a file delegated attributes were issues, update
-+ * @f attributes to current times.
-+ */
-+void nfsd_update_cmtime_attr(struct file *f, unsigned int flags)
++static u32 airoha_en7581_get_vip_port(struct airoha_gdm_port *port, int nbq)
 +{
-+	int ret;
-+	struct inode *inode = file_inode(f);
-+	struct iattr attr = {
-+		.ia_valid = ATTR_CTIME | ATTR_MTIME | ATTR_DELEG | flags,
-+	};
++	switch (port->id) {
++	case AIROHA_GDM3_IDX:
++		if (nbq == 4)
++			return XSI_PCIE0_VIP_PORT_MASK;
++		if (nbq == 5)
++			return XSI_PCIE1_VIP_PORT_MASK;
++		break;
++	case AIROHA_GDM4_IDX:
++		if (!nbq)
++			return XSI_ETH_VIP_PORT_MASK;
++		if (nbq == 1)
++			return XSI_USB_VIP_PORT_MASK;
++		break;
++	default:
++		break;
++	}
 +
-+	inode_lock(inode);
-+	ret = notify_change(&nop_mnt_idmap, f->f_path.dentry, &attr, NULL);
-+	inode_unlock(inode);
-+	if (ret)
-+		pr_notice_ratelimited("nfsd: Unable to update timestamps on "
-+				      "inode %02x:%02x:%lu: %d\n",
-+				      MAJOR(inode->i_sb->s_dev),
-+				      MINOR(inode->i_sb->s_dev),
-+				      inode->i_ino, ret);
++	return 0;
 +}
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -834,6 +834,7 @@ extern void nfsd4_shutdown_copy(struct n
- void nfsd4_put_client(struct nfs4_client *clp);
- void nfsd4_async_copy_reaper(struct nfsd_net *nn);
- bool nfsd4_has_active_async_copies(struct nfs4_client *clp);
-+void nfsd_update_cmtime_attr(struct file *f, unsigned int flags);
- extern struct nfs4_client_reclaim *nfs4_client_to_reclaim(struct xdr_netobj name,
- 				struct xdr_netobj princhash, struct nfsd_net *nn);
- extern bool nfs4_has_reclaimed_state(struct xdr_netobj name, struct nfsd_net *nn);
++
+ static const char * const an7583_xsi_rsts_names[] = {
+ 	"xsi-mac",
+ 	"hsi0-mac",
+@@ -3258,6 +3268,26 @@ static int airoha_an7583_get_src_port_id(struct airoha_gdm_port *port, int nbq)
+ 	return -EINVAL;
+ }
+ 
++static u32 airoha_an7583_get_vip_port(struct airoha_gdm_port *port, int nbq)
++{
++	switch (port->id) {
++	case AIROHA_GDM3_IDX:
++		if (!nbq)
++			return XSI_ETH_VIP_PORT_MASK;
++		break;
++	case AIROHA_GDM4_IDX:
++		if (!nbq)
++			return XSI_PCIE0_VIP_PORT_MASK;
++		if (nbq == 1)
++			return XSI_USB_VIP_PORT_MASK;
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
+ static const struct airoha_eth_soc_data en7581_soc_data = {
+ 	.version = 0x7581,
+ 	.xsi_rsts_names = en7581_xsi_rsts_names,
+@@ -3265,6 +3295,7 @@ static const struct airoha_eth_soc_data en7581_soc_data = {
+ 	.num_ppe = 2,
+ 	.ops = {
+ 		.get_src_port_id = airoha_en7581_get_src_port_id,
++		.get_vip_port = airoha_en7581_get_vip_port,
+ 	},
+ };
+ 
+@@ -3275,6 +3306,7 @@ static const struct airoha_eth_soc_data an7583_soc_data = {
+ 	.num_ppe = 1,
+ 	.ops = {
+ 		.get_src_port_id = airoha_an7583_get_src_port_id,
++		.get_vip_port = airoha_an7583_get_vip_port,
+ 	},
+ };
+ 
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 33277cc577990..57e8ddb30a9c5 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -536,6 +536,7 @@ struct airoha_gdm_port {
+ 	struct airoha_qdma *qdma;
+ 	struct net_device *dev;
+ 	int id;
++	int nbq;
+ 
+ 	struct airoha_hw_stats stats;
+ 
+@@ -576,6 +577,7 @@ struct airoha_eth_soc_data {
+ 	int num_ppe;
+ 	struct {
+ 		int (*get_src_port_id)(struct airoha_gdm_port *port, int nbq);
++		u32 (*get_vip_port)(struct airoha_gdm_port *port, int nbq);
+ 	} ops;
+ };
+ 
+-- 
+2.53.0
+
 
 
 
