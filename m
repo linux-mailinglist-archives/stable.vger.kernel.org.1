@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-250840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GK6mEM4UDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:46 +0200
+	id 4KZtKaUBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D65992F6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CC559737F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A824E3853DF8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABD9230488E0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458963F4DC0;
-	Wed, 20 May 2026 17:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840A93ED3B8;
+	Wed, 20 May 2026 18:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+WMS6HH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqJ7oHFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2473F44D0;
-	Wed, 20 May 2026 17:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB553F6C5F;
+	Wed, 20 May 2026 18:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296444; cv=none; b=JBNFrjAIYTOGO/Z5rntqcCXmKzrjA5k/fyt36bRf8wBmupdMexLTBoQOOAEh/avqgpCcc9Y43wRvGm8hMUi9zzbwsggazgZFTlOw0+xjTqxCWevr+QMmJtzjkv4rO+a8Zac1MHGSL1kk61bLaNRJ462NQKhPSwh2AqwB1gN/BLI=
+	t=1779300613; cv=none; b=fl1aTTKlYibxbwAeltPcMuFn/pSmMYmhlNK2bWYnOkyNPtkQF6S6oprDjl0yiZjbruxCEoGnhAmIW9mq3IfrGSlBgOo5Gob2xsZuPFnVGWOKV7nzOG84caF7DHOkbEiS9r2NgyHRg3viAXS1hV9qj8mOau9wGnD75PAg/076IuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296444; c=relaxed/simple;
-	bh=8ag/YG7Cxa6aHD1knbpP5JitSL6466+Sm36pci1H2Hs=;
+	s=arc-20240116; t=1779300613; c=relaxed/simple;
+	bh=u+JhstZLWx7aXebfEfaQ9Dnh/jdgmm5Awn974GU8YOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o34mn7UKHK+tJWjFT0LcL72X6s4L/hfU5BN8pkwX/O5avcZQFYT1I8+W6ls+AyldawLFAKHHf3JbuXWk3ry9GR93lNNTX4gVW477rp+pzUlzI8DEZRcSsN52+BT9Ksxb7QoJt1sn/IL8R/BZcqiil5O4MdIMSalrHaSPTzWrizU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+WMS6HH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 634B21F000E9;
-	Wed, 20 May 2026 17:00:42 +0000 (UTC)
+	 MIME-Version; b=FDfMhTSB5B10V12BiMmSJsvR5EymSNbhHh6SZ/2OIFSg96ibmcuH0wkzV4rTg9Z3Xj7a3d7ij19jF0kJT3SZ4pfPLobu3kEPziT49BWN9mXBJuhe/UBW16NwOzPSY4e4F62YeyF9FyFWD3UEwoWLe9Xt2Q9kFfxXSfAgdD2CNuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqJ7oHFz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600F41F000E9;
+	Wed, 20 May 2026 18:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296442;
-	bh=Aj0lXv9zI2we660JHZ000mNNk3H4/eDDs5UTg3iO1tE=;
+	s=korg; t=1779300611;
+	bh=wKTgQkirQa+fUlqQ+cNvtSKpMrN2uuqnVTt0C5gqbo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O+WMS6HHvrnDNoaF7diG2xDZaVxkjMGpN3P/NDCbvGPH8D0qdE1CsKw+Cd7IOfx1o
-	 tUN6P63kw6/p+g05FPXY4ApEVB02IfQODb8axKijeBmJJkKjS0T083PpbHQsIFodVe
-	 gnxwW5DePCW+TDZB04b+hpF4hzlqBG292rt35I44=
+	b=EqJ7oHFzRfqeYuaeVBX3ir5VJd46BOaEi1EVsGkiZZyKZqZDDybl2rPA5kXpbOHeX
+	 /izMiyKYVpxgKjMdaW67MXFNrldWyjefcIkg+3aGgjkKYHo5fL5aL/pMzkTQYAwveM
+	 b+zWYFNHtmXGWg1YKC0ESLm6SeEYSfMVTWXDnap8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0801/1146] i40e: dont advertise IFF_SUPP_NOFCS
+Subject: [PATCH 6.12 240/666] PCI: tegra194: Set LTR message request before PCIe link up in Endpoint mode
 Date: Wed, 20 May 2026 18:17:31 +0200
-Message-ID: <20260520162206.354160384@linuxfoundation.org>
+Message-ID: <20260520162116.418747763@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250840-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252415-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,60 +94,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9A9D65992F6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: F1CC559737F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
+[ Upstream commit b256493bf8cacf0e524bf4c10b5c4901d0c6cefe ]
 
-i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
-socket option. However, this option is silently ignored, as the driver
-does not check skb->no_fcs, and always enables FCS insertion offload.
+LTR message should be sent as soon as the Root Port enables LTR in the
+Endpoint mode. So set snoop and no-snoop LTR timing and LTR message request
+before the PCIe link comes up, so that the LTR message is sent upstream as
+soon as LTR is enabled.
 
-Fix this by removing the advertisement of IFF_SUPP_NOFCS.
+Without programming these values, the Endpoint would send latencies of 0 to
+the host, which will be inaccurate.
 
-This behavior can be reproduced with a simple AF_PACKET socket:
-
-  import socket
-  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
-  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
-  s.bind(("eth0", 0))
-  s.send(b'\xff' * 64)
-
-Previously, send() succeeds but the driver ignores SO_NOFCS.
-With this change, send() fails with -EPROTONOSUPPORT, as expected.
-
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-9-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 926d001b21502..028bd500603a5 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -13783,7 +13783,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
- 	netdev->neigh_priv_len = sizeof(u32) * 4;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 42a8bbfee3f9a..625660d4f747c 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -487,15 +487,6 @@ static irqreturn_t tegra_pcie_ep_irq_thread(int irq, void *arg)
+ 	if (val & PCI_COMMAND_MASTER) {
+ 		ktime_t timeout;
  
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
--	netdev->priv_flags |= IFF_SUPP_NOFCS;
- 	/* Setup netdev TC information */
- 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+-		/* 110us for both snoop and no-snoop */
+-		val = FIELD_PREP(PCI_LTR_VALUE_MASK, 110) |
+-		      FIELD_PREP(PCI_LTR_SCALE_MASK, 2) |
+-		      LTR_MSG_REQ |
+-		      FIELD_PREP(PCI_LTR_NOSNOOP_VALUE, 110) |
+-		      FIELD_PREP(PCI_LTR_NOSNOOP_SCALE, 2) |
+-		      LTR_NOSNOOP_MSG_REQ;
+-		appl_writel(pcie, val, APPL_LTR_MSG_1);
+-
+ 		/* Send LTR upstream */
+ 		val = appl_readl(pcie, APPL_LTR_MSG_2);
+ 		val |= APPL_LTR_MSG_2_LTR_MSG_REQ_STATE;
+@@ -1828,6 +1819,15 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 	val |= APPL_INTR_EN_L1_0_0_RDLH_LINK_UP_INT_EN;
+ 	appl_writel(pcie, val, APPL_INTR_EN_L1_0_0);
  
++	/* 110us for both snoop and no-snoop */
++	val = FIELD_PREP(PCI_LTR_VALUE_MASK, 110) |
++	      FIELD_PREP(PCI_LTR_SCALE_MASK, 2) |
++	      LTR_MSG_REQ |
++	      FIELD_PREP(PCI_LTR_NOSNOOP_VALUE, 110) |
++	      FIELD_PREP(PCI_LTR_NOSNOOP_SCALE, 2) |
++	      LTR_NOSNOOP_MSG_REQ;
++	appl_writel(pcie, val, APPL_LTR_MSG_1);
++
+ 	reset_control_deassert(pcie->core_rst);
+ 
+ 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
 -- 
 2.53.0
 
