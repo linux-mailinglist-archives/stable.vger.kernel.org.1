@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGTXBW0WDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:41 +0200
+	id OCN6DPTlDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D6C5995B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9B25927E4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F15132E5206
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43AC330ED724
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6FF366075;
-	Wed, 20 May 2026 17:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A991CDFCA;
+	Wed, 20 May 2026 16:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbJ7JpsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnxkXQg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D979D36A352;
-	Wed, 20 May 2026 17:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BC533AD9D;
+	Wed, 20 May 2026 16:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297448; cv=none; b=OPFWngyqxYB4FkikMr9y3yNYf4ojEV0+WASKyuX3B+usxVX2FAQNxrNoCuO8DqbcMT5pmwznYIPciiviFBR2FZIntL81SwJJivo63b4aIBjhEx+3mxurVxskbShFIxr0VkDX8t2jOxs2hv3DtyDvOa586OXX9aBJtdO/9lA7t+I=
+	t=1779295038; cv=none; b=tjDhOCvc8KTChR+9uRN5XK8zUFULjNNraE8S1/1f61EcgdkmtzRKm8bAvz2yYbKtoIbkkV16l6tky8PiUZWpkemU6orfPs0LAHm88I7316+xq1QK0VADJZRLrSrI8c8PJv6n2S1CsZKeWw0dxVABDTFosHPPTFcTEt/QM3hm4bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297448; c=relaxed/simple;
-	bh=H5kCx4am+uzCGk++Yv5pO0AvGwaKCCRs5aVjGP0exvs=;
+	s=arc-20240116; t=1779295038; c=relaxed/simple;
+	bh=O/VoZXAj7R6iuORAZnXqqikn9MUEqUfG2hJZYP8vvls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGAoJeDkZJj0qjPfefoxc0XeS7NJXiAgeGcrNpK5gHrPrBLqi5c94LQL4eUeMIu5u53FHnef2KRLD9J0M3NS75dEIlhc2JB1Frrioq+BraIVjzR9OCY8og9eRNQzA5O2z7YAzpjzQqvGkfjMzeZEmjg/qJBzNup9bF+pbvT7vZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbJ7JpsX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8301F000E9;
-	Wed, 20 May 2026 17:17:26 +0000 (UTC)
+	 MIME-Version; b=r35EIb6TflpsHYY+9YFd/lkeJUbGqlNoF/8YwBz1o9KBKi9jNwH39a8F26o6slYK7IIKd6BB4/0ETrpeEoFuJRqGN9SeON95QM63+ygxJJaUWHNNGVQQH/rt0H0PhO77/AkNYDiTafn4B1n2jccT606jP25Yuup8xWwpzUKtxNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnxkXQg2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86D21F00893;
+	Wed, 20 May 2026 16:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297446;
-	bh=cpNhUOmzL4dhy/cRd8Cp26iva5qB+GlGq5zD8+jiEVY=;
+	s=korg; t=1779295037;
+	bh=RSJF0oqs5VV/CwP3xGmlOVFPQiM0wX1dvGVIzGUZDuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cbJ7JpsXdYaHq62/JZGLd/5/3EGU314+WQ5Ycm0qClpZvEVBSfU7Fpq4QE28CGBD6
-	 G/0xm1XGd/yfq9ze4NwgHMnisDNEhQEQuPFvJSfeHbpZC5ZhJVnzke5tzZsz/lfS9K
-	 jdqLVDpyHQ+zoZfdD7aGEEAFOZxRYbUpuwlZ2VYU=
+	b=HnxkXQg2mfFaBYTP1woIomPTYvCl1MEVYAJZ4H7fSNju1EjKn/vAtPhD4idQoiJVO
+	 7IPD+nFe60J8zNm+RdoFVS5BWXFpxGPI4Gb4ZgythkWVPJDKULcWPXAHxvA4mPkUx2
+	 XEBZZ/SjTwHrUsmCQHIk7VJcomYZoAC/bdy5gyl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 034/957] bus: fsl-mc: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 18:08:37 +0200
-Message-ID: <20260520162135.299414489@linuxfoundation.org>
+Subject: [PATCH 7.0 0268/1146] dm cache metadata: fix memory leak on metadata abort retry
+Date: Wed, 20 May 2026 18:08:38 +0200
+Message-ID: <20260520162154.289199245@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,187 +68,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251233-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250295-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 62D6C5995B6
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BF9B25927E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 6c8dfb0362732bf1e4829867a2a5239fedc592d0 ]
+[ Upstream commit 044ca491d4086dc5bf233e9fcb71db52df32f633 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+When failing to acquire the root_lock in dm_cache_metadata_abort because
+the block_manager is read-only, the temporary block_manager created
+outside the root_lock is not properly released, causing a memory leak.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+Reproduce steps:
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+This can be reproduced by reloading a new table while the metadata
+is read-only. While the second call to dm_cache_metadata_abort is
+caused by lack of support for table preload in dm-cache, mentioned
+in commit 9b1cc9f251af ("dm cache: share cache-metadata object across
+inactive and active DM tables"), it exposes the memory leak in
+dm_cache_metadata_abort when the function is called multiple times.
+Specifically, dm-cache fails to sync the new cache object's mode during
+preresume, creating the reproducer condition.
 
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Acked-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Acked-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 1f86a00c1159 ("bus/fsl-mc: add support for 'driver_override' in the mc-bus")
-Link: https://patch.msgid.link/20260324005919.2408620-3-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+This issue could also occur through concurrent metadata_operation_failed
+calls due to races in cache mode updates, but the table preload scenario
+below provides a reliable reproducer.
+
+1. Create a cache device with some faulty trailing metadata blocks
+
+dmsetup create cmeta <<EOF
+0 200 linear /dev/sdc 0
+200 7992 error
+EOF
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 131072 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 1 writethrough smq 0"
+
+2. Suspend and resume the cache to start a new metadata transaction and
+   trigger metadata io errors on the next metadata commit.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+3. Write to the cache device to update metadata
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --size 64k
+
+4. Preload the same table
+
+dmsetup reload cache --table "$(dmsetup table cache)"
+
+5. Resume the new table. This triggers the memory leak.
+
+dmsetup suspend cache
+dmsetup resume cache
+
+kmemleak logs:
+
+<snip>
+unreferenced object 0xffff8880080c2010 (size 16):
+  comm "dmsetup", pid 132, jiffies 4294982580
+  hex dump (first 16 bytes):
+    00 38 b9 07 80 88 ff ff 6a 6b 6b 6b 6b 6b 6b a5 ...
+  backtrace (crc 3118f31c):
+    kmemleak_alloc+0x28/0x40
+    __kmalloc_cache_noprof+0x3d9/0x510
+    dm_block_manager_create+0x51/0x140
+    dm_cache_metadata_abort+0x85/0x320
+    metadata_operation_failed+0x103/0x1e0
+    cache_preresume+0xacd/0xe70
+    dm_table_resume_targets+0xd3/0x320
+    __dm_resume+0x1b/0xf0
+    dm_resume+0x127/0x170
+<snip>
+
+Fixes: 352b837a5541 ("dm cache: Fix ABBA deadlock between shrink_slab and dm_cache_metadata_abort")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c   | 43 +++++--------------------------
- drivers/vfio/fsl-mc/vfio_fsl_mc.c |  4 +--
- include/linux/fsl/mc.h            |  4 ---
- 3 files changed, 8 insertions(+), 43 deletions(-)
+ drivers/md/dm-cache-metadata.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index eb7b6c0ba9e7c..996379ace3764 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -86,12 +86,16 @@ static int fsl_mc_bus_match(struct device *dev, const struct device_driver *drv)
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
- 	const struct fsl_mc_driver *mc_drv = to_fsl_mc_driver(drv);
- 	bool found = false;
-+	int ret;
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 1b86e80c89cca..ddfc1a3cf2f53 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1023,6 +1023,12 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
+ 			return;			\
+ 	} while (0)
  
- 	/* When driver_override is set, only bind to the matching driver */
--	if (mc_dev->driver_override) {
--		found = !strcmp(mc_dev->driver_override, mc_drv->driver.name);
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret > 0) {
-+		found = true;
- 		goto out;
- 	}
-+	if (ret == 0)
-+		goto out;
++#define WRITE_LOCK_OR_GOTO(cmd, label)		\
++	do {					\
++		if (!cmd_write_lock((cmd)))	\
++			goto label;		\
++	} while (0)
++
+ #define WRITE_UNLOCK(cmd) \
+ 	up_write(&(cmd)->root_lock)
  
- 	if (!mc_drv->match_id_table)
- 		goto out;
-@@ -181,39 +185,8 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RO(modalias);
+@@ -1780,11 +1786,8 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
+ 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
+ 					 CACHE_MAX_CONCURRENT_LOCKS);
  
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
--	int ret;
--
--	if (WARN_ON(dev->bus != &fsl_mc_bus_type))
--		return -EINVAL;
--
--	ret = driver_set_override(dev, &mc_dev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", mc_dev->driver_override);
--	device_unlock(dev);
--	return len;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *fsl_mc_dev_attrs[] = {
- 	&dev_attr_modalias.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
+-	WRITE_LOCK(cmd);
+-	if (cmd->fail_io) {
+-		WRITE_UNLOCK(cmd);
+-		goto out;
+-	}
++	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
++	WRITE_LOCK_OR_GOTO(cmd, out);
  
-@@ -316,6 +289,7 @@ ATTRIBUTE_GROUPS(fsl_mc_bus);
- 
- const struct bus_type fsl_mc_bus_type = {
- 	.name = "fsl-mc",
-+	.driver_override = true,
- 	.match = fsl_mc_bus_match,
- 	.uevent = fsl_mc_bus_uevent,
- 	.dma_configure  = fsl_mc_dma_configure,
-@@ -925,9 +899,6 @@ static struct notifier_block fsl_mc_nb;
-  */
- void fsl_mc_device_remove(struct fsl_mc_device *mc_dev)
- {
--	kfree(mc_dev->driver_override);
--	mc_dev->driver_override = NULL;
--
- 	/*
- 	 * The device-specific remove callback will get invoked by device_del()
- 	 */
-diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-index 76ccbab0e3d64..84cd0eb65c471 100644
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-@@ -430,9 +430,7 @@ static int vfio_fsl_mc_bus_notifier(struct notifier_block *nb,
- 
- 	if (action == BUS_NOTIFY_ADD_DEVICE &&
- 	    vdev->mc_dev == mc_cont) {
--		mc_dev->driver_override = kasprintf(GFP_KERNEL, "%s",
--						    vfio_fsl_mc_ops.name);
--		if (!mc_dev->driver_override)
-+		if (device_set_driver_override(dev, vfio_fsl_mc_ops.name))
- 			dev_warn(dev, "VFIO_FSL_MC: Setting driver override for device in dprc %s failed\n",
- 				 dev_name(&mc_cont->dev));
- 		else
-diff --git a/include/linux/fsl/mc.h b/include/linux/fsl/mc.h
-index 897d6211c1635..1da63f2d70401 100644
---- a/include/linux/fsl/mc.h
-+++ b/include/linux/fsl/mc.h
-@@ -178,9 +178,6 @@ struct fsl_mc_obj_desc {
-  * @regions: pointer to array of MMIO region entries
-  * @irqs: pointer to array of pointers to interrupts allocated to this device
-  * @resource: generic resource associated with this MC object device, if any.
-- * @driver_override: driver name to force a match; do not set directly,
-- *                   because core frees it; use driver_set_override() to
-- *                   set or clear it.
-  *
-  * Generic device object for MC object devices that are "attached" to a
-  * MC bus.
-@@ -214,7 +211,6 @@ struct fsl_mc_device {
- 	struct fsl_mc_device_irq **irqs;
- 	struct fsl_mc_resource *resource;
- 	struct device_link *consumer_link;
--	const char *driver_override;
- };
- 
- #define to_fsl_mc_device(_dev) \
+ 	__destroy_persistent_data_objects(cmd, false);
+ 	old_bm = cmd->bm;
 -- 
 2.53.0
 
