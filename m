@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-252161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENptFr7/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:54 +0200
+	id UMBuDQsGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0B596DDF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B014E597BBA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 482C5355D8F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DF5A32C8C03
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694944F5E0;
-	Wed, 20 May 2026 17:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64975400DEB;
+	Wed, 20 May 2026 18:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rV/IKenW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIRJKjxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11273F787E;
-	Wed, 20 May 2026 17:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EA0400DF3;
+	Wed, 20 May 2026 18:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299951; cv=none; b=HHBHJZ5X00dqyE4+IXPs0gZrWJVqz6UHUr3SOH9fNY0puWptSb8jkWApcX7R32yZs2EN7bjd7EsQEqMCddxS/BiSwmUuD581GhDeloUFcHt3cQSSXRFCcxeDyKJqKYoRgafKybamjhHYdl0itGF7d3IelXf9RfOUbWrzCc7oB3M=
+	t=1779302813; cv=none; b=V7l3w2f2YRYqqPp/8ikTBjm7sOrT8PA9WkQpr5HWY2DVkmR1/q1J13J0YQ6JzH7ieaLO5sySABqzzje+l9v0qR44/RPeNxM6w22b2JaFvV6imxBSSxrCJCGe7GVYqmkzmOQug7+i8W44kHQG/RHyo9O5SdQjqHbVjtDEPdvRoJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299951; c=relaxed/simple;
-	bh=/FviS/uLb854I5XQtjk9pu2aduC803yELpUEMFqHB1s=;
+	s=arc-20240116; t=1779302813; c=relaxed/simple;
+	bh=mbrtuUeRiEBX1uLAqGPbOZ2zQDsx4iFa/0p3LcRmB/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fu2USB42VKsAaZDbSN/8igoKG8UyjiRId9+QIFmoUDyHQFrWJEi2LdNLcwV6kCSSqgYogpB7t1VdCa0PFy7VGI5HlI8sJWDWH6vhZstdA1RVtMrFKvlS5/aOT/Y7cJKyvuC3h0DiwVjfmzmveUa/hjcGE9m7QnpqjmEN5F6L4A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rV/IKenW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486E81F000E9;
-	Wed, 20 May 2026 17:59:09 +0000 (UTC)
+	 MIME-Version; b=FTEgz7cFV+7bmsyMTTRJKZMNsBsX207pyG+EXWjc/qXwFOTRlpBwu4KyLErTqH6kWsr4qHCIHyZFqFP2rVhzIs+XjbzZu15foAIUea2fC6rrxLodCX7ftSZxJv1UGA+ZaiOvKH4tUifO4NCuNG06TJ/nvc2MofRaTOomD665EaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIRJKjxL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BE01F000E9;
+	Wed, 20 May 2026 18:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299949;
-	bh=PBF4Z17LWK0SigoYf7eCx/N83MZ3cklmnvYgltWnGoc=;
+	s=korg; t=1779302812;
+	bh=/ckFpunD4blgAJghYkVdTZz83oVArkYZe5nqVQDU+Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rV/IKenW0X+D/lot5MgDEijpD2bBVwM8fOUFuB6lbS6FHHV9UhrIW+4brM33Wtnkk
-	 tiCW+w/a2NRi9pbl7qZ/LPW7W2blykjn6Lkmuw9S2M4VDkyGo9VPNcr7B82jO0UV+x
-	 NQ9n7lbGmSgHBJo3rMOnUTol+stXFv7YcplCKh60=
+	b=GIRJKjxL+FqDFwCEZ4WkFNlHFaMK85UMbSCrqNbC5wdY4eQEkM8TqQka0j7MwHz6K
+	 4GU4Hq71RuG2xUmAzRqIQjklVQ+ivoYOvZawBpOkYub2xy9W929xE3FxUPnvaLYbdJ
+	 3lNjxW/u1ZK9Bt6wNolt2cozI6+z00rs8cISQR7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.18 948/957] drm/v3d: Reject empty multisync extension to prevent infinite loop
-Date: Wed, 20 May 2026 18:23:51 +0200
-Message-ID: <20260520162155.160265419@linuxfoundation.org>
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 409/508] netfilter: skip recording stale or retransmitted INIT
+Date: Wed, 20 May 2026 18:23:52 +0200
+Message-ID: <20260520162107.471104893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +65,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252161-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,igalia.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253260-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,igalia.com:email]
-X-Rspamd-Queue-Id: 0CE0B596DDF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: B014E597BBA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit fb44d589bf3148e13452185a6e772a7efbf2d684 upstream.
+[ Upstream commit 576a5d2bad4814c881a829576b1261b9b8159d2b ]
 
-v3d_get_extensions() walks a userspace-provided singly-linked list of
-ioctl extensions without any bound on the chain length. A local user
-can craft a self-referential extension (ext->next == &ext) with zero
-in_sync_count and out_sync_count, which bypasses the existing duplicate-
-extension guard:
+An INIT whose init_tag matches the peer's vtag does not provide new state
+information. It indicates either:
 
-    if (se->in_sync_count || se->out_sync_count)
-            return -EINVAL;
+- a stale INIT (after INIT-ACK has already been seen on the same side), or
+- a retransmitted INIT (after INIT has already been recorded on the same
+  side).
 
-The guard never fires because v3d_get_multisync_post_deps() returns
-immediately when count is zero, leaving both fields at zero on every
-iteration. The result is an infinite loop in kernel context, blocking
-the calling thread and pegging a CPU core indefinitely.
+In both cases, the INIT must not update ct->proto.sctp.init[] state, since
+it does not advance the handshake tracking and may otherwise corrupt
+INIT/INIT-ACK validation logic.
 
-Fix this by rejecting a multisync extension where both in_sync_count
-and out_sync_count are zero in v3d_get_multisync_submit_deps(). An
-empty multisync carries no synchronization information and serves no
-useful purpose, so returning -EINVAL for such an extension is the
-correct defense against this attack vector.
+Allow INIT processing only when the conntrack entry is newly created
+(SCTP_CONNTRACK_NONE), or when the init_tag differs from the stored peer
+vtag.
 
-Fixes: e4165ae8304e ("drm/v3d: add multiple syncobjs support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Link: https://patch.msgid.link/20260415050000.3816128-1-ashutoshdesai993@gmail.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note it skips the check for the ct with old_state SCTP_CONNTRACK_NONE in
+nf_conntrack_sctp_packet(), as it is just created in sctp_new() where it
+set ct->proto.sctp.vtag[IP_CT_DIR_REPLY] = ih->init_tag.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Florian Westphal <fw@strlen.de>
+Link: https://patch.msgid.link/ee56c3e416452b2a40589a2a85245ac2ad5e9f4b.1777214801.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nf_conntrack_proto_sctp.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -390,6 +390,11 @@ v3d_get_multisync_submit_deps(struct drm
- 	if (multisync.pad)
- 		return -EINVAL;
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index fabb2c1ca00ab..0dd55d3fba38d 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -471,9 +471,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 			if (!ih)
+ 				goto out_unlock;
  
-+	if (!multisync.in_sync_count && !multisync.out_sync_count) {
-+		DRM_DEBUG("Empty multisync extension\n");
-+		return -EINVAL;
-+	}
-+
- 	ret = v3d_get_multisync_post_deps(file_priv, se, multisync.out_sync_count,
- 					  multisync.out_syncs);
- 	if (ret)
+-			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
+-				ct->proto.sctp.init[!dir] = 0;
+-			ct->proto.sctp.init[dir] = 1;
++			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
++			if (old_state == SCTP_CONNTRACK_NONE ||
++			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
++				if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
++					ct->proto.sctp.init[!dir] = 0;
++				ct->proto.sctp.init[dir] = 1;
++			}
+ 
+ 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
+ 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
+-- 
+2.53.0
+
 
 
 
