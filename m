@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IdAIOz4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-250823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:48 +0200
+	id QInbHr0dDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050CD5956EA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B986659A165
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B7B331ECFAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C838327466D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5A53EF0D7;
-	Wed, 20 May 2026 17:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3683EBF35;
+	Wed, 20 May 2026 17:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIHahUD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtumFE+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD9236BCDE;
-	Wed, 20 May 2026 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61C315E8B;
+	Wed, 20 May 2026 17:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296400; cv=none; b=BLRqs8RdCG6ff1aEPyyGZqQQLvA54WAEHqLirTCqgSpo00rWt9Wk9TT/YJe/TUf2iZDHy4Xa7q086Z/8fNdSVis0d2icymLWtkwNynHasRJgKbbp34THtk5pWQx52K9XqYS2se7N8K0LUDnMh8eNHd94Az/oMn1lDRR4l1rV9Ps=
+	t=1779298670; cv=none; b=Msm5CTVUtHY2JBvK+rNJvDqhH5PMJNEypL5qzlvwGll9llMyj8Bw+bN5BXv3rXJaQYORK05kOqyX1pETVGJZYRAQ3z0c+FPLyKUHtS/31Pw6x5dGB5zpDN7sshlMrMpEkPsDOSn841xlf6/lWIMnroAhoqPL1VWJXKu7zel2AeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296400; c=relaxed/simple;
-	bh=Yigtt9JdrUq60V3h+KK7kmG3E2Ax7JWcBptuGuSZjys=;
+	s=arc-20240116; t=1779298670; c=relaxed/simple;
+	bh=Ob7mXN7r4x0LarEKlfQQ2UERfsRcY0lPs/GdrLAyHFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgacZDD3IZrK6hjz29JXklw+4IeRIYsmVeL+d+BO1rJhmx05TQcy9hXzy84nUa5UJ1MXBsG0mhFN++cCYOuCPm+hxk5xX4LzNdoxbwZcy7Bk3ZtrMpSLunf17KaTirds1Tcar8rUjwpaI/lNbgpogB2/2ORlXPnBy2y8oA/m6+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIHahUD1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8011F00893;
-	Wed, 20 May 2026 16:59:57 +0000 (UTC)
+	 MIME-Version; b=hxV8P2yo/IAtPTCin7i3i1Q1giL33nwgYhevnunBF/fXjfg4SNr/aen6ZxZjvcZabjAyqdSTdHnekhuh2wwkcOQz9ORe2B1ksF9+Ua/zeGecv2IG2WdOSrUA4gm8D076vBCg+isIE8cStvE4EwSLKXNxaADjr/syN1gbAJTV7k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtumFE+D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179E61F000E9;
+	Wed, 20 May 2026 17:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296397;
-	bh=6oWROzS3x235q1OWZ6+9tgMdc0Gdflu4mvgTWWY5Bdo=;
+	s=korg; t=1779298669;
+	bh=59RKQ5j9b244G2jMfDGrkRBJjV0ZfUZxNQF2UTDYOp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mIHahUD1I6SDzeBNOVE+hP1W6bPzA0DXHEp1txljmcqcLsgOx+9hrZ00KkUCVF4yv
-	 6odPC3QHztZ9qI/BP4fUxGAL1sX0/pBOYcEaQufphUae1jF8icmB+yXBrmP1uGFjq4
-	 QIaCw3fZhE4OD9xqCpGSLkJxX1uYHZMBYYvnGthM=
+	b=BtumFE+DGsHx+7UfJIfnt1+mv4CBv1AlW0NqmpPCC+D5bxa/GKRKX8IYj8lIwOK4L
+	 ZNeXbhkT4BTnq5K6AZN2yzopwozMOsbDQ+1kDBMS0noAst8N/zqwQGDVWJha+QT/0F
+	 TwzlZT8fmXccT3yfLKf/FyyKJt2QnOGc0O3Wa/ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0733/1146] f2fs: fix to preserve previous reserve_{blocks,node} value when remount
+Subject: [PATCH 6.18 500/957] pinctrl: cy8c95x0: remove duplicate error message
 Date: Wed, 20 May 2026 18:16:23 +0200
-Message-ID: <20260520162204.793163024@linuxfoundation.org>
+Message-ID: <20260520162145.372859805@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +66,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251702-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250823-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,unisoc.com:email]
-X-Rspamd-Queue-Id: 050CD5956EA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B986659A165
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 01968164d94762db2f703647c5acfa28613844f1 ]
+[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
 
-The following steps will change previous value of reserve_{blocks,node},
-this dones not match the original intention.
+The pin control core is covered to report any error via message.
+The devm_request_threaded_irq() already prints an error message.
+Remove the duplicates.
 
-1.mount -t f2fs -o reserve_root=8192 imgfile test_mount/
-F2FS-fs (loop56): Mounted with checkpoint version = 1b69f8c7
-mount info:
-/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=8192,reserve_node=0,resuid=0,resgid=0,xxx)
+While at it, drop the info message as the same information about
+an IRQ in use can be retrieved differently.
 
-2.mount -t f2fs -o remount,reserve_root=4096 /data/test_mount
-F2FS-fs (loop56): Preserve previous reserve_root=8192
-check mount info: reserve_root change to 4096
-/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=4096,reserve_node=0,resuid=0,resgid=0,xxx)
-
-Prior to commit d18535132523 ("f2fs: separate the options parsing and options checking"),
-the value of reserve_{blocks,node} was only set during the first mount, along with
-the corresponding mount option F2FS_MOUNT_RESERVE_{ROOT,NODE} . If the mount option
-F2FS_MOUNT_RESERVE_{ROOT,NODE} was found to have been set during the mount/remount,
-the previously value of reserve_{blocks,node} would also be preserved, as shown in
-the code below.
-             if (test_opt(sbi, RESERVE_ROOT)) {
-                   f2fs_info(sbi, "Preserve previous reserve_root=%u",
-                          F2FS_OPTION(sbi).root_reserved_blocks);
-             } else {
-                   F2FS_OPTION(sbi).root_reserved_blocks = arg;
-                   set_opt(sbi, RESERVE_ROOT);
-             }
-But commit d18535132523 ("f2fs: separate the options parsing and options checking")
-only preserved the previous mount option; it did not preserve the previous value of
-reserve_{blocks,node}. Since value of reserve_{blocks,node} value is assigned
-or not depends on ctx->spec_mask, ctx->spec_mask should be alos handled in
-f2fs_check_opt_consistency.
-
-This patch will clear the corresponding ctx->spec_mask bits in f2fs_check_opt_consistency
-to preserve the previously values of reserve_{blocks,node} if it already have a value.
-
-Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 255db40c49ed9..f44e962b1ee7d 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1515,6 +1515,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
- 			F2FS_OPTION(sbi).root_reserved_blocks);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
- 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
-+		ctx->spec_mask &= ~F2FS_SPEC_reserve_root;
- 	}
- 	if (test_opt(sbi, RESERVE_NODE) &&
- 			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
-@@ -1523,6 +1524,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
- 			F2FS_OPTION(sbi).root_reserved_nodes);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
- 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
-+		ctx->spec_mask &= ~F2FS_SPEC_reserve_node;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 5c055d344ac9d..c0f1d964f8397 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1310,6 +1310,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+ {
+ 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
+ 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
++	struct device *dev = chip->dev;
+ 	int ret;
  
- 	err = f2fs_check_test_dummy_encryption(fc, sb);
+ 	mutex_init(&chip->irq_lock);
+@@ -1336,17 +1337,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+ 	girq->handler = handle_simple_irq;
+ 	girq->threaded = true;
+ 
+-	ret = devm_request_threaded_irq(chip->dev, irq,
+-					NULL, cy8c95x0_irq_handler,
+-					IRQF_ONESHOT | IRQF_SHARED,
+-					dev_name(chip->dev), chip);
+-	if (ret) {
+-		dev_err(chip->dev, "failed to request irq %d\n", irq);
+-		return ret;
+-	}
+-	dev_info(chip->dev, "Registered threaded IRQ\n");
+-
+-	return 0;
++	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
++					 IRQF_ONESHOT | IRQF_SHARED,
++					 dev_name(chip->dev), chip);
+ }
+ 
+ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
+@@ -1362,11 +1355,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
+ 	pd->owner = THIS_MODULE;
+ 
+ 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
+-	if (IS_ERR(chip->pctldev))
+-		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
+-			"can't register controller\n");
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(chip->pctldev);
+ }
+ 
+ static int cy8c95x0_detect(struct i2c_client *client,
 -- 
 2.53.0
 
