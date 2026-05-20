@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIg6OHYEDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:02 +0200
+	id ODvyIWgvDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5303359785C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDC159BA07
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E0E1342291F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2F8B39A0D34
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442A03EDAC6;
-	Wed, 20 May 2026 18:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662824014A8;
+	Wed, 20 May 2026 18:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCAAynHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pimbME0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED153F9280;
-	Wed, 20 May 2026 18:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBECD401490;
+	Wed, 20 May 2026 18:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301648; cv=none; b=mxDDIrIwh8I0+DxdDSH0nvuD3pjaFmygH+KLzEOW4TYEagI4K1EDySRROnk0exrKcXT1bdqbhOL0kAqrSyb6+FvbrWkyxHvpHySass7RUQz85IWN/2qY7IQmuH/SA7kDEdouSx9QzY3lAIDY0kCj8at3SrfyEeCST3cOBxjlqCs=
+	t=1779302850; cv=none; b=FYlD2W3HJVOeMo2ONfLe9I34QZ8BRuVkgiQFP9ofSGh5B6azNf2ExNxW9cBYlBOVd85z1H+sr4oo7NR2DGoMSN2+iCN62Rb5RfVTNDftWA9ANbPXV3jBVycMyvx2ff2O+LCa4dppJ1z1Zztcfs4DCLGceZ6ibx7NZp4v5CBX9ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301648; c=relaxed/simple;
-	bh=8MbPBBLivY23wx+OasVGQNKSwjDQHZYNWTPW1OwnY2g=;
+	s=arc-20240116; t=1779302850; c=relaxed/simple;
+	bh=/h7XzYpi3FHxpJQYUrVoaD4MUUaOe98talq+ud7nUZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWwUNbK1Q6HO40jIKVJvIf1XNMhg7tEn16OTxx0x41V+O8ZQVSmqGhe+L8TGRF62luQa+OGxLx8Zf5Pt034SBhFCWTUdsIKygO6ZG8E3avZwp+cpNnM2++iBKNzMImCa06p0LJfbKeyZFCGVdmYAklo7KVKXHgQQ2ZO3De38IDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCAAynHS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D371F000E9;
-	Wed, 20 May 2026 18:27:26 +0000 (UTC)
+	 MIME-Version; b=RK1o2rQlZLQWtqb3J1Gfbx8UFZPh4iuteWebg6UhCwr3Us/utj48ArKKh8q52nhI1FIw+Z6akgx6lEXNgq5GdcdtdKy2iM3vq8L70682LmfOHH4FECJJoCKIyhdxcQjA3dbf0OQAHD/ZOVEoC4L4ni2Zrbxnt2UUJprRXU7LRro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pimbME0o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F08F1F000E9;
+	Wed, 20 May 2026 18:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301646;
-	bh=fxFY5QLBk4HRYnR5/q3+XGvM87dj6kFbp4Mq5UXxWTE=;
+	s=korg; t=1779302848;
+	bh=ODrAxk1Q1Aqaa6wBCgX8E9j3LKAR7JzZ+8RZvJpd4us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qCAAynHSm+ys+5NrM9ilMObuxWiR+skNUiEzV2Ofn0MLrSq++MZo7N2miV1EXas0f
-	 RncGuZjn1otq6RvVwpLUNIAbIISSyODYGCma4wLUmk+CRW/TmFB50KBR7pAr93eofY
-	 PH//JxXrbwA2DMrJQjgzZmmDoqFYVM6yA8+8TP4I=
+	b=pimbME0opVjClnkWfVs7y3MSO3nu95Q+EzmOHqWlHmHbFAv5fHNHp9dNEw8qcGaTQ
+	 mZGtFD3CTESf3aj1bX5oyo859RSi+kZO18Z9JERzqc4je1FWqBp0N7+6H/Y+kF34dn
+	 4LcfSUvNVtNrDIqlKEXTynVMVthCS6rGTqWJAC8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoli Feng <xifeng@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 634/666] netfs: fix error handling in netfs_extract_user_iter()
+	Moritz Klammler <Moritz.Klammler@ferchau.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 422/508] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
 Date: Wed, 20 May 2026 18:24:05 +0200
-Message-ID: <20260520162125.016902019@linuxfoundation.org>
+Message-ID: <20260520162107.747079713@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252810-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253274-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -86,86 +83,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5303359785C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2BDC159BA07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 0aad5704c6b4d14007d4eab15883e8524e4310f4 upstream.
+[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
+During wait-requeue-pi (task A) and requeue-PI (task B) the following
+race can happen:
 
-This fixes mmapstress02 from LTP tests against CIFS.
+     Task A                             Task B
+  futex_wait_requeue_pi()
+    futex_setup_timer()
+    futex_do_wait()
+                                   futex_requeue()
+                                        CLASS(hb, hb1)(&key1);
+                                        CLASS(hb, hb2)(&key2);
+        *timeout*
+    futex_requeue_pi_wakeup_sync()
+        requeue_state = Q_REQUEUE_PI_IGNORE
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-10-dhowells@redhat.com
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    *blocks on hb->lock*
+
+                                        futex_proxy_trylock_atomic()
+                                          futex_requeue_pi_prepare()
+                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
+                                        double_unlock_hb(hb1, hb2)
+                                         *retry*
+
+Task B acquires both hb locks and attempts to acquire the PI-lock of the
+top most waiter (task B). Task A is leaving early due to a signal/
+timeout and started removing itself from the queue. It updates its
+requeue_state but can not remove it from the list because this requires
+the hb lock which is owned by task B.
+
+Usually task A is able to swoop the lock after task B unlocked it.
+However if task B is of higher priority then task A may not be able to
+wake up in time and acquire the lock before task B gets it again.
+Especially on a UP system where A is never scheduled.
+
+As a result task A blocks on the lock and task B busy loops, trying to
+make progress but live locks the system instead. Tragic.
+
+This can be fixed by removing the top most waiter from the list in this
+case. This allows task B to grab the next top waiter (if any) in the
+next iteration and make progress.
+
+Remove the top most waiter if futex_requeue_pi_prepare() fails.
+Let the waiter conditionally remove itself from the list in
+handle_early_requeue_pi_wakeup().
+
+Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
+Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
+Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/iterator.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ kernel/futex/requeue.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct i
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index 7e43839ca7b05..60b08247b07dd 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -307,8 +307,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
+ 		return -EINVAL;
  
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct i
- 		npages += cur_npages;
- 	}
- 
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
+ 	/* Ensure that this does not race against an early wakeup */
+-	if (!futex_requeue_pi_prepare(top_waiter, NULL))
++	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
++		plist_del(&top_waiter->list, &hb1->chain);
++		futex_hb_waiters_dec(hb1);
+ 		return -EAGAIN;
 +	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
+ 
+ 	/*
+ 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
+@@ -707,10 +710,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
+ 
+ 	/*
+ 	 * We were woken prior to requeue by a timeout or a signal.
+-	 * Unqueue the futex_q and determine which it was.
++	 * Conditionally unqueue the futex_q and determine which it was.
+ 	 */
+-	plist_del(&q->list, &hb->chain);
+-	futex_hb_waiters_dec(hb);
++	if (!plist_node_empty(&q->list)) {
++		plist_del(&q->list, &hb->chain);
++		futex_hb_waiters_dec(hb);
++	}
+ 
+ 	/* Handle spurious wakeups gracefully */
+ 	ret = -EWOULDBLOCK;
+-- 
+2.53.0
+
 
 
 
