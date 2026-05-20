@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJXgGq75DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:02 +0200
+	id oGnvKf8DDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C33559593A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44527597726
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BD1E304FA1F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95F2F317B4A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEA63F4DDB;
-	Wed, 20 May 2026 17:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468BA408011;
+	Wed, 20 May 2026 18:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7lB+WMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WX17cinB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4026C3A3E9C;
-	Wed, 20 May 2026 17:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97A840800E;
+	Wed, 20 May 2026 18:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299712; cv=none; b=HXtbMnoen1UBdDnIghFf8Ubwvr+bY8sXBhi7xcLbIh1h76aFZRY1z0lavXUBpSDOUG643n18EPg8oCo/z3ZciyDqgcAnTPbUDHd6y4JMXzSvmSYEezqLbciDUoE3fDAdj6hNKiUDIr21VxTIvJaXxK0UFxrv/cN9v+pRtZQ6v8Q=
+	t=1779302621; cv=none; b=KjuuSRJcxKc7qx4x3G36bV1F5b2Orbc6Ja86aqaXgShWCms8ED5bwTMy+yfTmkge3L9mJAq6Tn7jpyMZZ8gXSFvEW2vQbmtsQN1K+654c2klyzk5XqvfCBQq2DqA7MdZ0HJDwiUz8nGL+5bIbCTH1CeDtuKNijazCuaZ0JBOMDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299712; c=relaxed/simple;
-	bh=B54sqhuhUm0BZgYjl0murBoSDyZMYTfQyMuYk5q83mA=;
+	s=arc-20240116; t=1779302621; c=relaxed/simple;
+	bh=ZIBf7aMk94p9lwKdiaEFi9sp01G0ogjMeF7a7+2JC2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRYluPYgviyGVcmCMCbPm6zeLDSiR6Pvfu3+LAk1jI75Ja/M8dgmGfpxsZpo5ya7aFtRXtxpZsKQHdFIDPa3vMOCZumhr2lqH+WTUCZ8TYYYUhtq6JxIVJrxeQsRUjWOE+iMNMt8V5HFT9aW/QEwYT+tDqRXus6LZXDne/A9gcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7lB+WMo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18201F000E9;
-	Wed, 20 May 2026 17:55:10 +0000 (UTC)
+	 MIME-Version; b=O/6dKgiJoTVQbsICeFY2/QO2PSXhoxXWMUhYf1/Jw/HhlR6JVcjN+5Y/FUF2kJSzZfT1IxMQuuD9H/Z4fGSEqt6a4SLzh18K4Ms9XQMCBJO9VKPQpGXRtd4ocQfBuiBGgUeAA5tBwbNn2Jw2HxG31WxoVMKYQ50teSOC7rqvRq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WX17cinB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4D11F000E9;
+	Wed, 20 May 2026 18:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299711;
-	bh=6PfFTfM3hjmaSfYBbUW7guzLKGSVAEahztnl8pM8fI4=;
+	s=korg; t=1779302619;
+	bh=T1Rj+ATtah/wQiVsre1RQlbpeJxPNoXdvW/dohvNe3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p7lB+WMoCaB6A8p9pKeSHqlJwCDkJ8G9k7nwjpKiSsEnZfNdoi5b1NiB4xahZv4q+
-	 YEenv86rTMwkIIJdHN2g/eTvSIVhART2t54j3IbPArmVc6frTdrWt5ljiFAzqLEqFK
-	 3FPHwT3EbCop4KZafj+MtelC/x8qt9rRkPnQF0is=
+	b=WX17cinBXYH0o5uVJmZsBiPKuercNYwvlFO6JOPwsGKVURke2l6D6gAvB5CwavNhd
+	 DG2C2ujwJ/ZgRBFkJyou4LitSuKHbMVUWPrPUdGTUXKTzs/ouTdE6uUVhYf7r/qRVf
+	 GlOtyH6S5pXUTWkO3eeCdhyOUwlO6PI7cX3ELq3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Long Li <longli@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 875/957] net: mana: Fix use-after-free in reset service rescan path
+Subject: [PATCH 6.6 335/508] netfilter: nfnetlink_osf: fix potential NULL dereference in ttl check
 Date: Wed, 20 May 2026 18:22:38 +0200
-Message-ID: <20260520162153.541441318@linuxfoundation.org>
+Message-ID: <20260520162105.891839966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,104 +69,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252087-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253183-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,netfilter.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2C33559593A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 44527597726
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 3387a7ad478b46970ae8254049167d166e398aeb ]
+[ Upstream commit 711987ba281fd806322a7cd244e98e2a81903114 ]
 
-When mana_serv_reset() encounters -ETIMEDOUT or -EPROTO from
-mana_gd_resume(), it performs a PCI rescan via mana_serv_rescan().
+The nf_osf_ttl() function accessed skb->dev to perform a local interface
+address lookup without verifying that the device pointer was valid.
 
-mana_serv_rescan() calls pci_stop_and_remove_bus_device(), which can
-invoke the driver's remove path and free the gdma_context associated
-with the device. After returning, mana_serv_reset() currently jumps to
-the out label and attempts to clear gc->in_service, dereferencing a
-freed gdma_context.
+Additionally, the implementation utilized an in_dev_for_each_ifa_rcu
+loop to match the packet source address against local interface
+addresses. It assumed that packets from the same subnet should not see a
+decrement on the initial TTL. A packet might appear it is from the same
+subnet but it actually isn't especially in modern environments with
+containers and virtual switching.
 
-The issue was observed with the following call logs:
-[  698.942636] BUG: unable to handle page fault for address: ff6c2b638088508d
-[  698.943121] #PF: supervisor write access in kernel mode
-[  698.943423] #PF: error_code(0x0002) - not-present page
-[S[  698.943793] Pat Dec  6 07:GD5 100000067 P4D 1002f7067 PUD 1002f8067 PMD 101bef067 PTE 0
-0:56 2025] hv_[n e 698.944283] Oops: Oops: 0002 [#1] SMP NOPTI
-tvsc f8615163-00[  698.944611] CPU: 28 UID: 0 PID: 249 Comm: kworker/28:1
-...
-[Sat Dec  6 07:50:56 2025] R10: [  699.121594] mana 7870:00:00.0 enP30832s1: Configured vPort 0 PD 18 DB 16
-000000000000001b R11: 0000000000000000 R12: ff44cf3f40270000
-[Sat Dec  6 07:50:56 2025] R13: 0000000000000001 R14: ff44cf3f402700c8 R15: ff44cf3f4021b405
-[Sat Dec  6 07:50:56 2025] FS:  0000000000000000(0000) GS:ff44cf7e9fcf9000(0000) knlGS:0000000000000000
-[Sat Dec  6 07:50:56 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[Sat Dec  6 07:50:56 2025] CR2: ff6c2b638088508d CR3: 000000011fe43001 CR4: 0000000000b73ef0
-[Sat Dec  6 07:50:56 2025] Call Trace:
-[Sat Dec  6 07:50:56 2025]  <TASK>
-[Sat Dec  6 07:50:56 2025]  mana_serv_func+0x24/0x50 [mana]
-[Sat Dec  6 07:50:56 2025]  process_one_work+0x190/0x350
-[Sat Dec  6 07:50:56 2025]  worker_thread+0x2b7/0x3d0
-[Sat Dec  6 07:50:56 2025]  kthread+0xf3/0x200
-[Sat Dec  6 07:50:56 2025]  ? __pfx_worker_thread+0x10/0x10
-[Sat Dec  6 07:50:56 2025]  ? __pfx_kthread+0x10/0x10
-[Sat Dec  6 07:50:56 2025]  ret_from_fork+0x21a/0x250
-[Sat Dec  6 07:50:56 2025]  ? __pfx_kthread+0x10/0x10
-[Sat Dec  6 07:50:56 2025]  ret_from_fork_asm+0x1a/0x30
-[Sat Dec  6 07:50:56 2025]  </TASK>
+Remove the device dereference and interface loop. Replace the logic with
+a switch statement that evaluates the TTL according to the ttl_check.
 
-Fix this by returning immediately after mana_serv_rescan() to avoid
-accessing GC state that may no longer be valid.
-
-Fixes: 9bf66036d686 ("net: mana: Handle hardware recovery events when probing the device")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Link: https://patch.msgid.link/20251218131054.GA3173@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Kito Xu (veritas501) <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/20260414074556.2512750-1-hxzene@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nfnetlink_osf.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 0ad082b566f5e..45ee0774522a1 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -481,7 +481,7 @@ static void mana_serv_reset(struct pci_dev *pdev)
- 		/* Perform PCI rescan on device if we failed on HWC */
- 		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
- 		mana_serv_rescan(pdev);
--		goto out;
-+		return;
- 	}
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 2207bda442d54..6d3dfbeb398cb 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -31,26 +31,18 @@ EXPORT_SYMBOL_GPL(nf_osf_fingers);
+ static inline int nf_osf_ttl(const struct sk_buff *skb,
+ 			     int ttl_check, unsigned char f_ttl)
+ {
+-	struct in_device *in_dev = __in_dev_get_rcu(skb->dev);
+ 	const struct iphdr *ip = ip_hdr(skb);
+-	const struct in_ifaddr *ifa;
+-	int ret = 0;
  
- 	if (ret)
+-	if (ttl_check == NF_OSF_TTL_TRUE)
++	switch (ttl_check) {
++	case NF_OSF_TTL_TRUE:
+ 		return ip->ttl == f_ttl;
+-	if (ttl_check == NF_OSF_TTL_NOCHECK)
+-		return 1;
+-	else if (ip->ttl <= f_ttl)
++		break;
++	case NF_OSF_TTL_NOCHECK:
+ 		return 1;
+-
+-	in_dev_for_each_ifa_rcu(ifa, in_dev) {
+-		if (inet_ifa_match(ip->saddr, ifa)) {
+-			ret = (ip->ttl == f_ttl);
+-			break;
+-		}
++	case NF_OSF_TTL_LESS:
++	default:
++		return ip->ttl <= f_ttl;
+ 	}
+-
+-	return ret;
+ }
+ 
+ struct nf_osf_hdr_ctx {
 -- 
 2.53.0
 
