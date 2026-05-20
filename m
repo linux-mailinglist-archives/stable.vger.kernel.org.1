@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOmADPb4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-251549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:58 +0200
+	id yPkdB0b0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F388595700
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710B3594AEE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A3F47302E8F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A6C432D043D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12734E75C;
-	Wed, 20 May 2026 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5253EFD3D;
+	Wed, 20 May 2026 16:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnkOQ7NH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5qAeQXi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B852D879E;
-	Wed, 20 May 2026 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4313F33F5BA;
+	Wed, 20 May 2026 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298269; cv=none; b=d4LMDGh0yivTz2FM87zq4+/BvDcuvs2kust5qVkQzIyFi1lW9KU1FydtTc5fNavktKO4QEaPDSseYYfVhRxbe6Z+xUTEwRRm9pUvwjk6RTq9vGvtKS3hh9DeAvX5xQ1wYEaswWsVSnb/vOiJ7Cc0HMfpI/g4VDPSxNB4azJeduM=
+	t=1779295765; cv=none; b=p/e1qFCnHI+l+VSnhu+XXNJTN5c6reUjmOJv1JhLt7P4Vl3cDWQeZH4mXW/WvivvTOl33ZBRQmqKKtbOOVwl7+/A7kojknC9P+QyLPQbFyl8vk+RZpzL/TRjpheu0f3DybbzH5FHn4xOIloF6rSo38GYCOIv5SVSMfLCwGZdC8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298269; c=relaxed/simple;
-	bh=mmCRvKE1ddt1q0ki4FffoNjKO+3iBqBxujo59ulGyMo=;
+	s=arc-20240116; t=1779295765; c=relaxed/simple;
+	bh=8G3MBHjUDJ3kyVn1io8X6C3BWEgimboBsrptie+ylbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nkwqs0pT5tAwMV98r2FIKNsYjV6Gk5lC+UJwvJXozpdn8PIuthtm+EKLhrX4024d4EnE69nnCf86nbIOes2yHHH0I38cMsfnX46+LlE+CZFj3GzBrXGDqaAAvkxd2tNy4DAUEx0LIdYDvDTFKI7/tRPWaot2EFX2QSUf5H8slv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnkOQ7NH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4DC1F000E9;
-	Wed, 20 May 2026 17:31:07 +0000 (UTC)
+	 MIME-Version; b=CPgmkMAoPjZ5NwFFSKHqt6Ed3evQUIOTBXyfadnqlmCdFDWS4P0f3vIY9B4ApLhGaxn/f9L4ddncLxmnmNDzr+PmXCo9OA1UzgrOx3kRjGAdzLns3uiEvFyouGAoAuQryw0BFO8M63fp1rmVc6sMfjRySTkjSgRVsX3AvCq6Loo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5qAeQXi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DB01F00893;
+	Wed, 20 May 2026 16:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298267;
-	bh=nFYHvrQOc2dhIgkrp5We8TG7dq3YK39spesc98m4aoo=;
+	s=korg; t=1779295763;
+	bh=XHDGbJ1eV3zt/sFtEpdiCyVfhZ6C1hZerdUH9GjfZMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qnkOQ7NHxy0o3cQdGun9WXuzow/sKTvTE6oalzZZm60IABgiyXTlSjv1HmP2SnKju
-	 s83GKAmSKf1Ko1b594sMi+qQy0+cCRZnPL2dpc0Hs48lBgvri0T6dPyxkDOpcgx12s
-	 9PYXCTWl8T7SeywFXKrBRfOyU7AI7YevQ8jDexQA=
+	b=G5qAeQXiwxxnxxf0FklsZkyIRW+npEgRVaSLEkzxWwt+INgKX+BmTVC6BN6MDJ6+b
+	 bPsGMImdSlSq6zUqVuF/6MxOzSfFAkrak8yCMXTehE9shvKjHiAk8uSmznHRXNPX2z
+	 B2D7QEhTCk5wDOdnsx2IObS7lAHucMAdvEl6l7P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 309/957] gpu: nova-core: bitfield: fix broken Default implementation
-Date: Wed, 20 May 2026 18:13:12 +0200
-Message-ID: <20260520162141.233400478@linuxfoundation.org>
+Subject: [PATCH 7.0 0543/1146] arm64: dts: lx2160a: rename pinmux nodes for readability
+Date: Wed, 20 May 2026 18:13:13 +0200
+Message-ID: <20260520162200.469217308@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +66,249 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250573-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251549-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4F388595700
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 710B3594AEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliot Courtney <ecourtney@nvidia.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit de0aca13509bf47a2d49bc7a26d56079c758c95f ]
+[ Upstream commit 456eb494746afd56d3a9dc30271300136e55b96e ]
 
-The current implementation does not actually set the default values for
-the fields in the bitfield.
+LX2160A pinmux is done in groups by various length bitfields within
+configuration registers.
 
-Fixes: 3fa145bef533 ("gpu: nova-core: register: generate correct `Default` implementation")
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-Link: https://patch.msgid.link/20260401-fix-bitfield-v2-1-2fa68c98114a@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Each group of pins is named in the reference manual after a primary
+function using soc-specific naming, e.g. IIC1 (for i2c0).
+
+Hardware block numbering starts from zero in device-tree but one in the
+reference manual.
+
+Rename the already defined pinmux nodes originally added for changing
+i2c pins between i2c and gpio functions reflecting the reference manual
+name (IIC) in the node name, and the device-tree name (i2c, gpio) in the
+label.
+
+Specifically, drop the "_scl" suffix from the I2C labels because the
+nodes actually configure both SDA and SCL pins together. Instead add
+"_pins" suffix to avoid conflicts with I2C controller labels.
+
+For GPIO functions, include the specific controller and pin numbers in
+the label to clarify they are generic GPIOs and help spot mistakes.
+
+No functional change intended.
+
+Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/bitfield.rs | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 64 +++++++++----------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
-index fb60800898c55..1d4931c251bf4 100644
---- a/drivers/gpu/nova-core/bitfield.rs
-+++ b/drivers/gpu/nova-core/bitfield.rs
-@@ -303,12 +303,11 @@ macro_rules! bitfield {
-         /// Returns a value for the bitfield where all fields are set to their default value.
-         impl ::core::default::Default for $name {
-             fn default() -> Self {
--                #[allow(unused_mut)]
--                let mut value = Self(Default::default());
-+                let value = Self(Default::default());
+diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+index 41c9b4253f4a5..28500e8873909 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
+@@ -750,8 +750,8 @@ i2c0: i2c@2000000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c0_scl>;
+-			pinctrl-1 = <&i2c0_scl_gpio>;
++			pinctrl-0 = <&i2c0_pins>;
++			pinctrl-1 = <&gpio0_3_2_pins>;
+ 			scl-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -766,8 +766,8 @@ i2c1: i2c@2010000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c1_scl>;
+-			pinctrl-1 = <&i2c1_scl_gpio>;
++			pinctrl-0 = <&i2c1_pins>;
++			pinctrl-1 = <&gpio0_31_30_pins>;
+ 			scl-gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -782,8 +782,8 @@ i2c2: i2c@2020000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c2_scl>;
+-			pinctrl-1 = <&i2c2_scl_gpio>;
++			pinctrl-0 = <&i2c2_pins>;
++			pinctrl-1 = <&gpio0_29_28_pins>;
+ 			scl-gpios = <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -798,8 +798,8 @@ i2c3: i2c@2030000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c3_scl>;
+-			pinctrl-1 = <&i2c3_scl_gpio>;
++			pinctrl-0 = <&i2c3_pins>;
++			pinctrl-1 = <&gpio0_27_26_pins>;
+ 			scl-gpios = <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -814,8 +814,8 @@ i2c4: i2c@2040000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c4_scl>;
+-			pinctrl-1 = <&i2c4_scl_gpio>;
++			pinctrl-0 = <&i2c4_pins>;
++			pinctrl-1 = <&gpio0_25_24_pins>;
+ 			scl-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -830,8 +830,8 @@ i2c5: i2c@2050000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c5_scl>;
+-			pinctrl-1 = <&i2c5_scl_gpio>;
++			pinctrl-0 = <&i2c5_pins>;
++			pinctrl-1 = <&gpio0_23_22_pins>;
+ 			scl-gpios = <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -846,8 +846,8 @@ i2c6: i2c@2060000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c6_scl>;
+-			pinctrl-1 = <&i2c6_scl_gpio>;
++			pinctrl-0 = <&i2c6_i2c7_pins>;
++			pinctrl-1 = <&gpio1_18_15_pins>;
+ 			scl-gpios = <&gpio1 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -862,8 +862,8 @@ i2c7: i2c@2070000 {
+ 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
+ 					    QORIQ_CLK_PLL_DIV(16)>;
+ 			pinctrl-names = "default", "gpio";
+-			pinctrl-0 = <&i2c6_scl>;
+-			pinctrl-1 = <&i2c6_scl_gpio>;
++			pinctrl-0 = <&i2c6_i2c7_pins>;
++			pinctrl-1 = <&gpio1_18_15_pins>;
+ 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+ 			status = "disabled";
+ 		};
+@@ -1713,11 +1713,11 @@ pinmux_i2crv: pinmux@70010012c {
+ 			pinctrl-single,register-width = <32>;
+ 			pinctrl-single,function-mask = <0x7>;
  
-                 ::kernel::macros::paste!(
-                 $(
--                value.[<set_ $field>](Default::default());
-+                let value = value.[<set_ $field>](Default::default());
-                 )*
-                 );
+-			i2c1_scl: i2c1-scl-pins {
++			i2c1_pins: iic2-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 0x7>;
+ 			};
  
+-			i2c1_scl_gpio: i2c1-scl-gpio-pins {
++			gpio0_31_30_pins: iic2-gpio-pins {
+ 				pinctrl-single,bits = <0x0 0x1 0x7>;
+ 			};
+ 
+@@ -1725,35 +1725,35 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
+ 				pinctrl-single,bits = <0x0 0x6 0x7>;
+ 			};
+ 
+-			i2c2_scl: i2c2-scl-pins {
++			i2c2_pins: iic3-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
+ 			};
+ 
+-			i2c2_scl_gpio: i2c2-scl-gpio-pins {
++			gpio0_29_28_pins: iic3-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 3) (0x7 << 3)>;
+ 			};
+ 
+-			i2c3_scl: i2c3-scl-pins {
++			i2c3_pins: iic4-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
+ 			};
+ 
+-			i2c3_scl_gpio: i2c3-scl-gpio-pins {
++			gpio0_27_26_pins: iic4-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 6) (0x7 << 6)>;
+ 			};
+ 
+-			i2c4_scl: i2c4-scl-pins {
++			i2c4_pins: iic5-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
+ 			};
+ 
+-			i2c4_scl_gpio: i2c4-scl-gpio-pins {
++			gpio0_25_24_pins: iic5-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 9) (0x7 << 9)>;
+ 			};
+ 
+-			i2c5_scl: i2c5-scl-pins {
++			i2c5_pins: iic6-i2c-pins {
+ 				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
+ 			};
+ 
+-			i2c5_scl_gpio: i2c5-scl-gpio-pins {
++			gpio0_23_22_pins: iic6-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
+ 			};
+ 
+@@ -1777,19 +1777,19 @@ gpio0_14_12_pins: sdhc1-dir-gpio-pins {
+ 				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
+ 			};
+ 
+-			i2c6_scl: i2c6-scl-pins {
+-				pinctrl-single,bits = <0x4 0x2 0x7>;
++			gpio1_18_15_pins: iic8-iic7-gpio-pins {
++				pinctrl-single,bits = <0x4 0x1 0x7>;
+ 			};
+ 
+-			i2c6_scl_gpio: i2c6-scl-gpio-pins {
+-				pinctrl-single,bits = <0x4 0x1 0x7>;
++			i2c6_i2c7_pins: iic8-iic7-i2c-pins {
++				pinctrl-single,bits = <0x4 0x2 0x7>;
+ 			};
+ 
+-			i2c0_scl: i2c0-scl-pins {
++			i2c0_pins: iic1-i2c-pins {
+ 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
+ 			};
+ 
+-			i2c0_scl_gpio: i2c0-scl-gpio-pins {
++			gpio0_3_2_pins: iic1-gpio-pins {
+ 				pinctrl-single,bits = <0x8 (0x1 << 10) (0x1 << 10)>;
+ 			};
+ 		};
 -- 
 2.53.0
 
