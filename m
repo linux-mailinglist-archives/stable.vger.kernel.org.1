@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAq+EHoYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:26 +0200
+	id GOqPJ/DlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B2359989E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7715927DD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D223432FCAC6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5751230A83C8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D8F36CE19;
-	Wed, 20 May 2026 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C1523B61B;
+	Wed, 20 May 2026 16:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHfDGXN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGg9zNuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685D235C1A0;
-	Wed, 20 May 2026 17:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED4236494B;
+	Wed, 20 May 2026 16:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297466; cv=none; b=dF0uyxWSwyDKTGcg68Y4aQvkiseemlFa4e9nXT4hjzcxuY82HQW3hjcl1AQ3teVO1x4PAhVSOquwi4bKwVkFnJZV+j8IUIUTJwxFX5JlnIscKrMSWvPkzgnpreHMb4E9UKY4UzCYnDIdWS+38gH+MWszxuWmYQ2rtW0SQlAbdJE=
+	t=1779294975; cv=none; b=CMPEmpGv8bPMIUGEUBx3lwDuZUwdM08upP3wQZBAsFUthj2EfWeffsw9BKOidUCtnod03KkstAWLuEsOtNfbw6VFz5IZ+e483ryOqPNo4oZ5BLbJv1nJlf5BYzMZ2pmBHIPTqNOTJ2Rew84LXRDAzmNyMsbsk0sv3n1cQrpya3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297466; c=relaxed/simple;
-	bh=jl9dyrxqp5PehHyV/uS5Bs+k2vtbIg6xIuLFiPvbDFQ=;
+	s=arc-20240116; t=1779294975; c=relaxed/simple;
+	bh=VkCUCdby4hI63G9U0RYiSbmVFRE/seDt+ZkIypzMW40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQQJjX2o14HKiojFtX859RZIEO7HQYf2g9OcR12GgmUjCa+7JeG0dhoW9RgluvYAR9rEwzNCUIMOc3u/JvRsSC37knrf2QxOgrQq9gUCyLSV4CjpOiy8rmdrvpJikSqRzP6yu7GtMgvdZx3u/hwIoWBqTWO4Ko7N2J81VRz0748=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHfDGXN0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4201F00893;
-	Wed, 20 May 2026 17:17:44 +0000 (UTC)
+	 MIME-Version; b=KeE1OVBzWzis3ZGOLKU+29CrNaKhLTIA2mx7YKejBHhOv8wCV3NZ7T4t0Egbfc2oJ6Nl+2BS0klb2DB37Yk3Ff5Z15BgBXfoNG0lvgmNkxxJrz/QdSrsMH+F38d2ZkhjQs5uDjmjqSBh3plfI2V0tkgB0/zzyDjwWdTKy+3NrRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGg9zNuo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B392F1F000E9;
+	Wed, 20 May 2026 16:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297465;
-	bh=+w20QF/NvZiPFsBLz7IUwYEpudDneapEJrYj60Cqr1c=;
+	s=korg; t=1779294974;
+	bh=ZtDqVT+ROZtTbTEMdj3c10bE44UkjzJnJu7/alHEqNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VHfDGXN05Z3Bmg5/0DNLcnL69x5hC36HxVcjXOiLiSEpQW+J49xtR3siRWr89a4Kh
-	 D1AO8nkdb4L/HER/CgA/EqYTNVX7LpZn8gjFEDJCddUyq9FMx6bEqsa7ldjm+pdzu9
-	 vRSTtRvPYc35Plb4jzhbKFd4E1be542eSvb/zyKM=
+	b=ZGg9zNuoyE7X6K19XrDFMu38Taf4kBgFryjXe68GLImMN1GHMXJ0llVZlY/SZ5nYA
+	 bd0u3SJ/JCTbKXQNusF9OgjwbNdXlGxUdkNojHnY8a4xR1s1LgwaPt00PCx5+7wf5q
+	 O7UEy0NYFUUP9SIqggm5wMDwCbtYNuZWFbBB8wt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackie Liu <liuyun01@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Gary Guo <gary@garyguo.net>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/957] blk-cgroup: fix disk reference leak in blkcg_maybe_throttle_current()
-Date: Wed, 20 May 2026 18:08:11 +0200
-Message-ID: <20260520162134.743185634@linuxfoundation.org>
+Subject: [PATCH 7.0 0242/1146] gpu: nova-core: gsp: fix improper handling of empty slot in cmdq
+Date: Wed, 20 May 2026 18:08:12 +0200
+Message-ID: <20260520162153.717143999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251240-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250271-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
-X-Rspamd-Queue-Id: 74B2359989E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,garyguo.net:email]
+X-Rspamd-Queue-Id: 5F7715927DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackie Liu <liuyun01@kylinos.cn>
+From: Eliot Courtney <ecourtney@nvidia.com>
 
-[ Upstream commit 23308af722fefed00af5f238024c11710938fba3 ]
+[ Upstream commit f64caf673cb5add9ac2065609a52049e2317c498 ]
 
-Add the missing put_disk() on the error path in
-blkcg_maybe_throttle_current(). When blkcg lookup, blkg lookup, or
-blkg_tryget() fails, the function jumps to the out label which only
-calls rcu_read_unlock() but does not release the disk reference acquired
-by blkcg_schedule_throttle() via get_device(). Since current->throttle_disk
-is already set to NULL before the lookup, blkcg_exit() cannot release
-this reference either, causing the disk to never be freed.
+The current code hands out buffers that go all the way up to and
+including `rx - 1`, but we need to maintain an empty slot to prevent the
+ring buffer from wrapping around into having 'tx == rx', which means
+empty.
 
-Restore the reference release that was present as blk_put_queue() in the
-original code but was inadvertently dropped during the conversion from
-request_queue to gendisk.
+Also add more rigorous no-panic proofs.
 
-Fixes: f05837ed73d0 ("blk-cgroup: store a gendisk to throttle in struct task_struct")
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260331085054.46857-1-liu.yun@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings and handling")
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260129-nova-core-cmdq1-v3-4-2ede85493a27@nvidia.com
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/nova-core/gsp/cmdq.rs | 34 ++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 890c161bee25e..9a8d047be580b 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -2037,6 +2037,7 @@ void blkcg_maybe_throttle_current(void)
- 	return;
- out:
- 	rcu_read_unlock();
-+	put_disk(disk);
- }
+diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
+index fc4e7b1074307..5da153c71800a 100644
+--- a/drivers/gpu/nova-core/gsp/cmdq.rs
++++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+@@ -237,21 +237,27 @@ impl DmaGspMem {
+         // PANIC: per the invariant of `cpu_write_ptr`, `tx` is `<= MSGQ_NUM_PAGES`.
+         let (before_tx, after_tx) = gsp_mem.cpuq.msgq.data.split_at_mut(tx);
  
- /**
+-        if rx <= tx {
+-            // The area from `tx` up to the end of the ring, and from the beginning of the ring up
+-            // to `rx`, minus one unit, belongs to the driver.
+-            if rx == 0 {
+-                let last = after_tx.len() - 1;
+-                (&mut after_tx[..last], &mut [])
+-            } else {
+-                (after_tx, &mut before_tx[..rx])
+-            }
++        // The area starting at `tx` and ending at `rx - 2` modulo MSGQ_NUM_PAGES, inclusive,
++        // belongs to the driver for writing.
++
++        if rx == 0 {
++            // Since `rx` is zero, leave an empty slot at end of the buffer.
++            let last = after_tx.len() - 1;
++            (&mut after_tx[..last], &mut [])
++        } else if rx <= tx {
++            // The area is discontiguous and we leave an empty slot before `rx`.
++            // PANIC:
++            // - The index `rx - 1` is non-negative because `rx != 0` in this branch.
++            // - The index does not exceed `before_tx.len()` (which equals `tx`) because
++            //   `rx <= tx` in this branch.
++            (after_tx, &mut before_tx[..(rx - 1)])
+         } else {
+-            // The area from `tx` to `rx`, minus one unit, belongs to the driver.
+-            //
+-            // PANIC: per the invariants of `cpu_write_ptr` and `gsp_read_ptr`, `rx` and `tx` are
+-            // `<= MSGQ_NUM_PAGES`, and the test above ensured that `rx > tx`.
+-            (after_tx.split_at_mut(rx - tx).0, &mut [])
++            // The area is contiguous and we leave an empty slot before `rx`.
++            // PANIC:
++            // - The index `rx - tx - 1` is non-negative because `rx > tx` in this branch.
++            // - The index does not exceed `after_tx.len()` (which is `MSGQ_NUM_PAGES - tx`)
++            //   because `rx < MSGQ_NUM_PAGES` by the `gsp_read_ptr` invariant.
++            (&mut after_tx[..(rx - tx - 1)], &mut [])
+         }
+     }
+ 
 -- 
 2.53.0
 
