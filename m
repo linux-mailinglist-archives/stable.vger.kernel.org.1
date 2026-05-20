@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-251143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGQHIwbwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251143-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:50 +0200
+	id cCJrG9EDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-253124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A275593DFD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D95D15976B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12AB231CBCB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4F863277EB3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BFC3D8138;
-	Wed, 20 May 2026 17:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B49E4028DB;
+	Wed, 20 May 2026 18:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jij0cMBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeTZRsvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE023D6CB7;
-	Wed, 20 May 2026 17:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7E3BED26;
+	Wed, 20 May 2026 18:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297211; cv=none; b=tMu6Z3JWgImFwtsyW6N9YKep5YuCQ/0boFqEzjj6GLFQ42ZUJVqsdpBktjRfAkoOXrCHIeTLbzf94n1WJT2U2yYRPqwEf4l+T0SDxhDmJetKEaVgdiKf582KftrV9quwhiWt1h1sj+Pjhu5MBqf8m7voUh+ZoMMVeGVDr+VFFBg=
+	t=1779302468; cv=none; b=gBFttKxB1Trt64bpaH0XzUp97Nrj9HC/qfRKgBCg3M+UBlMbBp2QDxlmLw1YeikRwNvTfRk/7E+nHwwJXA8FfJ3cxyToWd3BZ/S5eB4U34v1Cwfx/Aig4OsfyNUW8vgQz8nkCv3OWogc2KDbdwBkrDhupZCbHcKUrwQgqn02V0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297211; c=relaxed/simple;
-	bh=X89WwMDoAKjcp4UUNjAuofPYSLoFSJCseQpeQI54zOo=;
+	s=arc-20240116; t=1779302468; c=relaxed/simple;
+	bh=biteVKi/xpP4/wpFhU8q7z4tALxOHx2UdsD6r3DnGf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRPHjPtAacaOATvE2gzS0AvLY3OahVMG5x2KoAcblWhv8zc0yILedRVayi0jzUK+6iBhUDVSVtNqcxIxE3YO6AWKN5PRl9AqNr+7SUG9cn1tQ1eUcBPsC+q87D65PFxBSg43/n7nM2BHMhnE9YRVWLiA+U9e/mqbcxeRAyhnYWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jij0cMBH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CD81F000E9;
-	Wed, 20 May 2026 17:13:29 +0000 (UTC)
+	 MIME-Version; b=kvKTahH9ELq3cKZBm1EOIT9fy9AQetAJH7eoHAjRSWK+ZgAhFb++Vr/U7HGrMbPK0Pde2vyrhV8i+ptGI3fPiVTqVI5KL+Xldx9f3Z6mTPMtO7wschVyot4l8sgp7SIz7kNjcT9ethdY+0GzMHyjp0s7S225t4PpTpL/Wcll5yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeTZRsvw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACD61F000E9;
+	Wed, 20 May 2026 18:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297209;
-	bh=ix1jZfHkHrHnKMxC3FJj1mekaHJvPxHQP7NE885K2Vg=;
+	s=korg; t=1779302467;
+	bh=RRsqsFwPVLfANjb4jb/fEfdy2qcgrRNRkiVRM0LCgkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jij0cMBHbmfgdUwHGnUrRGUD2c+5/lq/mhWanOVgR8CHImsueX5GCV+GEHvxd3Avv
-	 kFzVGS1Y/Xa3Q8VkwRK2UVgCIhBFapQx7XDOxEapELjHak9HKBDYqnNj490A6BDT+x
-	 HeJq+EAFgbFDed+YanYgXMsP5472VXH1a4NX1RDM=
+	b=TeTZRsvwNk8eKZFR3xCB3DHPiMCk/gfwPcKNVkIkr5yEGWaDRdljXoUR6mNLBnLug
+	 b88e+pAFlirt37OTnwiQ/I0TasWTSIYKgGLcGz+/kwMPT7mf13gw7L+/I++ZKZgVo4
+	 VkxbDyRD8/JNxhkERwh4yPr7uyaW3Ny3Fs0Bt74E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	stable@kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 1050/1146] idpf: fix double free and use-after-free in aux device error paths
-Date: Wed, 20 May 2026 18:21:40 +0200
-Message-ID: <20260520162211.997440226@linuxfoundation.org>
+	Val Packett <val@packett.cool>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 278/508] dt-bindings: clock: qcom,gcc-sc8180x: Add missing GDSCs
+Date: Wed, 20 May 2026 18:21:41 +0200
+Message-ID: <20260520162104.670284756@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251143-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253124-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lunn.ch:email,mpg.de:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1A275593DFD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[packett.cool:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D95D15976B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Val Packett <val@packett.cool>
 
-commit 6c77b9510829a424d1b74409b7db9456e3522871 upstream.
+[ Upstream commit 76404ffbf07f28a5ec04748e18fce3dac2e78ef6 ]
 
-When auxiliary_device_add() fails in idpf_plug_vport_aux_dev() or
-idpf_plug_core_aux_dev(), the err_aux_dev_add label calls
-auxiliary_device_uninit() and falls through to err_aux_dev_init.  The
-uninit call will trigger put_device(), which invokes the release
-callback (idpf_vport_adev_release / idpf_core_adev_release) that frees
-iadev.  The fall-through then reads adev->id from the freed iadev for
-ida_free() and double-frees iadev with kfree().
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Free the IDA slot and clear the back-pointer before uninit, while adev
-is still valid, then return immediately.
-
-Commit 65637c3a1811 ("idpf: fix UAF in RDMA core aux dev deinitialization")
-fixed the same use-after-free in the matching unplug path in this file but
-missed both probe error paths.
-
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: stable@kernel.org
-Fixes: be91128c579c ("idpf: implement RDMA vport auxiliary dev create, init, and destroy")
-Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-4-a5ea4dc837a9@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Val Packett <val@packett.cool>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260312112321.370983-2-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 3565741eb985 ("clk: qcom: gcc-sc8180x: Add missing GDSCs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_idc.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-@@ -90,7 +90,10 @@ static int idpf_plug_vport_aux_dev(struc
- 	return 0;
+diff --git a/include/dt-bindings/clock/qcom,gcc-sc8180x.h b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+index 2569f874fe13c..be97a0ca2ade4 100644
+--- a/include/dt-bindings/clock/qcom,gcc-sc8180x.h
++++ b/include/dt-bindings/clock/qcom,gcc-sc8180x.h
+@@ -308,5 +308,10 @@
+ #define USB30_MP_GDSC						8
+ #define USB30_PRIM_GDSC						9
+ #define USB30_SEC_GDSC						10
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC		11
++#define HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC		12
++#define HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC		13
++#define HLOS1_VOTE_TURING_MMU_TBU0_GDSC			14
++#define HLOS1_VOTE_TURING_MMU_TBU1_GDSC			15
  
- err_aux_dev_add:
-+	ida_free(&idpf_idc_ida, adev->id);
-+	vdev_info->adev = NULL;
- 	auxiliary_device_uninit(adev);
-+	return ret;
- err_aux_dev_init:
- 	ida_free(&idpf_idc_ida, adev->id);
- err_ida_alloc:
-@@ -228,7 +231,10 @@ static int idpf_plug_core_aux_dev(struct
- 	return 0;
- 
- err_aux_dev_add:
-+	ida_free(&idpf_idc_ida, adev->id);
-+	cdev_info->adev = NULL;
- 	auxiliary_device_uninit(adev);
-+	return ret;
- err_aux_dev_init:
- 	ida_free(&idpf_idc_ida, adev->id);
- err_ida_alloc:
+ #endif
+-- 
+2.53.0
+
 
 
 
