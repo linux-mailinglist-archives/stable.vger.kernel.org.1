@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-249840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOzaLWCaDWoMzwUAu9opvQ
-	(envelope-from <stable+bounces-249840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:26:24 +0200
+	id wDPRCPqaDWoU0AUAu9opvQ
+	(envelope-from <stable+bounces-249843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:28:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF4D58C649
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:26:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD8D58C6FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 11F8A307D7CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:22:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 285023059013
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB3B3E3141;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4A33DB63D;
 	Wed, 20 May 2026 11:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxX6TLZ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUtTWfy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E9A3E0254;
-	Wed, 20 May 2026 11:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA15B3D3002;
+	Wed, 20 May 2026 11:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779276019; cv=none; b=DI8S8x7UrU1ixZFvnFuY4nvL34584NwOUQhTVbo9GAdC2DOIEmfRExiMq8CroRIbadacnRZKqs1m+aogehQgLr9MZRmfTivdbE2/tZaAg/ZeooFiKoyyL6mpqPrIgHDXlyIREL7E6NCVaYXqmrbtqZFBxDsgCsT4jwGhsRtb5sE=
+	t=1779276020; cv=none; b=KdiUhvEtvxURB47KSlzFVxbpX6LwuMIZlyi6lFlS0kBsG6O+G5JWYkhxsoybIfPGJPbb1EM4UW39yaGiFFxTonc+KDGtmmRJ3HCOGDSa5XsQ5hGCtWNu8z6qXDCia0YToKmOsLNuPDczxWuUuHY8PG30R6M5RcLoHyXmX0Oa+go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779276019; c=relaxed/simple;
-	bh=kQiQktG49jtjh0yrsuVGLJX+d30nIFRsfE8tZ53RrL4=;
+	s=arc-20240116; t=1779276020; c=relaxed/simple;
+	bh=zGb5XWpc6ZIDpU9QwhdmaqYvZSeao8Zu2vRfr5h3CZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeaXwF6vAu45K9SLfFEdqLtSyTv17zwmgQEeHasjAM7UpVu7yZorpZVok7NE/SVs8f2t5pzRft/r5YecQR00bD3oAOnQfap5AR1WPUbaprXPs8lDM2Cfwf5OjdM/hT5yt7y6f4QusnGRHwmhlOiK0euC+wK54iZeCmXwpiMriug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxX6TLZ5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC001F000E9;
-	Wed, 20 May 2026 11:20:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AE+7xmjI6y4V8kFijcbdQPfFwmCzNujLjSUL0y0+wCpiXBICCuIZK9iZ7STAEVkPQfm5keHBIz9cd+2z3c4FMZrkxBsBDiAb1F7JHPdV9VZD1N8VNpzH2EouKy3Hr6v5I5D+hntuRLtwW9zkI57Si+UMxVH/7ftFRlT4w56nLrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUtTWfy5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4ED1F00896;
+	Wed, 20 May 2026 11:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779276015;
-	bh=kggCWnZpAHNNZQeOzSoSS4pC4UvCIi90dNDXgNeGc/Q=;
+	s=k20260515; t=1779276016;
+	bh=jUTfMqqDDJxFfr+dLoEBVtFnN+A04vnvH69Uzit7gWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mxX6TLZ5CPYc+j7YiAfFOOw98QO+x4qOjNxT44PmLhbwhGyM4ycC5t0alIkafz2Ba
-	 QBO8fgMZK5Byb+qHDgCa6qMKZk3aJLv31+HncoqDr5LDuxUGMOHU5FW3eBwK0ph/Eh
-	 jQWDC2QihMQSLbYnpofFa2vv81ptCgGuIiW1hHWiSX1tTA0eKAlAoU1UcVi4evUx7W
-	 2WrTMYaRZLsFl7jR3CUxm2lTSxajsOAWRnBeVatOk/MrsWlV2nO0Ps+o5QC7SlwoDN
-	 0GT6Cpz8upEMMwnHtdURQaCE8wGRLx0ECpY/RCAO0YSs0eqaH/HV6GpZcMmVb2Pj93
-	 C+390pLtihELA==
+	b=ZUtTWfy51U0NJxlxaugirdw+0fmsVFQ8+vxLbr8GQXW7RV7Ny7ldQ9sovvF66hmvd
+	 ZV4hThAMsb6gsNlTdx8YA9i+YnFGAPyZTXW4TUs7ZLYkt9KoReko24owclmvVU4P/O
+	 xMKMuBUUWapGIAdlVDry2SEJ3oZvvhNVxeSwqHbs4pX1EP+7+xvTAudQmLw9cuByUJ
+	 lgYWHIG7xL37+zMG6QqRmv4OTqT1vZe1Rta9b09sHOavnp9MpOR6/KJEYTCnCNlg/5
+	 k4KMco/mxVpxo7maGJU2fIq6KogB9nym2uJYcxreefZrKOQYUhOMIq4NCCL6O+JGvW
+	 4fmG8x9EfYQWw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i2c@vger.kernel.org,
+	mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
-Date: Wed, 20 May 2026 07:18:53 -0400
-Message-ID: <20260520111944.3424570-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-5.10] powerpc/vmx: avoid KASAN instrumentation in enter_vmx_ops() for kexec
+Date: Wed, 20 May 2026 07:18:54 -0400
+Message-ID: <20260520111944.3424570-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260520111944.3424570-1-sashal@kernel.org>
 References: <20260520111944.3424570-1-sashal@kernel.org>
@@ -67,287 +70,400 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0.9
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linux.ibm.com,gmail.com,kernel.org,ellerman.id.au,lists.ozlabs.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249843-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249840-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sang-engineering.com:email,xidian.edu.cn:email]
-X-Rspamd-Queue-Id: 5EF4D58C649
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6CD8D58C6FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 617eb7c0961a8dfcfc811844a6396e406b2923ea ]
+[ Upstream commit 38e989d504fc52900a3786b7144fb53cd67e0389 ]
 
-While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
-timeout value` warning was observed, accompanied by SMBus controller
-state machine corruption.
+The kexec sequence invokes enter_vmx_ops() via copy_page() with the MMU
+disabled. In this context, code must not rely on normal virtual address
+translations or trigger page faults.
 
-The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
-10 ms. The user argument is checked against INT_MAX, but it is
-subsequently multiplied by 10 before being passed to msecs_to_jiffies().
+With KASAN enabled, functions get instrumented and may access shadow
+memory using regular address translation. When executed with the MMU
+off, this can lead to page faults (bad_page_fault) from which the
+kernel cannot recover in the kexec path, resulting in a hang.
 
-A malicious user can pass a large value (e.g., 429496729) that passes
-the `arg > INT_MAX` check but overflows when multiplied by 10. This
-results in a truncated 32-bit unsigned value that bypasses the
-internal `(int)m < 0` check in `msecs_to_jiffies()`.
+The kexec path sets preempt_count to HARDIRQ_OFFSET before entering
+the MMU-off copy sequence.
 
-The truncated value is then assigned to `client->adapter->timeout`
-(a signed 32-bit int), which is reinterpreted as a negative number.
-When passed to wait_for_completion_timeout(), this negative value
-undergoes sign extension to a 64-bit unsigned long, triggering the
-`schedule_timeout` warning and causing premature returns. This leaves
-the SMBus state machine in an unrecoverable state, constituting a
-local Denial of Service (DoS).
+current_thread_info()->preempt_count = HARDIRQ_OFFSET
+  kexec_sequence(..., copy_with_mmu_off = 1)
+    -> kexec_copy_flush(image)
+         copy_segments()
+           -> copy_page(dest, addr)
+	         bl enter_vmx_ops()
+                   if (in_interrupt())
+                     return 0
+	         beq .Lnonvmx_copy
 
-Fix this by bounding the user argument to `INT_MAX / 10`.
+Since kexec sets preempt_count to HARDIRQ_OFFSET, in_interrupt()
+evaluates to true and enter_vmx_ops() returns early.
 
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-[wsa: move the comment as well]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+As in_interrupt() (and preempt_count()) are always inlined, mark
+enter_vmx_ops() with __no_sanitize_address to avoid KASAN
+instrumentation and shadow memory access with MMU disabled, helping
+kexec boot fine with KASAN enabled.
+
+Reported-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260407124349.1698552-2-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase Walkthrough
+## Phase 1: Commit Message Forensics
+Record: subsystem `powerpc/vmx`; action verb `avoid`; intent is to
+prevent KASAN instrumentation of `enter_vmx_ops()` when it is reached
+from the kexec MMU-off copy path.
 
-### Phase 1: Commit Message Forensics
-Step 1.1 Record: Subsystem `i2c: dev`; action verb `prevent`; intent is
-to prevent integer overflow in the userspace `I2C_TIMEOUT` ioctl.
+Record: tags parsed from the candidate message:
+- `Reported-by: Aboorva Devarajan <aboorvad@linux.ibm.com>`
+- `Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>`
+- `Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>`
+- `Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>`
+- `Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>`
+- `Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>`
+- `Link: https://patch.msgid.link/20260407124349.1698552-2-
+  sourabhjain@linux.ibm.com`
+- No `Fixes:` tag in this commit. Absence is not a negative signal.
 
-Step 1.2 Record: Tags are `Signed-off-by: Mingyu Wang
-<25181214217@stu.xidian.edu.cn>` and `Signed-off-by: Wolfram Sang
-<wsa+renesas@sang-engineering.com>` with maintainer edit note `[wsa:
-move the comment as well]`. No `Fixes:`, `Reported-by:`, `Tested-by:`,
-`Reviewed-by:`, `Link:`, or `Cc: stable` tags were present.
+Record: bug description from the message: `kexec_sequence()` may call
+`copy_page()` with the MMU disabled; on PowerPC Book3S this can enter
+`copypage_power7.S`, which calls `enter_vmx_ops()`. If KASAN instruments
+`enter_vmx_ops()`, the instrumentation may access shadow memory using
+normal virtual translation, which is invalid with MMU off and can cause
+an unrecoverable `bad_page_fault`/hang in kexec.
 
-Step 1.3 Record: The body describes a Syzkaller-found `schedule_timeout:
-wrong timeout value` warning and SMBus state machine corruption after a
-large userspace timeout causes overflow/truncation before storing into
-signed `adapter->timeout`. Symptom is local DoS through bad timeout
-behavior; root cause is validating `arg` before multiplying by 10.
+Record: hidden bug fix: yes. Although phrased as “avoid
+instrumentation,” this fixes a real boot/hang failure in the kexec/kdump
+path under KASAN.
 
-Step 1.4 Record: This is not hidden cleanup; it is an explicit integer
-overflow and local DoS fix.
+## Phase 2: Diff Analysis
+Record: one file changed: `arch/powerpc/lib/vmx-helper.c`, with 8
+insertions and 1 deletion in the fetched v3 patch. The only functional
+change is changing `int enter_vmx_ops(void)` to `int
+__no_sanitize_address enter_vmx_ops(void)`; the remaining additions are
+explanatory comments.
 
-### Phase 2: Diff Analysis
-Step 2.1 Record: One file changed, `drivers/i2c/i2c-dev.c`; committed
-diff is 5 insertions and 4 deletions due comment movement. Modified
-function: `i2cdev_ioctl()`. Scope: single-file surgical fix.
+Record: modified function: `enter_vmx_ops()`.
 
-Step 2.2 Record: Before, `I2C_TIMEOUT` accepted any `arg <= INT_MAX`,
-then used `msecs_to_jiffies(arg * 10)`. After, it accepts only `arg <=
-INT_MAX / 10`, so the 10 ms unit conversion cannot exceed signed 32-bit
-range before assignment to `adapter->timeout`.
+Record: before behavior: `enter_vmx_ops()` could be KASAN-instrumented.
+During kexec with MMU off, the function first checks `in_interrupt()`
+and should return `0`, but KASAN prologue/body instrumentation can run
+before or around normal code and touch shadow memory.
 
-Step 2.3 Record: Bug category is integer overflow/truncation and type-
-range validation. Broken mechanism: userspace-controlled timeout is
-range-checked before scaling, but stored in `struct
-i2c_adapter.timeout`, which is `int`.
+Record: after behavior: `__no_sanitize_address` suppresses KASAN
+instrumentation for this function, preserving the intended early return
+path when `preempt_count` contains `HARDIRQ_OFFSET`.
 
-Step 2.4 Record: Fix quality is high: one validation bound change, no
-new API, no refactor. Regression risk is low; it rejects only extreme
-timeout values that cannot be represented safely after the documented 10
-ms scaling.
+Record: bug category: sanitizer/real-mode correctness bug causing kexec
+hang. This is a crash/hang class fix, not a cleanup.
 
-### Phase 3: Git History Investigation
-Step 3.1 Record: `git blame` shows the existing `arg > INT_MAX` guard
-came from `6ebec961d59b` and the `arg * 10` timeout assignment/comment
-came from `cd97f39b7cdf`. `git describe` places them at
-`v5.0-rc2~14^2~1` and `v2.6.29-rc7~62^2~2`, respectively.
+Record: fix quality: small, surgical, and low risk. It does not alter
+normal logic, public API, data structures, or userspace-visible
+behavior. The only behavioral effect is disabling KASAN instrumentation
+for one helper that can run in an MMU-off path.
 
-Step 3.2 Record: No `Fixes:` tag, so no tagged introducing commit to
-follow. I still inspected `6ebec961d59b`, which originally fixed
-negative retry/timeout values and was itself stable-tagged.
+## Phase 3: Git History Investigation
+Record: local `HEAD` is a stable release commit, not the candidate. `git
+log --grep` on current history, `master`, and `power-next` did not find
+the candidate commit locally, so there was no commit hash available for
+`b4 dig -c`.
 
-Step 3.3 Record: Recent upstream `drivers/i2c/i2c-dev.c` history shows
-this candidate plus unrelated cleanup/fix commits; no prerequisite
-series was identified.
+Record: `git blame` on current `arch/powerpc/lib/vmx-helper.c` shows the
+unannotated `enter_vmx_ops()` present in the local tree; due this
+repository’s history shape, blame attributes the original lines to a
+merge/root history point, so the exact original introduction commit was
+not verifiable locally.
 
-Step 3.4 Record: `Mingyu Wang` has this one upstream `drivers/i2c`
-commit in the checked history. Wolfram Sang committed it and is the I2C
-maintainer in the patch flow.
+Record: no candidate `Fixes:` tag to follow. The companion patch in the
+same series has `Fixes: 2ab2d5794f14 ("powerpc/kasan: Disable address
+sanitization in kexec paths")`; `git show` confirms that commit disabled
+sanitization for PowerPC kexec real-mode paths in 2022.
 
-Step 3.5 Record: No dependent commit found. The patch assumes the long-
-existing `I2C_TIMEOUT` case and applies cleanly to the current `v7.0.5`
-checkout.
+Record: related recent local history: `6bc9c0a905228` changed VMX
+usercopy flow and added export context around the same file. That
+affects hunk context for older stable trees, but not the actual one-line
+fix.
 
-### Phase 4: Mailing List And External Research
-Step 4.1 Record: `b4 dig -c 617eb7c0961a8` found the original submission
-at `https://patch.msgid.link/20260427025745.1100768-1-
-25181214217@stu.xidian.edu.cn`. `b4 dig -a` found only v1. The submitted
-patch was a one-line bound change; the committed version is the
-maintainer-adjusted version with comment movement.
+Record: author context: `git log --author="Sourabh Jain" --
+arch/powerpc/...` shows multiple PowerPC kexec/crash/fadump commits.
+`MAINTAINERS` lists Madhavan Srinivasan and Michael Ellerman as PowerPC
+maintainers; Madhavan signed off the candidate.
 
-Step 4.2 Record: `b4 dig -w` shows recipients: Mingyu Wang, Wolfram
-Sang, `linux-i2c@vger.kernel.org`, and `linux-kernel@vger.kernel.org`.
+Record: dependencies: no source-level prerequisite for the annotation
+itself. Function `enter_vmx_ops()` and `__no_sanitize_address` exist in
+checked stable tags. Functional completeness is best with the companion
+patch fixing `KASAN_SANITIZE_core_$(BITS).o`, because review/test
+discussion says both patches together make KASAN kexec succeed.
 
-Step 4.3 Record: No `Link:` or `Reported-by:` tag exists. Public web
-searches did not find a syzkaller bug page for this exact issue; the
-Syzkaller finding is verified only from the commit/patch text.
+## Phase 4: Mailing List And External Research
+Record: `b4 am` for message id
+`20260407124349.1698552-2-sourabhjain@linux.ibm.com` fetched a v3 two-
+patch series. It reported total patches: 2, current tree apply clean,
+and DKIM signature valid for patch 2.
 
-Step 4.4 Record: No multi-patch series found; standalone patch.
+Record: `b4 am -c` checked for newer revisions and did not report a
+newer v4. v3 appears to be the latest fetched revision.
 
-Step 4.5 Record: Stable-list WebFetch was blocked by lore Anubis, and
-web search did not find stable-specific discussion. No evidence of
-objections or NAKs was found in the b4-fetched mbox.
+Record: `b4 mbox` fetched the v3 thread. Patch 2 was addressed to
+`linuxppc-dev` and CC’d PowerPC/kexec stakeholders including Michael
+Ellerman, Madhavan Srinivasan, Mahesh Salgaonkar, Hari Bathini, Daniel
+Axtens, Venkat Rao Bagalkote, Aboorva Devarajan, and Ritesh Harjani.
 
-### Phase 5: Code Semantic Analysis
-Step 5.1 Record: Modified function: `i2cdev_ioctl()`.
+Record: `WebFetch` of lore URLs was blocked by Anubis, but `b4` and the
+`yhbt.net` lore mirror provided the thread content.
 
-Step 5.2 Record: Call path is userspace ioctl on `/dev/i2c-*` through
-`i2cdev_fops.unlocked_ioctl = i2cdev_ioctl`; compat ioctls fall back to
-`i2cdev_ioctl()` for commands not handled specially, including
-`I2C_TIMEOUT`.
+Record: v2 review discussion verified:
+- Ritesh Harjani reviewed patch 2 and said “LGTM,” granting `Reviewed-
+  by`.
+- Aboorva Devarajan reported an actual KASAN-enabled kexec hang on
+  pseries PowerVM: system reached “kexec: Starting switchover sequence”
+  and then hung.
+- Aboorva tested that “with both the patches applied, kexec completes
+  successfully with KASAN enabled.”
+- v1 annotated both `enter_vmx_ops()` and `exit_vmx_ops()`; v2 removed
+  `exit_vmx_ops()` annotation and added the explanatory comment. This
+  shows review-driven narrowing of the fix.
 
-Step 5.3 Record: Key callee is `msecs_to_jiffies()`, whose runtime
-helper treats negative `unsigned int` values as infinite timeout. The
-result is assigned to `struct i2c_adapter.timeout`, verified as `int`.
+Record: stable-specific discussion: Ritesh explicitly suggested `Cc:
+stable@vger.kernel.org` for patch 1. I did not find a direct stable
+nomination for patch 2, but patch 2 was reviewed and tested as part of
+the same two-patch functional fix.
 
-Step 5.4 Record: Buggy path is reachable from userspace with access to
-an i2c-dev node. The corrupted timeout is then used by core retry loops
-and many bus drivers, including paths using
-`wait_for_completion_timeout()`.
+## Phase 5: Code Semantic Analysis
+Record: modified function: `enter_vmx_ops()`.
 
-Step 5.5 Record: Similar timeout use is widespread in `drivers/i2c`, but
-this specific unchecked userspace scaling pattern was found in
-`i2c-dev`.
+Record: callers found by exact search:
+- `arch/powerpc/lib/copypage_power7.S`
+- `arch/powerpc/lib/memcpy_power7.S`
+- `arch/powerpc/lib/memcmp_64.S`
 
-### Phase 6: Stable Tree Analysis
-Step 6.1 Record: Checked `v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.19`, and
-`v7.0`; all contain the vulnerable `arg > INT_MAX` plus
-`msecs_to_jiffies(arg * 10)` pattern.
+Record: relevant kexec call chain verified in code:
+`reboot(LINUX_REBOOT_CMD_KEXEC)` -> `kernel_kexec()` ->
+`machine_kexec()` -> `default_machine_kexec()` -> `kexec_sequence()` ->
+`kexec_copy_flush()` -> `copy_segments()` -> `copy_page()` ->
+`copypage_power7.S` -> `enter_vmx_ops()`.
 
-Step 6.2 Record: Expected backport difficulty is clean or trivial. `git
-apply --check` succeeded on current `v7.0.5`; checked stable snippets
-have matching context.
+Record: key callees/logic in `enter_vmx_ops()`: `in_interrupt()`,
+`preempt_disable()`, and `enable_kernel_altivec()`. In the kexec MMU-off
+path, `default_machine_kexec()` sets
+`current_thread_info()->preempt_count = HARDIRQ_OFFSET`, and
+`include/linux/preempt.h` defines `in_interrupt()` via `irq_count()`,
+which observes the hardirq bits.
 
-Step 6.3 Record: No alternate stable fix found by subject/phrase
-searches in local git history.
+Record: reachability: reachable from privileged kexec/kdump paths. It is
+not unprivileged-user reachable, but kdump reliability is operationally
+important.
 
-### Phase 7: Subsystem Context
-Step 7.1 Record: Subsystem is I2C userspace character-device interface,
-`drivers/i2c/i2c-dev.c`. Criticality: important, because it exposes bus
-control to userspace and affects any system using `i2c-dev`.
+Record: similar patterns: PowerPC already disables KASAN for sensitive
+real-mode/interrupt code in multiple Makefiles and uses
+`__no_sanitize_address` in PowerPC interrupt/stack code, so the
+attribute is consistent with local practice.
 
-Step 7.2 Record: Subsystem is mature but actively maintained. The
-affected ioctl path is long-standing.
+## Phase 6: Cross-Referencing And Stable Tree Analysis
+Record: buggy code exists in stable tags checked: `v5.4`, `v5.10`,
+`v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.18`, `v6.19`, and `v7.0` all have
+`enter_vmx_ops()` without `__no_sanitize_address`.
 
-### Phase 8: Impact And Risk
-Step 8.1 Record: Affected users are systems exposing `/dev/i2c-*` to
-userspace, including embedded, hardware-management, and sensor-control
-systems.
+Record: the kexec `copy_segments()` -> `copy_page()` path and
+`preempt_count = HARDIRQ_OFFSET` were verified in `v5.4`, `v5.10`,
+`v5.15`, `v6.1`, and current/v7.0-era code.
 
-Step 8.2 Record: Trigger is setting `I2C_TIMEOUT` to a large value
-through ioctl, then using affected I2C/SMBus transfer paths. It requires
-access to the device node; no capability check is present in the ioctl
-path itself.
+Record: `copypage_power7.S` calls `enter_vmx_ops()` in `v5.4`, `v5.10`,
+`v5.15`, and current code.
 
-Step 8.3 Record: Failure mode is at least a kernel `schedule_timeout:
-wrong timeout value` warning and broken timeout behavior; commit text
-reports SMBus controller state machine corruption and local DoS.
-Severity: HIGH.
+Record: `__no_sanitize_address` exists in compiler headers in checked
+stable tags, including `v5.4`, `v5.10`, `v6.1`, `v6.6`, and current.
 
-Step 8.4 Record: Benefit is high because it blocks a fuzzed, userspace-
-reachable DoS class bug in maintained stable trees. Risk is very low
-because the patch is one range check in one ioctl case.
+Record: backport difficulty: clean on current `7.0.y` per `git apply
+--check` and `b4`. Older stable trees may need a tiny context adjustment
+because `EXPORT_SYMBOL(exit_vmx_usercopy)` is not present in older
+versions, but the actual function signature is present and the backport
+is straightforward.
 
-### Phase 9: Final Synthesis
-Step 9.1 Record: Evidence for backporting: real integer overflow,
-Syzkaller-reported in commit text, userspace-reachable with i2c-dev
-access, high-severity timeout corruption/DoS, tiny fix, maintainer-
-applied, vulnerable code present in checked stable trees, clean apply to
-`v7.0.5`. Evidence against: no public syzkaller link, no `Reported-
-by`/`Tested-by`, and exact SMBus unrecoverable-state details were not
-independently reproduced.
+Record: related fixes already in stable: not verified as already
+present; local stable tags checked do not contain the candidate
+annotation.
 
-Step 9.2 Record: Stable rules: obviously correct yes; fixes real bug
-yes; important issue yes, local DoS/bad kernel timeout path; small and
-contained yes; no new features/APIs yes; stable applicability yes for
-checked trees.
+## Phase 7: Subsystem And Maintainer Context
+Record: subsystem is PowerPC architecture library/kexec path:
+`arch/powerpc/lib` and `arch/powerpc/kexec`.
 
-Step 9.3 Record: No exception category needed; this is a normal bug fix,
-not device ID/quirk/DT/build/doc.
+Record: criticality: important/platform-specific. It affects PowerPC
+systems using kexec/kdump with KASAN enabled, especially pseries/PowerVM
+cases verified in review. It is not universal across all architectures.
 
-Step 9.4 Record: The technical merits strongly support stable
-backporting.
+Record: subsystem activity: local history shows recent PowerPC VMX
+usercopy and kexec/crash/fadump activity, and the patch was handled
+through the PowerPC maintainer path.
+
+## Phase 8: Impact And Risk Assessment
+Record: affected users: PowerPC Book3S/PowerVM-style systems using
+kexec/kdump with KASAN-enabled kernels and VMX copy paths.
+
+Record: trigger conditions: kexec/kdump switchover, MMU-off copy path,
+KASAN enabled, and `copy_page()` selecting the Power7 VMX copy path. The
+triggering operation is privileged, but the failure impacts crash dump
+capture and reboot into the new kernel.
+
+Record: failure mode: system hang during kexec/kdump. Review discussion
+includes an observed hang after “kexec: Starting switchover sequence,”
+and the commit message explains unrecoverable `bad_page_fault` risk with
+MMU off. Severity: HIGH to CRITICAL for affected debug/crash-dump
+deployments.
+
+Record: benefit: high for affected PowerPC KASAN/kdump users because it
+prevents a hard hang and restores kexec completion.
+
+Record: risk: very low. One function annotation plus comment; no logic
+change. The main concern is that stable maintainers should also take the
+companion Makefile fix for full KASAN/kexec coverage.
+
+## Phase 9: Final Synthesis
+Record: evidence for backporting:
+- Fixes a real, reviewed, and tested kexec hang with KASAN enabled.
+- Aboorva Devarajan reported and tested the failure/fix.
+- Ritesh Harjani reviewed the final approach.
+- The fix is one function attribute and explanatory comment.
+- It affects a serious operational path: kexec/kdump boot into a
+  new/capture kernel.
+- The buggy code and call path exist across active stable versions
+  checked.
+- Backport is clean for current `7.0.y` and trivial for older stable
+  trees.
+
+Record: evidence against backporting:
+- The issue is config/platform specific: PowerPC plus KASAN plus
+  kexec/kdump plus VMX copy path.
+- Older stable trees may require minor context adjustment.
+- The commit is part of a two-patch series; the companion Makefile KASAN
+  fix should be included for the tested complete fix.
+
+Record: unresolved questions:
+- Exact original introduction commit for `enter_vmx_ops()` could not be
+  verified from local history.
+- Direct lore `WebFetch` was blocked by Anubis; I used `b4` and a lore
+  mirror instead.
+- I did not build-test the backport.
+
+Stable rules checklist:
+1. Obviously correct and tested: yes. The annotation directly suppresses
+   KASAN instrumentation on the one helper that can execute with MMU
+   off; tested-by is present.
+2. Fixes a real bug: yes. Review discussion reports an actual kexec hang
+   with KASAN.
+3. Important issue: yes. Failure mode is kexec/kdump hang.
+4. Small and contained: yes. One file, one function annotation.
+5. No new features/APIs: yes.
+6. Can apply to stable: yes for current `7.0.y`; older trees may need
+   trivial context adjustment.
+
+Exception category: not a device ID/quirk/build/doc exception. It is a
+normal stability fix.
 
 ## Verification
-- Phase 1: Parsed `git show 617eb7c0961a8`; confirmed tags and absence
-  of `Fixes:`, `Reported-by:`, `Link:`, and stable tag.
-- Phase 2: Inspected committed diff; confirmed one-file change in
-  `i2cdev_ioctl()`.
-- Phase 3: `git blame` identified `6ebec961d59b` and `cd97f39b7cdf`;
-  `git describe` placed them before all checked maintained stable trees.
-- Phase 3: `git show 6ebec961d59b` confirmed prior timeout/retry
-  negative-value fix and stable nomination.
-- Phase 4: `b4 dig`, `b4 dig -a`, `b4 dig -w`, and mbox read found one
-  v1 patch, proper I2C recipients, and no visible objections.
-- Phase 4: WebFetch of lore was blocked by Anubis; stable-list
-  discussion and public syzkaller report remain unverified.
-- Phase 5: `rg` and file reads confirmed ioctl file operations, compat
-  fallback, `msecs_to_jiffies()`, `adapter->timeout` as `int`, and
-  downstream timeout uses.
-- Phase 6: Checked `v5.15`, `v6.1`, `v6.6`, `v6.12`, `v6.19`, and `v7.0`
-  snippets; all contain the vulnerable pattern.
-- Phase 6: `git apply --check` confirmed the upstream diff applies to
-  current `v7.0.5`.
-- Phase 8: `schedule_timeout()` source confirms negative timeout emits
-  `wrong timeout value` and returns 0.
+- [Phase 1] Parsed the supplied commit message and fetched patch mbox;
+  confirmed tags, no `Fixes:` tag in patch 2, and the linked message id.
+- [Phase 2] Inspected fetched v3 diff; confirmed `arch/powerpc/lib/vmx-
+  helper.c` has 8 insertions and 1 deletion, changing only
+  `enter_vmx_ops()`.
+- [Phase 3] Ran `git log --grep` on current history, `master`, and
+  `power-next`; candidate not present locally.
+- [Phase 3] Ran `git blame` around `enter_vmx_ops()`; local history
+  could not identify true original introduction beyond repository
+  history shape.
+- [Phase 3] Ran `git show 2ab2d5794f14`; confirmed related PowerPC kexec
+  KASAN sanitization commit from 2022.
+- [Phase 4] Ran `b4 am` and `b4 am -c`; fetched v3 two-patch series, no
+  newer revision reported, patch 2 DKIM valid.
+- [Phase 4] Ran `b4 mbox`; confirmed original recipients and patch
+  content.
+- [Phase 4] Used lore mirror for v2 thread; confirmed Ritesh review,
+  Aboorva tested-by/reported hang, and v1-to-v2 narrowing.
+- [Phase 5] Searched call sites; confirmed `copypage_power7.S`,
+  `memcpy_power7.S`, and `memcmp_64.S` call `enter_vmx_ops()`.
+- [Phase 5] Read kexec and assembly code; confirmed kexec path reaches
+  `copy_page()` with MMU-off logic and `preempt_count = HARDIRQ_OFFSET`.
+- [Phase 6] Checked stable tags `v5.4` through `v7.0`; confirmed
+  `enter_vmx_ops()` exists without the annotation and the relevant
+  kexec/copy path exists in checked trees.
+- [Phase 6] Ran `git apply --check` on current tree for patch 2 and the
+  series; clean on current `7.0.y`.
+- [Phase 7] Checked `MAINTAINERS`; confirmed PowerPC maintainers and
+  that Madhavan Srinivasan is listed for PowerPC.
+- [Phase 8] Verified failure mode from review discussion: KASAN-enabled
+  kexec hangs after switchover; with both patches applied, kexec
+  completes.
+
+This should be backported, ideally together with the companion
+`powerpc/kdump: fix KASAN sanitization flag for core_$(BITS).o` patch
+for the tested complete KASAN/kexec fix.
 
 **YES**
 
- drivers/i2c/i2c-dev.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/powerpc/lib/vmx-helper.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-dev.c b/drivers/i2c/i2c-dev.c
-index 7bbe0263411eb..ccaac5e29f906 100644
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -487,12 +487,13 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		client->adapter->retries = arg;
- 		break;
- 	case I2C_TIMEOUT:
--		if (arg > INT_MAX)
-+		/*
-+		 * For historical reasons, user-space sets the timeout value in
-+		 * units of 10 ms.
-+		 */
-+		if (arg > INT_MAX / 10)
- 			return -EINVAL;
+diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
+index 554b248002b4f..57e897b60db86 100644
+--- a/arch/powerpc/lib/vmx-helper.c
++++ b/arch/powerpc/lib/vmx-helper.c
+@@ -52,7 +52,14 @@ int exit_vmx_usercopy(void)
+ }
+ EXPORT_SYMBOL(exit_vmx_usercopy);
  
--		/* For historical reasons, user-space sets the timeout
--		 * value in units of 10 ms.
--		 */
- 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
- 		break;
- 	default:
+-int enter_vmx_ops(void)
++/*
++ * Can be called from kexec copy_page() path with MMU off. The kexec
++ * code sets preempt_count to HARDIRQ_OFFSET so we return early here.
++ * Since in_interrupt() is always inline, __no_sanitize_address on this
++ * function is sufficient to avoid KASAN shadow memory accesses in real
++ * mode.
++ */
++int __no_sanitize_address enter_vmx_ops(void)
+ {
+ 	if (in_interrupt())
+ 		return 0;
 -- 
 2.53.0
 
