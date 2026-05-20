@@ -1,154 +1,165 @@
-Return-Path: <stable+bounces-249891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFjrB6ygDWqC0AUAu9opvQ
-	(envelope-from <stable+bounces-249891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:53:16 +0200
+	id CBI/GsGgDWqC0AUAu9opvQ
+	(envelope-from <stable+bounces-249892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:53:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A3258CFB9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:53:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFDC58CFFA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34B2B307EFC8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:40:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F72D305596A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCCE39B483;
-	Wed, 20 May 2026 11:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BB9371063;
+	Wed, 20 May 2026 11:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="ZSlSpqyn"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="rg65UGkh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F8D371063
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 11:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCBB233925;
+	Wed, 20 May 2026 11:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779277248; cv=none; b=rBhcFiXcLY2DnJK8SJn1KTBuuVFQlLq56rSo9AZ0VZniFIZSMPphnWaZUb0o/m20TH+/YVyJZWn83HofWW6kP20KxB8AaYvnAObgYR/VqYUOZirka9WMqvdHNfWtuRLumUPLwDfNPWaIvMfmjNX/EZVBVHqTGBxl8SIivjC8cQs=
+	t=1779277269; cv=none; b=U1v7oz1e8rCcq2b1YZ91u9Wvv8fVLV158alvI1JF0pPPR9ysAsh+b66v0/KI3n2GS5QndqOEvW7r3UZ1VSw1as++5k5ZX3+4C6DXxIBWK7r5plobliVdOtacQo+5+aLgIiYoWEV2PTA5zfeTaE7ceTpg3tYJ869l8Ux5DnVJqz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779277248; c=relaxed/simple;
-	bh=JVqcVqCzRl9FvRzvlut3UkWVQD+LeFl5vwBVEalGw3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BwZllMWmzrIlYF4OA1yeBH31ufAgJA3KiV2pXSLqqVKFXO/iQUDmGdArFmaZwia8Wt9/71DwL1JdCzEutRgoabKAo7j9Hv550jqCESmurWPxqJ3/x7WanOTMtbyzIFhnOGhfsjkJjg+Vnasa1ogyFI49A3/ovMrDsdFxXaqFzno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=ZSlSpqyn; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-43a1004f686so1828067fac.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 04:40:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1779277245; x=1779882045; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZJL6AQSMLl9+u0hYFPLf47FKOchRWlEKMHwFoxDMDoA=;
-        b=ZSlSpqynBnDIqQFJ5fBVRn/OaRjzBZpLRY5ISytFYL+SA0ZkM72P4jCoEkFltWKUTL
-         h8WXX3L6YuYrUu9XiejdDpg8XQOfuTJ9aEHWVsJNuMdveCUUNSYexVkR37ANyqrj6903
-         CYDiXa8c2tcYDdyUtHj8p1gwP9J8EETI5o41NRXNlsykfl8IpLK9gDq2efoTFyD9z2Yn
-         1Qed+9CF8b88ME348j1TBHhUwOac8rMQLpQS6rw/WcdHWGpabO3SR8zAybxfyXl6Mb6+
-         lGc2P+NAx1Cv22D17+kV1+snBSimnH3qzSg+nY17jLjE5R4rRPR080NSa4FnJFISg68B
-         l6YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779277245; x=1779882045;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZJL6AQSMLl9+u0hYFPLf47FKOchRWlEKMHwFoxDMDoA=;
-        b=bsR1zh5c+H5qfvbmGKRBxHTNJubqjUMSIZN3tS8SZsUKTPUNhe3+3n0UOPUcDDxyGI
-         O4BcSzCYBKNlbrXTvhez119s2fhGRUspo5RH5ldfLCb12PQytFMVNa0pxCeB5BG1U3XW
-         ePX8KOfdDkxPyQOwvJZ0/gRjdniFAWNT92fPpHRPSvhf+aRXSwW9zuxotkkNzneteX2k
-         fWrG/YoFfBI7EW54HCfIUYVvddkLXy1aW03xGlqESbG2TCp1QjPC4tNQs6dg4rsWAsox
-         s5eunGWSXJEqdJD5j70yu8ZWrfUXxqKQ3yPgeUUsQtxVhrgwep2Riq5gW8Q/Qk2EiUvg
-         bLTg==
-X-Forwarded-Encrypted: i=1; AFNElJ/YSq1NLku7jSqHcW0zE9ymmzRLjArPA1a/iUbl9LNNkV1IDEVJbemJOyXxrw/XhmO3u+wmvFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLH1TNa+2dBIIcEjGUfh72WCmrUvyW/zeDU/muRWHi3K0tfmlE
-	fLuTogNsbUiDlIgzmw9DqSVu4KRFOK/SvN8da1O4fv8JZp+0PbgHyIwCgKjcjuAKMoE=
-X-Gm-Gg: Acq92OFHnWDoZmgBqmSg4hAnslsoI9ecJgGHNWm/hbWfCZ7Y0rWyqbq/E6OQ59rd2hm
-	jDPnsM0k3AgBaGbLG7WU1MDyomxPdBYw45PA+Chx1d1+O6gl33XpKUHOOxlvPCM7tAYqx9x29hC
-	kXhTgT88YSy+8Jl6tnqC8+RT71uz4Z5kkYVgV/RLJAdfM8pjVlq7L2qDHuMt599vCHSu96qBHyd
-	xgLB+3ZCba2vSZPlxslqEE4M3nCmyuARonGP6kayYLn/DiXNVo6BETZG7Y1MeoKA4QWCpzOLl0B
-	S719V/Yzs8mGebsZy26EStfYcHKUtPIyswl+tjbbfDGiCiIR+LygowZWcV6xYdLQi0a7f2jeZ5G
-	EJq4SA+ObJ5vkDaDviU8XB7h+xFopVevE8kodNyPLJqFkTtONCdvI5puv9vzMGjqDiLup2DMY0/
-	KzWqmxgwpASrssuEbo3cCFymEcvQt12NytSXEwBKqLJHyPLA5aR7M5pS4NciCEsS3gEZ7tTCzWC
-	g33Cdl77Q==
-X-Received: by 2002:a05:6870:c443:10b0:43a:d1ec:55d2 with SMTP id 586e51a60fabf-43ad1ecb9c3mr3693924fac.36.1779277244904;
-        Wed, 20 May 2026 04:40:44 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43a957639b2sm9692661fac.14.2026.05.20.04.40.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 04:40:42 -0700 (PDT)
-Message-ID: <5a50c3f5-a5ef-4b2b-821c-5858d8b1ac13@kernel.dk>
-Date: Wed, 20 May 2026 05:40:40 -0600
+	s=arc-20240116; t=1779277269; c=relaxed/simple;
+	bh=cv2lOd1UJWlI1mRmvVecDPY4PRJV3tpIzSZp0gC+Iu4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgoyJrhhS9wUg1VC1rPRDtbNDm9e8Sv9FwCxT7Pim16WdTjJwMgxQCrcxoAjWyj16tgQAxgMaM0ev1cy35b/f5NkEdN963STyNh920ftrn9Hu7yi+IsHeqFq27wo2bQyoBUf7eelWHcBIEX+HYCsUDuba/ZhfXXEFwZNVUYrcHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=rg65UGkh; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5o+AiB6F2MAUPShPtLDrGv9fJP8sUM6Y8Mgl6QxOoE4=; b=rg65UGkhq3YJ26dobMGxmuy4yu
+	d7w06SMpuJr+8zqfcA84554pAUVaOD1SvC/p6Bfrpdms5hyFTvET9erS5X7x6lHU0S5yCk8ooqV6S
+	/CHJoWBLwUOy7exR5x3xQCZAtu5kOCnZIKzDG6AN0Q5wNDWhG53UCykpS4CnYKmuYRdJ1yj331FNW
+	P0Kk4GsiC7OIlhHMkglKHJvinKOo61nVpVWtbTQw66AuKoNStImjIEzJkOMRkezSqf9WS9FkAgNHc
+	ImGV8IZCZXi02yCreocfK4ly6X+3sXyA8GQG7kC7eCmQmV+oWOwAterwdvTQrN1a2fvgydZPYv5+8
+	iC2ZYKig==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wPfIJ-0034Ui-1T;
+	Wed, 20 May 2026 11:40:59 +0000
+Date: Wed, 20 May 2026 04:40:49 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Vlad Poenaru <vlad.wing@gmail.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, miklos@szeredi.hu, 
+	joannelkoong@gmail.com, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 6.18.y v2] fuse: avoid 0x10 fault in fuse_readahead when
+ max_pages == 0
+Message-ID: <ag2dqkvYw6cKntDs@gmail.com>
+References: <20260518182602.3107764-1-vlad.wing@gmail.com>
+ <20260519174816.3983940-1-vlad.wing@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 7.0] io_uring/wait: honour caller's time namespace
- for IORING_ENTER_ABS_TIMER
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Maoyi Xie <maoyixie.tju@gmail.com>,
- Pavel Begunkov <asml.silence@gmail.com>, Maoyi Xie <maoyi.xie@ntu.edu.sg>,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260520111944.3424570-1-sashal@kernel.org>
- <20260520111944.3424570-26-sashal@kernel.org>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260520111944.3424570-26-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519174816.3983940-1-vlad.wing@gmail.com>
+X-Debian-User: leitao
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_RHS_MATCH_TO(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,ntu.edu.sg,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249891-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249892-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[debian.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linuxfoundation.org,szeredi.hu,gmail.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel.dk:mid,kernel-dk.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: B9A3258CFB9
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2BFDC58CFFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 5:18 AM, Sasha Levin wrote:
-> From: Maoyi Xie <maoyixie.tju@gmail.com>
+On Tue, May 19, 2026 at 10:48:16AM -0700, Vlad Poenaru wrote:
+> [ Upstream commit 4ea907108a5c ("fuse: use iomap for readahead") ]
 > 
-> [ Upstream commit 45d2b37a37ab98484693533496395c610a2cab96 ]
+> The upstream fix is the iomap conversion in commit 4ea907108a5c
+> ("fuse: use iomap for readahead"), which rewrote fuse_readahead()
+> entirely and removed the buggy loop along with it.  That refactor
+> is too invasive to backport to the pre-iomap readahead path still
+> used by 6.18.y (and earlier stable branches), so this is a minimal,
+> equivalent fix to the same bug on those branches.
 > 
-> io_uring_enter() with IORING_ENTER_ABS_TIMER takes an absolute
-> timespec from the caller via ext_arg->ts. It arms an ABS mode
-> hrtimer in __io_cqring_wait_schedule(). The conversion path in
-> io_uring/wait.c parses ext_arg->ts inline rather than going
-> through io_parse_user_time(). It therefore does not pick up the
-> time namespace conversion added by the previous patch.
+> When fc->max_read is smaller than PAGE_SIZE (common on aarch64 with
+> 64K base pages if the FUSE server advertises a small max_read in INIT),
+> max_pages = min(fc->max_pages, fc->max_read / PAGE_SIZE) is 0, so
+> cur_pages is 0 on every outer iteration.
+> 
+> fuse_io_alloc(NULL, 0) then calls fuse_folios_alloc(0, ...), which
+> calls kzalloc(0, ...) and gets back ZERO_SIZE_PTR == (void *)16.
+> The "if (!ia->ap.folios)" guard in fuse_io_alloc does not catch
+> ZERO_SIZE_PTR, so fuse_io_alloc happily returns an ia whose
+> ap.folios is 0x10.
+> 
+> The inner "while (pages < cur_pages)" loop runs zero times, then
+> fuse_send_readpages(ia, ...) dereferences ap->folios[0] in
+> folio_pos(), faulting at virtual address 0x10:
+> 
+>   Unable to handle kernel NULL pointer dereference at virtual address
+>   0000000000000010
+>    fuse_readahead+0x14c/0x490
+>    read_pages+0x80/0x318
+>    page_cache_ra_unbounded+0x1c0/0x2b0
+>    page_cache_ra_order+0xb8/0x368
+>    page_cache_sync_ra+0x210/0x320
+>    filemap_get_pages+0x290/0xdb0
+>    generic_file_read_iter+0xd0/0x540
+>    fuse_file_read_iter+0x8c/0x158
+>    __arm64_sys_read+0x1a0/0x488
+> 
+> addr2line on the aarch64 vmlinux maps fuse_readahead+0x14c to
+> fs/fuse/file.c:897 inlined into :999, i.e. "folio_pos(ap->folios[0])"
+> inside fuse_send_readpages.  The faulting instruction "ldr x8, [x8]"
+> loads ap->folios[0]; ap->folios was previously loaded as 0x10
+> (ZERO_SIZE_PTR).
+> 
+> Without this fix the function would also spin forever, since
+> "nr_pages -= pages" makes no progress when pages stays 0; in practice
+> the NULL deref masks the spin.
+> 
+> Bail out of the outer loop if cur_pages is 0 -- there is no work we
+> can issue via FUSE in this iteration, and remaining folios will be
+> handled by read_pages() falling back to ->read_folio.
+> 
+> Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
+> Reported-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+> Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
 
-Once again - If you auto-pick this one, please also do the other one in
-the series, 9cc6bac1bebf8310d2950d1411a91479e86d69a1. Makes no sense to
-do just one of them.
+Thanks for the fix, Vlad.
 
--- 
-Jens Axboe
+Acked-by: Breno Leitao <leitao@debian.org>
 
