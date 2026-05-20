@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGc0DJj8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:28 +0200
+	id 4KiSB+b9DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A144B59616D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A745966A1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F046E302C348
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468253345BAE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C1F3F88B8;
-	Wed, 20 May 2026 18:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41723F20F9;
+	Wed, 20 May 2026 17:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYTcnNO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mNHlZNl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844E43F789B;
-	Wed, 20 May 2026 18:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBA939B483;
+	Wed, 20 May 2026 17:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301179; cv=none; b=HOt0iOMJOoMgYCNwC+BRW7oiGTqv9fI7dO7NR8D1BYTyI6oyl0Zx+TGuk5vuZDSqIerYsNgfL+f/YwV/zPanQ6o6ISFBOcVQ9etAo2zBB2Y1VyGVCJPyUiUH1kGDGGNu/HTxSk/feA+8eeyxKWomsVsCOm8EXSWTK9J82fexdyA=
+	t=1779299472; cv=none; b=XAM9rJTPcHY6T1JbV2dConrSGSVayKkQoid90v4z/piziAMskbcH6s8RIIy4BSrULzhXfZLSHCrOa5prnMBcxT94XNDCYrREOfdsx87icXi87p67iWl2iqrz9v0Etrt3MmtXXgcy7YRdgg9ViEWTr5selAbmsG5OwgBvP4JqpKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301179; c=relaxed/simple;
-	bh=XXTfy7wMnjiOO5EefT9LiWwkwZnCLpXtTLz1T9sZgpk=;
+	s=arc-20240116; t=1779299472; c=relaxed/simple;
+	bh=ArerDv50s1M/cxsPbFrG5erB1HO4KDkM+J1voFI7oXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kW5syMW1Jb6vi+Kz8l4hdjgPwjTvE4Tpg3u8hSFNLRSOGp2mvRemwxGv9JssYka456Dx0FlV34/q9hWQj33yv4QySII6wgkWZHcHzc6Us2+e+Hc6sywhF9JtmtxHGU/RHXF7ycd4XReb1Qhlc645JnClZQuKqrSms3BjF4CYj7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYTcnNO/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CDB1F000E9;
-	Wed, 20 May 2026 18:19:37 +0000 (UTC)
+	 MIME-Version; b=Rg/kJ3QmvV/Orlc96a4UJEJelqP77S8d9F+aoAQGG1bLUYXwKua31o4za1cfGJiS3mmzVZuXJrvsYB9EYwPYv2fO6k0kYXA9fCiqfF8fZA5JOkYZB+syY60UzSmpVr5sC3J4H2ohF1bOPQw2qCUSyECh+NRajwngSSGlEOGQF/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mNHlZNl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07841F000E9;
+	Wed, 20 May 2026 17:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301178;
-	bh=+gz97r3PWaBDwwsSJQqItuQQWcBikNMLapGchAKQaEs=;
+	s=korg; t=1779299471;
+	bh=+sMW4AmYGyrdzF7FS88hIinsKbfz1bU1ITXOeEgBcYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BYTcnNO/DKxkyERyVZLsArjrnlixeJrf1ToTsSwcJCDwhXldK4MNMDUbzHSbJxDjC
-	 kV/xUsxx4qAsIWv0eRTVdDtLPyou64izCICO6soCgf09dmSOfpoTZzS66HnlzbzPae
-	 WA/p/Oay3ys9NdV6kFgsh51fn2/pDmab6COCmLKc=
+	b=1mNHlZNl5hFntCTzuSereAKkDDFP8ROFbZ9nzS7jVytx9bYEmFySrnDj6vvk43gid
+	 s+98HI1+HIhzDTHpHiT0t/zeVZpnUwtKISHLTJwYMbdbgnhTnco6GWVsi+XFzQFkgY
+	 PNuez8OgIIHiBOdSBy36FJ4JjZpt+HEmLY2Eattk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zoltan Fodor <zoltan.fodor@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Altan Hacigumus <ahacigu.linux@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 456/666] ice: update PCS latency settings for E825 10G/25Gb modes
+Subject: [PATCH 6.18 784/957] tcp: make probe0 timer handle expired user timeout
 Date: Wed, 20 May 2026 18:21:07 +0200
-Message-ID: <20260520162121.153391773@linuxfoundation.org>
+Message-ID: <20260520162151.563213576@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +65,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252630-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251996-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A144B59616D
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 81A745966A1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Altan Hacigumus <ahacigu.linux@gmail.com>
 
-[ Upstream commit 05567e4052732d70c7ff9655217b3d14d25f639a ]
+[ Upstream commit 2b9f6f7065d4cfb65ba19126e0b35ac4544c3f3a ]
 
-Update MAC Rx/Tx offset registers settings (PHY_MAC_[RX|TX]_OFFSET
-registers) with the data obtained with the latest research. It applies
-to PCS latency settings for the following speeds/modes:
-* 10Gb NO-FEC
-        - TX latency changed from 71.25 ns to 73 ns
-        - RX latency changed from -25.6 ns to -28 ns
-* 25Gb NO-FEC
-	- TX latency changed from 28.17 ns to 33 ns
-        - RX latency changed from -12.45 ns to -12 ns
-* 25Gb RS-FEC
-        - TX latency changed from 64.5 ns to 69 ns
-        - RX latency changed from -3.6 ns to -3 ns
+tcp_clamp_probe0_to_user_timeout() computes remaining time in jiffies
+using subtraction with an unsigned lvalue.  If elapsed probing time
+exceeds the configured TCP_USER_TIMEOUT, the underflow yields a large
+value.
 
-The original data came from simulation and pre-production hardware.
-The new data measures the actual delays and as such is more accurate.
+This ends up re-arming the probe timer for a full backoff interval
+instead of expiring immediately, delaying connection teardown beyond
+the configured timeout.
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Co-developed-by: Zoltan Fodor <zoltan.fodor@intel.com>
-Signed-off-by: Zoltan Fodor <zoltan.fodor@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-2-686c33c9828d@intel.com
+Fix this by preventing underflow so user-set timeout expiration is
+handled correctly without extending the probe timer.
+
+Fixes: 344db93ae3ee ("tcp: make TCP_USER_TIMEOUT accurate for zero window probes")
+Link: https://lore.kernel.org/r/20260414013634.43997-1-ahacigu.linux@gmail.com
+Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260424014639.54110-1-ahacigu.linux@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp_consts.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/tcp_timer.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-index bdb1020147d1c..91cc7df5cab5b 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_consts.h
-@@ -123,14 +123,14 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
- 		.blktime = 0x666, /* 3.2 */
- 		.tx_offset = {
- 			.serdes = 0x234c, /* 17.6484848 */
--			.no_fec = 0x8e80, /* 71.25 */
-+			.no_fec = 0x93d9, /* 73 */
- 			.fc = 0xb4a4, /* 90.32 */
- 			.sfd = 0x4a4, /* 2.32 */
- 			.onestep = 0x4ccd /* 38.4 */
- 		},
- 		.rx_offset = {
- 			.serdes = 0xffffeb27, /* -10.42424 */
--			.no_fec = 0xffffcccd, /* -25.6 */
-+			.no_fec = 0xffffc7b6, /* -28 */
- 			.fc = 0xfffc557b, /* -469.26 */
- 			.sfd = 0x4a4, /* 2.32 */
- 			.bs_ds = 0x32 /* 0.0969697 */
-@@ -163,17 +163,17 @@ struct ice_eth56g_mac_reg_cfg eth56g_mac_cfg[NUM_ICE_ETH56G_LNK_SPD] = {
- 		.mktime = 0x147b, /* 10.24, only if RS-FEC enabled */
- 		.tx_offset = {
- 			.serdes = 0xe1e, /* 7.0593939 */
--			.no_fec = 0x3857, /* 28.17 */
-+			.no_fec = 0x4266, /* 33 */
- 			.fc = 0x48c3, /* 36.38 */
--			.rs = 0x8100, /* 64.5 */
-+			.rs = 0x8a00, /* 69 */
- 			.sfd = 0x1dc, /* 0.93 */
- 			.onestep = 0x1eb8 /* 15.36 */
- 		},
- 		.rx_offset = {
- 			.serdes = 0xfffff7a9, /* -4.1697 */
--			.no_fec = 0xffffe71a, /* -12.45 */
-+			.no_fec = 0xffffe700, /* -12 */
- 			.fc = 0xfffe894d, /* -187.35 */
--			.rs = 0xfffff8cd, /* -3.6 */
-+			.rs = 0xfffff8cc, /* -3 */
- 			.sfd = 0x1dc, /* 0.93 */
- 			.bs_ds = 0x14 /* 0.0387879, RS-FEC 0 */
- 		}
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index b2e5848b6980a..1e6d7d90371a9 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -49,7 +49,8 @@ static u32 tcp_clamp_rto_to_user_timeout(const struct sock *sk)
+ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	u32 remaining, user_timeout;
++	u32 user_timeout;
++	s32 remaining;
+ 	s32 elapsed;
+ 
+ 	user_timeout = READ_ONCE(icsk->icsk_user_timeout);
+@@ -60,7 +61,7 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
+ 	if (unlikely(elapsed < 0))
+ 		elapsed = 0;
+ 	remaining = msecs_to_jiffies(user_timeout) - elapsed;
+-	remaining = max_t(u32, remaining, TCP_TIMEOUT_MIN);
++	remaining = max_t(int, remaining, TCP_TIMEOUT_MIN);
+ 
+ 	return min_t(u32, remaining, when);
+ }
 -- 
 2.53.0
 
