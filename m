@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-252294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMaDJZ/5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:47 +0200
+	id mJA+Fs0SDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1585958FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B7A598FF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFB0130F1731
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE9C93209420
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86303FCB2C;
-	Wed, 20 May 2026 18:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334E2369D6E;
+	Wed, 20 May 2026 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cmcstwg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0WNpxqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7514E3FCB1C;
-	Wed, 20 May 2026 18:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6456317160;
+	Wed, 20 May 2026 16:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300299; cv=none; b=spBYqrAYfTfpnM1VJ4zkLY20md3Qi4F/Y4ht1dR8WDrvQSg6ld3/huV1GiJBH60nY3smZoc9lOAqIj3J4YyrsT8pSUqK56osllWBDHVoEIcXHJxePlTX7EMGX/rCp1hDsoq1QtL2umYcsqidFHpRABIHdWbqz4fyZ8nJQkL/50Q=
+	t=1779296030; cv=none; b=JRmi/nGhxJXbB4dtszNfEIqFOdj9Ot/AnUuaAgiEO91GV4PEY1AaLnd+NyAo2iagenRe/Tz3MyGZtoPyvxcBkwvH4wHQhYX44qUun9kocKbkGLbZFhgp7HVTmpVph4ybQZGUCW72bBOuF5MzkU4xO1w1nR++Hir65GWPiFQUiR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300299; c=relaxed/simple;
-	bh=sBPHzGvBo80poKLYPp3V/v/skL3n7E4LKyzlG9O7pz8=;
+	s=arc-20240116; t=1779296030; c=relaxed/simple;
+	bh=wbcloYHsxYrskBXKxBB8DcXUmD86J3oYsZ3hMSJrW4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7r/4LgZ5DSX5HKI3s8rW15bzb5I4C7zAkAWKwBOHdTavlr1DV+tqBipumiBvHCIfjJR6bQ5xt7z4CgtDne8FHjeNyXtLYwlCVJVyyxXwSYQzdGhg7n/vQAiV66SOxGIq/uS+WAei64Zo/KjAg4VbxAy3JX5scYBw5rVN6+XvG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cmcstwg5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC46A1F000E9;
-	Wed, 20 May 2026 18:04:57 +0000 (UTC)
+	 MIME-Version; b=md1w229TVDyoaVM5tUtvJ/gqNMWTly8IrtMkMi8JNqrAeFDDixhvCXjkxL09+V6mxRENTsDFPe8Uh0IXo4GCU3qc5M3EDZqR7rUfEgqC32fo4GY6K1fZ6DXjQipWn5nZn6AAJ6Hx9+3dY1bo47JLXsnNCxQQY5heD5/FEar5wGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0WNpxqd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B801F000E9;
+	Wed, 20 May 2026 16:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300298;
-	bh=JoKkCx7tDOoi8P/ByI9kS1bIMtgvlaNWNuenzqigFrI=;
+	s=korg; t=1779296028;
+	bh=gsCRdPgDZJzc3wnsNjKB9CHTRGLrea5odkOxRIeSiyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Cmcstwg5Y9YFG4W/PzxLfIsTZDie0lYdRXZydGXyJrT4WgbqKEHl6Bi3nWtsi/0KD
-	 fBQaLZ2eJjsgqTTaajmcC2DocaEaKhCCspJtn7JFm5IEYtykiC8SEk2cssovZFZ89K
-	 Jxmhv0PuzKQ+mhaLhi3wCIgBJ2Gi1AvU+Nk5Dv3g=
+	b=W0WNpxqdCNesgvX3Yc6olEQmrgomfelMt5BnCRjklFq4/DPZzu5ABWDmzkcAx8o87
+	 8ZOg9e8CeYcQ/0oKof5p8pNk5j6yEFN6fowXqoLb0kCU+mHgWIPqAgLtgdw5jqIWxC
+	 72PQaFNwv2jQY0XY3clwQxdnE44T3+Dq89zLDZzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/666] netfilter: xt_socket: enable defrag after all other checks
-Date: Wed, 20 May 2026 18:14:51 +0200
-Message-ID: <20260520162112.966549784@linuxfoundation.org>
+Subject: [PATCH 7.0 0642/1146] perf tools: Fix module symbol resolution for non-zero .text sh_addr
+Date: Wed, 20 May 2026 18:14:52 +0200
+Message-ID: <20260520162202.707416944@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +70,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250678-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252294-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
-X-Rspamd-Queue-Id: 5A1585958FA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: E0B7A598FF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 542be3fa5aff54210a02954c38f07e53ea9bdafd ]
+[ Upstream commit 9a82bfde4775b7a87cd1a7e791f46f83ae442848 ]
 
-Originally this did not matter because defrag was enabled once per netns
-and only disabled again on netns dismantle.  When this got changed I should
-have adjusted checkentry to not leave defrag enabled on error.
+When perf resolves symbols from kernel module ELF files (ET_REL),
+it converts symbol addresses to file offsets so that sample IPs
+can be matched to the correct symbol. The conversion adjusts each
+symbol's st_value:
 
-Fixes: de8c12110a13 ("netfilter: disable defrag once its no longer needed")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+  sym->st_value -= shdr->sh_addr - shdr->sh_offset;
+
+For vmlinux (ET_EXEC), st_value is a virtual address and sh_addr
+is the section's virtual base, so subtracting sh_addr and adding
+sh_offset correctly yields a file offset.
+
+For kernel modules (ET_REL), st_value is a section-relative
+offset. The module loader ignores sh_addr entirely and places
+symbols at module_base + st_value. Converting to file offset
+requires only adding sh_offset; subtracting sh_addr introduces an
+error equal to sh_addr bytes.
+
+When .text has sh_addr == 0 -- the historical norm for simple
+modules -- both formulas produce the same result and the bug is
+latent. As modules gain more metadata sections before .text (.note,
+.static_call.text, etc.), the linker assigns .text a non-zero
+sh_addr, exposing the defect. For example, nfsd.ko on this kernel
+has sh_addr=0xa80, kvm-intel.ko has sh_addr=0x1e90.
+
+The effect is that all .text symbols in affected modules
+shift by sh_addr bytes relative to sample IPs, causing perf
+report to attribute samples to incorrect, nearby symbols. This
+was observed as 13% of LLC-load-miss samples misattributed
+to nfsd_file_get_dio_attrs when the actual hot function was
+nfsd_cache_lookup, approximately 0xa80 bytes away in the symbol
+table.
+
+Use the existing dso__rel() flag (already set for ET_REL modules)
+to select the correct adjustment: add sh_offset for ET_REL,
+subtract (sh_addr - sh_offset) for ET_EXEC/ET_DYN.
+
+Fixes: 0131c4ec794a ("perf tools: Make it possible to read object code from kernel modules")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_socket.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ tools/perf/util/symbol-elf.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/xt_socket.c b/net/netfilter/xt_socket.c
-index 76e01f292aaff..811e53bee4085 100644
---- a/net/netfilter/xt_socket.c
-+++ b/net/netfilter/xt_socket.c
-@@ -168,52 +168,41 @@ static int socket_mt_enable_defrag(struct net *net, int family)
- static int socket_mt_v1_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo1 *info = (struct xt_socket_mtinfo1 *) par->matchinfo;
--	int err;
--
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 76912c62b6a07..968e269d9be1f 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -1356,8 +1356,12 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
+ 	char dso_name[PATH_MAX];
  
- 	if (info->flags & ~XT_SOCKET_FLAGS_V1) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V1);
- 		return -EINVAL;
- 	}
--	return 0;
-+
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
+ 	/* Adjust symbol to map to file offset */
+-	if (adjust_kernel_syms)
+-		sym->st_value -= shdr->sh_addr - shdr->sh_offset;
++	if (adjust_kernel_syms) {
++		if (dso__rel(dso))
++			sym->st_value += shdr->sh_offset;
++		else
++			sym->st_value -= shdr->sh_addr - shdr->sh_offset;
++	}
  
- static int socket_mt_v2_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo2 *info = (struct xt_socket_mtinfo2 *) par->matchinfo;
--	int err;
--
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
- 
- 	if (info->flags & ~XT_SOCKET_FLAGS_V2) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V2);
- 		return -EINVAL;
- 	}
--	return 0;
-+
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
- 
- static int socket_mt_v3_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo3 *info =
- 				    (struct xt_socket_mtinfo3 *)par->matchinfo;
--	int err;
- 
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
- 	if (info->flags & ~XT_SOCKET_FLAGS_V3) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V3);
- 		return -EINVAL;
- 	}
--	return 0;
-+
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
- 
- static void socket_mt_destroy(const struct xt_mtdtor_param *par)
+ 	if (strcmp(section_name, (dso__short_name(curr_dso) + dso__short_name_len(dso))) == 0)
+ 		return 0;
 -- 
 2.53.0
 
