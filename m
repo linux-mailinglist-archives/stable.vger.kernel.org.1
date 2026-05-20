@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qBzqD2sWDmpb6AUAu9opvQ
-	(envelope-from <stable+bounces-251231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:39 +0200
+	id 0PGoHDzlDWqF4gUAu9opvQ
+	(envelope-from <stable+bounces-250293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4095995AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2583592650
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D4DB32D98C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 506CC30E5B54
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2A53D75C7;
-	Wed, 20 May 2026 17:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E2E370D54;
+	Wed, 20 May 2026 16:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9xKS1Wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWM8NzS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4E83D6673;
-	Wed, 20 May 2026 17:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F2C36A376;
+	Wed, 20 May 2026 16:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297443; cv=none; b=XJfKJx7mOCVQ/kD08t5YOXbKVytCOopvrp1UdSrS4i6YCFZXte0YXSJlH98sth/iGIHzCj6UnhrQaLLiqrlasUb3s4qq8loRWPxEhMpxdvPsnVyJARs6oN5tKY5jWtD2BzQum2RJmmYGatTbAcyD1J06imdf4xFwNVci+c2hLXM=
+	t=1779295033; cv=none; b=FKh53RCSd5j9ICpNIQEHs9UGvq+9ZCIiKWamAbBrUjxaxuZBeYB3E7zZ4v0SJEati34TAOEjEuZhzO585ylsmrbF8XSSlpG+XHs/RkCKFjPdIJhHn9fkArySO0RIHT1nKLMHZ//3S0Ti9NQ0JD0sI1+EuofSOZ9JDiwlNZElr/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297443; c=relaxed/simple;
-	bh=6xv+/uva8d9eF1qBEAmKu00RwnQGBzKa3YabpDdwy4c=;
+	s=arc-20240116; t=1779295033; c=relaxed/simple;
+	bh=vJcaWHcJCTMd267gAhXNsWk93mLnmZl5o51J28GXTAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UqCFVqwplPG0N8vFPfIGgGIrf59XoXAQzforlrSQjaA5WwhF4MCOLiWOSRAwvU5nge26cDwtJjX+qNgLOF7ixOXD7gL4kI2H9H6H4aErnSBpIubuT+4vuKrojGt+Pn4N2KZBkOIG8f7jbIZ48P+kbNTOCyMhff3uFHh0443Hn6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9xKS1Wz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5381F000E9;
-	Wed, 20 May 2026 17:17:20 +0000 (UTC)
+	 MIME-Version; b=M8oRfp/v40fXDE5vVCjQe/AkWcXGkXyZywcNPZUpZhQLb6YYs7SGe3ltpw1rru0OeSnEqOry1aALYWeMSvYc4vzSYic7ZxoiAHHGi5EBtnTC+Zx7n5CqgeJ0dyEFvwx1k5L8cE3MoAROqS4xnLv9I6VGy1j0F0/SXxhR9mB8lN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWM8NzS1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A2B1F000E9;
+	Wed, 20 May 2026 16:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297441;
-	bh=BLflbBsLoA2zjA4umSNzzZeHYoWnE59g4/9nd1thSCk=;
+	s=korg; t=1779295032;
+	bh=19rwA/3f5jAO+VMXVUhRDr2U/Z6c3imldCsBAkh1U94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i9xKS1WzS0tojN4fRfM0sVk+ZxlTYlpvwi49Hqpuvr7KFh6anl9pB45S96HRGHaKN
-	 pqLW2MkcGnldrmBTyoiS9vjBjN4NJL6nUpS5EITlH/AEV9dYgeytI3yRFnRGmQAidj
-	 wyNp3rwt+l48GliX9+Asnqskno4JZZGkMSVBQwrQ=
+	b=mWM8NzS13mEPlt5d39QOa6kM4Xy5FSUSjpEedkUd+E7EKwXQMZLk5f7UM2qIMKmAk
+	 kjdXjuCBztpFvCek0vexiXr9kHX2idtv/Fqt3JRhGj8JJ+3cb9zme7IEI5V+YInmIQ
+	 bUc8brZphMjuyEVBRDIq/idGDn3UQAHtdWPlkwuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Aksh Garg <a-garg7@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 032/957] vdpa: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 18:08:35 +0200
-Message-ID: <20260520162135.255666476@linuxfoundation.org>
+Subject: [PATCH 7.0 0266/1146] PCI: dwc: ep: Mirror the max link width and speed fields to all functions
+Date: Wed, 20 May 2026 18:08:36 +0200
+Message-ID: <20260520162154.245640046@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,169 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251231-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250293-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 9A4095995AF
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ti.com:email]
+X-Rspamd-Queue-Id: E2583592650
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Aksh Garg <a-garg7@ti.com>
 
-[ Upstream commit 85bb534ff12aab6916058897b39c748940a7a4c6 ]
+[ Upstream commit 94cbea0f636b55602a9a10583670976680ecea67 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+PCIe r7.0, section 7.5.3.6 states that for multi-function devices, the
+Max Link Width and Max Link Speed fields in the Link Capabilities
+Register must report the same values for all functions.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+Currently, dw_pcie_setup() programs these fields only for Function 0
+via dw_pcie_link_set_max_speed() and dw_pcie_link_set_max_link_width().
+For multi-function endpoint configurations, Function 1 and beyond retain
+their default values, violating the PCIe specification.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+Fix this by reading the Max Link Width and Max Link Speed fields from
+Link Capabilities Register of Function 0 after dw_pcie_setup() completes,
+then mirroring these values to all other functions.
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 539fec78edb4 ("vdpa: add driver_override support")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260324005919.2408620-9-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 24ede430fa49 ("PCI: designware-ep: Add multiple PFs support for DWC")
+Fixes: 89db0793c9f2 ("PCI: dwc: Add missing PCI_EXP_LNKCAP_MLW handling")
+Signed-off-by: Aksh Garg <a-garg7@ti.com>
+[mani: renamed ref_lnkcap to func0_lnkcap]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20260224083817.916782-3-a-garg7@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa.c  | 48 +++++---------------------------------------
- include/linux/vdpa.h |  4 ----
- 2 files changed, 5 insertions(+), 47 deletions(-)
+ .../pci/controller/dwc/pcie-designware-ep.c   | 29 ++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-index 34874beb0152e..caf0ee5d6856c 100644
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -67,57 +67,20 @@ static void vdpa_dev_remove(struct device *d)
- 
- static int vdpa_dev_match(struct device *dev, const struct device_driver *drv)
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 10d6f53cf7bad..ab2e7de5c55eb 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -1110,7 +1110,8 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
  {
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
-+	int ret;
+ 	struct dw_pcie_ep *ep = &pci->ep;
+ 	u8 funcs = ep->epc->max_functions;
+-	u8 func_no;
++	u32 func0_lnkcap, lnkcap;
++	u8 func_no, offset;
  
- 	/* Check override first, and if set, only use the named driver */
--	if (vdev->driver_override)
--		return strcmp(vdev->driver_override, drv->name) == 0;
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
+ 	dw_pcie_dbi_ro_wr_en(pci);
  
- 	/* Currently devices must be supported by all vDPA bus drivers */
- 	return 1;
+@@ -1118,6 +1119,32 @@ static void dw_pcie_ep_init_non_sticky_registers(struct dw_pcie *pci)
+ 		dw_pcie_ep_init_rebar_registers(ep, func_no);
+ 
+ 	dw_pcie_setup(pci);
++
++	/*
++	 * PCIe r7.0, section 7.5.3.6 states that for multi-function
++	 * endpoints, max link width and speed fields must report same
++	 * values for all functions. However, dw_pcie_setup() programs
++	 * these fields only for function 0. Hence, mirror these fields
++	 * to all other functions as well.
++	 */
++	if (funcs > 1) {
++		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++		func0_lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
++		func0_lnkcap = FIELD_GET(PCI_EXP_LNKCAP_MLW |
++					 PCI_EXP_LNKCAP_SLS, func0_lnkcap);
++
++		for (func_no = 1; func_no < funcs; func_no++) {
++			offset = dw_pcie_ep_find_capability(ep, func_no,
++							    PCI_CAP_ID_EXP);
++			lnkcap = dw_pcie_ep_readl_dbi(ep, func_no,
++						      offset + PCI_EXP_LNKCAP);
++			FIELD_MODIFY(PCI_EXP_LNKCAP_MLW | PCI_EXP_LNKCAP_SLS,
++				     &lnkcap, func0_lnkcap);
++			dw_pcie_ep_writel_dbi(ep, func_no,
++					      offset + PCI_EXP_LNKCAP, lnkcap);
++		}
++	}
++
+ 	dw_pcie_dbi_ro_wr_dis(pci);
  }
  
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &vdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", vdev->driver_override);
--	device_unlock(dev);
--
--	return len;
--}
--static DEVICE_ATTR_RW(driver_override);
--
--static struct attribute *vdpa_dev_attrs[] = {
--	&dev_attr_driver_override.attr,
--	NULL,
--};
--
--static const struct attribute_group vdpa_dev_group = {
--	.attrs  = vdpa_dev_attrs,
--};
--__ATTRIBUTE_GROUPS(vdpa_dev);
--
- static const struct bus_type vdpa_bus = {
- 	.name  = "vdpa",
--	.dev_groups = vdpa_dev_groups,
-+	.driver_override = true,
- 	.match = vdpa_dev_match,
- 	.probe = vdpa_dev_probe,
- 	.remove = vdpa_dev_remove,
-@@ -132,7 +95,6 @@ static void vdpa_release_dev(struct device *d)
- 		ops->free(vdev);
- 
- 	ida_free(&vdpa_index_ida, vdev->index);
--	kfree(vdev->driver_override);
- 	kfree(vdev);
- }
- 
-diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
-index 4cf21d6e9cfde..0d8373adc1e46 100644
---- a/include/linux/vdpa.h
-+++ b/include/linux/vdpa.h
-@@ -72,9 +72,6 @@ struct vdpa_mgmt_dev;
-  * struct vdpa_device - representation of a vDPA device
-  * @dev: underlying device
-  * @vmap: the metadata passed to upper layer to be used for mapping
-- * @driver_override: driver name to force a match; do not set directly,
-- *                   because core frees it; use driver_set_override() to
-- *                   set or clear it.
-  * @config: the configuration ops for this device.
-  * @map: the map ops for this device
-  * @cf_lock: Protects get and set access to configuration layout.
-@@ -90,7 +87,6 @@ struct vdpa_mgmt_dev;
- struct vdpa_device {
- 	struct device dev;
- 	union virtio_map vmap;
--	const char *driver_override;
- 	const struct vdpa_config_ops *config;
- 	const struct virtio_map_ops *map;
- 	struct rw_semaphore cf_lock; /* Protects get/set config */
 -- 
 2.53.0
 
