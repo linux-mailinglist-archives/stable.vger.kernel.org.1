@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANcxH/ILDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:30:58 +0200
+	id 0Lp/Ex/tDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-251096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEF0598619
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:30:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE43593542
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A36EB334F9E1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43AFC30F424A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3660642EEDE;
-	Wed, 20 May 2026 18:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CEC370D54;
+	Wed, 20 May 2026 17:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLjRg6Dy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAHFLs7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1DF42B738;
-	Wed, 20 May 2026 18:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81403F23A1;
+	Wed, 20 May 2026 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302345; cv=none; b=QSQMucmGwcwJakZ6MbHi/CXfFAeC2zSPfyzDrg8s9/pENoCU4odp0+l/yNL4RdeUi2E20hKqLeAktLkZi+Woj4VNVWmmvZ+dCo/pFza99G//rlKxUfRRwryPueqMMP0/BKDQuNXOhSFqPhVEkA18WLVh6r9CSeU8QIPZucXZ+Jc=
+	t=1779297087; cv=none; b=FbpPAZu8HY7kkTqx7Vitv0F0AMvQrVdFfERLqhQ72KL/p9UJGirJaAE/bF5ckrjlCUPlCxc++cWoRN9s06QCY8YWajCqxoEF9Ho0SqcO7vOMJvitMP/PWHN0yT/v68UO5vsfb7bzGgcTf2EZes1InH4Ya4rp3U6jS53GUUiSKxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302345; c=relaxed/simple;
-	bh=866RifDa9UBz7hNQky8AnSw674N3LtbtSDXwsSdDmp0=;
+	s=arc-20240116; t=1779297087; c=relaxed/simple;
+	bh=qpiV9TOepGCFSFpnnFN9DmW20z+pQ/6OLYWy3IBvJDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGPbwv/mxt/0wmd/937LUFqgNB7ep6rLeIiTaLBoH2OyQu8DfvKjegXKwlCfpE6fplh1PVrvXf8O1pHt3TVOanZWszDuaCoqMleP638ttRWH9U6JEEUW1ulLxzPYIRbpO+Wwr6+4UzyKR7I+nOHtbF9080uBciCgJ11G528rDC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLjRg6Dy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE1D1F02831;
-	Wed, 20 May 2026 18:39:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=krWXrZ2g3asIK2JlZ/e8xtXZg7YBGzpmTrxxRGbm+5eLuW8FYaKR2eQoY72HPOTRMvD8F7oE3XswGkAIOIS9R9LTeJcb2CIl1Dj0pe+ULZNgCQ39DxaESgtlX1ikXnu9kgjOVMEYqTmyFUBsDcFfwn2u4vE5qLmNhsgYPSTAHS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAHFLs7n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478C61F000E9;
+	Wed, 20 May 2026 17:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302343;
-	bh=ZCH9ujvE7Hkjk5As3eOcOaqTdffdqMWWE9hW48R1mYk=;
+	s=korg; t=1779297085;
+	bh=o6OhcRt43DyBPk4cp1d/+aDBOUO2DGSMq2I/6omjsCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HLjRg6DyYnAjlvoNBoJq8Jidi6nFGDRem1Oyr0QvHk3x8o6FpYHPc1gFtL4uJQNTp
-	 uw31p0UkXT5NjA58cdkdjGz14GXinRIfo2AseTNKnCHUPIt8p/ZYC5WOfXRPjGdLr3
-	 FSZugQqBLEc9ej18nwU9gor+KYKBhgENgEcxE60s=
+	b=gAHFLs7nk2MduV1cuNtHSdjPPwHvadyfZte/GoyX7VxKhnSCMNSsUNBkXF6MiFkf6
+	 6w8scyXi3iFO/xDyUHajx0Xmyt700vYdr5KBRQpMHjfvNJ1sTpSS0rjQwv3s2eQAyR
+	 Wn2AqlwROo/vK3X47QcSmDEAXh4M2/IkZ4P5HX+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/508] mtd: parsers: ofpart: call of_node_put() only in ofpart_fail path
+Subject: [PATCH 7.0 1004/1146] drm/amd/display: Allow constructing DCE6 link encoder without DDC
 Date: Wed, 20 May 2026 18:20:54 +0200
-Message-ID: <20260520162103.655709648@linuxfoundation.org>
+Message-ID: <20260520162210.954705738@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253077-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,renesas.com:email]
-X-Rspamd-Queue-Id: 8DEF0598619
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CBE43593542
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0c87dea1aab86116211cb37387c404c9e9231c39 ]
+[ Upstream commit 880498a1943f865529819f778df3b9945ca57262 ]
 
-ofpart_none can only be reached after the for_each_child_of_node() loop
-finishes. for_each_child_of_node() correctly calls of_node_put() for all
-device nodes it iterates over as long as we don't break or jump out of
-the loop.
+When the DDC channel ID is set to CHANNEL_ID_UNKNOWN,
+pass NULL to the AUX regs array.
 
-Calling of_node_put() inside the ofpart_none path will wrongly decrement
-the ref count of the last node in the for_each_child_of_node() loop.
+This is necessary to support embedded connectors without DDC.
 
-Move the call to of_node_put() under the ofpart_fail label to fix this.
-
-Fixes: ebd5a74db74e ("mtd: ofpart: Check availability of reg property instead of name property")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 7c15fd86aaec ("drm/amd/display: dc/dce: add initial DCE6 support (v10)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 38a70e50b22a188ff601740d64dd75f46213121f)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/ofpart_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
-index 3cf75b56d5a2e..110994b1e02f5 100644
---- a/drivers/mtd/parsers/ofpart_core.c
-+++ b/drivers/mtd/parsers/ofpart_core.c
-@@ -191,11 +191,11 @@ static int parse_fixed_partitions(struct mtd_info *master,
- ofpart_fail:
- 	pr_err("%s: error parsing ofpart partition %pOF (%pOF)\n",
- 	       master->name, pp, mtd_node);
-+	of_node_put(pp);
- 	ret = -EINVAL;
- ofpart_none:
- 	if (dedicated)
- 		of_node_put(ofpart_node);
--	of_node_put(pp);
- 	kfree(parts);
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+index 3d52973dd7f20..15f220671fbed 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
+@@ -753,7 +753,8 @@ static struct link_encoder *dce60_link_encoder_create(
+ 				     enc_init_data,
+ 				     &link_enc_feature,
+ 				     &link_enc_regs[link_regs_id],
+-				     &link_enc_aux_regs[enc_init_data->channel - 1],
++				     enc_init_data->channel == CHANNEL_ID_UNKNOWN ?
++				     NULL : &link_enc_aux_regs[enc_init_data->channel - 1],
+ 				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
+ 				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
+ 	return &enc110->base;
 -- 
 2.53.0
 
