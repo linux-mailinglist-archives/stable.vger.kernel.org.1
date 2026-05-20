@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBMsOr/1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:15 +0200
+	id YFAFOyAADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAF6594EFF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A371F596F84
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A7CDA3149E89
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 984AD3091E6D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CAD3FB060;
-	Wed, 20 May 2026 17:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2501272E56;
+	Wed, 20 May 2026 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtRUS28N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCf5zfDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584193FADE9;
-	Wed, 20 May 2026 17:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE7373BEE;
+	Wed, 20 May 2026 18:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296781; cv=none; b=KNV0CfqgQcCXdZN3CoL9MknpzkkuEA3WgBSwozlwKAV1T3FFO/JfwW9j6akry3jqkmV+BS6otke9dE5aUCkQYtcEfXqZDiaHcOwcgNQvZb1CDPp0pdAYSEtoRqrNEKV5YIDy6RjfFBiVcNay21bpPoKYfDdaaYNB0+/w/sTz6XQ=
+	t=1779302100; cv=none; b=WIpR94kijCgFxh8RI6L/ygeQFN1X3IT8JdBFrmcnY6T6qu/N1lsYvgJDkkgXe6+3wjFKUbF7RdRVQmpId1dK23/pcReUf28aHRuBO6AYWJZoA3RdrCfXk0GR6JedhazQO+AJO8psDLoxhV/fDJNHp+Z2BSjr3ef+XGd+wXujiow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296781; c=relaxed/simple;
-	bh=8FVKax+QEIXRoHwIGqL4mY6R1C0ivva4E3v8S/MMrHE=;
+	s=arc-20240116; t=1779302100; c=relaxed/simple;
+	bh=iw2Pnb74kERRbmVUCtDuIgVfFjUXQr16kyZQPQKeuzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfYz9hmRTJENYqeCRkkYV38XwEhfNlMXyJvnXnY8HxJWd/e8cBVIzYCpVCjsUbmK12N42D53zzDQPibUkUJObQCDwahou/dmLJsBS1MGCdJY1wop4e2964jop2PNt8ClfSsekuvxITiUc1eFOEngYbrGoIYjUI9e0Gu+lvYLh2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtRUS28N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCD71F000E9;
-	Wed, 20 May 2026 17:06:19 +0000 (UTC)
+	 MIME-Version; b=WqT+yNYCtEwOURr66kazttuTGQFW7dBjp2ep4yzxUZ7gpLiO7NgPzQrt4rh3hf+NZ3IqmylYg87UsMn3gU8B6G4Qh504Evz3EUzfwZDwsmkwez2w3c01OTc3XK4qIHcK8JYtj3V+TSVXzWsqwBvgXAsEF/70eSrnbhjWvyjZzDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCf5zfDN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354F61F00894;
+	Wed, 20 May 2026 18:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296780;
-	bh=x8PfNTQK9AGceS+gFUy86Ue2Lk8y0jw2+PPlB69yYIE=;
+	s=korg; t=1779302098;
+	bh=WoMLj2ASPD514E3Oar4vsJHb3PDBg1NjxfLWjd8oSoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AtRUS28N3Y4jIygrkAXuPYPXS4pPG7zdlBn41DoBzBjb0r3z0YM2SlCpTjTLSyCiq
-	 1Ig9Nedpmj/Ql5IzH7806OL04j8tSlQjPSl0OI6r4ve8WImZ/+m6C36yREoI8EiUwY
-	 ymfNm/1N9f2CkVgXq48gRQAt13RuyBQLsOGi/O4k=
+	b=gCf5zfDN1zgjWMCFFAtI+uxAES7q1i1PVtwiaDI027YqcPg3aMtZABdmVMygX9Pts
+	 bXAstWIzM/NKt/MEhwcWvUJJdaGBADoVWXPIzqjE68RZIuSsOK9tj0fdaEV6SM5ex3
+	 +5rgNlBiSGmAczL3pwr4pqS7a6HEvzju3wVoC9Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0912/1146] ASoC: SOF: Intel: add an empty adr_link
+Subject: [PATCH 6.6 139/508] ASoC: fsl_micfil: Fix event generation in micfil_put_dc_remover_state()
 Date: Wed, 20 May 2026 18:19:22 +0200
-Message-ID: <20260520162208.880751522@linuxfoundation.org>
+Message-ID: <20260520162101.641598170@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +66,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252983-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250977-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,cirrus.com:email]
-X-Rspamd-Queue-Id: 0AAF6594EFF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: A371F596F84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 3c6f06a200796ae7b2b1065e8a6499b138e27a50 ]
+[ Upstream commit 7d2bd35100de370dc326b250e8f6b66bee06a2f3 ]
 
-An empty adr_link is expected to terminate the
-for (adr_link = mach_params->links; adr_link->num_adr; adr_link++) loop.
-Allocate link_num + 1 links to add an empty adr_link.
+ALSA controls should return 1 if the value in the control changed but the
+control put operation micfil_put_dc_remover_state() only returns 0 or a
+negative error code, causing ALSA to not generate any change events.
 
-Fixes: 5226d19d4cae5 ("ASoC: SOF: Intel: use sof_sdw as default SDW machine driver")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260424105031.114053-1-yung-chuan.liao@linux.intel.com
+return the value of snd_soc_component_update_bits() directly, as it has
+the capability of return check status of changed or not.
+
+Also enable pm runtime before calling the function
+snd_soc_component_update_bits() to make the regmap cache data align with
+the value in hardware.
+
+Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-6-shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_micfil.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index 8a240dcb7fcb3..5fa773bb26788 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -1399,7 +1399,8 @@ static struct snd_soc_acpi_mach *hda_sdw_machine_select(struct snd_sof_dev *sdev
- 		link_mask |= BIT(peripherals->array[i]->bus->link_id);
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 88553f0c0de86..32ee7093c8110 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -243,6 +243,10 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
+ 	if (val < 0 || val > 3)
+ 		return -EINVAL;
  
- 	link_num = hweight32(link_mask);
--	links = devm_kcalloc(sdev->dev, link_num, sizeof(*links), GFP_KERNEL);
-+	/* An empty adr_link is needed to terminate the adr_link loop */
-+	links = devm_kcalloc(sdev->dev, link_num + 1, sizeof(*links), GFP_KERNEL);
- 	if (!links)
- 		return NULL;
++	ret = pm_runtime_resume_and_get(comp->dev);
++	if (ret)
++		return ret;
++
+ 	micfil->dc_remover = val;
  
+ 	/* Calculate total value for all channels */
+@@ -252,10 +256,10 @@ static int micfil_put_dc_remover_state(struct snd_kcontrol *kcontrol,
+ 	/* Update DC Remover mode for all channels */
+ 	ret = snd_soc_component_update_bits(comp, REG_MICFIL_DC_CTRL,
+ 					    MICFIL_DC_CTRL_CONFIG, reg_val);
+-	if (ret < 0)
+-		return ret;
+ 
+-	return 0;
++	pm_runtime_put_autosuspend(comp->dev);
++
++	return ret;
+ }
+ 
+ static int micfil_get_dc_remover_state(struct snd_kcontrol *kcontrol,
 -- 
 2.53.0
 
