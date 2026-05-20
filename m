@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEvzJ03xDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:17 +0200
+	id ANlfOlLzDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9737059420E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D80594808
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DE0883234D69
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CBBD310F2E0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047133ED3CF;
-	Wed, 20 May 2026 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B7E3ED136;
+	Wed, 20 May 2026 17:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAR6sma8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Q77QKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD82B3EA953;
-	Wed, 20 May 2026 16:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869973EAC83;
+	Wed, 20 May 2026 17:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296290; cv=none; b=ohNWDFfkkYV1H6Sx9i19Y61uAOBRGUThZjW0GhMBpvshD5Wi5mf8Q6Dpictuki+YktSzGSLT13z5xQbnfVG7sD+0k/OjxEprF6UvorhSsouVjqtMgPvSKJaPLWGWzYBWi5k698Ps17SNjLYgSmT4gykeZ/W84AQQR9Brwem+Ov4=
+	t=1779298707; cv=none; b=Q0yUtnyfmB9KZT93td3ksTnVA1PFUNyvFhPiAHUN/Bj6oRcasNVr8dDzFkoc3SgFc8vreDWs/C9INHTnmlSEOzmdYOLgo03H9AUI1NmVO7ev45FQKAwNlURP4s+YdFo2HM7f4NG5SaAnUcutGHscPcJVOdRyLl2SyVi8oI7JHPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296290; c=relaxed/simple;
-	bh=jW4DFsA/O/XWL5Qxu4VnZ+m6xGMzeyGcaEpuJYswEYY=;
+	s=arc-20240116; t=1779298707; c=relaxed/simple;
+	bh=wFDXRMUw2lgUWols9qyrAed8O5Wsh7TsyFNSva5Au/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EV5PsCLl+Rgb1DEHjqDaHQIPLIgfGNHzfOLBZAz0Fi+TchU+cjdUbF53WMwaYAPm3kMaEjJhVjbjnnWc4bcQ6zJU75ICOvspLoPYYkDd77NZr9ZNlop51pdSpEr7iuPq0Hisjb6mlJKlnCE9vZd5DBuBZykwXC8Ecrh9BTeGlhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAR6sma8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3066F1F000E9;
-	Wed, 20 May 2026 16:58:09 +0000 (UTC)
+	 MIME-Version; b=aAo4afTLIS9K526EjyJoyPRKYP55JQwfxmTr94K1KPxiR4a2gwIJw/pso4/kbJprbnjNQLQHKWlqNEHGN1lOrsu9pls4oT7ADvGl88jZv63/QWFNRG4R/M2yIFmA3WmcAjavdJgbnM/iU5Q7bURWNjnnVFL2cYjLifZR85F+RQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Q77QKI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8CE1F000E9;
+	Wed, 20 May 2026 17:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296289;
-	bh=ry4NofiHywn/LA0Rdprg0edzkuPDkiHab1kGyTz71vA=;
+	s=korg; t=1779298706;
+	bh=WjDKAceowVOAGiLffgfdlRTM+QJcaq6z2Ud/j4ktnMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cAR6sma86PJDeJLd3x4QDEGWoeVKqnnGGcbq5pQ+HgThSI9ffT+qAoevj4if1Fdcm
-	 LzVqKY11VrZu5Pi0vQDEGla4IAn2/+w9/DjqsaFK2PhYQCa7YE271K8EWGgxZrJLm+
-	 8BCvjOA8y9tM19Y96QFbYa0SsGPlXx+mF3yx7vcU=
+	b=i5Q77QKIYGy3nABkBYiGnoW8Pha7Ubz1gtm0Eh9eBCW1IwQsE75QXuu77nncfXLaz
+	 U1XY+HsuYJL5uYgXOK0TXg88JVCJdnadTnsTBaN2cggMNKtK3pD5NKGIX9i39b14vh
+	 EX4lxmZ7uN8rAzE4btcdbSprSw/jH9Si5Mzx1FlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moses <p@1g4.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0744/1146] crypto: ccp - copy IV using skcipher ivsize
-Date: Wed, 20 May 2026 18:16:34 +0200
-Message-ID: <20260520162205.044551510@linuxfoundation.org>
+Subject: [PATCH 6.18 512/957] perf tools: Fix module symbol resolution for non-zero .text sh_addr
+Date: Wed, 20 May 2026 18:16:35 +0200
+Message-ID: <20260520162145.640355114@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250778-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251716-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,59 +87,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9737059420E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 90D80594808
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moses <p@1g4.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a7a1f3cdd64d8a165d9b8c9e9ad7fb46ac19dfc4 ]
+[ Upstream commit 9a82bfde4775b7a87cd1a7e791f46f83ae442848 ]
 
-AF_ALG rfc3686-ctr-aes-ccp requests pass an 8-byte IV to the driver.
+When perf resolves symbols from kernel module ELF files (ET_REL),
+it converts symbol addresses to file offsets so that sample IPs
+can be matched to the correct symbol. The conversion adjusts each
+symbol's st_value:
 
-ccp_aes_complete() restores AES_BLOCK_SIZE bytes into the caller's IV
-buffer while RFC3686 skciphers expose an 8-byte IV, so the restore
-overruns the provided buffer.
+  sym->st_value -= shdr->sh_addr - shdr->sh_offset;
 
-Use crypto_skcipher_ivsize() to copy only the algorithm's IV length.
+For vmlinux (ET_EXEC), st_value is a virtual address and sh_addr
+is the section's virtual base, so subtracting sh_addr and adding
+sh_offset correctly yields a file offset.
 
-Fixes: 2b789435d7f3 ("crypto: ccp - CCP AES crypto API support")
-Signed-off-by: Paul Moses <p@1g4.org>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+For kernel modules (ET_REL), st_value is a section-relative
+offset. The module loader ignores sh_addr entirely and places
+symbols at module_base + st_value. Converting to file offset
+requires only adding sh_offset; subtracting sh_addr introduces an
+error equal to sh_addr bytes.
+
+When .text has sh_addr == 0 -- the historical norm for simple
+modules -- both formulas produce the same result and the bug is
+latent. As modules gain more metadata sections before .text (.note,
+.static_call.text, etc.), the linker assigns .text a non-zero
+sh_addr, exposing the defect. For example, nfsd.ko on this kernel
+has sh_addr=0xa80, kvm-intel.ko has sh_addr=0x1e90.
+
+The effect is that all .text symbols in affected modules
+shift by sh_addr bytes relative to sample IPs, causing perf
+report to attribute samples to incorrect, nearby symbols. This
+was observed as 13% of LLC-load-miss samples misattributed
+to nfsd_file_get_dio_attrs when the actual hot function was
+nfsd_cache_lookup, approximately 0xa80 bytes away in the symbol
+table.
+
+Use the existing dso__rel() flag (already set for ET_REL modules)
+to select the correct adjustment: add sh_offset for ET_REL,
+subtract (sh_addr - sh_offset) for ET_EXEC/ET_DYN.
+
+Fixes: 0131c4ec794a ("perf tools: Make it possible to read object code from kernel modules")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-crypto-aes.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/perf/util/symbol-elf.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/ccp/ccp-crypto-aes.c b/drivers/crypto/ccp/ccp-crypto-aes.c
-index 01d298350b925..3ad6bb7666f62 100644
---- a/drivers/crypto/ccp/ccp-crypto-aes.c
-+++ b/drivers/crypto/ccp/ccp-crypto-aes.c
-@@ -30,8 +30,11 @@ static int ccp_aes_complete(struct crypto_async_request *async_req, int ret)
- 	if (ret)
- 		return ret;
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 9d62386464680..9602cc51dcc65 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -1353,8 +1353,12 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
+ 	char dso_name[PATH_MAX];
  
--	if (ctx->u.aes.mode != CCP_AES_MODE_ECB)
--		memcpy(req->iv, rctx->iv, AES_BLOCK_SIZE);
-+	if (ctx->u.aes.mode != CCP_AES_MODE_ECB) {
-+		size_t ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(req));
-+
-+		memcpy(req->iv, rctx->iv, ivsize);
+ 	/* Adjust symbol to map to file offset */
+-	if (adjust_kernel_syms)
+-		sym->st_value -= shdr->sh_addr - shdr->sh_offset;
++	if (adjust_kernel_syms) {
++		if (dso__rel(dso))
++			sym->st_value += shdr->sh_offset;
++		else
++			sym->st_value -= shdr->sh_addr - shdr->sh_offset;
 +	}
  
- 	return 0;
- }
+ 	if (strcmp(section_name, (dso__short_name(curr_dso) + dso__short_name_len(dso))) == 0)
+ 		return 0;
 -- 
 2.53.0
 
