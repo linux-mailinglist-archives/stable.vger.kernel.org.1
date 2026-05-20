@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-252783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFDnFSApDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:28 +0200
+	id uJtBBtT/DWp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4736B59B106
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20467596E67
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23BFD39E6148
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D03A138D2D41
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B978A3A453B;
-	Wed, 20 May 2026 18:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F93F44C9;
+	Wed, 20 May 2026 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRlquN9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3uV9yh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C50371048;
-	Wed, 20 May 2026 18:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF123F6619;
+	Wed, 20 May 2026 17:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301579; cv=none; b=Ceh8IH9Hf4sn2RmBEI8gZ1MUwykdKEWfEKpBkH2r5mcbgGAkNKCBeph7aOSpfU6fp1G0J2afNb6YjFhJJEHTx9jEeoC+eCQTRwRL1ako4lWTaxrTYpKGA+ONr3OuS9QiQybLUabnWbI9yJFWHmIq1ojz8mTYg9aoVjFH3Uuww0k=
+	t=1779299988; cv=none; b=mdDMFWL3cwavvDq3Dq52CNL5PHaOhHgO+Ce1ZPFT/B810deoo1pnXQZ+mLGEwgphpDl8WxV/oJDiK8DfBZBliS9Br9MLY4rtjCEjdV8GxJkxh1Yw2y/NyjwtXvjvsc1nykRwOaF36NVH6wrcSuOdz3469vGKBso6h32yYLvLe0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301579; c=relaxed/simple;
-	bh=s1unjLs9SeXLlOazmg5W9DAWjuvvDl1JkigDramXTAw=;
+	s=arc-20240116; t=1779299988; c=relaxed/simple;
+	bh=2KLlaYLiwA/57A+EDRHf4Wycrq5IJTINBmlK50sE9BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLihHtmgtT/XXuLntOp+CFjUhirntZkUnzbE3jia78QU9wuTe0UTVZ7xpHtN6a+6DSBa0GlwifdTtu1nivXdXshRb5XRvd4+g0Nob2vDPjO0KOCzFJIYBk/J7RPu37N32fuXfLDNj6Nde2BmnVVoA7S7MzrQkOBOaZDS+/NuQ4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRlquN9o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8D51F000E9;
-	Wed, 20 May 2026 18:26:17 +0000 (UTC)
+	 MIME-Version; b=puaQGH1+CrFTo88Cnt1JbpgC5L8slQ43RpC741DDLdvw3QsrKMq8ftK9zecYTfUO72pYd39zNiUvHLV8AfzsLHBygpRpQQUsJd7ovU8NjFOQq8N5+fFrgfs7S8auYPJgJ6SC037H/VFk8HTuUt/O52I0IOhWs7R0nlBLGFjELOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3uV9yh8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BF81F00893;
+	Wed, 20 May 2026 17:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301578;
-	bh=e/krT/TQ3SDN8eXEJCoE3NV+Ja4WhCYSG5nvb4Q6eWs=;
+	s=korg; t=1779299984;
+	bh=XWApp8atlEo2B7KOZAbWhB7UGtnzx+8qDaIEW3B8fzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nRlquN9ovv5FXLIJZ2SBiKXGQWw2F3oIce2West70b1a5wMXyJb3IaRryniSZUYJW
-	 TL29+FSmThCXNZDPHLbNMzzcGDYgA3oNPFKWrAtxDkbziwgWRhiFUuKG48/eKLoHBj
-	 hEcQWroquEP5LFp1UevHg7hw2KyzlU1amMGyzHQc=
+	b=w3uV9yh8cDC3lRcjWgr0ATASb9aD3J7g7XMcPGNWfk2m9oZpQiVmMKC2aOE7RdmRW
+	 VWBZW7A1tkymV2zBo6KFc+3OiBzW6VIz6hFo1VHKNM7Wbx46FYhvESoGvadx6LdbUl
+	 Hq4rvnIhTUWeNC/0xkHNojuoqviml4PPGNYA9gcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 606/666] net/sched: sch_pie: annotate more data-races in pie_dump_stats()
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 934/957] libceph: Fix potential null-ptr-deref in decode_choose_args()
 Date: Wed, 20 May 2026 18:23:37 +0200
-Message-ID: <20260520162124.404587216@linuxfoundation.org>
+Message-ID: <20260520162154.844824304@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252783-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252174-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4736B59B106
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 20467596E67
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 6d4106e8df94c0c52cf3ca6a6a0d01567fb3844e ]
+commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
 
-My prior patch missed few READ_ONCE()/WRITE_ONCE() annotations.
+A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
+contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
+array of max_buckets CRUSH buckets is decoded, where some indices may
+not refer to actual buckets and are therefore set to NULL. The received
+CRUSH map may optionally contain choose_args that get decoded in
+decode_choose_args(). When decoding a crush_choose_arg_map, a series of
+choose_args for different buckets is decoded, with the bucket_index
+being read from the incoming message. It is only checked that the bucket
+index does not exceed max_buckets, but not that it doesn't point to an
+index with a NULL bucket. If a (potentially corrupted) message contains
+a crush_choose_arg_map including such a bucket_index, a null pointer
+dereference may occur in the subsequent processing when attempting to
+access the bucket with the given index.
 
-Fixes: 5154561d9b11 ("net/sched: sch_pie: annotate data-races in pie_dump_stats()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430080056.35104-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by extending the affected check. Now, it is
+only attempted to access the bucket if it is not NULL.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_pie.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/ceph/osdmap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index abb8cdb409c48..a7c8477810107 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -214,16 +214,14 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
- 	 * packet timestamp.
- 	 */
- 	if (!params->dq_rate_estimator) {
--		vars->qdelay = now - pie_get_enqueue_time(skb);
-+		WRITE_ONCE(vars->qdelay,
-+			   backlog ? now - pie_get_enqueue_time(skb) : 0);
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -390,7 +390,8 @@ static int decode_choose_args(void **p,
+ 				goto fail;
  
- 		if (vars->dq_tstamp != DTIME_INVALID)
- 			dtime = now - vars->dq_tstamp;
+ 			if (arg->ids_size &&
+-			    arg->ids_size != c->buckets[bucket_index]->size)
++			    (!c->buckets[bucket_index] ||
++			     arg->ids_size != c->buckets[bucket_index]->size))
+ 				goto e_inval;
+ 		}
  
- 		vars->dq_tstamp = now;
- 
--		if (backlog == 0)
--			vars->qdelay = 0;
--
- 		if (dtime == 0)
- 			return;
- 
-@@ -371,7 +369,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
- 		delta += MAX_PROB / (100 / 2);
- 
--	vars->prob += delta;
-+	WRITE_ONCE(vars->prob, vars->prob + delta);
- 
- 	if (delta > 0) {
- 		/* prevent overflow */
-@@ -396,7 +394,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 
- 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
- 		/* Reduce drop probability to 98.4% */
--		vars->prob -= vars->prob / 64;
-+		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
- 
- 	WRITE_ONCE(vars->qdelay, qdelay);
- 	vars->backlog_old = backlog;
-@@ -496,7 +494,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct pie_sched_data *q = qdisc_priv(sch);
- 	struct tc_pie_xstats st = {
--		.prob		= q->vars.prob << BITS_PER_BYTE,
-+		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
- 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
- 				   NSEC_PER_USEC,
- 		.packets_in	= READ_ONCE(q->stats.packets_in),
-@@ -507,7 +505,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	};
- 
- 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
--	st.dq_rate_estimating = q->params.dq_rate_estimator;
-+	st.dq_rate_estimating = READ_ONCE(q->params.dq_rate_estimator);
- 
- 	/* unscale and return dq_rate in bytes per sec */
- 	if (st.dq_rate_estimating)
--- 
-2.53.0
-
 
 
 
