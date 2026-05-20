@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDFgBObmDWqx4gUAu9opvQ
-	(envelope-from <stable+bounces-250366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:54 +0200
+	id 8C0qCLYWDmpn6AUAu9opvQ
+	(envelope-from <stable+bounces-251267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9803592939
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5296A599628
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D91933020EFE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FDCB33E10E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDF92C15AB;
-	Wed, 20 May 2026 16:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132C136C9D2;
+	Wed, 20 May 2026 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBhWO2QK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPYtaRSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8FF221F2F;
-	Wed, 20 May 2026 16:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D8135C1A0;
+	Wed, 20 May 2026 17:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295225; cv=none; b=WZj4y4n3NYwN8TuAGawDd7QyLX06fQE23i28PUrnhjGYWqtWV1bDvso6d5oGjSk9G01lz8MyQhfI7/qsCOIqWIWEvKQsOn8kAdHTw76ykFpGXU874QpVzWFQPirkq7dVUT3v5a0FEatmv6uePpoV3HrqntEIjEm8jj5inVYM/JI=
+	t=1779297538; cv=none; b=ok+SEAyf/ipBRUdm7C6SOldnAT59LibCV4ET4Bo+buzThRtk/JF7/9pGZ49+TcGpofQsZ10HpLNuqExMiwDd7hs58DxUaJ01ycUdD2lF9Z51InP6m6aOFCXIx8DTZa7cw8NSGLQRY5RHWxyaU4HDFey/Z7gtD8Zk/nxMTO47ksw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295225; c=relaxed/simple;
-	bh=iX1IWoK9B0t7Y1zBGvCvviJ6ZarSyoeu+eNg+fpeTNA=;
+	s=arc-20240116; t=1779297538; c=relaxed/simple;
+	bh=pVcq1nDvtkvNK+1fih0BtQRZOt5/YkneZ0GCp2y/PvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPIUrkDtelcr+HHC6q/QhGz8AfT63M9raTzCJLYoue0BCogtdHRmFbH8DuSj/Qthqm9G/jfJY4374m1atxBPTUquX+LVa78NPMkSr4/bjR7ruF3uYs2mi1XfRIsV7hYLJ/uQbm+LVQc3lcrEspMyj5IKOGxmFpRUuviNR18i+yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBhWO2QK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D9E1F000E9;
-	Wed, 20 May 2026 16:40:23 +0000 (UTC)
+	 MIME-Version; b=sft/Qrul4ME9JlVrmOwi+3BYm85RbZLDos1ubRw7QX5LVRQUTXc1sRdAJGFY3316FBWyAa9eqOviqlIdPN1Sa+g6Ly81EUR6iKglZDhgmjxdYOnobD6izyx6pLXgjQlcX1it6OCgqxpvTrjtGb6GLo6S/c0XfzO9/gwMAxi8QPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPYtaRSI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FD51F000E9;
+	Wed, 20 May 2026 17:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295224;
-	bh=JqoCCR/MPuGfdE2Mn1sI9rvJPKZc+kbmM2zR8rtwsM0=;
+	s=korg; t=1779297537;
+	bh=AO8MQOYjIr0chSIigcyx2kVLgZhkDKeBvaokTVNAb3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GBhWO2QKrAOyTRYcDyHvpCiVy70uaPk5NW8KmuXe0GRNwNqL/7rzk8Mfy1J6etaj0
-	 GiqKXnZk9xnc/ZftWqAXzTymgs7Ve3K3xTdw9bUuXpOwbStxVia6PD4LO92DFMR3Lh
-	 3atEz5mtuppLGdgyMAfrwMBBv8K4gCvoc/gu65x4=
+	b=yPYtaRSI4XRAsV9h8DYrWp3Z0+o+5OHNeikFW9q14gGYi9FvXUky/0eAC26zGwnMR
+	 BoZWBNSBBUMob91nKkcS+N6byEaR7XijGC0kJU+8OBuKfV1/I9SF//LdXAwvlRX1Wl
+	 /jgUZ6tKjapTCSb2HKWtEZ/JClCMN0XwDeMRDr3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Gonnet <ggonnet.linux@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0301/1146] dm init: ensure device probing has finished in dm-mod.waitfor=
+Subject: [PATCH 6.18 068/957] module: Fix freeing of charp module parameters when CONFIG_SYSFS=n
 Date: Wed, 20 May 2026 18:09:11 +0200
-Message-ID: <20260520162155.021151462@linuxfoundation.org>
+Message-ID: <20260520162136.039373598@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250366-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251267-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A9803592939
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 5296A599628
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Gonnet <ggonnet.linux@gmail.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 99a2312f69805f4ba92d98a757625e0300a747ab ]
+[ Upstream commit deffe1edba626d474fef38007c03646ca5876a0e ]
 
-The early_lookup_bdev() function returns successfully when the disk
-device is present but not necessarily its partitions. In this situation,
-dm_early_create() fails as the partition block device does not exist
-yet.
+When setting a charp module parameter, the param_set_charp() function
+allocates memory to store a copy of the input value. Later, when the module
+is potentially unloaded, the destroy_params() function is called to free
+this allocated memory.
 
-In my case, this phenomenon occurs quite often because the device is
-an SD card with slow reading times, on which kernel takes time to
-enumerate available partitions.
+However, destroy_params() is available only when CONFIG_SYSFS=y, otherwise
+only a dummy variant is present. In the unlikely case that the kernel is
+configured with CONFIG_MODULES=y and CONFIG_SYSFS=n, this results in
+a memory leak of charp values when a module is unloaded.
 
-Fortunately, the underlying device is back to "probing" state while
-enumerating partitions. Waiting for all probing to end is enough to fix
-this issue.
+Fix this issue by making destroy_params() always available when
+CONFIG_MODULES=y. Rename the function to module_destroy_params() to clarify
+that it is intended for use by the module loader.
 
-That's also the reason why this problem never occurs with rootwait=
-parameter: the while loop inside wait_for_root() explicitly waits for
-probing to be done and then the function calls async_synchronize_full().
-These lines were omitted in 035641b, even though the commit says it's
-based on the rootwait logic...
-
-Anyway, calling wait_for_device_probe() after our while loop does the
-job (it both waits for probing and calls async_synchronize_full).
-
-Fixes: 035641b01e72 ("dm init: add dm-mod.waitfor to wait for asynchronously probed block devices")
-Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/moduleparam.h | 11 +++--------
+ kernel/module/main.c        |  4 ++--
+ kernel/params.c             | 27 ++++++++++++++++++---------
+ 3 files changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
-index 7403823384c57..c1bacba92c65c 100644
---- a/drivers/md/dm-init.c
-+++ b/drivers/md/dm-init.c
-@@ -303,8 +303,10 @@ static int __init dm_init_init(void)
- 		}
- 	}
+diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
+index 6907aedc4f748..77775fd821407 100644
+--- a/include/linux/moduleparam.h
++++ b/include/linux/moduleparam.h
+@@ -414,14 +414,9 @@ extern char *parse_args(const char *name,
+ 		      void *arg, parse_unknown_fn unknown);
  
--	if (waitfor[0])
-+	if (waitfor[0]) {
-+		wait_for_device_probe();
- 		DMINFO("all devices available");
-+	}
+ /* Called by module remove. */
+-#ifdef CONFIG_SYSFS
+-extern void destroy_params(const struct kernel_param *params, unsigned num);
+-#else
+-static inline void destroy_params(const struct kernel_param *params,
+-				  unsigned num)
+-{
+-}
+-#endif /* !CONFIG_SYSFS */
++#ifdef CONFIG_MODULES
++void module_destroy_params(const struct kernel_param *params, unsigned int num);
++#endif
  
- 	list_for_each_entry(dev, &devices, list) {
- 		if (dm_early_create(&dev->dmi, dev->table,
+ /* All the helper functions */
+ /* The macros to do compile-time type checking stolen from Jakub
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 66d4efbddfffe..3745cd02c8479 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1408,7 +1408,7 @@ static void free_module(struct module *mod)
+ 	module_unload_free(mod);
+ 
+ 	/* Free any allocated parameters. */
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 
+ 	if (is_livepatch_module(mod))
+ 		free_module_elf(mod);
+@@ -3519,7 +3519,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
+ 	mod_sysfs_teardown(mod);
+  coming_cleanup:
+ 	mod->state = MODULE_STATE_GOING;
+-	destroy_params(mod->kp, mod->num_kp);
++	module_destroy_params(mod->kp, mod->num_kp);
+ 	blocking_notifier_call_chain(&module_notify_list,
+ 				     MODULE_STATE_GOING, mod);
+ 	klp_module_going(mod);
+diff --git a/kernel/params.c b/kernel/params.c
+index 7c2242f64bf08..8942884e21c43 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -746,15 +746,6 @@ void module_param_sysfs_remove(struct module *mod)
+ }
+ #endif
+ 
+-void destroy_params(const struct kernel_param *params, unsigned num)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < num; i++)
+-		if (params[i].ops->free)
+-			params[i].ops->free(params[i].arg);
+-}
+-
+ struct module_kobject * __init_or_module
+ lookup_or_create_module_kobject(const char *name)
+ {
+@@ -986,3 +977,21 @@ static int __init param_sysfs_builtin_init(void)
+ late_initcall(param_sysfs_builtin_init);
+ 
+ #endif /* CONFIG_SYSFS */
++
++#ifdef CONFIG_MODULES
++
++/*
++ * module_destroy_params - free all parameters for one module
++ * @params: module parameters (array)
++ * @num: number of module parameters
++ */
++void module_destroy_params(const struct kernel_param *params, unsigned int num)
++{
++	unsigned int i;
++
++	for (i = 0; i < num; i++)
++		if (params[i].ops->free)
++			params[i].ops->free(params[i].arg);
++}
++
++#endif /* CONFIG_MODULES */
 -- 
 2.53.0
 
