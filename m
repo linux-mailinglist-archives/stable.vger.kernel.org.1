@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-252106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNgXGGciDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:47 +0200
+	id CBNaEv4GDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC29D59A739
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD533597DB2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 507C538AC099
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5065E35C2058
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8013EF0C1;
-	Wed, 20 May 2026 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1274B3FD142;
+	Wed, 20 May 2026 18:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7iihar5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM84Rc8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388C83F54C7;
-	Wed, 20 May 2026 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C515F3FD133;
+	Wed, 20 May 2026 18:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299806; cv=none; b=hkUyydzquJbxgFjIRFNatKYIkPhGMt5o154nODBq+uRJH/gO5Z731iri1HBnG+CLvwz3wKw+nIHEFYtigMEt9GByqV6Xe7lQ3eVfds9fEXOWfes+sRvV1YyaDCQ9rsBIqenoQjVpWb4ocAyYzJgyfWa+e2HqkBmi//qdCrvAlgM=
+	t=1779302665; cv=none; b=c06Tr2iBXuIYJrBMBFY+Gor2w8BGrjYzv8cyyVb4h2/yVemZdP6TWzozOc8741H0kAe+7AfwM39uJtSlYkrxuO2rr7zi1bioVHklDG+ZwGVqXVifkzM54YfbPN6WRfkZGRP7u0yzJ7e5Z2OdWsJ7yxJ/xFpOUw+ZB61tU0r56fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299806; c=relaxed/simple;
-	bh=4ZiE6o9YEM5tSjGe9JPf37+esrSZfmWQcm9yjkyTP+4=;
+	s=arc-20240116; t=1779302665; c=relaxed/simple;
+	bh=390IE5xO26ZfABZET5oNPqnVv+DQHejY8RfPu2gLYRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQIteF8ba3D0IKF70C3fSNhucdrDIJAlloY16rhMAG/5KWFbmcQarhiFXyZ6leEYQY/bLoD6dgapCZBI5oHDXur1k/2If+Jo4GVZA6c+8CI/HhqGLIo0Ov6SdiVUStuJ0XifZLTh4tBP/kog070d8zh6aGvLPxZ8D/+VtWqO5r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7iihar5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F7E1F000E9;
-	Wed, 20 May 2026 17:56:44 +0000 (UTC)
+	 MIME-Version; b=QphU/pnhzPfquFQ7YzwXPZu9HQRWMPgBDytvg3SJLwiOOKgpkXKfAWdRd7SACkhIhxnEp3a8VmIQmpAL3Q8sRT1qzyCnVx2+8o7elCEb4+I33JaOnj5wtkRgpEyTlrzQqSjv68NyC0J5HqCPBdRIlY96uybXWYdxiYDXU5uOTss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM84Rc8G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D0B1F000E9;
+	Wed, 20 May 2026 18:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299804;
-	bh=JqoFMb/NNVG6+hNxmP55FocCqBk1Kisq3KCy/nkz5Rc=;
+	s=korg; t=1779302664;
+	bh=NsFtirGl4BAe2HxLXsJRHW4KK7fm2yiboKhj2XzjIbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W7iihar5pc/NZvUoalG6myZVWzpISWVbR9lP89Gd2r8AcUUWoj15uW+D5UEit4eJ7
-	 AhBZWW1FkgUkKmobS3omI0UKuawv1xij0fULe2j2tn1D8cDusV7fpszRD6IKTiJlLX
-	 clXvnWn3kQuNsbjn7B8x7dMmktKoWWuxGC2TQpew=
+	b=bM84Rc8G0/vARaPnISelNqi4I5m8+K8AqMFWfTcz1OSt5nWLZQ8KMHSACPT2feSpi
+	 rgjrGqeAsd79HdWVgfXYGi7F7KElFOTQHWd8njfec7jfy8Tn9HitDSld6kLZjTH07X
+	 2U6jHd5oVi0awVWRKw4t3/4+uKuTGui+70nIbsAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Ma <maqianga@uniontech.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 894/957] KVM: x86: Fix Xen hypercall tracepoint argument assignment
+	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
+	Kohei Enju <kohei@enjuk.jp>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 354/508] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
 Date: Wed, 20 May 2026 18:22:57 +0200
-Message-ID: <20260520162153.959686713@linuxfoundation.org>
+Message-ID: <20260520162106.304855349@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +66,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252106-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253201-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,uniontech.com:email]
-X-Rspamd-Queue-Id: BC29D59A739
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[enjuk.jp:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AD533597DB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Ma <maqianga@uniontech.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-commit 2b72f1674e427c56e3772c5ccf785fdda2138820 upstream.
+[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
 
-TRACE_EVENT(kvm_xen_hypercall) stores a5 in __entry->a4 instead of
-__entry->a5.
+syzbot reported "sleeping function called from invalid context" in
+vhost_net_busy_poll().
 
-That overwrites the recorded a4 argument and leaves a5 unset in the
-trace entry. Fix the typo so both arguments are captured correctly.
+Commit 030881372460 ("vhost_net: basic polling support") introduced a
+busy-poll loop and preempt_{disable,enable}() around it, where each
+iteration calls a sleepable function inside the loop.
 
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
-Link: https://patch.msgid.link/20260512015313.1685784-1-maqianga@uniontech.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The purpose of disabling preemption was to keep local_clock()-based
+timeout accounting on a single CPU, rather than as a requirement of
+busy-poll itself:
+
+https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+
+>From this perspective, migrate_disable() is sufficient here, so replace
+preempt_disable() with migrate_disable(), avoiding sleepable accesses
+from a preempt-disabled context.
+
+Fixes: 030881372460 ("vhost_net: basic polling support")
+Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/trace.h
-+++ b/arch/x86/kvm/trace.h
-@@ -154,7 +154,7 @@ TRACE_EVENT(kvm_xen_hypercall,
- 		__entry->a2 = a2;
- 		__entry->a3 = a3;
- 		__entry->a4 = a4;
--		__entry->a4 = a5;
-+		__entry->a5 = a5;
- 	),
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 5ad237d77a9a9..b26d9a8e4e055 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -547,7 +547,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
+ 				     tvq->busyloop_timeout;
  
- 	TP_printk("cpl %d nr 0x%lx a0 0x%lx a1 0x%lx a2 0x%lx a3 0x%lx a4 0x%lx a5 %lx",
+-	preempt_disable();
++	migrate_disable();
+ 	endtime = busy_clock() + busyloop_timeout;
+ 
+ 	while (vhost_can_busy_poll(endtime)) {
+@@ -564,7 +564,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 		cpu_relax();
+ 	}
+ 
+-	preempt_enable();
++	migrate_enable();
+ 
+ 	if (poll_rx || sock_has_rx_data(sock))
+ 		vhost_net_busy_poll_try_queue(net, vq);
+-- 
+2.53.0
+
 
 
 
