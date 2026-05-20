@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMXDIAoWDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:02 +0200
+	id KHhaACX/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249CE599501
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3FC596BCC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71D17325FD5F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC6A38B3641
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9153F1AC7;
-	Wed, 20 May 2026 17:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD7F3F44F7;
+	Wed, 20 May 2026 17:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ8dzNmK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v569I1rq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E073EE1DA;
-	Wed, 20 May 2026 17:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581903EF0C1;
+	Wed, 20 May 2026 17:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297366; cv=none; b=RUbE9kW+FTOgh9bXPEKcMMsQlL/asj6AH2QvtXLDC4v4qZys0ZPmOLdoxQN/b3XZKiEg03nwVfDZFIEUYBCpc1O0fcX3Xnn02EVJMWWnJOv7+7+Rf4g/kUJlSUIlYQ+p2aol8bA2a7l8Rk764JL7qWe5DXkrzfZfa/ODZ4YawoE=
+	t=1779299840; cv=none; b=ElOX3EhSxsMXPSVWavuyEcIs3FW9NCGEMRD96rojWrV8YrShKbbToCKrwajirjy4H7QFp1HAqzku3GWkoWCVv7ATCiyFEbZjNWnYQ3UD+L06EjN+FFgzXoeD34ePUr7Ctzw+T12XkaXxAtTajGhlh619einf7drHCswWkPLPxSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297366; c=relaxed/simple;
-	bh=KNYWEwDDBtafrXnNbdXa5nmVFutOnfzInpwnLyeUj60=;
+	s=arc-20240116; t=1779299840; c=relaxed/simple;
+	bh=drr5Q9ugDtKtpWoiyIdREfuy32hmWqKhijB2PLbs/nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3pD65AuYHiYqs80KhhuEPC+uUb26gCM5MfgFuM/4FAegaMI/ngFz3udo2sJjOmcI3m42CkApkFWWeGYNHd0aHlzjt7u5+nLkEPlOc1ATxxwsH+DgJGaDyyWNv2AFeE5clIRWvC4YZ0jV2LTvieM2Q0E9UMnrAvAI8W7U7akL3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ8dzNmK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872D31F000E9;
-	Wed, 20 May 2026 17:16:04 +0000 (UTC)
+	 MIME-Version; b=Joduroe0LATLg83Ct0tZ2qkbtnadb4xPYjOgXT8m4krinbnb4hSVJdWAndcDVySHRi4wemwK2Rv/Ux4Cawc/vTB3sCCBB21hQIqechM1Y1tJJyGtXeFSdpZSbjFq21TCWTur+AunqDoEr2Iz9tS+hNsxZZpwZd+l5gG2A55qYbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v569I1rq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52471F000E9;
+	Wed, 20 May 2026 17:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297365;
-	bh=/ClRZtC5nXDBPDXUrXHb5KWlOJM551pyugGY9+CGS4E=;
+	s=korg; t=1779299839;
+	bh=S9ad3loR+jpuxO+m8AdB0inLV7gX4AT/lQSkP8KeBAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jJ8dzNmK4B+nKnZ7wL6UkeYBprqzQg2aPOqa5URnbOY2qtdx5BLMR0tLzf+DckDCZ
-	 nlibuRmLczLEf8/rILXTiqu0SCMzZR2B/L87AJbkC/Zb8zTaiChgHE+MFtKGPYd0Y7
-	 +3oGClDH7JQSpVzWPNV7uKomdB5YyzINUPyuVAFk=
+	b=v569I1rqu/rpxM5w5KjGhltmYO4bWjSOveszJBHDATgArSu0xgFBgkS8/PJEjERzI
+	 hifiWB5edK+Kn/Hc/Yr/9BQ8dwsJMOq8HUfqQb4unICr1fe7ogsYuTWJjSPoS3zONu
+	 A0L4UPErPpGL1PvSAVF9HR5cNLfaBKKityim+bDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Horgan <ben.horgan@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 7.0 1139/1146] arm_mpam: Improve check for whether or not NRDY is hardware managed
+	DeepChirp <DeepChirp@outlook.com>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.18 906/957] drm/i915/dp: Fix VSC dynamic range signaling for RGB formats
 Date: Wed, 20 May 2026 18:23:09 +0200
-Message-ID: <20260520162214.031540394@linuxfoundation.org>
+Message-ID: <20260520162154.223489118@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +67,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251202-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,intel.com,ursulin.net];
+	TAGGED_FROM(0.00)[bounces-252119-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
-X-Rspamd-Queue-Id: 249CE599501
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,intel.com:email,ursulin.net:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: 5C3FC596BCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Horgan <ben.horgan@arm.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-commit ccad6001be5c38426ccf45790c411467ad3c03c6 upstream.
+commit 1ae15b6c7965d137eef21f2cc7d367b29cb88369 upstream.
 
-mpam_ris_hw_probe_csu_nrdy() sets and clears MSMON_CSU.NRDY and checks
-whether it's configuration sticks. However, hardware isn't given a chance
-to disagree. Based on rule LRTGP, in MPAM specification IHI0099 version
-B.b, the hardware will set NRDY if it needs time to establish a count after
-a configuration change.
+For RGB, set dynamic_range to CTA or VESA based on
+crtc_state->limited_color_range so sinks apply correct
+quantization. YCbCr remains limited (CTA) range.
+(DP v1.4, Table 5-1)
 
-Enable the monitor so that NRDY becomes relevant and change the
-configuration after clearing NRDY to try and coax the hardware into setting
-it.
+v2:
+- Added Reported-by and Tested-by tags
 
-Fixes: 8c90dc68a5de ("arm_mpam: Probe the hardware features resctrl supports")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+v3:
+- Add back YCbCr comment(Suraj)
+
+Cc: stable@vger.kernel.org #v5.8+
+Reported-by: DeepChirp <DeepChirp@outlook.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15874
+Tested-by: DeepChirp <DeepChirp@outlook.com>
+Fixes: 9799c4c3b76e ("drm/i915/dp: Add compute routine for DP VSC SDP")
+Assisted-by: GitHub-Copilot:GPT-5.4
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260505090920.2479112-1-chaitanya.kumar.borah@intel.com
+(cherry picked from commit 38e10ddae6f8d42a2e8437fcd25a1cac51106c64)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/resctrl/mpam_devices.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/resctrl/mpam_devices.c
-+++ b/drivers/resctrl/mpam_devices.c
-@@ -634,8 +634,7 @@ static struct mpam_msc_ris *mpam_get_or_
-  */
- static bool mpam_ris_hw_probe_csu_nrdy(struct mpam_msc_ris *ris)
- {
--	u32 now;
--	u32 mon_sel;
-+	u32 now, mon_sel, ctl_val;
- 	bool can_set, can_clear;
- 	struct mpam_msc *msc = ris->vmsc->msc;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2869,8 +2869,13 @@ static void intel_dp_compute_vsc_colorim
+ 	drm_WARN_ON(display->drm,
+ 		    vsc->bpc == 6 && vsc->pixelformat != DP_PIXELFORMAT_RGB);
  
-@@ -646,11 +645,21 @@ static bool mpam_ris_hw_probe_csu_nrdy(s
- 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
- 	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
- 
-+	/* Hardware might ignore nrdy if it's not enabled */
-+	ctl_val = MSMON_CFG_CSU_CTL_TYPE_CSU;
-+	ctl_val |= MSMON_CFG_x_CTL_MATCH_PARTID;
-+	ctl_val |= MSMON_CFG_x_CTL_MATCH_PMG;
-+	ctl_val |= MSMON_CFG_x_CTL_EN;
-+	mpam_write_monsel_reg(msc, CFG_CSU_FLT, 0);
-+	mpam_write_monsel_reg(msc, CFG_CSU_CTL, ctl_val);
+-	/* all YCbCr are always limited range */
+-	vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
++	/* All YCbCr formats are always limited range. */
++	if (vsc->pixelformat == DP_PIXELFORMAT_RGB)
++		vsc->dynamic_range = crtc_state->limited_color_range ?
++			DP_DYNAMIC_RANGE_CTA : DP_DYNAMIC_RANGE_VESA;
++	else
++		vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
 +
- 	_mpam_write_monsel_reg(msc, MSMON_CSU, MSMON___NRDY);
- 	now = _mpam_read_monsel_reg(msc, MSMON_CSU);
- 	can_set = now & MSMON___NRDY;
+ 	vsc->content_type = DP_CONTENT_TYPE_NOT_DEFINED;
+ }
  
- 	_mpam_write_monsel_reg(msc, MSMON_CSU, 0);
-+	/* Configuration change to try and coax hardware into setting nrdy */
-+	mpam_write_monsel_reg(msc, CFG_CSU_FLT, 0x1);
- 	now = _mpam_read_monsel_reg(msc, MSMON_CSU);
- 	can_clear = !(now & MSMON___NRDY);
- 	mpam_mon_sel_unlock(msc);
 
 
 
