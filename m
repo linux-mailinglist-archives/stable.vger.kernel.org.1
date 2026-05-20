@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONi+DcP3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-251712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:51 +0200
+	id 6CqdBKYkDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BC35953CD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C6859AA1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 94036307E114
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6C9E30DF543
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA473E6385;
-	Wed, 20 May 2026 17:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C3A42A96;
+	Wed, 20 May 2026 18:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4fpWSCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7gZV2E3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BC3D75D3;
-	Wed, 20 May 2026 17:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A16436CE19;
+	Wed, 20 May 2026 18:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298697; cv=none; b=ohTJk3DzQCTYdCNTFPH4IfSBTnKrFCVhsJ/Hu6ZgMo1JTskKSKzEBWkPQQ+YMFHhLGs1Ac1Hy8FpZZODhv83p5qnPB6DeH7xL0vfu/qrqPTmWio5rIQ7hhziLp+DgN72OvwyUtTGxZMvAX0lEktVap9RTs0K/Yylxf29rR7NPNc=
+	t=1779300452; cv=none; b=lGURVOq0lYBQxpF6QS0xZ0z1VN+SMPNXXdjDta3+/buEpQY2jqxjYIYMzMik/pD/vi2HZdYNVeyA7YIDo74ZNxNQnkD0QVpIQO8gWqIjsZmpDZUcZuSDERfqyWKVxBeVvO6iQDkOo185Nyc8NJw42gIiLI9c8nm3xaixHtUIDmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298697; c=relaxed/simple;
-	bh=z2PnkFdJDqCzD4b66Gb0/GjGmjnCdzec1bppY6+APl8=;
+	s=arc-20240116; t=1779300452; c=relaxed/simple;
+	bh=24sD+amJ9pP4AmyvY2DDQO3feedxCRxeRNS3ymxMEEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHPVSXxmhOQ4hE0OSybFkwtI9yFe/P3b9Ieu2MEU7bRKxl2tauFtUPNnpSDDDmV09pe2o/0D+TQxUbLyInS66D5wRHEQcZVD4q6Y+HPOFU+hQjbhYLkz33470AexCAgRThC9NG4oO2Dr8U+VLweKUsHdncoo43o1nMHgFjYdP90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4fpWSCI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAFC1F000E9;
-	Wed, 20 May 2026 17:38:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qcfng8PEGsvWEdEEFl8q92crdsMuw6ICL/0PEcCvTKXVgb0yZ0IWKlNdXwPyP4jsExUle61cM2bvZGT+vOs7UZkm6qBKWGuOzn7RJIbUUhq2e/+3egSGISwSU3lFQ6YWmrdqhWK6ldUCo9Y9+x4llR+uMHmYZDotEDPEaz07KRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7gZV2E3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E056E1F000E9;
+	Wed, 20 May 2026 18:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298695;
-	bh=cS7u3K2Zj6/Qtz6nrVj8r/zUjNRu1AL48UTpRZudQBM=;
+	s=korg; t=1779300451;
+	bh=VZeeNY53+fpYeOrw3c3fMvEts3dzJTlPxr18WmGdUY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T4fpWSCInWIFArh2jJNhUhf5gdqMdaZB78mkvJi3kpKmXRzcmG61zSA65Gf1JyhIp
-	 5LbEkl2s3XwrMMsc9WZSRLNdxMLWQlADh5s1Q6bUBsvkliaXcf+UiUMxL9eu4CuZD2
-	 IkJX8ueVcdP3zZhhWPEhehp6OJTYclwOE13bZue8=
+	b=K7gZV2E3YqgRXf3gabgsxtiNR8dK6SXLhV8LCgjpfAuYCGXLNVz0g+uHgVxuF1siG
+	 Mdxax7GGhTNuL88kxpPBnwRHjVByODFxCNYpZ0Yef9274JpPrrNsGco/TU3TPoJd1k
+	 I3MiUDEXrNnerT4jX8jynw9PXOON7MGyWbIGDwrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 509/957] perf lock: Fix option value type in parse_max_stack
+Subject: [PATCH 6.12 181/666] drm/amd/pm/ci: Fill DW8 fields from SMC
 Date: Wed, 20 May 2026 18:16:32 +0200
-Message-ID: <20260520162145.574874291@linuxfoundation.org>
+Message-ID: <20260520162115.124002005@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251712-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252352-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F1BC35953CD
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: A5C6859AA1F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit cfaade34b52aa1ec553044255702c4b31b57c005 ]
+[ Upstream commit baf28ec5795c077406d6f52b8ad39e614153bce6 ]
 
-The value is a void* and the address of an int, max_stack_depth, is
-set up in the perf lock options. The parse_max_stack function treats
-the int* as a long*, make this more correct by declaring the value to
-be an int*.
+In ci_populate_dw8() we currently just read a value from the SMU
+and then throw it away. Instead of throwing away the value,
+we should use it to fill other fields in DW8 (like radeon).
 
-Fixes: 0a277b622670 ("perf lock contention: Check --max-stack option")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Otherwise the value of the other fiels is just cleared when
+we copy this data to the SMU later.
+
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-lock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-index e8962c985d34a..5585aeb97684d 100644
---- a/tools/perf/builtin-lock.c
-+++ b/tools/perf/builtin-lock.c
-@@ -2250,7 +2250,7 @@ static int parse_map_entry(const struct option *opt, const char *str,
- static int parse_max_stack(const struct option *opt, const char *str,
- 			   int unset __maybe_unused)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index 1494143132eb5..aea3ad523cc03 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -543,12 +543,11 @@ static int ci_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
  {
--	unsigned long *len = (unsigned long *)opt->value;
-+	int *len = opt->value;
- 	long val;
- 	char *endptr;
+ 	struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
+ 	const struct ci_pt_defaults *defaults = smu_data->power_tune_defaults;
+-	uint32_t temp;
  
+ 	if (ci_read_smc_sram_dword(hwmgr,
+ 			fuse_table_offset +
+ 			offsetof(SMU7_Discrete_PmFuses, TdcWaterfallCtl),
+-			(uint32_t *)&temp, SMC_RAM_END))
++			(uint32_t *)&smu_data->power_tune_table.TdcWaterfallCtl, SMC_RAM_END))
+ 		PP_ASSERT_WITH_CODE(false,
+ 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
+ 				return -EINVAL);
 -- 
 2.53.0
 
