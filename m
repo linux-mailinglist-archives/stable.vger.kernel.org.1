@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJ1VCtsnDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:03 +0200
+	id cON9JGYGDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8462B59AED9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A1E597C9F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF6E3279264
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7DD6395DF95
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA3F3E5ECF;
-	Wed, 20 May 2026 18:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759323FFAA0;
+	Wed, 20 May 2026 18:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzWxJTWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9THyCRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B6029B78D;
-	Wed, 20 May 2026 18:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114684028D8;
+	Wed, 20 May 2026 18:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301258; cv=none; b=BIHi7crzr9zNXbQVeCx84eiuTo016XpNuS9fLazMO+OwFkUqG9domH9tGUlJvoupzO3FlCIbmVnKT9ehVVWMS0CyuV4Gecb0taQfE3VebmEcIhrN1VJjIUeaUZ5NIWSfiXjRJlqRU9fwqSBnzvU+DxQjeekw2Ks18JrP4JtDNc8=
+	t=1779302463; cv=none; b=j6cRiqhisEqbIW8GrjEpXRc4YdTQVuBlVF9G8pSp85E4N/7jU84ytrdUe234+yc4o1RxGaWvuUeXOErPzedPFO3twT6MqtiFHaFmsjWqW3Z1spLnKg0G7CU8I4dcWGlcNdNniUq2FbwhAuy2GSr5eDEhEihWcoGiJgp825gwqtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301258; c=relaxed/simple;
-	bh=Fn2yuHdThLWWesVX4l0c7AdopvbUV5kiqZ39Nl/8Sus=;
+	s=arc-20240116; t=1779302463; c=relaxed/simple;
+	bh=USIyc6dsX2yeShmOeT6vV13qTf5jPbvpUb9/7BfexCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEDoRx4aqanUCWgpu0/moQD8jSt5lelIW/3TwzCTi3j6aSAwigXqgtZrf25ckXrvmgCwCwIu5/J2oQ0OQwCDZf8wKn765GLmeiiCJCzvTI5jgExduyn2HcLenm3lfsOfelJhnenMoWyr1BWKe3tjSC+lJJt1KYVPG2b9wj0odH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzWxJTWX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948341F000E9;
-	Wed, 20 May 2026 18:20:56 +0000 (UTC)
+	 MIME-Version; b=L1z0KXMws7IS29FfI8G0JKw7sXmGLruXMpBgkwapRgLni6TOmXWaCXShxf3G5bVPV5RnYFpGzUszpJfmXi6eoQq+wSNIeu3i9Nv9hi2CXHSoKod7o/OegRrgWPb/Xn4LlFESyOqjDmRdtF9XlidtQZc2p88VmfUzFLhL/grv6Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9THyCRt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CED11F000E9;
+	Wed, 20 May 2026 18:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301257;
-	bh=7SG4EBr1usEIZ+8IH/jPbGGmUruW/9L7zgTJVgMEquQ=;
+	s=korg; t=1779302461;
+	bh=jkFrTRZfllG2TTMxT3J1ULZSk6xl07PCA6VOwHDOOX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uzWxJTWXzbs1IbS3Kp2SoVlZ+OOtnpWWsAEza/NuFjmqB8xMYjegNzICvnHEINaMB
-	 XibS1VaZ6XAWlQCrNVl7QPCvVaPpLE6XX0hF/Ta0slM2dBAPXip5xuEPkILu7dmlm7
-	 utZG+nTSet/Gi1XoYGxxJ4yMz53cE+wnH4siTW2s=
+	b=v9THyCRtqQXrTNEqUAB7UafSpz29ZPTTolzC6zGHFdPSpD4jLYsQMQ0fFhP71nkRa
+	 ss302Um7FEmoUmWiSj0SkTNwcvwKdS7zSSf5hpLJxhTcF52E27WP0ARRAbSpIssW3s
+	 1QM2gzpsIMJRpfBWmnUedhCvfNO5nsUEFJq7dbPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	White Lewis <liu224806@gmail.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 487/666] net/sched: sch_fq_codel: remove data-races from fq_codel_dump_stats()
-Date: Wed, 20 May 2026 18:21:38 +0200
-Message-ID: <20260520162121.819758059@linuxfoundation.org>
+Subject: [PATCH 6.6 276/508] clk: qcom: dispcc-sc8280xp: remove CLK_SET_RATE_PARENT from byte_div_clk_src dividers
+Date: Wed, 20 May 2026 18:21:39 +0200
+Message-ID: <20260520162104.627208041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,71 +77,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252660-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253122-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
-X-Rspamd-Queue-Id: 8462B59AED9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 19A1E597C9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: White Lewis <liu224806@gmail.com>
 
-[ Upstream commit bbfaa73ea6871db03dc05d7f05f00557a8981f25 ]
+[ Upstream commit 0b151a6307205eb867250985a910a88787cbf12e ]
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+The four byte_div_clk_src dividers (disp{0,1}_cc_mdss_byte{0,1}_div_clk_src)
+had CLK_SET_RATE_PARENT set. When the DSI driver calls clk_set_rate() on
+byte_intf_clk, the rate-change propagates through the divider up to the
+parent PLL (byte_clk_src), halving the byte clock rate.
 
-Move this acquisition before we fill st.qdisc_stats with live data.
+A simiar issue had been also encountered on SM8750.
+b8501febdc51 ("clk: qcom: dispcc-sm8750: Drop incorrect CLK_SET_RATE_PARENT on byte intf parent").
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142509.3967231-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Likewise, remove CLK_SET_RATE_PARENT from all four byte divider clocks
+so that clk_set_rate() on the divider adjusts only the divider ratio,
+leaving the parent PLL untouched.
+
+Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
+Signed-off-by: White Lewis <liu224806@gmail.com>
+[pengyu: reword]
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260303115550.9279-1-mitltlatltl@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_codel.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 551b7cbdae90c..3f797ec4b0c2f 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -581,6 +581,8 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	};
- 	struct list_head *pos;
- 
-+	sch_tree_lock(sch);
-+
- 	st.qdisc_stats.maxpacket = q->cstats.maxpacket;
- 	st.qdisc_stats.drop_overlimit = q->drop_overlimit;
- 	st.qdisc_stats.ecn_mark = q->cstats.ecn_mark;
-@@ -589,7 +591,6 @@ static int fq_codel_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	st.qdisc_stats.memory_usage  = q->memory_usage;
- 	st.qdisc_stats.drop_overmemory = q->drop_overmemory;
- 
--	sch_tree_lock(sch);
- 	list_for_each(pos, &q->new_flows)
- 		st.qdisc_stats.new_flows_len++;
- 
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index 30f636b9f0ec8..7f8819ece5eb0 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -1161,7 +1161,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte0_div_clk_src = {
+ 			&disp0_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1176,7 +1175,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte0_div_clk_src = {
+ 			&disp1_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1191,7 +1189,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte1_div_clk_src = {
+ 			&disp0_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1206,7 +1203,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte1_div_clk_src = {
+ 			&disp1_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
