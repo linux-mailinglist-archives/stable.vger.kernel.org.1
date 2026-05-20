@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-251716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANlfOlLzDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:54 +0200
+	id +PbELS4UDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D80594808
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F31F599212
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3CBBD310F2E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36229381FD41
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B7E3ED136;
-	Wed, 20 May 2026 17:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4C43F1AC7;
+	Wed, 20 May 2026 16:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Q77QKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4nioBH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869973EAC83;
-	Wed, 20 May 2026 17:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEDD3EE1DA;
+	Wed, 20 May 2026 16:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298707; cv=none; b=Q0yUtnyfmB9KZT93td3ksTnVA1PFUNyvFhPiAHUN/Bj6oRcasNVr8dDzFkoc3SgFc8vreDWs/C9INHTnmlSEOzmdYOLgo03H9AUI1NmVO7ev45FQKAwNlURP4s+YdFo2HM7f4NG5SaAnUcutGHscPcJVOdRyLl2SyVi8oI7JHPU=
+	t=1779296293; cv=none; b=HuxXsHjtBuyQSSFkJt8sc3eQmeEd67jT4XFGcAm/2ywgly+2jrNXNctrYh52HMp04JP6t3ETpD9NKuFUyKCQGDe1gSDXwK8FL6/PIKmitlhvJNBgmDi9QKj4ebalf9Hj+H1V2qaW/+wGY6Ls3p0ldEVOQ0NsKRDcGP8e9hLrs1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298707; c=relaxed/simple;
-	bh=wFDXRMUw2lgUWols9qyrAed8O5Wsh7TsyFNSva5Au/M=;
+	s=arc-20240116; t=1779296293; c=relaxed/simple;
+	bh=CsT62k9xZczJ+FXQ7FRk5dPOb8znyX9gn7H1Ivg90oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAo4afTLIS9K526EjyJoyPRKYP55JQwfxmTr94K1KPxiR4a2gwIJw/pso4/kbJprbnjNQLQHKWlqNEHGN1lOrsu9pls4oT7ADvGl88jZv63/QWFNRG4R/M2yIFmA3WmcAjavdJgbnM/iU5Q7bURWNjnnVFL2cYjLifZR85F+RQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Q77QKI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8CE1F000E9;
-	Wed, 20 May 2026 17:38:25 +0000 (UTC)
+	 MIME-Version; b=FBasft+9we93j9s3q/Gq0d1PdjnaIsFg6gIg/O/ezCyvWtkTaXuRhJlPFtMDJN1rOzE7MVTBuFIcIWE4GTzeqe5k/r8fI/cuMh3q0NzbQQZEyCzLlJIzyhrnxFLjnIljHqWqpwZTTIHjPE62ggk4CPsmhqZVaRxK6IByeY/+Xx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4nioBH4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96F01F00894;
+	Wed, 20 May 2026 16:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298706;
-	bh=WjDKAceowVOAGiLffgfdlRTM+QJcaq6z2Ud/j4ktnMg=;
+	s=korg; t=1779296292;
+	bh=PYgD9+ngn1y3m8y9QJoLnE+DdTg/ScDaLJtJEVZkodM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i5Q77QKIYGy3nABkBYiGnoW8Pha7Ubz1gtm0Eh9eBCW1IwQsE75QXuu77nncfXLaz
-	 U1XY+HsuYJL5uYgXOK0TXg88JVCJdnadTnsTBaN2cggMNKtK3pD5NKGIX9i39b14vh
-	 EX4lxmZ7uN8rAzE4btcdbSprSw/jH9Si5Mzx1FlY=
+	b=l4nioBH4mvF7o7wgrzBtL1MqTAM4s9OpSnjSIdqqQrYGF3UD5/PXCvwGFElmz3Iz4
+	 MNThZMdw6m4LuuGlS1iyfSK1w6SRmjwGB4ItZ4KZodFMbzcwUM05hpAx/d3b/00Loj
+	 cWiuq3pzzuMZ0tKa+qVpaA9wx2oulDGzGGBfi7VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Lee Jones <lee@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 512/957] perf tools: Fix module symbol resolution for non-zero .text sh_addr
+Subject: [PATCH 7.0 0745/1146] sh: Include <linux/io.h> in dac.h
 Date: Wed, 20 May 2026 18:16:35 +0200
-Message-ID: <20260520162145.640355114@linuxfoundation.org>
+Message-ID: <20260520162205.067126444@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +72,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251716-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-250779-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,intel.com,kernel.org,ffwll.ch,gmail.com,lists.freedesktop.org,physik.fu-berlin.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 90D80594808
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,fu-berlin.de:email,lists.freedesktop.org:email,intel.com:email]
+X-Rspamd-Queue-Id: 1F31F599212
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 9a82bfde4775b7a87cd1a7e791f46f83ae442848 ]
+[ Upstream commit 57b3ec396dd898aadc073bb16f3d05ee64b2c8af ]
 
-When perf resolves symbols from kernel module ELF files (ET_REL),
-it converts symbol addresses to file offsets so that sample IPs
-can be matched to the correct symbol. The conversion adjusts each
-symbol's st_value:
+Include <linux/io.h> to avoid depending on <linux/backlight.h>
+for including it. Declares __raw_readb() and __raw_writeb().
 
-  sym->st_value -= shdr->sh_addr - shdr->sh_offset;
-
-For vmlinux (ET_EXEC), st_value is a virtual address and sh_addr
-is the section's virtual base, so subtracting sh_addr and adding
-sh_offset correctly yields a file offset.
-
-For kernel modules (ET_REL), st_value is a section-relative
-offset. The module loader ignores sh_addr entirely and places
-symbols at module_base + st_value. Converting to file offset
-requires only adding sh_offset; subtracting sh_addr introduces an
-error equal to sh_addr bytes.
-
-When .text has sh_addr == 0 -- the historical norm for simple
-modules -- both formulas produce the same result and the bug is
-latent. As modules gain more metadata sections before .text (.note,
-.static_call.text, etc.), the linker assigns .text a non-zero
-sh_addr, exposing the defect. For example, nfsd.ko on this kernel
-has sh_addr=0xa80, kvm-intel.ko has sh_addr=0x1e90.
-
-The effect is that all .text symbols in affected modules
-shift by sh_addr bytes relative to sample IPs, causing perf
-report to attribute samples to incorrect, nearby symbols. This
-was observed as 13% of LLC-load-miss samples misattributed
-to nfsd_file_get_dio_attrs when the actual hot function was
-nfsd_cache_lookup, approximately 0xa80 bytes away in the symbol
-table.
-
-Use the existing dso__rel() flag (already set for ET_REL modules)
-to select the correct adjustment: add sh_offset for ET_REL,
-subtract (sh_addr - sh_offset) for ET_EXEC/ET_DYN.
-
-Fixes: 0131c4ec794a ("perf tools: Make it possible to read object code from kernel modules")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510282206.wI0HrqcK-lkp@intel.com/
+Fixes: 243ce64b2b37 ("backlight: Do not include <linux/fb.h> in header file")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <danielt@kernel.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol-elf.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/sh/include/cpu-sh3/cpu/dac.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index 9d62386464680..9602cc51dcc65 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -1353,8 +1353,12 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
- 	char dso_name[PATH_MAX];
+diff --git a/arch/sh/include/cpu-sh3/cpu/dac.h b/arch/sh/include/cpu-sh3/cpu/dac.h
+index fd02331608a8d..323ec8570bcd1 100644
+--- a/arch/sh/include/cpu-sh3/cpu/dac.h
++++ b/arch/sh/include/cpu-sh3/cpu/dac.h
+@@ -2,6 +2,8 @@
+ #ifndef __ASM_CPU_SH3_DAC_H
+ #define __ASM_CPU_SH3_DAC_H
  
- 	/* Adjust symbol to map to file offset */
--	if (adjust_kernel_syms)
--		sym->st_value -= shdr->sh_addr - shdr->sh_offset;
-+	if (adjust_kernel_syms) {
-+		if (dso__rel(dso))
-+			sym->st_value += shdr->sh_offset;
-+		else
-+			sym->st_value -= shdr->sh_addr - shdr->sh_offset;
-+	}
- 
- 	if (strcmp(section_name, (dso__short_name(curr_dso) + dso__short_name_len(dso))) == 0)
- 		return 0;
++#include <linux/io.h>
++
+ /*
+  * Copyright (C) 2003  Andriy Skulysh
+  */
 -- 
 2.53.0
 
