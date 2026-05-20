@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6E9XIL7wDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:54 +0200
+	id SFrPLjHmDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1671D594018
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E667592833
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C144315BE73
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5AD1E303DA0A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008CF35F619;
-	Wed, 20 May 2026 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44AD33BBAF;
+	Wed, 20 May 2026 16:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoLupYrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAivZcQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A78D33F59D;
-	Wed, 20 May 2026 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6FC31CA4E;
+	Wed, 20 May 2026 16:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297490; cv=none; b=Kvep5/4A9fJtob7Yz+l3F+PYOjToEergwJmtYzy9+MVHCg9/Iia8DWPqjjMbayipq4ldPOAzJjsYWHVhgfVUf6dfKdDK8zxrUExUv8bheVkn8DtTv/6MZulUXI5OdYngtQxZPMiEUBeIEUHtUPgAHu+nWcNHvwSWFGjMyN21SPQ=
+	t=1779295092; cv=none; b=cNHwLI+uqKVsLC7w33id4vu+Blu5e9pNZYqRuQWWyIvu6Fd37PuhBiq/UVGzYr2SxoQVq2NFEjI351fuStew80DGTbELd3ols1TdXxzzVhptgcuordZAabFubMiGzw604Rx3TKTJe4ovfnJ4Y+mLGFWnRn2KwwEvB+skxJ0zaDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297490; c=relaxed/simple;
-	bh=pFNr1d2muYh/n1JWfB5rboGPUHM4HEP/EsQvGd7Jc8I=;
+	s=arc-20240116; t=1779295092; c=relaxed/simple;
+	bh=vFuz1ZF0T/AAzTsejShk03BXskDRDqt/RLv37Xos/GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oblScnYfwBy7odlyXYaVO7+A5ReeV5n4pBiaR4a7IToOD4DJKksRQtQl5hAf5EUF8n4hIFwxvdFsZbjNZju/KElVtv/L3RewrAXFt7dJ65ywcyQIMk39SkwqD3L+5p85KiwJQ+w0PfUfTwZiTLgfH+NmFpDweLD7RqN/37nYF+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoLupYrQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC841F000E9;
-	Wed, 20 May 2026 17:18:08 +0000 (UTC)
+	 MIME-Version; b=cxHwcOawk/L4Yvd1K9442g3L/KBtRaEqxMdQzL2Jkyh00jZRykXhIJl9HrcC+6hk0bPC6xfwg4+q5iuscA59gkotiE4DB5zy3dRvdyU++2ZUrDT8MrBpTk+8DjSuoMk4nutBBy11O3RqCrJqj6cOnd9yyS+NTVvD+/YsaySouxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAivZcQX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2971F000E9;
+	Wed, 20 May 2026 16:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297489;
-	bh=/eg7q55jIYdLDJ99bp4l6X9xTxs5ucDScmBBKUDz5Ag=;
+	s=korg; t=1779295090;
+	bh=ETGhH3lMyRocJ7T50sfFenXUBFxSB+iRE2JRFVt452A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BoLupYrQyVTPGURprrlTiRZejEWRJ9GGnSGhCchponwy/IaV0GjHEyX6KC0qyl9wN
-	 Bmr8X2vokG3KQPtwfSEoIF559LQa0ikCjbP2zZVZh43ZVVTONsEjoAT1VNuDIqUSD0
-	 LavmCLJu28bhmcq17/N2S2lN8UqyFq6uSGca9GdE=
+	b=nAivZcQXw9ei1HwVobY+uS8fwawSg2mfKLX9EKvaY89XhvpzVfmFhuU+Z8czcUtnp
+	 DMHVBtwn9FlRlLyjA3p2Lg//vZeup5OP+M1p6vTqpP39xw//CNtEgSrd/yLMJ/U8Vw
+	 f9fWgWnPAijTu1B0DmZmj5vWLmLwfV68RrAheIwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 052/957] sched: Make class_schedulers avoid pushing current, and get rid of proxy_tag_curr()
-Date: Wed, 20 May 2026 18:08:55 +0200
-Message-ID: <20260520162135.687777470@linuxfoundation.org>
+	John Madieu <john.madieu.xa@bp.renesas.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 7.0 0286/1146] PCI: rzg3s-host: Fix reset handling in probe error path
+Date: Wed, 20 May 2026 18:08:56 +0200
+Message-ID: <20260520162154.690036054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251249-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250315-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,179 +87,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: 1671D594018
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,renesas.com:email]
+X-Rspamd-Queue-Id: 5E667592833
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: John Madieu <john.madieu.xa@bp.renesas.com>
 
-[ Upstream commit e0ca8991b2de6c9dfe6fcd8a0364951b2bd56797 ]
+[ Upstream commit d284389d4576e7c8040dc4cbb66876e539c6d064 ]
 
-With proxy-execution, the scheduler selects the donor, but for
-blocked donors, we end up running the lock owner.
+Fix incorrect reset_control_bulk_deassert() call in the probe error
+path. When unwinding from a failed pci_host_probe(), the configuration
+resets should be asserted to restore the hardware to its initial state,
+not deasserted again.
 
-This caused some complexity, because the class schedulers make
-sure to remove the task they pick from their pushable task
-lists, which prevents the donor from being migrated, but there
-wasn't then anything to prevent rq->curr from being migrated
-if rq->curr != rq->donor.
-
-This was sort of hacked around by calling proxy_tag_curr() on
-the rq->curr task if we were running something other then the
-donor. proxy_tag_curr() did a dequeue/enqueue pair on the
-rq->curr task, allowing the class schedulers to remove it from
-their pushable list.
-
-The dequeue/enqueue pair was wasteful, and additonally K Prateek
-highlighted that we didn't properly undo things when we stopped
-proxying, leaving the lock owner off the pushable list.
-
-After some alternative approaches were considered, Peter
-suggested just having the RT/DL classes just avoid migrating
-when task_on_cpu().
-
-So rework pick_next_pushable_dl_task() and the rt
-pick_next_pushable_task() functions so that they skip over the
-first pushable task if it is on_cpu.
-
-Then just drop all of the proxy_tag_curr() logic.
-
-Fixes: be39617e38e0 ("sched: Fix proxy/current (push,pull)ability")
-Closes: https://lore.kernel.org/lkml/e735cae0-2cc9-4bae-b761-fcb082ed3e94@amd.com/
-Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260324191337.1841376-2-jstultz@google.com
+Fixes: 7ef502fb35b2 ("PCI: Add Renesas RZ/G3S host controller driver")
+Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # RZ/V2N EVK
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20260306143423.19562-2-john.madieu.xa@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c     | 24 ------------------------
- kernel/sched/deadline.c | 18 ++++++++++++++++--
- kernel/sched/rt.c       | 15 ++++++++++++---
- 3 files changed, 28 insertions(+), 29 deletions(-)
+ drivers/pci/controller/pcie-rzg3s-host.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 421efba7db5a1..522d4bad56ad1 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6730,23 +6730,6 @@ find_proxy_task(struct rq *rq, struct task_struct *donor, struct rq_flags *rf)
- }
- #endif /* SCHED_PROXY_EXEC */
+diff --git a/drivers/pci/controller/pcie-rzg3s-host.c b/drivers/pci/controller/pcie-rzg3s-host.c
+index 2809112e63171..7a80455aad366 100644
+--- a/drivers/pci/controller/pcie-rzg3s-host.c
++++ b/drivers/pci/controller/pcie-rzg3s-host.c
+@@ -1589,8 +1589,7 @@ static int rzg3s_pcie_probe(struct platform_device *pdev)
  
--static inline void proxy_tag_curr(struct rq *rq, struct task_struct *owner)
--{
--	if (!sched_proxy_exec())
--		return;
--	/*
--	 * pick_next_task() calls set_next_task() on the chosen task
--	 * at some point, which ensures it is not push/pullable.
--	 * However, the chosen/donor task *and* the mutex owner form an
--	 * atomic pair wrt push/pull.
--	 *
--	 * Make sure owner we run is not pushable. Unfortunately we can
--	 * only deal with that by means of a dequeue/enqueue cycle. :-/
--	 */
--	dequeue_task(rq, owner, DEQUEUE_NOCLOCK | DEQUEUE_SAVE);
--	enqueue_task(rq, owner, ENQUEUE_NOCLOCK | ENQUEUE_RESTORE);
--}
--
- /*
-  * __schedule() is the main scheduler function.
-  *
-@@ -6896,9 +6879,6 @@ static void __sched notrace __schedule(int sched_mode)
- 		 */
- 		RCU_INIT_POINTER(rq->curr, next);
- 
--		if (!task_current_donor(rq, next))
--			proxy_tag_curr(rq, next);
--
- 		/*
- 		 * The membarrier system call requires each architecture
- 		 * to have a full memory barrier after updating
-@@ -6933,10 +6913,6 @@ static void __sched notrace __schedule(int sched_mode)
- 		/* Also unlocks the rq: */
- 		rq = context_switch(rq, prev, next, &rf);
- 	} else {
--		/* In case next was already curr but just got blocked_donor */
--		if (!task_current_donor(rq, next))
--			proxy_tag_curr(rq, next);
--
- 		rq_unpin_lock(rq, &rf);
- 		__balance_callbacks(rq);
- 		raw_spin_rq_unlock_irq(rq);
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index d5052f238adf7..ed96b86dec04d 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2761,12 +2761,26 @@ static int find_later_rq(struct task_struct *task)
- 
- static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
- {
--	struct task_struct *p;
-+	struct task_struct *i, *p = NULL;
-+	struct rb_node *next_node;
- 
- 	if (!has_pushable_dl_tasks(rq))
- 		return NULL;
- 
--	p = __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
-+	next_node = rb_first_cached(&rq->dl.pushable_dl_tasks_root);
-+	while (next_node) {
-+		i = __node_2_pdl(next_node);
-+		/* make sure task isn't on_cpu (possible with proxy-exec) */
-+		if (!task_on_cpu(rq, i)) {
-+			p = i;
-+			break;
-+		}
-+
-+		next_node = rb_next(next_node);
-+	}
-+
-+	if (!p)
-+		return NULL;
- 
- 	WARN_ON_ONCE(rq->cpu != task_cpu(p));
- 	WARN_ON_ONCE(task_current(rq, p));
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index a892a01c463e5..8cead8f37aa50 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1847,13 +1847,22 @@ static int find_lowest_rq(struct task_struct *task)
- 
- static struct task_struct *pick_next_pushable_task(struct rq *rq)
- {
--	struct task_struct *p;
-+	struct plist_head *head = &rq->rt.pushable_tasks;
-+	struct task_struct *i, *p = NULL;
- 
- 	if (!has_pushable_tasks(rq))
- 		return NULL;
- 
--	p = plist_first_entry(&rq->rt.pushable_tasks,
--			      struct task_struct, pushable_tasks);
-+	plist_for_each_entry(i, head, pushable_tasks) {
-+		/* make sure task isn't on_cpu (possible with proxy-exec) */
-+		if (!task_on_cpu(rq, i)) {
-+			p = i;
-+			break;
-+		}
-+	}
-+
-+	if (!p)
-+		return NULL;
- 
- 	BUG_ON(rq->cpu != task_cpu(p));
- 	BUG_ON(task_current(rq, p));
+ host_probe_teardown:
+ 	rzg3s_pcie_teardown_irqdomain(host);
+-	reset_control_bulk_deassert(host->data->num_cfg_resets,
+-				    host->cfg_resets);
++	reset_control_bulk_assert(host->data->num_cfg_resets, host->cfg_resets);
+ rpm_put:
+ 	pm_runtime_put_sync(dev);
+ rpm_disable:
 -- 
 2.53.0
 
