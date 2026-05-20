@@ -1,194 +1,149 @@
-Return-Path: <stable+bounces-249775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPYvEVloDWo0xAUAu9opvQ
-	(envelope-from <stable+bounces-249775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:52:57 +0200
+	id 0NRdEXhqDWqHxAUAu9opvQ
+	(envelope-from <stable+bounces-249776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:02:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98BB589328
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:52:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A356D5894DE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 257C8301707E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 07:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7AD59304E400
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 07:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F87D378D82;
-	Wed, 20 May 2026 07:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF6236494F;
+	Wed, 20 May 2026 07:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQBv+m2x"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E7ih3YVH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486A3375ADE;
-	Wed, 20 May 2026 07:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E8F376A13
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 07:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779263568; cv=none; b=JfS6GoWEtSTyBqcCGfaFvCO8lj8baStGtKCa65Y817atCB1KOzP/Te2lmmlFPgrNxWGR9g41z8IWGmIzdpcm1opKZItdj44lLm0Sn70s0Rt0HbVp6h2ZZTndSk0PJDuptR9Ycpiu+GwwtXjn2Bz4K4TGK9zjRAeaeeTwarkTm48=
+	t=1779263677; cv=none; b=lJqWEGUwXzGvaftW0RP1m6C97fsvvUmWuRP7503rdAErZoxk5cotz/qOmsAtXtIjWFp6F9algjT7tT6BiESM3spvMhpWrFNKOmIu4F9QvR/j0BfOdA1Rnq3IiO0zsE+Wbo1QU0Ig9iduRORVhqWqr0PPl+xjxK8rL6AWkEm+B1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779263568; c=relaxed/simple;
-	bh=l2iq04dfid1P/RI7IJB6RTFHGWrxxxOjteF9sXcweUg=;
+	s=arc-20240116; t=1779263677; c=relaxed/simple;
+	bh=qAh1VLAJGnsgqquDAhS+FfRurgPmqKRM0FABdJ7PnCE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3nEnsKXopWzTkFoer3vjLhTy7N3ngjb/gvEtwHpSu2I8uhInH7wwc4B9cm7wl8nyfVv4ur7iPgVhnS+6W4urM3T+zDhyYs8fhrPwPm8RmnfXlZwY9dgb8MIaB73GeUOYo5YXi5Md6IBUh8w35f0xVFSA6T/bNKJRsTMNlFghj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQBv+m2x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12ED41F000E9;
-	Wed, 20 May 2026 07:52:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779263566;
-	bh=K7AXusVw5tvRk0MCx58b3uVuuJbfqHqRR7DEObAZuqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YQBv+m2xMy4acoftW+DIFqymklNIOAyXZXlVYOo2ON1JvQARL78iTvyrRWzv3kXrw
-	 iN5udWjmMvNWKgQRF8/mCm+JiZi1pTiSmtXs3WgIuC5Vb6jtv2+q3C3waRqtrCexXe
-	 kM69ptL06OpIAvotnuTai5zRhuvsd6VnOrAazR5ZXPJcfXgsGgCFi1gOb3uTSPlDLk
-	 lpMD6q5Hup5DNGehX92Z74Bv7dff7d9+JksIcnk7irk/3l3Y/H9qnzIiiJXobEnU+j
-	 IO6wg9UlrhNlW5aHsjgcfUj8DmMeLqXnhDUX9LP0Om9zjLID1Wk6Ku+FArQVu01FgX
-	 FP336eN77QIzg==
-Date: Wed, 20 May 2026 13:22:37 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org, 
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Koichiro Den <den@valinux.co.jp>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] PCI: rcar-gen4: Limit Max_Read_Request_Size and
- Max_Payload_Size to 256 Bytes
-Message-ID: <n54cy5tedwjw7tr6a7h7fh3ja6rnmwur4yuc7235pt6nv4dwfs@phoahokzmts5>
-References: <20260425233845.459175-1-marek.vasut+renesas@mailbox.org>
- <dicudl6knlptqnscyqkedp5zrs4vyosjggysnqsaupxi3g3o4x@rngp35usnurb>
- <e7078be5-4d95-4b85-9590-d1f0c76b653a@mailbox.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gVtAbhMQ6EedM/xIbwy0V4gJSRfWYOt4Sbl3So9mi9e703L+p73V6+pMGn4TQgYOL+XUM2HglskT+PcV1WIWt0rS/SHLIuA10rMIxZubHYbQFugI0j/DkRR1ZVJYz6SaYy05MgkvnOJuaZQEc8ttkSl6+OLaQV+lV4DWi4ViGVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E7ih3YVH; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8413ac3d82fso204992b3a.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 00:54:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1779263673; x=1779868473; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jw4GyRnL2M4P8CKjQW6uXBwJzV1CCa+rVhOUr7kFD7M=;
+        b=E7ih3YVHa7B8ZfaTjL0NNSj6GH7Rr8JPLGsMlpakqHtWB5Rxvrp+2dn7pAhxIREw/3
+         6QKJKBB4G528T5ayx/budGVPJyFLCvSVKTi4Ki8iEFogiBAYukt9VGYYhja5O2ikA9Fx
+         CaAlZup5iB/W9hy6Oc9yltkPVQSBMbdIBnimJBh5JHA2rzaiLErUOwQSMoh/DWt7g4S3
+         Vh7eurzStHO6LrgHLGhavdUA9QO00jjbjeGgjRAhT8xRikbHVucSUITGltzoWlaFgMlu
+         cjGfldmKNhMwBvwJlrEOa9MA2KivM5YiILgyoexJCUzcxQsqOgqWIQfnXzBfQBx944A4
+         ewig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779263673; x=1779868473;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jw4GyRnL2M4P8CKjQW6uXBwJzV1CCa+rVhOUr7kFD7M=;
+        b=aLdUvqyDvK0WxqLGYFrAjhlwO7ss180Q0Ua3Dc2+o9Qm27GfyZB300NBlgpedl3kQ9
+         ImnK0eaIugsXtOFJ6rPREnE/NS7StwQcQJ18dZ/NGlLyzviOG+6eEQJ/YHFEDVR1RZ2L
+         qNp92SVpyLaid2F9H6+cdD48mTMiRHA/PpdYwN/QINUbDgBpBiXh0epdyx8ryfpYN9Ez
+         UyMw3xvCr7VoAhYfmUUWf3uX1oRJYbNV/QGIjEdW+BEQnKFV/bN1NQo504S68YhXm2yn
+         RHD6rhdSxtqa4HvINf3HwUR3S8WOn1znVuNHC68nX5vKu4sOvfhwd6PzvZfMTSrMFjg0
+         lmHg==
+X-Forwarded-Encrypted: i=1; AFNElJ9VtKaEpbRHPI8oORLn7yKAAfsMziVbVpp6d/NnyW3nZPqPXSFh4icAf38j9thOchYZCtg/XtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUEjbCPDekYVAc5MV7XiLIlxA8A9A2xzDsfYe0KYlp2RFVHSBA
+	rG5OpZa3BJAFkXInLMhMPZnPdH7fqaqdY7R5ciYM6mGX9feC/6lAEv6EYWLtrmXlCHVAQCyjV0R
+	ZWRAA
+X-Gm-Gg: Acq92OHzdIwpVU50nTfmOeID7WfqB6rOAiWCM3FIMYt7ZV4bU8O0VgZBxAcU9+/PZnb
+	FuUGLB5NGRY7CpQgV20uQTIf0QFEgMoP7/uJMThBkR0Tu3PRS5mq3ezvwIlja8HlJykGiTD4C5o
+	hSXmlkiiqlowiBxJJZABM1KZMK8+SR/Iau4+AOCAZEE9xTf647N7W8J+N92AOMZ3FjaGlx/lvKi
+	BdjjhOKVSrsN216SNcbCu4JDmDuhn+IryF18XFtUbOjgKldKEItn+9krEmQ7hHFa9qMiUmmRAY7
+	QhvkwaJbmenWTaU/WeV/5q8vz0Xn5Kza94uadWMbPX93pE0YJKhj8APt58850roqLahlepxxTzF
+	jnRUEP+YRS6bFX4a2O6X3djYEhD2L9d/xhvuTKOExZEz3n6pZqXwKp2nXLrJOO+PCyrOkBs9lvv
+	17NSWY4quu7EC66pgrO83xhDU=
+X-Received: by 2002:a05:6a00:299a:b0:82f:6e9:d1ba with SMTP id d2e1a72fcca58-83f33df4581mr24179421b3a.37.1779263673292;
+        Wed, 20 May 2026 00:54:33 -0700 (PDT)
+Received: from localhost ([122.172.82.94])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f63bb986dsm9950186b3a.48.2026.05.20.00.54.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 00:54:32 -0700 (PDT)
+Date: Wed, 20 May 2026 13:24:30 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Cc: vireshk@kernel.org, nm@ti.com, sboyd@kernel.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, jcalligeros99@gmail.com, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] OPP: of: Fix potential memory leak in
+ opp_parse_supplies()
+Message-ID: <lr5bp3ndh535rwmfx4p7toyclzhibn22m4e6s2zg7527lhegwf@cnwfq26flerm>
+References: <20260511064213.33638-1-nihaal@cse.iitm.ac.in>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e7078be5-4d95-4b85-9590-d1f0c76b653a@mailbox.org>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260511064213.33638-1-nihaal@cse.iitm.ac.in>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249775-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249776-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,ti.com,vger.kernel.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,glider.be,valinux.co.jp,gmail.com,renesas.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B98BB589328
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[viresh.kumar@linaro.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:dkim,iitm.ac.in:email]
+X-Rspamd-Queue-Id: A356D5894DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 13, 2026 at 12:57:18AM +0200, Marek Vasut wrote:
-> On 5/11/26 4:34 PM, Manivannan Sadhasivam wrote:
+On 11-05-26, 12:12, Abdun Nihaal wrote:
+> The memory allocated for microvolt, microamp and microwatt is not freed
+> in one of the paths in opp_parse_supplies() which returns directly.
+> Fix that by adding a goto to the error unwind ladder.
 > 
-> Hello Manivannan,
+> Fixes: 2eedf62e66c2 ("OPP: decouple dt properties in opp_parse_supplies()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+> ---
+> Compile tested only. Issue found using static analysis.
 > 
-> > >   drivers/pci/controller/dwc/pcie-rcar-gen4.c | 56 +++++++++++++++++++++
-> > >   1 file changed, 56 insertions(+)
-> > > 
-> > > diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> > > index 8b03c42f8c84c..82f0a074a71da 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-> > > @@ -576,6 +576,7 @@ static int r8a779f0_pcie_ltssm_control(struct rcar_gen4_pcie *rcar, bool enable)
-> > >   static void rcar_gen4_pcie_additional_common_init(struct rcar_gen4_pcie *rcar)
-> > >   {
-> > >   	struct dw_pcie *dw = &rcar->dw;
-> > > +	u16 offset = dw_pcie_find_capability(dw, PCI_CAP_ID_EXP);
-> > >   	u32 val;
-> > >   	val = dw_pcie_readl_dbi(dw, PCIE_PORT_LANE_SKEW);
-> > > @@ -584,11 +585,66 @@ static void rcar_gen4_pcie_additional_common_init(struct rcar_gen4_pcie *rcar)
-> > >   		val |= BIT(6);
-> > >   	dw_pcie_writel_dbi(dw, PCIE_PORT_LANE_SKEW, val);
-> > > +	val = dw_pcie_readl_dbi(dw, offset + PCI_EXP_DEVCTL);
-> > > +	val &= ~(PCI_EXP_DEVCTL_PAYLOAD | PCI_EXP_DEVCTL_READRQ);
-> > > +	val |= PCI_EXP_DEVCTL_PAYLOAD_256B | PCI_EXP_DEVCTL_READRQ_256B;
-> > > +	dw_pcie_writel_dbi(dw, offset + PCI_EXP_DEVCTL, val);
-> > 
-> > Instead of limiting the MRRS/MPS values for all devices through quirks, why
-> > can't you just limit the Root Port's MPSS value in PCI_EXP_DEVCAP?
-> The root port MPSS is already 3'b001 = 256 Bytes and is read-only for
-> EXPCAP1F0 (PCI_EXP_DEVCAP) .
-> 
-> The controller is limited to MPS 256 Bytes according to V4H rev.1.30
-> documentation. There is no explicitly spelled out MRRS limitation in the
-> documentation to my knowledge, except for the DMA hint, but please read on.
-> 
-> The root port EXPCAP2F0 MPS is 128 Bytes and MRRS is 512 Bytes .
-> 
-> I now noticed that in V4H rev.1.30 documentation, the EXPCAP2F0 MRRS field
-> is default set to 3'b010 = 512 Bytes, but that value is "Reserved" and only
-> two non-reserved values are 3'b000 and 3'b001 which are MRRS 128 Bytes and
-> 256 Bytes respectively. That means MRRS has to be trimmed to maximum 256
-> Bytes in software to avoid "Reserved" settings. I will also ask the hardware
-> and documentation team about this.
-> 
-> As a result, I adjust EXPCAP2F0:
-> 
-> - I raise MPS from 128 Bytes to 256 Bytes
-> - I reduce MRRS from 512 Bytes to 256 Bytes (this is important to prevent
-> data corruption)
-> 
-> However, the downstream devices (in my case, PCIe SSD) can still be
-> configured with MRRS > 256 (in my case, Crucial P5 Plus 1 TiB has MRRS=512
-> and MPS=128), which is where the quirk kicks in and reconfigures MRRS for
-> those downstream devices.
-> 
-> The pci_configure_mps() does propagate MPS from root port EXPCAP2F0 to
-> downstream devices, but there is no equivalent for MRRS as far as I can find
-> ?
+>  drivers/opp/of.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Sorry for the late reply!
-
-I'm now confused about the issue itself. In your v1 patch you said:
-
-"R-Car Gen4 PCIe controller has a hardware limitation of 256 Bytes
-maximum payload size. The PCIe DMA generates requests of size up
-to minimum(Max_Read_Request_Size, Max_Payload_Size). Force limit
-both Max_Read_Request_Size and Max_Payload_Size to 256 Bytes and
-propagate this limit to all downstream devices."
-
-The 256B limitation of Root Port MPS is clear. And you said, Root Port's MPSS is
-already 256B. So this will prevent the endpoints from sending > 256B payload.
-
-Also, the DMA calculation of min(MRRS,MPS) will also satisfy with 256B MPS even
-if MRRS is higher i.e, 512B.
-
-If MRRS is 512B, the endpoint should send two 256B TLPs based on MPS and that
-shouldn't be a problem on the host. So I'm not sure how the higher MRRS value
-induces data corruption here. And why you want to limit MRRS on all downstream
-devices and not just the Root Port? Since you are using NVMe, the host will be
-the one sending MRd TLP to the device. So I'm not sure how the endpoint MRRS
-comes into play.
-
-Am I missing something?
-
-- Mani
+Applied. Thanks.
 
 -- 
-மணிவண்ணன் சதாசிவம்
+viresh
 
