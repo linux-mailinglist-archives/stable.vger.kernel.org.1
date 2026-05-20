@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFWKNFnpDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:21 +0200
+	id UG3kDckaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A456A592DD2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83245599C75
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E041B30368B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DEDF3278F77
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CE83403FA;
-	Wed, 20 May 2026 16:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F06B3F39D1;
+	Wed, 20 May 2026 17:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPCf2fC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrPrwtCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0FE31A575;
-	Wed, 20 May 2026 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319D330BF68;
+	Wed, 20 May 2026 17:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295654; cv=none; b=N944P3Jr0znyULSot/pXiD4aFaIQwIC2DxffzOjUzrxut9E/nN1fHAQhFdKJWlycEG2PNlS4etVAHBKN5zrFbd4AyEWeZkv0GzZieambwyI/H5GEY9udZKCaO9amH/XP+l8jzJZGVtb+OmwCTQ/5xYtsskMSUpKHhp8U3ix/9hM=
+	t=1779297992; cv=none; b=BjwHoauio/vChstT2IcMsj7x7lDZqVRq9gy30vHjdY3ZIAVirQrnrkzYFSsGjzu+0xm6nmymM93zkF6qvJtXb//rMbWYTR64AtSIzizAKTMQfNfcWd9nTSx9Rpi7pc2s3SLWbVrb0yX0kh39b0yPOVjbcREgUVCyWkn835TUPjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295654; c=relaxed/simple;
-	bh=HDX+mdC/aYpll5b8MAsQt4VrbYkmFShaG0I51yu2iqs=;
+	s=arc-20240116; t=1779297992; c=relaxed/simple;
+	bh=CULOLV7JqkD07BdWTpVDcI+p0r3R3dJGL9IZhB2SLbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2GazqUUXbuEACKwMeKlcjgfb1udTYs+IVCqtEBDDka+ZJ7C2nc48Z6e1MDHnzFyVNA2fvTapA7evHinQWwF1hVws6a73sIJ24262qnFSZKm3++781npmlMvtmFXI9uMQw2WZ2As5mxo1BZ2GLIndoeYuB23lmoMmWwLc5el+jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPCf2fC5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2991F000E9;
-	Wed, 20 May 2026 16:47:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EixN1xBCU7gRntakQ3Zi2VAySqYC3zMZ8YzpaaSewL5zJb6uIzU+P59xNgi5lbsmisDAd3ZZ+FO/sSXTV8Ds2kW91BiSd63CSJc6srLidrmp8MYhCyhID4M/tikCALHjN6UJbMSOzMxisCCce/IR9p3yL3dlf/4I4tGJlSnXGFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrPrwtCg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960BE1F00893;
+	Wed, 20 May 2026 17:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295653;
-	bh=SoBErP1r4MkgX5Q9JL9e+6k8Pg7biM9guDSZwOADfyc=;
+	s=korg; t=1779297991;
+	bh=AnTRy+Pix3ZYr3wtzESOFBEVYT5CWgnU6yT3HFXiH3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kPCf2fC5atXJj4lFla231Td5NZdcRujGfKB9/2nymRF5u1TRW9O2JhYaptVQRS0sU
-	 ZYa5ACW1qp3+N2f6SBUpJx/g2gfd0XSZqK3hH/nUUoyb0xqUr/sNtSvFQNS3xvCSqb
-	 yrICvo7oVpAKX5x0v5bFiwIuBVe/Z1KTnL6VYATM=
+	b=qrPrwtCgS+zrBzgnYcudewimqR5mWuzN5uhM89GHKl5e3Xgv6xilbeo8SsbyCqxmV
+	 C2I1+fplIR0tgklPvrzQQiDd935hNJ5qLp0j3MlXCBtiRqZXZWlI0aWGpe8ibYGnNl
+	 KRQh9gV+FQGCREE7QmD+t4CZZKMQcHSKTHALAHJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Lo=C3=AFc=20Minier?= <loic.minier@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0474/1146] arm64: dts: rockchip: Make Jaguar PCIe-refclk pin use pull-up config
+Subject: [PATCH 6.18 241/957] drm/msm: add missing MODULE_DEVICE_ID definitions
 Date: Wed, 20 May 2026 18:12:04 +0200
-Message-ID: <20260520162158.921576933@linuxfoundation.org>
+Message-ID: <20260520162139.768660349@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +63,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250531-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251442-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,rock-chips.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sntech.de:email]
-X-Rspamd-Queue-Id: A456A592DD2
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 83245599C75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit f45d4356feeba1c8dac3414b688f59292ddfc9f9 ]
+[ Upstream commit b21e85400ce763f2c6ad913e03fea5cadc323c13 ]
 
-The hardware PU/PD config of the pin after reset is to pull-up and on
-Jaguar this will also keep the device in reset until the driver actually
-enables the pin. So restore this boot pull-up config of the pin on Jaguar
-instead of setting it to pull-none.
+The drm/msm module bundles several drivers, each of them having a
+separate OF match table, however only MDSS (subsystem), KMS devices and
+GPU have corresponding MODULE_DEVICE_ID tables.
 
-Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
-Fixes: 0ec7e1096332 ("arm64: dts: rockchip: add PCIe3 support on rk3588-jaguar")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://patch.msgid.link/20260210080303.680403-5-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Add MODULE_DEVICE_ID to the display-related driver and to all other
+drivers in this module, simplifying userspace job.
+
+Fixes: 060530f1ea67 ("drm/msm: use componentised device support")
+Reported-by: Loïc Minier <loic.minier@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/707960/
+Link: https://lore.kernel.org/r/20260228-msm-device-id-v2-1-24b085919444@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dp/dp_display.c   | 1 +
+ drivers/gpu/drm/msm/dsi/dsi.c         | 1 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 1 +
+ drivers/gpu/drm/msm/hdmi/hdmi.c       | 1 +
+ drivers/gpu/drm/msm/hdmi/hdmi_phy.c   | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-index 952affaf455cf..500a0bad1ea30 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-@@ -588,7 +588,7 @@ led1_pin: led1-pin {
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index f247aad553975..c79e624c11758 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -201,6 +201,7 @@ static const struct of_device_id msm_dp_dt_match[] = {
+ 	{ .compatible = "qcom,x1e80100-dp", .data = &msm_dp_desc_x1e80100 },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, msm_dp_dt_match);
  
- 	pcie30x4 {
- 		pcie30x4_clkreqn_m0: pcie30x4-clkreqn-m0 {
--			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
-+			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
+ static struct msm_dp_display_private *dev_get_dp_display_private(struct device *dev)
+ {
+diff --git a/drivers/gpu/drm/msm/dsi/dsi.c b/drivers/gpu/drm/msm/dsi/dsi.c
+index d8bb40ef820e2..3c9f01ed62713 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi.c
++++ b/drivers/gpu/drm/msm/dsi/dsi.c
+@@ -198,6 +198,7 @@ static const struct of_device_id dt_match[] = {
+ 	{ .compatible = "qcom,dsi-ctrl-6g-qcm2290" },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, dt_match);
  
- 		pcie30x4_perstn_m0: pcie30x4-perstn-m0 {
+ static const struct dev_pm_ops dsi_pm_ops = {
+ 	SET_RUNTIME_PM_OPS(msm_dsi_runtime_suspend, msm_dsi_runtime_resume, NULL)
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+index 4ea681130dbaf..5d627df687700 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -580,6 +580,7 @@ static const struct of_device_id dsi_phy_dt_match[] = {
+ #endif
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, dsi_phy_dt_match);
+ 
+ /*
+  * Currently, we only support one SoC for each PHY type. When we have multiple
+diff --git a/drivers/gpu/drm/msm/hdmi/hdmi.c b/drivers/gpu/drm/msm/hdmi/hdmi.c
+index 5afac09c0d334..d5ef5089c9e9c 100644
+--- a/drivers/gpu/drm/msm/hdmi/hdmi.c
++++ b/drivers/gpu/drm/msm/hdmi/hdmi.c
+@@ -441,6 +441,7 @@ static const struct of_device_id msm_hdmi_dt_match[] = {
+ 	{ .compatible = "qcom,hdmi-tx-8660", .data = &hdmi_tx_8960_config },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, msm_hdmi_dt_match);
+ 
+ static struct platform_driver msm_hdmi_driver = {
+ 	.probe = msm_hdmi_dev_probe,
+diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_phy.c b/drivers/gpu/drm/msm/hdmi/hdmi_phy.c
+index 667573f1db7c6..f726555bb6810 100644
+--- a/drivers/gpu/drm/msm/hdmi/hdmi_phy.c
++++ b/drivers/gpu/drm/msm/hdmi/hdmi_phy.c
+@@ -204,6 +204,7 @@ static const struct of_device_id msm_hdmi_phy_dt_match[] = {
+ 	  .data = &msm_hdmi_phy_8998_cfg },
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, msm_hdmi_phy_dt_match);
+ 
+ static struct platform_driver msm_hdmi_phy_platform_driver = {
+ 	.probe      = msm_hdmi_phy_probe,
 -- 
 2.53.0
 
