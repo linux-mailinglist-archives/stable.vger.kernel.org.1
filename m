@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMpsJq8VDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:31 +0200
+	id iIhgDAYiDmru6QUAu9opvQ
+	(envelope-from <stable+bounces-252094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0536B599439
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B83D459A6E3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1AAF31AC36E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 19C82331813A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2258A3F4DCC;
-	Wed, 20 May 2026 17:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29CC3A3E60;
+	Wed, 20 May 2026 17:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofVJWMaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9bj5SmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DA3F4DC0;
-	Wed, 20 May 2026 17:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1B9369D75;
+	Wed, 20 May 2026 17:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297268; cv=none; b=bFx2xtVXyUeAxJkoKhoyYkxP7JAgtIxJL6KEJhKMTXJSmosLdbreKke+beEbb095vzq4glYw4Js7HwGL2mkD/Xc/hRqkHiGsHmGkXa6fYFAmnJAAkkDDFdhu0E/rxchdZ2wmTd7pTS5xAax0F/ivuUMdfb28meA08xmEo36olas=
+	t=1779299730; cv=none; b=stnHXIEqOB9PQzgDzdh1UwxH0WXCW6jaPqYlZNhVNV0+IpnwJMJSPiDCBzOzoQVL2UPreZmhc8UY/9n7qlpOQ9ZqcQ5zs/nAcPAIonyc7Unv+BD1LyveBkGWcLjLIWsh3grQkjNYujNUi7AaC3Qv6RAkv69a05x1jfDTtCo2nDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297268; c=relaxed/simple;
-	bh=7HT3cBloBWIPaM6DuIJyPg2VCxO1hi+NDYTOJ5EalOI=;
+	s=arc-20240116; t=1779299730; c=relaxed/simple;
+	bh=AT2EJvtHSaFNUjhahKoDVdrEShXfID7rWIaFc0fqge8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bk3krtr7qy69RRnDO+fT9CHCZl+zVXgM8B8oSMOF4JrrMjo5TiCiQ4Ddmuw7jLQ7fHRwrGpp8MapJMfZtO5U5MnZN7aMyfDYhlHF/ONfBcPPIrtyFt1oJ0V4qGy1W/vO79hpwzW1zPT7BcvHqUOVwLhP8aeq6FSdRGA5ZvApIsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofVJWMaC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305841F000E9;
-	Wed, 20 May 2026 17:14:27 +0000 (UTC)
+	 MIME-Version; b=K4I7839ISevSlC6p40FqvSCLej/b25CgV8Y5nc3Zf3zMZeOqlC3ZNkWoYOQTWdq0mu9PDsfXQ0G/g8ZwFS8q2v2MUWXhpVK33OQ+kvyFnAXDNqAhMb3NXmqsNNjBQtCijrMb8UM/HOD33PdjYpsa8NmvQ07UWaqlNV6j4PR9HAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9bj5SmQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCA61F000E9;
+	Wed, 20 May 2026 17:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297267;
-	bh=TSvgkmrNwBuRQPkgn5gD8eMMmLt5Cy/eXIb5cfJZGBg=;
+	s=korg; t=1779299729;
+	bh=A8LUZm7SHI52DBzYegpp1xkO46vpFLg+TJYyv6NdzJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ofVJWMaC6XelnrcTNNpFPQhTPuzYBPsQt/QIyxfRvXWpbOWoGU5yp50pAF+t1UiQY
-	 oPBhnzSJybND4Pf8iamYTI+pS2P8TRQPdnh9h34Qsw5amEixXnySX5Nd0en0A4Qtxg
-	 YUdpGwe+oHgkjKb7eNsGnqITmCCDwWzBZ6buipx8=
+	b=N9bj5SmQoNq6VpH0fxKlxem8M2HmYzt7rJlF5elZeG/HGMMfQ2jBxMejzbNZg7TE8
+	 fX2I3aFuh4UpgjdYcMM/5+n0HhIINgqOMzPDbOwEs+95QpHfXT6MhMQ19NNmazqSwC
+	 aexxycJ+ebU0vzFP5bk4xsNacXgZL9OWMlYVDGYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 7.0 1114/1146] libceph: Fix potential out-of-bounds access in osdmap_decode()
+	stable@kernel.org,
+	Breno Leitao <leitao@debian.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.18 881/957] workqueue: Fix wq->cpu_pwq leak in alloc_and_link_pwqs() WQ_UNBOUND path
 Date: Wed, 20 May 2026 18:22:44 +0200
-Message-ID: <20260520162213.456133766@linuxfoundation.org>
+Message-ID: <20260520162153.672073039@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251165-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252094-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tu-ilmenau.de:email]
-X-Rspamd-Queue-Id: 0536B599439
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B83D459A6E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
+commit 0143033dc22cdff912cfc13419f5db92fea3b4cb upstream.
 
-When decoding osd_state and osd_weight from an incoming osdmap in
-osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
-times. The ceph_decode_need() check only accounts for
-sizeof(*map->osd_weight) once. This can potentially result in an
-out-of-bounds memory access if the incoming message is corrupted such
-that the max_osd value exceeds the actual content of the osdmap message.
+For WQ_UNBOUND workqueues, alloc_and_link_pwqs() allocates wq->cpu_pwq
+via alloc_percpu() and then calls apply_workqueue_attrs_locked(). On
+failure it returns the error directly, bypassing the enomem: label
+which holds the only free_percpu(wq->cpu_pwq) in this function.
 
-This patch fixes the issue by changing the corresponding part in the
-ceph_decode_need() check to account for
-map->max_osd*sizeof(*map->osd_weight).
+The caller's error path kfree()s wq without touching wq->cpu_pwq,
+leaking one percpu pointer table (nr_cpu_ids * sizeof(void *) bytes) per
+failed call.
 
-Cc: stable@vger.kernel.org
-Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+If kmemleak is enabled, we can see:
+
+  unreferenced object (percpu) 0xc0fffa5b121048 (size 8):
+    comm "insmod", pid 776, jiffies 4294682844
+    backtrace (crc 0):
+      pcpu_alloc_noprof+0x665/0xac0
+      __alloc_workqueue+0x33f/0xa20
+      alloc_workqueue_noprof+0x60/0x100
+
+Route the error through the existing enomem: cleanup and any error
+before this one.
+
+Cc: stable@kernel.org
+Fixes: 636b927eba5b ("workqueue: Make unbound workqueues to use per-cpu pool_workqueues")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/workqueue.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1702,7 +1702,7 @@ static int osdmap_decode(void **p, void
- 	ceph_decode_need(p, end, 3*sizeof(u32) +
- 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
- 						       sizeof(u8)) +
--				       sizeof(*map->osd_weight), e_inval);
-+			 map->max_osd*sizeof(*map->osd_weight), e_inval);
- 	if (ceph_decode_32(p) != map->max_osd)
- 		goto e_inval;
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5619,7 +5619,9 @@ static int alloc_and_link_pwqs(struct wo
+ 		ret = apply_workqueue_attrs_locked(wq, unbound_std_wq_attrs[highpri]);
+ 	}
  
+-	return ret;
++	if (ret)
++		goto enomem;
++	return 0;
+ 
+ enomem:
+ 	if (wq->cpu_pwq) {
 
 
 
