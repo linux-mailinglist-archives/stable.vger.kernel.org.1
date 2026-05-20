@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJa+Fv4ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200
+	id QCNqCiXxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365CA597206
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BE859419B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5FE6E308B456
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 989A7316ED10
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42296DF59;
-	Wed, 20 May 2026 18:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1FE3D75A0;
+	Wed, 20 May 2026 17:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANQtVbkB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PImoiS3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0789A3CB2F8;
-	Wed, 20 May 2026 18:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B44372691;
+	Wed, 20 May 2026 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302263; cv=none; b=eSkGxEhQUJz0P5/wM2nQkaq+zViq3dzMsNf2dod50LTD5K2MnyBTsiKoLn0uOiR9xa1lNzr4NNm//UoKnmvaeJWgwFQ6GrinBZckbMwG/yp9yB2hh5tV2JQHfe/UbmUbTA2Xz8n9/S1fgdmCdahKIfIEk2WsC9RfgSh1GrnuJvg=
+	t=1779296892; cv=none; b=WLsCz/X9U3VmQItuK+2ep34Y+lfbPVz4mtG1wJeNOMP2o+58B4Ah7yC3kF3v1ldTPeodSxnVD6p1JmTgtx74ztRSW5K0KygdpIlc4vHS81yOyWHWVnuWWBNa9iEtSNjNt6jcdyYUPLzypo1VWfDC11Gfge1jsCrsa7DYV6x6vUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302263; c=relaxed/simple;
-	bh=nOoioEbgA2DEY63LtTy3hjsTGpsiTMfqJNi528xOa2E=;
+	s=arc-20240116; t=1779296892; c=relaxed/simple;
+	bh=bK3P+j4JW0KqTuePVq1wv2zwxVgZNhWOLyP9SRN81gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbZo1Me/giZ+uXXbyschrLAeN213K6VIF9lBKrY+V3QzJ1zICcmST/nVwPmMknb+NDPhuyInmgVzhDhqeMZGUxNUP9R4jLpi5fuY1NysR1SB3KE4rSBO67EDB+gftqC0rkYyTqQdHGQH3IEndH6X/US4RoGcnul8nnnNMBSbgm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANQtVbkB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F481F000E9;
-	Wed, 20 May 2026 18:37:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Uxx+szlTMGGmjAN7nc3FohbcHNTb/Zp1dMdxWVK0h6WaYEv+V0VbfoWweZpzRzcForMo6EGtuF+7GdskwYHWs5P5ogtrVxLEGYq+OC38LB1qStg/430prT4No8ZN8xkHfk5Vp1UdyIzAJ+1Qo3GpOXX2NFP37tBoD2tActKYDAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PImoiS3G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727EB1F000E9;
+	Wed, 20 May 2026 17:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302261;
-	bh=ZeccV/AVFQ92IjmC24GAwCMb04psNGvkUTKFfSkT0lE=;
+	s=korg; t=1779296891;
+	bh=3AZEp4LgSSXtS9d9aj8RXnUhL187QKeVRlunv7pTbw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ANQtVbkBLq9fGDDmei2NQl4UXPy3xUd13TKlYSRVev5mJcwVQC1jMJhNaJnVj2CGH
-	 oJVMD084HmJ1uoUKspcIHzNsKrStqULRdBfsjIIS3eVQSby7jOaq5hHlxE6dOiiNiU
-	 jMtcW64Ms3rxM5SupTPZl6drVk/qhMDpQA4mubos=
+	b=PImoiS3G3iSDUwQg2NbZAfVf+f9G5l0sY4eTJaGsa3TeSduCathtnv1Mah4PklmyI
+	 pI+GPFSUcplqOZtNVweHuU4NzGkP7HacZy9ivgBJp6H+4/7AVrNCJD/yvCtxkZYbAY
+	 EcIviykVWuWBU+E1zGovhz7f8BwGynk1iHPHIMrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/508] arm64: dts: qcom: sm8550: Enable UHS-I SDR50 and SDR104 SD card modes
+Subject: [PATCH 7.0 0972/1146] drm/amdgpu/jpeg: set no_user_fence for JPEG v2.5 ring
 Date: Wed, 20 May 2026 18:20:22 +0200
-Message-ID: <20260520162102.948005206@linuxfoundation.org>
+Message-ID: <20260520162210.228835372@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251019-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253046-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,0.134.86.160:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 365CA597206
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 92BE859419B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 66b0f024fba0728ddce6916dce173bb1bdd4eab0 ]
+[ Upstream commit 79405e774ede411c6b47ed41c651e40b92de64a2 ]
 
-The restriction on UHS-I speed modes was added to all SM8550 platforms
-by copying it from SM8450 dtsi file, and due to the overclocking of SD
-cards it was an actually reproducible problem. Since the latter issue
-has been fixed, UHS-I speed modes are working fine on SM8550 boards,
-below is the test performed on SM8550-HDK:
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-SDR50 speed mode:
-
-    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
-    mmcblk0: mmc0:0001 00000 14.6 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 23.5468 s, 45.6 MB/s
-
-SDR104 speed mode:
-
-    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
-    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 11.9819 s, 89.6 MB/s
-
-Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
-file, there is no indication that the SDHC controller is broken.
-
-Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-6-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 14f43e8f88c5 ("drm/amdgpu: move JPEG2.5 out from VCN2.5")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3216a7f4e2642bda5fd14f57586e835ae9202587)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 3d14575e5aace..5a79adbe8da12 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2535,9 +2535,6 @@ sdhc_2: mmc@8804000 {
- 			bus-width = <4>;
- 			dma-coherent;
- 
--			/* Forbid SDR104/SDR50 - broken hw! */
--			sdhci-caps-mask = <0x3 0>;
--
- 			status = "disabled";
- 
- 			sdhc2_opp_table: opp-table {
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
+index 20983f126b490..13a6e24c624a2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_5.c
+@@ -693,6 +693,7 @@ static const struct amd_ip_funcs jpeg_v2_6_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v2_5_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v2_5_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v2_5_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v2_5_dec_ring_set_wptr,
+@@ -724,6 +725,7 @@ static const struct amdgpu_ring_funcs jpeg_v2_5_dec_ring_vm_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v2_6_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v2_5_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v2_5_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v2_5_dec_ring_set_wptr,
 -- 
 2.53.0
 
