@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-250891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N1hGDzwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:44 +0200
+	id aD/TEbH/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2983593E80
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6A3596D97
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 266B631BFBA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 24B2630B1E8B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BA73F9296;
-	Wed, 20 May 2026 17:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFF0331A41;
+	Wed, 20 May 2026 18:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dHx6Xk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4jcSP4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868693F23BF;
-	Wed, 20 May 2026 17:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA85343880;
+	Wed, 20 May 2026 18:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296577; cv=none; b=rUCOqPEloQ0Je3ZlOlXBREa5aYj7lujjU8OVHegZppOGSTRrJwgBnv5x+JlC64Yba7UzoF6tQLIcoNvTAwYA/T8pMIQtddKi9l0vzB+SmbOP94M7X38FQuCxCyQVb2pZqNtPeNXzWSR4M0VkPlStMRBPoDdj0NAyUKFzwKzapj0=
+	t=1779301870; cv=none; b=MdCcm6c0n5lerHyJys8Yh3H4xWhG7hPaqxhZ0m+foEXPamQE819oE0386mkm4VG9EGQS+Rud4zvTI+zZBpNhuBG6mbVUZbJqYg/odzDH/4Vq/m8KrfJXwLVPl3JZEMqo6wZiDFhiRX+qClVGp2BTCmvnBmYnBEhyHqFzYZoCVkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296577; c=relaxed/simple;
-	bh=a8S7sE0bP8n1TbrPfH6QY2kH7AzavAy7FIHtVLd4eSw=;
+	s=arc-20240116; t=1779301870; c=relaxed/simple;
+	bh=9L42QXqvSmkWqiSMMp7Z/4Yz9cdn7t+1wIDB0tI9B58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeDp+bPmEFnV8ghwaWP56aYY3kx1Ur0OkMOHcNb/LYs+b2j3/e7xLaQJNnwQ2jY0049dDVal/Ax2Np2SCqrYr5nek0kTx46Psu2tYVG0FZ7cX6mJWFvSmBVUcoWvbzDIm5aLIw3WnicbGNF3kswJkMMVdy5YYd2pOc63+V7xXlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dHx6Xk1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4461F00893;
-	Wed, 20 May 2026 17:02:54 +0000 (UTC)
+	 MIME-Version; b=ktbUXV4nYF+8RJbukNSk0TL+lfCIqfU60X3NO7vP9qoOpxKv5w+kIld5dKOJkJrfNCChawTzJv/f/kT8IzvdJUrJ2y1fCeIME9lLBlMI2gWAj6INb92xRASI+G+CrUl4mMBkT2vKZpLidmH//9Pi9NOvXN0qTa+Ls3gXYr7Uq2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4jcSP4j; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE311F000E9;
+	Wed, 20 May 2026 18:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296575;
-	bh=Ue7GHfyNDnFmxPvueT0po7z5oGlT1TypUDkAoa56oLc=;
+	s=korg; t=1779301869;
+	bh=2i5ij8Tl7cnmwOihSKyAdjVttYmAPCMNsB+3G/aERe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0dHx6Xk1zriQDWrX8QU9qErsG2V2VEP84Oh5UgWTZ5D+jYpRoh1UvyYwyuGi2OlAn
-	 1Tdf27ZyLG0jrpkK2XRYbn358dvbTEzeA4cvNpE2aJnGWoySWAoOppl8S5i3O2pJsM
-	 MBfktTqp9CBBRjuNfr+BAvyKFKTJhszWx0WigErQ=
+	b=w4jcSP4jYEHCsFwSNwXT2FuoSt5X58hnqN73lcgrmYu6nQlyLScv7WR8ckDkmab1+
+	 5UgZL3UqdgfJoBvHFWeCxnpk8c3cCHgPFM5tsB65ffI3xfmejqLmHHH55z8BQyLd8J
+	 wh+AXoPGPYRZiGmSpwbcR2xBhP8MrMyjRvZQCujY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Evans <mattev@meta.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0824/1146] vfio/pci: Clean up DMABUFs before disabling function
+Subject: [PATCH 6.6 051/508] bpf: reject negative CO-RE accessor indices in bpf_core_parse_spec()
 Date: Wed, 20 May 2026 18:17:54 +0200
-Message-ID: <20260520162206.879155455@linuxfoundation.org>
+Message-ID: <20260520162059.701172023@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +67,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250891-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252895-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,etsalapatis.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,meta.com:email,shazbot.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F2983593E80
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,asu.edu:email]
+X-Rspamd-Queue-Id: DE6A3596D97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Evans <mattev@meta.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit d97708701434ce72968e771976aaf9d3438fcafd ]
+[ Upstream commit 1c22483a2c4bbf747787f328392ca3e68619c4dc ]
 
-On device shutdown, make vfio_pci_core_close_device() call
-vfio_pci_dma_buf_cleanup() before the function is disabled via
-vfio_pci_core_disable().  This ensures that all access via DMABUFs is
-revoked before the function's BARs become inaccessible.
+CO-RE accessor strings are colon-separated indices that describe a path
+from a root BTF type to a target field, e.g. "0:1:2" walks through
+nested struct members. bpf_core_parse_spec() parses each component with
+sscanf("%d"), so negative values like -1 are silently accepted.  The
+subsequent bounds checks (access_idx >= btf_vlen(t)) only guard the
+upper bound and always pass for negative values because C integer
+promotion converts the __u16 btf_vlen result to int, making the
+comparison (int)(-1) >= (int)(N) false for any positive N.
 
-This fixes an issue where, if the function is disabled first, a tiny
-window exists in which the function's MSE is cleared and yet BARs
-could still be accessed via the DMABUF.  The resources would also be
-freed and up for grabs by a different driver.
+When -1 reaches btf_member_bit_offset() it gets cast to u32 0xffffffff,
+producing an out-of-bounds read far past the members array.  A crafted
+BPF program with a negative CO-RE accessor on any struct that exists in
+vmlinux BTF (e.g. task_struct) crashes the kernel deterministically
+during BPF_PROG_LOAD on any system with CONFIG_DEBUG_INFO_BTF=y
+(default on major distributions).  The bug is reachable with CAP_BPF:
 
-Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-Signed-off-by: Matt Evans <mattev@meta.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20260415181752.1027604-1-mattev@meta.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+ BUG: unable to handle page fault for address: ffffed11818b6626
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+ CPU: 0 UID: 0 PID: 85 Comm: poc Not tainted 7.0.0-rc6 #18 PREEMPT(full)
+ RIP: 0010:bpf_core_parse_spec (tools/lib/bpf/relo_core.c:354)
+ RAX: 00000000ffffffff
+ Call Trace:
+  <TASK>
+  bpf_core_calc_relo_insn (tools/lib/bpf/relo_core.c:1321)
+  bpf_core_apply (kernel/bpf/btf.c:9507)
+  check_core_relo (kernel/bpf/verifier.c:19475)
+  bpf_check (kernel/bpf/verifier.c:26031)
+  bpf_prog_load (kernel/bpf/syscall.c:3089)
+  __sys_bpf (kernel/bpf/syscall.c:6228)
+  </TASK>
+
+CO-RE accessor indices are inherently non-negative (struct member index,
+array element index, or enumerator index), so reject them immediately
+after parsing.
+
+Fixes: ddc7c3042614 ("libbpf: implement BPF CO-RE offset relocation algorithm")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260404161221.961828-2-bestswngs@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/lib/bpf/relo_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3fea064d00de2..e34c7e1ba1c81 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -734,10 +734,10 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
- #if IS_ENABLED(CONFIG_EEH)
- 	eeh_dev_release(vdev->pdev);
- #endif
--	vfio_pci_core_disable(vdev);
--
- 	vfio_pci_dma_buf_cleanup(vdev);
- 
-+	vfio_pci_core_disable(vdev);
-+
- 	mutex_lock(&vdev->igate);
- 	vfio_pci_eventfd_replace_locked(vdev, &vdev->err_trigger, NULL);
- 	vfio_pci_eventfd_replace_locked(vdev, &vdev->req_trigger, NULL);
+diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
+index 63a4d5ad12d1a..04c8febfc0aa7 100644
+--- a/tools/lib/bpf/relo_core.c
++++ b/tools/lib/bpf/relo_core.c
+@@ -293,6 +293,8 @@ int bpf_core_parse_spec(const char *prog_name, const struct btf *btf,
+ 			++spec_str;
+ 		if (sscanf(spec_str, "%d%n", &access_idx, &parsed_len) != 1)
+ 			return -EINVAL;
++		if (access_idx < 0)
++			return -EINVAL;
+ 		if (spec->raw_len == BPF_CORE_SPEC_MAX_LEN)
+ 			return -E2BIG;
+ 		spec_str += parsed_len;
 -- 
 2.53.0
 
