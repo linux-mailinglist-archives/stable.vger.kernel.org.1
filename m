@@ -1,59 +1,97 @@
-Return-Path: <stable+bounces-250962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBrbG4v1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-250962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:23 +0200
+	id cAFXAHD9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D90594EBC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96615964C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93B7E3161560
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EEB8530E64AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1A53F86F4;
-	Wed, 20 May 2026 17:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369803F54D1;
+	Wed, 20 May 2026 18:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBEFZjxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSxnKlYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7508C3F789B;
-	Wed, 20 May 2026 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A794F3769E0;
+	Wed, 20 May 2026 18:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296744; cv=none; b=fykFGwu10rR3pw5LKQOCSDOB7NjDr8/tDQq98JlU20yego009ZKNrKEfYUMjim8z/taRgpLshx6O7DY1vV3I/H62ZKD0MDfTTWlSBvuKlZTJo2wE61CwitRQ6LyOgHVmv4ATgDb8+8VJy3lDu+GrnQjrxO9hcIMNC+xj944pnqk=
+	t=1779300800; cv=none; b=hUwOsPOXnLTWNcYgs9OM3sQS/cfTBkg7Dn7fBgucrRlJEkUz6Y1nIdPxSPjiE/SDxNqd7oW+VE7KoW6WoxqYxdEw7v8Nvcoc1dNRqc7k9IWo+5o2gn4tiLwPFbXA2wlFyVNFgmMDLgtvYEoaLeHgebZWhjh3jdQlCNEcxPbfg/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296744; c=relaxed/simple;
-	bh=ArcmgR+FOtvRWGcUWHg1p3d251rRRsBysJJLkzPicdc=;
+	s=arc-20240116; t=1779300800; c=relaxed/simple;
+	bh=com2pU8YGZl5aMex8VL2ilqhmpEBVj8glsXSlrlH920=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mi4UdiLKv1cD8ngO/nsYkCpPKyFV1DNDtRcKshND0bAqhb4dJVBivDtExqU4iam9Ue28aBRxkhbW+SAATsmhDVoi/zaOyYBRpd0F0oLSC7C4HdjN4K0H7W5JcJQ2qoAcf3GyRtIPyUGBCPmUgxE81i2SHRTxQQ/4ZpaKGoPtbzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBEFZjxf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC10E1F000E9;
-	Wed, 20 May 2026 17:05:42 +0000 (UTC)
+	 MIME-Version; b=Knfd5BVZt3+LRCfElL6J6levUow5y0XquuHpbq/+93XxeCCN++PgNJdHBHuAKeMJAPB+hUVH4iC7jKL7ja+c/jPrhKZ+NVFKo4pNxpfw2RlgGTRKrs5GI/drV5rRMLTWuFLtCeWwXEi8mOdgRVOljkJjPvBOmWvngTwPdArWo48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSxnKlYe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEBF1F000E9;
+	Wed, 20 May 2026 18:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296743;
-	bh=W53d9qc+axIa0vpeK/jGU6Y/MdELBlFVwtWDBViupow=;
+	s=korg; t=1779300798;
+	bh=Ra5XibesOBGAwaDua53noMWS/86GNlw4F50PpAgK2BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kBEFZjxfZiLngsA0px+ZvOM6+/3ltwpmjoDrgwbanOYk3WOQ97ilZZzo6FHWdBUud
-	 JUY9C9Kn+c1Yots4GxvNMs5yezxepNvfBRH9O8OfhnY+vJ6DBMzXa+wyfDb9CKuBkk
-	 j5mnImQcW5gVzYrPQWcn/owyoZhjpq5cRTSmrUWQ=
+	b=HSxnKlYe6NacnQJYyAE18MZN3v8wM3lUHbD3QiIqQ5N2rZczG8Zs3tLgSdA8x6B2S
+	 FSc+dgSh8Pefhr0Imrwiuf1QQvC9j8tqzTt+os2hTW2AKQV6EfvHclxcF6kYPe4Pve
+	 n0S85hpkHsvHyHE1Cw7Qzy2k6pXa2fsiZDeIX7Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chris Mason <clm@fb.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Sterba <dsterba@suse.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Li Nan <linan122@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Song Liu <song@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ted Tso <tytso@mit.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0874/1146] tools/power turbostat: Fix --cpu-set 0 regression on HT systems
+Subject: [PATCH 6.12 313/666] arm64/xor: fix conflicting attributes for xor_block_template
 Date: Wed, 20 May 2026 18:18:44 +0200
-Message-ID: <20260520162208.018080563@linuxfoundation.org>
+Message-ID: <20260520162118.004677767@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +104,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252486-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,kernel.org,eecs.berkeley.edu,linux.ibm.com,ghiti.fr,gaisler.com,cambridgegreys.com,arndb.de,alien8.de,arm.com,fb.com,intel.com,davemloft.net,suse.com,gondor.apana.org.au,zytor.com,redhat.com,zx2c4.com,sipsolutions.net,huawei.com,gmail.com,ellerman.id.au,dabbelt.com,linaro.org,nod.at,armlinux.org.uk,mit.edu,xen0n.name,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[44];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250962-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 77D90594EBC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B96615964C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2c52f942fcf21c8e09c7dac669fca591cec2692b ]
+[ Upstream commit 675a0dd596e712404557286d0a883b54ee28e4f4 ]
 
-"turbostat --cpu-set 0" appears to hang if cpu0 has an HT sibling.
+Commit 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+changes the definition to __ro_after_init instead of const, but failed to
+update the external declaration in xor.h.  This was not found because
+xor-neon.c doesn't include <asm/xor.h>, and can't easily do that due to
+current architecture of the XOR code.
 
-This is because the initialization code recognizes that it does not
-have to open perf files for the HT sibling, but the HT support
-in the collection code sees the HT sibling and tries to read
-from an uninitialized file descriptor, 0 (standard input).
-
-Access HT siblings only when they are in the allowed set.
-
-Fixes: a2b4d0f8bf07 ("tools/power turbostat: Favor cpu# over core#")
-Signed-off-by: Len Brown <len.brown@intel.com>
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Link: https://lkml.kernel.org/r/20260327061704.3707577-4-hch@lst.de
+Fixes: 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: David Sterba <dsterba@suse.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Li Nan <linan122@huawei.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Magnus Lindholm <linmag7@gmail.com>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Song Liu <song@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ted Ts'o <tytso@mit.edu>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/xor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index d6b4fd17c5f37..7f61f07ceb314 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -2427,11 +2427,17 @@ char *sys_lpi_file_debugfs = "/sys/kernel/debug/pmc_core/slp_s0_residency_usec";
+diff --git a/arch/arm64/include/asm/xor.h b/arch/arm64/include/asm/xor.h
+index befcd8a7abc98..7c03207157196 100644
+--- a/arch/arm64/include/asm/xor.h
++++ b/arch/arm64/include/asm/xor.h
+@@ -13,7 +13,7 @@
  
- int cpu_is_not_present(int cpu)
- {
-+	if (cpu < 0)
-+		return 1;
-+
- 	return !CPU_ISSET_S(cpu, cpu_present_setsize, cpu_present_set);
- }
+ #ifdef CONFIG_KERNEL_MODE_NEON
  
- int cpu_is_not_allowed(int cpu)
- {
-+	if (cpu < 0)
-+		return 1;
-+
- 	return !CPU_ISSET_S(cpu, cpu_allowed_setsize, cpu_allowed_set);
- }
+-extern struct xor_block_template const xor_block_inner_neon;
++extern struct xor_block_template xor_block_inner_neon __ro_after_init;
  
-@@ -2473,9 +2479,12 @@ int for_all_cpus(int (func) (struct thread_data *, struct core_data *, struct pk
- 		int i;
- 
- 		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
--			if (cpus[cpu].ht_sibling_cpu_id[i] <= 0)
-+			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
-+
-+			if (cpu_is_not_allowed(sibling_cpu_id))
- 				continue;
--			t = &thread_base[cpus[cpu].ht_sibling_cpu_id[i]];
-+
-+			t = &thread_base[sibling_cpu_id];
- 
- 			retval |= func(t, c, p);
- 		}
-@@ -6252,10 +6261,13 @@ int for_all_cpus_2(int (func) (struct thread_data *, struct core_data *,
- 		int i;
- 
- 		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
--			if (cpus[cpu].ht_sibling_cpu_id[i] <= 0)
-+			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
-+
-+			if (cpu_is_not_allowed(sibling_cpu_id))
- 				continue;
--			t = &thread_base[cpus[cpu].ht_sibling_cpu_id[i]];
--			t2 = &thread_base2[cpus[cpu].ht_sibling_cpu_id[i]];
-+
-+			t = &thread_base[sibling_cpu_id];
-+			t2 = &thread_base2[sibling_cpu_id];
- 
- 			retval |= func(t, c, p, t2, c2, p2);
- 		}
+ static void
+ xor_neon_2(unsigned long bytes, unsigned long * __restrict p1,
 -- 
 2.53.0
 
