@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKkzBlMQDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:39 +0200
+	id GNVVEq/nDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E90598C61
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:49:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F013592AE5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3793E376FF6D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A914315B27C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B96B363C59;
-	Wed, 20 May 2026 16:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9A13D47C4;
+	Wed, 20 May 2026 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teK8Mj6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0urFz0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D520221F2F;
-	Wed, 20 May 2026 16:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7800364E89;
+	Wed, 20 May 2026 16:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295441; cv=none; b=pe3uEUtgUVZEQNfJEx/wkttXvxIo9Q24mUHg2EWnJK9QVxqoTiw94WQcvPcA5EAQGaW0zk+WSlIq4x4ZFmfd85bm+C5kKcPzwGl6b+4LQEM+oo2WggS4KpC/dhTbmutvNmpldSMriSKYuQ7BsVjlpk9Yy9IbDghYcJKv3gxLAUI=
+	t=1779295444; cv=none; b=beCWfvRTvCwPIg0hVHFEqrAqDog1ArIZGkY7YcmC5bMkMiDgRw2Qu4kZ0o/DQhf9PvW51cHK2xVYpQC7EDSD9Sm6JIfJgA/8QkdNoT45/nD3qId0JVOWsABINJ/iBYWOdj2yXKOD9qfB6LfsDK7v99rwgY2C0K7fAZRc1dEykQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295441; c=relaxed/simple;
-	bh=3lirELHYPlltxMskfyU1VhUNSEN3fMhDbDAQOffg85s=;
+	s=arc-20240116; t=1779295444; c=relaxed/simple;
+	bh=JpUsRwm4ZJdnwmiHlKKGi3MXTUwjQ8vJAJyJbXwyC5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLNqFM26P7pcSa4dQT0gnQFmq/Wh249HXnkGoUSor7zvf9KI6g0n5M2djL2Qp+1SjtNsdz5w0jwLjjxTAPnxBaQHy9/x40exS0KqgPGNDp7poLkOPCYqzvCsugSMMcOPM5jJH3VFaTWGW50R1aFo+ZKfkF7xMbS0S0D8GPmLC+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teK8Mj6E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AC91F000E9;
-	Wed, 20 May 2026 16:43:59 +0000 (UTC)
+	 MIME-Version; b=s/GJfwYdqqpA7BTz0sr0S1fe+wjZIi/PHRc1iFLa+6wlz1Y85go9I9zWzmcCF/Gs6CKBg/Y5xYW8LH/zOi0v3J60CwAiqxIzO1BqVIOtFqdq9YoA3S3VPsGKSbSokRfXQUWeQhJOYcrPRAGQRzidBYXd9jRPzFRQAAu7iSNmECQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0urFz0p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5438D1F000E9;
+	Wed, 20 May 2026 16:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295440;
-	bh=Z1WjxznSrPoz1f1xYzHPJ+Y/P551hEJcZ8XDwGZ9cTY=;
+	s=korg; t=1779295442;
+	bh=/HEKwVMpswmKTtuPy0BHshQIv6CocKS1pNoc1q6hhOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=teK8Mj6E4c/+82Pi3wKTFQvblCv1oqc1FHiTLirQIk0wbtssAywJDlB1I8wy6kb1m
-	 SA8snXiwVJruThY21QRnxWr5hby/7BbpCeUVU/AAqhs89O7ojm9PQikZUBAVPzjCNz
-	 TZE/5xNFPkCmddnbB0dH7LyuIVrvudcXfWw6N4uw=
+	b=O0urFz0p8RhfMZtbBfIXPYZadyMOnic2XTsOKxmW3ooGPplYTG/Jr8OGxIz7CY/+2
+	 ZFz9Asvt9AtdDOqVrTqZKRqeSz5K0UcBu/R+gDSuntkErYMjb3iMNJjPqE5J+t5YWq
+	 Y98nv2BbsnudvpAb6FVO4QBOCBvSEqASRzyOep3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0419/1146] PCI: tegra194: Disable PERST# IRQ only in Endpoint mode
-Date: Wed, 20 May 2026 18:11:09 +0200
-Message-ID: <20260520162157.678724437@linuxfoundation.org>
+Subject: [PATCH 7.0 0420/1146] PCI: tegra194: Use devm_gpiod_get_optional() to parse "nvidia,refclk-select"
+Date: Wed, 20 May 2026 18:11:10 +0200
+Message-ID: <20260520162157.700090146@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -71,31 +71,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250449-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250450-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A9E90598C61
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 0F013592AE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,50 +102,44 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 40658a31b6e134169c648041efc84944c4c71dcd ]
+[ Upstream commit f62bc7917de1374dce86a852ffba8baf9cb7a56a ]
 
-The PERST# GPIO interrupt is only registered when the controller is
-operating in Endpoint mode. In Root Port mode, the PERST# GPIO is
-configured as an output to control downstream devices, and no interrupt is
-registered for it.
-
-Currently, tegra_pcie_dw_stop_link() unconditionally calls disable_irq()
-on pex_rst_irq, which causes issues in Root Port mode where this IRQ is
-not registered.
-
-Fix this by only disabling the PERST# IRQ when operating in Endpoint mode,
-where the interrupt is actually registered and used to detect PERST#
-assertion/deassertion from the host.
+The GPIO DT property "nvidia,refclk-select", to select the PCIe reference
+clock is optional. Use devm_gpiod_get_optional() to get it.
 
 Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
 Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Jon Hunter <jonathanh@nvidia.com>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-6-mmaddireddy@nvidia.com
+Link: https://patch.msgid.link/20260324190755.1094879-7-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index c84eb1ba3a11c..ceb34110a50b3 100644
+index ceb34110a50b3..71b80edd10c8c 100644
 --- a/drivers/pci/controller/dwc/pcie-tegra194.c
 +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1025,7 +1025,8 @@ static void tegra_pcie_dw_stop_link(struct dw_pcie *pci)
- {
- 	struct tegra_pcie_dw *pcie = to_tegra_pcie(pci);
+@@ -1167,9 +1167,9 @@ static int tegra_pcie_dw_parse_dt(struct tegra_pcie_dw *pcie)
+ 		return err;
+ 	}
  
--	disable_irq(pcie->pex_rst_irq);
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		disable_irq(pcie->pex_rst_irq);
- }
- 
- static const struct dw_pcie_ops tegra_dw_pcie_ops = {
+-	pcie->pex_refclk_sel_gpiod = devm_gpiod_get(pcie->dev,
+-						    "nvidia,refclk-select",
+-						    GPIOD_OUT_HIGH);
++	pcie->pex_refclk_sel_gpiod = devm_gpiod_get_optional(pcie->dev,
++							     "nvidia,refclk-select",
++							     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pcie->pex_refclk_sel_gpiod)) {
+ 		int err = PTR_ERR(pcie->pex_refclk_sel_gpiod);
+ 		const char *level = KERN_ERR;
 -- 
 2.53.0
 
