@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEX3IP0dDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:57 +0200
+	id uMxZEoT/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7BC59A1E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDF4596D00
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 439B435013AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB21A30AEBFB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C4C3EF0DA;
-	Wed, 20 May 2026 17:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFA4342CB3;
+	Wed, 20 May 2026 18:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW1gZZAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvU4/JYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E5A3D7D66;
-	Wed, 20 May 2026 17:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725FA318ED6;
+	Wed, 20 May 2026 18:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298897; cv=none; b=TJk1+Ra4VKvComqkwdcYQoBJveqL7ZlhFpGhcKU9gYe0n41XFdzw6MYBm67rVladrVn466FTPcgJs/trqyNszw4uqe63YgviQcB56DYl7LfG71ZzztStIo22cR/SdFsW2kDwMhjRh8cv4Kt3llMrUOMRPRAOEbtyh5/fXEl+KkQ=
+	t=1779301854; cv=none; b=oZDKZ2oXGE961TMdAKuOyW4mL1UhrT7WFjsvgsnEYXkE5ypKpjGI8Q9p9YSnJ3+cemv7ZanD5505dsnQvDAm0Iz2sRiZmeakOrb+YzEgw3Mxi401/8M6EuKr/N7ndMixPuanvjYDwlVXRzfLQyMa1r6gMkHdEF+DmKdVa7YQndc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298897; c=relaxed/simple;
-	bh=BXQm9VYNsVH7ZOEbEKfsgIo4leVJF6M9cwp2iEgMHcU=;
+	s=arc-20240116; t=1779301854; c=relaxed/simple;
+	bh=N7SGo81SSaWzcr30CXGH8HEn9ae78TEGqumNNjIleC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FGxC7xe4jq0JjlLYzJge1hFx7GuKXjmhgA63h/XRWUIdjEs5kZDM+ApbZ2ziwQzOx1KPn92lqyw+jGu33kcytLEdp19csaAXmc1+CEbDXFYCGSnsQGQiUkFXqigZSsazkJYF+cYdoSrVf/YmCWUZgzhx1SNB71Jj7jijbxS4Wh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW1gZZAT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801101F000E9;
-	Wed, 20 May 2026 17:41:35 +0000 (UTC)
+	 MIME-Version; b=mEhNmbMGDHU8VFuKIsZi5rYNZm0HTSl2K+6vXulLAhfsxN0rVJQXgN7+XvLDNQ9AxvWRmDTzTWJJ8QSNz7+UAmifZBGniB2lX0aHQjsIekIyUecn0A2y5X8LCsDH9CnOXnV+zTAR89LMx8rQbMuepFTVTG5LyhEhyUpi0kw1+qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvU4/JYP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01781F000E9;
+	Wed, 20 May 2026 18:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298896;
-	bh=n2rqVQazb6eyMrfdUL0PVayZsDOc1HrYUPi0uZ5kv9M=;
+	s=korg; t=1779301853;
+	bh=73CtLfnAFoxaHlg7B0rtfZ1qjwbAAxaNGwXapeJ9vMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NW1gZZATnLTU4888HgvmrwbI1uY8xPNuTLNu1MhoKqLZiEWMirTjk/UVUl/Lohsgx
-	 T9neLNmUQfeFMY1s4vrlb2TPy4RRJNBKQvRJEYFF5ULIGGPGQGsPTTgx9cUXXJnJKv
-	 MxPRhpAi2hKg7s2RojSUPGFo2BkmAf54UJsSUlp0=
+	b=fvU4/JYPUTYI7+NPdUog/lUp67bZV8SDnCHe80PMeK+4wVkdmJbpxp2m9AvvPuljE
+	 OGTmkh/PnkSLtmDQSweFFJXm58X1yhceC+kfY2/M8fq1h2kyGZb2UC9RBqCHWeBf2D
+	 bGt/SVyCuoiKxyzU8RdBLdarH6IAIS+ynidpBbW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 586/957] f2fs: fix to preserve previous reserve_{blocks,node} value when remount
+Subject: [PATCH 6.6 046/508] macvlan: annotate data-races around port->bc_queue_len_used
 Date: Wed, 20 May 2026 18:17:49 +0200
-Message-ID: <20260520162147.240230355@linuxfoundation.org>
+Message-ID: <20260520162059.592880183@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +68,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251790-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252889-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,unisoc.com:email]
-X-Rspamd-Queue-Id: DC7BC59A1E5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: DDDF4596D00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 01968164d94762db2f703647c5acfa28613844f1 ]
+[ Upstream commit 1ef5789d9906df3771c99b7f413caaf2bf473ca5 ]
 
-The following steps will change previous value of reserve_{blocks,node},
-this dones not match the original intention.
+port->bc_queue_len_used is read and written locklessly,
+add READ_ONCE()/WRITE_ONCE() annotations.
 
-1.mount -t f2fs -o reserve_root=8192 imgfile test_mount/
-F2FS-fs (loop56): Mounted with checkpoint version = 1b69f8c7
-mount info:
-/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=8192,reserve_node=0,resuid=0,resgid=0,xxx)
+While WRITE_ONCE() in macvlan_fill_info() is not yet needed,
+it is a prereq for future RTNL avoidance.
 
-2.mount -t f2fs -o remount,reserve_root=4096 /data/test_mount
-F2FS-fs (loop56): Preserve previous reserve_root=8192
-check mount info: reserve_root change to 4096
-/dev/block/loop56 on /data/test_mount type f2fs (xxx,reserve_root=4096,reserve_node=0,resuid=0,resgid=0,xxx)
-
-Prior to commit d18535132523 ("f2fs: separate the options parsing and options checking"),
-the value of reserve_{blocks,node} was only set during the first mount, along with
-the corresponding mount option F2FS_MOUNT_RESERVE_{ROOT,NODE} . If the mount option
-F2FS_MOUNT_RESERVE_{ROOT,NODE} was found to have been set during the mount/remount,
-the previously value of reserve_{blocks,node} would also be preserved, as shown in
-the code below.
-             if (test_opt(sbi, RESERVE_ROOT)) {
-                   f2fs_info(sbi, "Preserve previous reserve_root=%u",
-                          F2FS_OPTION(sbi).root_reserved_blocks);
-             } else {
-                   F2FS_OPTION(sbi).root_reserved_blocks = arg;
-                   set_opt(sbi, RESERVE_ROOT);
-             }
-But commit d18535132523 ("f2fs: separate the options parsing and options checking")
-only preserved the previous mount option; it did not preserve the previous value of
-reserve_{blocks,node}. Since value of reserve_{blocks,node} value is assigned
-or not depends on ctx->spec_mask, ctx->spec_mask should be alos handled in
-f2fs_check_opt_consistency.
-
-This patch will clear the corresponding ctx->spec_mask bits in f2fs_check_opt_consistency
-to preserve the previously values of reserve_{blocks,node} if it already have a value.
-
-Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d4bff72c8401 ("macvlan: Support for high multicast packet rate")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260401103809.3038139-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/macvlan.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 8790d9d4348a1..7e04ae8f32f0e 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1467,6 +1467,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
- 			F2FS_OPTION(sbi).root_reserved_blocks);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
- 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
-+		ctx->spec_mask &= ~F2FS_SPEC_reserve_root;
- 	}
- 	if (test_opt(sbi, RESERVE_NODE) &&
- 			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
-@@ -1475,6 +1476,7 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
- 			F2FS_OPTION(sbi).root_reserved_nodes);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
- 		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
-+		ctx->spec_mask &= ~F2FS_SPEC_reserve_node;
- 	}
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index 4e28fcbf13c74..1035a95beee6f 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -351,6 +351,7 @@ static void macvlan_broadcast_enqueue(struct macvlan_port *port,
+ 				      const struct macvlan_dev *src,
+ 				      struct sk_buff *skb)
+ {
++	u32 bc_queue_len_used = READ_ONCE(port->bc_queue_len_used);
+ 	struct sk_buff *nskb;
+ 	int err = -ENOMEM;
  
- 	err = f2fs_check_test_dummy_encryption(fc, sb);
+@@ -361,7 +362,7 @@ static void macvlan_broadcast_enqueue(struct macvlan_port *port,
+ 	MACVLAN_SKB_CB(nskb)->src = src;
+ 
+ 	spin_lock(&port->bc_queue.lock);
+-	if (skb_queue_len(&port->bc_queue) < port->bc_queue_len_used) {
++	if (skb_queue_len(&port->bc_queue) < bc_queue_len_used) {
+ 		if (src)
+ 			dev_hold(src->dev);
+ 		__skb_queue_tail(&port->bc_queue, nskb);
+@@ -1732,7 +1733,8 @@ static int macvlan_fill_info(struct sk_buff *skb,
+ 	}
+ 	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN, vlan->bc_queue_len_req))
+ 		goto nla_put_failure;
+-	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN_USED, port->bc_queue_len_used))
++	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN_USED,
++			READ_ONCE(port->bc_queue_len_used)))
+ 		goto nla_put_failure;
+ 	if (port->bc_cutoff != 1 &&
+ 	    nla_put_s32(skb, IFLA_MACVLAN_BC_CUTOFF, port->bc_cutoff))
+@@ -1792,7 +1794,7 @@ static void update_port_bc_queue_len(struct macvlan_port *port)
+ 		if (vlan->bc_queue_len_req > max_bc_queue_len_req)
+ 			max_bc_queue_len_req = vlan->bc_queue_len_req;
+ 	}
+-	port->bc_queue_len_used = max_bc_queue_len_req;
++	WRITE_ONCE(port->bc_queue_len_used, max_bc_queue_len_req);
+ }
+ 
+ static int macvlan_device_event(struct notifier_block *unused,
 -- 
 2.53.0
 
