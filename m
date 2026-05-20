@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEIGEgoODmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:54 +0200
+	id yDAXGPghDmru6QUAu9opvQ
+	(envelope-from <stable+bounces-252090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6B3598902
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE04F59A6DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E86F931C2F4A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EB4D330CA21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C48408016;
-	Wed, 20 May 2026 18:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB32369D75;
+	Wed, 20 May 2026 17:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnMlx3MK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qChvUZbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D258E3D75AB;
-	Wed, 20 May 2026 18:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992461684BE;
+	Wed, 20 May 2026 17:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302628; cv=none; b=XevKP8IgDELBu6+l7NVE3u/ucF9z2Rf1viHn6FElPGlgDcMPZEEQx73iTRMaSEOnumYVFBgEcTk8i88f4RJLRbwF/7o6OLxUxYBUcW0u4QIsBAB2C89DAdN1fbiCeJDF8+CwZdnTuA5EOMxRoFr72RAln+jHkcgnCSho+TqeR5c=
+	t=1779299721; cv=none; b=VGtbRYW8I852guyYJt2K4SihNMnhxUiACmyB+1NQiOFwTdXEjRRAOKQrhAuqDgvqCQshRCkOxj2s8Q9n4T70ybYWSKlPluH4QVkcIPGCyQxdM8Vk0qssbok+1I2Z55wjU77wB98J8yg9XdPlN3tz8henaeFRP3twV3T5at9t1/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302628; c=relaxed/simple;
-	bh=Iq25VEdnaHJdJT4H8l/gkAcafBTmddxROEiEqTQEkjw=;
+	s=arc-20240116; t=1779299721; c=relaxed/simple;
+	bh=46s7SEVn5HJjpETEpt15TKkhMawQ6EUV7VQhTiu52pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/YnTiGO55SQiiIUoDfhO6YOW1uUCNQ5KV9qtxEuVbjlardYQVd7t1egEkdRQ+t2BaNMHjONx3xtpSF2kW1gQzqrQYGS2mDQxOQFIIZkKE1JpjVA2ZxJJ5CjrQXAYauvyHvQMgrftggKJnV6JkMNDoYYnW3ebzjeJmtL87vhBic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnMlx3MK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D3B1F000E9;
-	Wed, 20 May 2026 18:43:47 +0000 (UTC)
+	 MIME-Version; b=bwXUpj6ST/5wIZoZHQ4B4s1r9d1kqwYtypUJ2bXtnVETGlUxCTAaql/e2YfuqcWKvaTdS/O1WeMZF934aIlh7DwMzwvtEAkk2xPqJEqaB2Fwmcapfdez3CAeTGP6bwVjJlDH53HZ8J1Dk31yBP/qmosjWNI/dbDJqEhclN0mvBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qChvUZbv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4751F000E9;
+	Wed, 20 May 2026 17:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302627;
-	bh=W9fmoXkhAdbdeissijDIUO1RMgBqFO8UPePWKS8RqmI=;
+	s=korg; t=1779299719;
+	bh=7wbXXvAf6Z/g9f81aQXvpL7dPDiSipuB89js93U0mbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mnMlx3MK2fHpDmIHQTrfKh/yUuqxQvJTpp2m12nk7Y1ued9nPFnNox45wSndoaWBO
-	 sFzObftx8dIguKSxH33zGzsVldxnxkxb090QH0076Dy1i+zXF1h4vVO/CC5BTyTWZ2
-	 Udl3kJJvb8z9NIKcyh+GMeWKRJboglTHnWdKjfEI=
+	b=qChvUZbvf+VMgHDHBzWB44/b3ZXpDVLBBRQz9tnmK1MZnQBGpZVEaHHKbjLYl4qr/
+	 slxzAzcsfOfT3egTsPx79jdzC+jAuztkJV265vvNF3mQYVln0X/Js7vjZxH/Ciq+f5
+	 G9FkyEdO4c64ZntQ2b8RGPawRQp6IxU3uPWQhZB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Yan <jerrysteve1101@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/508] arm64: dts: meson-gxl-p230: fix ethernet PHY interrupt number
+Subject: [PATCH 6.18 878/957] sched/fair: Revert force wakeup preemption
 Date: Wed, 20 May 2026 18:22:41 +0200
-Message-ID: <20260520162105.955195699@linuxfoundation.org>
+Message-ID: <20260520162153.606016702@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,googlemail.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253186-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252090-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.0:email,linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2E6B3598902
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: AE04F59A6DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jun Yan <jerrysteve1101@gmail.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit 174a0ef3b33434f475c87e66f37980e39b73805a ]
+[ Upstream commit 15257cc2f905dbf5813c0bfdd3c15885f28093c4 ]
 
-Correct the interrupt number assigned to the Realtek PHY in the p230
+This agressively bypasses run_to_parity and slice protection with the
+assumpiton that this is what waker wants but there is no garantee that
+the wakee will be the next to run. It is a better choice to use
+yield_to_task or WF_SYNC in such case.
 
-following the same logic as commit 3106507e1004 ("ARM64: dts: meson-gxm:
-fix q200 interrupt number"),as reported in [PATCH 0/2] Ethernet PHY
-interrupt improvements [1].
+This increases the number of resched and preemption because a task becomes
+quickly "ineligible" when it runs; We update the task vruntime periodically
+and before the task exhausted its slice or at least quantum.
 
-[1] https://lore.kernel.org/all/20171202214037.17017-1-martin.blumenstingl@googlemail.com/
+Example:
+2 tasks A and B wake up simultaneously with lag = 0. Both are
+eligible. Task A runs 1st and wakes up task C. Scheduler updates task
+A's vruntime which becomes greater than average runtime as all others
+have a lag == 0 and didn't run yet. Now task A is ineligible because
+it received more runtime than the other task but it has not yet
+exhausted its slice nor a min quantum. We force preemption, disable
+protection but Task B will run 1st not task C.
 
-Fixes: b94d22d94ad2 ("ARM64: dts: meson-gx: add external PHY interrupt on some platforms")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20260330145111.115318-1-jerrysteve1101@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Sidenote, DELAY_ZERO increases this effect by clearing positive lag at
+wake up.
+
+Fixes: e837456fdca8 ("sched/fair: Reimplement NEXT_BUDDY to align with EEVDF goals")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260123102858.52428-1-vincent.guittot@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-index c1470416faade..36e97ed585ae7 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-@@ -84,7 +84,8 @@ external_phy: ethernet-phy@0 {
- 		reset-gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 58f535cc64215..7e0e2044d840b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8943,16 +8943,6 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ 	if ((wake_flags & WF_FORK) || pse->sched_delayed)
+ 		return;
  
- 		interrupt-parent = <&gpio_intc>;
--		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-+		/* MAC_INTR on GPIOZ_15 */
-+		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
- 		eee-broken-1000t;
- 	};
- };
+-	/*
+-	 * If @p potentially is completing work required by current then
+-	 * consider preemption.
+-	 *
+-	 * Reschedule if waker is no longer eligible. */
+-	if (in_task() && !entity_eligible(cfs_rq, se)) {
+-		preempt_action = PREEMPT_WAKEUP_RESCHED;
+-		goto preempt;
+-	}
+-
+ 	/* Prefer picking wakee soon if appropriate. */
+ 	if (sched_feat(NEXT_BUDDY) &&
+ 	    set_preempt_buddy(cfs_rq, wake_flags, pse, se)) {
 -- 
 2.53.0
 
