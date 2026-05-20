@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAPCOEXyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200
+	id KGFyDsfxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7625944E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F55A594325
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 650B432920D1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC7B3501C7B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96E13E6385;
-	Wed, 20 May 2026 16:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3351A36B067;
+	Wed, 20 May 2026 16:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smlsrMtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avRqsPa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462E23D8138;
-	Wed, 20 May 2026 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB520369D4C;
+	Wed, 20 May 2026 16:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295365; cv=none; b=rmuJrZTBIAay1NzqprQ27LKcwmm71w4NSBDAdAzCPJc6wp6qHnuL3J9pf3b9Z5PoMR/m/0tz98qVYp72qq/AvyweoZ3wiN11d4N9PMEF6JPKHIxmKnvCsI27fEFYm6oynmIwHkCAjPA4ELh7FTZtv4nLDp/FbfXuZmlJnI2Sxuk=
+	t=1779295252; cv=none; b=uot0AN73gPX/1H2vuenuN+kXSb+dFUrSnneR7IhVZ+Cqg/skA940vefW/8aERgW1VRIPn2TbZ5kGCmXnd+QwwG7NJVkYDfdJztt1h/cTqU6D1IVmI3//0iUjIz1aZ9BppSVxFmCWGP5JGpIPYGA2XgbePxy8+BJsYRtgTEiaxO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295365; c=relaxed/simple;
-	bh=2wux+9mONN5BOYu0F6JylFz5Jq4iBc+DeX9vAMsi2B0=;
+	s=arc-20240116; t=1779295252; c=relaxed/simple;
+	bh=BX07HNckEOPnV9s+kGodCIpHGvKvrkQCankdSodny3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SHygGh3/SifdiFIwH8HaNC981T8WJHKlZqbNSuIecczZz9w+Ww7od33X6Um3oxhIZ2wAkXqj4sTR/IAQO5w5J03Tb4OJ3vDt4WDDTQcKNS9FdK+ojN9OIg87axI2WGkOMTuhzyJ/0ZF13s2YWWc0X8Hjqz4I4oZEz/7uxfrd8jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smlsrMtB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B91F000E9;
-	Wed, 20 May 2026 16:42:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZTCS3jqL0WchaKVjAdNOC5DZ0w1ypxdQ4LFbZDBM4s4+bPGTnJl1/7cTuBwS7y0gUbzxor+NgYo3kr9KKw6GPoRuMrJq3DmQvvajEzKPaReoHystC6qXz47RDGlPugWokSvKJqUx+UY12OSwqfb3BY+fVOj+ysDs8meF1IWnWZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avRqsPa5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A90A1F00894;
+	Wed, 20 May 2026 16:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295364;
-	bh=oatYlFhA4nb1m1gXrqYrguteCwb1I1REN7JqZOFZ+uY=;
+	s=korg; t=1779295250;
+	bh=jkaTfqcPOiOisR58HxmioQ+OqTFZiTrklsAqS6dgm6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=smlsrMtBLdAHyGTB2KSEuUkJ7soIqE/SokiI+o7DOyhvLL+ICBK2Z+DG6zwTnusJn
-	 FuKdM3APIPhWBCpxzI290UPbacpeDpLs0V3YnYru5HmJBxiFjtgvOOOxayQbn1/Qyl
-	 Q8b2fTwOpqA6H0lYJg3CwFD3hdcvWfue3t3OCD8k=
+	b=avRqsPa563ANnQQZZ77g0tgRCkUmUA5IrYlwX8UkjFH+1W3MxxNF3FZCC1gPEZ1qZ
+	 lzd6lDjCNiLpUwuxsf2Xk1W2AFJLg84ltqvRemFoQFZFEwmwSAZZYflR6/kccaWAYO
+	 S03VCbywRU050xeIpKTRS+6fegSLWzfsTq9VdWVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0340/1146] drm/amd/pm/smu7: Fix SMU7 voltage dependency on display clock
-Date: Wed, 20 May 2026 18:09:50 +0200
-Message-ID: <20260520162155.895408707@linuxfoundation.org>
+Subject: [PATCH 7.0 0341/1146] drm/amd/pm/ci: Fix powertune defaults for Hawaii 0x67B0
+Date: Wed, 20 May 2026 18:09:51 +0200
+Message-ID: <20260520162155.918526807@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250419-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7A7625944E2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 8F55A594325
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,185 +103,34 @@ X-Rspamd-Server: lfdr
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0138610c14130425be53423b35336561829965e0 ]
+[ Upstream commit d784759c07924280f3c313f205fc48eb62d7cb71 ]
 
-The DCE (display controller engine) requires a minimum voltage
-in order to function correctly, depending on which clock level
-it currently uses.
+There is no AMD GPU with the ID 0x66B0, this looks like a typo.
+It should be 0x67B0 which is actually part of the PCI ID list,
+and should use the Hawaii XT powertune defaults according to
+the old radeon driver.
 
-Add a new table that contains display clock frequency levels
-and the corresponding required voltages. The clock frequency
-levels are taken from DC (and the old radeon driver's voltage
-dependency table for CI in cases where its values were lower).
-The voltage levels are taken from the following function:
-phm_initializa_dynamic_state_adjustment_rule_settings().
-Furthermore, in case of CI, call smu7_patch_vddc() on the new
-table to account for leakage voltage (like in radeon).
-
-Use the display clock value from amd_pp_display_configuration
-to look up the voltage level needed by the DCE. Send the
-voltage to the SMU via the PPSMC_MSG_VddC_Request command.
-
-The previous implementation of this feature was non-functional
-because it relied on a "dal_power_level" field which was never
-assigned; and it was not at all implemented for CI ASICs.
-
-I verified this on a Radeon R9 M380 which previously booted to
-a black screen with DC enabled (default since Linux 6.19), but
-now works correctly.
-
-Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 88 ++++++++++++++++++-
- drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  1 +
- 2 files changed, 86 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index e38222877f7ef..563482f5d35fd 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2802,6 +2802,10 @@ static int smu7_patch_dependency_tables_with_leakage(struct pp_hwmgr *hwmgr)
- 	if (tmp)
- 		return -EINVAL;
- 
-+	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dependency_on_display_clock);
-+	if (tmp)
-+		return -EINVAL;
-+
- 	tmp = smu7_patch_vce_vddc(hwmgr, hwmgr->dyn_state.vce_clock_voltage_dependency_table);
- 	if (tmp)
- 		return -EINVAL;
-@@ -2885,6 +2889,8 @@ static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
- {
- 	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
- 	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
-+	kfree(hwmgr->dyn_state.vddc_dependency_on_display_clock);
-+	hwmgr->dyn_state.vddc_dependency_on_display_clock = NULL;
- 	kfree(hwmgr->backend);
- 	hwmgr->backend = NULL;
- 
-@@ -2955,6 +2961,51 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
- 	return ret;
- }
- 
-+static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *hwmgr)
-+{
-+	struct phm_clock_voltage_dependency_table *table;
-+
-+	if (!amdgpu_device_ip_get_ip_block(hwmgr->adev, AMD_IP_BLOCK_TYPE_DCE))
-+		return 0;
-+
-+	table = kzalloc(struct_size(table, entries, 4), GFP_KERNEL);
-+	if (!table)
-+		return -ENOMEM;
-+
-+	if (hwmgr->chip_id >= CHIP_POLARIS10) {
-+		table->entries[0].clk = 38918;
-+		table->entries[1].clk = 45900;
-+		table->entries[2].clk = 66700;
-+		table->entries[3].clk = 113200;
-+
-+		table->entries[0].v = 700;
-+		table->entries[1].v = 740;
-+		table->entries[2].v = 800;
-+		table->entries[3].v = 900;
-+	} else {
-+		if (hwmgr->chip_family == AMDGPU_FAMILY_CZ) {
-+			table->entries[0].clk = 35200;
-+			table->entries[1].clk = 35200;
-+			table->entries[2].clk = 46700;
-+			table->entries[3].clk = 64300;
-+		} else {
-+			table->entries[0].clk = 0;
-+			table->entries[1].clk = 35200;
-+			table->entries[2].clk = 54000;
-+			table->entries[3].clk = 62500;
-+		}
-+
-+		table->entries[0].v = 0;
-+		table->entries[1].v = 720;
-+		table->entries[2].v = 810;
-+		table->entries[3].v = 900;
-+	}
-+
-+	table->count = 4;
-+	hwmgr->dyn_state.vddc_dependency_on_display_clock = table;
-+	return 0;
-+}
-+
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -2983,6 +3034,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		smu7_get_elb_voltages(hwmgr);
- 	}
- 
-+	result = smu7_init_voltage_dependency_on_display_clock_table(hwmgr);
-+	if (result)
-+		goto fail;
-+
- 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
- 		smu7_complete_dependency_tables(hwmgr);
- 		smu7_set_private_data_based_on_pptable_v1(hwmgr);
-@@ -3079,13 +3134,40 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
- 	return 0;
- }
- 
-+static uint32_t smu7_lookup_vddc_from_dispclk(struct pp_hwmgr *hwmgr)
-+{
-+	const struct amd_pp_display_configuration *cfg = hwmgr->display_config;
-+	const struct phm_clock_voltage_dependency_table *vddc_dep_on_dispclk =
-+			hwmgr->dyn_state.vddc_dependency_on_display_clock;
-+	uint32_t i;
-+
-+	if (!vddc_dep_on_dispclk || !vddc_dep_on_dispclk->count ||
-+	    !cfg || !cfg->num_display || !cfg->display_clk)
-+		return 0;
-+
-+	/* Start from 1 because ClocksStateUltraLow should not be used according to DC. */
-+	for (i = 1; i < vddc_dep_on_dispclk->count; ++i)
-+		if (vddc_dep_on_dispclk->entries[i].clk >= cfg->display_clk)
-+			return vddc_dep_on_dispclk->entries[i].v;
-+
-+	return vddc_dep_on_dispclk->entries[vddc_dep_on_dispclk->count - 1].v;
-+}
-+
-+static void smu7_apply_minimum_dce_voltage_request(struct pp_hwmgr *hwmgr)
-+{
-+	uint32_t req_vddc = smu7_lookup_vddc_from_dispclk(hwmgr);
-+
-+	smum_send_msg_to_smc_with_parameter(hwmgr,
-+			PPSMC_MSG_VddC_Request,
-+			req_vddc * VOLTAGE_SCALE,
-+			NULL);
-+}
-+
- static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
- {
- 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
- 
--	if (hwmgr->pp_table_version == PP_TABLE_V1)
--		phm_apply_dal_min_voltage_request(hwmgr);
--/* TO DO  for v0 iceland and Ci*/
-+	smu7_apply_minimum_dce_voltage_request(hwmgr);
- 
- 	if (!data->sclk_dpm_key_disabled) {
- 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-index c661185753b42..2f49c95342a14 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
-@@ -631,6 +631,7 @@ struct phm_dynamic_state_info {
- 	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
- 	struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
- 	struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
-+	struct phm_clock_voltage_dependency_table *vddc_dependency_on_display_clock;
- 	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
- 	struct phm_clock_array                    *valid_sclk_values;
- 	struct phm_clock_array                    *valid_mclk_values;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index c0a04fab3ceca..b5f6a5da6549d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -245,7 +245,7 @@ static void ci_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
+ 		smu_data->power_tune_defaults = &defaults_hawaii_pro;
+ 		break;
+ 	case 0x67B8:
+-	case 0x66B0:
++	case 0x67B0:
+ 		smu_data->power_tune_defaults = &defaults_hawaii_xt;
+ 		break;
+ 	case 0x6640:
 -- 
 2.53.0
 
