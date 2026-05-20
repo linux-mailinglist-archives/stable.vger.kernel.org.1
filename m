@@ -1,77 +1,67 @@
-Return-Path: <stable+bounces-249804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG5/LY6PDWoIzQUAu9opvQ
-	(envelope-from <stable+bounces-249804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:40:14 +0200
+	id QLi5EWyPDWoIzQUAu9opvQ
+	(envelope-from <stable+bounces-249805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:39:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CBC58BE21
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:40:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43BB58BDF0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5BEB8304AC20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:37:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA564300821F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8E73AF641;
-	Wed, 20 May 2026 10:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5066C3D904C;
+	Wed, 20 May 2026 10:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ILgFKeaZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9goHgLp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2637B2E92B3;
-	Wed, 20 May 2026 10:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546463D8117;
+	Wed, 20 May 2026 10:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779273454; cv=none; b=TEgYgnjjy0I5VkVSa03mhDnu3hHSiZ1KglRtF2oLhKUyuPP1gmq5ia+ZN6ULRCyJJhUAGWF1+8D3oWf4R/W6Qp005JMI1ipU3tPYL8CiABxUM5fOBt0ybACxkaZ77gyifEZm8WRINx1uaMshIzeZjO2YdT+cqsVBkjrFEG4iGJI=
+	t=1779273567; cv=none; b=rHEBvPcUBw/1HEBYu5jdxYNfmLPehmdBwuMvMTMNygeZ+FFsid/oJamLvqo/8M9MbVcmqx6EcT2fs5+ACYn70Kqzdx/3COYFzD2oCM/TXu+Qadp7zKMsI9DC0S7xTqVqa6CCSqOvLJwW20dIMBV+2t3tgusD1aPYYifEYE3qlww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779273454; c=relaxed/simple;
-	bh=uWZpbSqdF0Glgyt4dchwz+eQwccfAQiF4/g/zF76HAM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Lp/Ee0XddfkFyKSdtRgazmPy134ssxWKkszFzaAFc/EGfO1ceuCcktJcsNFY1HrWwNckUb5H1srj5HBkLbj7I6BcHuxWv2wmd2XNtcsmxgZAJ5J7ytQdfu88XhTOTlX2ajjrNJvKWK3hwSL3S4sScQzmvE76csvyaHgqDVMCxuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ILgFKeaZ; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779273453; x=1810809453;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=uWZpbSqdF0Glgyt4dchwz+eQwccfAQiF4/g/zF76HAM=;
-  b=ILgFKeaZIZcxm36pt46CsO+Pqofv74oBnW1Qf5i6RE/Cadjph/4HkGjM
-   GLzewtMU1xtynJcmY+aTEM1aCmogyF07A1NgV88DSm44EfjqDgOeDi2nt
-   zVe5ny49tO36wbjFbdoxYdbkKw6Sc5QWtb3q5D0kIPc1OxyV+aRMHNqml
-   WVXeFAOWiJUxKRx9r3OTTno38SIzrD/NAVHlLxt/Kg+5aojJXl04jv7TI
-   e0rrhUzsGKeUxuw1JnvWGE4QtQXES1xsWrkznyZ/4vPTNStS8Mb9GdUsu
-   r5gIloKCaO0uSGRh4zDrSm1+G7bqHB364blQXsQhSlQAJSSCwKinnGioX
-   w==;
-X-CSE-ConnectionGUID: LYXWaAl0S4ub3fJErMiLAg==
-X-CSE-MsgGUID: BgNbQlqWQD+4T3no2cvyyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="91561576"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="91561576"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 03:37:33 -0700
-X-CSE-ConnectionGUID: jdQd7bv5TPupaulGhBhWbA==
-X-CSE-MsgGUID: ILG0gVETSJmUKPvVbSHfdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235695239"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.181])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 03:37:30 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 20 May 2026 13:37:26 +0300 (EEST)
-To: ZhaoJinming <zhaojinming@uniontech.com>
-cc: srinivas.pandruvada@linux.intel.com, Hans de Goede <hansg@kernel.org>, 
-    platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] platform/x86/intel/tpmi: use cleanup helpers in
- mem_write()
-In-Reply-To: <20260520054122.1630021-2-zhaojinming@uniontech.com>
-Message-ID: <9de7a91f-2dfa-7a99-9580-378c7a044bce@linux.intel.com>
-References: <b1006ce4-f596-b2aa-421a-518fe3cfe1f0@linux.intel.com> <20260520054122.1630021-1-zhaojinming@uniontech.com> <20260520054122.1630021-2-zhaojinming@uniontech.com>
+	s=arc-20240116; t=1779273567; c=relaxed/simple;
+	bh=5JJDNR+dZSYvqZY2l3m6GIwe+YErFLstimjoZfOAABI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=reoOhkVn0mLhWIA1JCJh/8JypQJNH8Y34vvJHqf+0r9s/M+hE75g/8htOfkd6zU2GVv4M0PNIH3e1Dy7fA5/UnUgQbw3mqd4P0bUnCBuvmp7jyYvXxN92LDNn/TdEZ+VooWJdHKQqb2RMW6KzQG/0itt+90GiVeF++Bsd+AIrBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9goHgLp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6321F000E9;
+	Wed, 20 May 2026 10:39:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779273560;
+	bh=8kFn9W05qyL1k/0OdwAdZn7KvbzCgH579qyEY6ai480=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Z9goHgLpSpjaUCEYm71hbEKdr1WxNNGkPRC5VJxaCIG0wP/wWzInzAT2uhCxeQzcN
+	 6ByUkJTvWawtcB7uxLMVB+W/aBCxbh+rUgMJxH+1SS9gJ0bceN9H5AfrkgvxcsSkO0
+	 kA3JOFB2A0lR+KhKK9ket29iYSiIk8MBLDw1lkvfIJ/XT5DmhVFCeB5T9OoHtVEbjK
+	 LN58gFfVD7bZM7L8AkZoS8qVaeFHVBDCJ27uJnRS80HPPpCf2KkHBPJ3ssdgNIXSUu
+	 ZvG5NsyIpx0lKc9sLnQsfqSeqfPkkhMPSIavxITWhzx5UuapLgtwC6rJO2S/odkPa/
+	 ktCFczP1/GOaQ==
+Date: Wed, 20 May 2026 11:39:14 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Stepan Ionichev <sozdayvek@gmail.com>,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: rohm-bm1390: notify trigger on all error
+ paths
+Message-ID: <20260520113914.7af0bdf7@jic23-huawei>
+In-Reply-To: <agtbFDbw2m9ptEua@ashevche-desk.local>
+References: <20260517160801.269-1-sozdayvek@gmail.com>
+	<54ee1fba-3209-4192-82c3-674a1ae3ca8f@baylibre.com>
+	<3cb30f12-8b4f-415f-9a1d-823d8ff8c33b@gmail.com>
+	<agq4zER5Tv2LErZV@ashevche-desk.local>
+	<20260518155521.6c61504d@jic23-huawei>
+	<agtbFDbw2m9ptEua@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,136 +69,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249804-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249805-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.intel.com:mid,intel.com:dkim,uniontech.com:email]
-X-Rspamd-Queue-Id: 77CBC58BE21
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B43BB58BDF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 20 May 2026, ZhaoJinming wrote:
+On Mon, 18 May 2026 21:31:48 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> In mem_write(), the temporary array returned by parse_int_array_user() must be released on all error paths. Convert the array variable to use cleanup.h scope-based cleanup so it is freed automatically on return.
-
-Not only on "error paths" but also when no error occurs.
-
-> This also moves the array declaration next to parse_int_array_user() as required by cleanup.h usage guidelines.
-
-Please fold any text paragraphs so they don't exceed 72 characters per 
-row.
-
-> Fixes: 8e0a2fc68ec3 ("platform/x86/intel/tpmi: Use 32 bit aligned address for debugfs mem write")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-> ---
->  drivers/platform/x86/intel/vsec_tpmi.c | 26 +++++++++-----------------
->  1 file changed, 9 insertions(+), 17 deletions(-)
+> On Mon, May 18, 2026 at 03:55:21PM +0100, Jonathan Cameron wrote:
+> > On Mon, 18 May 2026 09:59:24 +0300
+> > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
+> > > On Mon, May 18, 2026 at 08:21:17AM +0300, Matti Vaittinen wrote:  
+> > > > On 17/05/2026 20:12, David Lechner wrote:    
+> > > > > On 5/17/26 11:08 AM, Stepan Ionichev wrote:    
 > 
-> diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
-> index 16fd7aa41f20..e7bc3474c7aa 100644
-> --- a/drivers/platform/x86/intel/vsec_tpmi.c
-> +++ b/drivers/platform/x86/intel/vsec_tpmi.c
-> @@ -51,6 +51,7 @@
->  #include <linux/bitfield.h>
->  #include <linux/debugfs.h>
->  #include <linux/delay.h>
-> +#include <linux/cleanup.h>
->  #include <linux/intel_tpmi.h>
->  #include <linux/intel_vsec.h>
->  #include <linux/io.h>
-> @@ -473,7 +474,7 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
->  	struct seq_file *m = file->private_data;
->  	struct intel_tpmi_pm_feature *pfs = m->private;
->  	u32 addr, value, punit, size;
-> -	u32 num_elems, *array;
-> +	u32 num_elems;
->  	void __iomem *mem;
->  	int ret;
->  
-> @@ -481,15 +482,14 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
->  	if (!size)
->  		return -EIO;
->  
-> +	u32 *array __free(kfree) = NULL;
->  	ret = parse_int_array_user(userbuf, len, (int **)&array);
->  	if (ret < 0)
->  		return ret;
->  
->  	num_elems = *array;
-> -	if (num_elems != 3) {
-> -		ret = -EINVAL;
-> -		goto exit_write;
-> -	}
-> +	if (num_elems != 3)
-> +		return -EINVAL;
->  
->  	punit = array[1];
->  	addr = array[2];
-> @@ -498,15 +498,11 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
->  	if (!IS_ALIGNED(addr, sizeof(u32)))
->  		return -EINVAL;
->  
-> -	if (punit >= pfs->pfs_header.num_entries) {
-> -		ret = -EINVAL;
-> -		goto exit_write;
-> -	}
-> +	if (punit >= pfs->pfs_header.num_entries)
-> +		return -EINVAL;
->  
-> -	if (addr >= size) {
-> -		ret = -EINVAL;
-> -		goto exit_write;
-> -	}
-> +	if (addr >= size)
-> +		return -EINVAL;
->  
->  	mutex_lock(&tpmi_dev_lock);
->  
-> @@ -522,12 +518,8 @@ static ssize_t mem_write(struct file *file, const char __user *userbuf, size_t l
->  
->  	ret = len;
->  
-> -unlock_mem_write:
-
-The last goto is only removed in the second patch so this will cause a 
-build failure mid-series which would be a problem when using git bisect.
-
-Other than that, this change looked okay.
-
->  	mutex_unlock(&tpmi_dev_lock);
->  
-> -exit_write:
-> -	kfree(array);
-> -
->  	return ret;
->  }
->  
+> ...
 > 
+> > > > Maybe it would be better to do something like:
+> > > > 
+> > > > void iio_trigger_poll_nested(struct iio_trigger *trig)
+> > > > {
+> > > >         int i;
+> > > > 
+> > > >         if (!atomic_read(&trig->use_count)) {
+> > > >                 atomic_set(&trig->use_count,
+> > > > CONFIG_IIO_CONSUMERS_PER_TRIGGER);    
+> > > 
+> > > Just in case somebody is going to do that, avoid doing atomic_read() followed
+> > > by atomic_set(). This is typical TOCTOU issue. This should be something like
+> > > atomic_xchg() or atomic_add_return() or something like this in a single atomic
+> > > operation.  
+> > 
+> > Just to clarify - the current code is fine.  This got reported a few years
+> > back and I did the analysis to prove it. From what I recall the key is
+> > that the state space isn't as complex as it immediately looks.
+> > That counter is either non 0 at the start (we don't use it here and we
+> > skip an interrupt - that's actually the desired behaviour if the trigger is running
+> > too fast - triggers must survive that - reenable() callback is there to make that
+> > all work).
+> > 
+> > Otherwise there is a single path that sets it and we know any decrement until after
+> > that happens would have undeflowed (and hence was a bug). The rest are decrement
+> > only and it can never go to less than 0.
+> > 
+> > Hence it is fine.
+> > 
+> > Agreed things get messy if we make this alg any more complex though!  
+> 
+> Perhaps we need a good comment just on top of this atomic_read()/atomic_set()
+> pair. Because it's really the code no one should take as an example how to do
+> atomics :-) Logical question, why do we even have atomics there? Shouldn't
+> be that READ_ONCE()/WRITE_ONCE() to have an integrity in place? (This I believe
+> even mentioned in the documentation for atomics.)
 
--- 
- i.
+There are atomic decrements elsewhere that need to be (multiple drivers
+can decrement at the same time) and mixing and matching between atomic accessors
+and non atomic is a mess.
+
+Comment wise. I'd like to say I'll get to it, but unlikely it'll be soon.
+
+Jonathan
+
+
+> 
+> > > >                 for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
+> > > >                         if (trig->subirqs[i].enabled)
+> > > >                                 handle_nested_irq(trig->subirq_base + i);
+> > > >                         else
+> > > >                                 iio_trigger_notify_done(trig);
+> > > >                 }
+> > > > 		atomic_set(&trig->use_count, 0); /* Clear the use_count if drivers didn't
+> > > > */
+> > > >         }
+> > > > }
+> > > > 
+> > > > to prevent this class of problems once and for all. But yeah, wiser minds
+> > > > have designed this - so let's hear some other opinions as well :)    
+> 
 
 
