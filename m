@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wpMNCrAnDmp56gUAu9opvQ
-	(envelope-from <stable+bounces-252664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:20 +0200
+	id MNw9LmsGDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D13359AE8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DE2597CA9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03AF73658E61
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A4453961672
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA7D3D1CC6;
-	Wed, 20 May 2026 18:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A0F4028E1;
+	Wed, 20 May 2026 18:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvYllkhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtyfMkXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5D7348C55;
-	Wed, 20 May 2026 18:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27D03FBEB3;
+	Wed, 20 May 2026 18:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301268; cv=none; b=Xuougo1nSVkBLpvfxKYN9rEmEaHzqn5kjvsXfmq/xg0xje1oX3bH5N6/qO4udeXvP/NCITwm3cX+2DNYY0CiLP3rN1kVtFHtjxRMiWzktb+wBcPGpDxsJ/DCmQ4t28XU1LKEs3mtnmUNz5I3hUGxjzPG24r9uuM7f4WSHi/Y3J4=
+	t=1779302470; cv=none; b=p48qjnbVO6n6YRQRSl7DlDkALmpHO0MdHuiZI7So4SS6rrDTclodeOaqbWZlz9gF7J8a6T53Jy7hTwmd/P/ehOgHp8Vxo/f1WEL+9QdT/Er2h5GzDA9k6g3bLfGWCewSB6iApVyas/y0gp2DnlEhHLQs3Dlzr3BoULbjcGWLULs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301268; c=relaxed/simple;
-	bh=Wiwfo94+zByYsja3zGolDYm5Vsfs3LsaArYi9pXRE2U=;
+	s=arc-20240116; t=1779302470; c=relaxed/simple;
+	bh=S3bHp0rzXxeb9kEEapQ1BDDDYuA3hYldechMRNzRiKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ja4kEwAjdFR9o2E1lacfQmte7VtqqaHY8vY1EI9eVmwvddAx5pne5W4iGvYTcL0muoS0OvlUCqdlo6xucepiVgZHwwWCb5ONRTFiXgaM5tzGT2Hu2dQzT8dOrCuFsBFfclVg1iXs+VcR2gNJX9cz8UD3K1p3ZaesXESxoKvhpPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvYllkhj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0057B1F000E9;
-	Wed, 20 May 2026 18:21:06 +0000 (UTC)
+	 MIME-Version; b=OIQcYlB550qpl39/q123NHQ/NXliv9KhhmiopjX9D1fLandEllnsmAjku1rFIMPonlX7ono9bGBncSliF11NsaCPOATX2f+d65FXa88X4ikdGyitrmGDhQuwnW460t85YdZBGvIzByZZ8MGfgMwg810bjIauL2osnYcqK3nml+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtyfMkXA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338E91F000E9;
+	Wed, 20 May 2026 18:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301267;
-	bh=JBdUogOLU//82YqFmPJme2/lH/XvTIkarKOtQdZTZtw=;
+	s=korg; t=1779302469;
+	bh=zOhQ7ejvI0/DNRZyy2WpNgZanFcdbPP1uMFWu++ZwNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lvYllkhja/MZ2b557iQZFZ8TsmgrwYZJvkGtpM4e5CottZRjv5HRUmUihgf6HjPqL
-	 SjW/8a+1McOWqSgKSIo5OcxdqR5NFgMt34wjkGcDET+ES2ClUe4FRNpQ+xzCHf5AwU
-	 PpAhvY3AE1cvmNzjNRtVmmr9jHA/vYpaeD/yykLI=
+	b=XtyfMkXAnwTuxbmEFtfDdsqgp2pC54eFAphebp8W6BYs6fjGCWU1ymWargqIjSplN
+	 ILh62KCVuXcbBi+xS2L+Q8V+snQetZ4g/PXTi5CWyUObC1Q1Z8NJNuVpfZIpsdyB9G
+	 dEPnDLS2cX2w61ZLo7fCVzGI5H4jmieUeXmDx4Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 491/666] net: airoha: Move ndesc initialization at end of airoha_qdma_init_rx_queue()
+Subject: [PATCH 6.6 279/508] clk: qcom: gcc-sc8180x: Add missing GDSCs
 Date: Wed, 20 May 2026 18:21:42 +0200
-Message-ID: <20260520162121.905819753@linuxfoundation.org>
+Message-ID: <20260520162104.690661901@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +68,126 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252664-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253125-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9D13359AE8E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: 56DE2597CA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 379050947a1828826ad7ea50c95245a56929b35a ]
+[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
 
-If queue entry or DMA descriptor list allocation fails in
-airoha_qdma_init_rx_queue routine, airoha_qdma_cleanup() will trigger a
-NULL pointer dereference running netif_napi_del() for RX queue NAPIs
-since netif_napi_add() has never been executed to this particular RX NAPI.
-The issue is due to the early ndesc initialization in
-airoha_qdma_init_rx_queue() since airoha_qdma_cleanup() relies on ndesc
-value to check if the queue is properly initialized. Fix the issue moving
-ndesc initialization at end of airoha_qdma_init_tx routine.
-Move page_pool allocation after descriptor list allocation in order to
-avoid memory leaks if desc allocation fails.
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260420-airoha_qdma_init_rx_queue-fix-v2-1-d99347e5c18d@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index d8af267f64f71..7b929b20fe64b 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -1574,14 +1574,18 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
- 	dma_addr_t dma_addr;
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index ec0c45881c67a..08011db603503 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4199,6 +4199,51 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
- 	q->buf_size = PAGE_SIZE / 2;
--	q->ndesc = ndesc;
- 	q->qdma = qdma;
- 
--	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
-+	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
- 				GFP_KERNEL);
- 	if (!q->entry)
- 		return -ENOMEM;
- 
-+	q->desc = dmam_alloc_coherent(eth->dev, ndesc * sizeof(*q->desc),
-+				      &dma_addr, GFP_KERNEL);
-+	if (!q->desc)
-+		return -ENOMEM;
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
- 	q->page_pool = page_pool_create(&pp_params);
- 	if (IS_ERR(q->page_pool)) {
- 		int err = PTR_ERR(q->page_pool);
-@@ -1590,11 +1594,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
- 		return err;
- 	}
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
+ 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
+@@ -4499,6 +4544,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
+ 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
+ };
  
--	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
--				      &dma_addr, GFP_KERNEL);
--	if (!q->desc)
--		return -ENOMEM;
--
-+	q->ndesc = ndesc;
- 	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
- 
- 	airoha_qdma_wr(qdma, REG_RX_RING_BASE(qid), dma_addr);
+ static const struct regmap_config gcc_sc8180x_regmap_config = {
 -- 
 2.53.0
 
