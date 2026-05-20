@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOPoLBnzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:57 +0200
+	id oObFMIb3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA6A594771
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CAD59531F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED96E3107325
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDC2C358ACDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA903ED5C8;
-	Wed, 20 May 2026 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5591A3D75D3;
+	Wed, 20 May 2026 16:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0GUTrKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLbCSYG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEB515E8B;
-	Wed, 20 May 2026 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D013D3CE5;
+	Wed, 20 May 2026 16:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298652; cv=none; b=e2+4Yi4Y7OHG3fqzWDoY8UqGbDlEJj5ThNH/JlbIUcihsCoql+yw+y0LuKult1Cm6VfteXlCmubg+fF3/rINAk98RtDaOqmndda8/I8/zqCBP0MjswxAHoVZouXpzB6lJOZwB43YR4nsM5fTwLTRNyzyMo2pSQ7pEwMVFCZFmAA=
+	t=1779296251; cv=none; b=tBY1UD8x46S1v/xcGlgUrsqUvBqL2HdR7hh2R7JZrU7ogO2S+JlHGbcFcmyttClwkz1FW89zicIbvhos0WdqbXA9vzblZcwGJmvmrfi6+k6KsgWoLJrv1OAxaKwHstgfgXRW0AQ1eCb2y1yf94UiVIaOCy7n5crONpFaBibV970=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298652; c=relaxed/simple;
-	bh=8borbBgedtA/lWOXT5CHSWss9pxzHRg4zwZi5UiQ46U=;
+	s=arc-20240116; t=1779296251; c=relaxed/simple;
+	bh=ucmd6Ay8JfAZC7LXS2dxNZ4kbKr+ET0W4rvMKAhezzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbnAVTf9+RJMoTeu/ff3LZVZv3XKZlVeEo6n5THN5MQIc4mcgRQOLeSJYDEucX0ljEqZwzEnSNnnRaz7Lga4WQA0qHjxVgkUizmx41ho9nyw7tNR93xAvNP9WB2qGVFsumT4DmcYo5772X47MpxZ5iCd3wPgPQDI0CuPFtFNRVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0GUTrKa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C491F000E9;
-	Wed, 20 May 2026 17:37:30 +0000 (UTC)
+	 MIME-Version; b=MUoHHvust4uuoV7/6CK0dxuajXegc6afY0PyM+9/J7x+1PMvklBBshq5x+MckG4/UQ4NZc02f/pjkXowg4oS/PQI/4TOjyZyAEm23TbhRiQiyCHY2QmXUiAlISf8MQ6Z3wi5HmqrJ35N3X9ETwnJbp94L8k0CVpLex0AMEFiXPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLbCSYG2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD6D1F000E9;
+	Wed, 20 May 2026 16:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298651;
-	bh=famp7GXlb0wmnVKtxtZWkVCcndex0HY8fcZ2tSNK/dc=;
+	s=korg; t=1779296250;
+	bh=qIi/SDW0FNVSweFEFtimNc4dV/0x1eljZcY1FqLG48o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l0GUTrKabXvSsLhf07mOm2pkYTQrZdfaOcFBXO6KQleGjhi9NHyXFAk5cJ6sdmrbG
-	 CmGH+JPhGAeHpIik3f5xQ3BaJHjE77ZNDThrUVZG4Kv69IzMCoyDZceM3RNfULgIq2
-	 iKBjgync9HqH7Ijl7PhNIO4Dnq+/G1iF13KoBI7M=
+	b=DLbCSYG2U7g264jq+nRqwOZVeSVfHpF55tZQJyCItgXvOaaR6Kl7D3XRJit0cVNEG
+	 G25iG+hCcxa5MJKNQ0LHhqB7gfALcwuThokg+sdk5diLj3DLb3yHfWDvFLFa3ou8iD
+	 CoT2LmPFMfz3qkRZR+b+emxizZzUOuKz+W78ulQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihan Ding <dingyihan@uniontech.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shuwei Wu <shuwei.wu@mailbox.org>,
+	Yixun Lan <dlan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 493/957] bpf: allow UTF-8 literals in bpf_bprintf_prepare()
-Date: Wed, 20 May 2026 18:16:16 +0200
-Message-ID: <20260520162145.217971375@linuxfoundation.org>
+Subject: [PATCH 7.0 0727/1146] clk: spacemit: ccu_mix: fix inverted condition in ccu_mix_trigger_fc()
+Date: Wed, 20 May 2026 18:16:17 +0200
+Message-ID: <20260520162204.658092448@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +64,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251695-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,uniontech.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250762-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniontech.com:email]
-X-Rspamd-Queue-Id: 2BA6A594771
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email]
+X-Rspamd-Queue-Id: A1CAD59531F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Ding <dingyihan@uniontech.com>
+From: Shuwei Wu <shuwei.wu@mailbox.org>
 
-[ Upstream commit b960430ea8862ef37ce53c8bf74a8dc79d3f2404 ]
+[ Upstream commit 54e97360b44bed6b4399dd3be3d65f392df940fa ]
 
-bpf_bprintf_prepare() only needs ASCII parsing for conversion
-specifiers. Plain text can safely carry bytes >= 0x80, so allow
-UTF-8 literals outside '%' sequences while keeping ASCII control
-bytes rejected and format specifiers ASCII-only.
+Fix inverted condition that skips frequency change trigger,
+causing kernel panics during cpufreq scaling.
 
-This keeps existing parsing rules for format directives unchanged,
-while allowing helpers such as bpf_trace_printk() to emit UTF-8
-literal text.
-
-Update test_snprintf_negative() in the same commit so selftests keep
-matching the new plain-text vs format-specifier split during bisection.
-
-Fixes: 48cac3f4a96d ("bpf: Implement formatted output helpers with bstr_printf")
-Signed-off-by: Yihan Ding <dingyihan@uniontech.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260416120142.1420646-2-dingyihan@uniontech.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 1b72c59db0ad ("clk: spacemit: Add clock support for SpacemiT K1 SoC")
+Signed-off-by: Shuwei Wu <shuwei.wu@mailbox.org>
+Reviewed-by: Yixun Lan <dlan@kernel.org>
+Link: https://lore.kernel.org/r/20260305-k1-clk-fix-v1-1-abca85d6e266@mailbox.org
+Signed-off-by: Yixun Lan <dlan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c                            | 17 ++++++++++++++++-
- .../testing/selftests/bpf/prog_tests/snprintf.c |  3 ++-
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ drivers/clk/spacemit/ccu_mix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 68da6dcfb4bb7..b596452424481 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -848,7 +848,13 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
- 		data->buf = buffers->buf;
+diff --git a/drivers/clk/spacemit/ccu_mix.c b/drivers/clk/spacemit/ccu_mix.c
+index 9578366e97466..a8b407049bf4d 100644
+--- a/drivers/clk/spacemit/ccu_mix.c
++++ b/drivers/clk/spacemit/ccu_mix.c
+@@ -73,7 +73,7 @@ static int ccu_mix_trigger_fc(struct clk_hw *hw)
+ 	struct ccu_common *common = hw_to_ccu_common(hw);
+ 	unsigned int val;
  
- 	for (i = 0; i < fmt_size; i++) {
--		if ((!isprint(fmt[i]) && !isspace(fmt[i])) || !isascii(fmt[i])) {
-+		unsigned char c = fmt[i];
-+
-+		/*
-+		 * Permit bytes >= 0x80 in plain text so UTF-8 literals can pass
-+		 * through unchanged, while still rejecting ASCII control bytes.
-+		 */
-+		if (isascii(c) && !isprint(c) && !isspace(c)) {
- 			err = -EINVAL;
- 			goto out;
- 		}
-@@ -870,6 +876,15 @@ int bpf_bprintf_prepare(const char *fmt, u32 fmt_size, const u64 *raw_args,
- 		 * always access fmt[i + 1], in the worst case it will be a 0
- 		 */
- 		i++;
-+		c = fmt[i];
-+		/*
-+		 * The format parser below only understands ASCII conversion
-+		 * specifiers and modifiers, so reject non-ASCII after '%'.
-+		 */
-+		if (!isascii(c)) {
-+			err = -EINVAL;
-+			goto out;
-+		}
+-	if (common->reg_fc)
++	if (!common->reg_fc)
+ 		return 0;
  
- 		/* skip optional "[0 +-][num]" width formatting field */
- 		while (fmt[i] == '0' || fmt[i] == '+'  || fmt[i] == '-' ||
-diff --git a/tools/testing/selftests/bpf/prog_tests/snprintf.c b/tools/testing/selftests/bpf/prog_tests/snprintf.c
-index 594441acb7071..4e4a82d54f799 100644
---- a/tools/testing/selftests/bpf/prog_tests/snprintf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/snprintf.c
-@@ -114,7 +114,8 @@ static void test_snprintf_negative(void)
- 	ASSERT_ERR(load_single_snprintf("%--------"), "invalid specifier 5");
- 	ASSERT_ERR(load_single_snprintf("%lc"), "invalid specifier 6");
- 	ASSERT_ERR(load_single_snprintf("%llc"), "invalid specifier 7");
--	ASSERT_ERR(load_single_snprintf("\x80"), "non ascii character");
-+	ASSERT_OK(load_single_snprintf("\x80"), "non ascii plain text");
-+	ASSERT_ERR(load_single_snprintf("%\x80"), "non ascii in specifier");
- 	ASSERT_ERR(load_single_snprintf("\x1"), "non printable character");
- 	ASSERT_ERR(load_single_snprintf("%p%"), "invalid specifier 8");
- 	ASSERT_ERR(load_single_snprintf("%s%"), "invalid specifier 9");
+ 	ccu_update(common, fc, common->mask_fc, common->mask_fc);
 -- 
 2.53.0
 
