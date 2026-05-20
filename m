@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-252252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIa4CX37DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:45 +0200
+	id aJbgArf4DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B17595D98
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC9B595643
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E2A573078514
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8DA1313C339
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DAF3D75C7;
-	Wed, 20 May 2026 18:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692A13F65E6;
+	Wed, 20 May 2026 18:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kf2Dpu7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ/J1FFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304383A3E79;
-	Wed, 20 May 2026 18:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDA13F39F5;
+	Wed, 20 May 2026 18:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300191; cv=none; b=INBONM181v2Snmu3mCo2w6oc864bel2mIF586KDWnwQkVhyWjHE3aJfEWi7OF7GEXl57xDJkkdoQJgbZBTkIHVWXiqCzwjBATYkWX9yqxTq7pvg0OprGYpcp0O81fRiJlOgsRKnvUZpsWf24cX8Ius5Lr/k8fo6toqt56G24848=
+	t=1779300076; cv=none; b=H2KiDoCBMp1QKZd5E+pEiESyZm3Sb0XKnu0ttgCFopsrGqtu2uXhlKhzVbT9JcltFgxUV2JBXw2LVoHuM1JDtGeRAt0nC8mowivOKG93kFM4WVDRX0w/dIDWriBvDOuyuQL3EL+XYOMeo8vzp9X6uXsFs1jSzqpiWeIETGmTjlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300191; c=relaxed/simple;
-	bh=x+ilijrX0RmOWOIGKjePYMrNYYOGcoWsvMEHJpas/C8=;
+	s=arc-20240116; t=1779300076; c=relaxed/simple;
+	bh=g/LbxD8S4KX8XEXhsi3VNl+ZoojpdXAmI6j9NTaSA4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4GH4nEjVX3aTO7i6k7JTApGqabJPdJb59gUcqPhqLI6xh08RU/dsW5X6vGa0z+LGe80KrSPIFD3xEJou6DjqccSbCzuRFdcbWUn4xazIw7LfW3lcc4CEh2GBYyNr0tYyTDi+m87tQBZIZxgoqCgIthGioiUu4ZWRzy5wgoY5f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kf2Dpu7c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9593D1F00893;
-	Wed, 20 May 2026 18:03:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ljIqvLeVT9S1fqGtcaDu8V3inJuqVnBHuBXDJzvDAOj0op49J3Zk6+jFw9D1E2hJ7JW48yXlbenC9QrPKT29Nl1ETUJaVhrnI4vollRXry54pIGzzIvnzgoqMXTTpfCE76eGG6h5y7AIOvkRAowypRpnF7KnYsHd1iEZW58ZJ4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ/J1FFK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF90F1F00893;
+	Wed, 20 May 2026 18:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300190;
-	bh=UCfz2CH7fxcQf1jZakE6qlCeffZku/oGY3jP95E04Kk=;
+	s=korg; t=1779300074;
+	bh=jm80kvjjXhiVq0wWOYmujx1K6or16uYYhyIs12EfLZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kf2Dpu7cunZ5Gcf4FcTGjNkG3AfOToztsQcrRefUniEPWmSCkiIAjD5Y/IXng/DB1
-	 LowzgHwM0malIWL9gRTP32xPVqC486uHpRSxCYUQnKu/0I+0/1pjDBFuobupDk5ncV
-	 3iTc+rf7UTFF/t67XzioBcfFSNWX0h+Gei3XIbJw=
+	b=XZ/J1FFKEQaoNoOVDNv264Me3Qzz2KDKDg/0D3u/bpnYV0I+bcgQbdw0WzdWUyC/2
+	 rykk7mYJfhnOWIDVlrqhks1cGzWeSeQ+0cH+8loJJB0D2Lvoc56Sqobc0qko8+bxjx
+	 Wz6nv6DgWR6OCFgyMeNJ8a/CgykukD5dQzynoxLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/666] hrtimer: Reduce trace noise in hrtimer_start()
-Date: Wed, 20 May 2026 18:14:00 +0200
-Message-ID: <20260520162111.867078021@linuxfoundation.org>
+Subject: [PATCH 6.12 030/666] sparc/vdso: Always reject undefined references during linking
+Date: Wed, 20 May 2026 18:14:01 +0200
+Message-ID: <20260520162111.887984871@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
 References: <20260520162111.222830634@linuxfoundation.org>
@@ -63,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252207-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252252-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D0B17595D98
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linutronix.de:email,davemloft.net:email,cppflags_vdso.lds:url]
+X-Rspamd-Queue-Id: 7CC9B595643
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,214 +101,67 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit f2e388a019e4cf83a15883a3d1f1384298e9a6aa ]
+[ Upstream commit 652262975db421767ada3f05b926854bbb357759 ]
 
-hrtimer_start() when invoked with an already armed timer traces like:
+Instead of using a custom script to detect and fail on undefined
+references, use --no-undefined for all VDSO linker invocations.
 
- <comm>-..   [032] d.h2. 5.002263: hrtimer_cancel: hrtimer= ....
- <comm>-..   [032] d.h1. 5.002263: hrtimer_start: hrtimer= ....
+Drop the now unused checkundef.sh script.
 
-Which is incorrect as the timer doesn't get canceled. Just the expiry time
-changes. The internal dequeue operation which is required for that is not
-really interesting for trace analysis. But it makes it tedious to keep real
-cancellations and the above case apart.
-
-Remove the cancel tracing in hrtimer_start() and add a 'was_armed'
-indicator to the hrtimer start tracepoint, which clearly indicates what the
-state of the hrtimer is when hrtimer_start() is invoked:
-
-<comm>-..   [032] d.h1. 6.200103: hrtimer_start: hrtimer= .... was_armed=0
- <comm>-..   [032] d.h1. 6.200558: hrtimer_start: hrtimer= .... was_armed=1
-
-Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260224163430.208491877@kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/r/20250306-vdso-checkundef-v2-2-a26cc315fd73@linutronix.de
+Stable-dep-of: acc4f131d5d5 ("sparc64: vdso: Link with -z noexecstack")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/timer.h | 11 +++++----
- kernel/time/hrtimer.c        | 43 +++++++++++++++++-------------------
- 2 files changed, 27 insertions(+), 27 deletions(-)
+ arch/sparc/vdso/Makefile      |  7 +++----
+ arch/sparc/vdso/checkundef.sh | 10 ----------
+ 2 files changed, 3 insertions(+), 14 deletions(-)
+ delete mode 100644 arch/sparc/vdso/checkundef.sh
 
-diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
-index 1ef58a04fc579..19c975ffea176 100644
---- a/include/trace/events/timer.h
-+++ b/include/trace/events/timer.h
-@@ -218,12 +218,13 @@ TRACE_EVENT(hrtimer_init,
-  * hrtimer_start - called when the hrtimer is started
-  * @hrtimer:	pointer to struct hrtimer
-  * @mode:	the hrtimers mode
-+ * @was_armed:	Was armed when hrtimer_start*() was invoked
-  */
- TRACE_EVENT(hrtimer_start,
+diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+index 243dbfc4609d8..c7697884975ea 100644
+--- a/arch/sparc/vdso/Makefile
++++ b/arch/sparc/vdso/Makefile
+@@ -22,7 +22,7 @@ targets += $(foreach x, 32 64, vdso-image-$(x).c vdso$(x).so vdso$(x).so.dbg)
  
--	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
-+	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
+ CPPFLAGS_vdso.lds += -P -C
  
--	TP_ARGS(hrtimer, mode),
-+	TP_ARGS(hrtimer, mode, was_armed),
+-VDSO_LDFLAGS_vdso.lds = -m elf64_sparc -soname linux-vdso.so.1 --no-undefined \
++VDSO_LDFLAGS_vdso.lds = -m elf64_sparc -soname linux-vdso.so.1 \
+ 			-z max-page-size=8192
  
- 	TP_STRUCT__entry(
- 		__field( void *,	hrtimer		)
-@@ -231,6 +232,7 @@ TRACE_EVENT(hrtimer_start,
- 		__field( s64,		expires		)
- 		__field( s64,		softexpires	)
- 		__field( enum hrtimer_mode,	mode	)
-+		__field( bool,		was_armed	)
- 	),
+ $(obj)/vdso64.so.dbg: $(obj)/vdso.lds $(vobjs) FORCE
+@@ -101,7 +101,6 @@ $(obj)/vdso32.so.dbg: FORCE \
+ quiet_cmd_vdso = VDSO    $@
+       cmd_vdso = $(LD) -nostdlib -o $@ \
+ 		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
+-		       -T $(filter %.lds,$^) $(filter %.o,$^) && \
+-		sh $(src)/checkundef.sh '$(OBJDUMP)' '$@'
++		       -T $(filter %.lds,$^) $(filter %.o,$^)
  
- 	TP_fast_assign(
-@@ -239,13 +241,14 @@ TRACE_EVENT(hrtimer_start,
- 		__entry->expires	= hrtimer_get_expires(hrtimer);
- 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
- 		__entry->mode		= mode;
-+		__entry->was_armed	= was_armed;
- 	),
- 
- 	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
--		  "mode=%s", __entry->hrtimer, __entry->function,
-+		  "mode=%s was_armed=%d", __entry->hrtimer, __entry->function,
- 		  (unsigned long long) __entry->expires,
- 		  (unsigned long long) __entry->softexpires,
--		  decode_hrtimer_mode(__entry->mode))
-+		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
- );
- 
- /**
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 343c7e4008aba..5d1b880de171d 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -489,17 +489,10 @@ debug_init(struct hrtimer *timer, clockid_t clockid,
- 	trace_hrtimer_init(timer, clockid, mode);
- }
- 
--static inline void debug_activate(struct hrtimer *timer,
--				  enum hrtimer_mode mode)
-+static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
- {
- 	debug_hrtimer_activate(timer, mode);
--	trace_hrtimer_start(timer, mode);
--}
--
--static inline void debug_deactivate(struct hrtimer *timer)
--{
--	debug_hrtimer_deactivate(timer);
--	trace_hrtimer_cancel(timer);
-+	trace_hrtimer_start(timer, mode, was_armed);
- }
- 
- static struct hrtimer_clock_base *
-@@ -1094,9 +1087,9 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
-  * Returns true when the new timer is the leftmost timer in the tree.
-  */
- static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
--			    enum hrtimer_mode mode)
-+			    enum hrtimer_mode mode, bool was_armed)
- {
--	debug_activate(timer, mode);
-+	debug_activate(timer, mode, was_armed);
- 	WARN_ON_ONCE(!base->cpu_base->online);
- 
- 	base->cpu_base->active_bases |= 1 << base->index;
-@@ -1156,6 +1149,8 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 	if (state & HRTIMER_STATE_ENQUEUED) {
- 		bool reprogram;
- 
-+		debug_hrtimer_deactivate(timer);
-+
- 		/*
- 		 * Remove the timer and force reprogramming when high
- 		 * resolution mode is active and the timer is on the current
-@@ -1164,7 +1159,6 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
- 		 * reprogramming happens in the interrupt handler. This is a
- 		 * rare case and less expensive than a smp call.
- 		 */
--		debug_deactivate(timer);
- 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
- 
- 		/*
-@@ -1231,15 +1225,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- {
- 	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
- 	struct hrtimer_clock_base *new_base;
--	bool force_local, first;
-+	bool force_local, first, was_armed;
- 
- 	/*
- 	 * If the timer is on the local cpu base and is the first expiring
- 	 * timer then this might end up reprogramming the hardware twice
--	 * (on removal and on enqueue). To avoid that by prevent the
--	 * reprogram on removal, keep the timer local to the current CPU
--	 * and enforce reprogramming after it is queued no matter whether
--	 * it is the new first expiring timer again or not.
-+	 * (on removal and on enqueue). To avoid that prevent the reprogram
-+	 * on removal, keep the timer local to the current CPU and enforce
-+	 * reprogramming after it is queued no matter whether it is the new
-+	 * first expiring timer again or not.
- 	 */
- 	force_local = base->cpu_base == this_cpu_base;
- 	force_local &= base->cpu_base->next_timer == timer;
-@@ -1261,7 +1255,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	 * avoids programming the underlying clock event twice (once at
- 	 * removal and once after enqueue).
- 	 */
--	remove_hrtimer(timer, base, true, force_local);
-+	was_armed = remove_hrtimer(timer, base, true, force_local);
- 
- 	if (mode & HRTIMER_MODE_REL)
- 		tim = ktime_add_safe(tim, base->get_time());
-@@ -1278,7 +1272,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 		new_base = base;
- 	}
- 
--	first = enqueue_hrtimer(timer, new_base, mode);
-+	first = enqueue_hrtimer(timer, new_base, mode, was_armed);
- 
- 	/*
- 	 * If the hrtimer interrupt is running, then it will reevaluate the
-@@ -1382,8 +1376,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
- 
- 	base = lock_hrtimer_base(timer, &flags);
- 
--	if (!hrtimer_callback_running(timer))
-+	if (!hrtimer_callback_running(timer)) {
- 		ret = remove_hrtimer(timer, base, false, false);
-+		if (ret)
-+			trace_hrtimer_cancel(timer);
-+	}
- 
- 	unlock_hrtimer_base(timer, &flags);
- 
-@@ -1770,7 +1767,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
- 	 */
- 	if (restart != HRTIMER_NORESTART &&
- 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
--		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
-+		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
- 
- 	/*
- 	 * Separate the ->running assignment from the ->state assignment.
-@@ -2252,7 +2249,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 	while ((node = timerqueue_getnext(&old_base->active))) {
- 		timer = container_of(node, struct hrtimer, node);
- 		BUG_ON(hrtimer_callback_running(timer));
--		debug_deactivate(timer);
-+		debug_hrtimer_deactivate(timer);
- 
- 		/*
- 		 * Mark it as ENQUEUED not INACTIVE otherwise the
-@@ -2269,7 +2266,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 		 * sort out already expired timers and reprogram the
- 		 * event device.
- 		 */
--		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
-+		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
- 	}
- }
- 
+-VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic
++VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined
+diff --git a/arch/sparc/vdso/checkundef.sh b/arch/sparc/vdso/checkundef.sh
+deleted file mode 100644
+index 2d85876ffc325..0000000000000
+--- a/arch/sparc/vdso/checkundef.sh
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#!/bin/sh
+-objdump="$1"
+-file="$2"
+-$objdump -t "$file" | grep '*UUND*' | grep -v '#scratch' > /dev/null 2>&1
+-if [ $? -eq 1 ]; then
+-    exit 0
+-else
+-    echo "$file: undefined symbols found" >&2
+-    exit 1
+-fi
 -- 
 2.53.0
 
