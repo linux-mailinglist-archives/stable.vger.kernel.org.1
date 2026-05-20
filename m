@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEaMN878DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:22 +0200
+	id uHUELbbvDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE210596243
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0660593D63
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D02B3203451
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4CA183224B22
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BCC3F6C4C;
-	Wed, 20 May 2026 17:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0540A3A4526;
+	Wed, 20 May 2026 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMWxrWsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj0Mev1H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ED53F6C4E;
-	Wed, 20 May 2026 17:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A17036EAB8;
+	Wed, 20 May 2026 16:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297947; cv=none; b=rB4r7mQ9UIJILcI9YwiC/9BeSrj+VkdP8f1jtN6rUAlpVzNv4+Ol9IjgEqYf6DTviNFmLM+jKmuL5XSYy2jnfRc4Q78T57zyE2U+buHUIftvlEvjqQJEeeljKYBruDq+rn8qdVVzcAsUS27Q/n+pUG2OwQy1UDORPZAcduhkb48=
+	t=1779295543; cv=none; b=OEiH9LTHwS8TkAqdHSraWKvBuINeMCdFJCEBNY3F9Wmcm3IKS17mgbGnR2Rqt0jaUJcUO6ZOMC6pOLZ+03ccjSd/PT4vlCZNEdCdpJhgQm7reQKXK3ohHSS+1x6dqpoWxQ9srrtiz0JfWay6S0sUm0jnOtrlj3++XKxH4Mlm8wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297947; c=relaxed/simple;
-	bh=QAQCnOIEnhKBZGaBFZKRHRusEN2r2uk1OFGN1kDbz+4=;
+	s=arc-20240116; t=1779295543; c=relaxed/simple;
+	bh=f5oDWkDl47cNYkSIJmtYDDvlaYbAGQfwdimhXIaXJaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrIeTsS7oYq2kvc8L3/nrEZMlquTm7EXm8p6XzHHG33iDr6nPRMWSPJudW1Bi0fGap0uNu0gQb9TnnfRO3mQVDmtE6MVSbGwW5GKSuWfNmV12X58rO66qhw7gXcVhP7XK2jcwDx6zt2kEZcgs3vBn6B2qqJkLhmbx0yWsWmRP/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMWxrWsd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEBF1F000E9;
-	Wed, 20 May 2026 17:25:45 +0000 (UTC)
+	 MIME-Version; b=g2bvmhsmROWEUDWUoHPjear9Dn0znZaRAtJwiI0aUrJ7EDpj1du3/HBRh9S/FxAmjNzXQID7bJ0EfKodgLt+LRYGalh8Fmz9nPsnLpahgviLVbtHbaIfZ+JTKNpbWn/oadg5y0COKUQxXBSACe/qYlnGZ5d8S8LH0Unpi4x3Bq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj0Mev1H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC8E1F000E9;
+	Wed, 20 May 2026 16:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297946;
-	bh=XU/bS2/s1+TzdwqGJ0uV83Zs22iICnKEjMRGLdVUUaE=;
+	s=korg; t=1779295542;
+	bh=v60S4fv0Zn0qotkaQBHIRUsa8iksAFNRt6k8CvrNv10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TMWxrWsdiF34s299v7K2/xJA34iPG22ihh4hTKYmlEP049O3pVJNXZDEs3dKQSk+w
-	 aOgBBAYbyW4lQFNV//hqvy1hHQu7d4n9suvijBPKD7l4B7Ri2+5f4nRG3f4W6NDctW
-	 CMCzzD360NLQtUSsy9dW4lWwiKFp+FPJc2MwJM+4=
+	b=Rj0Mev1HUQTXfCgEPPSgYyCAkaMHhLQzGHZ4Rfh3vnoS/1rDMwF16I0SshAFWXuCn
+	 gchS9QRRCSkPT29fpXNzaCoa2oHFRAcJN6QXcXkpN26yE3/f0e2OEpfIev/2o6N2dg
+	 RpLA/5r2Q8pNq2m3p+oDEpFSkkMpv8wpFbp6akq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Matt Evans <mattev@meta.com>,
+	Ted Logan <tedlogan@fb.com>,
+	David Matlack <dmatlack@google.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 225/957] iommu/riscv: Stop polling when CQCSR reports an error
+Subject: [PATCH 7.0 0458/1146] vfio: selftests: Build tests on aarch64
 Date: Wed, 20 May 2026 18:11:48 +0200
-Message-ID: <20260520162139.420678207@linuxfoundation.org>
+Message-ID: <20260520162158.561956307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,79 +75,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250489-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251425-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,alibaba.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EE210596243
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:email,meta.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,fb.com:email]
+X-Rspamd-Queue-Id: D0660593D63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: Ted Logan <tedlogan@fb.com>
 
-[ Upstream commit b2e5684558edf3e9bbe18d0e0043854994eab1be ]
+[ Upstream commit 1347a742a1e1b080e2e8d200312ae45b8d6ac859 ]
 
-The cmdq wait loop busy-polls the consumer index until it advances
-or the software timeout expires. If the IOMMU has already signaled
-a command queue failure in CQCSR, continuing to poll for progress is
-pointless.
+Fix vfio selftests on aarch64, allowing native builds on aarch64 hosts.
 
-Make riscv_iommu_queue_wait() also terminate the poll when any of these
-CQCSR error bits are observed.
-
-This helps the caller return earlier in failure cases and avoids
-spinning until the full timeout interval when the hardware has already
-reported an error. On single-core systems in particular, the current
-busy-wait can delay servicing the command-timeout interrupt until the
-software timeout expires (90s by default).
-
-Fixes: 856c0cfe5c5f ("iommu/riscv: Command and fault queue support")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Reported-by: Matt Evans <mattev@meta.com>
+Closes: https://lore.kernel.org/all/e51b4ff2-13c4-47d4-b781-3dcbd740d274@meta.com/
+Fixes: a55d4bbbe644 ("vfio: selftests: only build tests on arm64 and x86_64")
+Signed-off-by: Ted Logan <tedlogan@fb.com>
+Reviewed-by: David Matlack <dmatlack@google.com>
+Link: https://lore.kernel.org/r/20260319-vfio-selftests-aarch64-v2-1-bb2621c24dc4@fb.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/riscv/iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/vfio/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index c183818015813..1e8007a153c32 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -368,6 +368,8 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
- 				  unsigned int timeout_us)
- {
- 	unsigned int cons = atomic_read(&queue->head);
-+	unsigned int flags = RISCV_IOMMU_CQCSR_CQMF | RISCV_IOMMU_CQCSR_CMD_TO |
-+			     RISCV_IOMMU_CQCSR_CMD_ILL;
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index 8e90e409e91d8..0684932d91bfc 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -1,6 +1,6 @@
+ ARCH ?= $(shell uname -m)
  
- 	/* Already processed by the consumer */
- 	if ((int)(cons - index) > 0)
-@@ -375,6 +377,7 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
- 
- 	/* Monitor consumer index */
- 	return readx_poll_timeout(riscv_iommu_queue_cons, queue, cons,
-+				 (riscv_iommu_readl(queue->iommu, queue->qcr) & flags) ||
- 				 (int)(cons - index) > 0, 0, timeout_us);
- }
- 
+-ifeq (,$(filter $(ARCH),arm64 x86_64))
++ifeq (,$(filter $(ARCH),aarch64 arm64 x86_64))
+ # Do nothing on unsupported architectures
+ include ../lib.mk
+ else
 -- 
 2.53.0
 
