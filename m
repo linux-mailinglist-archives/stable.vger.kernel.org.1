@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBvcIbMVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:35 +0200
+	id GOmUADL+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3517B599448
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A693F5967A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2598731B45D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01FED317B4AD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C17F3F39E2;
-	Wed, 20 May 2026 17:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041613FDC00;
+	Wed, 20 May 2026 18:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYw8pbI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE/VgXXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD913C6A5C;
-	Wed, 20 May 2026 17:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F8C3FBB45;
+	Wed, 20 May 2026 18:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297276; cv=none; b=O/zjHxm2U/Rux7asgR5b7jVMVJtiTKwxLD2Y4/6OaUbN/fLpNug8MTVn2xGVSS4QeE+sUc/MTbHHkrX3l1iMTt/OhXeCC7BXjpbDqFkxaT0XMztdGr9Eo554d3ULtQrwnC4baohZWjT7bjj4gP/B0FT66oo4gx2RZ8GrlDSAPck=
+	t=1779301447; cv=none; b=mLlBr3e87ALNHYecQAn5gFmJRiNzeNdSBQQgH6IL0PMpIFsM8b+KXS5nYxfRppw76ikGbxAVDpnDhXXOYBpdfKq590qliDoYZHBG5L06CVTwl4uLBcWQxAbv4jDBUsBshBe8sgzreHLms3XXZxjpQFGAr/0Joztektqez5RAVv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297276; c=relaxed/simple;
-	bh=G5NvtBiafaOqDYG0UzGTnFQJQwZ9HedHremagF8nSE8=;
+	s=arc-20240116; t=1779301447; c=relaxed/simple;
+	bh=ldgY1VSXA3CL9htaSzEqbQRdgfn0V2SNtLpxDZoCNHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mC7a2+su5dfYYZQYgEMfgw6KpWpbOnasTnKhNRwUMpYGMlEMVh6zCnY2Vh9+LL9YgrEMuL1H977Bih0KJS0WDMElnJJnDRWKQS+ZPOT/0SOPrugUtTBARkoVbRJI5phAuuINnvKYnZrKg9rQol3HS/GgyWhQ/ce8DqxaEYgmgU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYw8pbI0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC151F000E9;
-	Wed, 20 May 2026 17:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fsxx5/IRzFfelRMkiASJ+D9ajLwLKlhDNoYNdzxrRfaQ0FAu6KTeUoA5NY60MXAYv7eAwFRZDRyNRZ4mozICbYAEX0GfxKGXPu+I6qunE2rP+NU+AwfSPr39oWuQn7TnIF0vCBi87zZCiHJcYaOCIxPppJcXyjtkR86g97IUQbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE/VgXXm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ECF1F00893;
+	Wed, 20 May 2026 18:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297275;
-	bh=NlyK/auqC7gmCAv/BEgjb0tH9bRnpfWuZ6DF2ew5MeM=;
+	s=korg; t=1779301446;
+	bh=lgaWIsU/bPINxjfx18puwB8QrPlO/QmMtdSRPWsrR7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qYw8pbI0MD6S9g7UyeiL43acJqzeqSD8KNpcYomohdNZDDoRkD4UYcuBMdFRbo+pi
-	 veFHZscawD+0eRRqfjN+IvTZ3bsPARpSxq2xF6ZdCW4w7GuwZZhbpjJdaPmzqbrSGM
-	 TRMQsdn7TYyppcoKHaBFXW4f0iFnRCz2jDmSKtQU=
+	b=nE/VgXXmh6PNAPchfKQg1d6ANf2sUEPZUBXNPI8cIJ0YriVejG7KcgQ0kVfbznTtW
+	 DAlIjxcCOCNaLySzI3KDvM0lueGAEvbM8TrAwGiJJ6DD8AUjR/Sd7xQmrvSv1q7lUX
+	 g/USTFS6WMfa1kFo3D5LUHovgKb8T5EfQHurJjgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 7.0 1117/1146] libceph: Fix potential out-of-bounds access in crush_decode()
-Date: Wed, 20 May 2026 18:22:47 +0200
-Message-ID: <20260520162213.521776052@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 557/666] drm/amdgpu/vcn: set no_user_fence for VCN v3.0 enc/dec rings
+Date: Wed, 20 May 2026 18:22:48 +0200
+Message-ID: <20260520162123.338310893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252733-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251168-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3517B599448
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A693F5967A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-commit 4c79fc2d598694bda845b46229c9d48b65042970 upstream.
+[ Upstream commit f1e5a6660d7cbf006079126d9babbf0ccf538c6b ]
 
-A message of type CEPH_MSG_OSD_MAP containing a crush map with at least
-one bucket has two fields holding the bucket algorithm. If the values
-in these two fields differ, an out-of-bounds access can occur. This is
-the case because the first algorithm field (alg) is used to allocate
-the correct amount of memory for a bucket of this type, while the second
-algorithm field inside the bucket (b->alg) is used in the subsequent
-processing.
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-This patch fixes the issue by adding a check that compares alg and
-b->alg and aborts the processing in case they differ. Furthermore,
-b->alg is set to 0 in this case, because the destruction of the crush
-map also uses this field to determine the bucket type, which can again
-result in an out-of-bounds access when trying to free the memory pointed
-to by the fields of the bucket. To correctly free the memory allocated
-for the bucket in such a case, the corresponding call to kfree is moved
-from the algorithm-specific crush_destroy_bucket functions to the
-generic crush_destroy_bucket().
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf14826cdfb5 ("drm/amdgpu: add VCN3.0 support for Sienna_Cichlid")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 663bed3c7b8b9a7624b0d95d300ddae034ad0614)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/crush/crush.c |    6 +-----
- net/ceph/osdmap.c      |    4 ++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ceph/crush/crush.c
-+++ b/net/ceph/crush/crush.c
-@@ -47,7 +47,6 @@ int crush_get_bucket_item_weight(const s
- void crush_destroy_bucket_uniform(struct crush_bucket_uniform *b)
- {
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_list(struct crush_bucket_list *b)
-@@ -55,14 +54,12 @@ void crush_destroy_bucket_list(struct cr
- 	kfree(b->item_weights);
- 	kfree(b->sum_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_tree(struct crush_bucket_tree *b)
- {
- 	kfree(b->h.items);
- 	kfree(b->node_weights);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw(struct crush_bucket_straw *b)
-@@ -70,14 +67,12 @@ void crush_destroy_bucket_straw(struct c
- 	kfree(b->straws);
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw2(struct crush_bucket_straw2 *b)
- {
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket(struct crush_bucket *b)
-@@ -99,6 +94,7 @@ void crush_destroy_bucket(struct crush_b
- 		crush_destroy_bucket_straw2((struct crush_bucket_straw2 *)b);
- 		break;
- 	}
-+	kfree(b);
- }
- 
- /**
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -517,6 +517,10 @@ static struct crush_map *crush_decode(vo
- 		b->id = ceph_decode_32(p);
- 		b->type = ceph_decode_16(p);
- 		b->alg = ceph_decode_8(p);
-+		if (b->alg != alg) {
-+			b->alg = 0;
-+			goto bad;
-+		}
- 		b->hash = ceph_decode_8(p);
- 		b->weight = ceph_decode_32(p);
- 		b->size = ceph_decode_32(p);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+index 53428a364c1ae..09f8324fdb990 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -1791,6 +1791,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_dec_sw_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_DEC_SW_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -1972,6 +1973,7 @@ static int vcn_v3_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ static const struct amdgpu_ring_funcs vcn_v3_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -2073,6 +2075,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v3_0_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v3_0_enc_ring_set_wptr,
+-- 
+2.53.0
+
 
 
 
