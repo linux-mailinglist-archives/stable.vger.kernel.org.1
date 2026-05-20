@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-251649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NCDFNTyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:48 +0200
+	id gOlXDPcRDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-252284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA964594676
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32004598EB7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80B5630DC94D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34C023181622
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899EA370AC3;
-	Wed, 20 May 2026 17:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD0E3F9260;
+	Wed, 20 May 2026 18:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB9gAzvM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yueuXDER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0F22609FD;
-	Wed, 20 May 2026 17:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599633F871A;
+	Wed, 20 May 2026 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298532; cv=none; b=Z5uFH6/RDGLL4ezky2yv7A2iZYqgmOMgVwv2u8rVcLpjvZgmY8+1UoQumvuqwaIw+wwokQ8acOERdI8/+HI48o+Lf/kg/n+wHn2cpFSR2UabsLJvsKeBPUOHY7XS1W0eACUuaAPFTfd9Q4tmpjmHtTt2t5JtAXsUH7c78wihamE=
+	t=1779300273; cv=none; b=nYPpWCSGvRTGBRz6vR1BP/NzYYbnNHks1CBopTdECYWi525jrKl7ysaKCIO1YrwKNkf5jphvf+kfVUG/0thEfNkgB/dCyLgI43Fxz2+uDo9qB/2sTAv631kBt4ij5XbE6fDgpnSiJDnUNmzyMqJ2tfOxsY36QKqhc3BToczltWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298532; c=relaxed/simple;
-	bh=9wghZ+C8Z+R80eMPwVGcbMolE3/rYPSU3WqjRW49JAo=;
+	s=arc-20240116; t=1779300273; c=relaxed/simple;
+	bh=Hkj0q8E/a4+/Se4udAau4vcnTHd6BmfH/XS3b/UN2S8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F79eWuM7C7Yc1PikUlLpf9CE/GTnvokC76S8+2RQWxSTxQE8ZzHFW3XOhnAOCD6+C2zajedLUrMYmurfoXcyrzMoqd4LPPHBOFyiTpiPMzZ5QZsmSb62GuEg9R4nDxeWzYHv8H3rfE83SNd5Y0pHSrRjKKetym/AcPAHDpEH7kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB9gAzvM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F4B1F000E9;
-	Wed, 20 May 2026 17:35:30 +0000 (UTC)
+	 MIME-Version; b=LIfz6FTfMSoYRhPzQGvnKdrNxlc7taYtp2CTJ8uVKirrBuKmbbIsDaQ7G6PLHXna5LonsdX0idauZ2suR4ht7HoRM8Z7QdaTliEhTaacMZ87ueg6jX91cLgXbdyvdg0EhCs/k2sS85Ew8RCfFQmZt3eXoiA8+QoA8tzfl8jyEZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yueuXDER; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4691F00893;
+	Wed, 20 May 2026 18:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298531;
-	bh=gebNyAdEEye7AvWTpZJhZ2NNa9Lsr2jxHv7M2aihF6o=;
+	s=korg; t=1779300272;
+	bh=y0sekA3wpkOepNbfFlPNZL5ItWDJoSD49BIzOT5rYH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cB9gAzvMwOAclsVtzq7qI/IKnGQu3F5I5zjehtjWQgvdGUEp5mEDbz7COg8Vmo2Dv
-	 SJf1BpYg7DqI6088uUSAgOLiqd9sOYyQdrpvTWseIOR/bsNwfb09NnsnCH4H7tB5TF
-	 wm8Czq2TUfH6QhxQzR+B8BuNidX9qOiWYNJXBrQA=
+	b=yueuXDERVIJLock2NIp9DZ7gs+9359wcHLOSfvwvUArIDAYEWAmHKuAYIFRN7B5R3
+	 k7SEQsMPniz8E8L6ZZLP4XF0oh6Qk0jOJIquwxxjHn8A/PPgkPRmapJPHvHWtnAIRH
+	 kd8UKHq1mopPUlAxd1vs52Sb+jQQgLUxgFFK3L14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	David Howells <dhowells@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 439/957] lib: kunit_iov_iter: fix memory leaks
+Subject: [PATCH 6.12 111/666] net: phy: qcom: at803x: Use the correct bit to disable extended next page
 Date: Wed, 20 May 2026 18:15:22 +0200
-Message-ID: <20260520162144.042073535@linuxfoundation.org>
+Message-ID: <20260520162113.626604634@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,114 +69,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251649-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252284-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,c--e.de:email]
-X-Rspamd-Queue-Id: BA964594676
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 32004598EB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 0b49c7d0ae697fcecd7377cb7dda220f7cd096ff ]
+[ Upstream commit e7a62edd34b1b4bc5f979988efc2f81c075733fd ]
 
-Use vfree() instead of vunmap() to free the buffer allocated by
-iov_kunit_create_buffer() because vunmap() does not honour
-VM_MAP_PUT_PAGES.  In order for this to work the page array itself must
-not be managed by kunit.
+As noted in the blamed commit, the AR8035 and other PHYs from this
+family advertise the Extended Next Page support by default, which may be
+understood by some partners as this PHY being multi-gig capable.
 
-Remove the folio_put() when destroying a folioq.  This is handled by
-vfree(), now.
+The fix is to disable XNP advertising, which is done by setting bit 12
+of the Auto-Negotiation Advertisement Register (MII_ADVERTISE).
 
-Pointed out by sashiko.dev on a previous iteration of this series.
+The blamed commit incorrectly uses MDIO_AN_CTRL1_XNP, which is bit 13 as per
+802.3 : 45.2.7.1 AN control register (Register 7.0)
 
-Tested by running the kunit test 10000 times in a loop.
+BIT 12 in MII_ADVERTISE is wrapped by ADVERTISE_RESV, used by some
+drivers such as the aquantia one. 802.3 Clause 28 defines bit 12 as
+Extended Next Page ability, at least in recent versions of the standard.
 
-Link: https://lkml.kernel.org/r/20260326214905.818170-4-lk@c--e.de
-Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Let's add a define for it and use it in the at803x driver.
+
+Fixes: 3c51fa5d2afe ("net: phy: ar803x: disable extended next page bit")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260410171021.1277138-1-maxime.chevallier@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/tests/kunit_iov_iter.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/phy/qcom/at803x.c | 2 +-
+ include/uapi/linux/mii.h      | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/tests/kunit_iov_iter.c b/lib/tests/kunit_iov_iter.c
-index 48342736d0164..43e63bf4c0956 100644
---- a/lib/tests/kunit_iov_iter.c
-+++ b/lib/tests/kunit_iov_iter.c
-@@ -42,7 +42,7 @@ static inline u8 pattern(unsigned long x)
- 
- static void iov_kunit_unmap(void *data)
- {
--	vunmap(data);
-+	vfree(data);
+diff --git a/drivers/net/phy/qcom/at803x.c b/drivers/net/phy/qcom/at803x.c
+index ac909ad8a87b4..11b7540b69582 100644
+--- a/drivers/net/phy/qcom/at803x.c
++++ b/drivers/net/phy/qcom/at803x.c
+@@ -474,7 +474,7 @@ static int at803x_config_init(struct phy_device *phydev)
+ 	 * behaviour but we still need to accommodate it. XNP is only needed
+ 	 * for 10Gbps support, so disable XNP.
+ 	 */
+-	return phy_modify(phydev, MII_ADVERTISE, MDIO_AN_CTRL1_XNP, 0);
++	return phy_modify(phydev, MII_ADVERTISE, ADVERTISE_XNP, 0);
  }
  
- static void *__init iov_kunit_create_buffer(struct kunit *test,
-@@ -53,17 +53,22 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
- 	unsigned long got;
- 	void *buffer;
- 
--	pages = kunit_kcalloc(test, npages, sizeof(struct page *), GFP_KERNEL);
--        KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
-+	pages = kzalloc_objs(struct page *, npages, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
- 	*ppages = pages;
- 
- 	got = alloc_pages_bulk(GFP_KERNEL, npages, pages);
- 	if (got != npages) {
- 		release_pages(pages, got);
-+		kvfree(pages);
- 		KUNIT_ASSERT_EQ(test, got, npages);
- 	}
- 
- 	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
-+	if (buffer == NULL) {
-+		release_pages(pages, got);
-+		kvfree(pages);
-+	}
-         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
- 
- 	kunit_add_action_or_reset(test, iov_kunit_unmap, buffer);
-@@ -369,9 +374,6 @@ static void iov_kunit_destroy_folioq(void *data)
- 
- 	for (folioq = data; folioq; folioq = next) {
- 		next = folioq->next;
--		for (int i = 0; i < folioq_nr_slots(folioq); i++)
--			if (folioq_folio(folioq, i))
--				folio_put(folioq_folio(folioq, i));
- 		kfree(folioq);
- 	}
- }
+ static void at803x_link_change_notify(struct phy_device *phydev)
+diff --git a/include/uapi/linux/mii.h b/include/uapi/linux/mii.h
+index 39f7c44baf535..61d6edad4b94a 100644
+--- a/include/uapi/linux/mii.h
++++ b/include/uapi/linux/mii.h
+@@ -82,7 +82,8 @@
+ #define ADVERTISE_100BASE4	0x0200	/* Try for 100mbps 4k packets  */
+ #define ADVERTISE_PAUSE_CAP	0x0400	/* Try for pause               */
+ #define ADVERTISE_PAUSE_ASYM	0x0800	/* Try for asymetric pause     */
+-#define ADVERTISE_RESV		0x1000	/* Unused...                   */
++#define ADVERTISE_XNP		0x1000  /* Extended Next Page */
++#define ADVERTISE_RESV		ADVERTISE_XNP /* Used to be reserved */
+ #define ADVERTISE_RFAULT	0x2000	/* Say we can detect faults    */
+ #define ADVERTISE_LPACK		0x4000	/* Ack link partners response  */
+ #define ADVERTISE_NPAGE		0x8000	/* Next page bit               */
 -- 
 2.53.0
 
