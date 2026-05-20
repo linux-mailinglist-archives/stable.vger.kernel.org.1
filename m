@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNSzDLkTDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:09 +0200
+	id iGLoJ4ISDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-252261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9511D599125
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9EBC598F4C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A01A33EA2FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 00142313766A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1476E3F1ADF;
-	Wed, 20 May 2026 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D735B3F9287;
+	Wed, 20 May 2026 18:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2hXhMXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6b5BHs+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A5A3F1AD8;
-	Wed, 20 May 2026 16:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7632D3F6619;
+	Wed, 20 May 2026 18:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296153; cv=none; b=dQ6m3JvKaLbv/wEbRaJGqCV9r7SV6T+xz2RUokub6EPPOmSYNOGY2FgdiFMmmw3elaloyrTRr5XOpkgZ4HJ37X5fVrdOjOTfTOLCxSUMnaz/rIdvmClXhr5pC4AmZBdr5zhDD2M/q259Rzlzh1dAYhlwklwAGL/zGzP2HOvBHCI=
+	t=1779300212; cv=none; b=ZGaT6YZUli4W+2sMMP21GQS39ZyhabTsEEmsTt4S2h6tAVpiXgS+qWCfWVC4w+z3V7O6BQ9GFEo6F99BY3Kdp1lydoD6Y+wSiyqpxDDlgPEDWvFaoIeYANBJbwVHLF5Jxqg8cs8c0e6s+PwSlwDyAFkH8w3FOHy3LxFpRxi3NcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296153; c=relaxed/simple;
-	bh=bYk2tnizFqZO4DohF16w4C9BuEVW6cwgg6aHnVLRbPk=;
+	s=arc-20240116; t=1779300212; c=relaxed/simple;
+	bh=7ET3afKGSxH9dULYBc9Q3iCW5DNsLHdmzRFoLqvAFvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaY122XiOFiUJVlBz2eyDysu11/yoVOXa1ol07XJ2oRckKfvO8ly/jtOigPHmSXAR4S/nMvrgFH98ID8UvCT8NNh5sUi48MC6jS+jXAqNWl60ySUKlGE3aNN+JOoXdvqESvqW5ID4Fkua/+35xuQ3eo0wq4PejlDG1G2VLxmAKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2hXhMXZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1370C1F000E9;
-	Wed, 20 May 2026 16:55:51 +0000 (UTC)
+	 MIME-Version; b=AjSyRM9bZ5AXM4qebZhnKck0/DAWl0uaocUvRVOQNIPis77XjBJsmMqh4giv+BkObwJVCCg+pC5gcvL/wdVqTWwD4YGsjcJ+hfTbBZ9UdvsJ+wN4xFJ4ud0NzbNkC/92CZQPKRi76QjwO6IYfXj/XPt3vrz215R8eShwP8RKoWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6b5BHs+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE581F00893;
+	Wed, 20 May 2026 18:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296152;
-	bh=lFW1/aXUFiVcxslx9X1Me5BO45zkCmbiTF1F2c8N2lg=;
+	s=korg; t=1779300211;
+	bh=8Hm1fsPuSvb1zCxUwCyjA8kXC2tWxZZbVya6oiVyTvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t2hXhMXZDygCMrDNe9nCnDP2rENc9Hq5h3EuNAjxJliVd9p0WErJ4exuBydQRSEME
-	 sCFdJetTM4TMnrkvEWGaAs7zb2XN9XCmX8fkxoY8TlYta5l9cA5o08GM20Iv7hcYp2
-	 E829wnvb5jvovUUg+7TjwEYlQQduJg/rHw5XiU6I=
+	b=o6b5BHs+Qn5xgllckNwDi0v2jdK09Bw6EOXZ4AkIIdkLn86IS6GAMvpAtIEBCp4xq
+	 VEQmroen9pSqvMiVYSjJmMaHvfTp2V8zMgxe5FdIaXEidrhK5RexwMuqWFzXdI6lF4
+	 ZefiIundEovrWajxQWHYnhTDxr6h9XCYIezjYY+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Linus Walleij <linusw@kernel.org>,
+	zdi-disclosures@trendmicro.com,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0651/1146] pinctrl: sophgo: pinctrl-sg2042: Fix wrong module description
+Subject: [PATCH 6.12 090/666] net/sched: act_ct: Only release RCU read lock after ct_ft
 Date: Wed, 20 May 2026 18:15:01 +0200
-Message-ID: <20260520162202.917437289@linuxfoundation.org>
+Message-ID: <20260520162113.177766746@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +70,160 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250725-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252261-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email]
-X-Rspamd-Queue-Id: 9511D599125
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A9EBC598F4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit ca1c2ddff00480c213903a1479b56203536e92de ]
+[ Upstream commit f462dca0c8415bf0058d0ffa476354c4476d0f09 ]
 
-Fix the SoC model in module description string, it should be
-sg2042 instead of sg2002.
+When looking up a flow table in act_ct in tcf_ct_flow_table_get(),
+rhashtable_lookup_fast() internally opens and closes an RCU read critical
+section before returning ct_ft.
+The tcf_ct_flow_table_cleanup_work() can complete before refcount_inc_not_zero()
+is invoked on the returned ct_ft resulting in a UAF on the already freed ct_ft
+object. This vulnerability can lead to privilege escalation.
 
-Fixes: 1e67465d3b74 ("pinctrl: sophgo: add support for SG2042 SoC")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Analysis from zdi-disclosures@trendmicro.com:
+When initializing act_ct, tcf_ct_init() is called, which internally triggers
+tcf_ct_flow_table_get().
+
+static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+
+{
+                struct zones_ht_key key = { .net = net, .zone = params->zone };
+                struct tcf_ct_flow_table *ct_ft;
+                int err = -ENOMEM;
+
+                mutex_lock(&zones_mutex);
+                ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params); // [1]
+                if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) // [2]
+                                goto out_unlock;
+                ...
+}
+
+static __always_inline void *rhashtable_lookup_fast(
+                struct rhashtable *ht, const void *key,
+                const struct rhashtable_params params)
+{
+                void *obj;
+
+                rcu_read_lock();
+                obj = rhashtable_lookup(ht, key, params);
+                rcu_read_unlock();
+
+                return obj;
+}
+
+At [1], rhashtable_lookup_fast() looks up and returns the corresponding ct_ft
+from zones_ht . The lookup is performed within an RCU read critical section
+through rcu_read_lock() / rcu_read_unlock(), which prevents the object from
+being freed. However, at the point of function return, rcu_read_unlock() has
+already been called, and there is nothing preventing ct_ft from being freed
+before reaching refcount_inc_not_zero(&ct_ft->ref) at [2]. This interval becomes
+the race window, during which ct_ft can be freed.
+
+Free Process:
+
+tcf_ct_flow_table_put() is executed through the path tcf_ct_cleanup() call_rcu()
+tcf_ct_params_free_rcu() tcf_ct_params_free() tcf_ct_flow_table_put().
+
+static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
+{
+                if (refcount_dec_and_test(&ct_ft->ref)) {
+                                rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
+                                INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work); // [3]
+                                queue_rcu_work(act_ct_wq, &ct_ft->rwork);
+                }
+}
+
+At [3], tcf_ct_flow_table_cleanup_work() is scheduled as RCU work
+
+static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
+
+{
+                struct tcf_ct_flow_table *ct_ft;
+                struct flow_block *block;
+
+                ct_ft = container_of(to_rcu_work(work), struct tcf_ct_flow_table,
+                                                                rwork);
+                nf_flow_table_free(&ct_ft->nf_ft);
+                block = &ct_ft->nf_ft.flow_block;
+                down_write(&ct_ft->nf_ft.flow_block_lock);
+                WARN_ON(!list_empty(&block->cb_list));
+                up_write(&ct_ft->nf_ft.flow_block_lock);
+                kfree(ct_ft); // [4]
+
+                module_put(THIS_MODULE);
+}
+
+tcf_ct_flow_table_cleanup_work() frees ct_ft at [4]. When this function executes
+between [1] and [2], UAF occurs.
+
+This race condition has a very short race window, making it generally
+difficult to trigger. Therefore, to trigger the vulnerability an msleep(100) was
+inserted after[1]
+
+Fixes: 138470a9b2cc2 ("net/sched: act_ct: fix lockdep splat in tcf_ct_flow_table_get")
+Reported-by: zdi-disclosures@trendmicro.com
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260410111627.46611-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sophgo/pinctrl-sg2042.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/act_ct.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/sophgo/pinctrl-sg2042.c b/drivers/pinctrl/sophgo/pinctrl-sg2042.c
-index 185305ac897d9..8dba12e122a45 100644
---- a/drivers/pinctrl/sophgo/pinctrl-sg2042.c
-+++ b/drivers/pinctrl/sophgo/pinctrl-sg2042.c
-@@ -651,5 +651,5 @@ static struct platform_driver sg2042_pinctrl_driver = {
- };
- module_platform_driver(sg2042_pinctrl_driver);
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 945b64be4c1f1..c82755749211c 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -326,9 +326,13 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ 	int err = -ENOMEM;
  
--MODULE_DESCRIPTION("Pinctrl driver for the SG2002 series SoC");
-+MODULE_DESCRIPTION("Pinctrl driver for the SG2042 series SoC");
- MODULE_LICENSE("GPL");
+ 	mutex_lock(&zones_mutex);
+-	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+-	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
++	rcu_read_lock();
++	ct_ft = rhashtable_lookup(&zones_ht, &key, zones_params);
++	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref)) {
++		rcu_read_unlock();
+ 		goto out_unlock;
++	}
++	rcu_read_unlock();
+ 
+ 	ct_ft = kzalloc(sizeof(*ct_ft), GFP_KERNEL);
+ 	if (!ct_ft)
 -- 
 2.53.0
 
