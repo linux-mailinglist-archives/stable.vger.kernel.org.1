@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-250774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAJYIb33DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-250774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:45 +0200
+	id UGXlFAf6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0F05953C4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C863595A0F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8676833B3A06
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29C7F3110401
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E563A16B6;
-	Wed, 20 May 2026 16:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541CD3F8707;
+	Wed, 20 May 2026 18:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVJaZrwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s51FWl+b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264339C00B;
-	Wed, 20 May 2026 16:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1188E371CEA;
+	Wed, 20 May 2026 18:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296280; cv=none; b=c9rFvL1/zBAVk696SKhR+gFfHPtfXivv8eMsO8EHurxGe6VPg1nihZbIkP5Lj+gRu3kk5a+HVSz5W3bBuZidBm3s6YZvTz+JzszURzbUlysyj+pwpYwnAPva9KPIDVHXg5BUSdOYdFDyNA5vdam/tCUXzoU06g980BPiBoHhcAQ=
+	t=1779300339; cv=none; b=nEulnRRVfhScLoipuaivid2ttpQ0LGuuwIeLReJQxUydf0caMReVXDmUwi5jckOH2TMXdOISXDbdLlIINYSVTpT9JPiBhO3LmeVVlg/wzR32kylEdYaNvBKTX/jt4NtMH/ZMtxO4NUzgHoXMc7ADeToqaNbInP95Orv5NtUu8IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296280; c=relaxed/simple;
-	bh=Z5Mw/O8Y5vVJ80TwBAEuZLC77PFnaq4vR/3X1+3x4M0=;
+	s=arc-20240116; t=1779300339; c=relaxed/simple;
+	bh=V08hdCZeUIyNWXH1XIBBeMSuVvQylSz0XSXAZ3PyH0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaYa+Xz/GtuW47DrNAz8E1u/LzxglFeG9NsuH0zVzVJyzSUVr6pJP0pwHw9fNrrmMnUPveAwQhWRawMKYyLXFaUmGKw7s13GnFKwOxpcP0+ObeAs61UbbC+sTHJ8aULn34jWYvCRJ6t9WWMpls+8l6ZWkMyeNcTKbzDIP0gjTvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVJaZrwA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7DE1F000E9;
-	Wed, 20 May 2026 16:57:58 +0000 (UTC)
+	 MIME-Version; b=S0S7SCohDS9d2W/bLMvQwiH8soZlX6CLzjJrqrk4Aaq/xK2h/SDQ3PRPZc3z31MqkMEb0AN76artK3QbCiUMOqyWdi9YYRi1wP/8EADGR3QcAuYmxVtk5pGuP1URPqX91Tdok5forgqSmjLR4jY8kSMmUWi9Ku2Wqjb4WG9nKeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s51FWl+b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751981F000E9;
+	Wed, 20 May 2026 18:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296279;
-	bh=GIrYAfv3ROpmTdGpaJGQVXP3zD1uRbw8wifbYE8ho70=;
+	s=korg; t=1779300338;
+	bh=tTMfZlfY/liwoWe7Vh3Y8SX7i00xi8/pnfoJxMzOsGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gVJaZrwAto4Q3LDWo7Plze1AXYn78c0J7MxWdwdrWFw2tYKAMCT/+p/nuXrzz/DnJ
-	 wOqUq96uY2MTGzsJ5uvIOX6f0jsig5RCpYaRSqMKm1kfa19ZHz14Utx2mEjai9RdrQ
-	 KjRVKp/6GzuPlaegxqVXCFtF3gL6c9Lc/KyuexCg=
+	b=s51FWl+bGAd5SWirpInXHmDlV4zWwZaLB8cGtx30K0fcJXB00uO+8mL5P0mreiBa8
+	 mx7eIvXvFlE87eSVSA/YUYX/Gi4plzM+XYtTYF824u04LfoSuobg+i5bYVYHl8Q4BN
+	 CksFWi91Q6acG0v/W8cxWO6qiKpaCs7WdRpsglwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0698/1146] clk: qcom: dispcc-sm8450: use RCG2 ops for DPTX1 AUX clock source
-Date: Wed, 20 May 2026 18:15:48 +0200
-Message-ID: <20260520162203.988902012@linuxfoundation.org>
+Subject: [PATCH 6.12 138/666] dm log: fix out-of-bounds write due to region_count overflow
+Date: Wed, 20 May 2026 18:15:49 +0200
+Message-ID: <20260520162114.203685947@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,70 +69,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252309-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250774-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: EE0F05953C4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: 0C863595A0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 141af1be817c42c7f1e1605348d4b1983d319bea ]
+[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
 
-The clk_dp_ops are supposed to be used for DP-related clocks with a
-proper MND divier. Use standard RCG2 ops for dptx1_aux_clk_src, the same
-as all other DPTX AUX clocks in this driver.
+The local variable region_count in create_log_context() is declared as
+unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
+When a device-mapper target has a sufficiently large ti->len with a small
+region_size, the division result can exceed UINT_MAX. The truncated
+value is then used to calculate bitset_size, causing clean_bits,
+sync_bits, and recovering_bits to be allocated far smaller than needed
+for the actual number of regions.
 
-Fixes: 16fb89f92ec4 ("clk: qcom: Add support for Display Clock Controller on SM8450")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260112-dp-aux-clks-v1-2-456b0c11b069@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
+region indices derived from the full untruncated region space, causing
+out-of-bounds writes to kernel heap memory allocated by vmalloc.
+
+This can be reproduced by creating a mirror target whose region_count
+overflows 32 bits:
+
+  dmsetup create bigzero --table '0 8589934594 zero'
+  dmsetup create mymirror --table '0 8589934594 mirror \
+    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
+    /dev/mapper/bigzero 0'
+
+The status output confirms the truncation (sync_count=1 instead of
+4294967297, because 0x100000001 was truncated to 1):
+
+  $ dmsetup status mymirror
+  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
+
+This leads to a kernel crash in core_in_sync:
+
+  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
+  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
+  CR2: 0000000000000008
+  Fixing recursive fault but reboot is needed!
+
+Fix by widening the local region_count to sector_t and adding an
+explicit overflow check before the value is assigned to lc->region_count.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8450.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-log.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8450.c b/drivers/clk/qcom/dispcc-sm8450.c
-index 9ce9fd28e55b2..2e91332dd92ab 100644
---- a/drivers/clk/qcom/dispcc-sm8450.c
-+++ b/drivers/clk/qcom/dispcc-sm8450.c
-@@ -409,7 +409,7 @@ static struct clk_rcg2 disp_cc_mdss_dptx1_aux_clk_src = {
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_dp_ops,
-+		.ops = &clk_rcg2_ops,
- 	},
- };
+diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
+index bced5a783ee33..4a1369b8f44a0 100644
+--- a/drivers/md/dm-log.c
++++ b/drivers/md/dm-log.c
+@@ -373,7 +373,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
  
+ 	struct log_c *lc;
+ 	uint32_t region_size;
+-	unsigned int region_count;
++	sector_t region_count;
+ 	size_t bitset_size, buf_size;
+ 	int r;
+ 	char dummy;
+@@ -401,6 +401,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+ 	}
+ 
+ 	region_count = dm_sector_div_up(ti->len, region_size);
++	if (region_count > UINT_MAX) {
++		DMWARN("region count exceeds limit of %u", UINT_MAX);
++		return -EINVAL;
++	}
+ 
+ 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
+ 	if (!lc) {
 -- 
 2.53.0
 
