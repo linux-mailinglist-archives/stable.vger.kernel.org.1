@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJFrHp/JDWo33QUAu9opvQ
-	(envelope-from <stable+bounces-249959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:59 +0200
+	id QE/yAPjHDWr93AUAu9opvQ
+	(envelope-from <stable+bounces-249960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FFF59001F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957F558FD3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 98D9E306390A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:38:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8511D301065F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4973ED3BA;
-	Wed, 20 May 2026 14:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5379C27B353;
+	Wed, 20 May 2026 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sq9SZJdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCswURbx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE2C3EC2D1
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D681D3ED138
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779287931; cv=none; b=ZtW4QImYJqK3vp46A0sNe2n4ertyVcCPHGDYzwaTWODq/pTsUdbcELRdWml5CvXzl0RdiAQY6rHWVl+1pthDO6VNwdogFo1oYqP96bcpBEL+8FqHRYZAhsCUxiFHcQnYCRbCBj7G6v5KPqNx6XByKXIkKWo6Jp8S4XfNGVArRNc=
+	t=1779287940; cv=none; b=b8cwLROk31yWKVTWbigUJfU6qaDqufMoWRXazevhfTYwMd32Bpaha0Obf8cmjuSrZv0O2aK1dxLAP+fh1HR/KyYS8JOybbtk9rv7l9qrUUmQpDkeCkxnoJ2WCJjr92HOiVmgzFs9hfWZhpupThMTr/MPSweojV/HpkMIt0lQHs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779287931; c=relaxed/simple;
-	bh=1lXquzBjJNGVS8ZntH7Lv+nyqa+lDbHHs6tKKJHcxUE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vBMIZElRA3Nd154Df3EbXhMRDSsYcGCu9pI3SGmcy7HH/G/pbo5sBmDYRCbduZY0cJwXFc2PHVFzOq6O9vRF5fA+H4vlo6pIdK8GYujG8lG5R109Yi9wgmX34wmz8q7k4EsqbTYCsisoYRhE2RbNA+u9J95H010l9MgA4Wei7R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sq9SZJdW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B092F1F00893;
-	Wed, 20 May 2026 14:38:49 +0000 (UTC)
+	s=arc-20240116; t=1779287940; c=relaxed/simple;
+	bh=qhaIquGFdJaoe5OBs7Hb3wyKYm9RTD1CI+sl5tDy+Ps=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gXbupFmpRbkd3rBhUf6dc0blYa7T9hkma7cfPVwny6zq0D37QBQwxk08YpNoFcaGpt13B/CV/kAcHK8F/xdsCTp/TG3bsUupPO0OKco8ZF1mpqmh8Nc4mg/hUBfnSz/qc4rppbbhFtDycNWteWMYD1QBlUjDcAhZlnbYwqfGupw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCswURbx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1156C1F000E9;
+	Wed, 20 May 2026 14:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779287930;
-	bh=YTXBGdZ0a8jbZQAHbMs4sWT5/edhP19Il2tM2YWgYRk=;
+	s=korg; t=1779287938;
+	bh=b8sSUssSXsv3eBVLJuY/cTCqwkkWwF/EHlXahphVkwc=;
 	h=Subject:To:Cc:From:Date;
-	b=sq9SZJdWWdTQwMH0wpnQ6gU6iF7ep8cp5FW2dFQ71fya/Mkq5QysLPY/RvscruKp6
-	 5FRFVDczIZ2WrSKkZ4ATzFiku21isGQotx6V4/LesyBzadkNWC49ejP22w4dkL0+co
-	 ZBHuXAlk0abLF+I/NWeXf7fIpVciWEYlTjXMd/Sg=
-Subject: FAILED: patch "[PATCH] platform/x86: lenovo-wmi-other: Balance component bind and" failed to apply to 6.18-stable tree
-To: i@rong.moe,derekjohn.clark@gmail.com,ilpo.jarvinen@linux.intel.com,mpearson-lenovo@squebb.ca
+	b=jCswURbxh7melnW5Gd1puO2mhb/6yuLNaiCHIoC26c3Se5TnNZmMI4rR3dOx3sbOU
+	 PA43mRmAPx3YLxPFIm3ibOAmSLIpqXN4fcZK2zKQweK5IL0neWcx2P8pKcO6bjkMUB
+	 HBkyY42BA1+6IyJJ9iUqQXQOp+goPTF7q+fK0o7Y=
+Subject: FAILED: patch "[PATCH] platform/x86: lenovo-wmi-other: Zero initialize WMI arguments" failed to apply to 6.18-stable tree
+To: derekjohn.clark@gmail.com,i@rong.moe,ilpo.jarvinen@linux.intel.com,mpearson-lenovo@squebb.ca
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 May 2026 16:38:53 +0200
-Message-ID: <2026052053-waltz-unshackle-2092@gregkh>
+Date: Wed, 20 May 2026 16:39:01 +0200
+Message-ID: <2026052001-striving-endocrine-d192@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,15 +61,15 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249959-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249960-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[rong.moe,gmail.com,linux.intel.com,squebb.ca];
+	FREEMAIL_TO(0.00)[gmail.com,rong.moe,linux.intel.com,squebb.ca];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
@@ -79,12 +79,12 @@ X-Spamd-Result: default: False [3.84 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sashiko.dev:url,msgid.link:url,squebb.ca:email,gregkh:email,intel.com:email,rong.moe:email]
-X-Rspamd-Queue-Id: 96FFF59001F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gregkh:email,squebb.ca:email]
+X-Rspamd-Queue-Id: 957F558FD3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,10 +98,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2fe2504abcfa4f82a4208e8d0c21ec0f22baca43
+git cherry-pick -x 816fbd5dacee977ca56bab79bf97f71f2f7ac24e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052053-waltz-unshackle-2092@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052001-striving-endocrine-d192@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,50 +113,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2fe2504abcfa4f82a4208e8d0c21ec0f22baca43 Mon Sep 17 00:00:00 2001
-From: Rong Zhang <i@rong.moe>
-Date: Sun, 10 May 2026 04:25:33 +0000
-Subject: [PATCH] platform/x86: lenovo-wmi-other: Balance component bind and
- unbind
+From 816fbd5dacee977ca56bab79bf97f71f2f7ac24e Mon Sep 17 00:00:00 2001
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+Date: Sun, 10 May 2026 04:25:34 +0000
+Subject: [PATCH] platform/x86: lenovo-wmi-other: Zero initialize WMI arguments
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When lwmi_om_master_bind() fails, the master device's components are
-left bound, with the aggregate device destroyed due to the failure
-(found by sashiko.dev [1]).
-
-Balance calls to component_bind_all() and component_unbind_all() when an
-error is propagated to the component framework.
+Adds explicit initialization of wmi_method_args_32 declarations with
+zero values to prevent uninitialized data from being sent to the device
+BIOS when passed.
 
 No functional change intended.
 
 Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 22024ac5366f ("platform/x86: Add Lenovo Gamezone WMI Driver")
 Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
+Reported-by: Rong Zhang <i@rong.moe>
+Closes: https://lore.kernel.org/platform-driver-x86/95c7e7b539dd0af41189c754fcd35cec5b6fe182.camel@rong.moe/
 Cc: stable@vger.kernel.org
-Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
-Signed-off-by: Rong Zhang <i@rong.moe>
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
 Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-4-derekjohn.clark@gmail.com
+Link: https://patch.msgid.link/20260510042546.436874-5-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
+diff --git a/drivers/platform/x86/lenovo/wmi-gamezone.c b/drivers/platform/x86/lenovo/wmi-gamezone.c
+index c7fe7e3c9f17..098239c9311a 100644
+--- a/drivers/platform/x86/lenovo/wmi-gamezone.c
++++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
+@@ -201,7 +201,7 @@ static int lwmi_gz_profile_set(struct device *dev,
+ 			       enum platform_profile_option profile)
+ {
+ 	struct lwmi_gz_priv *priv = dev_get_drvdata(dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	int ret;
+ 
 diff --git a/drivers/platform/x86/lenovo/wmi-other.c b/drivers/platform/x86/lenovo/wmi-other.c
-index ebef3649d0a7..70fcb8406c27 100644
+index 70fcb8406c27..c1b429269f89 100644
 --- a/drivers/platform/x86/lenovo/wmi-other.c
 +++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -1070,8 +1070,11 @@ static int lwmi_om_master_bind(struct device *dev)
+@@ -166,7 +166,7 @@ MODULE_PARM_DESC(relax_fan_constraint,
+  */
+ static int lwmi_om_fan_get_set(struct lwmi_om_priv *priv, int channel, u32 *val, bool set)
+ {
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	u32 method_id, retval;
+ 	int err;
  
- 	priv->cd00_list = binder.cd00_list;
- 	priv->cd01_list = binder.cd01_list;
--	if (!priv->cd00_list || !priv->cd01_list)
-+	if (!priv->cd00_list || !priv->cd01_list) {
-+		component_unbind_all(dev, NULL);
-+
- 		return -ENODEV;
-+	}
- 
- 	lwmi_om_fan_info_collect_cd00(priv);
- 
+@@ -775,7 +775,7 @@ static ssize_t attr_current_value_store(struct kobject *kobj,
+ 					struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	struct capdata01 capdata;
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+@@ -838,7 +838,7 @@ static ssize_t attr_current_value_show(struct kobject *kobj,
+ 				       struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+ 	int retval;
 
 
