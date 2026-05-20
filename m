@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBcMNtoADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-253025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:38 +0200
+	id 6DvjJRz9DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BDB597174
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EE1596363
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DEC653079C6C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D41B73255E6F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD297270545;
-	Wed, 20 May 2026 18:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6F53F23BF;
+	Wed, 20 May 2026 17:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcgBNWjr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdPfeXfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99790DF59;
-	Wed, 20 May 2026 18:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08E3B0AD6;
+	Wed, 20 May 2026 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302207; cv=none; b=nXL/3pIGapZP+dm+xpEb7KeFgmurlYIECyo5lAGq709aUIPsh0SiO0YklLarc2Y3WWgUm+49lDgjyFa4xXg0RVX0cqmjJbArufIviKMUevyfiiDcbJGUlk+hWt/rjdUvmWhUz+3NkgdFl/xlLiV3ZzCkgO1fU3MlQFkuyWfxvqs=
+	t=1779299299; cv=none; b=n1Nrz9grdVtYsDN1MxPwPIjNjWqJWlnMsYdvmiz/ezE1OTjUpafXuXczAAm8Bg113A4Hkc9XRD7V91CnISyQP2v+vBbIdiSa/GjBZwmPDPTujVo3P/JqzaDcGoHqKJuPkYF1dxnHUVEYwc3JfF4ETNAPJ+vAemW6MEM3vuUuWIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302207; c=relaxed/simple;
-	bh=caTF7qZuvQqomgvIXeZYGiFB0ZVny9EhBaS+nKgXi0A=;
+	s=arc-20240116; t=1779299299; c=relaxed/simple;
+	bh=Th+9Y2/zHXwX4ZAb+rYbBkK+MpO/GYgHu5Q7ZSZ9DVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUx1TX2Sv5dJBGxwadiszY5kSuI/5kZBPzvDRunjTA2x0/+AHGKs3zqkfcZyJsl3B1qYTEILhSqi/sMEBTn3AVQiw95/SiH/96IUCfFi4w3h9qQSuunoDfSjKeqSxpmD8JVpXq105mHawTe8vEVOXLsDkj6RBI1OWuH+IuANIXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcgBNWjr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2E01F000E9;
-	Wed, 20 May 2026 18:36:45 +0000 (UTC)
+	 MIME-Version; b=aBL9IHYPHNKvIDQXthYlhtn4Ek08KvWaBGyFXL532sBFiygCqa9+he4Q7Etlm/HHuKBH9FeaYZbVMjpQQZIw6CLyzkOPIzinsBXSGQb55UBq6ekXfJA/aP+djFO0aiWo8k0lrrvW5bdopjhY05XQqQeOcLXdveXBmADgSOKHvi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdPfeXfb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB9A1F000E9;
+	Wed, 20 May 2026 17:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302206;
-	bh=2b4n/VBAD7YIV94gEK+AykdYS7GD7nGmm3alUe8RdLw=;
+	s=korg; t=1779299298;
+	bh=rm+gfWPl1Swpq0tTFds3DdtfoPJUuwRzghEGHhKEblc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rcgBNWjrpgC4Usx/IiKZdOnmOsvIJgbPGzvcixaT/Tl6gn/P+m70Bl2FTI5Ax9JSs
-	 EAMQcqCkJKnsXzNYXCgCvF9+nAnK/FYVljT8obZ4YV+Rb7fi2oAIY3EyDL6q79Vprj
-	 C8f81ECORk9pTBSONGBRJqUdINif/w/8mSUXJVwA=
+	b=CdPfeXfbq5SZmKShnomerY2VkbcL0SX4IL3dN06oHE6qW7fpOpPvv1hM/PLtzXmq9
+	 r/waE0uFIG0akPRCr+B8TMAUCeQdDOBEnMMP6GTs186QvY6QqI1Ua/JXOqMS5+lL+8
+	 12r1eJtBVOLDo3F4HY7M1Gcw527i4DwrNfysbJ+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/508] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
+Subject: [PATCH 6.18 720/957] eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}()
 Date: Wed, 20 May 2026 18:20:03 +0200
-Message-ID: <20260520162102.539340585@linuxfoundation.org>
+Message-ID: <20260520162150.163307899@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +67,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253025-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251929-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A4BDB597174
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 00EE1596363
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
+[ Upstream commit 0feaf644f7180c4a91b6b405a881afbfd958f1cf ]
 
-ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
-and does not handle the -EINPROGRESS return code from async hardware
-crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
--EINPROGRESS, ksmbd treats it as an error and immediately frees the
-request while the hardware DMA operation is still in flight. The DMA
-completion callback then dereferences freed memory, causing a NULL
-pointer crash:
+With __ep_remove() gone, the double-underscore on __ep_remove_file()
+and __ep_remove_epi() no longer contrasts with a __-less parent and
+just reads as noise. Rename both to ep_remove_file() and
+ep_remove_epi(). No functional change.
 
-  pc : qce_skcipher_done+0x24/0x174
-  lr : vchan_complete+0x230/0x27c
-  ...
-  el1h_64_irq+0x68/0x6c
-  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
-  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
-
-Use the standard crypto_wait_req() pattern with crypto_req_done() as
-the completion callback, matching the approach used by the SMB client
-in fs/smb/client/smb2ops.c. This properly handles both synchronous
-engines (immediate return) and async engines (-EINPROGRESS followed
-by callback notification).
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Link: https://github.com/openwrt/openwrt/issues/21822
-Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/eventpoll.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 16a57425099de..d28b34e1d047a 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1106,6 +1106,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
- 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
- 	int rc;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist *sg;
- 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
-@@ -1192,12 +1193,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 5d982c2503d68..68607634a60df 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -830,7 +830,7 @@ static void ep_free(struct eventpoll *ep)
+  * Called with &file->f_lock held,
+  * returns with it released
+  */
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
++static void ep_remove_file(struct eventpoll *ep, struct epitem *epi,
+ 			     struct file *file)
+ {
+ 	struct epitems_head *to_free = NULL;
+@@ -854,7 +854,7 @@ static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
+ 	free_ephead(to_free);
+ }
  
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-+				  CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
+-static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
++static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+ {
+ 	lockdep_assert_held(&ep->mtx);
  
--	if (enc)
--		rc = crypto_aead_encrypt(req);
--	else
--		rc = crypto_aead_decrypt(req);
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
-+			     crypto_aead_decrypt(req), &wait);
- 	if (rc)
- 		goto free_iv;
+@@ -900,9 +900,9 @@ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ 		spin_unlock(&file->f_lock);
+ 		return;
+ 	}
+-	__ep_remove_file(ep, epi, file);
++	ep_remove_file(ep, epi, file);
+ 
+-	if (__ep_remove_epi(ep, epi))
++	if (ep_remove_epi(ep, epi))
+ 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
+ 
+@@ -1147,8 +1147,8 @@ void eventpoll_release_file(struct file *file)
+ 		ep_unregister_pollwait(ep, epi);
+ 
+ 		spin_lock(&file->f_lock);
+-		__ep_remove_file(ep, epi, file);
+-		dispose = __ep_remove_epi(ep, epi);
++		ep_remove_file(ep, epi, file);
++		dispose = ep_remove_epi(ep, epi);
+ 
+ 		mutex_unlock(&ep->mtx);
  
 -- 
 2.53.0
