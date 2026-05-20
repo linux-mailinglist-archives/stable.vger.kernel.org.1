@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKU9Eq0gDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-251964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:25 +0200
+	id OJ4fN8oaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35A859A5A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BB7599C7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09D153741D03
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8447932F9201
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C340B3F39F5;
-	Wed, 20 May 2026 17:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC233F660B;
+	Wed, 20 May 2026 18:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzGXl5Yg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PlOK8zj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF673F23A4;
-	Wed, 20 May 2026 17:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63C73E277C;
+	Wed, 20 May 2026 18:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299388; cv=none; b=I6aWTzyqS/OLsFuw89zFeG7Fvhwlfa7Z2ho/WRzpBgY+LgqtAHZqgW/haZFSluG9tfgwlxLzheJCZ+w7NdIKOiVbZ00J9TpujuLJswf5Uy20xGBl8zVlfJ6cqr8nfFNZNr4jWkALPE2xQlmK0DSsunJr4yf7o3AoDyOt6FmINTM=
+	t=1779302296; cv=none; b=XhiQShV8jQowoCNgfxKOWOuea1tfNDOiNYgafQPq+6mX+CSuU2q0Mhz/TpKhzCTG6dJ1ooCYcphgZHxnAJjUo5/X0TR+TkjLAfeORyTbeif5nOQsA0uksG6+qRtQCBW4lYC+CSkaueDUljMHY9FN8CyaeRkIk6X/RIttHUtqXTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299388; c=relaxed/simple;
-	bh=N9NW18o1MwtLyMGvudtOL/P+LAzX2DCXIgdExzG6ZXE=;
+	s=arc-20240116; t=1779302296; c=relaxed/simple;
+	bh=2a6aCUz0zYyq+X9SJt7UEHzIQwzWSc3ELWC23qNdfwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjA6B44qQ7Tifjoi9XXVb/x7cu6lJDZuwQXUMfyP83VVWs7Sc31WxMwTgV4umDn+if0C1LmQzXO6C0s6KPxP+zZzo8PtExdhhDDzhh76BH+l2rt7JMsGP6oqyoBuU8svMdJCV8i6b8LXxeVWKO5wBuFX3lWw0bQv335lpBNGDA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzGXl5Yg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AAC1F000E9;
-	Wed, 20 May 2026 17:49:46 +0000 (UTC)
+	 MIME-Version; b=Kdeb+v6k50IhtY1UAIOyLK94YqNghChy4dcWM/PwkncULZw/OWHUYbNne/Vyrttf1A4dGk9w8Qddvk4cv2w+Cjfw9rn+pue6ia8IdYCEednX+NwnihYX38HAiVcKh52Yh5ivcqO6NK7MUHs/bjnZn7L6T+b1t7FJgafUBnR4vCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PlOK8zj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424681F000E9;
+	Wed, 20 May 2026 18:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299387;
-	bh=agjgR+vvzUNbZBXPTvvpT1AgFU0HL7w+r1WRkbd12do=;
+	s=korg; t=1779302295;
+	bh=9zGl7Fr4g4dUndDGeyUpwcAXBWgYZIy1XTfnM4/Lz8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RzGXl5Yg2hx1W0wWSSAoJiomR0g7RFkenjxvsl5QO+0T02sHpN4eDI2Dft3L/Bt35
-	 j/vSTJiEDx8uwv9gqBhahtzmaWJsaIkCBhKHVMjUaVfZ4jhm7UmRljHnsnADTNUskt
-	 /EwU3hdvQ0aDSs8ksRONOBC+umyUuecUVHMjGePc=
+	b=1PlOK8zjMgwq73rXU8xsB9ynT90OHadMa06rJw2sfyLvrn8kXgJmt2P8Hc2wAgDYV
+	 UcUAkEnamTh6doRxl3uctJCb4ZVcdrJjvaznMkns9LkUlKtpkDD7pFR6UD9zWVEMbF
+	 2zbSePXHaTr6fsdiKhY4FrBDx4Dl+8lRapaxvQe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 711/957] virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET
-Date: Wed, 20 May 2026 18:19:54 +0200
-Message-ID: <20260520162149.964504635@linuxfoundation.org>
+Subject: [PATCH 6.6 172/508] gfs2: Call unlock_new_inode before d_instantiate
+Date: Wed, 20 May 2026 18:19:55 +0200
+Message-ID: <20260520162102.364971216@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251964-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-253059-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A35A859A5A9
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,0ea5108a1f5fb4fcc2d8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D1BB7599C7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 3bc06da858ef17cfe94b49efc0d9713727012835 ]
+[ Upstream commit 2ff7cf7e0640ff071ebc5c7e3dc2df024a7c91e6 ]
 
-When netif_is_rxfh_configured() is true (i.e., the user has explicitly
-configured the RSS indirection table), virtnet_set_queues() skips the
-RSS update path and falls through to the VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET
-command to change the number of queue pairs. However, it does not update
-vi->rss_trailer.max_tx_vq to reflect the new queue_pairs value.
+As Neil Brown describes in detail in the link referenced below, new
+inodes must be unlocked before they can be instantiated.
 
-This causes a mismatch between vi->curr_queue_pairs and
-vi->rss_trailer.max_tx_vq. Any subsequent RSS reconfiguration (e.g.,
-via ethtool -X) calls virtnet_commit_rss_command(), which sends the
-stale max_tx_vq to the device, silently reverting the queue count.
+An even better fix is to use d_instantiate_new(), which combines
+d_instantiate() and unlock_new_inode().
 
-Reproduction:
-1. User configured RSS
-  ethtool -X eth0 equal 8
-2. VQ_PAIRS_SET path; max_tx_vq stays 16
-  ethtool -L eth0 combined 12
-3. RSS commit uses max_tx_vq=16 instead of 12
-  ethtool -X eth0 equal 4
-
-Fix this by updating vi->rss_trailer.max_tx_vq after a successful
-VQ_PAIRS_SET command when RSS is enabled, keeping it in sync with
-curr_queue_pairs.
-
-Fixes: 50bfcaedd78e ("virtio_net: Update rss when set queue")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260416212121.29073-1-brett.creeley@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3d36e57ff768 ("gfs2: gfs2_create_inode rework")
+Reported-by: syzbot+0ea5108a1f5fb4fcc2d8@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-fsdevel/177153754005.8396.8777398743501764194@noble.neil.brown.name/
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/gfs2/inode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 0cfe7ab59412c..aed65dbf3fca0 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3828,6 +3828,12 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
- 			 queue_pairs);
- 		return -EINVAL;
- 	}
-+
-+	/* Keep max_tx_vq in sync so that a later RSS command does not
-+	 * revert queue_pairs to a stale value.
-+	 */
-+	if (vi->has_rss)
-+		vi->rss_trailer.max_tx_vq = cpu_to_le16(queue_pairs);
- succ:
- 	vi->curr_queue_pairs = queue_pairs;
- 	if (dev->flags & IFF_UP) {
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 45040622d316e..18f75beea0890 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -805,7 +805,7 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 		goto fail_gunlock4;
+ 
+ 	mark_inode_dirty(inode);
+-	d_instantiate(dentry, inode);
++	d_instantiate_new(dentry, inode);
+ 	/* After instantiate, errors should result in evict which will destroy
+ 	 * both inode and iopen glocks properly. */
+ 	if (file) {
+@@ -817,7 +817,6 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	gfs2_glock_dq_uninit(&gh);
+ 	gfs2_glock_put(io_gl);
+ 	gfs2_qa_put(dip);
+-	unlock_new_inode(inode);
+ 	return error;
+ 
+ fail_gunlock4:
 -- 
 2.53.0
 
