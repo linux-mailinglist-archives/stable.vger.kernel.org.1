@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCpHGD4jDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:22 +0200
+	id iHptJhscDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9C159A833
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C6E599E6C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD9BF356834D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BB95361CCEF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15EF34DCE4;
-	Wed, 20 May 2026 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B905F3A3825;
+	Wed, 20 May 2026 17:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiR8aMhs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlgkvxW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823E03769E0;
-	Wed, 20 May 2026 18:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E8B36405A;
+	Wed, 20 May 2026 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300035; cv=none; b=P+7DQ/AvWilAiZblmc3ggULBKEpyA0CK47VCeFUMKTts/1a9+HYxmKM/WyvaPAkcnuW5jiQJ7HqaMycSMt+OHiIpcyXJZQZup6FyCmRRvqxC5yQ7tn3rN/dTR0V5TztI78ILWr2pSjFio703sBTopOYov/uu1tkkV1HbREFwg2c=
+	t=1779298328; cv=none; b=lW2WHLeNsFEkJQjIWTUx5WpO5eQwfJ28pvui2ynF8muwnRXqSPMgJVU2EK/nIJxKloI+I37su4JCsLNh1+sOLzfQDRMi8WxD7RDfoHwZ1YPDFMnxR0axNObFZ2/x7neIuO/aYiVRtOBh3H0Cx4xujHSwMnkBrOAvOZ2lHzacD5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300035; c=relaxed/simple;
-	bh=6RoY9bnq9lDUDcyeyXjCWogbXbi3Kxtpmc14yyPbUHc=;
+	s=arc-20240116; t=1779298328; c=relaxed/simple;
+	bh=LScinRLwG8cX5loD7eiTOfa62n/G89LPmaHUAW+TOC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+vH818pC3mORjQuiPbN286pXilMdSBiEIxU6Wz/eCbNw8Lxk31zssChUIcsYonFRRlQlnBl7tcS19IvbYb2ZDzM61B5YEdsBtJ27LNka+FthSWruN8MIxdD987XXvYspc4AvyN0sZOBMSi24pZTHFr+o0zeLno+3E2VGAznFNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiR8aMhs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71211F000E9;
-	Wed, 20 May 2026 18:00:33 +0000 (UTC)
+	 MIME-Version; b=QcbqHSaQeZLfxBVHTiTWnpwfeM6Dw+FkQ4B7C0Ier95YwG++87H0Y9UjjjQ7LUR9CKuYswHshyaORjV2aQYxGayDnocLQw5/gyCcuUOuQarcgmRg68u7N3vLr8V1Nwkme1k18Ke3ulJXrnQcdvtTOB2gbE52+7M1S1yCGyYKE8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlgkvxW+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623C71F000E9;
+	Wed, 20 May 2026 17:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300034;
-	bh=3AxnKjImNUKs5P4EjiPB+wBOqJ0UrcyxTsKPrTi99WE=;
+	s=korg; t=1779298325;
+	bh=Z6em4b3NkrrdqONMSQhuTQb6s42KBjW5kVJ206Yljnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YiR8aMhsbDxHnsm4zbT+jwzsX4BkU24JWZ5E/+PIJ5C/YrXMzo1iBU7Nxc0HscKUc
-	 n7lpy9tmfkyuj/S9mnReWRRf7uTXS0yecSx9/BilTIkwCOY/jjwxz0la8P5cxklabk
-	 t9/KH/pTdn2n5K7q0Mv9wXrp0nj3M9UUiD8COyLA=
+	b=LlgkvxW+KRYOymPHYqSWP1SEnBIFbKjnuY4c3fg38V+vzWzr3CI7aHQxaAtYJPiao
+	 xo5W3is8qwBB61Guu8rblaS9LObk+/1LG+apEh2QvIkWJBYDt2JcNjtY6qaZTib0HA
+	 7gykLaXzkZCMDJOi3dSTPjCUBT+PAFBdjvtDapY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/666] PCI: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 18:13:53 +0200
-Message-ID: <20260520162111.712323101@linuxfoundation.org>
+Subject: [PATCH 6.18 351/957] rtla: Fix -C/--cgroup interface
+Date: Wed, 20 May 2026 18:13:54 +0200
+Message-ID: <20260520162142.142941548@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,244 +64,388 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252193-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,shazbot.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251571-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BC9C159A833
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 03C6E599E6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 10a4206a24013be4d558d476010cbf2eb4c9fa64 ]
+[ Upstream commit 7b71f3a6986c93defbb72bb6c143e04122720cb1 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+Currently, user can only specify cgroup to the tracer's thread the
+following ways:
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+    `-C[cgroup]`
+    `-C[=cgroup]`
+    `--cgroup[=cgroup]`
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+If user tries to specify cgroup as `-C [cgroup]` or `--cgroup [cgroup]`,
+the parser silently fails and rtla's cgroup is used for the tracer
+threads.
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 782a985d7af2 ("PCI: Introduce new device binding path using pci_dev.driver_override")
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Alex Williamson <alex@shazbot.org>
-Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://patch.msgid.link/20260324005919.2408620-6-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+To make interface more user-friendly, allow user to specify cgroup in
+the aforementioned way, i.e. `-C [cgroup]` and `--cgroup [cgroup]`.
+
+Refactor identical logic between -t/--trace and -C/--cgroup into a
+common function.
+
+Change documentation to reflect this user interface change.
+
+Fixes: a957cbc02531 ("rtla: Add -C cgroup support")
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Reviewed-by: Tomas Glozar <tglozar@redhat.com>
+Link: https://lore.kernel.org/r/16132f1565cf5142b5fbd179975be370b529ced7.1762186418.git.ipravdin.official@gmail.com
+[ use capital letter in subject, as required by tracing subsystem ]
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Stable-dep-of: 5b6dc659ad79 ("rtla/utils: Fix resource leak in set_comm_sched_attr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c           | 11 +++++++----
- drivers/pci/pci-sysfs.c            | 28 ----------------------------
- drivers/pci/probe.c                |  1 -
- drivers/vfio/pci/vfio_pci_core.c   |  5 ++---
- drivers/xen/xen-pciback/pci_stub.c |  6 ++++--
- include/linux/pci.h                |  6 ------
- 6 files changed, 13 insertions(+), 44 deletions(-)
+ Documentation/tools/rtla/common_options.txt |  2 +-
+ tools/tracing/rtla/src/osnoise_hist.c       | 26 ++++++---------------
+ tools/tracing/rtla/src/osnoise_top.c        | 26 ++++++---------------
+ tools/tracing/rtla/src/timerlat_hist.c      | 26 ++++++---------------
+ tools/tracing/rtla/src/timerlat_top.c       | 26 ++++++---------------
+ tools/tracing/rtla/src/utils.c              | 26 +++++++++++++++++++++
+ tools/tracing/rtla/src/utils.h              |  1 +
+ 7 files changed, 56 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index a00a2ce01045f..860d80787d9b1 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -138,9 +138,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
- {
- 	struct pci_dynid *dynid;
- 	const struct pci_device_id *found_id = NULL, *ids;
-+	int ret;
+diff --git a/Documentation/tools/rtla/common_options.txt b/Documentation/tools/rtla/common_options.txt
+index 77ef35d3f8317..edc8e850f5d01 100644
+--- a/Documentation/tools/rtla/common_options.txt
++++ b/Documentation/tools/rtla/common_options.txt
+@@ -42,7 +42,7 @@
+         - *f:prio* - use SCHED_FIFO with *prio*;
+         - *d:runtime[us|ms|s]:period[us|ms|s]* - use SCHED_DEADLINE with *runtime* and *period* in nanoseconds.
  
- 	/* When driver_override is set, only bind to the matching driver */
--	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
-+	ret = device_match_driver_override(&dev->dev, &drv->driver);
-+	if (ret == 0)
- 		return NULL;
+-**-C**, **--cgroup**\[*=cgroup*]
++**-C**, **--cgroup** \[*cgroup*]
  
- 	/* Look at the dynamic ids first, before the static ones */
-@@ -164,7 +166,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
- 		 * matching.
- 		 */
- 		if (found_id->override_only) {
--			if (dev->driver_override)
-+			if (ret > 0)
- 				return found_id;
- 		} else {
- 			return found_id;
-@@ -172,7 +174,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
- 	}
+         Set a *cgroup* to the tracer's threads. If the **-C** option is passed without arguments, the tracer's thread will inherit **rtla**'s *cgroup*. Otherwise, the threads will be placed on the *cgroup* passed to the option.
  
- 	/* driver_override will always match, send a dummy id */
--	if (dev->driver_override)
-+	if (ret > 0)
- 		return &pci_device_id_any;
- 	return NULL;
+diff --git a/tools/tracing/rtla/src/osnoise_hist.c b/tools/tracing/rtla/src/osnoise_hist.c
+index d22feb4d6cc9d..ae8426f40f8f4 100644
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -428,9 +428,9 @@ static void osnoise_hist_usage(char *usage)
+ 	static const char * const msg[] = {
+ 		"",
+ 		"  usage: rtla osnoise hist [-h] [-D] [-d s] [-a us] [-p us] [-r us] [-s us] [-S us] \\",
+-		"	  [-T us] [-t[file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] \\",
++		"	  [-T us] [-t [file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] \\",
+ 		"	  [-c cpu-list] [-H cpu-list] [-P priority] [-b N] [-E N] [--no-header] [--no-summary] \\",
+-		"	  [--no-index] [--with-zeros] [-C[=cgroup_name]] [--warm-up]",
++		"	  [--no-index] [--with-zeros] [-C [cgroup_name]] [--warm-up]",
+ 		"",
+ 		"	  -h/--help: print this menu",
+ 		"	  -a/--auto: set automatic trace mode, stopping the session if argument in us sample is hit",
+@@ -441,10 +441,10 @@ static void osnoise_hist_usage(char *usage)
+ 		"	  -T/--threshold us: the minimum delta to be considered a noise",
+ 		"	  -c/--cpus cpu-list: list of cpus to run osnoise threads",
+ 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
+-		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
++		"	  -C/--cgroup [cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
+ 		"	  -d/--duration time[s|m|h|d]: duration of the session",
+ 		"	  -D/--debug: print debug info",
+-		"	  -t/--trace[file]: save the stopped trace to [file|osnoise_trace.txt]",
++		"	  -t/--trace [file]: save the stopped trace to [file|osnoise_trace.txt]",
+ 		"	  -e/--event <sys:event>: enable the <sys:event> in the trace instance, multiple -e are allowed",
+ 		"	     --filter <filter>: enable a trace event filter to the previous -e event",
+ 		"	     --trigger <trigger>: enable a trace event trigger to the previous -e event",
+@@ -575,13 +575,7 @@ static struct common_params
+ 			break;
+ 		case 'C':
+ 			params->common.cgroup = 1;
+-			if (!optarg) {
+-				/* will inherit this cgroup */
+-				params->common.cgroup_name = NULL;
+-			} else if (*optarg == '=') {
+-				/* skip the = */
+-				params->common.cgroup_name = ++optarg;
+-			}
++			params->common.cgroup_name = parse_optional_arg(argc, argv);
+ 			break;
+ 		case 'D':
+ 			config_debug = 1;
+@@ -647,14 +641,8 @@ static struct common_params
+ 			params->threshold = get_llong_from_str(optarg);
+ 			break;
+ 		case 't':
+-			if (optarg) {
+-				if (optarg[0] == '=')
+-					trace_output = &optarg[1];
+-				else
+-					trace_output = &optarg[0];
+-			} else if (optind < argc && argv[optind][0] != '0')
+-				trace_output = argv[optind];
+-			else
++			trace_output = parse_optional_arg(argc, argv);
++			if (!trace_output)
+ 				trace_output = "osnoise_trace.txt";
+ 			break;
+ 		case '0': /* no header */
+diff --git a/tools/tracing/rtla/src/osnoise_top.c b/tools/tracing/rtla/src/osnoise_top.c
+index a8d31030c4122..6ae7cdb3bdc0d 100644
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -263,8 +263,8 @@ static void osnoise_top_usage(struct osnoise_params *params, char *usage)
+ 
+ 	static const char * const msg[] = {
+ 		" [-h] [-q] [-D] [-d s] [-a us] [-p us] [-r us] [-s us] [-S us] \\",
+-		"	  [-T us] [-t[file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] \\",
+-		"	  [-c cpu-list] [-H cpu-list] [-P priority] [-C[=cgroup_name]] [--warm-up s]",
++		"	  [-T us] [-t [file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] \\",
++		"	  [-c cpu-list] [-H cpu-list] [-P priority] [-C [cgroup_name]] [--warm-up s]",
+ 		"",
+ 		"	  -h/--help: print this menu",
+ 		"	  -a/--auto: set automatic trace mode, stopping the session if argument in us sample is hit",
+@@ -275,10 +275,10 @@ static void osnoise_top_usage(struct osnoise_params *params, char *usage)
+ 		"	  -T/--threshold us: the minimum delta to be considered a noise",
+ 		"	  -c/--cpus cpu-list: list of cpus to run osnoise threads",
+ 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
+-		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
++		"	  -C/--cgroup [cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
+ 		"	  -d/--duration time[s|m|h|d]: duration of the session",
+ 		"	  -D/--debug: print debug info",
+-		"	  -t/--trace[file]: save the stopped trace to [file|osnoise_trace.txt]",
++		"	  -t/--trace [file]: save the stopped trace to [file|osnoise_trace.txt]",
+ 		"	  -e/--event <sys:event>: enable the <sys:event> in the trace instance, multiple -e are allowed",
+ 		"	     --filter <filter>: enable a trace event filter to the previous -e event",
+ 		"	     --trigger <trigger>: enable a trace event trigger to the previous -e event",
+@@ -409,13 +409,7 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
+ 			break;
+ 		case 'C':
+ 			params->common.cgroup = 1;
+-			if (!optarg) {
+-				/* will inherit this cgroup */
+-				params->common.cgroup_name = NULL;
+-			} else if (*optarg == '=') {
+-				/* skip the = */
+-				params->common.cgroup_name = ++optarg;
+-			}
++			params->common.cgroup_name = parse_optional_arg(argc, argv);
+ 			break;
+ 		case 'D':
+ 			config_debug = 1;
+@@ -475,14 +469,8 @@ struct common_params *osnoise_top_parse_args(int argc, char **argv)
+ 			params->common.stop_total_us = get_llong_from_str(optarg);
+ 			break;
+ 		case 't':
+-			if (optarg) {
+-				if (optarg[0] == '=')
+-					trace_output = &optarg[1];
+-				else
+-					trace_output = &optarg[0];
+-			} else if (optind < argc && argv[optind][0] != '-')
+-				trace_output = argv[optind];
+-			else
++			trace_output = parse_optional_arg(argc, argv);
++			if (!trace_output)
+ 				trace_output = "osnoise_trace.txt";
+ 			break;
+ 		case 'T':
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 3d56df3d5fa0d..311c4f18ce4c6 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -717,9 +717,9 @@ static void timerlat_hist_usage(char *usage)
+ 	char *msg[] = {
+ 		"",
+ 		"  usage: [rtla] timerlat hist [-h] [-q] [-d s] [-D] [-n] [-a us] [-p us] [-i us] [-T us] [-s us] \\",
+-		"         [-t[file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] [-c cpu-list] [-H cpu-list]\\",
++		"         [-t [file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] [-c cpu-list] [-H cpu-list]\\",
+ 		"	  [-P priority] [-E N] [-b N] [--no-irq] [--no-thread] [--no-header] [--no-summary] \\",
+-		"	  [--no-index] [--with-zeros] [--dma-latency us] [-C[=cgroup_name]] [--no-aa] [--dump-task] [-u|-k]",
++		"	  [--no-index] [--with-zeros] [--dma-latency us] [-C [cgroup_name]] [--no-aa] [--dump-task] [-u|-k]",
+ 		"	  [--warm-up s] [--deepest-idle-state n]",
+ 		"",
+ 		"	  -h/--help: print this menu",
+@@ -730,11 +730,11 @@ static void timerlat_hist_usage(char *usage)
+ 		"	  -s/--stack us: save the stack trace at the IRQ if a thread latency is higher than the argument in us",
+ 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
+ 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
+-		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
++		"	  -C/--cgroup [cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
+ 		"	  -d/--duration time[m|h|d]: duration of the session in seconds",
+ 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
+ 		"	  -D/--debug: print debug info",
+-		"	  -t/--trace[file]: save the stopped trace to [file|timerlat_trace.txt]",
++		"	  -t/--trace [file]: save the stopped trace to [file|timerlat_trace.txt]",
+ 		"	  -e/--event <sys:event>: enable the <sys:event> in the trace instance, multiple -e are allowed",
+ 		"	     --filter <filter>: enable a trace event filter to the previous -e event",
+ 		"	     --trigger <trigger>: enable a trace event trigger to the previous -e event",
+@@ -890,13 +890,7 @@ static struct common_params
+ 			break;
+ 		case 'C':
+ 			params->common.cgroup = 1;
+-			if (!optarg) {
+-				/* will inherit this cgroup */
+-				params->common.cgroup_name = NULL;
+-			} else if (*optarg == '=') {
+-				/* skip the = */
+-				params->common.cgroup_name = ++optarg;
+-			}
++			params->common.cgroup_name = parse_optional_arg(argc, argv);
+ 			break;
+ 		case 'b':
+ 			params->common.hist.bucket_size = get_llong_from_str(optarg);
+@@ -969,14 +963,8 @@ static struct common_params
+ 			params->common.stop_total_us = get_llong_from_str(optarg);
+ 			break;
+ 		case 't':
+-			if (optarg) {
+-				if (optarg[0] == '=')
+-					trace_output = &optarg[1];
+-				else
+-					trace_output = &optarg[0];
+-			} else if (optind < argc && argv[optind][0] != '-')
+-				trace_output = argv[optind];
+-			else
++			trace_output = parse_optional_arg(argc, argv);
++			if (!trace_output)
+ 				trace_output = "timerlat_trace.txt";
+ 			break;
+ 		case 'u':
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index 6cc9a3607c665..3a3b11b5beaaa 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -483,8 +483,8 @@ static void timerlat_top_usage(char *usage)
+ 	static const char *const msg[] = {
+ 		"",
+ 		"  usage: rtla timerlat [top] [-h] [-q] [-a us] [-d s] [-D] [-n] [-p us] [-i us] [-T us] [-s us] \\",
+-		"	  [[-t[file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] [-c cpu-list] [-H cpu-list]\\",
+-		"	  [-P priority] [--dma-latency us] [--aa-only us] [-C[=cgroup_name]] [-u|-k] [--warm-up s] [--deepest-idle-state n]",
++		"	  [[-t [file]] [-e sys[:event]] [--filter <filter>] [--trigger <trigger>] [-c cpu-list] [-H cpu-list]\\",
++		"	  [-P priority] [--dma-latency us] [--aa-only us] [-C [cgroup_name]] [-u|-k] [--warm-up s] [--deepest-idle-state n]",
+ 		"",
+ 		"	  -h/--help: print this menu",
+ 		"	  -a/--auto: set automatic trace mode, stopping the session if argument in us latency is hit",
+@@ -495,11 +495,11 @@ static void timerlat_top_usage(char *usage)
+ 		"	  -s/--stack us: save the stack trace at the IRQ if a thread latency is higher than the argument in us",
+ 		"	  -c/--cpus cpus: run the tracer only on the given cpus",
+ 		"	  -H/--house-keeping cpus: run rtla control threads only on the given cpus",
+-		"	  -C/--cgroup[=cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
++		"	  -C/--cgroup [cgroup_name]: set cgroup, if no cgroup_name is passed, the rtla's cgroup will be inherited",
+ 		"	  -d/--duration time[s|m|h|d]: duration of the session",
+ 		"	  -D/--debug: print debug info",
+ 		"	     --dump-tasks: prints the task running on all CPUs if stop conditions are met (depends on !--no-aa)",
+-		"	  -t/--trace[file]: save the stopped trace to [file|timerlat_trace.txt]",
++		"	  -t/--trace [file]: save the stopped trace to [file|timerlat_trace.txt]",
+ 		"	  -e/--event <sys:event>: enable the <sys:event> in the trace instance, multiple -e are allowed",
+ 		"	     --filter <command>: enable a trace event filter to the previous -e event",
+ 		"	     --trigger <command>: enable a trace event trigger to the previous -e event",
+@@ -654,13 +654,7 @@ static struct common_params
+ 			break;
+ 		case 'C':
+ 			params->common.cgroup = 1;
+-			if (!optarg) {
+-				/* will inherit this cgroup */
+-				params->common.cgroup_name = NULL;
+-			} else if (*optarg == '=') {
+-				/* skip the = */
+-				params->common.cgroup_name = ++optarg;
+-			}
++			params->common.cgroup_name = optarg;
+ 			break;
+ 		case 'D':
+ 			config_debug = 1;
+@@ -723,14 +717,8 @@ static struct common_params
+ 			params->common.stop_total_us = get_llong_from_str(optarg);
+ 			break;
+ 		case 't':
+-			if (optarg) {
+-				if (optarg[0] == '=')
+-					trace_output = &optarg[1];
+-				else
+-					trace_output = &optarg[0];
+-			} else if (optind < argc && argv[optind][0] != '-')
+-				trace_output = argv[optind];
+-			else
++			trace_output = parse_optional_arg(argc, argv);
++			if (!trace_output)
+ 				trace_output = "timerlat_trace.txt";
+ 			break;
+ 		case 'u':
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index d6ab15dcb4907..bd5f34b446480 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -959,3 +959,29 @@ int auto_house_keeping(cpu_set_t *monitored_cpus)
+ 
+ 	return 1;
  }
-@@ -423,7 +425,7 @@ static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
- static inline bool pci_device_can_probe(struct pci_dev *pdev)
- {
- 	return (!pdev->is_virtfn || pdev->physfn->sriov->drivers_autoprobe ||
--		pdev->driver_override);
-+		device_has_driver_override(&pdev->dev));
- }
- #else
- static inline bool pci_device_can_probe(struct pci_dev *pdev)
-@@ -1677,6 +1679,7 @@ static void pci_dma_cleanup(struct device *dev)
- 
- const struct bus_type pci_bus_type = {
- 	.name		= "pci",
-+	.driver_override = true,
- 	.match		= pci_bus_match,
- 	.uevent		= pci_uevent,
- 	.probe		= pci_device_probe,
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 96f9cf9f8d643..122c182229b33 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -606,33 +606,6 @@ static ssize_t devspec_show(struct device *dev,
- static DEVICE_ATTR_RO(devspec);
- #endif
- 
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct pci_dev *pdev = to_pci_dev(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct pci_dev *pdev = to_pci_dev(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
--	device_unlock(dev);
--	return len;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *pci_dev_attrs[] = {
- 	&dev_attr_power_state.attr,
- 	&dev_attr_resource.attr,
-@@ -660,7 +633,6 @@ static struct attribute *pci_dev_attrs[] = {
- #ifdef CONFIG_OF
- 	&dev_attr_devspec.attr,
- #endif
--	&dev_attr_driver_override.attr,
- 	&dev_attr_ari_enabled.attr,
- 	NULL,
- };
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 9e71eb4d1010e..d8c5a957b70e5 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2373,7 +2373,6 @@ static void pci_release_dev(struct device *dev)
- 	pci_release_of_node(pci_dev);
- 	pcibios_release_device(pci_dev);
- 	pci_bus_put(pci_dev->bus);
--	kfree(pci_dev->driver_override);
- 	bitmap_free(pci_dev->dma_alias_mask);
- 	dev_dbg(dev, "device released\n");
- 	kfree(pci_dev);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 5f545b45078f8..dd6e73de2e2a0 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -2014,9 +2014,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
- 	    pdev->is_virtfn && physfn == vdev->pdev) {
- 		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
- 			 pci_name(pdev));
--		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
--						  vdev->vdev.ops->name);
--		WARN_ON(!pdev->driver_override);
-+		WARN_ON(device_set_driver_override(&pdev->dev,
-+						   vdev->vdev.ops->name));
- 	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
- 		   pdev->is_virtfn && physfn == vdev->pdev) {
- 		struct pci_driver *drv = pci_dev_driver(pdev);
-diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-index b616b7768c3b9..8b3006078d003 100644
---- a/drivers/xen/xen-pciback/pci_stub.c
-+++ b/drivers/xen/xen-pciback/pci_stub.c
-@@ -618,6 +618,8 @@ static int pcistub_seize(struct pci_dev *dev,
- 	return err;
- }
- 
-+static struct pci_driver xen_pcibk_pci_driver;
 +
- /* Called when 'bind'. This means we must _NOT_ call pci_reset_function or
-  * other functions that take the sysfs lock. */
- static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
-@@ -629,8 +631,8 @@ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
++/**
++ * parse_optional_arg - Parse optional argument value
++ *
++ * Parse optional argument value, which can be in the form of:
++ * -sarg, -s/--long=arg, -s/--long arg
++ *
++ * Returns arg value if found, NULL otherwise.
++ */
++char *parse_optional_arg(int argc, char **argv)
++{
++	if (optarg) {
++		if (optarg[0] == '=') {
++			/* skip the = */
++			return &optarg[1];
++		} else {
++			return optarg;
++		}
++	/* parse argument of form -s [arg] and --long [arg]*/
++	} else if (optind < argc && argv[optind][0] != '-') {
++		/* consume optind */
++		return argv[optind++];
++	} else {
++		return NULL;
++	}
++}
+diff --git a/tools/tracing/rtla/src/utils.h b/tools/tracing/rtla/src/utils.h
+index a2a6f89f342d0..d8d83abf0f0d0 100644
+--- a/tools/tracing/rtla/src/utils.h
++++ b/tools/tracing/rtla/src/utils.h
+@@ -24,6 +24,7 @@ long parse_seconds_duration(char *val);
+ void get_duration(time_t start_time, char *output, int output_size);
  
- 	match = pcistub_match(dev);
+ int parse_cpu_list(char *cpu_list, char **monitored_cpus);
++char *parse_optional_arg(int argc, char **argv);
+ long long get_llong_from_str(char *start);
  
--	if ((dev->driver_override &&
--	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
-+	if (device_match_driver_override(&dev->dev,
-+					 &xen_pcibk_pci_driver.driver) > 0 ||
- 	    match) {
- 
- 		if (dev->hdr_type != PCI_HEADER_TYPE_NORMAL
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 242ee3843e10e..825e6b3056f15 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -540,12 +540,6 @@ struct pci_dev {
- 	u8		supported_speeds; /* Supported Link Speeds Vector */
- 	phys_addr_t	rom;		/* Physical address if not from BAR */
- 	size_t		romlen;		/* Length if not from BAR */
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char	*driver_override;
--
- 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
- 
- 	/* These methods index pci_reset_fn_methods[] */
+ static inline void
 -- 
 2.53.0
 
