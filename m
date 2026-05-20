@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIBzOgEUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:21 +0200
+	id SP8dE1gADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738695991B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4B9596FE5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B2D2380E174
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8645330F3253
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C95373BEB;
-	Wed, 20 May 2026 16:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056F03B0AD6;
+	Wed, 20 May 2026 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulwNB3j1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKlA2mkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC03368968;
-	Wed, 20 May 2026 16:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9423DD504;
+	Wed, 20 May 2026 17:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296259; cv=none; b=rJyX6XcqXnJbjF+nBxc+nOL4qhe6t2EvfbsvM32ALugPVID1kmGFQulcPtszMG7Fu0p3qv50BLuaazlXwGQTCdnqJnuftHPsuyTp+MZKw3usIE6/0ExdUgqPxRPOKSb3CWAfOml+AmViZnb67siGU2+z3B8990jHLJw34iG8YDY=
+	t=1779298662; cv=none; b=W8SHXLKGu9a/BQsd4U4/15+0uO+Y//meSgm6Fb95+zien5k8b92NdXiKbYeGacHEV1IwZTbDjetlScU0L/DjhNVEBBNDHw+lRhNs9V6ZYwHz9gzEOBtV4EjgyKIpIiOrsKkSsHmgSoQG1gDBX39gZlU2PgOE6xdaKbSf/36E2Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296259; c=relaxed/simple;
-	bh=WQr+35TIzsccfnZV//4PZB27kG2X5X0R2jl8BBfvnng=;
+	s=arc-20240116; t=1779298662; c=relaxed/simple;
+	bh=onGJtGgq0GZpxbE0eSTDgv3ehYs4PEiWrA27isNNRMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQA/1yTDddHDlrxVX8Kse9Ke3oQu8v5baQyGXuGXhIi/T6SDvRFKEQQIxDgZaoxPHviY8kga44xfLi6q0eiePHmdGbu0ftBa3VXWdaAb+snDFaRLSqtCgR3f/iTzC8yQvyKgNPB2LqtGRclsgplDjfNt/HKkK5euVqva/5hDGag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulwNB3j1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0401F000E9;
-	Wed, 20 May 2026 16:57:37 +0000 (UTC)
+	 MIME-Version; b=tkVydww8KJuhqF49De+Kh+ail3OYCppQKGkPFhcZytBPgMJwiUR+kGyZ6l2WWAsu9FcJu8BEUWGKL6YYQOLACpIaK04YODAUpsc6W4Z1W+bfawUFUh70B8PGSDeXX3fjBNDVI+Ck7cwYEmmA4TrkryjpDkiF0RXuGttg41forpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKlA2mkl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D91C1F000E9;
+	Wed, 20 May 2026 17:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296257;
-	bh=nM0zVYarTb50y3Ia1mZxUVdmVv0RzZ0MQqBYLwD8cFY=;
+	s=korg; t=1779298661;
+	bh=yzGZCfiTu7IGFz0FjadZjH6bxx9GlvXkx4c17ndZP4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ulwNB3j16yaHbehp9nl60hkPfn8gQ7srDhH/AvO/JBT5woDZk7gYHW22GXnM9fndM
-	 J1fCs/OXGpWzBdbS4E5X/9lYOCx/mxfj4cWZJNaLpWkTGidIXWacckiJmcKERiclg5
-	 OZXISUDMzlmYhx9WNLhOmaCf4/TRLRufQoGQpWKg=
+	b=zKlA2mklldQHcmCxp5MWgJEZlo10uwJ8XDQga+8xohGUaa+1NEGvGr0GJGCTgTD53
+	 pqrBJCHhKzTirC/Zt1hczok/BqojuN4xExt2cafuVL2NRFfMVIDm9qacJsN6wv/Pfy
+	 7hw2+72uRxIQDWQ3O+VLy6odpXwGqgvHZs5CyLNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Petr Mladek <pmladek@suse.com>,
+	wangguangju <wangguangju@hygon.cn>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0729/1146] printk_ringbuffer: Fix get_data() size sanity check
-Date: Wed, 20 May 2026 18:16:19 +0200
-Message-ID: <20260520162204.705024252@linuxfoundation.org>
+Subject: [PATCH 6.18 497/957] perf trace: Fix IS_ERR() vs NULL check bug
+Date: Wed, 20 May 2026 18:16:20 +0200
+Message-ID: <20260520162145.303790945@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,106 +68,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250765-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251699-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hygon.cn,gmail.com,google.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,msgid.link:url,suse.com:email]
-X-Rspamd-Queue-Id: 738695991B5
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E4B9596FE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: wangguangju <wangguangju@hygon.cn>
 
-[ Upstream commit 8e81ecbf1cb46b8d2d13e772d5924b09bd60169a ]
+[ Upstream commit 96f202eab8133f94479b14a32902c636e9bdf6af ]
 
-Commit cc3bad11de6e ("printk_ringbuffer: Fix check of valid data
-size when blk_lpos overflows") added sanity checking to get_data()
-to avoid returning data of illegal sizes (too large or too small).
-It uses the helper function data_check_size() for the check.
-However, data_check_size() expects the size of the data, not the
-size of the data block. get_data() is providing the size of the
-data block.  This means that if the data size (text_buf_size) is
-at or near the maximum legal size:
+The alloc_syscall_stats() function always returns an error pointer
+(ERR_PTR) on failure.
 
-sizeof(prb_data_block) + text_buf_size == DATA_SIZE(data_ring) / 2
+So replace NULL check with IS_ERR() check after calling
+delete_syscall_stats() function.
 
-data_check_size() will report failure because it adds
-sizeof(prb_data_block) to the provided size. The sanity check in
-get_data() is counting the data block header twice. The result is
-that the reader fails to read the legal record.
-
-Since get_data() subtracts the data block header size before returning,
-move the sanity check to after the subtraction.
-
-Luckily printk() is not vulnerable to this problem because
-truncate_msg() limits printk-messages to 1/4 of the ringbuffer.
-Indeed, by adjusting the printk_ringbuffer KUnit test, which does not
-use printk() and its truncate_msg() check, it is easy to see that the
-reader fails and the WARN_ON is triggered.
-
-Fixes: cc3bad11de6e ("printk_ringbuffer: Fix check of valid data size when blk_lpos overflows")
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Link: https://patch.msgid.link/20260326133809.8045-1-john.ogness@linutronix.de
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: ef2da619b132c6f74 ("perf trace: Convert syscall_stats to hashmap")
+Signed-off-by: wangguangju <wangguangju@hygon.cn>
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk_ringbuffer.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/perf/builtin-trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/printk/printk_ringbuffer.c b/kernel/printk/printk_ringbuffer.c
-index 56c8e3d031f49..a3526bdd4e10d 100644
---- a/kernel/printk/printk_ringbuffer.c
-+++ b/kernel/printk/printk_ringbuffer.c
-@@ -1302,10 +1302,6 @@ static const char *get_data(struct prb_data_ring *data_ring,
- 		return NULL;
- 	}
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index c607f39b8c8bb..1f0b9ba3cdc15 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -1573,7 +1573,7 @@ static void delete_syscall_stats(struct hashmap *syscall_stats)
+ 	struct hashmap_entry *pos;
+ 	size_t bkt;
  
--	/* Sanity check. Data-less blocks were handled earlier. */
--	if (WARN_ON_ONCE(!data_check_size(data_ring, *data_size) || !*data_size))
--		return NULL;
--
- 	/* A valid data block will always be aligned to the ID size. */
- 	if (WARN_ON_ONCE(blk_lpos->begin != ALIGN(blk_lpos->begin, sizeof(db->id))) ||
- 	    WARN_ON_ONCE(blk_lpos->next != ALIGN(blk_lpos->next, sizeof(db->id)))) {
-@@ -1319,6 +1315,10 @@ static const char *get_data(struct prb_data_ring *data_ring,
- 	/* Subtract block ID space from size to reflect data size. */
- 	*data_size -= sizeof(db->id);
+-	if (syscall_stats == NULL)
++	if (IS_ERR(syscall_stats))
+ 		return;
  
-+	/* Sanity check the max size of the regular data block. */
-+	if (WARN_ON_ONCE(!data_check_size(data_ring, *data_size)))
-+		return NULL;
-+
- 	return &db->data[0];
- }
- 
+ 	hashmap__for_each_entry(syscall_stats, pos, bkt)
 -- 
 2.53.0
 
