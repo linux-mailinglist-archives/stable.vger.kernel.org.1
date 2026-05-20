@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EbVH1D6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:44 +0200
+	id oCZjHIsmDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8469D595AAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B660959ACCE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95D9F306695A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49BAA33751B7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD653F1AC8;
-	Wed, 20 May 2026 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF9D3E123F;
+	Wed, 20 May 2026 18:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyHf3fBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cVs2Bz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1522C3EEAC6;
-	Wed, 20 May 2026 17:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA83B347515;
+	Wed, 20 May 2026 18:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296929; cv=none; b=GRCSATokzveRZkYM+mw8zM3NUhCSCcz9CADVTBopJgY0QkaT4zdBEeau1xgwhUkJsgbqwBTcHt7VwwbPFxvvTepGb8Hi3Dlc6likRsNotoUdFOQyCjufBL0OWn1g9FtvMBJYSvqavEYq+l5VeTaz+FdB2ks6O9umAyuStS2hlNA=
+	t=1779301094; cv=none; b=L88wXaJaIlWXNO1VCwiyKaeGi5foX7AHocHoQigxTTuK4kdsweWgrUiiC1ymrh6T7O5EIfv3CjLmZXbL5dJhtafFHYI/gq/cwzNPLLC6AdW/rAtifmMBC5AyVJHAPdk6Bl5nYyi+jyG5yxXgAskQIN+vS1eoLjam8DVqLwrnIFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296929; c=relaxed/simple;
-	bh=JK35KytxAdQlQym8N5IoSUgIMqb/u37RcP52GhjvOFM=;
+	s=arc-20240116; t=1779301094; c=relaxed/simple;
+	bh=2VjH9C8eoYPlOZjGFXtc51gDBpc3V7AAXCj+CeYL5EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3QSvpeh2Jnjf9JZ/yqe0vqjLTlPRRLQU0WdY1uz0acZe09XnH4pMLa5yXSPgHvQlo1e6WS1BpZ1LOiH3eancEv7OokhfYtQjGFqdSeRoVJQ07YMsjUqEpIX8V8JmXE9Pp6ld+kZAXKMklXulGWMhZU8zqK1nm8WzDQLYFKQ4go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyHf3fBC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B8E1F000E9;
-	Wed, 20 May 2026 17:08:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=olT+gwzR1jc+/PpTLphj+6+ThJxYGBr7n8EDRPEoQwX8dULiXoz5caLrC+gPuF97j5gzh/VP04pk/ZrWypu26/W/9w499fx5H0dbLlkGaKw4go8IhBFs3n/C96N9SGDoPR1jeNQwIso9pJ4rHEE75U5yx+KhpFetDvQ1LpjZTDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cVs2Bz7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9771F000E9;
+	Wed, 20 May 2026 18:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296927;
-	bh=SXdZtVQYDLS7x4tic5GenVGSJ+k2wKa01hI6cl9UEWI=;
+	s=korg; t=1779301093;
+	bh=LYO3HubTpWJSbG4ZzI4PbGIwg2XmroyauA7YXZGts7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uyHf3fBC32OtgGlzg4r4MJSDMzHfaOk5ubtMyn2qY2IWh9G+bUm8t+GorfqHtjXyX
-	 IMrBZ04mKqegVz1EPzBBmo4DhOKlGnH0DnvnroqRtmnJZT756XtwJrMYEZlzzYNMi3
-	 xREvIqqNyVm/FV/yy59VXWEm4sbR/hPHKJ7PHbkY=
+	b=0cVs2Bz7uaKuxRTTXC1VexohEc/X7AcQ5rXAGjQflCrGZjldBoSpepD2H/A5diHrC
+	 +KP/S0BWfKTyOPKzt8lNUQZNH/yhMA6Yx7mW2TMR3AQgno0BRTri0ZHxWAA37iZ35i
+	 RjXEUh47GyPs1WRK+9mNYzIsN+j93U1gjo1rFyxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0984/1146] net: psp: require admin permission for dev-set and key-rotate
+Subject: [PATCH 6.12 423/666] clk: visconti: pll: initialize clk_init_data to zero
 Date: Wed, 20 May 2026 18:20:34 +0200
-Message-ID: <20260520162210.500939701@linuxfoundation.org>
+Message-ID: <20260520162120.437000960@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251034-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252598-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8469D595AAF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,sashiko.dev:url,mail.toshiba:email]
+X-Rspamd-Queue-Id: B660959ACCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit b718342a7fbaa2dff5fefc31988c07af8c6cbc21 ]
+[ Upstream commit 1603cbb64173a0e9fa7500f2a686f4aa011c58b9 ]
 
-The dev-set and key-rotate netlink operations modify shared device
-state (PSP version configuration and cryptographic key material,
-respectively) but do not require CAP_NET_ADMIN. The only access
-control is psp_dev_check_access() which merely verifies netns
-membership.
+Sashiko reported the following:
 
-Fixes: 00c94ca2b99e ("psp: base PSP device support")
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260427195856.401223-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> The struct clk_init_data init is declared on the stack without being
+> fully zero-initialized. While fields like name, flags, parent_names,
+> num_parents, and ops are explicitly assigned, the parent_data and
+> parent_hws fields are left containing stack garbage.
+
+clk_core_populate_parent_map() currently prefers the parent names over
+the parent data and hws, so this isn't a problem at the moment. If that
+ordering ever changed in the future, then this could lead to some
+unexpected crashes. Let's just go ahead and make sure that the struct
+clk_init_data is initialized to zero as a good practice.
+
+Fixes: b4cbe606dc367 ("clk: visconti: Add support common clock driver and reset driver")
+Link: https://sashiko.dev/#/patchset/20260326042317.122536-1-rosenp%40gmail.com
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Benoît Monin <benoit.monin@bootlin.com>
+Reviewed-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/psp.yaml | 2 ++
- net/psp/psp-nl-gen.c                 | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/visconti/pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
-index f3a57782d2cf4..49b7563f705f1 100644
---- a/Documentation/netlink/specs/psp.yaml
-+++ b/Documentation/netlink/specs/psp.yaml
-@@ -188,6 +188,7 @@ operations:
-       name: dev-set
-       doc: Set the configuration of a PSP device.
-       attribute-set: dev
-+      flags: [admin-perm]
-       do:
-         request:
-           attributes:
-@@ -207,6 +208,7 @@ operations:
-       name: key-rotate
-       doc: Rotate the device key.
-       attribute-set: dev
-+      flags: [admin-perm]
-       do:
-         request:
-           attributes:
-diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
-index 22a48d0fa378c..953309952cef7 100644
---- a/net/psp/psp-nl-gen.c
-+++ b/net/psp/psp-nl-gen.c
-@@ -76,7 +76,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
- 		.post_doit	= psp_device_unlock,
- 		.policy		= psp_dev_set_nl_policy,
- 		.maxattr	= PSP_A_DEV_PSP_VERSIONS_ENA,
--		.flags		= GENL_CMD_CAP_DO,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
- 		.cmd		= PSP_CMD_KEY_ROTATE,
-@@ -85,7 +85,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
- 		.post_doit	= psp_device_unlock,
- 		.policy		= psp_key_rotate_nl_policy,
- 		.maxattr	= PSP_A_DEV_ID,
--		.flags		= GENL_CMD_CAP_DO,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
- 		.cmd		= PSP_CMD_RX_ASSOC,
+diff --git a/drivers/clk/visconti/pll.c b/drivers/clk/visconti/pll.c
+index 3f929cf8dd2f7..22930fd589b70 100644
+--- a/drivers/clk/visconti/pll.c
++++ b/drivers/clk/visconti/pll.c
+@@ -244,7 +244,7 @@ static struct clk_hw *visconti_register_pll(struct visconti_pll_provider *ctx,
+ 					    const struct visconti_pll_rate_table *rate_table,
+ 					    spinlock_t *lock)
+ {
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	struct visconti_pll *pll;
+ 	struct clk_hw *pll_hw_clk;
+ 	size_t len;
 -- 
 2.53.0
 
