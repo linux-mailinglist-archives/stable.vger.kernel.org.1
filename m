@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI6IGvrmDWqx4gUAu9opvQ
-	(envelope-from <stable+bounces-250321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:14 +0200
+	id OLRMIaQWDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232D0592948
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5C5599602
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 45E8C30BC818
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BAD633CD4C1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6941436655C;
-	Wed, 20 May 2026 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A005F3BED26;
+	Wed, 20 May 2026 17:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrBYkWFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYZjqRRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15387317160;
-	Wed, 20 May 2026 16:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A893D75DA;
+	Wed, 20 May 2026 17:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295107; cv=none; b=UJMJz90RbtFyPeZp6Rz6VxmKXpNjgeWP1rO80o8fqbyItYykt8hhxRcDS+Zmia2q3fMVpHoPWJ1KwdzFHbH/xxNirs17Vemz3jE5Klmwb0JqppJFZS1hobVGjHkMQqFLAFkHOUBacbl/NOM9p+da+IMN/ZbbH4kRRz4Sw6fWml8=
+	t=1779297512; cv=none; b=n56ZodyY8Yrw9p2t+WTpqdfjF8Q4U3ArIWT/hMa9kz55XC5UwW/OJTDTKATXyJNrohNkiJA1bnc1Utie+N2dvOUWljJG59AEJorYyM43eAY+sg8Psczzr9BsYf1YBI//6PUSkRf26RvO8h2f70xknn2UxrYMnXBzJUIQlceKI+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295107; c=relaxed/simple;
-	bh=RKGWQFSrXasYV8T/PeUUM0H6jfG1L2HFLre5jV+kq4k=;
+	s=arc-20240116; t=1779297512; c=relaxed/simple;
+	bh=ZNf/k3r2VVom0JqkX5BlbnJSO+OkbhMZGXRypnxEzeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSM/RMueUhXcoSDkEx9LBq9635/1exKd8Tj5wn33hoeiMIAIk4yltJecoxzqmLVsI8Fd1TYLSlGlfHZGdHB39/YwMcm95QQ82f6Vt+D7QkfuVaYkqhBTpwnQssOBsv8gD4bhxt4Zh92NtGzrxWkj18RzHsOT33jf3csW/j2NB04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrBYkWFE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9E71F000E9;
-	Wed, 20 May 2026 16:38:25 +0000 (UTC)
+	 MIME-Version; b=bUALfjOdi2yQBseEYgRejY7nZ4cJmtLt7W8O5rtznrOBUvtdAHFw4BHRwZxIVhFFT3wXB/FLyGn5oNTTeEoA8ctxLFstpBJTKZPGi5voi1b7QJ1Z4neSnNWb8mF3hxs5HFcK+qR/fkdE4yrLOzvmywSG8eVgnt4WbtwgzZen40I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYZjqRRO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA781F00896;
+	Wed, 20 May 2026 17:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295106;
-	bh=Npz8cKLFK4NZioD+Ob+imlYxjXtk5lg24cs1XKAG914=;
+	s=korg; t=1779297510;
+	bh=Ltsr0ti/p8SZuQzwPVLpRrvBaE6Ctt7UMtyh/8xw2fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JrBYkWFEyunT5N6uZ0oN7C5Ijlr3YVbC/Ejw+MJkfau8Pny7gtLn8gpug4TwYxNH0
-	 Gkpz23sN0tpUHnU+eq8Q6i0E2XJb6vcrHnO8PPcSxwJ9q/LQXmCA4hVnuec0KoqdQV
-	 drIixtYCb0pgP6SqKXHBedRsM9e+Qp2B7WFoXVFI=
+	b=QYZjqRROesrsYAJOnkZcvhoEZqbnBctg2Y7V7lZ76AotOVpC1/3fagV0XJk4VQkGA
+	 57NYatbjM/9mSk3YpAzGb6q+RODw8mM9WMeY5PavRp04JJg1IDnN+2H9bm82y59Ns0
+	 A3UDsAL+Bsiybe6fmXzroPS04/tDFNQitQLFVtdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0292/1146] iommu/riscv: Stop polling when CQCSR reports an error
+Subject: [PATCH 6.18 059/957] wifi: ieee80211: split VHT definitions out
 Date: Wed, 20 May 2026 18:09:02 +0200
-Message-ID: <20260520162154.824221541@linuxfoundation.org>
+Message-ID: <20260520162135.839254518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +65,561 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251257-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250321-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,alibaba.com:email,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 232D0592948
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: DE5C5599602
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b2e5684558edf3e9bbe18d0e0043854994eab1be ]
+[ Upstream commit 7cb14da1d7bbfa4a6417ed7f1bc07dd77bcd9c83 ]
 
-The cmdq wait loop busy-polls the consumer index until it advances
-or the software timeout expires. If the IOMMU has already signaled
-a command queue failure in CQCSR, continuing to poll for progress is
-pointless.
+The ieee80211.h file has gotten very long, continue splitting
+it by putting VHT definitions into a separate file.
 
-Make riscv_iommu_queue_wait() also terminate the poll when any of these
-CQCSR error bits are observed.
-
-This helps the caller return earlier in failure cases and avoids
-spinning until the full timeout interval when the hardware has already
-reported an error. On single-core systems in particular, the current
-busy-wait can delay servicing the command-timeout interrupt until the
-software timeout expires (90s by default).
-
-Fixes: 856c0cfe5c5f ("iommu/riscv: Command and fault queue support")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Link: https://patch.msgid.link/20251105153843.c31cb771a250.I787a13064db7d80440101de3445be17881daf1b6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: cb0caadb64ca ("wifi: ieee80211: fix definition of EHT-MCS 15 in MRU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/riscv/iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/ieee80211-vht.h | 236 ++++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h     | 216 +------------------------------
+ 2 files changed, 237 insertions(+), 215 deletions(-)
+ create mode 100644 include/linux/ieee80211-vht.h
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index aadfbc181138f..6ac7e3edef8aa 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -368,6 +368,8 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
- 				  unsigned int timeout_us)
- {
- 	unsigned int cons = atomic_read(&queue->head);
-+	unsigned int flags = RISCV_IOMMU_CQCSR_CQMF | RISCV_IOMMU_CQCSR_CMD_TO |
-+			     RISCV_IOMMU_CQCSR_CMD_ILL;
+diff --git a/include/linux/ieee80211-vht.h b/include/linux/ieee80211-vht.h
+new file mode 100644
+index 0000000000000..898dfb561fef2
+--- /dev/null
++++ b/include/linux/ieee80211-vht.h
+@@ -0,0 +1,236 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * IEEE 802.11 VHT definitions
++ *
++ * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
++ * <jkmaline@cc.hut.fi>
++ * Copyright (c) 2002-2003, Jouni Malinen <jkmaline@cc.hut.fi>
++ * Copyright (c) 2005, Devicescape Software, Inc.
++ * Copyright (c) 2006, Michael Wu <flamingice@sourmilk.net>
++ * Copyright (c) 2013 - 2014 Intel Mobile Communications GmbH
++ * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
++ * Copyright (c) 2018 - 2025 Intel Corporation
++ */
++
++#ifndef LINUX_IEEE80211_VHT_H
++#define LINUX_IEEE80211_VHT_H
++
++#include <linux/types.h>
++#include <linux/if_ether.h>
++
++#define IEEE80211_MAX_MPDU_LEN_VHT_3895		3895
++#define IEEE80211_MAX_MPDU_LEN_VHT_7991		7991
++#define IEEE80211_MAX_MPDU_LEN_VHT_11454	11454
++
++/**
++ * enum ieee80211_vht_opmode_bits - VHT operating mode field bits
++ * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK: channel width mask
++ * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_20MHZ: 20 MHz channel width
++ * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_40MHZ: 40 MHz channel width
++ * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_80MHZ: 80 MHz channel width
++ * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_160MHZ: 160 MHz or 80+80 MHz channel width
++ * @IEEE80211_OPMODE_NOTIF_BW_160_80P80: 160 / 80+80 MHz indicator flag
++ * @IEEE80211_OPMODE_NOTIF_RX_NSS_MASK: number of spatial streams mask
++ *	(the NSS value is the value of this field + 1)
++ * @IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT: number of spatial streams shift
++ * @IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF: indicates streams in SU-MIMO PPDU
++ *	using a beamforming steering matrix
++ */
++enum ieee80211_vht_opmode_bits {
++	IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK	= 0x03,
++	IEEE80211_OPMODE_NOTIF_CHANWIDTH_20MHZ	= 0,
++	IEEE80211_OPMODE_NOTIF_CHANWIDTH_40MHZ	= 1,
++	IEEE80211_OPMODE_NOTIF_CHANWIDTH_80MHZ	= 2,
++	IEEE80211_OPMODE_NOTIF_CHANWIDTH_160MHZ	= 3,
++	IEEE80211_OPMODE_NOTIF_BW_160_80P80	= 0x04,
++	IEEE80211_OPMODE_NOTIF_RX_NSS_MASK	= 0x70,
++	IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT	= 4,
++	IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF	= 0x80,
++};
++
++/*
++ * Maximum length of AMPDU that the STA can receive in VHT.
++ * Length = 2 ^ (13 + max_ampdu_length_exp) - 1 (octets)
++ */
++enum ieee80211_vht_max_ampdu_length_exp {
++	IEEE80211_VHT_MAX_AMPDU_8K = 0,
++	IEEE80211_VHT_MAX_AMPDU_16K = 1,
++	IEEE80211_VHT_MAX_AMPDU_32K = 2,
++	IEEE80211_VHT_MAX_AMPDU_64K = 3,
++	IEEE80211_VHT_MAX_AMPDU_128K = 4,
++	IEEE80211_VHT_MAX_AMPDU_256K = 5,
++	IEEE80211_VHT_MAX_AMPDU_512K = 6,
++	IEEE80211_VHT_MAX_AMPDU_1024K = 7
++};
++
++/**
++ * struct ieee80211_vht_mcs_info - VHT MCS information
++ * @rx_mcs_map: RX MCS map 2 bits for each stream, total 8 streams
++ * @rx_highest: Indicates highest long GI VHT PPDU data rate
++ *	STA can receive. Rate expressed in units of 1 Mbps.
++ *	If this field is 0 this value should not be used to
++ *	consider the highest RX data rate supported.
++ *	The top 3 bits of this field indicate the Maximum NSTS,total
++ *	(a beamformee capability.)
++ * @tx_mcs_map: TX MCS map 2 bits for each stream, total 8 streams
++ * @tx_highest: Indicates highest long GI VHT PPDU data rate
++ *	STA can transmit. Rate expressed in units of 1 Mbps.
++ *	If this field is 0 this value should not be used to
++ *	consider the highest TX data rate supported.
++ *	The top 2 bits of this field are reserved, the
++ *	3rd bit from the top indiciates VHT Extended NSS BW
++ *	Capability.
++ */
++struct ieee80211_vht_mcs_info {
++	__le16 rx_mcs_map;
++	__le16 rx_highest;
++	__le16 tx_mcs_map;
++	__le16 tx_highest;
++} __packed;
++
++/* for rx_highest */
++#define IEEE80211_VHT_MAX_NSTS_TOTAL_SHIFT	13
++#define IEEE80211_VHT_MAX_NSTS_TOTAL_MASK	(7 << IEEE80211_VHT_MAX_NSTS_TOTAL_SHIFT)
++
++/* for tx_highest */
++#define IEEE80211_VHT_EXT_NSS_BW_CAPABLE	(1 << 13)
++
++/**
++ * enum ieee80211_vht_mcs_support - VHT MCS support definitions
++ * @IEEE80211_VHT_MCS_SUPPORT_0_7: MCSes 0-7 are supported for the
++ *	number of streams
++ * @IEEE80211_VHT_MCS_SUPPORT_0_8: MCSes 0-8 are supported
++ * @IEEE80211_VHT_MCS_SUPPORT_0_9: MCSes 0-9 are supported
++ * @IEEE80211_VHT_MCS_NOT_SUPPORTED: This number of streams isn't supported
++ *
++ * These definitions are used in each 2-bit subfield of the @rx_mcs_map
++ * and @tx_mcs_map fields of &struct ieee80211_vht_mcs_info, which are
++ * both split into 8 subfields by number of streams. These values indicate
++ * which MCSes are supported for the number of streams the value appears
++ * for.
++ */
++enum ieee80211_vht_mcs_support {
++	IEEE80211_VHT_MCS_SUPPORT_0_7	= 0,
++	IEEE80211_VHT_MCS_SUPPORT_0_8	= 1,
++	IEEE80211_VHT_MCS_SUPPORT_0_9	= 2,
++	IEEE80211_VHT_MCS_NOT_SUPPORTED	= 3,
++};
++
++/**
++ * struct ieee80211_vht_cap - VHT capabilities
++ *
++ * This structure is the "VHT capabilities element" as
++ * described in 802.11ac D3.0 8.4.2.160
++ * @vht_cap_info: VHT capability info
++ * @supp_mcs: VHT MCS supported rates
++ */
++struct ieee80211_vht_cap {
++	__le32 vht_cap_info;
++	struct ieee80211_vht_mcs_info supp_mcs;
++} __packed;
++
++/**
++ * enum ieee80211_vht_chanwidth - VHT channel width
++ * @IEEE80211_VHT_CHANWIDTH_USE_HT: use the HT operation IE to
++ *	determine the channel width (20 or 40 MHz)
++ * @IEEE80211_VHT_CHANWIDTH_80MHZ: 80 MHz bandwidth
++ * @IEEE80211_VHT_CHANWIDTH_160MHZ: 160 MHz bandwidth
++ * @IEEE80211_VHT_CHANWIDTH_80P80MHZ: 80+80 MHz bandwidth
++ */
++enum ieee80211_vht_chanwidth {
++	IEEE80211_VHT_CHANWIDTH_USE_HT		= 0,
++	IEEE80211_VHT_CHANWIDTH_80MHZ		= 1,
++	IEEE80211_VHT_CHANWIDTH_160MHZ		= 2,
++	IEEE80211_VHT_CHANWIDTH_80P80MHZ	= 3,
++};
++
++/**
++ * struct ieee80211_vht_operation - VHT operation IE
++ *
++ * This structure is the "VHT operation element" as
++ * described in 802.11ac D3.0 8.4.2.161
++ * @chan_width: Operating channel width
++ * @center_freq_seg0_idx: center freq segment 0 index
++ * @center_freq_seg1_idx: center freq segment 1 index
++ * @basic_mcs_set: VHT Basic MCS rate set
++ */
++struct ieee80211_vht_operation {
++	u8 chan_width;
++	u8 center_freq_seg0_idx;
++	u8 center_freq_seg1_idx;
++	__le16 basic_mcs_set;
++} __packed;
++
++/* 802.11ac VHT Capabilities */
++#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895			0x00000000
++#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991			0x00000001
++#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454			0x00000002
++#define IEEE80211_VHT_CAP_MAX_MPDU_MASK				0x00000003
++#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ		0x00000004
++#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ	0x00000008
++#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK			0x0000000C
++#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_SHIFT			2
++#define IEEE80211_VHT_CAP_RXLDPC				0x00000010
++#define IEEE80211_VHT_CAP_SHORT_GI_80				0x00000020
++#define IEEE80211_VHT_CAP_SHORT_GI_160				0x00000040
++#define IEEE80211_VHT_CAP_TXSTBC				0x00000080
++#define IEEE80211_VHT_CAP_RXSTBC_1				0x00000100
++#define IEEE80211_VHT_CAP_RXSTBC_2				0x00000200
++#define IEEE80211_VHT_CAP_RXSTBC_3				0x00000300
++#define IEEE80211_VHT_CAP_RXSTBC_4				0x00000400
++#define IEEE80211_VHT_CAP_RXSTBC_MASK				0x00000700
++#define IEEE80211_VHT_CAP_RXSTBC_SHIFT				8
++#define IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE			0x00000800
++#define IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE			0x00001000
++#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT                  13
++#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_MASK			\
++		(7 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT)
++#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT		16
++#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_MASK		\
++		(7 << IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT)
++#define IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE			0x00080000
++#define IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE			0x00100000
++#define IEEE80211_VHT_CAP_VHT_TXOP_PS				0x00200000
++#define IEEE80211_VHT_CAP_HTC_VHT				0x00400000
++#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT	23
++#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK	\
++		(7 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT)
++#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_UNSOL_MFB	0x08000000
++#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_MRQ_MFB	0x0c000000
++#define IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN			0x10000000
++#define IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN			0x20000000
++#define IEEE80211_VHT_CAP_EXT_NSS_BW_SHIFT			30
++#define IEEE80211_VHT_CAP_EXT_NSS_BW_MASK			0xc0000000
++
++/**
++ * ieee80211_get_vht_max_nss - return max NSS for a given bandwidth/MCS
++ * @cap: VHT capabilities of the peer
++ * @bw: bandwidth to use
++ * @mcs: MCS index to use
++ * @ext_nss_bw_capable: indicates whether or not the local transmitter
++ *	(rate scaling algorithm) can deal with the new logic
++ *	(dot11VHTExtendedNSSBWCapable)
++ * @max_vht_nss: current maximum NSS as advertised by the STA in
++ *	operating mode notification, can be 0 in which case the
++ *	capability data will be used to derive this (from MCS support)
++ * Return: The maximum NSS that can be used for the given bandwidth/MCS
++ *	combination
++ *
++ * Due to the VHT Extended NSS Bandwidth Support, the maximum NSS can
++ * vary for a given BW/MCS. This function parses the data.
++ *
++ * Note: This function is exported by cfg80211.
++ */
++int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
++			      enum ieee80211_vht_chanwidth bw,
++			      int mcs, bool ext_nss_bw_capable,
++			      unsigned int max_vht_nss);
++
++/* VHT action codes */
++enum ieee80211_vht_actioncode {
++	WLAN_VHT_ACTION_COMPRESSED_BF = 0,
++	WLAN_VHT_ACTION_GROUPID_MGMT = 1,
++	WLAN_VHT_ACTION_OPMODE_NOTIF = 2,
++};
++
++#endif /* LINUX_IEEE80211_VHT_H */
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index f0a7899fb6626..fb399b7833736 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -239,10 +239,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
+ /* 30 byte 4 addr hdr, 2 byte QoS, 2304 byte MSDU, 12 byte crypt, 4 byte FCS */
+ #define IEEE80211_MAX_FRAME_LEN		2352
  
- 	/* Already processed by the consumer */
- 	if ((int)(cons - index) > 0)
-@@ -375,6 +377,7 @@ static int riscv_iommu_queue_wait(struct riscv_iommu_queue *queue,
+-#define IEEE80211_MAX_MPDU_LEN_VHT_3895		3895
+-#define IEEE80211_MAX_MPDU_LEN_VHT_7991		7991
+-#define IEEE80211_MAX_MPDU_LEN_VHT_11454	11454
+-
+ #define IEEE80211_MAX_SSID_LEN		32
  
- 	/* Monitor consumer index */
- 	return readx_poll_timeout(riscv_iommu_queue_cons, queue, cons,
-+				 (riscv_iommu_readl(queue->iommu, queue->qcr) & flags) ||
- 				 (int)(cons - index) > 0, 0, timeout_us);
- }
+ #define IEEE80211_FIRST_TSPEC_TSID	8
+@@ -988,32 +984,6 @@ struct ieee80211_tim_ie {
+ 	};
+ } __packed;
  
+-/**
+- * enum ieee80211_vht_opmode_bits - VHT operating mode field bits
+- * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK: channel width mask
+- * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_20MHZ: 20 MHz channel width
+- * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_40MHZ: 40 MHz channel width
+- * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_80MHZ: 80 MHz channel width
+- * @IEEE80211_OPMODE_NOTIF_CHANWIDTH_160MHZ: 160 MHz or 80+80 MHz channel width
+- * @IEEE80211_OPMODE_NOTIF_BW_160_80P80: 160 / 80+80 MHz indicator flag
+- * @IEEE80211_OPMODE_NOTIF_RX_NSS_MASK: number of spatial streams mask
+- *	(the NSS value is the value of this field + 1)
+- * @IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT: number of spatial streams shift
+- * @IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF: indicates streams in SU-MIMO PPDU
+- *	using a beamforming steering matrix
+- */
+-enum ieee80211_vht_opmode_bits {
+-	IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK	= 0x03,
+-	IEEE80211_OPMODE_NOTIF_CHANWIDTH_20MHZ	= 0,
+-	IEEE80211_OPMODE_NOTIF_CHANWIDTH_40MHZ	= 1,
+-	IEEE80211_OPMODE_NOTIF_CHANWIDTH_80MHZ	= 2,
+-	IEEE80211_OPMODE_NOTIF_CHANWIDTH_160MHZ	= 3,
+-	IEEE80211_OPMODE_NOTIF_BW_160_80P80	= 0x04,
+-	IEEE80211_OPMODE_NOTIF_RX_NSS_MASK	= 0x70,
+-	IEEE80211_OPMODE_NOTIF_RX_NSS_SHIFT	= 4,
+-	IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF	= 0x80,
+-};
+-
+ /**
+  * enum ieee80211_s1g_chanwidth - S1G channel widths
+  * These are defined in IEEE802.11-2016ah Table 10-20
+@@ -1663,119 +1633,6 @@ struct ieee80211_p2p_noa_attr {
+ #define IEEE80211_P2P_OPPPS_ENABLE_BIT		BIT(7)
+ #define IEEE80211_P2P_OPPPS_CTWINDOW_MASK	0x7F
+ 
+-/*
+- * Maximum length of AMPDU that the STA can receive in VHT.
+- * Length = 2 ^ (13 + max_ampdu_length_exp) - 1 (octets)
+- */
+-enum ieee80211_vht_max_ampdu_length_exp {
+-	IEEE80211_VHT_MAX_AMPDU_8K = 0,
+-	IEEE80211_VHT_MAX_AMPDU_16K = 1,
+-	IEEE80211_VHT_MAX_AMPDU_32K = 2,
+-	IEEE80211_VHT_MAX_AMPDU_64K = 3,
+-	IEEE80211_VHT_MAX_AMPDU_128K = 4,
+-	IEEE80211_VHT_MAX_AMPDU_256K = 5,
+-	IEEE80211_VHT_MAX_AMPDU_512K = 6,
+-	IEEE80211_VHT_MAX_AMPDU_1024K = 7
+-};
+-
+-/**
+- * struct ieee80211_vht_mcs_info - VHT MCS information
+- * @rx_mcs_map: RX MCS map 2 bits for each stream, total 8 streams
+- * @rx_highest: Indicates highest long GI VHT PPDU data rate
+- *	STA can receive. Rate expressed in units of 1 Mbps.
+- *	If this field is 0 this value should not be used to
+- *	consider the highest RX data rate supported.
+- *	The top 3 bits of this field indicate the Maximum NSTS,total
+- *	(a beamformee capability.)
+- * @tx_mcs_map: TX MCS map 2 bits for each stream, total 8 streams
+- * @tx_highest: Indicates highest long GI VHT PPDU data rate
+- *	STA can transmit. Rate expressed in units of 1 Mbps.
+- *	If this field is 0 this value should not be used to
+- *	consider the highest TX data rate supported.
+- *	The top 2 bits of this field are reserved, the
+- *	3rd bit from the top indiciates VHT Extended NSS BW
+- *	Capability.
+- */
+-struct ieee80211_vht_mcs_info {
+-	__le16 rx_mcs_map;
+-	__le16 rx_highest;
+-	__le16 tx_mcs_map;
+-	__le16 tx_highest;
+-} __packed;
+-
+-/* for rx_highest */
+-#define IEEE80211_VHT_MAX_NSTS_TOTAL_SHIFT	13
+-#define IEEE80211_VHT_MAX_NSTS_TOTAL_MASK	(7 << IEEE80211_VHT_MAX_NSTS_TOTAL_SHIFT)
+-
+-/* for tx_highest */
+-#define IEEE80211_VHT_EXT_NSS_BW_CAPABLE	(1 << 13)
+-
+-/**
+- * enum ieee80211_vht_mcs_support - VHT MCS support definitions
+- * @IEEE80211_VHT_MCS_SUPPORT_0_7: MCSes 0-7 are supported for the
+- *	number of streams
+- * @IEEE80211_VHT_MCS_SUPPORT_0_8: MCSes 0-8 are supported
+- * @IEEE80211_VHT_MCS_SUPPORT_0_9: MCSes 0-9 are supported
+- * @IEEE80211_VHT_MCS_NOT_SUPPORTED: This number of streams isn't supported
+- *
+- * These definitions are used in each 2-bit subfield of the @rx_mcs_map
+- * and @tx_mcs_map fields of &struct ieee80211_vht_mcs_info, which are
+- * both split into 8 subfields by number of streams. These values indicate
+- * which MCSes are supported for the number of streams the value appears
+- * for.
+- */
+-enum ieee80211_vht_mcs_support {
+-	IEEE80211_VHT_MCS_SUPPORT_0_7	= 0,
+-	IEEE80211_VHT_MCS_SUPPORT_0_8	= 1,
+-	IEEE80211_VHT_MCS_SUPPORT_0_9	= 2,
+-	IEEE80211_VHT_MCS_NOT_SUPPORTED	= 3,
+-};
+-
+-/**
+- * struct ieee80211_vht_cap - VHT capabilities
+- *
+- * This structure is the "VHT capabilities element" as
+- * described in 802.11ac D3.0 8.4.2.160
+- * @vht_cap_info: VHT capability info
+- * @supp_mcs: VHT MCS supported rates
+- */
+-struct ieee80211_vht_cap {
+-	__le32 vht_cap_info;
+-	struct ieee80211_vht_mcs_info supp_mcs;
+-} __packed;
+-
+-/**
+- * enum ieee80211_vht_chanwidth - VHT channel width
+- * @IEEE80211_VHT_CHANWIDTH_USE_HT: use the HT operation IE to
+- *	determine the channel width (20 or 40 MHz)
+- * @IEEE80211_VHT_CHANWIDTH_80MHZ: 80 MHz bandwidth
+- * @IEEE80211_VHT_CHANWIDTH_160MHZ: 160 MHz bandwidth
+- * @IEEE80211_VHT_CHANWIDTH_80P80MHZ: 80+80 MHz bandwidth
+- */
+-enum ieee80211_vht_chanwidth {
+-	IEEE80211_VHT_CHANWIDTH_USE_HT		= 0,
+-	IEEE80211_VHT_CHANWIDTH_80MHZ		= 1,
+-	IEEE80211_VHT_CHANWIDTH_160MHZ		= 2,
+-	IEEE80211_VHT_CHANWIDTH_80P80MHZ	= 3,
+-};
+-
+-/**
+- * struct ieee80211_vht_operation - VHT operation IE
+- *
+- * This structure is the "VHT operation element" as
+- * described in 802.11ac D3.0 8.4.2.161
+- * @chan_width: Operating channel width
+- * @center_freq_seg0_idx: center freq segment 0 index
+- * @center_freq_seg1_idx: center freq segment 1 index
+- * @basic_mcs_set: VHT Basic MCS rate set
+- */
+-struct ieee80211_vht_operation {
+-	u8 chan_width;
+-	u8 center_freq_seg0_idx;
+-	u8 center_freq_seg1_idx;
+-	__le16 basic_mcs_set;
+-} __packed;
+-
+ /**
+  * struct ieee80211_he_cap_elem - HE capabilities element
+  * @mac_cap_info: HE MAC Capabilities Information
+@@ -2045,71 +1902,6 @@ struct ieee80211_eht_operation_info {
+ 	u8 optional[];
+ } __packed;
+ 
+-/* 802.11ac VHT Capabilities */
+-#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_3895			0x00000000
+-#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_7991			0x00000001
+-#define IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454			0x00000002
+-#define IEEE80211_VHT_CAP_MAX_MPDU_MASK				0x00000003
+-#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ		0x00000004
+-#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ	0x00000008
+-#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK			0x0000000C
+-#define IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_SHIFT			2
+-#define IEEE80211_VHT_CAP_RXLDPC				0x00000010
+-#define IEEE80211_VHT_CAP_SHORT_GI_80				0x00000020
+-#define IEEE80211_VHT_CAP_SHORT_GI_160				0x00000040
+-#define IEEE80211_VHT_CAP_TXSTBC				0x00000080
+-#define IEEE80211_VHT_CAP_RXSTBC_1				0x00000100
+-#define IEEE80211_VHT_CAP_RXSTBC_2				0x00000200
+-#define IEEE80211_VHT_CAP_RXSTBC_3				0x00000300
+-#define IEEE80211_VHT_CAP_RXSTBC_4				0x00000400
+-#define IEEE80211_VHT_CAP_RXSTBC_MASK				0x00000700
+-#define IEEE80211_VHT_CAP_RXSTBC_SHIFT				8
+-#define IEEE80211_VHT_CAP_SU_BEAMFORMER_CAPABLE			0x00000800
+-#define IEEE80211_VHT_CAP_SU_BEAMFORMEE_CAPABLE			0x00001000
+-#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT                  13
+-#define IEEE80211_VHT_CAP_BEAMFORMEE_STS_MASK			\
+-		(7 << IEEE80211_VHT_CAP_BEAMFORMEE_STS_SHIFT)
+-#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT		16
+-#define IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_MASK		\
+-		(7 << IEEE80211_VHT_CAP_SOUNDING_DIMENSIONS_SHIFT)
+-#define IEEE80211_VHT_CAP_MU_BEAMFORMER_CAPABLE			0x00080000
+-#define IEEE80211_VHT_CAP_MU_BEAMFORMEE_CAPABLE			0x00100000
+-#define IEEE80211_VHT_CAP_VHT_TXOP_PS				0x00200000
+-#define IEEE80211_VHT_CAP_HTC_VHT				0x00400000
+-#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT	23
+-#define IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK	\
+-		(7 << IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_SHIFT)
+-#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_UNSOL_MFB	0x08000000
+-#define IEEE80211_VHT_CAP_VHT_LINK_ADAPTATION_VHT_MRQ_MFB	0x0c000000
+-#define IEEE80211_VHT_CAP_RX_ANTENNA_PATTERN			0x10000000
+-#define IEEE80211_VHT_CAP_TX_ANTENNA_PATTERN			0x20000000
+-#define IEEE80211_VHT_CAP_EXT_NSS_BW_SHIFT			30
+-#define IEEE80211_VHT_CAP_EXT_NSS_BW_MASK			0xc0000000
+-
+-/**
+- * ieee80211_get_vht_max_nss - return max NSS for a given bandwidth/MCS
+- * @cap: VHT capabilities of the peer
+- * @bw: bandwidth to use
+- * @mcs: MCS index to use
+- * @ext_nss_bw_capable: indicates whether or not the local transmitter
+- *	(rate scaling algorithm) can deal with the new logic
+- *	(dot11VHTExtendedNSSBWCapable)
+- * @max_vht_nss: current maximum NSS as advertised by the STA in
+- *	operating mode notification, can be 0 in which case the
+- *	capability data will be used to derive this (from MCS support)
+- * Return: The maximum NSS that can be used for the given bandwidth/MCS
+- *	combination
+- *
+- * Due to the VHT Extended NSS Bandwidth Support, the maximum NSS can
+- * vary for a given BW/MCS. This function parses the data.
+- *
+- * Note: This function is exported by cfg80211.
+- */
+-int ieee80211_get_vht_max_nss(struct ieee80211_vht_cap *cap,
+-			      enum ieee80211_vht_chanwidth bw,
+-			      int mcs, bool ext_nss_bw_capable,
+-			      unsigned int max_vht_nss);
+-
+ /* 802.11ax HE MAC capabilities */
+ #define IEEE80211_HE_MAC_CAP0_HTC_HE				0x01
+ #define IEEE80211_HE_MAC_CAP0_TWT_REQ				0x02
+@@ -3561,13 +3353,6 @@ enum ieee80211_spectrum_mgmt_actioncode {
+ 	WLAN_ACTION_SPCT_CHL_SWITCH = 4,
+ };
+ 
+-/* VHT action codes */
+-enum ieee80211_vht_actioncode {
+-	WLAN_VHT_ACTION_COMPRESSED_BF = 0,
+-	WLAN_VHT_ACTION_GROUPID_MGMT = 1,
+-	WLAN_VHT_ACTION_OPMODE_NOTIF = 2,
+-};
+-
+ /* Self Protected Action codes */
+ enum ieee80211_self_protected_actioncode {
+ 	WLAN_SP_RESERVED = 0,
+@@ -5619,6 +5404,7 @@ static inline u32 ieee80211_eml_trans_timeout_in_us(u16 eml_cap)
+ #define NAN_DEV_CAPA_S3_SUPPORTED		0x10
+ 
+ #include "ieee80211-ht.h"
++#include "ieee80211-vht.h"
+ #include "ieee80211-mesh.h"
+ 
+ #endif /* LINUX_IEEE80211_H */
 -- 
 2.53.0
 
