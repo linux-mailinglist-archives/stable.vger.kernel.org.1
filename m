@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-253090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iP9/B5sEDmpO5gUAu9opvQ
-	(envelope-from <stable+bounces-253090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:39 +0200
+	id qO/QCm3xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9AB5978B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEBA594252
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0613E30BF417
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 59AF330A9E5A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8823C3FFAB3;
-	Wed, 20 May 2026 18:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613873DA7C6;
+	Wed, 20 May 2026 17:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00JZftqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koXyIttP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBD03FE66D;
-	Wed, 20 May 2026 18:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1956237754D;
+	Wed, 20 May 2026 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302379; cv=none; b=Eom09Rw5OuVugm3QygBNBcRZsFzt+TglAUOhAIE6I4F1PazdphHsvjJXRMhPCsnoja02JQxHpbeyuZtTYadocXl8qId1bJw7Y+arpmHlr8Q9w8RaW8ZDlj3O163loH72Uhj/cINe0mUDblsmYDNHZUnSgf4inLmQHVsvZitezgE=
+	t=1779297008; cv=none; b=aJd6O0oup3QXi7ng2GrogH6Orbydz49wWUewrNxdfBziMoARl1jCmibil+/UWP9fE+MA+fiWnvITaG9OP6EOQjhE/gmBjQYsMg+xX61ZwhLMkdrnhY/BhpUZEq8TQK6WL/UTGrN7C9TD2E1t+PpdhTjjhs4MZro3KUdlgS+GKoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302379; c=relaxed/simple;
-	bh=VUfWHrdTgXgZSuVQhsy4qcECgNDnUHIcADBVLc0CEE8=;
+	s=arc-20240116; t=1779297008; c=relaxed/simple;
+	bh=rhl8J+gdFckkB2ASt0QNPyHJcrtnnqS3XWWuY2Xl+n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apHZhP5hI6cW2T9nD1To6qWWUmwPY5/7+TI3QPsLBp5Cup61nojSbF3JJDmhP7FM39jzEVem3QLvV8z9VsPXJlM91FZsBK0jPwSVju70C3AE++h0a8uWeQKWInoUkAQ4F6M1WayQAiBUlskLDGjXBw8s5DW41SQGrc3CS4Mgx1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00JZftqf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644B31F000E9;
-	Wed, 20 May 2026 18:39:37 +0000 (UTC)
+	 MIME-Version; b=Bmie4iPxQkENe8bvDqWfvgpkBWP8notVg59Gb3H5Rkv/jyZvVMZVzOi2vKKeR/qcHY+3wyBN23vmoJ9CELVh24laVV2jOS3wYqRV/poF1Dj06k+U5kHiswbbWDB9NaQIeLYxhQzJ8dgiF/v/H3j5eMG5i7nZ+mEa5NXc4QIbbjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koXyIttP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E96F1F000E9;
+	Wed, 20 May 2026 17:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302377;
-	bh=rKns3p3/rjECN+49IbGEvbvz5j21W20aT2YyG9O3gck=;
+	s=korg; t=1779297007;
+	bh=PN1qVFhplEa7qeCXqbNezYug1dUrbKGmyDCnRB/Tdyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=00JZftqfgghjooHIeN9DjfgM1z/DGQOzOXmDKy/E5gegwx1TdYgA0V2sFJ0VWxMfe
-	 Ls8hUsVMvrbedjXQUTYPN/WlrIQTd2MReXh4gJcQmcWBq8Jw8zJdpJbjzAqj5dO00D
-	 WjPysZpt2F9LjZsRFO+ek1VJ+HrYLG+UrqKNazW0=
+	b=koXyIttP+wPzMFkJCBnXFAvlNqHIuXeT5EXxAzLgMzIMNtFmR9jM4yv5J3Sufhhen
+	 80O+HbSVbc+is1+fSlwFp3sbaBGsRbrhrhw4axefbsr/u5ZpKVJIz52K39KI5x6DQ4
+	 hMdZ0TP770plp4zufApNVUssEif4nO+Vn9WRMoCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/508] bpf, arm32: Reject BPF-to-BPF calls and callbacks in the JIT
+Subject: [PATCH 7.0 1016/1146] net: airoha: Do not return err in ndo_stop() callback
 Date: Wed, 20 May 2026 18:21:06 +0200
-Message-ID: <20260520162103.918004769@linuxfoundation.org>
+Message-ID: <20260520162211.227031449@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,126 +68,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253090-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251064-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,iogearbox.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pengutronix.de:email]
-X-Rspamd-Queue-Id: 8A9AB5978B8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BDEBA594252
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit e1d486445af3c392628532229f7ce5f5cf7891b6 ]
+[ Upstream commit 4ca01292ea2f2363660610a65ba0285d7c3309ed ]
 
-The ARM32 BPF JIT does not support BPF-to-BPF function calls
-(BPF_PSEUDO_CALL) or callbacks (BPF_PSEUDO_FUNC), but it does
-not reject them either.
+Always complete the airoha_dev_stop() routine regardless of the
+airoha_set_vip_for_gdm_port() return value, since errors from
+ndo_stop() are ignored by the networking stack and the interface is
+always considered down after the call.
 
-When a program with subprograms is loaded (e.g. libxdp's XDP
-dispatcher uses __noinline__ subprograms, or any program using
-callbacks like bpf_loop or bpf_for_each_map_elem), the verifier
-invokes bpf_jit_subprogs() which calls bpf_int_jit_compile()
-for each subprogram.
-
-For BPF_PSEUDO_CALL, since ARM32 does not reject it, the JIT
-silently emits code using the wrong address computation:
-
-    func = __bpf_call_base + imm
-
-where imm is a pc-relative subprogram offset, producing a bogus
-function pointer.
-
-For BPF_PSEUDO_FUNC, the ldimm64 handler ignores src_reg and
-loads the immediate as a normal 64-bit value without error.
-
-In both cases, build_body() reports success and a JIT image is
-allocated. ARM32 lacks the jit_data/extra_pass mechanism needed
-for the second JIT pass in bpf_jit_subprogs(). On the second
-pass, bpf_int_jit_compile() performs a full fresh compilation,
-allocating a new JIT binary and overwriting prog->bpf_func. The
-first allocation is never freed. bpf_jit_subprogs() then detects
-the function pointer changed and aborts with -ENOTSUPP, but the
-original JIT binary has already been leaked. Each program
-load/unload cycle leaks one JIT binary allocation, as reported
-by kmemleak:
-
-    unreferenced object 0xbf0a1000 (size 4096):
-      backtrace:
-        bpf_jit_binary_alloc+0x64/0xfc
-        bpf_int_jit_compile+0x14c/0x348
-        bpf_jit_subprogs+0x4fc/0xa60
-
-Fix this by rejecting both BPF_PSEUDO_CALL in the BPF_CALL
-handler and BPF_PSEUDO_FUNC in the BPF_LD_IMM64 handler, falling
-through to the existing 'notyet' path. This causes build_body()
-to fail before any JIT binary is allocated, so
-bpf_int_jit_compile() returns the original program unjitted.
-bpf_jit_subprogs() then sees !prog->jited and cleanly falls
-back to the interpreter with no leak.
-
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-Reported-by: Jonas Rebmann <jre@pengutronix.de>
-Closes: https://lore.kernel.org/bpf/b63e9174-7a3d-4e22-8294-16df07a4af89@pengutronix.de
-Tested-by: Jonas Rebmann <jre@pengutronix.de>
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Link: https://lore.kernel.org/r/20260417143353.838911-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260428-airoha-ndo-stop-not-err-v1-1-674506d29a91@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/net/bpf_jit_32.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/airoha/airoha_eth.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/net/bpf_jit_32.c b/arch/arm/net/bpf_jit_32.c
-index 6a1c9fca5260b..2292245cfe7a9 100644
---- a/arch/arm/net/bpf_jit_32.c
-+++ b/arch/arm/net/bpf_jit_32.c
-@@ -1594,6 +1594,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 	{
- 		u64 val = (u32)imm | (u64)insn[1].imm << 32;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 3e406d880c0cd..83882a8953d25 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1738,13 +1738,10 @@ static int airoha_dev_stop(struct net_device *dev)
+ {
+ 	struct airoha_gdm_port *port = netdev_priv(dev);
+ 	struct airoha_qdma *qdma = port->qdma;
+-	int i, err;
++	int i;
  
-+		if (insn->src_reg == BPF_PSEUDO_FUNC)
-+			goto notyet;
-+
- 		emit_a32_mov_i64(dst, val, ctx);
+ 	netif_tx_disable(dev);
+-	err = airoha_set_vip_for_gdm_port(port, false);
+-	if (err)
+-		return err;
+-
++	airoha_set_vip_for_gdm_port(port, false);
+ 	for (i = 0; i < dev->num_tx_queues; i++)
+ 		netdev_tx_reset_subqueue(dev, i);
  
- 		return 1;
-@@ -1785,6 +1788,9 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
- 		const s8 *r5 = bpf2a32[BPF_REG_5];
- 		const u32 func = (u32)__bpf_call_base + (u32)imm;
- 
-+		if (insn->src_reg == BPF_PSEUDO_CALL)
-+			goto notyet;
-+
- 		emit_a32_mov_r64(true, r0, r1, ctx);
- 		emit_a32_mov_r64(true, r1, r2, ctx);
- 		emit_push_r64(r5, ctx);
 -- 
 2.53.0
 
