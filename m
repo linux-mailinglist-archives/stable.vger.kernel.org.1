@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-250237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGS8I8PvDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:43 +0200
+	id aHMKOI8ODmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3299593D7A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6740C5989D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53B423374B67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0A2633CF027
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B2D36A357;
-	Wed, 20 May 2026 16:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FDC3BA237;
+	Wed, 20 May 2026 16:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eqhm6cW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qtyu6WX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00C236A01E;
-	Wed, 20 May 2026 16:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319813D6CA5;
+	Wed, 20 May 2026 16:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294888; cv=none; b=gXfBxxMrVg2g5Df7XZ2DQMXQ1Z1L7JMLJYZllxtRcA+tcnJd1IWU8J5RvmrrKXIm3DUZbSV4ffndQ1O2v++AFiA8ZzV/INJZ5JJgryXZtlGOExVTZYcWQPHPIH876sZra8bD54yF3jo72KdW6b1pZbLhS2z9WbRFLKTmkfPfQ4A=
+	t=1779295020; cv=none; b=DC/u5oQ50agCrqAmQdB9ethJcA+5fuh8+feZk1moXZEJRQvVKLRc46NPiv2V8q1dGR0cjFWfsS6tZO7OKdKDgG2Y0iEHwb3PwhF3TaNDmO3hOHViHsB0oEsSXjJOSVM02ppGLFll1M0Of5J+H4G9uZcT2t/u/INkvct+mf+1P3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294888; c=relaxed/simple;
-	bh=eIApBFQFu0y26Q4m/d9ArulHIaiA/r5z0D2hZDoHTEI=;
+	s=arc-20240116; t=1779295020; c=relaxed/simple;
+	bh=yQqRJmJxvKPSlzpKNzFGBAU7sx+KMa8Q9o6GWwCKPCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzwZKbxgFV/z9lQrDzDrXDDA/gqaAOcdHe2Exic5sFJvc4VLF4on68U1kgS6eFzW28Awib4GtQZLtkShdHuUkSchY+WF73fIU7YMVEodKmslSU0BbhQkBxzZudlJOKanC+ZFmAgSq5+d4YnLBQ9kkc7R8nue7Ld+AK96FtEIYg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eqhm6cW4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A361F000E9;
-	Wed, 20 May 2026 16:34:46 +0000 (UTC)
+	 MIME-Version; b=r7jUNqrsXMwWxsHviozgHjpmAGSmJmb+PPhhv5hp6V3FbC8R5nwPlmNidZESC3echoVgaGhroPC0ULTk5dKEWqYUu+uY1/mFrbi+z0d0v+hToVY8gTwEgzf0xDWsXOLW7W9O8tl9EoTaBjMgjRu5EtlSj4QQgNWLriub6CGQnj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qtyu6WX0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9291F000E9;
+	Wed, 20 May 2026 16:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294887;
-	bh=89PFykt7KbcNKN4b1abxVnBFqI2QygY47NR3XsgF+CM=;
+	s=korg; t=1779295018;
+	bh=iIz8d4j0jiCOb2WaYUMETKJKK66BivvfxKI9qbm6yO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Eqhm6cW4jb2VZI1WyTvHrublHukeAUF7aN5kD2umEwPqE74yp2XEY+IZ02rcm/r/l
-	 QupjSvMH1w7kCUZJEQY2Fjc7fHhQpUSl3Ivz7SYjDuSB/1vJccdyGkYCgCvSM8lNpN
-	 nXm4UDSyRlk1znr83wcQLagWRdBan1AOpNTywPnY=
+	b=Qtyu6WX0H0Hua2v5ntyntLCvNmkDc+41W6sti7b3mj/3gy0xdABKGKKWOBBt5A2yO
+	 /uRJFKaWMm881hl2MzYNl5rQziq9zwaT42LQvdXs4m5ifO1dtctZDey/bhFhoSeVsh
+	 Pv0t2ETbDJEZ90qO1OIsNjE9h6Lylzj0goJMMj0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
+	Konstantin Khorenko <khorenko@virtuozzo.com>,
+	Thomas Weissschuh <linux@weissschuh.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0208/1146] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
-Date: Wed, 20 May 2026 18:07:38 +0200
-Message-ID: <20260520162152.974284866@linuxfoundation.org>
+Subject: [PATCH 7.0 0209/1146] net: fix skb_ext_total_length() BUILD_BUG_ON with CONFIG_GCOV_PROFILE_ALL
+Date: Wed, 20 May 2026 18:07:39 +0200
+Message-ID: <20260520162152.996407792@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250288-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250237-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,makrotopia.org:email]
-X-Rspamd-Queue-Id: F3299593D7A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,weissschuh.net:email]
+X-Rspamd-Queue-Id: 6740C5989D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,143 +101,80 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-[ Upstream commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 ]
+[ Upstream commit c0b4382c86e3d92f79b71c9ed55654db520d7b36 ]
 
-The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
-registers that the driver never initializes. The hardware defaults do
-not account for PPPoE overhead, causing the PPE to punt encapsulated
-frames back to the CPU instead of forwarding them.
+When CONFIG_GCOV_PROFILE_ALL=y is enabled, the kernel fails to build:
 
-Initialize the registers at PPE start and on MTU changes using the
-maximum GMAC MTU. This is a conservative approximation -- the actual
-per-PPE requirement depends on egress path, but using the global
-maximum ensures the limits are never too small.
+  In file included from <command-line>:
+  In function 'skb_extensions_init',
+      inlined from 'skb_init' at net/core/skbuff.c:5214:2:
+  ././include/linux/compiler_types.h:706:45: error: call to
+    '__compiletime_assert_1490' declared with attribute error:
+    BUILD_BUG_ON failed: skb_ext_total_length() > 255
 
-Fixes: ba37b7caf1ed2 ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
+CONFIG_GCOV_PROFILE_ALL adds -fprofile-arcs -ftest-coverage
+-fno-tree-loop-im to CFLAGS globally. GCC inserts branch profiling
+counters into the skb_ext_total_length() loop and, combined with
+-fno-tree-loop-im (which disables loop invariant motion), cannot
+constant-fold the result.
+BUILD_BUG_ON requires a compile-time constant and fails.
+
+The issue manifests in kernels with 5+ SKB extension types enabled
+(e.g., after addition of SKB_EXT_CAN, SKB_EXT_PSP). With 4 extensions
+GCC can still unroll and fold the loop despite GCOV instrumentation;
+with 5+ it gives up.
+
+Mark skb_ext_total_length() with __no_profile to prevent GCOV from
+inserting counters into this function. Without counters the loop is
+"clean" and GCC can constant-fold it even with -fno-tree-loop-im active.
+This allows BUILD_BUG_ON to work correctly while keeping GCOV profiling
+for the rest of the kernel.
+
+This also removes the CONFIG_KCOV_INSTRUMENT_ALL preprocessor guard
+introduced by d6e5794b06c0. That guard was added as a precaution because
+KCOV instrumentation was also suspected of inhibiting constant folding.
+However, KCOV uses -fsanitize-coverage=trace-pc, which inserts
+lightweight trace callbacks that do not interfere with GCC's constant
+folding or loop optimization passes. Only GCOV's -fprofile-arcs combined
+with -fno-tree-loop-im actually prevents the compiler from evaluating
+the loop at compile time. The guard is therefore unnecessary and can be
+safely removed.
+
+Fixes: 96ea3a1e2d31 ("can: add CAN skb extension infrastructure")
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Reviewed-by: Thomas Weissschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20260410162150.3105738-2-khorenko@virtuozzo.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
- drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
- drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ net/core/skbuff.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index ddc321a02fdae..796f79088f366 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3566,12 +3566,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
- 	return NOTIFY_DONE;
- }
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 43ee86dcf2eaf..59fb4b2bb8217 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5142,7 +5142,7 @@ static const u8 skb_ext_type_len[] = {
+ #endif
+ };
  
-+static int mtk_max_gmac_mtu(struct mtk_eth *eth)
-+{
-+	int i, max_mtu = ETH_DATA_LEN;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
-+		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
-+			max_mtu = eth->netdev[i]->mtu;
-+
-+	return max_mtu;
-+}
-+
- static int mtk_open(struct net_device *dev)
+-static __always_inline unsigned int skb_ext_total_length(void)
++static __always_inline __no_profile unsigned int skb_ext_total_length(void)
  {
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
- 	struct mtk_mac *target_mac;
--	int i, err, ppe_num;
-+	int i, err, ppe_num, mtu;
- 
- 	ppe_num = eth->soc->ppe_num;
- 
-@@ -3618,6 +3629,10 @@ static int mtk_open(struct net_device *dev)
- 			mtk_gdm_config(eth, target_mac->id, gdm_config);
- 		}
- 
-+		mtu = mtk_max_gmac_mtu(eth);
-+		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+			mtk_ppe_update_mtu(eth->ppe[i], mtu);
-+
- 		napi_enable(&eth->tx_napi);
- 		napi_enable(&eth->rx_napi);
- 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-@@ -4311,6 +4326,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	int length = new_mtu + MTK_RX_ETH_HLEN;
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
-+	int max_mtu, i;
- 
- 	if (rcu_access_pointer(eth->prog) &&
- 	    length > MTK_PP_MAX_BUF_SIZE) {
-@@ -4321,6 +4337,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	mtk_set_mcr_max_rx(mac, length);
- 	WRITE_ONCE(dev->mtu, new_mtu);
- 
-+	max_mtu = mtk_max_gmac_mtu(eth);
-+	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
-index 75f7728fc7962..18279e2a7022e 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
-@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
- 	}
- }
- 
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
-+{
-+	int base;
-+	u32 val;
-+
-+	if (!ppe)
-+		return;
-+
-+	/* The PPE checks output frame size against per-tag-layer MTU limits,
-+	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
-+	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
-+	 * overhead, but 802.1Q VLAN tags are handled transparently without
-+	 * being reflected by the lower device MTU being increased by 4.
-+	 * Use the maximum MTU across all GMAC interfaces so that PPE output
-+	 * frame limits are sufficiently high regardless of which port a flow
-+	 * egresses through.
-+	 */
-+	base = ETH_HLEN + mtu;
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
-+			 base + 2 * VLAN_HLEN) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
-+			 base + 3 * VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
-+}
-+
- void mtk_ppe_start(struct mtk_ppe *ppe)
+ 	unsigned int l = SKB_EXT_CHUNKSIZEOF(struct skb_ext);
+ 	int i;
+@@ -5156,9 +5156,7 @@ static __always_inline unsigned int skb_ext_total_length(void)
+ static void skb_extensions_init(void)
  {
- 	u32 val;
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
-index 223f709e2704f..ba85e39a155bf 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.h
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
-@@ -346,6 +346,7 @@ struct mtk_ppe {
- struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 	BUILD_BUG_ON(SKB_EXT_NUM > 8);
+-#if !IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL)
+ 	BUILD_BUG_ON(skb_ext_total_length() > 255);
+-#endif
  
- void mtk_ppe_deinit(struct mtk_eth *eth);
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
- void mtk_ppe_start(struct mtk_ppe *ppe);
- int mtk_ppe_stop(struct mtk_ppe *ppe);
- int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
+ 	skbuff_ext_cache = kmem_cache_create("skbuff_ext_cache",
+ 					     SKB_EXT_ALIGN_VALUE * skb_ext_total_length(),
 -- 
 2.53.0
 
