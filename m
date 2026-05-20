@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNZdBmXuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:53 +0200
+	id 6LZ4KX38DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91402593953
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23684596125
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF9F93164196
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AB1A30AD225
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D763D8104;
-	Wed, 20 May 2026 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8313F8896;
+	Wed, 20 May 2026 18:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ww7UK/1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6WhDR/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E013364E89;
-	Wed, 20 May 2026 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D189347515;
+	Wed, 20 May 2026 18:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296997; cv=none; b=Rop7U2jJcXTZioeNJ3SnnvDt6ztBs0MboF5ewgEnp75zYvnjb9tzjeoYyIKntKwxuI7l6Jy2dwU8Kl2K6W5tSx60DS/R0BmbAkcfcj/vVj8B8Uu8XJpaNzwSYx4bxY9CNLoTDzKC/8zBH+Qw+OcyYShnzYyGM73L/+ZNbMYP5ok=
+	t=1779301166; cv=none; b=ZRRi2GtVpGehn8Qp4fCSOAWqHBNMW1cEwVX91NRTvsjgX+QbIjh488reym7ULY8kZjioK5b6sWPI316ufOMURK/KPy/cuCUvS+VYRkTMRUKZwI9dNHgVaK5nNDYd6C+kfWs1U++ImoJUiCsqa191RPmh6OCJAdxtjEe/PkeEI4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296997; c=relaxed/simple;
-	bh=0xFwP3VAckaxQwfQHM/VRkLW3UkKFo1AKTsoRgtHwls=;
+	s=arc-20240116; t=1779301166; c=relaxed/simple;
+	bh=pouCNr7CdaqQrz4AjkMLHVWTdT6eiAIIxc2qEpZEzYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFuJoTQJqIxFCA9GC5Zyz0z2xf1QjCoAKCIxPL1J+fgXlRp3T4OXvPD+p1h/w6JHHP0WRWfMGFPBK18Yp70z/pYyfQK7dyuegfnsNNwyVHtgnWfG875CZu+bALvlImqbEMrUB8/AsW+Vq/nRyxuARUHjUZ4xARpttYFt+TcOvdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ww7UK/1N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83DB1F000E9;
-	Wed, 20 May 2026 17:09:55 +0000 (UTC)
+	 MIME-Version; b=Po75EI/Cni+qIqxr/VhP6P8BbUxoxwCjIKKVO0BfSpsw92imT/hFuNhT21ZjmxcOvdlX7mz5KhQrF4ROOQdqcrKjYvXNWjI+QWcvj/T/RHv0dnDw18x/4vUTgzDFXiXwesWsK+0fo/IfrdBDKlWfsb92x53Hj/iyoRD9T9vkWnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6WhDR/1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE291F00893;
+	Wed, 20 May 2026 18:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296996;
-	bh=oaYro74TKXUFR6x+v/GO9TgJBCQk4vHcD2bFSHwkAdY=;
+	s=korg; t=1779301165;
+	bh=kgMKQrHKLv/P6hB/0dv3qtJPyWJsUhisOJWQ6UD76SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ww7UK/1NYI3Q+uHa90yowk4zEqYEvujPro6C9NVOlxg9kSZ+tke8mR5IKBG2lSdFZ
-	 Cs+IWH9YhEcAL9S5AtdOD0wTHdQ74IMDX5gXBFujki1oK99Ui5fMu3fZmTWfPZ2/2d
-	 WQrfCM6hZhDyZTQIkqA+CjGupNBgC0x8ciSdEBpM=
+	b=F6WhDR/11O8KbuO5LoWidDP999X4afEj/aphDM31v0wul6AW57TadM7o8bnV04Ip+
+	 hcpvui7d4XS6GXlseYomp+HT9sbSfs5uorFUsTwvR7JXktaXx2s7jPDua3W3GkTJu8
+	 41U2M0bHAhfzGYSeMQYrtH2ZhhPwnGMbgC3V6oos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francois Dugast <francois.dugast@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1012/1146] drm/xe: Fix error cleanup in xe_exec_queue_create_ioctl()
+Subject: [PATCH 6.12 451/666] tcp: annotate data-races around tp->bytes_sent
 Date: Wed, 20 May 2026 18:21:02 +0200
-Message-ID: <20260520162211.137128649@linuxfoundation.org>
+Message-ID: <20260520162121.045334085@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,104 +73,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251060-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252625-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 91402593953
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 23684596125
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f3cc22d4df3ed58439ea7e21daa54c3608e03b78 ]
+[ Upstream commit ee43e957ce2ec77b2ec47fef28f3c0df6ab01a31 ]
 
-Two error handling issues exist in xe_exec_queue_create_ioctl():
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-1. When xe_hw_engine_group_add_exec_queue() fails, the error path jumps
-   to put_exec_queue which skips xe_exec_queue_kill(). If the VM is in
-   preempt fence mode, xe_vm_add_compute_exec_queue() has already added
-   the queue to the VM's compute exec queue list. Skipping the kill
-   leaves the queue on that list, leading to a dangling pointer after
-   the queue is freed.
-
-2. When xa_alloc() fails after xe_hw_engine_group_add_exec_queue() has
-   succeeded, the error path does not call
-   xe_hw_engine_group_del_exec_queue() to remove the queue from the hw
-   engine group list. The queue is then freed while still linked into
-   the hw engine group, causing a use-after-free.
-
-Fix both by:
-- Changing the xe_hw_engine_group_add_exec_queue() failure path to jump
-  to kill_exec_queue so that xe_exec_queue_kill() properly removes the
-  queue from the VM's compute list.
-- Adding a del_hw_engine_group label before kill_exec_queue for the
-  xa_alloc() failure path, which removes the queue from the hw engine
-  group before proceeding with the rest of the cleanup.
-
-Fixes: 7970cb36966c ("'drm/xe/hw_engine_group: Register hw engine group's exec queues")
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Assisted-by: Claude:claude-opus-4.6
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260408020647.3397933-1-shuicheng.lin@intel.com
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-(cherry picked from commit 37c831f401746a45d510b312b0ed7a77b1e06ec8)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: ba113c3aa79a ("tcp: add data bytes sent stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c        | 2 +-
+ net/ipv4/tcp_output.c | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 3a60a2fb9cf96..a49919da0eee6 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -1227,7 +1227,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 		if (q->vm && q->hwe->hw_engine_group) {
- 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
- 			if (err)
--				goto put_exec_queue;
-+				goto kill_exec_queue;
- 		}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 16ee72717e039..08678dd21950e 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4302,7 +4302,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+ 			  TCP_NLA_PAD);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 59a0ef96b4d85..5d1aa41592720 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1448,7 +1448,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 		tcp_event_data_sent(tp, sk);
+ 		WRITE_ONCE(tp->data_segs_out,
+ 			   tp->data_segs_out + tcp_skb_pcount(skb));
+-		tp->bytes_sent += skb->len - tcp_header_size;
++		WRITE_ONCE(tp->bytes_sent,
++			   tp->bytes_sent + skb->len - tcp_header_size);
  	}
  
-@@ -1236,12 +1236,15 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 	/* user id alloc must always be last in ioctl to prevent UAF */
- 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
- 	if (err)
--		goto kill_exec_queue;
-+		goto del_hw_engine_group;
- 
- 	args->exec_queue_id = id;
- 
- 	return 0;
- 
-+del_hw_engine_group:
-+	if (q->vm && q->hwe && q->hwe->hw_engine_group)
-+		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
- kill_exec_queue:
- 	xe_exec_queue_kill(q);
- delete_queue_group:
+ 	if (after(tcb->end_seq, tp->snd_nxt) || tcb->seq == tcb->end_seq)
 -- 
 2.53.0
 
