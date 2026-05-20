@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIAYMOsADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-251756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:55 +0200
+	id 8FWCFJr5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-250865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E375971AE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FD65958EB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2633B30721BA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D6CB33F0AE3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E661317160;
-	Wed, 20 May 2026 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDD43EC2DB;
+	Wed, 20 May 2026 17:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orCeirWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ad1QuW2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFE136D9EA;
-	Wed, 20 May 2026 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33423D88FC;
+	Wed, 20 May 2026 17:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298810; cv=none; b=j2YMPuU5wU3kG95BKAi+1T3C2OHzfETPAorUiqC6Lu/S9VqRebsqLA/iLGPy2fE7mSvFBVRaImsqWnb6V+Uz+yY+XDJLF/bwersGNSNElj/7H2iEBf7EE11iI1CIirJoItPnI5IglHIlrafE95CJLvFNZLteIEexr4wbIJt0Gso=
+	t=1779296509; cv=none; b=dx5ICWZnItdESqyU02QJ+BjLCdej7jlojUWS+5HbtzzWyFxRnHTKyfefIViO6iv4ATSDJ6wiI2sM1FMq7E3bt6jjDQ32NPTcKbdnY7io+LDshFAuoEvysxm2UhEr2+om3p2ZsvP5fC+MafYqamLyS3wIgie1WIaInDzSBHs4NBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298810; c=relaxed/simple;
-	bh=DIPsSIg3+IxYAUXtW/+YH//YNxj/2tLVc6r0S5WRQ8E=;
+	s=arc-20240116; t=1779296509; c=relaxed/simple;
+	bh=IPt7oxmc3YcGHmDmRUsVR+QnwtEcjrK3R0MqeeDFVAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlgAE8PqlnrUScV5MosfJneP0TNFhZFWEhyDz/JHBER9jixFPHaHLBmaLaZDvOIqVer68/sfDn14dy0Z0B6Efr1J+LbUXQjqWfGLVk8Q0dRWvNLport2EWNWGJvgGto21A56YjymfUAEI6gZ22urrMZEb9Rthhy6u3VHFvnfEAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orCeirWL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AABEF1F000E9;
-	Wed, 20 May 2026 17:40:08 +0000 (UTC)
+	 MIME-Version; b=PbEyv/nbJkGaLMup3qerMSiTQnQBdVjDNivJSD2E4OomO2mTTauyTbwYcgHh798k8Nt1flggSyZ5D5xkHaywdAD51nco6DjYrIdVKwT0p1UX6Ma83Ooa50QpU13pw5agR0toJ0YPK2rw6fa74I51xzRFt2xFtwwZ1X3UDU/s/+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ad1QuW2L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342CF1F000E9;
+	Wed, 20 May 2026 17:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298809;
-	bh=sBOK0ycwWjGKazCVNo7tPePAvbkvULvIJ0nGUeQWAaw=;
+	s=korg; t=1779296508;
+	bh=MroQVWw6Zjrw+SJACCh9gb4jn1ShDVY72NizEmLZ8pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=orCeirWLjyYfqIzEJjRKE0Sgp7ZpYdkOFjfeKkOssNmU/wk+KOgPw6QV0TM2wc7g3
-	 z0R5Q8WLtLeDH7Bc9858QMly2KWTlhlXe702yN2XcVep94Vc484/rqKTb2/Zp+GoPP
-	 KhnON1NIYM100a+odA2UpAWkrs5hiLuv2ljvDHXU=
+	b=Ad1QuW2Lmx4J//48vOVsr7SQKxnBrIGkDIl/foVgEw/HzcPbvD5BM7NY8+t4NPxKq
+	 kYO1ugk/0WwNI+D09/xL7JDN0/qD4lUIBZRAVUjQsh7GNBRnhAYtqmnIVms5RrGdSD
+	 iviSGh8SCP7VyqGpZLQnYkUIFNMWuPhcjyHFkgeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 552/957] scsi: sg: Fix sysctl sg-big-buff register during sg_init()
+Subject: [PATCH 7.0 0785/1146] tcp: add data-race annotations for TCP_NLA_SNDQ_SIZE
 Date: Wed, 20 May 2026 18:17:15 +0200
-Message-ID: <20260520162146.503892353@linuxfoundation.org>
+Message-ID: <20260520162205.985446515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251756-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250865-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E6E375971AE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: C8FD65958EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3033c471aaf675254efaa0da431e95d91a104b41 ]
+[ Upstream commit 124199444de467767175a9004e1574dc42523e62 ]
 
-Commit 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c") made
-a mistake. sysctl sg-big-buff was not created because the call to
-register_sg_sysctls() was placed on the wrong code path.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260127062044.3034148-2-yangerkun@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 87ecc95d81d9 ("tcp: add send queue size stat in SCM_TIMESTAMPING_OPT_STATS")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c        | 4 +++-
+ net/ipv4/tcp_input.c  | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 57fba34832ad1..c93cc9323f563 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1689,13 +1689,13 @@ init_sg(void)
- 	sg_sysfs_valid = 1;
- 	rc = scsi_register_interface(&sg_interface);
- 	if (0 == rc) {
-+		register_sg_sysctls();
- #ifdef CONFIG_SCSI_PROC_FS
- 		sg_proc_init();
- #endif				/* CONFIG_SCSI_PROC_FS */
- 		return 0;
- 	}
- 	class_unregister(&sg_sysfs_class);
--	register_sg_sysctls();
- err_out:
- 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
- 	return rc;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index ee50b2d3ed976..75164510b4232 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4490,7 +4490,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
+ 
+-	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
++	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE,
++		    max_t(int, 0,
++			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index f1bb0ad2eead1..b9bd42f9d08b5 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3914,7 +3914,7 @@ static void tcp_snd_una_update(struct tcp_sock *tp, u32 ack)
+ 	sock_owned_by_me((struct sock *)tp);
+ 	tp->bytes_acked += delta;
+ 	tcp_snd_sne_update(tp, ack);
+-	tp->snd_una = ack;
++	WRITE_ONCE(tp->snd_una, ack);
+ }
+ 
+ static void tcp_rcv_sne_update(struct tcp_sock *tp, u32 seq)
+@@ -7297,7 +7297,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (sk->sk_socket)
+ 			sk_wake_async(sk, SOCK_WAKE_IO, POLL_OUT);
+ 
+-		tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
++		WRITE_ONCE(tp->snd_una, TCP_SKB_CB(skb)->ack_seq);
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
+ 
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 6603331ec589e..1bb46aafe4049 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -4136,7 +4136,7 @@ static void tcp_connect_init(struct sock *sk)
+ 	tp->snd_wnd = 0;
+ 	tcp_init_wl(tp, 0);
+ 	tcp_write_queue_purge(sk);
+-	tp->snd_una = tp->write_seq;
++	WRITE_ONCE(tp->snd_una, tp->write_seq);
+ 	tp->snd_sml = tp->write_seq;
+ 	tp->snd_up = tp->write_seq;
+ 	WRITE_ONCE(tp->snd_nxt, tp->write_seq);
 -- 
 2.53.0
 
