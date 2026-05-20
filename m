@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-250272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SNu+Dg/wDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:59 +0200
+	id +JEOIaXlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC1C593E12
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCB8592722
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BF6D30BC4D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55FF930BB538
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FF4369D42;
-	Wed, 20 May 2026 16:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F529369224;
+	Wed, 20 May 2026 16:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m5a8IZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQvu3QXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA2936494B;
-	Wed, 20 May 2026 16:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02BD36404E;
+	Wed, 20 May 2026 16:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294978; cv=none; b=eUd/8DULvsjpU52TSeZptkgMfRS9fW/N+evJOL/yq1/JwmYH/MTDTkcL4+aGfmiiOgljRD+AdO8I4R+bPQb5U08C17p5xapI3RLFnEY5UYlYIYns9PhBiKCfecxkDorYRjffe3xWdETZVVa3IsDKnTYf9Rr3FfNnI8bHfyme70Y=
+	t=1779294981; cv=none; b=f34ZqXdPyGBGNHmHWXWIs/tEp/SSp424cy5WN5Vp5EAL2hvnQ2v1QNuI0pm9rCE7flmEtELH+r+WlmGFsNUdLEWsF57WJn+KMfcO+59HDnr4ZWlzz+vWzHZXtCiJCVbFeK/xa5zWnzeeMwQ0KXakpdEEAqBuNtriSXDqXREihQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294978; c=relaxed/simple;
-	bh=XCEImX+KVOSEDUVVGhXOtBHBsjmQ3epfUiOHVp97eB4=;
+	s=arc-20240116; t=1779294981; c=relaxed/simple;
+	bh=EsRz4fXzI2RqIH7jjw097wilUKgxSt7V2D2NYyM0A9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1PEH73DeStP4gFy+iGUfNNQvACAuM0WtUbm1ybGuYWo76KNFqGpGWoB6w/c35F6ieTtGXfSOaFHQZ3wZ2a4FMFjwJdXxyW2pH00Msj/1B5p4DCh92MhiI6f+MV2Sz5ayjHErojbHEPW/vC2zWkhwdtMMZg9EHUPFFwf9sS69f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m5a8IZf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD6C1F000E9;
-	Wed, 20 May 2026 16:36:16 +0000 (UTC)
+	 MIME-Version; b=HARmGaDSo1ZKEYwWgpVJAUEMjSHQ3njG+8085ZK2GLXkLd5jtygx8uXQgP3xD7bEwjCWVh2c8IGtA2UQcS+ka6j76AJMOdZOevuhwaQIcKsttloJ8m6/KApvVE3XUGO+LwwCNBjrM7PcSQ1MBTVRwl8Td3iw4/m/OrZqKPmOVbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQvu3QXj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0531F1F000E9;
+	Wed, 20 May 2026 16:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294976;
-	bh=GUUofTw6DN4YzYrZXRJYvXHd29YIpHmXkNSs2hggrgU=;
+	s=korg; t=1779294979;
+	bh=+vjZl4Q3+uqStPYTf+ng6pRUqrJMs8vDP/JxTUHtg8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0m5a8IZf01rvDS9me4NmhIAjRDY/w94khxELdOyULoIR09/y1/NdchzqoeShn3ZvY
-	 nYbhbRMOzto1b2WIMQt8hAv3/yf0ZnT90sLxggAYnXqF2qDB9NOItn5RDOq/yG4nEH
-	 Ma+iL4qw9q36qbSPlz8/l4ZoeZ6QAi1LNX9XIKXM=
+	b=iQvu3QXj7HX6G/FC+kvhyQDZmevQND1GaMYji3ssSkRMR99SMDnK1YUyjxB4o/7OW
+	 Poz0rFYj+tliT91Hcy/sarmwy+HTy0bBhDbtMD+vrzTofts7Q/iGH/fqyw0mtb2YSu
+	 s4pqMynsS6IiGL4PpduFZ4znrkraU+tJb9itrRn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Martin <andrew.martin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0243/1146] drm/amdkfd: Removed commented line for MQD queue priority
-Date: Wed, 20 May 2026 18:08:13 +0200
-Message-ID: <20260520162153.739245482@linuxfoundation.org>
+Subject: [PATCH 7.0 0244/1146] PCI: imx6: Fix device node reference leak in imx_pcie_probe()
+Date: Wed, 20 May 2026 18:08:14 +0200
+Message-ID: <20260520162153.761374557@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -64,34 +66,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250272-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250273-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8EC1C593E12
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: EBCB8592722
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,111 +103,52 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Andrew Martin <andrew.martin@amd.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit bfe60e539cf7690a6739466b41fb6be250bb783e ]
+[ Upstream commit 3b55079d6387805ede687e234d84669aeb0f7e98 ]
 
-Missed deleting the commented line in the original patch.
+In imx_pcie_probe(), of_parse_phandle() returns the device node pointer
+with increased refcount. The pointer reference must be dropped by the
+caller when it's no longer needed. However, imx_pcie_probe() doesn't drop
+the reference, causing reference leak.
 
-Fixes: 73463e26f7e2 ("drm/amdkfd: Disable MQD queue priority")
-Signed-off-by: Andrew Martin <andrew.martin@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by using the __free(device_node) cleanup handler to drop the
+reference when the function goes out of scope.
+
+Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
+Link: https://patch.msgid.link/20260124-pci_imx6-v2-1-acb8d5187683@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c   | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c   | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c   | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c   | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12_1.c | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c    | 1 -
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c    | 1 -
- 7 files changed, 7 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
-index 562d475cf4c99..bb70e57ae4d52 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
-@@ -70,7 +70,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct cik_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index e01a225cf3ab6..2aa5467d5400a 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1647,7 +1647,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct dw_pcie *pci;
+ 	struct imx_pcie *imx_pcie;
+-	struct device_node *np;
+ 	struct device_node *node = dev->of_node;
+ 	int i, ret, domain;
+ 	u16 val;
+@@ -1674,7 +1673,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		pci->pp.ops = &imx_pcie_host_dw_pme_ops;
  
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-index d6067316d7f49..77fb41e2486a4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-@@ -70,7 +70,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct v10_compute_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
+ 	/* Find the PHY if one is defined, only imx7d uses it */
+-	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
++	struct device_node *np __free(device_node) =
++		of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+ 	if (np) {
+ 		struct resource res;
  
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-index e3a7acb0ccbc8..a1e3cf2384dd3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -96,7 +96,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct v11_compute_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
- 
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-index 0b97376fc6f9f..b3e122d7876e0 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12.c
-@@ -77,7 +77,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct v12_compute_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
- 
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12_1.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12_1.c
-index eef6bdce4be39..c90c0d99b1e3f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12_1.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v12_1.c
-@@ -131,7 +131,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct v12_1_compute_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
- 
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-index a535f151cb5fd..e856bee628058 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -113,7 +113,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct v9_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
- 
- static bool mqd_on_vram(struct amdgpu_device *adev)
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
-index 69c1b8a690b86..f02ef2d44a07f 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
-@@ -73,7 +73,6 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
- static void set_priority(struct vi_mqd *m, struct queue_properties *q)
- {
- 	m->cp_hqd_pipe_priority = pipe_priority_map[q->priority];
--	/* m->cp_hqd_queue_priority = q->priority; */
- }
- 
- static struct kfd_mem_obj *allocate_mqd(struct mqd_manager *mm,
 -- 
 2.53.0
 
