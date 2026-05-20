@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLItHdshDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:27 +0200
+	id YNhbG2fyDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-251152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B782559A6C3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3015594541
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23E0D31F7CFE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 943363145B2B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8435E36A02E;
-	Wed, 20 May 2026 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC36C34B40F;
+	Wed, 20 May 2026 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5e2JynV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXJN9k/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A68336405A;
-	Wed, 20 May 2026 17:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867393403F4;
+	Wed, 20 May 2026 17:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299691; cv=none; b=Ov5Wfu+8d1vWKTKUWaJDsE6zy3e3aT5+s1FJ6VJYC3wV2FVaiK7be3qWSNUHzImW3O5D3AurxI1tKzC3gtUvoMYsvHFvk++1ZeUSdGXQWH5u8D38vmGJeTXFf0GHlxds1GjutAfirmD7X7G3IRydVC/+ZC3hU4gj9YKVF7Ff6ms=
+	t=1779297234; cv=none; b=o5FJtniKA4VR02gUvLwU0Zh/kZZ80bX4K6Yw9nbbWylaRy/leaG+1U23dmgidv49UCwUOjizo6jZa8UumQulO185fcA/EhVOEoiQR9pELxfgu7OsC2rOh444rLPc4CITdFpWjsdG69qCHffErl56sRVPbcFdtrEuHWHaHi+WRUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299691; c=relaxed/simple;
-	bh=lS+52D/hZ7gS8ZD3LxW5PoRnEDOiu9iYrXiOpwhMWB8=;
+	s=arc-20240116; t=1779297234; c=relaxed/simple;
+	bh=qo91nTGiZ9FhwegCk0uIk0WM1EUl9XqC2UtLsfm6biI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzE2sMOi2Z/TuJwKZVNAv1AsgcI3gMU7S6MVEjUljJLZyQ1TARvDYRUPonS7gLt8kB5PmQa3LNK5cIvLd7BKhWNWc9Y6wLGTOFPPIIOIVjWPII7zCvA37G2ZIRqolzmckjQdMX9Ug78yLKBdct9BovnKJzodM7vUB9GYhy2G3rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5e2JynV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C241F000E9;
-	Wed, 20 May 2026 17:54:49 +0000 (UTC)
+	 MIME-Version; b=XukTRJprN2lO2pW29YNACCqz5ymMqFZkgA896FiCJiqYaU0Vvl0+/gf70yyl/5OHh8ZEgowO5ocKAL2/Z/dmrcXK165uTQSqcUNxJdw8HWJSGwGKM5O6U5Y3CaemCEv8PQ1oT8rV83c5qagOzagywBAMWSLWgG2OSxZfw8brxo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXJN9k/7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2DA1F000E9;
+	Wed, 20 May 2026 17:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299690;
-	bh=AFq1xrGLYTOLAld3gm+S1YCaZZaTPcHj4Hv++jn/q2g=;
+	s=korg; t=1779297233;
+	bh=DTLWYUAAza/Y7gCx4AV0FK/My07FCEuO0CG/BLJnxho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B5e2JynVgoz4VMvfDQUmk4deTbOV5OHa4hz1sEuMUlZn3ORpHRaFTZpL5wQGEyZMA
-	 p+gcNGMf9lnbUqyHpGzBUvRZF+PeurWW/0AnXcZstLqbC80hILt5kOwKjlz1B3fDzB
-	 8Xv/XuSPNQicLekFKuXtOsakTonJmXbhjnxQ5obs=
+	b=uXJN9k/7m0ycR8eWLiYes5X3BLlWeeVB8peUw7c170dfLzZRU/5Es8LvjqfPcd9f1
+	 OeBA8czb4hH1txIR8LrvRnpwBu+Nd1Ntzf5rHV6LqjntEOIrWUZzl7l6Tm5jNBrBMi
+	 /Vsc8uKIWlz5RIVmou8mYluWhJput5H4Wmsk6VSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 868/957] rtla: Fix parse_cpu_set() bug introduced by strtoi()
-Date: Wed, 20 May 2026 18:22:31 +0200
-Message-ID: <20260520162153.391842750@linuxfoundation.org>
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Songsong Zhang <U2FsdGVkX1@gmail.com>
+Subject: [PATCH 7.0 1102/1146] riscv: misaligned: Make enabling delegation depend on NONPORTABLE
+Date: Wed, 20 May 2026 18:22:32 +0200
+Message-ID: <20260520162213.183375345@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252079-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iscas.ac.cn,microchip.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-251152-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B782559A6C3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F3015594541
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Costa Shulyupin <costa.shul@redhat.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-[ Upstream commit 6ea8a206108fe8b5940c2797afc54ae9f5a7bbdd ]
+commit b69bcb13ed7024a84d6cd8ad330f1e32782fcf28 upstream.
 
-The patch 'Replace atoi() with a robust strtoi()' introduced a bug
-in parse_cpu_set(), which relies on partial parsing of the input string.
+The unaligned access emulation code in Linux has various deficiencies.
+For example, it doesn't emulate vector instructions [1] [2], and doesn't
+emulate KVM guest accesses. Therefore, requesting misaligned exception
+delegation with SBI FWFT actually regresses vector instructions' and KVM
+guests' behavior.
 
-The function parses CPU specifications like '0-3,5' by incrementing
-a pointer through the string. strtoi() rejects strings with trailing
-characters, causing parse_cpu_set() to fail on any CPU list with
-multiple entries.
+Until Linux can handle it properly, guard these sbi_fwft_set() calls
+behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends on
+NONPORTABLE. Those who are sure that this wouldn't be a problem can
+enable this option, perhaps getting better performance.
 
-Restore the original use of atoi() in parse_cpu_set().
+The rest of the existing code proceeds as before, except as if
+SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
+address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
+implementation is also not touched, but it is disabled if the firmware
+emulates unaligned accesses.
 
-Fixes: 7e9dfccf8f11 ("rtla: Replace atoi() with a robust strtoi()")
-Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20260112192642.212848-2-costa.shul@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception from SBI")
+Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
+Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224f529c@iscas.ac.cn/ [1]
+Link: https://lore.kernel.org/linux-riscv/b3cfcdac-0337-4db0-a611-258f2868855f@iscas.ac.cn/ [2]
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260401-riscv-misaligned-dont-delegate-v2-1-5014a288c097@iscas.ac.cn
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/utils.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ arch/riscv/Kconfig                   |   22 ++++++++++++++++++++++
+ arch/riscv/kernel/traps_misaligned.c |    2 +-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-index bf20077cca742..b4cd93f784522 100644
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -113,18 +113,16 @@ int parse_cpu_set(char *cpu_list, cpu_set_t *set)
- 	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -941,6 +941,28 @@ config RISCV_VECTOR_MISALIGNED
+ 	help
+ 	  Enable detecting support for vector misaligned loads and stores.
  
- 	for (p = cpu_list; *p; ) {
--		if (strtoi(p, &cpu))
--			goto err;
--		if (cpu < 0 || cpu >= nr_cpus)
-+		cpu = atoi(p);
-+		if (cpu < 0 || (!cpu && *p != '0') || cpu >= nr_cpus)
- 			goto err;
++config RISCV_SBI_FWFT_DELEGATE_MISALIGNED
++	bool "Request firmware delegation of unaligned access exceptions"
++	depends on RISCV_SBI
++	depends on NONPORTABLE
++	help
++	  Use SBI FWFT to request delegation of load address misaligned and
++	  store address misaligned exceptions, if possible, and prefer Linux
++	  kernel emulation of these accesses to firmware emulation.
++
++	  Unfortunately, Linux's emulation is still incomplete. Namely, it
++	  currently does not handle vector instructions and KVM guest accesses.
++	  On platforms where these accesses would have been handled by firmware,
++	  enabling this causes unexpected kernel oopses, userspaces crashes and
++	  KVM guest crashes. If you are sure that these are not a problem for
++	  your platform, you can say Y here, which may improve performance.
++
++	  Saying N here will not worsen emulation support for unaligned accesses
++	  even in the case where the firmware also has incomplete support. It
++	  simply keeps the firmware's emulation enabled.
++
++	  If you don't know what to do here, say N.
++
+ choice
+ 	prompt "Unaligned Accesses Support"
+ 	default RISCV_PROBE_UNALIGNED_ACCESS
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -584,7 +584,7 @@ static int cpu_online_check_unaligned_ac
  
- 		while (isdigit(*p))
- 			p++;
- 		if (*p == '-') {
- 			p++;
--			if (strtoi(p, &end_cpu))
--				goto err;
--			if (end_cpu < cpu || end_cpu >= nr_cpus)
-+			end_cpu = atoi(p);
-+			if (end_cpu < cpu || (!end_cpu && *p != '0') || end_cpu >= nr_cpus)
- 				goto err;
- 			while (isdigit(*p))
- 				p++;
--- 
-2.53.0
-
+ static bool misaligned_traps_delegated;
+ 
+-#ifdef CONFIG_RISCV_SBI
++#if defined(CONFIG_RISCV_SBI_FWFT_DELEGATE_MISALIGNED)
+ 
+ static int cpu_online_sbi_unaligned_setup(unsigned int cpu)
+ {
 
 
 
