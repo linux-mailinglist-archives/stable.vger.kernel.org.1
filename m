@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJfFLa8nDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252666-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:19 +0200
+	id yJD6Lj75DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C859AE8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655325957D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73EFD3663F4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A815C30F589C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1CF3F8706;
-	Wed, 20 May 2026 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8EB3F44C9;
+	Wed, 20 May 2026 17:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I89wszfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZGMa+3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C356A3BE64B;
-	Wed, 20 May 2026 18:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5880E39B483;
+	Wed, 20 May 2026 17:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301273; cv=none; b=jFiR31Q4FmQqpgeHW7BKTFfp2XSUwqY67Urv9LQO0XM6zM50TcwFXgsTOistK5AKRvUqxgkmsCP7o95gOo5O1KBP1QsYfvh+ASIDWy+0MtYLHdTvY5gW7PxuHHziKLrdhs3veui16L5mcNq9Ut5VtxF9VyS0otKneEvGHT4dIMI=
+	t=1779299567; cv=none; b=Rn7/wLls6kd0lcPbXB5EKVbjgGBenEXSCnB25Q0qMxJGuO6oJ5voM4+HpO7HJrNxLI7aPuU/WYJuWKMYTHWqHjr0XsGIppxerv/iHsF20VTXcNf/LxcCktGioRWcj+wZfYywDA6au3OZF3/nU7QupqYmjUZDnrMbEseszemqDGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301273; c=relaxed/simple;
-	bh=apJrqdEMFGiHLeXSfgZiI4Qq3auqS2UFiKEXpExbv/U=;
+	s=arc-20240116; t=1779299567; c=relaxed/simple;
+	bh=252haq5RdNGqIqfXGIZMsMw854rsBTdz+bnmvlgcTvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzT2UKfWaL8L8Gxt2MksOn+/V2DZOJZJiHqS+mKAK+YLsn4zLpfX1CO3F8NXl65+i4P/Z1v69lo9doBFvB+wZVnPU2CD8ax3YYgIjCtFY0Kv8uYCslvE2mBM0jbce7yEXgGTKUTbOJG3NMJOn/DFNc+RQXtPIRA0dDpsbnVGluo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I89wszfA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C03B1F00893;
-	Wed, 20 May 2026 18:21:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kqVeKmHL3MZXVRilcdxEYsmob20dXpqVmwBi5paEdVTqVyE7+s7xbxvNMUyzenpLLqcVsHv8EMZ1/ULZqvrexQSzpaor8glF6KrzclSZUu8abyLPyyT0C6d8RJuj5ncSjPcKquH8tqBT+8a3Ax/chlei+1xJa0opzek0iT0JWuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZGMa+3a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0981F000E9;
+	Wed, 20 May 2026 17:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301272;
-	bh=3V9GqY/RTJHxdEaoxzeRwgFHiYX0ftuXyxyQHcc+UKQ=;
+	s=korg; t=1779299566;
+	bh=MGb1EqYWy/wzFFCxnZrAGyxyCie1JDPwl2XgVght2s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I89wszfAcHKX95TYgeiNCIHqTcfYEk1xxVRhSzu53t2DT68IgXN++NdsbHxo+QX0R
-	 wazdAy36fjrQuyKE89DOWa9bwr/Z+7onXDwjX0xYopMcaNocPiI6zf3t/9mtHD3xTR
-	 vGo4y9PuRa1dd4z6uBPGeb8db3aw29M9wEUwNxLc=
+	b=HZGMa+3aCNUYeRTneo2rWrp97RzLGVgt7s1LzMOqSIRo6beth1oyLRPVVyKNWZHSZ
+	 zk2lteoWlsjQu3IbL6h8J4pDkg+8LZ4Z+l9GqwG9S4mXODDHbW4lZbWJi2Ddjx+Ut0
+	 se1jQuIMrVLiS39dyJUB29LlT4+rQ2exd203e+sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 493/666] virtio_net: Fix endian with virtio_net_ctrl_rss
+Subject: [PATCH 6.18 821/957] net/sched: sch_cake: annotate data-races in cake_dump_stats() (III)
 Date: Wed, 20 May 2026 18:21:44 +0200
-Message-ID: <20260520162121.947625931@linuxfoundation.org>
+Message-ID: <20260520162152.372994576@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,154 +64,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252032-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252666-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,daynix.com:email]
-X-Rspamd-Queue-Id: 1E3C859AE8C
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,toke.dk:email]
+X-Rspamd-Queue-Id: 655325957D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 97841341e302eac13d54eb5e968570b5626196a7 ]
+[ Upstream commit 276a98a434964088fccd4745db5b34d6e831e358 ]
 
-Mark the fields of struct virtio_net_ctrl_rss as little endian as
-they are in struct virtio_net_rss_config, which it follows.
+cake_dump_stats() runs without qdisc spinlock being held.
 
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Link: https://patch.msgid.link/20250321-virtio-v2-2-33afb8f4640b@daynix.com
+In this third patch, I add READ_ONCE()/WRITE_ONCE() annotations
+for the following fields:
+
+- packets
+- tin_dropped
+- tin_ecn_mark
+- ack_drops
+- peak_delay
+- avge_delay
+- base_delay
+
+Other annotations are added in following patches, to ease code review.
+
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
+Link: https://patch.msgid.link/20260427083606.459355-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3bc06da858ef ("virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ net/sched/sch_cake.c | 38 ++++++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 5c83983f0eb3f..05b50a4626b85 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -373,15 +373,15 @@ struct receive_queue {
-  */
- #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
- struct virtio_net_ctrl_rss {
--	u32 hash_types;
--	u16 indirection_table_mask;
--	u16 unclassified_queue;
--	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
--	u16 max_tx_vq;
-+	__le32 hash_types;
-+	__le16 indirection_table_mask;
-+	__le16 unclassified_queue;
-+	__le16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
-+	__le16 max_tx_vq;
- 	u8 hash_key_length;
- 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 1a2023cd55109..7b97f6b57cb17 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1590,7 +1590,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 	sch->qstats.backlog -= len;
  
--	u16 *indirection_table;
-+	__le16 *indirection_table;
- };
+ 	flow->dropped++;
+-	b->tin_dropped++;
++	WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
  
- /* Control VQ buffers: protected by the rtnl lock */
-@@ -3477,9 +3477,9 @@ static void virtnet_rss_update_by_qpairs(struct virtnet_info *vi, u16 queue_pair
+ 	if (q->rate_flags & CAKE_FLAG_INGRESS)
+ 		cake_advance_shaper(q, b, skb, now, true);
+@@ -1808,7 +1808,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			numsegs++;
+ 			slen += segs->len;
+ 			q->buffer_used += segs->truesize;
+-			b->packets++;
++			WRITE_ONCE(b->packets, b->packets + 1);
+ 		}
  
- 	for (; i < vi->rss_indir_table_size; ++i) {
- 		indir_val = ethtool_rxfh_indir_default(i, queue_pairs);
--		vi->rss.indirection_table[i] = indir_val;
-+		vi->rss.indirection_table[i] = cpu_to_le16(indir_val);
- 	}
--	vi->rss.max_tx_vq = queue_pairs;
-+	vi->rss.max_tx_vq = cpu_to_le16(queue_pairs);
- }
+ 		/* stats */
+@@ -1832,7 +1832,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			ack = cake_ack_filter(q, flow);
  
- static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
-@@ -3998,10 +3998,10 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
+ 		if (ack) {
+-			b->ack_drops++;
++			WRITE_ONCE(b->ack_drops, b->ack_drops + 1);
+ 			sch->qstats.drops++;
+ 			ack_pkt_len = qdisc_pkt_len(ack);
+ 			b->bytes += ack_pkt_len;
+@@ -1848,7 +1848,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		}
  
- static void virtnet_init_default_rss(struct virtnet_info *vi)
- {
--	vi->rss.hash_types = vi->rss_hash_types_supported;
-+	vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_supported);
- 	vi->rss_hash_types_saved = vi->rss_hash_types_supported;
- 	vi->rss.indirection_table_mask = vi->rss_indir_table_size
--						? vi->rss_indir_table_size - 1 : 0;
-+						? cpu_to_le16(vi->rss_indir_table_size - 1) : 0;
- 	vi->rss.unclassified_queue = 0;
- 
- 	virtnet_rss_update_by_qpairs(vi, vi->curr_queue_pairs);
-@@ -4119,7 +4119,7 @@ static bool virtnet_set_hashflow(struct virtnet_info *vi, struct ethtool_rxnfc *
- 
- 	if (new_hashtypes != vi->rss_hash_types_saved) {
- 		vi->rss_hash_types_saved = new_hashtypes;
--		vi->rss.hash_types = vi->rss_hash_types_saved;
-+		vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
- 		if (vi->dev->features & NETIF_F_RXHASH)
- 			return virtnet_commit_rss_command(vi);
- 	}
-@@ -5291,7 +5291,7 @@ static int virtnet_get_rxfh(struct net_device *dev,
- 
- 	if (rxfh->indir) {
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
--			rxfh->indir[i] = vi->rss.indirection_table[i];
-+			rxfh->indir[i] = le16_to_cpu(vi->rss.indirection_table[i]);
+ 		/* stats */
+-		b->packets++;
++		WRITE_ONCE(b->packets, b->packets + 1);
+ 		b->bytes	    += len - ack_pkt_len;
+ 		b->backlogs[idx]    += len - ack_pkt_len;
+ 		b->tin_backlog      += len - ack_pkt_len;
+@@ -2191,7 +2191,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 			b->tin_deficit -= len;
+ 		}
+ 		flow->dropped++;
+-		b->tin_dropped++;
++		WRITE_ONCE(b->tin_dropped, b->tin_dropped + 1);
+ 		qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 		qdisc_qstats_drop(sch);
+ 		kfree_skb_reason(skb, reason);
+@@ -2199,16 +2199,18 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 			goto retry;
  	}
  
- 	if (rxfh->key)
-@@ -5319,7 +5319,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 			return -EOPNOTSUPP;
+-	b->tin_ecn_mark += !!flow->cvars.ecn_marked;
++	WRITE_ONCE(b->tin_ecn_mark, b->tin_ecn_mark + !!flow->cvars.ecn_marked);
+ 	qdisc_bstats_update(sch, skb);
  
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
--			vi->rss.indirection_table[i] = rxfh->indir[i];
-+			vi->rss.indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
- 		update = true;
- 	}
+ 	/* collect delay stats */
+ 	delay = ktime_to_ns(ktime_sub(now, cobalt_get_enqueue_time(skb)));
+-	b->avge_delay = cake_ewma(b->avge_delay, delay, 8);
+-	b->peak_delay = cake_ewma(b->peak_delay, delay,
+-				  delay > b->peak_delay ? 2 : 8);
+-	b->base_delay = cake_ewma(b->base_delay, delay,
+-				  delay < b->base_delay ? 2 : 8);
++	WRITE_ONCE(b->avge_delay, cake_ewma(b->avge_delay, delay, 8));
++	WRITE_ONCE(b->peak_delay,
++		   cake_ewma(b->peak_delay, delay,
++			     delay > b->peak_delay ? 2 : 8));
++	WRITE_ONCE(b->base_delay,
++		   cake_ewma(b->base_delay, delay,
++			     delay < b->base_delay ? 2 : 8));
  
-@@ -5945,9 +5945,9 @@ static int virtnet_set_features(struct net_device *dev,
+ 	len = cake_advance_shaper(q, b, skb, now, false);
+ 	flow->deficit -= len;
+@@ -2940,17 +2942,17 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		PUT_TSTAT_U32(INTERVAL_US,
+ 			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
  
- 	if ((dev->features ^ features) & NETIF_F_RXHASH) {
- 		if (features & NETIF_F_RXHASH)
--			vi->rss.hash_types = vi->rss_hash_types_saved;
-+			vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
- 		else
--			vi->rss.hash_types = VIRTIO_NET_HASH_REPORT_NONE;
-+			vi->rss.hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
+-		PUT_TSTAT_U32(SENT_PACKETS, b->packets);
+-		PUT_TSTAT_U32(DROPPED_PACKETS, b->tin_dropped);
+-		PUT_TSTAT_U32(ECN_MARKED_PACKETS, b->tin_ecn_mark);
+-		PUT_TSTAT_U32(ACKS_DROPPED_PACKETS, b->ack_drops);
++		PUT_TSTAT_U32(SENT_PACKETS, READ_ONCE(b->packets));
++		PUT_TSTAT_U32(DROPPED_PACKETS, READ_ONCE(b->tin_dropped));
++		PUT_TSTAT_U32(ECN_MARKED_PACKETS, READ_ONCE(b->tin_ecn_mark));
++		PUT_TSTAT_U32(ACKS_DROPPED_PACKETS, READ_ONCE(b->ack_drops));
  
- 		if (!virtnet_commit_rss_command(vi))
- 			return -EINVAL;
+ 		PUT_TSTAT_U32(PEAK_DELAY_US,
+-			      ktime_to_us(ns_to_ktime(b->peak_delay)));
++			      ktime_to_us(ns_to_ktime(READ_ONCE(b->peak_delay))));
+ 		PUT_TSTAT_U32(AVG_DELAY_US,
+-			      ktime_to_us(ns_to_ktime(b->avge_delay)));
++			      ktime_to_us(ns_to_ktime(READ_ONCE(b->avge_delay))));
+ 		PUT_TSTAT_U32(BASE_DELAY_US,
+-			      ktime_to_us(ns_to_ktime(b->base_delay)));
++			      ktime_to_us(ns_to_ktime(READ_ONCE(b->base_delay))));
+ 
+ 		PUT_TSTAT_U32(WAY_INDIRECT_HITS, b->way_hits);
+ 		PUT_TSTAT_U32(WAY_MISSES, b->way_misses);
 -- 
 2.53.0
 
