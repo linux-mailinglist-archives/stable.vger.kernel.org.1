@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-250159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GM9FAJTkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:00 +0200
+	id kFOLE5fkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4FA5924D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC2D5924E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A970430F9002
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB67F304ABB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C283C3458;
-	Wed, 20 May 2026 16:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2E734B40F;
+	Wed, 20 May 2026 16:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8z4Y94a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUnzZVNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0332036A352;
-	Wed, 20 May 2026 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBE236A352;
+	Wed, 20 May 2026 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294699; cv=none; b=P1zzdG+7BlTmL9rnrxoW57ylTJeXi1XmAmF7PYfejkssnhvLDg8tQ0Q+ENOUPVAW2u57RHT3xnHXr/j+qnZrYuBaBukytlytPWUZYcx1DU1Bar7nSQjuDQRefVfc6RW0A3UwT0MW28SncThXOaM+B3UxSRqFhm/8uXYJwmboIms=
+	t=1779294705; cv=none; b=NXVT9kc3xsMc/gs8rxmD5yEiuECMyny9jXmUgdSHLYAZTPWEwAY8h6xBIUl87NNoxvjKCbZ1sQCxWI/yUbHqMGK0Qo5qKpI+PstmT6D7GXn+FVRibUr6HekpWajLH0STkVUKi+r8hRNfrcTtaBIzVWsCWAC+Ojxh59vabQaONOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294699; c=relaxed/simple;
-	bh=TRwKEexaDKNNAX3ELrWHqmjZdd2twbS91TsIputCXGs=;
+	s=arc-20240116; t=1779294705; c=relaxed/simple;
+	bh=+PyMmiUs8W/w4iDud4bsZyQTcMOmE2E3m73GmLFmoKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OdAGSfmNMi3Kl1gAOsHwYBgnm8uv2fzuFLHnVVnLBE4my5xSHy8wt6gBbs8RnIY23qJ6/VVVZL7zfDWzoXf+nRFFjkakuLtUsAsWaKjY56eUIA1TllYWnP6tNaLCMM2dlcU1yK0HcvWaIcxII1ITwuzgl0bNsSVyja+RtJY3aeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8z4Y94a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB551F00894;
-	Wed, 20 May 2026 16:31:37 +0000 (UTC)
+	 MIME-Version; b=lnyLwwHQfQ8rb54xMzJA1VDDot+4ZPtvYaUsyCQf5F0a/Gb1W2ajzoEravH+ldgyfzQe3zAWfMGp5r2aFAOOpAGvFO1hdr+KOw7ToRpPVRhJQKj+2ImGn3qZTbkuQieD1Gje7CFb8yxeyft/9xG1F8jvsiXc6e/Ji+EW+G2qd9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUnzZVNH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2A41F000E9;
+	Wed, 20 May 2026 16:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294697;
-	bh=wFLZNB4YAGML7eGv5AHHPljoBiDnCQ4mAzwJQqp9RYE=;
+	s=korg; t=1779294700;
+	bh=sEY758YV2dLHGoRlz0BDJncxH0ooefaupnyq22G5/As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H8z4Y94acGrV08vLse1ttIQtdkV+P4KNpw+YxCPzy4BmaBE7uUz6sn0leDb21tqCF
-	 vU7PmIDmGZr6ANeElugjqibS1ztbLMs7nMJAC8VOruMbVGjlzKwm/yx0e/cLjkNRis
-	 XgTdEPlbHlupwwe26q67PNLcUBkzObeppib9nebk=
+	b=RUnzZVNHeK2AZsgC/Oaj31V4pTHOF9sOCBzrguK9BSmQKRCk1q3h7zSpm7V30jGUJ
+	 Z13ov0mVfcdjIDY2uVdAuloNN74g3uUGYi5XUd8ds7bbnVJ90+f5CaCoHCnS5HSrMk
+	 qsprV7Krq3H9tuapT7lt1i6RoWB/Wb6j0dd5EExo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0139/1146] drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block
-Date: Wed, 20 May 2026 18:06:29 +0200
-Message-ID: <20260520162151.461152411@linuxfoundation.org>
+Subject: [PATCH 7.0 0140/1146] r8152: fix incorrect register write to USB_UPHY_XTAL
+Date: Wed, 20 May 2026 18:06:30 +0200
+Message-ID: <20260520162151.482511830@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -66,37 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,shazbot.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250159-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250161-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,shazbot.org:email]
-X-Rspamd-Queue-Id: BF4FA5924D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1BC2D5924E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,87 +100,39 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-[ Upstream commit 948b71aa81cd89b222942db6055e8d9c51c54e78 ]
+[ Upstream commit 48afd5124fd6129c46fd12cb06155384b1c4a0c4 ]
 
-Architectures like PowerPC uses runtime defined values for
-PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
-at runtime using kernel cmdline. So the pXd_index_size is not known at
-compile time. Without this fix, when we add huge pfn support on powerpc
-in the next patch, vfio_pci_core driver compilation can fail with the
-following errors.
+The old code used ocp_write_byte() to clear the OOBS_POLLING bit
+(BIT(8)) in the USB_UPHY_XTAL register, but this doesn't correctly
+clear a bit in the upper byte of the 16-bit register.
 
-  CC [M]  drivers/vfio/vfio_main.o
-  CC [M]  drivers/vfio/group.o
-  CC [M]  drivers/vfio/container.o
-  CC [M]  drivers/vfio/virqfd.o
-  CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
-  CC [M]  drivers/vfio/pci/vfio_pci_core.o
-  CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
-  CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
-  CC [M]  drivers/vfio/pci/vfio_pci_config.o
-  CC [M]  drivers/vfio/pci/vfio_pci.o
-  AR      kernel/built-in.a
-../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
-../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
- 1678 |         case PMD_ORDER:
-      |         ^~~~
-../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
- 1682 |         case PUD_ORDER:
-      |         ^~~~
-make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
-make[5]: *** Waiting for unfinished jobs....
-make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
-make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+Fix this by using ocp_write_word() instead.
 
-Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Alex Williamson <alex@shazbot.org>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com
+Fixes: 195aae321c82 ("r8152: support new chips")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+Link: https://patch.msgid.link/20260326073925.32976-454-nic_swsd@realtek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/net/usb/r8152.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 460852f79f29b..3fea064d00de2 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
- 		return VM_FAULT_SIGBUS;
- 
--	switch (order) {
--	case 0:
-+	if (!order)
- 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
--	case PMD_ORDER:
-+
-+	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
- 		return vmf_insert_pfn_pmd(vmf, pfn, false);
--#endif
--#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
--	case PUD_ORDER:
-+
-+	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
- 		return vmf_insert_pfn_pud(vmf, pfn, false);
--		break;
--#endif
--	default:
--		return VM_FAULT_FALLBACK;
--	}
-+
-+	return VM_FAULT_FALLBACK;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
- 
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 0c83bbbea2e7c..f69e7e1ab7788 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -3890,7 +3890,7 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 		case RTL_VER_15:
+ 			ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL);
+ 			ocp_data &= ~OOBS_POLLING;
+-			ocp_write_byte(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
++			ocp_write_word(tp, MCU_TYPE_USB, USB_UPHY_XTAL, ocp_data);
+ 			break;
+ 		default:
+ 			break;
 -- 
 2.53.0
 
