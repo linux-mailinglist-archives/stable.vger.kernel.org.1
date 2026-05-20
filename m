@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-250746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8G2sNnjsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:40 +0200
+	id SAqtKIgdDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A021A593387
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC9059A136
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0AA69317EA01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA6B7321CB2E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A27D3E277C;
-	Wed, 20 May 2026 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFA3EF0DA;
+	Wed, 20 May 2026 17:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gsr3LBHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRYDal6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0483164C3;
-	Wed, 20 May 2026 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0283F1AD9;
+	Wed, 20 May 2026 17:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296209; cv=none; b=TteJKEUMHAK0GEQlI4A7rA4Rs8Yg/JldI9pCnk2xlFxh9h1fFBIK2AIMkqFprijjXUlr2wiOC1fwjcH+u9A7UL26nFjaVqb9Ttur8Zn+ws6r1+OtY3hniDjMs4mriJ6zX681A9H9uyDqJKWziQG5gqN9cxaRkNi2K3ZmDAuj+ME=
+	t=1779298626; cv=none; b=TBC+Rzo9nks1iddkhgoU0CV7KfrBZQ3xp3hI+8+I5PYi1O3CwE5HRGzCKz0tWKkoAMGzJUccfAvGBIUD2xlxEWouO10UJDtfPI6//NRwb2sWlyxZMOjWPFLECXDWl+Mc9EMNughdLdlSuF4XHX6rDclG4jz2lC8BAJLDp1+SMTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296209; c=relaxed/simple;
-	bh=x7T/Oy3Bn+TcQXt2COt+kNhZqENNvYJ/RGQ8p+Yi0Lc=;
+	s=arc-20240116; t=1779298626; c=relaxed/simple;
+	bh=lUeP3jxQvoNlDyiAecw8CWzyD106s94+dyayelWFuQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nn/jRzTpy9PWc93wX0b1CTOARyClOGRCs6/7g9zPNOAfwgwJ2q0xULpsi26Ny0NhJyuM3Wu50JyNWpHQj+hJ9jcPt+93Z76jiyrngwHqAN/MH/1HuAlGEScYJMzACru0mByalg/jYYIuLQ8NoNVWHp3ZSAAXzSCmHc2syjNkT2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gsr3LBHO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7B41F000E9;
-	Wed, 20 May 2026 16:56:47 +0000 (UTC)
+	 MIME-Version; b=NwpeUBUIhTNJ6W7YXU2yoQSgh+STwUl+RcocWz/pdOkIg/7UfBGdeAcV/QlPhre2QmFzr1YEp9X9LSthBwGHPYfEw99I7vP2dJrVMYbYiV06iB52sNd6VptiFnJZtwu/7Q84K85GV+9Bz+V3UZwpV+ReqaMuh3yXB6Lp26kGcKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRYDal6R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F27C1F000E9;
+	Wed, 20 May 2026 17:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296207;
-	bh=BPjkATWdwNm5KwrFupv+RWlvV4xfhWViLBikqGn0PXw=;
+	s=korg; t=1779298622;
+	bh=T8GdM7gyN8SSpF9Qgw17SuFqLJheRPY5EckH2ggm870=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gsr3LBHO+GDS60Laku1e4DxZ5Rx9ItNyiHRDJo00F7z9TlY5vr9oHCzg+nHHRmuDX
-	 focJVRObHCtMHOgeS4/IuCwV61wkbZrGa8YPgictdFSZogF25IuzUGrlq91jaCEjJc
-	 +j0gNhrYWnyXhTMBv3FqtthmWjOlZbckY9q/2d2c=
+	b=XRYDal6R95NQ0s86uqw+DaO9Z/pWE8KSj+/IjzgAvqnZNesbffcgRcVBqg5d1NTmu
+	 U1YScTZ1o67ReNTmBW/ZXvC3+BHNrBuDBT/mhVby6cLyB+j7Kd4hMCjl4HpBxr57za
+	 RdKKzjC8jo5nZAmF1tLV3Y36h31jWwmbR/Vg6QW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0712/1146] scsi: target: core: Fix integer overflow in UNMAP bounds check
+Subject: [PATCH 6.18 479/957] mtd: spinand: Gather all the bus interface steps in one single function
 Date: Wed, 20 May 2026 18:16:02 +0200
-Message-ID: <20260520162204.302256254@linuxfoundation.org>
+Message-ID: <20260520162144.913849614@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +65,171 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250746-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251684-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,outlook.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A021A593387
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3EC9059A136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 2bf2d65f76697820dbc4227d13866293576dd90a ]
+[ Upstream commit be0b86c648bf811237cc17e274e9f9488fccb772 ]
 
-sbc_execute_unmap() checks LBA + range does not exceed the device capacity,
-but does not guard against LBA + range wrapping around on 64-bit overflow.
+Writing the quad enable bit in one helper and doing the chip
+configuration in another does not make much sense from a bus interface
+setup point of view.
 
-Add an overflow check matching the pattern already used for WRITE_SAME in
-the same file.
+Instead, let's create a broader helper which is going to be in charge of
+all the bus configuration steps at once. This will specifically allow to
+transition to octal DDR mode, and even fallback to quad (if suppoorted)
+or single mode otherwise.
 
-Fixes: 86d7182985d2 ("target: Add sbc_execute_unmap() helper")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881593C61AD52C69FBDB0BDAF7CA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_sbc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/spi/core.c | 62 ++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
-index abe91dc8722e4..21f5cb86d70c0 100644
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -1187,7 +1187,8 @@ sbc_execute_unmap(struct se_cmd *cmd)
- 			goto err;
- 		}
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 5c1797946a047..b88f30ed746fc 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -177,18 +177,9 @@ static int spinand_init_cfg_cache(struct spinand_device *spinand)
+ 	return 0;
+ }
  
--		if (lba + range > dev->transport->get_blocks(dev) + 1) {
-+		if (lba + range < lba ||
-+		    lba + range > dev->transport->get_blocks(dev) + 1) {
- 			ret = TCM_ADDRESS_OUT_OF_RANGE;
- 			goto err;
- 		}
+-static int spinand_init_quad_enable(struct spinand_device *spinand)
++static int spinand_init_quad_enable(struct spinand_device *spinand,
++				    bool enable)
+ {
+-	bool enable = false;
+-
+-	if (!(spinand->flags & SPINAND_HAS_QE_BIT))
+-		return 0;
+-
+-	if (spinand->op_templates->read_cache->data.buswidth == 4 ||
+-	    spinand->op_templates->write_cache->data.buswidth == 4 ||
+-	    spinand->op_templates->update_cache->data.buswidth == 4)
+-		enable = true;
+-
+ 	return spinand_upd_cfg(spinand, CFG_QUAD_ENABLE,
+ 			       enable ? CFG_QUAD_ENABLE : 0);
+ }
+@@ -1314,12 +1305,6 @@ static int spinand_manufacturer_init(struct spinand_device *spinand)
+ 			return ret;
+ 	}
+ 
+-	if (spinand->configure_chip) {
+-		ret = spinand->configure_chip(spinand);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	return 0;
+ }
+ 
+@@ -1496,6 +1481,31 @@ static int spinand_detect(struct spinand_device *spinand)
+ 	return 0;
+ }
+ 
++static int spinand_configure_chip(struct spinand_device *spinand)
++{
++	bool quad_enable = false;
++	int ret;
++
++	if (spinand->flags & SPINAND_HAS_QE_BIT) {
++		if (spinand->ssdr_op_templates.read_cache->data.buswidth == 4 ||
++		    spinand->ssdr_op_templates.write_cache->data.buswidth == 4 ||
++		    spinand->ssdr_op_templates.update_cache->data.buswidth == 4)
++			quad_enable = true;
++	}
++
++	ret = spinand_init_quad_enable(spinand, quad_enable);
++	if (ret)
++		return ret;
++
++	if (spinand->configure_chip) {
++		ret = spinand->configure_chip(spinand);
++		if (ret)
++			return ret;
++	}
++
++	return ret;
++}
++
+ static int spinand_init_flash(struct spinand_device *spinand)
+ {
+ 	struct device *dev = &spinand->spimem->spi->dev;
+@@ -1506,10 +1516,6 @@ static int spinand_init_flash(struct spinand_device *spinand)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spinand_init_quad_enable(spinand);
+-	if (ret)
+-		return ret;
+-
+ 	ret = spinand_upd_cfg(spinand, CFG_OTP_ENABLE, 0);
+ 	if (ret)
+ 		return ret;
+@@ -1522,19 +1528,25 @@ static int spinand_init_flash(struct spinand_device *spinand)
+ 		return ret;
+ 	}
+ 
++	ret = spinand_configure_chip(spinand);
++	if (ret)
++		goto manuf_cleanup;
++
+ 	/* After power up, all blocks are locked, so unlock them here. */
+ 	for (i = 0; i < nand->memorg.ntargets; i++) {
+ 		ret = spinand_select_target(spinand, i);
+ 		if (ret)
+-			break;
++			goto manuf_cleanup;
+ 
+ 		ret = spinand_lock_block(spinand, BL_ALL_UNLOCKED);
+ 		if (ret)
+-			break;
++			goto manuf_cleanup;
+ 	}
+ 
+-	if (ret)
+-		spinand_manufacturer_cleanup(spinand);
++	return 0;
++
++manuf_cleanup:
++	spinand_manufacturer_cleanup(spinand);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
