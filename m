@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QD/zI1wWDmpb6AUAu9opvQ
-	(envelope-from <stable+bounces-252647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:24 +0200
+	id 8MV8BIgGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD9E599597
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8AA597CE5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0553A30CAC94
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99B713855BC9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A933F4DD6;
-	Wed, 20 May 2026 18:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1044D403E92;
+	Wed, 20 May 2026 18:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBroW9Ga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROegsIzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139123D1CC6;
-	Wed, 20 May 2026 18:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01C0402BBA;
+	Wed, 20 May 2026 18:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301224; cv=none; b=UvjJzzygB48emjqWYpG8N24RYaNxyJ8AcRfXMMdSeMn3KhuJxYvQZlEOg0cY4nPtxBk2wJz0LUyH2er3Ugh3fw4BnW3woPnfZ57oBzF6kpOH93hZYhyVnpAFxLEn4D9QlXE9rdA2qjZAyuEMxGJqmKl200eor/iycqGzN58DW3w=
+	t=1779302528; cv=none; b=Kw7aktnCD9KoZZY/NDZltmqH5qqEGeGbp01CDbhbkFwSeDX2a0ng06GqRyhM9U5IIwjbJuK1MReTxHPEmttTPHkXXbQbhfmC2bxhAIHmwd9A/jreDyFU7kCDqge8u0KU5O3fTa+NzXVcCkkMMjmvPjqx5BYCwtLi1YGXKi1WnZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301224; c=relaxed/simple;
-	bh=i+xPW6fyPqcL+B6jcSt6B/dmJ1fb8UOzkd6I4Xcrzzw=;
+	s=arc-20240116; t=1779302528; c=relaxed/simple;
+	bh=tHNgIn63Y+Fy3KU6sbQ6rXib69vJbUNGHjaZTBzJ4jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVscgrIejEMautyTn4WfTW7yb5NMlQKSHNPqwdtjDGvhPaFKxIGLSlzvRozlowJrAzX3Bu9vo3E6lZ5jW+5aUKB8QbYyZ+5Fg95cypB8FU5iJR/ObWjPh3XShX29LUCaQwNvRJuCo1vReoePqapfwnfNlpPbRCvyNPRkfE58DcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBroW9Ga; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643E91F000E9;
-	Wed, 20 May 2026 18:20:22 +0000 (UTC)
+	 MIME-Version; b=hs383Pyol0r84vqHF330NsrvwS2tD84Jerjb+YDqIQEuMYiQXL4Te+Jn6brREzDk3Js4A/aytj4D3Z4tyZ0E/9cJwfF7ALNWYCfMz415aHtOpnQOKLyX0xLaOcEO+L5MzeELLOAz3xEEwWZJTQsmYbvnIWx12XSOUoCAiBrNlJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROegsIzX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303621F000E9;
+	Wed, 20 May 2026 18:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301222;
-	bh=vQRjSxMY7HzKHJK9bGJZBX8rLQZYXVGTeilAeONNr6E=;
+	s=korg; t=1779302527;
+	bh=+ehfE6mTBBdjstgch4RlLQNSPhyubFENLld27kuJytQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eBroW9Gaxpk58RUkioI1f/zdK2HwIxqnziGrH7RW0oeea+F8OSwjpScvwD6BJhwiC
-	 3mjImVjN9iBj5/JcxIcQSiemZFKNHH8PBmk1TnxBeNwzxOMFBVxnPxNjrRT8TRXtoI
-	 D5c/VW/OS+llI/zVothsq2nRA/BJDNdDaz8T6tTQ=
+	b=ROegsIzXrF6pibMdSFBXbPcQV3BIt6p1O3v5rIZSKh6n7NRkfiPYOvuZUqe5CDAqK
+	 sBdL5J9aVnXuE0wEmhIBZzMvlTO9BBpvzPXQY98Eg2P1NhqYMM6eOxY5qYDazKWWp1
+	 pKOKZ8rZUf3ulPBD8fs/wryNXuZ0SN1VbytLAm3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yingnan Zhang <342144303@qq.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 471/666] ipvs: fix MTU check for GSO packets in tunnel mode
+Subject: [PATCH 6.6 259/508] i3c: mipi-i3c-hci: fix IBI payload length calculation for final status
 Date: Wed, 20 May 2026 18:21:22 +0200
-Message-ID: <20260520162121.477405730@linuxfoundation.org>
+Message-ID: <20260520162104.258843817@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,128 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252647-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253147-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qq.com:email,ssi.bg:email]
-X-Rspamd-Queue-Id: 8DD9E599597
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 7B8AA597CE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yingnan Zhang <342144303@qq.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
+[ Upstream commit d35a6db887eeae7c57b719521e39d64f929c6dc3 ]
 
-Currently, IPVS skips MTU checks for GSO packets by excluding them with
-the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
-mode encapsulates GSO packets with IPIP headers.
+In DMA mode, the IBI status descriptor encodes the payload using
+CHUNKS (number of chunks) and DATA_LENGTH (valid bytes in the last
+chunk). All preceding chunks are implicitly full-sized.
 
-The issue manifests in two ways:
+The current code accumulates full chunk sizes for non-final status
+descriptors, but for the final status descriptor it only adds
+DATA_LENGTH. This ignores the contribution of the preceding full
+chunks described by the same final status entry.
 
-1. MTU violation after encapsulation:
-   When a GSO packet passes through IPVS tunnel mode, the original MTU
-   check is bypassed. After adding the IPIP tunnel header, the packet
-   size may exceed the outgoing interface MTU, leading to unexpected
-   fragmentation at the IP layer.
+As a result, the computed IBI payload length is truncated whenever
+the final status spans multiple chunks. For example, with a chunk
+size of 4 bytes, CHUNKS=2 and DATA_LENGTH=1 should result in a total
+payload size of 5 bytes, but the current code reports only 1 byte.
 
-2. Fragmentation with problematic IP IDs:
-   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
-   is fragmented after encapsulation, each segment gets a sequentially
-   incremented IP ID (0, 1, 2, ...). This happens because:
+Fix the calculation by adding the size of (CHUNKS - 1) full chunks
+plus DATA_LENGTH for the last chunk.
 
-   a) The GSO packet bypasses MTU check and gets encapsulated
-   b) At __ip_finish_output, the oversized GSO packet is split into
-      separate SKBs (one per segment), with IP IDs incrementing
-   c) Each SKB is then fragmented again based on the actual MTU
-
-   This sequential IP ID allocation differs from the expected behavior
-   and can cause issues with fragment reassembly and packet tracking.
-
-Fix this by properly validating GSO packets using
-skb_gso_validate_network_len(). This function correctly validates
-whether the GSO segments will fit within the MTU after segmentation. If
-validation fails, send an ICMP Fragmentation Needed message to enable
-proper PMTU discovery.
-
-Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
-Signed-off-by: Yingnan Zhang <342144303@qq.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260407-i3c-hci-dma-v2-1-a583187b9d22@aspeedtech.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index 8892f261451e9..ed8b2616cf178 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -103,6 +103,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
- 	return dest_dst;
- }
- 
-+/* Based on ip_exceeds_mtu(). */
-+static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
-+{
-+	if (skb->len <= mtu)
-+		return false;
-+
-+	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
-+		return false;
-+
-+	return true;
-+}
-+
- static inline bool
- __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
- {
-@@ -112,10 +124,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
- 		 */
- 		if (IP6CB(skb)->frag_max_size > mtu)
- 			return true; /* largest fragment violate MTU */
--	}
--	else if (skb->len > mtu && !skb_is_gso(skb)) {
-+	} else if (ip_vs_exceeds_mtu(skb, mtu))
- 		return true; /* Packet size violate MTU size */
--	}
-+
- 	return false;
- }
- 
-@@ -233,7 +244,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
- 			return true;
- 
- 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
--			     skb->len > mtu && !skb_is_gso(skb) &&
-+			     ip_vs_exceeds_mtu(skb, mtu) &&
- 			     !ip_vs_iph_icmp(ipvsh))) {
- 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
- 				  htonl(mtu));
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index e270fcd0f7c38..624d00b853a51 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -636,7 +636,10 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
+ 		if (!(ibi_status & IBI_LAST_STATUS)) {
+ 			ibi_size += chunks * rh->ibi_chunk_sz;
+ 		} else {
+-			ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			if (chunks) {
++				ibi_size += (chunks - 1) * rh->ibi_chunk_sz;
++				ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			}
+ 			last_ptr = ptr;
+ 			break;
+ 		}
 -- 
 2.53.0
 
