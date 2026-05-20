@@ -1,67 +1,60 @@
-Return-Path: <stable+bounces-252772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOg/KJoXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:42 +0200
+	id qHYKHRcvDmpo7wUAu9opvQ
+	(envelope-from <stable+bounces-253236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8D5599781
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAF859B975
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CCA72305FCAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 913AE3980027
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07353FBEC0;
-	Wed, 20 May 2026 18:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1117E3EAC82;
+	Wed, 20 May 2026 18:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDWHgyA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oGwkl0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B80B3FB05C;
-	Wed, 20 May 2026 18:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9576346E55;
+	Wed, 20 May 2026 18:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301550; cv=none; b=pO/eVmk2L7bD++ZnUWPb1FGkUUcZa60YpLXAhjOrwXQgQg5OAPgApI3iohckUFmrSvnnT8Eamc/qd+N1Pj4zKSd9nNHzWtEi6MKXlnliChn5DsWCD3qt5gsaebGSuW5x/SoCKyqpeZ6CokDQV6LA43vpVCT4iu49ySf82RHnnT0=
+	t=1779302752; cv=none; b=n69QVgHeRlXPissI9HIeolxm1DYg+LQbIGKk+E5kdoaEYfDy3Hoa5qODjye1CyXWBOLMzVo4dHCHUYW+GTbHzicCPTbr+U7UFIlPXE8ih4f/KW8r9BJpN45v7b2aM401PyGLNo9ne/LCRiAlak7BdhalCLyIEG9S3jjYY1upx5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301550; c=relaxed/simple;
-	bh=9DlASsqkdyjSGE94UdQxqhHOp0msXDnwW+HQCr0OEE0=;
+	s=arc-20240116; t=1779302752; c=relaxed/simple;
+	bh=NX9wElKHL3AY8IzBto0qqDA+BA3eS7C/HZ/HdDPmhLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtL+E/b8uYAdqgEAKcERsfuY4xrvaUgmPAVDSl6kvHDZjbJHqTI0jZrMCBPm6nFwjxzRq277XOxEOizAx0/9V5eIHSqmV6OLrwlrTiHCBEO3SViQlEoPUnTCgLnqNJ3ub8ifycverqhQQvcw+t31dXsbqWs0697zjmyq5E6Dd7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDWHgyA2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB801F000E9;
-	Wed, 20 May 2026 18:25:48 +0000 (UTC)
+	 MIME-Version; b=JtysAhWRabxtIeII1ei19HZz79EcY3gmu7VjaNWgWh/cqIseQ7mO9ovW3flcQJbWKxeeMkmyRNYUtrwM/iyoUvwGfZG5CIgQqQvDZxEP/MAH/bLm4ike9Z6Tu2pTkjr12SCj6DluV/LD5tBYo3xyj0J9JiH4tYFLKVOhO7wh/hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oGwkl0O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1511F000E9;
+	Wed, 20 May 2026 18:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301549;
-	bh=6eMVNHlOFSONiUOKGkWEz4JeIptxIqp71zYlm7Vhrew=;
+	s=korg; t=1779302751;
+	bh=aupZADaAfIfvxHS/1eGEp3ACCl3qPFICus6y7ePw4Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sDWHgyA2241kAJwBbcn7EttHHNE59pg94NmktFrXQlUGdexc+KwLKuqBMTBAFcg7G
-	 8lpVuZ50CqBw8fsH0htvSMdqRbHdXY8sYAgebpoTPyAPJVSI/LZqSZQ40i4Tw4gg5B
-	 uZ0dz1vgo1kZll/EazJR/hITTOT7qHofkl/vkt/g=
+	b=1oGwkl0Oa1zOHmJkeftc3tCB9vS9FAvJNa3AxNj2b0RAqHC/uK7Sgrc1PruIu2zpm
+	 DPLuLqCqh5aT+Mo6WWe8nh3RzvF7KB7JKWhs8/1Z8d7v1SRQCvSpH1pIXZYzAbUK5H
+	 sckZmcT/KV+gNgZkhxYkABF7MHMi9YTNeMGq5+ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	stable <stable@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 596/666] smb: client: fix OOB reads parsing symlink error response
+Subject: [PATCH 6.6 384/508] net/sched: netem: validate slot configuration
 Date: Wed, 20 May 2026 18:23:27 +0200
-Message-ID: <20260520162124.183837571@linuxfoundation.org>
+Message-ID: <20260520162106.941084968@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,154 +67,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-252772-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253236-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org,foxmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,foxmail.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,talpey.com:email,manguebit.org:email]
-X-Rspamd-Queue-Id: AD8D5599781
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,networkplumber.org:email]
+X-Rspamd-Queue-Id: 0FAF859B975
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 3df690bba28edec865cf7190be10708ad0ddd67e ]
+[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
 
-When a CREATE returns STATUS_STOPPED_ON_SYMLINK, smb2_check_message()
-returns success without any length validation, leaving the symlink
-parsers as the only defense against an untrusted server.
+Reject slot configurations that have no defensible meaning:
 
-symlink_data() walks SMB 3.1.1 error contexts with the loop test "p <
-end", but reads p->ErrorId at offset 4 and p->ErrorDataLength at offset
-0.  When the server-controlled ErrorDataLength advances p to within 1-7
-bytes of end, the next iteration will read past it.  When the matching
-context is found, sym->SymLinkErrorTag is read at offset 4 from
-p->ErrorContextData with no check that the symlink header itself fits.
+  - negative min_delay or max_delay
+  - min_delay greater than max_delay
+  - negative dist_delay or dist_jitter
+  - negative max_packets or max_bytes
 
-smb2_parse_symlink_response() then bounds-checks the substitute name
-using SMB2_SYMLINK_STRUCT_SIZE as the offset of PathBuffer from
-iov_base.  That value is computed as sizeof(smb2_err_rsp) +
-sizeof(smb2_symlink_err_rsp), which is correct only when
-ErrorContextCount == 0.
+Negative or out-of-order delays underflow in get_slot_next(),
+producing garbage intervals. Negative limits trip the per-slot
+accounting (packets_left/bytes_left <= 0) on the first packet of
+every slot, defeating the rate-limiting half of the slot feature.
 
-With at least one error context the symlink data sits 8 bytes deeper,
-and each skipped non-matching context shifts it further by 8 +
-ALIGN(ErrorDataLength, 8).  The check is too short, allowing the
-substitute name read to run past iov_len.  The out-of-bound heap bytes
-are UTF-16-decoded into the symlink target and returned to userspace via
-readlink(2).
+Note that dist_jitter has been silently coerced to its absolute
+value by get_slot() since the feature was introduced; rejecting
+negatives here converts that silent coercion into -EINVAL. The
+abs() can be removed in a follow-up.
 
-Fix this all up by making the loops test require the full context header
-to fit, rejecting sym if its header runs past end, and bound the
-substitute name against the actual position of sym->PathBuffer rather
-than a fixed offset.
-
-Because sub_offs and sub_len are 16bits, the pointer math will not
-overflow here with the new greater-than.
-
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable <stable@kernel.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index 35d2933982d31..fd331a9f2f4d2 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -27,10 +27,11 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index e778eb1d1a510..1bb399cf40328 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -825,6 +825,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
+ 	return 0;
+ }
+ 
++static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
++{
++	const struct tc_netem_slot *c = nla_data(attr);
++
++	if (c->min_delay < 0 || c->max_delay < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
++		return -EINVAL;
++	}
++	if (c->min_delay > c->max_delay) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
++		return -EINVAL;
++	}
++	if (c->dist_delay < 0 || c->dist_jitter < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
++		return -EINVAL;
++	}
++	if (c->max_packets < 0 || c->max_bytes < 0) {
++		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
++		return -EINVAL;
++	}
++	return 0;
++}
++
+ static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
  {
- 	struct smb2_err_rsp *err = iov->iov_base;
- 	struct smb2_symlink_err_rsp *sym = ERR_PTR(-EINVAL);
-+	u8 *end = (u8 *)err + iov->iov_len;
- 	u32 len;
- 
- 	if (err->ErrorContextCount) {
--		struct smb2_error_context_rsp *p, *end;
-+		struct smb2_error_context_rsp *p;
- 
- 		len = (u32)err->ErrorContextCount * (offsetof(struct smb2_error_context_rsp,
- 							      ErrorContextData) +
-@@ -39,8 +40,7 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 			return ERR_PTR(-EINVAL);
- 
- 		p = (struct smb2_error_context_rsp *)err->ErrorData;
--		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
--		do {
-+		while ((u8 *)p + sizeof(*p) <= end) {
- 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
- 				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
- 				break;
-@@ -50,14 +50,16 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
--		} while (p < end);
-+		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
- 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
- 		sym = (struct smb2_symlink_err_rsp *)err->ErrorData;
+ 	const struct tc_netem_slot *c = nla_data(attr);
+@@ -1038,6 +1061,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto table_free;
  	}
  
--	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
--			     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
-+	if (!IS_ERR(sym) &&
-+	    ((u8 *)sym + sizeof(*sym) > end ||
-+	     le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
-+	     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
- 		sym = ERR_PTR(-EINVAL);
- 
- 	return sym;
-@@ -82,8 +84,10 @@ int smb2_parse_symlink_response(struct cifs_sb_info *cifs_sb, const struct kvec
- 	print_len = le16_to_cpu(sym->PrintNameLength);
- 	print_offs = le16_to_cpu(sym->PrintNameOffset);
- 
--	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||
--	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)
-+	if ((char *)sym->PathBuffer + sub_offs + sub_len >
-+		(char *)iov->iov_base + iov->iov_len ||
-+	    (char *)sym->PathBuffer + print_offs + print_len >
-+		(char *)iov->iov_base + iov->iov_len)
- 		return -EINVAL;
- 
- 	return smb2_parse_native_symlink(path,
++	if (tb[TCA_NETEM_SLOT]) {
++		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
++		if (ret)
++			goto table_free;
++	}
++
+ 	sch_tree_lock(sch);
+ 	/* backup q->clg and q->loss_model */
+ 	old_clg = q->clg;
 -- 
 2.53.0
 
