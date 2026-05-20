@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AtzOdH+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:57 +0200
+	id aEpAA/D/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB9C596AAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6EB596ED1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EEC6732073FD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58C3C3561BA5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F48356745;
-	Wed, 20 May 2026 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C80F3F929A;
+	Wed, 20 May 2026 18:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbHcPgdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnr5mdHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0226829D26E;
-	Wed, 20 May 2026 17:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6F33F4DDB;
+	Wed, 20 May 2026 18:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298248; cv=none; b=ai7WJG5TrxyCsPxBdzl8pTQpPGHARrtLNj2DX7w7dz1JkYD/ZvMyL7PQ5foOlO3L3j7W+iYPPFXHRDm2sNMtYjg8XL8oA6pmpGtbCaaN5Wk/i7Vuq60kunsrvbxq2cz7ZTSVTVCw/oQC9fHJtl0393R4ygsr0ROihxWwyPb8m8k=
+	t=1779300001; cv=none; b=l/HSfcXi6X132jDuuY2IYLlIy6c/cwl+WrwisilWIi4I7S8xB+hmGW56KJY2jAphCAZq9X0klD/7O4Z9vI1GtwkxOHVVH0jygi2EkYh/y/wDmOcCjbA3BkOqV7SEVdrEHQIReyz3x3qLSRBFfJsc7UBAu8jcU9bA5D/PoAk0y4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298248; c=relaxed/simple;
-	bh=cM/06j6Gv1s7Bz9Tailr2XYCKIIayQNPKw/05tr+8rE=;
+	s=arc-20240116; t=1779300001; c=relaxed/simple;
+	bh=Cs6wglBiuB6ZviHfr7M4jqS3UMVzRoiVFqOdYDiZ9Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urMGkELsaxk9gPDq/8aUIyQUh7592+MxnFFeC+2tUIYcd+9awkX4xnSn9t1scxVlclIOygDaWxQBrzR/UVR8Ql3wmssItkBQNHyplYRXEg8zZthGvB35GTsmNSxHlr259PnjlUBdkbmptMqbhojAArrd7sYeUMl4hEmb2iJ6IM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbHcPgdl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC091F000E9;
-	Wed, 20 May 2026 17:30:46 +0000 (UTC)
+	 MIME-Version; b=uIpKLKiRTrkts3RXGnS0hWi4txzqDK6hoLoqXc6oqONRhZhBC/23qfe8puNt4SMTN/s88J+Bzgz5aGtvJ0tlqVEqOnfJ7xokykB4cPUyysqIoXgbVpVtnVbVltWBbp6dhqH82LoOEi+QoeVadsupo7BpX755vIXcktQtTjTGSmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnr5mdHf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819161F000E9;
+	Wed, 20 May 2026 17:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298246;
-	bh=14zHpBvJ04EjiPzxf1F9bBifoo4ZhasPZVoT59CbO1Q=;
+	s=korg; t=1779300000;
+	bh=fKbZDcyYHAut6WEupVzw+3m8g7ajtzvIWa9UFebvkGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vbHcPgdlJlHXhRYWZ3XmE+JrSrXN2gINDiqySBd3zSwxAozjLee5N2zXvYM34vWS8
-	 aPiixATgMpsJptYwv9pysDemc6rwP++ZeaYFfEyonrIEMyZ7DnujPr+C8mHAzNHACK
-	 TxeioxJvTuFOvzEnUaW6z5CRTgK1quCw1iMBOwPk=
+	b=Lnr5mdHf0faoXy49hxElOW5UxxxKVaxmPDRFgfXiOH0H8wuZziQHxGaGPQm9l6GD9
+	 aCPTd8IAUOR2DvJM8H2WPeVVtDLpyzN4BhzEFN6SCyGZ83FepXRpn9zxJ4/hPqRx0Z
+	 m5VYFwuBGBc7Via3qNkSuiRU6w4CnfmjCF8RdmAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 337/957] sched_ext: Fix ops.cgroup_move() invocation kf_mask and rq tracking
-Date: Wed, 20 May 2026 18:13:40 +0200
-Message-ID: <20260520162141.840447762@linuxfoundation.org>
+Subject: [PATCH 6.12 010/666] pstore/ram: fix resource leak when ioremap() fails
+Date: Wed, 20 May 2026 18:13:41 +0200
+Message-ID: <20260520162111.454417941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252180-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251541-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 3DB9C596AAE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[unwrap.rs:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3F6EB596ED1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit b470e37c1fad72731be6f437e233cb6b16618f41 ]
+[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
 
-sched_move_task() invokes ops.cgroup_move() inside task_rq_lock(tsk), so
-@p's rq lock is held. The SCX_CALL_OP_TASK invocation mislabels this:
+In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
+failure. Currently, if this happens, the function returns NULL without
+releasing the memory region acquired by request_mem_region().
 
-  - kf_mask = SCX_KF_UNLOCKED (== 0), claiming no lock is held.
-  - rq = NULL, so update_locked_rq() doesn't run and scx_locked_rq()
-    returns NULL.
+This leads to a resource leak where the memory region remains reserved
+but unusable.
 
-Switch to SCX_KF_REST and pass task_rq(p), matching ops.set_cpumask()
-from set_cpus_allowed_scx().
+Additionally, the caller persistent_ram_buffer_map() handles NULL
+correctly by returning -ENOMEM, but without this check, a NULL return
+combined with request_mem_region() succeeding leaves resources in an
+inconsistent state.
 
-Three effects:
+This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
+ram_core: fix incorrect success return when vmap() fails") which fixed
+a similar issue in the vmap() path.
 
-  - scx_bpf_task_cgroup() becomes callable (was rejected by
-    scx_kf_allowed(__SCX_KF_RQ_LOCKED)). Safe; rq lock is held.
-
-  - scx_bpf_dsq_move() is now rejected (was allowed via the unlocked
-    branch). Calling it while holding an unrelated task's rq lock is
-    risky; rejection is correct.
-
-  - scx_bpf_select_cpu_*() previously took the unlocked branch in
-    select_cpu_from_kfunc() and called task_rq_lock(p, &rf), which
-    would deadlock against the already-held pi_lock. Now it takes the
-    locked-rq branch and is rejected with -EPERM via the existing
-    kf_allowed(SCX_KF_SELECT_CPU | SCX_KF_ENQUEUE) check. Latent
-    deadlock fix.
-
-No in-tree scheduler is known to call any of these from ops.cgroup_move().
-
-v2: Add Fixes: tag (Andrea Righi).
-
-Fixes: 18853ba782be ("sched_ext: Track currently locked rq")
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/pstore/ram_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 17905ad77598c..32bb89559716e 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3225,7 +3225,7 @@ void scx_cgroup_move_task(struct task_struct *p)
- 	 */
- 	if (SCX_HAS_OP(sch, cgroup_move) &&
- 	    !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
--		SCX_CALL_OP_TASK(sch, SCX_KF_UNLOCKED, cgroup_move, NULL,
-+		SCX_CALL_OP_TASK(sch, SCX_KF_REST, cgroup_move, task_rq(p),
- 				 p, p->scx.cgrp_moving_from,
- 				 tg_cgrp(task_group(p)));
- 	p->scx.cgrp_moving_from = NULL;
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index 7b6d6378a3b87..95675d4bab141 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
+ 	else
+ 		va = ioremap_wc(start, size);
+ 
++	/* We must release the mem region if ioremap fails. */
++	if (!va)
++		release_mem_region(start, size);
++
+ 	/*
+ 	 * Since request_mem_region() and ioremap() are byte-granularity
+ 	 * there is no need handle anything special like we do when the
 -- 
 2.53.0
 
