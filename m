@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJvuNj30DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:49 +0200
+	id mOmADPb4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-251549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FBC594AE7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F388595700
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D74631A31BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A3F47302E8F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4043D7D66;
-	Wed, 20 May 2026 16:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12734E75C;
+	Wed, 20 May 2026 17:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPvy2I6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnkOQ7NH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41A53ED136;
-	Wed, 20 May 2026 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B852D879E;
+	Wed, 20 May 2026 17:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295762; cv=none; b=jifv/LTjqh1nggCJxXmEvM6+D5WWxDKhuW2K7PyApiCfwsAVupHicTn/kLCYToRgAZoyTZXMprgQlBWjSFFlSU1tdWRDpxmHmzTFv7Nty6Fb2smgMymOW2/m16IqA21yudwxsT4smJA3jSWnfc3WBk+4lRV+ND9FZB39bMbjtYo=
+	t=1779298269; cv=none; b=d4LMDGh0yivTz2FM87zq4+/BvDcuvs2kust5qVkQzIyFi1lW9KU1FydtTc5fNavktKO4QEaPDSseYYfVhRxbe6Z+xUTEwRRm9pUvwjk6RTq9vGvtKS3hh9DeAvX5xQ1wYEaswWsVSnb/vOiJ7Cc0HMfpI/g4VDPSxNB4azJeduM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295762; c=relaxed/simple;
-	bh=IuglcmGYyDjz6cNHbG5ZRpr6ARS93UAtUhi5VhCwPY8=;
+	s=arc-20240116; t=1779298269; c=relaxed/simple;
+	bh=mmCRvKE1ddt1q0ki4FffoNjKO+3iBqBxujo59ulGyMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aF8evtFcuSX59obPCzo/YYLvtYsn9W2GqlaCCzRJ3Ckv2rHk90EKMFcZO0dv+mCE/6W87h2YUX330An98vqRFkToDIcjUs4LuCLF28pKeGoFY6XhmOYOIIG1lXfa2VgG0XJkrahYYRNd3jj0yhsreUxOWo/Nb9LCvm0M4mkncDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPvy2I6v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3B51F00893;
-	Wed, 20 May 2026 16:49:20 +0000 (UTC)
+	 MIME-Version; b=Nkwqs0pT5tAwMV98r2FIKNsYjV6Gk5lC+UJwvJXozpdn8PIuthtm+EKLhrX4024d4EnE69nnCf86nbIOes2yHHH0I38cMsfnX46+LlE+CZFj3GzBrXGDqaAAvkxd2tNy4DAUEx0LIdYDvDTFKI7/tRPWaot2EFX2QSUf5H8slv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnkOQ7NH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4DC1F000E9;
+	Wed, 20 May 2026 17:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295761;
-	bh=Y+KUHhQxU6IWO/m2Ou9Y/iQ74Z5y6vVz06QkX/qOGEM=;
+	s=korg; t=1779298267;
+	bh=nFYHvrQOc2dhIgkrp5We8TG7dq3YK39spesc98m4aoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vPvy2I6vrUQemBWYGjulbz/WG9l76t1wI5n0Zv+8PtLq2k6TAp+OiAqO2IYLpvi+N
-	 /A49l9BkxKprYX/l+z3P+xgWfKxl1jIZk9+mMN8muE1dF4cbXwHW2ZlWKG01luzaTF
-	 GbAIqYO28FPtb9fRZbalOmhadQ/niVmv4ORPPzi0=
+	b=qnkOQ7NHxy0o3cQdGun9WXuzow/sKTvTE6oalzZZm60IABgiyXTlSjv1HmP2SnKju
+	 s83GKAmSKf1Ko1b594sMi+qQy0+cCRZnPL2dpc0Hs48lBgvri0T6dPyxkDOpcgx12s
+	 9PYXCTWl8T7SeywFXKrBRfOyU7AI7YevQ8jDexQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0542/1146] arm64: dts: lx2160a: remove duplicate pinmux nodes
+Subject: [PATCH 6.18 309/957] gpu: nova-core: bitfield: fix broken Default implementation
 Date: Wed, 20 May 2026 18:13:12 +0200
-Message-ID: <20260520162200.446965920@linuxfoundation.org>
+Message-ID: <20260520162141.233400478@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251549-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,70 +89,51 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[solid-run.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,0.31.149.240:email]
-X-Rspamd-Queue-Id: 33FBC594AE7
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4F388595700
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Eliot Courtney <ecourtney@nvidia.com>
 
-[ Upstream commit 325ca511ca3dda936207ce737e0afe837d45a674 ]
+[ Upstream commit de0aca13509bf47a2d49bc7a26d56079c758c95f ]
 
-LX2160A pinmux is done in groups by various length bitfields within
-configuration registers.
+The current implementation does not actually set the default values for
+the fields in the bitfield.
 
-The pinmux nodes i2c7-scl-pins and i2c7-scl-gpio-pins are duplicates of
-i2c6-scl-gpio and i2c6-scl-gpio-pins, writing to the same register and
-bits.
-
-These two i2c buses i2c6/i2c7 (IIC7/IIC8) are configured together in
-register RCWSR13 bits 3-0.
-
-Drop the duplicate node name and change references to the i2c6 node.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 3fa145bef533 ("gpu: nova-core: register: generate correct `Default` implementation")
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+Link: https://patch.msgid.link/20260401-fix-bitfield-v2-1-2fa68c98114a@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/gpu/nova-core/bitfield.rs | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index d5bb55df03216..41c9b4253f4a5 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -862,8 +862,8 @@ i2c7: i2c@2070000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c7_scl>;
--			pinctrl-1 = <&i2c7_scl_gpio>;
-+			pinctrl-0 = <&i2c6_scl>;
-+			pinctrl-1 = <&i2c6_scl_gpio>;
- 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -1785,14 +1785,6 @@ i2c6_scl_gpio: i2c6-scl-gpio-pins {
- 				pinctrl-single,bits = <0x4 0x1 0x7>;
- 			};
+diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
+index fb60800898c55..1d4931c251bf4 100644
+--- a/drivers/gpu/nova-core/bitfield.rs
++++ b/drivers/gpu/nova-core/bitfield.rs
+@@ -303,12 +303,11 @@ macro_rules! bitfield {
+         /// Returns a value for the bitfield where all fields are set to their default value.
+         impl ::core::default::Default for $name {
+             fn default() -> Self {
+-                #[allow(unused_mut)]
+-                let mut value = Self(Default::default());
++                let value = Self(Default::default());
  
--			i2c7_scl: i2c7-scl-pins {
--				pinctrl-single,bits = <0x4 0x2 0x7>;
--			};
--
--			i2c7_scl_gpio: i2c7-scl-gpio-pins {
--				pinctrl-single,bits = <0x4 0x1 0x7>;
--			};
--
- 			i2c0_scl: i2c0-scl-pins {
- 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
- 			};
+                 ::kernel::macros::paste!(
+                 $(
+-                value.[<set_ $field>](Default::default());
++                let value = value.[<set_ $field>](Default::default());
+                 )*
+                 );
+ 
 -- 
 2.53.0
 
