@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG2kHG8mDmpZ6gUAu9opvQ
-	(envelope-from <stable+bounces-252632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:59 +0200
+	id ONlPHLAEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9A259ACA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE4F5978C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07BCB386650E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B985F31B18CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1A23E5ECF;
-	Wed, 20 May 2026 18:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22176400DE5;
+	Wed, 20 May 2026 18:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgZTXtA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eMktbTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8021B348C55;
-	Wed, 20 May 2026 18:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABB646AF27;
+	Wed, 20 May 2026 18:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301184; cv=none; b=nuHRD91GqTVTQiM/t19YRyFT+z3foV/DN2DtBHRpUnyeCakFA3oHF9STYHZ7I2DhTydWxaj66TCJF1t1mf6XykcuGwehuh1JwrAza7LS3d+03OhDJ0vJrjQ1+o1ucKV4JqGo6wmQPdEdWcJ7h6pGeHskHvm2hi/l5sFZo6C2skI=
+	t=1779302386; cv=none; b=e1EAfkSYkXmm7RpTwJCjC07qmr1IE7KX+RFj26I58oSVYzvm5JfthdAVDUVAomhGpVPiTrqt+B+V1EQuXvZlKYjpJNY6F77SfipMyUjGs6ISX79au3U7JmhIaVaaGw/lhh7aFpS/WGt/XeAFzhCITPkn9Uzu3zbGagsy0nj5540=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301184; c=relaxed/simple;
-	bh=EiX1hGz8IUPoobVSLXq0tWFhT/jypSXpZWqIu7VL1dM=;
+	s=arc-20240116; t=1779302386; c=relaxed/simple;
+	bh=yvgN41uy719eykOhzEiNBLjWgxcTimi1ljPcIp78Xh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkoWmj+kgRU+KWc8+2dqdifhvhXsMwnFfQ/sY74TBUuzh8hp2fGk+jLsUOPrSjTMcFkcxxDQ+BTUCk7p7QfBbnHRje+VifirPqlQzIqu324nA+syon1am64Q1ln2QcA8sEJ5XRu0WQBMBVmNeU6R/NtDh9ehFCU7Ooa6vBf8tS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgZTXtA8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54D11F000E9;
-	Wed, 20 May 2026 18:19:42 +0000 (UTC)
+	 MIME-Version; b=HZSujbvN/P6OeBCIynWBaWzQG1+1uhQOVicg74VXAkgCKPrDuK/sMSNLgEwsKLWUzISc5KPOeJMTaJJxkahuollP3GhbiyBX59pDJc2qqX2/Ltgj23WHIBeswEFcoEyZZu5phZKjsdoZM4MwJlLIGB6MHn0lRq3occxqv0m5T3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eMktbTT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB991F00893;
+	Wed, 20 May 2026 18:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301183;
-	bh=5QwrRdiaYf2GELdUY1ymL0kUpcPoXF/QzS8N+vlsA0o=;
+	s=korg; t=1779302385;
+	bh=0LsYoF3SwXhyMRh2ncyjbTOV4IbyrZ0yzEyo8FJUUqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DgZTXtA8p0CLXcxuDPIv2MCu2XhbwjCcVjRSwo7x3QJg+Iw86HP1CXjdwZ6okMOx8
-	 ck/5wvCbj7OjKljXkIjhNf3OkfMwQHZoAyYRMmBc8pNEdFOK0BbyYda6aq+l5t0xWp
-	 Wu/jMzh+ACdTzTpVnoCJiRE6patlUHFpH1C694jI=
+	b=1eMktbTTrAjex/B0z0cFQ+EJtDj83eLJFlqipbV2IHdbAxD6V9iLU8S7JMsjhmfqh
+	 34/EkHSXCcVBvdoGcFxhH9ImaBdBpc0EG6eWh1MMLrONinj/DlCceU6xi7HhJBnNXy
+	 3j/5sNO4XkN+Dn/9ffb7mFVZGqN+mx0MdeV3/PO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 458/666] ice: fix double-free of tx_buf skb
+Subject: [PATCH 6.6 246/508] pinctrl: cy8c95x0: Unify messages with help of dev_err_probe()
 Date: Wed, 20 May 2026 18:21:09 +0200
-Message-ID: <20260520162121.196383831@linuxfoundation.org>
+Message-ID: <20260520162103.981302494@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252632-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253093-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CF9A259ACA3
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1BE4F5978C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1a303baa715e6b78d6a406aaf335f87ff35acfcd ]
+[ Upstream commit 014884732095b982412d13d3220c3fe8483b9b3e ]
 
-If ice_tso() or ice_tx_csum() fail, the error path in
-ice_xmit_frame_ring() frees the skb, but the 'first' tx_buf still points
-to it and is marked as valid (ICE_TX_BUF_SKB).
-'next_to_use' remains unchanged, so the potential problem will
-likely fix itself when the next packet is transmitted and the tx_buf
-gets overwritten. But if there is no next packet and the interface is
-brought down instead, ice_clean_tx_ring() -> ice_unmap_and_free_tx_buf()
-will find the tx_buf and free the skb for the second time.
+Unify error messages that might appear during probe phase by
+switching to use dev_err_probe().
 
-The fix is to reset the tx_buf type to ICE_TX_BUF_EMPTY in the error
-path, so that ice_unmap_and_free_tx_buf().
-Move the initialization of 'first' up, to ensure it's already valid in
-case we hit the linearization error path.
-
-The bug was spotted by AI while I had it looking for something else.
-It also proposed an initial version of the patch.
-
-I reproduced the bug and tested the fix by adding code to inject
-failures, on a build with KASAN.
-
-I looked for similar bugs in related Intel drivers and did not find any.
-
-Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
-Assisted-by: Claude:claude-4.6-opus-high Cursor
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-4-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 08d1757f40888..48434a79869cb 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2346,6 +2346,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 97eeaae17f669..1432b6714dc69 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1262,10 +1262,8 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
  
- 	ice_trace(xmit_frame_ring, tx_ring, skb);
+ 	/* Read IRQ status register to clear all pending interrupts */
+ 	ret = cy8c95x0_irq_pending(chip, pending_irqs);
+-	if (ret) {
+-		dev_err(chip->dev, "failed to clear irq status register\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to clear irq status register\n");
  
-+	/* record the location of the first descriptor for this packet */
-+	first = &tx_ring->tx_buf[tx_ring->next_to_use];
-+
- 	count = ice_xmit_desc_count(skb);
- 	if (ice_chk_linearize(skb, count)) {
- 		if (__skb_linearize(skb))
-@@ -2371,8 +2374,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- 
- 	offload.tx_ring = tx_ring;
- 
--	/* record the location of the first descriptor for this packet */
--	first = &tx_ring->tx_buf[tx_ring->next_to_use];
- 	first->skb = skb;
- 	first->type = ICE_TX_BUF_SKB;
- 	first->bytecount = max_t(unsigned int, skb->len, ETH_ZLEN);
-@@ -2436,6 +2437,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
- out_drop:
- 	ice_trace(xmit_frame_ring_drop, tx_ring, skb);
- 	dev_kfree_skb_any(skb);
-+	first->type = ICE_TX_BUF_EMPTY;
- 	return NETDEV_TX_OK;
- }
- 
+ 	/* Mask all interrupts */
+ 	bitmap_fill(chip->irq_mask, MAX_LINE);
 -- 
 2.53.0
 
