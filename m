@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-253189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFuEMtcGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:11 +0200
+	id OEMPFlgXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C87B597D8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B266599707
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 292AE27A971
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D320301831D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060B23FD122;
-	Wed, 20 May 2026 18:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1213FCB27;
+	Wed, 20 May 2026 18:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMa3ojYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3p94DyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D593D75AB;
-	Wed, 20 May 2026 18:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A270340A57;
+	Wed, 20 May 2026 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302636; cv=none; b=pgyC6k3fv2FnFyKliPdMIY8NuU2fPB0/DKLcY0J16ROk7AIBfrRCRnjdn4NzEF8hu0ACWM392o94F67CBZihRtvuwr0qxOHZOIXZNhgvwj2TT5nkmNuFGytX4EHiH6woAhyOABmH9ECWZoI7CgIRi7Mzsok/+fZiib/qgOAGVdk=
+	t=1779301434; cv=none; b=TlUX/mXv/vfHaV9mhkZ0iYgqa1pnJdl4nkIQmfBPFM62MEptnwTYw6U7W/ag7azwfcjxoNloKQUObenO8bgpEiLVF5WmbuwP8Pc59fJgkaXwY2+JSNE2X4eguBKKzjJcp8Ed1EbV6/QDiyyTc/w+a8AbjOA1XEWFJ8Wh96Y2k3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302636; c=relaxed/simple;
-	bh=+fP5E1ofnzz/w9JrXcr/azGcG3jWOtVau1JdJZylCyk=;
+	s=arc-20240116; t=1779301434; c=relaxed/simple;
+	bh=HAWEUq9CUTpIq+MJODGb9xWGAlUMamk0LOdR5h7Umwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gV1NyZqtSu7xuNoztTwis2aV25lxW2O1j6IhtHmvxb5mmLTJkaHV53Sx77u7aWDXdvumhqOkcFYOhOd72oJHBSqTp7wB5jgxWLWaTmyfuHkfJgB7mwyawi2Ml2haHxyf4y6T7gQoVzcuDbQ9Ym16T0VHvRX9RryhIF3M80KXiW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMa3ojYf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390711F000E9;
-	Wed, 20 May 2026 18:43:55 +0000 (UTC)
+	 MIME-Version; b=mb4SM+96Q+WzsDqiY/MINpMqIOHE6BfNnfRUvINLT1DXfYag5FBWJeiZ+x8AHfP5tLIKnJVr4icDJwpgesgxwOofctPHJbQ6ytpEr6kl6UaBANNckiQVw3ucMLhFmbQx0fZY35ICWIV5Pvsc/qrf4u66cjvQ9Dz9DqxWwhL+pzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3p94DyE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07111F000E9;
+	Wed, 20 May 2026 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302635;
-	bh=f3pDz9p0Vf43eXHVsiSR/E5BG7JCach/2zK9gm2vSbc=;
+	s=korg; t=1779301433;
+	bh=r3NtgaRdk+3QeBe/OJoiOrqxesDQGikR0zIYF3wW2w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qMa3ojYfTrw0Ou0Pa8wPbU5EUUSe8jipSIbQKHkTTlJEhSPO4M9WCw4QzkktPnvL9
-	 VtsC7U4tzG41KODvGNATnSfAhlA7VSE57fjPG3tB5pG23iQulkZzj2L7aOghBT0ax5
-	 MqvyztqbaKxueM5ll+4gnETZ+2KqmX+XjULxyYao=
+	b=M3p94DyEL/5sbTUJyXHEtvUWv+RUlnkY3cVXe6IC9EKnseBKQb6zWYeZ96tdAV7Dq
+	 qJ0lBY5SdCmzQNfh6Zvbqqj1ZVBgN4E+JUBrS+ir6JuyPj0qcn60a5lDs2zBygRObt
+	 HrlydeafwxEzbzeNAxUKhn+JOnhaTgb1VAdjYC8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/508] ksmbd: Use struct_size() to improve smb_direct_rdma_xmit()
+	Zicheng Qu <quzicheng@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Hui Tang <tanghui20@huawei.com>,
+	Zhang Qiao <zhangqiao22@huawei.com>
+Subject: [PATCH 6.12 552/666] sched/fair: Clear rel_deadline when initializing forked entities
 Date: Wed, 20 May 2026 18:22:43 +0200
-Message-ID: <20260520162105.998471203@linuxfoundation.org>
+Message-ID: <20260520162123.231125804@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +70,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253189-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252728-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,55 +84,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3C87B597D8C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,huawei.com:email]
+X-Rspamd-Queue-Id: 8B266599707
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 9c383396362a4d1db99ed5240f4708d443361ef3 ]
+[ Upstream commit 3da56dc063cd77b9c0b40add930767fab4e389f3 ]
 
-Use struct_size() to calculate the number of bytes to allocate for a
-new message.
+A yield-triggered crash can happen when a newly forked sched_entity
+enters the fair class with se->rel_deadline unexpectedly set.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: b32c8db48212 ("ksmbd: destroy async_ida in ksmbd_conn_free()")
+The failing sequence is:
+
+  1. A task is forked while se->rel_deadline is still set.
+  2. __sched_fork() initializes vruntime, vlag and other sched_entity
+     state, but does not clear rel_deadline.
+  3. On the first enqueue, enqueue_entity() calls place_entity().
+  4. Because se->rel_deadline is set, place_entity() treats se->deadline
+     as a relative deadline and converts it to an absolute deadline by
+     adding the current vruntime.
+  5. However, the forked entity's deadline is not a valid inherited
+     relative deadline for this new scheduling instance, so the conversion
+     produces an abnormally large deadline.
+  6. If the task later calls sched_yield(), yield_task_fair() advances
+     se->vruntime to se->deadline.
+  7. The inflated vruntime is then used by the following enqueue path,
+     where the vruntime-derived key can overflow when multiplied by the
+     entity weight.
+  8. This corrupts cfs_rq->sum_w_vruntime, breaks EEVDF eligibility
+     calculation, and can eventually make all entities appear ineligible.
+     pick_next_entity() may then return NULL unexpectedly, leading to a
+     later NULL dereference.
+
+A captured trace shows the effect clearly. Before yield, the entity's
+vruntime was around:
+
+  9834017729983308
+
+After yield_task_fair() executed:
+
+  se->vruntime = se->deadline
+
+the vruntime jumped to:
+
+  19668035460670230
+
+and the deadline was later advanced further to:
+
+  19668035463470230
+
+This shows that the deadline had already become abnormally large before
+yield_task_fair() copied it into vruntime.
+
+rel_deadline is only meaningful when se->deadline really carries a
+relative deadline that still needs to be placed against vruntime. A
+freshly forked sched_entity should not inherit or retain this state.
+Clear se->rel_deadline in __sched_fork(), together with the other
+sched_entity runtime state, so that the first enqueue does not interpret
+the new entity's deadline as a stale relative deadline.
+
+Fixes: 82e9d0456e06 ("sched/fair: Avoid re-setting virtual deadline on 'migrations'")
+Analyzed-by: Hui Tang <tanghui20@huawei.com>
+Analyzed-by: Zhang Qiao <zhangqiao22@huawei.com>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260424071113.1199600-1-quzicheng@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 3528ec33919d5..10ceade590529 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1407,8 +1407,8 @@ static int smb_direct_rdma_xmit(struct smb_direct_transport *t,
- 	/* build rdma_rw_ctx for each descriptor */
- 	desc_buf = buf;
- 	for (i = 0; i < desc_num; i++) {
--		msg = kzalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
--			      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
-+		msg = kzalloc(struct_size(msg, sg_list, SG_CHUNK_SIZE),
-+			      GFP_KERNEL);
- 		if (!msg) {
- 			ret = -ENOMEM;
- 			goto out;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index df76b32a013fb..9b238c9c71c67 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4453,6 +4453,7 @@ static void __sched_fork(unsigned long clone_flags, struct task_struct *p)
+ 	p->se.nr_migrations		= 0;
+ 	p->se.vruntime			= 0;
+ 	p->se.vlag			= 0;
++	p->se.rel_deadline		= 0;
+ 	INIT_LIST_HEAD(&p->se.group_node);
+ 
+ 	/* A delayed task cannot be in clone(). */
 -- 
 2.53.0
 
