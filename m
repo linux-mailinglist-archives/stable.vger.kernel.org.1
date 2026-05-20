@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-250966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJSyH+TtDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:44 +0200
+	id QLPBNnsCDmra5QUAu9opvQ
+	(envelope-from <stable+bounces-251894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B5B593793
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60BB5974C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9310630A4FB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33F7031F7D12
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF653F888B;
-	Wed, 20 May 2026 17:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBF03F1AB8;
+	Wed, 20 May 2026 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqmJFXMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGJZkCCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015083EF0D7;
-	Wed, 20 May 2026 17:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D623F1AD9;
+	Wed, 20 May 2026 17:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296755; cv=none; b=oq30NPHbt73DtgVJn8FiozIn4oFlhCGSCfWQ8G5YOsQYLpLYW1fE7PbAZhVziLpmlQasyc0CniruuPx0u9pmEVm46kc+OyMM2eGDJUmVCYP7/eXEHriTDhbILpgAFs9xCOxyv5s0LxxNbmJYjHMcedNwsxmgYdmp8hPKAnHj/tc=
+	t=1779299166; cv=none; b=gRmKa0VTtB3xRBpSpqKwsZ4BYlEXtLPthOsByD/0Y2mBtWBxChaUSslYZL+xr/+FLA25YVl2EvwIdDg1Gl8BbP617pFKoT4ZktQnkR+zRKpYBX2147wQTvwevfNd6K0s3c0dGPKR4gnN9FM0pCtCNf271IKUhf5U6lgwncYVyOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296755; c=relaxed/simple;
-	bh=OcnQVvU1VO97j1GJrWI4GVw33aB0M/RlKqiMErGyWPw=;
+	s=arc-20240116; t=1779299166; c=relaxed/simple;
+	bh=DIl5zTWSLuygl9l4Q/TgjhcfuZhjnT8F4uW+/6hO6gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXetEbmXBmOejCTtISv4X/l4jF9F+oWGOGpLn/SY/gf6KsugUz49kJr+349xYj+wX+AOxKhPm6aw/fXWXXnTQPLp9LvXfzC/gwM6GzPxtkHoMzkviTWN7lmnltSv0y+i2/TuxgpcmIHDZPvrn/b/oxdfGHKz/jXQe5f6v8bZX4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqmJFXMA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666651F000E9;
-	Wed, 20 May 2026 17:05:53 +0000 (UTC)
+	 MIME-Version; b=ltzDJdj/IGIF07D/7dioLnGWk2Jj9AUdLokj72XhV7LTgDQysC2HQeY1yzb+19bmBq/jkWBGnwGUwVJysVrn04K18TvsjGiiv5iNVw26GGxql5keBHM65djSEK923eXblTaDCOQAMjIE6ONF0gZR1viO07iteVAS61k4zgk2qTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGJZkCCG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53F91F000E9;
+	Wed, 20 May 2026 17:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296753;
-	bh=QTrkxB0d9Mdk3MOyXFHshrDaCE5Y733or0XEidar04Q=;
+	s=korg; t=1779299164;
+	bh=CRVtpmyJ3z7L30COsD/jeZSovFVNYP7/f2p110RJ1e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MqmJFXMA/aod2TNXh9qkoU0x38+O4/lBlko0E7B5LfrCjMKEaQdOphQPabZgtMrk/
-	 dr1eY82YYh1KLCsoiz+UijvYZIN7YRHAJlJpXmWaV+oGrshGEmzD2wxAgnQ7FahtbM
-	 PH7C6JJllxixq6hFv8UymavUNCmnj4qrgFywz/K4=
+	b=UGJZkCCG6LcvqPjmabiAjphufsZx+1mllgxc9F+2d7Wj2OfCmwlWfRX239BxF55LM
+	 hdi2GXusKElrssJCwAmBcwycNHN1p2Kls3vWobohXrvSNliuMLgsb6GdUSyjA1m75X
+	 XFhcgocE8RZwsT8tBVQCf7Hsf8duZY421llJOqdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0920/1146] mtd: spinand: Add support for packed read data ODTR commands
+Subject: [PATCH 6.18 687/957] net/sched: sch_pie: annotate data-races in pie_dump_stats()
 Date: Wed, 20 May 2026 18:19:30 +0200
-Message-ID: <20260520162209.061376483@linuxfoundation.org>
+Message-ID: <20260520162149.438874281@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,131 +69,190 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251894-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250966-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 26B5B593793
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: E60BB5974C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5e25407b68f460142539536e31fa20338db6146f ]
+[ Upstream commit 5154561d9b119f781249f8e845fecf059b38b483 ]
 
-Some devices stuff address bits in the double byte opcode (in place of
-the repeated byte) in order to be able to increase the size of the
-devices, without adding extra address bytes.
+pie_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Create a flag to identify those devices. When the flag is set, use the
-"packed" variant for the read data operation.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 8d655748aba1 ("mtd: spinand: winbond: Set the packed page read flag to W35N02/04JW")
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_pie_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142944.4009941-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c | 24 +++++++++++++++++++++---
- include/linux/mtd/spinand.h |  7 +++++++
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ include/net/pie.h   |  2 +-
+ net/sched/sch_pie.c | 38 +++++++++++++++++++-------------------
+ 2 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 8aa3753aaaa1d..0b076790bd9df 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -100,6 +100,17 @@ spinand_fill_page_read_op(struct spinand_device *spinand, u64 addr)
- 	return op;
+diff --git a/include/net/pie.h b/include/net/pie.h
+index 01cbc66825a40..1f3db0c355149 100644
+--- a/include/net/pie.h
++++ b/include/net/pie.h
+@@ -104,7 +104,7 @@ static inline void pie_vars_init(struct pie_vars *vars)
+ 	vars->dq_tstamp = DTIME_INVALID;
+ 	vars->accu_prob = 0;
+ 	vars->dq_count = DQCOUNT_INVALID;
+-	vars->avg_dq_rate = 0;
++	WRITE_ONCE(vars->avg_dq_rate, 0);
  }
  
-+static struct spi_mem_op
-+spinand_fill_page_read_packed_op(struct spinand_device *spinand, u64 addr)
-+{
-+	struct spi_mem_op op = spinand->op_templates->page_read;
-+
-+	op.cmd.opcode |= addr >> 16;
-+	op.addr.val = addr & 0xFFFF;
-+
-+	return op;
-+}
-+
- struct spi_mem_op
- spinand_fill_prog_exec_op(struct spinand_device *spinand, u64 addr)
- {
-@@ -453,7 +464,10 @@ static int spinand_load_page_op(struct spinand_device *spinand,
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
--	struct spi_mem_op op = SPINAND_OP(spinand, page_read, row);
-+	bool packed = spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ;
-+	struct spi_mem_op op = packed ?
-+		SPINAND_OP(spinand, page_read_packed, row) :
-+		SPINAND_OP(spinand, page_read, row);
+ static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 0a377313b6a9d..73650200482f4 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -90,7 +90,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	bool enqueue = false;
  
- 	return spi_mem_exec_op(spinand->spimem, &op);
+ 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
+-		q->stats.overlimit++;
++		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
+ 		goto out;
+ 	}
+ 
+@@ -104,7 +104,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		/* If packet is ecn capable, mark it if drop probability
+ 		 * is lower than 10%, else drop it.
+ 		 */
+-		q->stats.ecn_mark++;
++		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
+ 		enqueue = true;
+ 	}
+ 
+@@ -114,15 +114,15 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!q->params.dq_rate_estimator)
+ 			pie_set_enqueue_time(skb);
+ 
+-		q->stats.packets_in++;
++		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
+ 		if (qdisc_qlen(sch) > q->stats.maxq)
+-			q->stats.maxq = qdisc_qlen(sch);
++			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
+ 
+ 		return qdisc_enqueue_tail(skb, sch);
+ 	}
+ 
+ out:
+-	q->stats.dropped++;
++	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
+ 	q->vars.accu_prob = 0;
+ 	return qdisc_drop_reason(skb, sch, to_free, reason);
  }
-@@ -1489,9 +1503,13 @@ static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
- 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->blk_erase))
- 		return -EOPNOTSUPP;
+@@ -267,11 +267,11 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 			count = count / dtime;
  
--	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
--	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read))
-+	if (spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ)
-+		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(0);
-+	else
-+		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read)) {
- 		return -EOPNOTSUPP;
-+	}
+ 			if (vars->avg_dq_rate == 0)
+-				vars->avg_dq_rate = count;
++				WRITE_ONCE(vars->avg_dq_rate, count);
+ 			else
+-				vars->avg_dq_rate =
++				WRITE_ONCE(vars->avg_dq_rate,
+ 				    (vars->avg_dq_rate -
+-				     (vars->avg_dq_rate >> 3)) + (count >> 3);
++				     (vars->avg_dq_rate >> 3)) + (count >> 3));
  
- 	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_8D_8D_0_OP(0);
- 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->prog_exec))
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 6a024cf1c53ac..f2f80103649d5 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -290,6 +290,12 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_NO_DATA)
+ 			/* If the queue has receded below the threshold, we hold
+ 			 * on to the last drain rate calculated, else we reset
+@@ -381,7 +381,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+ 		if (vars->prob < oldprob) {
+-			vars->prob = MAX_PROB;
++			WRITE_ONCE(vars->prob, MAX_PROB);
+ 			/* Prevent normalization error. If probability is at
+ 			 * maximum value already, we normalize it here, and
+ 			 * skip the check to do a non-linear drop in the next
+@@ -392,7 +392,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	} else {
+ 		/* prevent underflow */
+ 		if (vars->prob > oldprob)
+-			vars->prob = 0;
++			WRITE_ONCE(vars->prob, 0);
+ 	}
  
-+#define SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(addr)			\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_PACKED_CMD(0x13, addr >> 16, 8),	\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr & 0xffff, 8),		\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
- #define SPINAND_PAGE_READ_FROM_CACHE_8D_8D_8D_OP(addr, ndummy, buf, len, freq) \
- 	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x9d, 8),			\
- 		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-@@ -482,6 +488,7 @@ struct spinand_ecc_info {
- #define SPINAND_HAS_PROG_PLANE_SELECT_BIT		BIT(2)
- #define SPINAND_HAS_READ_PLANE_SELECT_BIT		BIT(3)
- #define SPINAND_NO_RAW_ACCESS				BIT(4)
-+#define SPINAND_ODTR_PACKED_PAGE_READ			BIT(5)
+ 	/* Non-linear drop in probability: Reduce drop probability quickly if
+@@ -403,7 +403,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 		/* Reduce drop probability to 98.4% */
+ 		vars->prob -= vars->prob / 64;
  
- /**
-  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
+-	vars->qdelay = qdelay;
++	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+ 
+ 	/* We restart the measurement cycle if the following conditions are met
+@@ -502,21 +502,21 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+ 		.prob		= q->vars.prob << BITS_PER_BYTE,
+-		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
++		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.maxq		= q->stats.maxq,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
++		.packets_in	= READ_ONCE(q->stats.packets_in),
++		.overlimit	= READ_ONCE(q->stats.overlimit),
++		.maxq		= READ_ONCE(q->stats.maxq),
++		.dropped	= READ_ONCE(q->stats.dropped),
++		.ecn_mark	= READ_ONCE(q->stats.ecn_mark),
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+ 	st.dq_rate_estimating = q->params.dq_rate_estimator;
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+-	if (q->params.dq_rate_estimator)
+-		st.avg_dq_rate = q->vars.avg_dq_rate *
++	if (st.dq_rate_estimating)
++		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
+ 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
 -- 
 2.53.0
 
