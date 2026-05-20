@@ -1,192 +1,128 @@
-Return-Path: <stable+bounces-249713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UN3pEIP5DGpHqwUAu9opvQ
-	(envelope-from <stable+bounces-249713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:00:03 +0200
+	id MBI7LTwFDWoksQUAu9opvQ
+	(envelope-from <stable+bounces-249714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:50:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A704F5862FD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D474586616
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD31D30974AE
-	for <lists+stable@lfdr.de>; Tue, 19 May 2026 23:57:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68BA330158B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F7A318BA7;
-	Tue, 19 May 2026 23:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B36B2609C5;
+	Wed, 20 May 2026 00:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="WrOZ6bBS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fN4OIBan"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479BE3AE18D
-	for <stable@vger.kernel.org>; Tue, 19 May 2026 23:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2230AE573;
+	Wed, 20 May 2026 00:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779235045; cv=none; b=ueKMn3Iawd1OjDhb29JXsdvFAK+/u1/ALhBU4BvPhcULiFZdCOws+06GA4sM3wcmB0/5tAT+ClS6/I6Pr/aEmYJ+kF+lmKsNaSCJtnUho/PS07MnYBf1QezQkoKzqmMNrSw9703cGFA+mAgWaqb4ngO84Km1oh2P3a+gk8+MnHg=
+	t=1779238196; cv=none; b=Famoq5ym7dn2ACWPFNlVTY+BdzYRlrc2WdvSD3MtdjbbSE/j4lRhJi0Ee2ow3/O003ktn+gkzvJrQHuDpnxSb9H8hAmKfp17SHkzaanFv/YlcF5P9hfBAV89XdTMqLk9y9bkKSUx51cub4zxUsNHm9AWwFXlIVhqZU03WGxjBLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779235045; c=relaxed/simple;
-	bh=QvDQQgxMlWe/NUUFRvDVO+G5N8HLQaZdguGH3FEQcqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MCspxtDgt2uHhiz7jUFFRkc0mYolbbj/9A4IFYZ/M8xgxmbd2fATWeXlYlAbw0iXPaVidvZ4ZX+z7tjD4GXczD8cfPE2zCmYtDmvqVuDOaLaKmq1aRUZIXQwUyfH5zt63QrAD87yk2+fg9eDiL7AsGTuLiglQwJ0FEl9TZH19sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=WrOZ6bBS; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1779235041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lMO4XGKe9tJXICUR0USBAX2E9zLMBYajvIK0HLgJ5KM=;
-	b=WrOZ6bBSquFqxaSvtRHPCQwGiwSrQGG+xkrQRe7VcCplByyYK6JfR+Z7fav4fKFzW+pg6n
-	d0ksXkV1F3ev3T2/kyofk8fWaLCvoRxk4euavdsLl+2AtPOBb6LdH5PGMjM/r1QPGHHuyH
-	EqgWu+zAWm+UrNgNOL97BMOuOfaZajxPvdIqM0zrJf1/HL4JKeErdkrWTZsYGmpRz3h9px
-	4CdMIrLfx8IKrhYdWHc8cnIIA3hVq3D+ePqLDmZxLX/dq5tHkYmJiNKCOn4BGOVwELIyKk
-	nOtTDrCnJtZw3ADdb3iamHri5YXn1AcveRqqvW7qFcbrqDsntDKc4UJ/p5WGoA==
-From: Devin Wittmayer <lucid_duck@justthetip.ca>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>,
-	fjhhz1997@gmail.com
-Subject: [PATCH v4] wifi: mac80211: fix monitor mode frame capture for real chanctx drivers
-Date: Tue, 19 May 2026 16:57:13 -0700
-Message-ID: <20260519235713.49109-2-lucid_duck@justthetip.ca>
-In-Reply-To: <20260519235713.49109-1-lucid_duck@justthetip.ca>
-References: <20260518170147.13885-1-lucid_duck@justthetip.ca>
- <20260519235713.49109-1-lucid_duck@justthetip.ca>
+	s=arc-20240116; t=1779238196; c=relaxed/simple;
+	bh=lBfm9tSSe0sbgpengcGxja9yeUM22QBkM9dkNrYcNjc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=SMc33yQqdt+TsXRFtg77Qf6fg69HeD0+plFtPec8gx1BxFHrRNrQuXbNKd/DxPS93BR91vZpmDVtlVfwlSa1bi5thfJ+7ld6A+LR7xKSSqKmlQ4stg+OPvxXpaQrjjAl640kmU2bn15eb0At8dTHqy5csEtdJQNwa2aH1fDmoEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fN4OIBan; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC9A1F000E9;
+	Wed, 20 May 2026 00:49:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779238194;
+	bh=0mq7kib0N1oJE7BLzLydBG9O6cvohSd5MZVgGw55/X8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=fN4OIBantfenbOAJ1Mt3Qe3d8rUabM/SQo2v5hx7QprQVpcqFJpq/Hn3WPPysIcH7
+	 SKz25/9L4pcIjLavZv51ADJn6RNrAZIx1C+4eNageGJuSBz4wEXtXszPc6rpoDkwVF
+	 jxec6E0IpG5Ug/BWrKL4C8eAObCpjbFT6t1roOuTPnm9rZbAJhLCFQ/wLABKutCb26
+	 VewtahUhony2/EPQzeUeJDeh2rgJynEkH9Idbah1WZy2umWTf9iWcoQuf6vNDyB9ag
+	 ymNSOPl0f+e9kxm4axKvWo449yiaDfwYqEOExQjRJcn1yFswaqu7KbFR3q59JnPGm5
+	 4kx9twgXM+ANA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B04383BF53;
+	Wed, 20 May 2026 00:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.34 / 15.00];
+Subject: Re: [PATCH net] net: pse-pd: fix sign on -ENOENT check in
+ of_load_pse_pis()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177923820539.2936298.11897991390696602983.git-patchwork-notify@kernel.org>
+Date: Wed, 20 May 2026 00:50:05 +0000
+References: <20260515143103.1721888-1-jelonek.jonas@gmail.com>
+In-Reply-To: <20260515143103.1721888-1-jelonek.jonas@gmail.com>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_CC(0.00)[sipsolutions.net,nbd.name,kernel.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-249714-lists,stable=lfdr.de,netdevbpf];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249713-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,justthetip.ca:email,justthetip.ca:mid,justthetip.ca:dkim,sipsolutions.net:email]
-X-Rspamd-Queue-Id: A704F5862FD
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4D474586616
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: 傅继晗 <fjhhz1997@gmail.com>
+Hello:
 
-Commit d594cc6f2c58 ("wifi: mac80211: restore non-chanctx injection
-behaviour") restored the monitor injection fallback for drivers using
-chanctx emulation but explicitly deferred drivers that transitioned
-to real chanctx ops. mt76 falls in that category and still drops
-every injected frame when monitor coexists with another interface.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-When the monitor has no chanctx of its own, fall back to the only
-chanctx in flight if there is exactly one. Refuse if multiple are
-present: picking arbitrarily would inject on an unrelated channel.
-Emulated and real chanctx drivers both flow through this fallback,
-since emulation always presents zero or one chanctx in
-local->chanctx_list.
+On Fri, 15 May 2026 14:31:03 +0000 you wrote:
+> of_count_phandle_with_args() returns the count on success and a negative
+> errno on failure, including -ENOENT when the "pairsets" property is
+> absent. The existing comparison in of_load_pse_pis() checks against
+> ENOENT (positive 2) instead of -ENOENT, so the branch is taken for any
+> error return: legitimate DTs that omit "pairsets" trigger a spurious
+> "wrong number of pairsets" error and probe fails with -EINVAL.
+> 
+> [...]
 
-Reran the airgeddon evil-twin flow (hostapd AP + coexisting monitor
-VIF on the same phy + aireplay-ng deauth from the monitor) on
-mt7921e PCIe and mt7921u USB across 2.4 GHz and 5 GHz, and on a
-Kali VM with MT7921U passthrough as the closest match to the
-original reporter's setup. None reproduced the hang seen against
-the earlier attempt at this fix
-(<20251216111909.25076-2-johannes@sipsolutions.net>) or against v1
-on lore in March.
+Here is the summary with links:
+  - [net] net: pse-pd: fix sign on -ENOENT check in of_load_pse_pis()
+    https://git.kernel.org/netdev/net/c/33d35975cbea
 
-Cc: stable@vger.kernel.org # 6.9+
-Reported-by: Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
-Closes: https://github.com/morrownr/USB-WiFi/issues/682
-Tested-by: Devin Wittmayer <lucid_duck@justthetip.ca>
-Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
-Signed-off-by: 傅继晗 <fjhhz1997@gmail.com>
-Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
----
-v4:
-  - Drop the dedicated local->emulate_chanctx branch. Emulation always
-    presents zero or one chanctx in local->chanctx_list, so the
-    single-chanctx walk handles that path too.
-  - Real-chanctx TX path is unchanged, so v3 Tested-by carries.
-
-v3:
-  - Replace list_is_singular() + list_first_entry() with
-    list_first_or_null_rcu() and an rcu_access_pointer() check
-    that the entry is the only one in the list. The v2 pair
-    re-read ->next without RCU between the singularity check
-    and the entry fetch, racing list_del_rcu() of the sole entry
-    (rculist.h).
-
-v2:
-  - First respin under my submitter signoff; preserves fjh1997
-    authorship.
-  - Verification matrix; airgeddon evil-twin flow on mt7921e/
-    mt7921u/Kali-VM does not reproduce the hang reported against
-    the v1 attempt at this fix.
-
- net/mac80211/tx.c | 16 ++++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 933c86ca21c3..a8c5d3a2b1f0 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2407,12 +2407,18 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 				rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
- 	}
- 
--	if (chanctx_conf)
-+	if (chanctx_conf) {
- 		chandef = &chanctx_conf->def;
--	else if (local->emulate_chanctx)
--		chandef = &local->hw.conf.chandef;
--	else
--		goto fail_rcu;
-+	} else {
-+		struct ieee80211_chanctx *ctx;
-+
-+		ctx = list_first_or_null_rcu(&local->chanctx_list,
-+					     struct ieee80211_chanctx, list);
-+		if (!ctx ||
-+		    rcu_access_pointer(ctx->list.next) != &local->chanctx_list)
-+			goto fail_rcu;
-+		chandef = &ctx->conf.def;
-+	}
- 
- 	/*
- 	 * If driver/HW supports IEEE80211_CHAN_CAN_MONITOR we still
+You are awesome, thank you!
 -- 
-2.54.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
