@@ -1,79 +1,59 @@
-Return-Path: <stable+bounces-252551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ3WG3kVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:37 +0200
+	id WJuuFw36DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-250985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C185993D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C6F595A1D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51F5B32807D7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9664330F0DBD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AA33F0A83;
-	Wed, 20 May 2026 18:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03673DCD9A;
+	Wed, 20 May 2026 17:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzhcB8fs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOWhVeYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E481D34DB46;
-	Wed, 20 May 2026 18:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641D63F0AB8;
+	Wed, 20 May 2026 17:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300971; cv=none; b=UovCj9p4cU/YUSmv7T3WZqQsRgeZqgaJcRdCiVvSkvo8gaDmpVvAM6BttPxAufznzVjKWrfIzxQ0Wg3/b/yNdCI8Cpe90Pj5gQiXUQPvHbb0CfgB4RLT2ID/K4c/87mKtAPxeuwR+UTTh6LVC0mU8c/2JuGBklKd2DVg/nGytYY=
+	t=1779296802; cv=none; b=Au17SQUbOokJyfANI92orGWt0RHKnv+lTKmxdNlbBULr2vHvmLrL7PR089wf157wrc8kypytUtBmvQC3db2R81R44XvfnFI82mN4m7y1oWgnrdy34A4XM8/DaGk4M6+yyZQG96UNNSJAJpqoPsRUVoNiB10v8n12SP6oMFDfSzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300971; c=relaxed/simple;
-	bh=1/vR7XOugVq+pJtMKcK5xSQRXMCpd7HJUaNwouJ2fr0=;
+	s=arc-20240116; t=1779296802; c=relaxed/simple;
+	bh=6CldsTlAksE0z2Q1nc7Mj+57Bpx//PDc7svjSLvT9FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHiwu75+VZ3fKHO1MSb6mbgXgbZMDAwxYKM9NZMHUrDp1tVDSXA+o9rHY061BEZTCE9HNHlHzrlBBYj2BZJed9sIvkJWxgB4qurVYKwCIEAU9KHe0YfRxAB5Os5OxOZm/H9X+6zjny4fnx2QGRkaxiU9PG7ZbJVEHC7nUpY7igM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzhcB8fs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DE41F00893;
-	Wed, 20 May 2026 18:16:09 +0000 (UTC)
+	 MIME-Version; b=gx0++ZIQLxDT4XKxsZmXkrc1J+kGmh2FJv7Ut7ehfgPZYc/8gpK0//zr7yS/bCQDGYwisltNSj7FPHDBtA4lLVLArJMF3n6TEzAbUGgrmPxOwxdQidJp6sWM2LcmatC0qISJSoCHWHCNClFkADWTdKagB12w4UtkzRJ8/qs55HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOWhVeYq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A21F000E9;
+	Wed, 20 May 2026 17:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300969;
-	bh=TrFc3mQyTXzr3d9NHKRXNpmc9Ubr/WswWzDiqzSuvUQ=;
+	s=korg; t=1779296801;
+	bh=/MP4WCC+wMQqxPcXbajUdkk295uufHg+7xwiFiovdTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pzhcB8fsloJlUFRHscglZsFi7Q7l1RN3MSlNuNqaJGZn2HEQltMrSak/GvVQ6WUQf
-	 uhB6F0B1IGoTpXOzP4gs5qHHZpdJdFnJ8YP1J0kmiiSsdfg4eYlNxgPh6aBGt/lWnc
-	 NP7QVvzkl20VCcctz1RedI0gsS7RRQxlPUhknPwQ=
+	b=OOWhVeYqciCWoD+/E+XfMlHY5lVcagrOXkEwfETWhv5H3+wBpagWY5TeG7demy9tg
+	 S1weJMozmHMSX2TufkBhm0gGKoD+1c2LNZ43OxRrhXqEQy3eKtPQkAsoPXSVMBHrcN
+	 TqRoEXJImfxH+taxxBUvMwWJA5RhkRHGlzYgKzl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Veronika Molnarova <vmolnaro@redhat.com>,
-	Weilin Wang <weilin.wang@intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 376/666] perf python: Add parse_events function
+Subject: [PATCH 7.0 0937/1146] net: airoha: Do not wake all netdev TX queues in airoha_qdma_wake_netdev_txqs()
 Date: Wed, 20 May 2026 18:19:47 +0200
-Message-ID: <20260520162119.398822002@linuxfoundation.org>
+Message-ID: <20260520162209.441317388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,241 +64,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-252551-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,intel.com,linux.intel.com,linux.vnet.ibm.com,gmail.com,linux.ibm.com,redhat.com,linaro.org,kernel.org,arm.com,infradead.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250985-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 88C185993D2
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 78C6F595A1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit f081defccd934a8db309c90a61178e4f2eef386c ]
+[ Upstream commit e070aac63b42bf81f4dc565f9f841ff47e6c992f ]
 
-Add basic parse_events function that takes a string and returns an
-evlist. As the python evlist is embedded in a pyrf_evlist, and the
-evsels are embedded in pyrf_evsels, copy the parsed data into those
-structs and update evsel__clone to enable this.
+Do not wake every netdev TX queue across all ports sharing the QDMA
+running netif_tx_wake_all_queues routine in airoha_qdma_wake_netdev_txqs()
+but only the ones that are mapped the specific QDMA stopped hw TX queue.
+This patch can potentially avoid waking already stopped netdev TX queues
+that are mapped to a different QDMA hw TX queue.
+Introduce airoha_qdma_get_txq utility routine.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Howard Chu <howardchu95@gmail.com>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Veronika Molnarova <vmolnaro@redhat.com>
-Cc: Weilin Wang <weilin.wang@intel.com>
-Link: https://lore.kernel.org/r/20241119011644.971342-20-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: c9ef786c0970 ("perf cgroup: Update metric leader in evlist__expand_cgroup")
+Fixes: b94769eb2f30 ("net: airoha: Fix possible TX queue stall in airoha_qdma_tx_napi_poll()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260421-airoha-wake_netdev_txqs-optmization-v1-1-e0be95115d53@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/cgroup.c |  2 +-
- tools/perf/util/evsel.c  | 19 ++++++++-----
- tools/perf/util/evsel.h  |  2 +-
- tools/perf/util/python.c | 61 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 75 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 19 +++++++++++++++----
+ drivers/net/ethernet/airoha/airoha_eth.h |  5 +++++
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
-index 0f759dd96db71..fbcc0626f9ce2 100644
---- a/tools/perf/util/cgroup.c
-+++ b/tools/perf/util/cgroup.c
-@@ -473,7 +473,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
- 
- 		leader = NULL;
- 		evlist__for_each_entry(orig_list, pos) {
--			evsel = evsel__clone(pos);
-+			evsel = evsel__clone(/*dest=*/NULL, pos);
- 			if (evsel == NULL)
- 				goto out_err;
- 
-diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
-index d2965dc49bac2..45a7ed5c7a473 100644
---- a/tools/perf/util/evsel.c
-+++ b/tools/perf/util/evsel.c
-@@ -332,7 +332,7 @@ static int evsel__copy_config_terms(struct evsel *dst, struct evsel *src)
-  * The assumption is that @orig is not configured nor opened yet.
-  * So we only care about the attributes that can be set while it's parsed.
-  */
--struct evsel *evsel__clone(struct evsel *orig)
-+struct evsel *evsel__clone(struct evsel *dest, struct evsel *orig)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 8819e24283abc..f9e6406ca55da 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -847,13 +847,24 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
  {
- 	struct evsel *evsel;
+ 	struct airoha_qdma *qdma = q->qdma;
+ 	struct airoha_eth *eth = qdma->eth;
+-	int i;
++	int i, qid = q - &qdma->q_tx[0];
  
-@@ -345,7 +345,11 @@ struct evsel *evsel__clone(struct evsel *orig)
- 	if (orig->bpf_obj)
- 		return NULL;
- 
--	evsel = evsel__new(&orig->core.attr);
-+	if (dest)
-+		evsel = dest;
-+	else
-+		evsel = evsel__new(&orig->core.attr);
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
++		int j;
 +
- 	if (evsel == NULL)
- 		return NULL;
++		if (!port)
++			continue;
  
-@@ -395,11 +399,12 @@ struct evsel *evsel__clone(struct evsel *orig)
- 	evsel->core.leader = orig->core.leader;
- 
- 	evsel->max_events = orig->max_events;
--	free((char *)evsel->unit);
--	evsel->unit = strdup(orig->unit);
--	if (evsel->unit == NULL)
--		goto out_err;
--
-+	zfree(&evsel->unit);
-+	if (orig->unit) {
-+		evsel->unit = strdup(orig->unit);
-+		if (evsel->unit == NULL)
-+			goto out_err;
-+	}
- 	evsel->scale = orig->scale;
- 	evsel->snapshot = orig->snapshot;
- 	evsel->per_pkg = orig->per_pkg;
-diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
-index b23fa3ca88883..0e64b9f17f0a6 100644
---- a/tools/perf/util/evsel.h
-+++ b/tools/perf/util/evsel.h
-@@ -241,7 +241,7 @@ static inline struct evsel *evsel__new(struct perf_event_attr *attr)
- 	return evsel__new_idx(attr, 0);
+-		if (port && port->qdma == qdma)
+-			netif_tx_wake_all_queues(port->dev);
++		if (port->qdma != qdma)
++			continue;
++
++		for (j = 0; j < port->dev->num_tx_queues; j++) {
++			if (airoha_qdma_get_txq(qdma, j) != qid)
++				continue;
++
++			netif_wake_subqueue(port->dev, j);
++		}
+ 	}
+ 	q->txq_stopped = false;
  }
+@@ -1999,7 +2010,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	u16 index;
+ 	u8 fport;
  
--struct evsel *evsel__clone(struct evsel *orig);
-+struct evsel *evsel__clone(struct evsel *dest, struct evsel *orig);
+-	qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx);
++	qid = airoha_qdma_get_txq(qdma, skb_get_queue_mapping(skb));
+ 	tag = airoha_get_dsa_tag(skb, dev);
  
- int copy_config_terms(struct list_head *dst, struct list_head *src);
- void free_config_terms(struct list_head *config_terms);
-diff --git a/tools/perf/util/python.c b/tools/perf/util/python.c
-index e7f36ea9e2fa1..5060dc801dede 100644
---- a/tools/perf/util/python.c
-+++ b/tools/perf/util/python.c
-@@ -13,6 +13,7 @@
- #include "evsel.h"
- #include "event.h"
- #include "print_binary.h"
-+#include "strbuf.h"
- #include "thread_map.h"
- #include "trace-event.h"
- #include "mmap.h"
-@@ -1247,6 +1248,60 @@ static PyObject *pyrf__tracepoint(struct pyrf_evsel *pevsel,
- #endif // HAVE_LIBTRACEEVENT
- }
+ 	msg0 = FIELD_PREP(QDMA_ETH_TXMSG_CHAN_MASK,
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 46f4197007074..7098e95f0067a 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -630,6 +630,11 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 mask, u32 val);
+ #define airoha_qdma_clear(qdma, offset, val)			\
+ 	airoha_rmw((qdma)->regs, (offset), (val), 0)
  
-+static PyObject *pyrf_evsel__from_evsel(struct evsel *evsel)
++static inline u16 airoha_qdma_get_txq(struct airoha_qdma *qdma, u16 qid)
 +{
-+	struct pyrf_evsel *pevsel = PyObject_New(struct pyrf_evsel, &pyrf_evsel__type);
-+
-+	if (!pevsel)
-+		return NULL;
-+
-+	memset(&pevsel->evsel, 0, sizeof(pevsel->evsel));
-+	evsel__init(&pevsel->evsel, &evsel->core.attr, evsel->core.idx);
-+
-+	evsel__clone(&pevsel->evsel, evsel);
-+	return (PyObject *)pevsel;
++	return qid % ARRAY_SIZE(qdma->q_tx);
 +}
 +
-+static PyObject *pyrf_evlist__from_evlist(struct evlist *evlist)
-+{
-+	struct pyrf_evlist *pevlist = PyObject_New(struct pyrf_evlist, &pyrf_evlist__type);
-+	struct evsel *pos;
-+
-+	if (!pevlist)
-+		return NULL;
-+
-+	memset(&pevlist->evlist, 0, sizeof(pevlist->evlist));
-+	evlist__init(&pevlist->evlist, evlist->core.all_cpus, evlist->core.threads);
-+	evlist__for_each_entry(evlist, pos) {
-+		struct pyrf_evsel *pevsel = (void *)pyrf_evsel__from_evsel(pos);
-+
-+		evlist__add(&pevlist->evlist, &pevsel->evsel);
-+	}
-+	return (PyObject *)pevlist;
-+}
-+
-+static PyObject *pyrf__parse_events(PyObject *self, PyObject *args)
-+{
-+	const char *input;
-+	struct evlist evlist = {};
-+	struct parse_events_error err;
-+	PyObject *result;
-+
-+	if (!PyArg_ParseTuple(args, "s", &input))
-+		return NULL;
-+
-+	parse_events_error__init(&err);
-+	evlist__init(&evlist, NULL, NULL);
-+	if (parse_events(&evlist, input, &err)) {
-+		parse_events_error__print(&err, input);
-+		PyErr_SetFromErrno(PyExc_OSError);
-+		return NULL;
-+	}
-+	result = pyrf_evlist__from_evlist(&evlist);
-+	evlist__exit(&evlist);
-+	return result;
-+}
-+
- static PyMethodDef perf__methods[] = {
- 	{
- 		.ml_name  = "tracepoint",
-@@ -1254,6 +1309,12 @@ static PyMethodDef perf__methods[] = {
- 		.ml_flags = METH_VARARGS | METH_KEYWORDS,
- 		.ml_doc	  = PyDoc_STR("Get tracepoint config.")
- 	},
-+	{
-+		.ml_name  = "parse_events",
-+		.ml_meth  = (PyCFunction) pyrf__parse_events,
-+		.ml_flags = METH_VARARGS,
-+		.ml_doc	  = PyDoc_STR("Parse a string of events and return an evlist.")
-+	},
- 	{ .ml_name = NULL, }
- };
- 
+ static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
+ {
+ 	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
 -- 
 2.53.0
 
