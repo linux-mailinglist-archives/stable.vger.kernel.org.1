@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EFdK08EDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:23 +0200
+	id sAojLKruDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D548C5977DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A186593A3D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43A2331253FC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 199E230E8C3D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD103F44CD;
-	Wed, 20 May 2026 17:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8D9231842;
+	Wed, 20 May 2026 17:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dMTVrmK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROk0vvcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B863A3E60;
-	Wed, 20 May 2026 17:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E5D3BE165;
+	Wed, 20 May 2026 17:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299622; cv=none; b=bABlDzZpn980VQpVlHGSsDyu+zjJkFW5B6IELBpWiwXeN8+fRzHSiXZtR1QMiGm+P7H/ppYZLQ6DWKbisdiGynsik3rTiOIgWFO9EF1lN7j+dZcQJ+QuZFYxH1QopGFI7u5LaPcTIqjmGgqlR4BDzMhdc6EQHdkB6ESfT0mn9dk=
+	t=1779297063; cv=none; b=u2tW5SyVmNGMFnQPWCqFq30nTPwOguqlRwiXRfWPd/8aUw+RGJpra6i9qh26TcyZSE8nRAOOa73KcoIRLDwZemyVDY7aY0uxMHuRA+zj2PNl73D7/AzlkqmjPZu9MhiWCbX43zG9cO5HC/pOVhdPT3y7nt44wqDINTXWyFgPAaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299622; c=relaxed/simple;
-	bh=04JJ5qgTPBGHacYaPhkQEIPn2yDIBvxdBfwHT1YCVcY=;
+	s=arc-20240116; t=1779297063; c=relaxed/simple;
+	bh=WIZf8zyzorpMDfIvg4mrLueJWUG1b8qd9U+IzjR+oCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IiKC0iM6HMy1/jMKX5L5R3fGw+RQgEKPydYfinm0PwvTpwN/kBs+kXrSXshjRK3bKs8EU0e3xWFGlOaYeQOeIAcN0qW9reVIWRxM4mVZToWajeeFuxzKlpT9FsX2KfaJt7Q1eyjYiNT/DPV2d64JItHsed8sm+iG1ldu6zQW3PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dMTVrmK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0611F000E9;
-	Wed, 20 May 2026 17:53:41 +0000 (UTC)
+	 MIME-Version; b=unE9T6gDBkCKZnZ9QcIygur8/dCdDDx9SQof/Fu78pxdmLAEnbbjhNPcSVtOjzou4UPZQ+d5ai/mcqFdcLiBQs171vgk2s/DEXovbhVSLknJH2yqyD7kvkTZP+emkxshr49YYD285v1VnAhdesITaIZy4ZbUEADYpha66jY3gFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROk0vvcy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6F11F000E9;
+	Wed, 20 May 2026 17:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299621;
-	bh=RlnQjsDyUYr1AkgF/QBxeLjCNvyS7OdtQoP2zkpUi14=;
+	s=korg; t=1779297062;
+	bh=FE+gkwVhFCTOskp/We6UFa+9LGWR7dUzqxUL8NMIM/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2dMTVrmKiOYqgvsiIIr9yiH77utwJLAQYO2OAmWfPGiqS0uOpi3Az/9tuDbowDmtJ
-	 jRDza+kjgt4OYwQaucwPnrUp3306MENNl8yjqmrEkLh7BfP3EM7wacSJ6KXWQ6ib/H
-	 GRvg54MGm5UyrvLILxoJGKCrPU4fgMG58d+vBdJA=
+	b=ROk0vvcyto57UY0/2U2bBNWKLgqlQzOHauZeypHVx1ZtMQLDtNb1AvJWCJ9J3JQ4/
+	 MGri29F6tBxAnaG8Xkr0wwBIeSuwHKgkvrsZY+fAaVA1XEXNgDmlxh6MadCWCaJRO0
+	 Xn3XeyEWmSoLTNlFECqKy+IKmBS24/amtnPn76lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 801/957] drm/amdgpu/vcn: set no_user_fence for VCN v4.0 enc ring
-Date: Wed, 20 May 2026 18:21:24 +0200
-Message-ID: <20260520162151.937622676@linuxfoundation.org>
+Subject: [PATCH 7.0 1035/1146] arm64: Reserve an extra page for early kernel mapping
+Date: Wed, 20 May 2026 18:21:25 +0200
+Message-ID: <20260520162211.654409848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252053-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251086-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D548C5977DF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,unisoc.com:email]
+X-Rspamd-Queue-Id: 4A186593A3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-[ Upstream commit 51f694221047c84fa185be98210eb2c354ffb8c6 ]
+[ Upstream commit 4d8e74ad4585672489da6145b3328d415f50db82 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+The final part of [data, end) segment may overflow into the next page of
+init_pg_end[1] which is the gap page before early_init_stack[2]:
 
-Fixes: 8da1170a16e4 ("drm/amdgpu: add VCN4 ip block support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fd852c048b46f9825e904a4f3f4538fe9d8827d9)
+[1]
+crash_arm64_v9.0.1> vtop ffffffed00601000
+VIRTUAL           PHYSICAL
+ffffffed00601000  83401000
+
+PAGE DIRECTORY: ffffffecffd62000
+   PGD: ffffffecffd62da0 => 10000000833fb003
+   PMD: ffffff80033fb018 => 10000000833fe003
+   PTE: ffffff80033fe008 => 68000083401f03
+  PAGE: 83401000
+
+     PTE        PHYSICAL  FLAGS
+68000083401f03  83401000  (VALID|SHARED|AF|NG|PXN|UXN)
+
+      PAGE       PHYSICAL      MAPPING       INDEX CNT FLAGS
+fffffffec00d0040 83401000                0        0  1 4000 reserved
+
+[2]
+ffffffed002c8000 (r) __pi__data
+ffffffed0054e000 (d) __pi___bss_start
+ffffffed005f5000 (b) __pi_init_pg_dir
+ffffffed005fe000 (b) __pi_init_pg_end
+ffffffed005ff000 (B) early_init_stack
+ffffffed00608000 (b) __pi__end
+
+For 4K pages, the early kernel mapping may use 2MB block entries but the
+kernel segments are only 64KB aligned. Segment boundaries that fall
+within a 2MB block therefore require a PTE table so that different
+attributes can be applied on either side of the boundary.
+
+KERNEL_SEGMENT_COUNT still correctly counts the five permanent kernel
+VMAs registered by declare_kernel_vmas(). However, since commit
+5973a62efa34 ("arm64: map [_text, _stext) virtual address range
+non-executable+read-only"), the early mapper also maps [_text, _stext)
+separately from [_stext, _etext). This adds one more early-only split
+and can require one more page-table page than the existing
+EARLY_SEGMENT_EXTRA_PAGES allowance reserves.
+
+Increase the 4K-page early mapping allowance by one page to cover that
+additional split.
+
+Fixes: 5973a62efa34 ("arm64: map [_text, _stext) virtual address range non-executable+read-only")
+Assisted-by: TRAE:GLM-5.1
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+[catalin.marinas@arm.com: rewrote part of the commit log]
+[catalin.marinas@arm.com: expanded the code comment]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/kernel-pgtable.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-index 64bda0e944a7c..21e40eb2078d1 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
-@@ -1995,6 +1995,7 @@ static struct amdgpu_ring_funcs vcn_v4_0_unified_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.extra_bytes = sizeof(struct amdgpu_vcn_rb_metadata),
- 	.get_rptr = vcn_v4_0_unified_ring_get_rptr,
- 	.get_wptr = vcn_v4_0_unified_ring_get_wptr,
+diff --git a/arch/arm64/include/asm/kernel-pgtable.h b/arch/arm64/include/asm/kernel-pgtable.h
+index 74a4f738c5f52..229ee7976f693 100644
+--- a/arch/arm64/include/asm/kernel-pgtable.h
++++ b/arch/arm64/include/asm/kernel-pgtable.h
+@@ -68,7 +68,12 @@
+ #define KERNEL_SEGMENT_COUNT	5
+ 
+ #if SWAPPER_BLOCK_SIZE > SEGMENT_ALIGN
+-#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 1)
++/*
++ * KERNEL_SEGMENT_COUNT counts the permanent kernel VMAs. The early mapping
++ * has one additional split, [_text, _stext). Reserve one more page for the
++ * SWAPPER_BLOCK_SIZE-unaligned boundaries.
++ */
++#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 2)
+ /*
+  * The initial ID map consists of the kernel image, mapped as two separate
+  * segments, and may appear misaligned wrt the swapper block size. This means
 -- 
 2.53.0
 
