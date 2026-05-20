@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJ7SKR/2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:51 +0200
+	id mKnkC54uDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBB1594FCE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B278159B8D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 175CC3019478
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66EC83856670
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971D73E5ECF;
-	Wed, 20 May 2026 17:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE6D40756E;
+	Wed, 20 May 2026 18:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzpQ1/Pc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdAlIF0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FD93A3E60;
-	Wed, 20 May 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D00405C2B;
+	Wed, 20 May 2026 18:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299662; cv=none; b=EclBBQjarHecycBZodKPaUlwdSOWxxWziNqN77BawSkHOwRfbqcDRJN4qv2naXHY4HE9C/R1VHSluJiQUGeYGywOyHK+L7zpmlQxRDPkeiQGkhBIyw4E6HZ8GdJzUFfPlJJYq8Q3Ts3SwIslHyWZv9YXEfoZDP8hpurrqQbHWpM=
+	t=1779302571; cv=none; b=ckjBxRArOcGziv/PPYcnQwFTIZDHo2OEsZ/YMKqEC3Pw9Bt0yZwBY6LjTkPtRBj7VqPQG1EveHkV2k3GeQiPGq577/lBXAh9EIoZN9N9Du+2n97jXXFZCbepuyEIYyCEKk98Avp3JjwtDSdT5+G5DE2KVw8pT2b0RLkwZYJv3Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299662; c=relaxed/simple;
-	bh=WgOr5vJYrrg8s1XZzahFdhFWqmUWMXf+58fRSf2A4fw=;
+	s=arc-20240116; t=1779302571; c=relaxed/simple;
+	bh=/FjoGGaBbY8wDXyHcQKGQRSWzhpYynhYAi9MHqrXTao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4yzM9PJbnsB6Ezm3fLoRj176BK+Hx9qCf8gdbBxLqpG53LVNXdpXIfK+XzPxM4jqnwW4yZo/RE56Jq/SvmggG0awgfB+sbd4mQJGL+pPSXvmKUcL2AN+FsnGMeB+3Nh6GR0N1zGP0B4e9/Q8NZ1SbC1JdJb939MHNft/8QhC98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzpQ1/Pc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF731F00893;
-	Wed, 20 May 2026 17:54:20 +0000 (UTC)
+	 MIME-Version; b=uJ856nmzSwL6s7BB8lfzD3YE71I0BIQDxvrZJouz+afQRZC/zWUTl3/URtEyDrwEpGSkENAJqHASGCz/qU31p3rk0Y0FHiSpnUYdgM2fB7m/JnZT52aiU6LG8cWTh5trPCRI/s3zt2QnnWA+Jh7R+Ibf8dw3jVj3kcIbrNynerg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdAlIF0o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786601F000E9;
+	Wed, 20 May 2026 18:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299661;
-	bh=9WzY8VnSR+v5RK7Qkdv2suuRvxMDSQDlZiILxfnOoAU=;
+	s=korg; t=1779302570;
+	bh=WRicJ7dpmMNyWz+V164XOTS9ABJx6X2G/tsNWZggDls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AzpQ1/PcGSWGcnkiRDy6AoXZ6MYV/KkACZWaJ5MqNLwr8wc7Et06/4/tdnvpjeWWR
-	 wtahcS6/rbiyT4oWpZzGtpgJWkAMSMAW0aGn+ZRSvD16Hkc5tXLyfbFzfrj0Rs9gtG
-	 s4PWUe4FVW3b+SEvLxABw+/C2pTkJu+jPukVEkw0=
+	b=LdAlIF0opHBTprtTCoyHpQUcDsjmfSpAehtjr12ctRz/0R2zZEkZeAy39hTg/D1Ua
+	 rW1MFaTxRcm6LDdpKJxLeupMwass63itD8CPOTvz0dPwcSQJrOltrtloe15GcG5M3r
+	 rQf5L//mWEM8aFsoIF8H6ma8xOBMPoSs0kEBUilY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 858/957] arm64: Reserve an extra page for early kernel mapping
+Subject: [PATCH 6.6 318/508] tcp: annotate data-races around tp->dsack_dups
 Date: Wed, 20 May 2026 18:22:21 +0200
-Message-ID: <20260520162153.172528731@linuxfoundation.org>
+Message-ID: <20260520162105.527427405@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,117 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253163-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252068-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,unisoc.com:email]
-X-Rspamd-Queue-Id: 1FBB1594FCE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B278159B8D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4d8e74ad4585672489da6145b3328d415f50db82 ]
+[ Upstream commit a984705ca88b976bf1087978fd98b7f3993da88c ]
 
-The final part of [data, end) segment may overflow into the next page of
-init_pg_end[1] which is the gap page before early_init_stack[2]:
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-[1]
-crash_arm64_v9.0.1> vtop ffffffed00601000
-VIRTUAL           PHYSICAL
-ffffffed00601000  83401000
-
-PAGE DIRECTORY: ffffffecffd62000
-   PGD: ffffffecffd62da0 => 10000000833fb003
-   PMD: ffffff80033fb018 => 10000000833fe003
-   PTE: ffffff80033fe008 => 68000083401f03
-  PAGE: 83401000
-
-     PTE        PHYSICAL  FLAGS
-68000083401f03  83401000  (VALID|SHARED|AF|NG|PXN|UXN)
-
-      PAGE       PHYSICAL      MAPPING       INDEX CNT FLAGS
-fffffffec00d0040 83401000                0        0  1 4000 reserved
-
-[2]
-ffffffed002c8000 (r) __pi__data
-ffffffed0054e000 (d) __pi___bss_start
-ffffffed005f5000 (b) __pi_init_pg_dir
-ffffffed005fe000 (b) __pi_init_pg_end
-ffffffed005ff000 (B) early_init_stack
-ffffffed00608000 (b) __pi__end
-
-For 4K pages, the early kernel mapping may use 2MB block entries but the
-kernel segments are only 64KB aligned. Segment boundaries that fall
-within a 2MB block therefore require a PTE table so that different
-attributes can be applied on either side of the boundary.
-
-KERNEL_SEGMENT_COUNT still correctly counts the five permanent kernel
-VMAs registered by declare_kernel_vmas(). However, since commit
-5973a62efa34 ("arm64: map [_text, _stext) virtual address range
-non-executable+read-only"), the early mapper also maps [_text, _stext)
-separately from [_stext, _etext). This adds one more early-only split
-and can require one more page-table page than the existing
-EARLY_SEGMENT_EXTRA_PAGES allowance reserves.
-
-Increase the 4K-page early mapping allowance by one page to cover that
-additional split.
-
-Fixes: 5973a62efa34 ("arm64: map [_text, _stext) virtual address range non-executable+read-only")
-Assisted-by: TRAE:GLM-5.1
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-[catalin.marinas@arm.com: rewrote part of the commit log]
-[catalin.marinas@arm.com: expanded the code comment]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 7e10b6554ff2 ("tcp: add dsack blocks received stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-10-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/kernel-pgtable.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c       | 2 +-
+ net/ipv4/tcp_input.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kernel-pgtable.h b/arch/arm64/include/asm/kernel-pgtable.h
-index 74a4f738c5f52..229ee7976f693 100644
---- a/arch/arm64/include/asm/kernel-pgtable.h
-+++ b/arch/arm64/include/asm/kernel-pgtable.h
-@@ -68,7 +68,12 @@
- #define KERNEL_SEGMENT_COUNT	5
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 2ab4b8f4d8d10..51e71407f4b89 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3990,7 +3990,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 			  TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
+ 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+-	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
++	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 359d36be04829..eb1bf58634741 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1041,7 +1041,7 @@ static u32 tcp_dsack_seen(struct tcp_sock *tp, u32 start_seq,
+ 	else if (tp->tlp_high_seq && tp->tlp_high_seq == end_seq)
+ 		state->flag |= FLAG_DSACK_TLP;
  
- #if SWAPPER_BLOCK_SIZE > SEGMENT_ALIGN
--#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 1)
-+/*
-+ * KERNEL_SEGMENT_COUNT counts the permanent kernel VMAs. The early mapping
-+ * has one additional split, [_text, _stext). Reserve one more page for the
-+ * SWAPPER_BLOCK_SIZE-unaligned boundaries.
-+ */
-+#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 2)
- /*
-  * The initial ID map consists of the kernel image, mapped as two separate
-  * segments, and may appear misaligned wrt the swapper block size. This means
+-	tp->dsack_dups += dup_segs;
++	WRITE_ONCE(tp->dsack_dups, tp->dsack_dups + dup_segs);
+ 	/* Skip the DSACK if dup segs weren't retransmitted by sender */
+ 	if (tp->dsack_dups > tp->total_retrans)
+ 		return 0;
 -- 
 2.53.0
 
