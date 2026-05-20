@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-253156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEiTH4kuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:33 +0200
+	id oN3iIXb5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62A459B8B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9AE59589C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76CD23967581
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 23405304F324
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31C9371CEA;
-	Wed, 20 May 2026 18:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604EF3F20FA;
+	Wed, 20 May 2026 17:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5lhA0c5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="os2zPlP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45223CB2F8;
-	Wed, 20 May 2026 18:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E703F1AD9;
+	Wed, 20 May 2026 17:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302552; cv=none; b=tQ6e3y1J5f9pVAZ1kBahom7J9ge7h8STyOE7uT6IWSB4WeGbur1HdfXvacfpYfjWy6vso8I1XscwVlSy0KKuzEJTRr1fpeLx8w7KgueZgTotpOceJlPCsWIHVSI6XXpJ8qm4wkqfmlr83auqY8QAKbUDWog1MUfjZKCiECwlURk=
+	t=1779299644; cv=none; b=ozSFYNpVLvKX0VLjtmd4S6UdGZKztC/OKmuc5g9sHdkkbdRGyBVKLzqYPuozBmfG0FK3xQF4TZO5x3+04mDLyvuKUiBaeEMITK3XFo/YcAAE+hr4wU2jLkCFq0WFGUI8srZMopuGd3gdyBHsYxKOiil6zz1wNmLeTBB1bZSbuY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302552; c=relaxed/simple;
-	bh=XvNYcYlwXAfLV4srQB1GoIjkz0DCDTYrN+X/clBeBXM=;
+	s=arc-20240116; t=1779299644; c=relaxed/simple;
+	bh=qLGdWKz3Sh2u2lVBuffJUOFF5yZXXVXIsMDtkR+EGus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5e8hFyWiceOT5phUYuXiczarLRsIbLti/SFvHiNzINmWIp6/DxS61pPplsQe+TxUISUlFn550/SAilKnlw98UHYPAKvJvK0xzPxOTFbE90PrCO3QrsJBm5IHGoNL+NxCwqB+a5Wen3Wft4NgVQqzJ8A6yLoUV4/DiLXOavpsAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5lhA0c5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9D01F000E9;
-	Wed, 20 May 2026 18:42:30 +0000 (UTC)
+	 MIME-Version; b=HlBEIKtzIX3giEpJ6P5eC+my7552huQVt/O8jcvgvCdudM6ou8AKFg4jZXV1VYHKUgLT5nSrRRGs1tYZxW9VMq3itBk8MbrtVCUHXtZRmdc8knVmvxhPt7wKV5oj3DOpmrh07CVMVYbbNHyY2r19M/GYfnt+jGkR02IUT9R4Uhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=os2zPlP3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE951F000E9;
+	Wed, 20 May 2026 17:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302551;
-	bh=/M3sEE3SJ1m1jSWCYhjnhCpMnF19bUFQubJR+xcIFns=;
+	s=korg; t=1779299642;
+	bh=8DntM4s7/rVXPbeXj1Vh6fASVK3Wm/2Ajzt4EB0d1AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=m5lhA0c5vvnWquSet5R+gspzhZLqMyWcBv3nebWPwDfOVxDWg0x1aM0MZT1+SqRqk
-	 8z2oUgKYTp3u9SMYkuINqliBAXLY65h+4RPceQ3LcVOVOYu2cDPojsKpmWD5LOsK6A
-	 vEwXLVMYyBAiCSD23X7BzjZEigkjnje2HsVaUCRE=
+	b=os2zPlP3F799JXso1kIbiKjsKOmP3jj0F1s6mcWc1kP5jqOtXbzEOg6HMk/8RVGqj
+	 GGFlElOLSLHziJqqeCjZZQ0DEIMh28bgeSnsVh8MGkghEPGYTzldNJr5xINzCMVJJv
+	 KwWkadGZn2YO54kWdQ860dTmFIKg5uR/RkDC2eQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/508] macvlan: fix macvlan_get_size() not reserving space for IFLA_MACVLAN_BC_CUTOFF
+Subject: [PATCH 6.18 851/957] dpll: Add notifier chain for dpll events
 Date: Wed, 20 May 2026 18:22:14 +0200
-Message-ID: <20260520162105.378056659@linuxfoundation.org>
+Message-ID: <20260520162153.022109370@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +72,269 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253156-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252061-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C62A459B8B5
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 3D9AE59589C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit fa92a77b0ed4d5f11a71665a232ac5a54a4b055d ]
+[ Upstream commit 2be467588d6bc6ec5988fc254e62a44b865912a0 ]
 
-macvlan_get_size() does not account for IFLA_MACVLAN_BC_CUTOFF, but
-macvlan_fill_info() conditionally includes it when port->bc_cutoff != 1.
-This causes nla_put_s32() to fail with -EMSGSIZE when the netlink skb
-runs out of space, triggering a WARN_ON in rtnetlink and preventing the
-interface from being dumped.
+Currently, the DPLL subsystem reports events (creation, deletion, changes)
+to userspace via Netlink. However, there is no mechanism for other kernel
+components to be notified of these events directly.
 
-The bug can be reproduced with:
+Add a raw notifier chain to the DPLL core protected by dpll_lock. This
+allows other kernel subsystems or drivers to register callbacks and
+receive notifications when DPLL devices or pins are created, deleted,
+or modified.
 
-  ip link add macvlan0 link eth0 type macvlan mode bridge
-  ip link set macvlan0 type macvlan bc_cutoff 0
-  ip -d link show macvlan0   # fails with -EMSGSIZE
+Define the following:
+- Registration helpers: {,un}register_dpll_notifier()
+- Event types: DPLL_DEVICE_CREATED, DPLL_PIN_CREATED, etc.
+- Context structures: dpll_{device,pin}_notifier_info  to pass relevant
+  data to the listeners.
 
-The bc_cutoff feature was added in commit 954d1fa1ac93 ("macvlan: Add
-netlink attribute for broadcast cutoff"), which added the nla_put_s32()
-call in macvlan_fill_info() but missed adding the corresponding
-nla_total_size(4) in macvlan_get_size(). A follow-up commit
-55cef78c244d ("macvlan: add forgotten nla_policy for
-IFLA_MACVLAN_BC_CUTOFF") fixed the missing nla_policy entry but still
-did not fix the size calculation.
+The notification chain is invoked alongside the existing Netlink event
+generation to ensure in-kernel listeners are kept in sync with the
+subsystem state.
 
-Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260413085349.73977-1-phx0fer@gmail.com
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Link: https://patch.msgid.link/20260203174002.705176-4-ivecera@redhat.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dpll/dpll_core.c    | 57 +++++++++++++++++++++++++++++++++++++
+ drivers/dpll/dpll_core.h    |  4 +++
+ drivers/dpll/dpll_netlink.c |  6 ++++
+ include/linux/dpll.h        | 29 +++++++++++++++++++
+ 4 files changed, 96 insertions(+)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 1035a95beee6f..399c8deb35103 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1687,6 +1687,7 @@ static size_t macvlan_get_size(const struct net_device *dev)
- 		+ macvlan_get_size_mac(vlan) /* IFLA_MACVLAN_MACADDR */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN_USED */
-+		+ nla_total_size(4) /* IFLA_MACVLAN_BC_CUTOFF */
- 		);
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index f04ed7195cadd..b05fe2ba46d91 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -23,6 +23,8 @@ DEFINE_MUTEX(dpll_lock);
+ DEFINE_XARRAY_FLAGS(dpll_device_xa, XA_FLAGS_ALLOC);
+ DEFINE_XARRAY_FLAGS(dpll_pin_xa, XA_FLAGS_ALLOC);
+ 
++static RAW_NOTIFIER_HEAD(dpll_notifier_chain);
++
+ static u32 dpll_device_xa_id;
+ static u32 dpll_pin_xa_id;
+ 
+@@ -46,6 +48,39 @@ struct dpll_pin_registration {
+ 	void *cookie;
+ };
+ 
++static int call_dpll_notifiers(unsigned long action, void *info)
++{
++	lockdep_assert_held(&dpll_lock);
++	return raw_notifier_call_chain(&dpll_notifier_chain, action, info);
++}
++
++void dpll_device_notify(struct dpll_device *dpll, unsigned long action)
++{
++	struct dpll_device_notifier_info info = {
++		.dpll = dpll,
++		.id = dpll->id,
++		.idx = dpll->device_idx,
++		.clock_id = dpll->clock_id,
++		.type = dpll->type,
++	};
++
++	call_dpll_notifiers(action, &info);
++}
++
++void dpll_pin_notify(struct dpll_pin *pin, unsigned long action)
++{
++	struct dpll_pin_notifier_info info = {
++		.pin = pin,
++		.id = pin->id,
++		.idx = pin->pin_idx,
++		.clock_id = pin->clock_id,
++		.fwnode = pin->fwnode,
++		.prop = &pin->prop,
++	};
++
++	call_dpll_notifiers(action, &info);
++}
++
+ struct dpll_device *dpll_device_get_by_id(int id)
+ {
+ 	if (xa_get_mark(&dpll_device_xa, id, DPLL_REGISTERED))
+@@ -539,6 +574,28 @@ void dpll_netdev_pin_clear(struct net_device *dev)
+ }
+ EXPORT_SYMBOL(dpll_netdev_pin_clear);
+ 
++int register_dpll_notifier(struct notifier_block *nb)
++{
++	int ret;
++
++	mutex_lock(&dpll_lock);
++	ret = raw_notifier_chain_register(&dpll_notifier_chain, nb);
++	mutex_unlock(&dpll_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(register_dpll_notifier);
++
++int unregister_dpll_notifier(struct notifier_block *nb)
++{
++	int ret;
++
++	mutex_lock(&dpll_lock);
++	ret = raw_notifier_chain_unregister(&dpll_notifier_chain, nb);
++	mutex_unlock(&dpll_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(unregister_dpll_notifier);
++
+ /**
+  * dpll_pin_get - find existing or create new dpll pin
+  * @clock_id: clock_id of creator
+diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
+index d3e17ff0ecef0..b7b4bb251f739 100644
+--- a/drivers/dpll/dpll_core.h
++++ b/drivers/dpll/dpll_core.h
+@@ -91,4 +91,8 @@ struct dpll_pin_ref *dpll_xa_ref_dpll_first(struct xarray *xa_refs);
+ extern struct xarray dpll_device_xa;
+ extern struct xarray dpll_pin_xa;
+ extern struct mutex dpll_lock;
++
++void dpll_device_notify(struct dpll_device *dpll, unsigned long action);
++void dpll_pin_notify(struct dpll_pin *pin, unsigned long action);
++
+ #endif
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index 64944f601ee5a..fe9c3d9073f0f 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -742,17 +742,20 @@ dpll_device_event_send(enum dpll_cmd event, struct dpll_device *dpll)
+ 
+ int dpll_device_create_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_CREATED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_CREATE_NTF, dpll);
  }
  
+ int dpll_device_delete_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_DELETED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_DELETE_NTF, dpll);
+ }
+ 
+ static int
+ __dpll_device_change_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_CHANGED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_CHANGE_NTF, dpll);
+ }
+ 
+@@ -810,16 +813,19 @@ dpll_pin_event_send(enum dpll_cmd event, struct dpll_pin *pin)
+ 
+ int dpll_pin_create_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_CREATED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_CREATE_NTF, pin);
+ }
+ 
+ int dpll_pin_delete_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_DELETED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
+ }
+ 
+ int __dpll_pin_change_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+ }
+ 
+diff --git a/include/linux/dpll.h b/include/linux/dpll.h
+index f0c31a111c304..34b005bb4df6f 100644
+--- a/include/linux/dpll.h
++++ b/include/linux/dpll.h
+@@ -11,6 +11,7 @@
+ #include <linux/device.h>
+ #include <linux/netlink.h>
+ #include <linux/netdevice.h>
++#include <linux/notifier.h>
+ #include <linux/rtnetlink.h>
+ 
+ struct dpll_device;
+@@ -167,6 +168,30 @@ struct dpll_pin_properties {
+ 	u32 phase_gran;
+ };
+ 
++#define DPLL_DEVICE_CREATED	1
++#define DPLL_DEVICE_DELETED	2
++#define DPLL_DEVICE_CHANGED	3
++#define DPLL_PIN_CREATED	4
++#define DPLL_PIN_DELETED	5
++#define DPLL_PIN_CHANGED	6
++
++struct dpll_device_notifier_info {
++	struct dpll_device *dpll;
++	u32 id;
++	u32 idx;
++	u64 clock_id;
++	enum dpll_type type;
++};
++
++struct dpll_pin_notifier_info {
++	struct dpll_pin *pin;
++	u32 id;
++	u32 idx;
++	u64 clock_id;
++	const struct fwnode_handle *fwnode;
++	const struct dpll_pin_properties *prop;
++};
++
+ #if IS_ENABLED(CONFIG_DPLL)
+ void dpll_netdev_pin_set(struct net_device *dev, struct dpll_pin *dpll_pin);
+ void dpll_netdev_pin_clear(struct net_device *dev);
+@@ -237,4 +262,8 @@ int dpll_device_change_ntf(struct dpll_device *dpll);
+ 
+ int dpll_pin_change_ntf(struct dpll_pin *pin);
+ 
++int register_dpll_notifier(struct notifier_block *nb);
++
++int unregister_dpll_notifier(struct notifier_block *nb);
++
+ #endif
 -- 
 2.53.0
 
