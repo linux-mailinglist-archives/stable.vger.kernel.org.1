@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-250940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOI7MKvtDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250940-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:47 +0200
+	id CIfWCKX9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671BE5936E3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC5D5965C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BC5A31943D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 586E731238AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22728372EED;
-	Wed, 20 May 2026 17:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7533F86F4;
+	Wed, 20 May 2026 18:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIFocUyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyFUBPUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15A34A3BF;
-	Wed, 20 May 2026 17:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711343F789B;
+	Wed, 20 May 2026 18:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296686; cv=none; b=CEb4pR/TFvfw7ulJB954dMAgD200MHgzcH4uVLO75kiPNbvtw+mZZsNBitWlt0fRMzE6s+JIxjdpmZRgw4W4G9if/DNUX2tRA2m1CiN2X+maAihMNMBkuvbzZ+EMVHCGOeLTSQ2orunNKr8sIbTKRLnfLjNVoiRYAe1Tr+OIan8=
+	t=1779300854; cv=none; b=GUb1U0ImT5GjdhU1Hcy/vRNLAJtIF6A3a7dxQqMSinepXM4lPhsMR7XoTA27rTxH/67pg7hrpfWn1kmC8Yuj7wmPeqNICbNQArVLIar2w6lU8aKkAB8DiMOYbcE2SvGPBH/sb0jikm/67xC6gf6n+K3NJ2nSTgarWiAWc+LR6oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296686; c=relaxed/simple;
-	bh=lbPO1nTDg9t9o2bDTBN3aqedNw/kZcSIoOmlfbZay5Y=;
+	s=arc-20240116; t=1779300854; c=relaxed/simple;
+	bh=K5PJWq2S0myoA47uaQ5hdn6IcGq8bhN9ouiUO0Gwvao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQXByjXN8ZoS0jwZ4kQA5xEXAIqpq7nRra6TGy7TK+SWydoEDGpg5UIjGOdeAvUyVGzcDiEEk0dHzJoyZG64wnV9SwEcuEQv1FeGYuKuMF5L7oxSmXCdbb0EyMkwoYFk5eGlEU/mPfpeCmk988NkwDl/Yi4h1u8jckW/l0M8zZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIFocUyR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C641F000E9;
-	Wed, 20 May 2026 17:04:44 +0000 (UTC)
+	 MIME-Version; b=lJ7D9Wx/bGClfKdk8xOwfhiMZgUer2aM8kE9oLTGuTnVJ7kfzi9qwOhNhLdtjTP0XfRUK1ln5Khev/jJQTa2uu5J2ByXqHgm9bgFoZLjih1qo46dxH3BXyKx/4h0hziBTxSlOZRlploJ3FqhChpGcFLgnWudpuL1cvcWBUGGtqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyFUBPUP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1811F000E9;
+	Wed, 20 May 2026 18:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296685;
-	bh=s1xyHrSjB/tk4HCWt0AXIdyFuLweI/jy6tQTlmCDQ6Y=;
+	s=korg; t=1779300853;
+	bh=jLIjt5pk9Ye+XJm7BhM1Eu97yKXBf+hvskKPGJRMKro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tIFocUyRHUNjPzkHx58FzPtu+4Ew40QXrIWQd7HyqKMGv9GwepH23ehaEDqn5wibZ
-	 PD4zQthOvj7kE19SqS2vgwWHqAg8zpUYIGaGRG6EychKbrUiobBghRvfWso9282/ww
-	 RdmkZw4BqliGPy6vLMltu0+m6x08dheCyF/ydtMo=
+	b=NyFUBPUP7rHCCx2NIezBYRX6COBhKl5RdaufYQnUhEgexowlq8LpvwFLnCnYauoh7
+	 ERTuDqDTWIZ/p206QdQ/24+ZhxWWllqOL3dwy3FtAgKjteYoy105fnrwY0m9YkksqY
+	 q0qmjG4vtmYrM1tKNdAsvL2ut78kTr5E6bDRQylc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Dmitry Safonov <dima@arista.com>,
+	Enrico Bravi <enrico.bravi@polito.it>,
+	Silvia Sisinni <silvia.sisinni@polito.it>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0893/1146] tracing: branch: Fix inverted check on stat tracer registration
+Subject: [PATCH 6.12 332/666] ima_fs: Correctly create securityfs files for unsupported hash algos
 Date: Wed, 20 May 2026 18:19:03 +0200
-Message-ID: <20260520162208.446263850@linuxfoundation.org>
+Message-ID: <20260520162118.425384929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +71,160 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,efficios.com,elte.hu,gmail.com,debian.org,kernel.org,goodmis.org];
-	TAGGED_FROM(0.00)[bounces-250940-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252507-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,elte.hu:email,efficios.com:email]
-X-Rspamd-Queue-Id: 671BE5936E3
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	HAS_WP_URI(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,polito.it:email,denx.de:url]
+X-Rspamd-Queue-Id: CEC5D5965C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Dmitry Safonov <dima@arista.com>
 
-[ Upstream commit 3b75dd76e64a04771861bb5647951c264919e563 ]
+[ Upstream commit d7bd8cf0b348d3edae7bee33e74a32b21668b181 ]
 
-init_annotated_branch_stats() and all_annotated_branch_stats() check the
-return value of register_stat_tracer() with "if (!ret)", but
-register_stat_tracer() returns 0 on success and a negative errno on
-failure. The inverted check causes the warning to be printed on every
-successful registration, e.g.:
+ima_tpm_chip->allocated_banks[i].crypto_id is initialized to
+HASH_ALGO__LAST if the TPM algorithm is not supported. However there
+are places relying on the algorithm to be valid because it is accessed
+by hash_algo_name[].
 
-  Warning: could not register annotated branches stats
+On 6.12.40 I observe the following read out-of-bounds in hash_algo_name:
+  ==================================================================
+  BUG: KASAN: global-out-of-bounds in create_securityfs_measurement_lists+0x396/0x440
+  Read of size 8 at addr ffffffff83e18138 by task swapper/0/1
 
-while leaving real failures silent. The initcall also returned a
-hard-coded 1 instead of the actual error.
+  CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.40 #3
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x61/0x90
+   print_report+0xc4/0x580
+   ? kasan_addr_to_slab+0x26/0x80
+   ? create_securityfs_measurement_lists+0x396/0x440
+   kasan_report+0xc2/0x100
+   ? create_securityfs_measurement_lists+0x396/0x440
+   create_securityfs_measurement_lists+0x396/0x440
+   ima_fs_init+0xa3/0x300
+   ima_init+0x7d/0xd0
+   init_ima+0x28/0x100
+   do_one_initcall+0xa6/0x3e0
+   kernel_init_freeable+0x455/0x740
+   kernel_init+0x24/0x1d0
+   ret_from_fork+0x38/0x80
+   ret_from_fork_asm+0x11/0x20
+   </TASK>
 
-Invert the check and propagate ret so that the warning fires on real
-errors and the initcall reports the correct status.
+  The buggy address belongs to the variable:
+   hash_algo_name+0xb8/0x420
 
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Ingo Molnar <mingo@elte.hu>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>
-Link: https://patch.msgid.link/20260420-tracing-v1-1-d8f4cd0d6af1@debian.org
-Fixes: 002bb86d8d42 ("tracing/ftrace: separate events tracing and stats tracing engine")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+  Memory state around the buggy address:
+   ffffffff83e18000: 00 01 f9 f9 f9 f9 f9 f9 00 01 f9 f9 f9 f9 f9 f9
+   ffffffff83e18080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  >ffffffff83e18100: 00 00 00 00 00 00 00 f9 f9 f9 f9 f9 00 05 f9 f9
+                                          ^
+   ffffffff83e18180: f9 f9 f9 f9 00 00 00 00 00 00 00 04 f9 f9 f9 f9
+   ffffffff83e18200: 00 00 00 00 00 00 00 00 04 f9 f9 f9 f9 f9 f9 f9
+  ==================================================================
+
+Seems like the TPM chip supports sha3_256, which isn't yet in
+tpm_algorithms:
+  tpm tpm0: TPM with unsupported bank algorithm 0x0027
+
+That's TPM_ALG_SHA3_256 == 0x0027 from "Trusted Platform Module 2.0
+Library Part 2: Structures", page 51 [1].
+See also the related U-Boot algorithms update [2].
+
+Thus solve the problem by creating a file name with "_tpm_alg_<ID>"
+postfix if the crypto algorithm isn't initialized.
+
+This is how it looks on the test machine (patch ported to v6.12 release):
+  # ls -1 /sys/kernel/security/ima/
+  ascii_runtime_measurements
+  ascii_runtime_measurements_tpm_alg_27
+  ascii_runtime_measurements_sha1
+  ascii_runtime_measurements_sha256
+  binary_runtime_measurements
+  binary_runtime_measurements_tpm_alg_27
+  binary_runtime_measurements_sha1
+  binary_runtime_measurements_sha256
+  policy
+  runtime_measurements_count
+  violations
+
+[1]: https://trustedcomputinggroup.org/wp-content/uploads/Trusted-Platform-Module-2.0-Library-Part-2-Version-184_pub.pdf
+[2]: https://lists.denx.de/pipermail/u-boot/2024-July/558835.html
+
+Fixes: 9fa8e7625008 ("ima: add crypto agility support for template-hash algorithm")
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Cc: Enrico Bravi <enrico.bravi@polito.it>
+Cc: Silvia Sisinni <silvia.sisinni@polito.it>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Tested-by: Roberto Sassu <roberto.sassu@huawei.com>
+Link: https://github.com/linux-integrity/linux/issues/14
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_branch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ security/integrity/ima/ima_fs.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/trace_branch.c b/kernel/trace/trace_branch.c
-index 6809b370e991d..d1564db95a8f5 100644
---- a/kernel/trace/trace_branch.c
-+++ b/kernel/trace/trace_branch.c
-@@ -373,10 +373,10 @@ __init static int init_annotated_branch_stats(void)
- 	int ret;
+diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
+index 87045b09f1206..25970867f594e 100644
+--- a/security/integrity/ima/ima_fs.c
++++ b/security/integrity/ima/ima_fs.c
+@@ -404,16 +404,24 @@ static int __init create_securityfs_measurement_lists(void)
+ 		char file_name[NAME_MAX + 1];
+ 		struct dentry *dentry;
  
- 	ret = register_stat_tracer(&annotated_branch_stats);
--	if (!ret) {
-+	if (ret) {
- 		printk(KERN_WARNING "Warning: could not register "
- 				    "annotated branches stats\n");
--		return 1;
-+		return ret;
- 	}
- 	return 0;
- }
-@@ -438,10 +438,10 @@ __init static int all_annotated_branch_stats(void)
- 	int ret;
+-		sprintf(file_name, "ascii_runtime_measurements_%s",
+-			hash_algo_name[algo]);
++		if (algo == HASH_ALGO__LAST)
++			sprintf(file_name, "ascii_runtime_measurements_tpm_alg_%x",
++				ima_tpm_chip->allocated_banks[i].alg_id);
++		else
++			sprintf(file_name, "ascii_runtime_measurements_%s",
++				hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+ 						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_ascii_measurements_ops);
+ 		if (IS_ERR(dentry))
+ 			return PTR_ERR(dentry);
  
- 	ret = register_stat_tracer(&all_branch_stats);
--	if (!ret) {
-+	if (ret) {
- 		printk(KERN_WARNING "Warning: could not register "
- 				    "all branches stats\n");
--		return 1;
-+		return ret;
- 	}
- 	return 0;
- }
+-		sprintf(file_name, "binary_runtime_measurements_%s",
+-			hash_algo_name[algo]);
++		if (algo == HASH_ALGO__LAST)
++			sprintf(file_name, "binary_runtime_measurements_tpm_alg_%x",
++				ima_tpm_chip->allocated_banks[i].alg_id);
++		else
++			sprintf(file_name, "binary_runtime_measurements_%s",
++				hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+ 						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_measurements_ops);
 -- 
 2.53.0
 
