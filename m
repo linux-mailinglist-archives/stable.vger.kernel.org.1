@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLCbH6ccDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:15 +0200
+	id eMuaMIsSDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-252264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA90599F5A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCB4598F6A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B1C932161B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 26E783103D4C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC1B3B0AD6;
-	Wed, 20 May 2026 17:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72EE3F54D1;
+	Wed, 20 May 2026 18:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj69laPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHpG6hnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF06359A6F;
-	Wed, 20 May 2026 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BF43F6C5F;
+	Wed, 20 May 2026 18:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298467; cv=none; b=qoHX8C29u1Hd5Vy7qLhMgxUwehC8FGPkemGQObpRXCF7O7sC0m3c1yjIuVCbWpPqYm38ALzGQIWcWoE99WBt52QPivhKkHkivM9//kHcrbuvGhdEksRscZYVH051st/vLmrd1I+wQ+ibvY0QRZJV+i4nrK+TSiJ4KlArMldjEY8=
+	t=1779300220; cv=none; b=fVr2WC3XrvXsDBwLL9wT3HdhBis68+X9z2RwkuqDis/2EJVU3/E0fMXOkKbQIJu3G8K0cHu8sqqc+VbQF2Q1+1V4Yt+AMJ7/dyk2nFf5kmfhMoeadrMow1UDGquTNvEFZd/VKN5URAvXPrp8GLakChuXXb/KOArmaqBdUBsXr9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298467; c=relaxed/simple;
-	bh=/49r2KygwrkDy2WpfkXmvHDuVVZW+uPQqzu+X5YY3IE=;
+	s=arc-20240116; t=1779300220; c=relaxed/simple;
+	bh=2R2UGaeggw4EUEE9ABNPwTJeCbLpYhKKrpwTlRtb0oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfyUYQTAjUloV/vFnKHW1kQc+5Lczc7nmsXUpLb89Bkpx1QhU3hUb3Rg0+478MogUXRHCGf7zfqq0ktMZjQwT7WozEwTthe7RdwX192PEsnctwMDbBNv+j+8jJqjn7rlpOHp2N5VB4tbWp/nWroFj+u3N0hMfbRXZlkubxwlr9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj69laPE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302181F000E9;
-	Wed, 20 May 2026 17:34:25 +0000 (UTC)
+	 MIME-Version; b=Oux9NpKaopRHPlotzEJKqGnEgXmAXBI77PpjQs0l/qIeI6a6RjKsOfnEYiamSlmWCOaALp1BbWmO5t6Zk1V6wlbpCEgVUpaew8sSVdpX1R0XqMQkZlggrDwjI7My2DxSvDguaPtTkRt4kWGIm1f0KfIsTe03oOANaTcyLgp12qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHpG6hnW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C123B1F000E9;
+	Wed, 20 May 2026 18:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298465;
-	bh=4t0M8pAZD9psTbV/hhF2O7rE9yT+kdnzK/2GJb9/bjY=;
+	s=korg; t=1779300219;
+	bh=kvw2k5ZZaSL9Clt6A7aP4KKX1FFXLSzMx10js0h+7aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lj69laPEx6OnHq97cQfAzU01YtOKydhXSBJ1VlY3WuD9qvrQwoFcO7ZyizvBEYYA8
-	 pkSPIZPbTXzap9egrFZBUynnN6zc/e90VRtU7GYE+Ff0vmPQqzyIQRum+Xdailcvpt
-	 xPYGm2rEPdiVE+VSmLIwambEV2UEQqNdJZAzrnqQ=
+	b=wHpG6hnW9BxyXBljdxzVDHeS2RedH7PiJcjEQxMwPeMmAp8Z1SBOxvYUhvb1ngMto
+	 aqsA5Zal7k8F88GpJtfJP8N5ygswtHj4dkV7f6fjZ7DCyb2XgchAU7MwmLlbg+YScJ
+	 pntG/1bgcDHvF9WY2srZXyXx81ACStxFMeF9IbUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 421/957] arm64: dts: lx2160a: rename pinmux nodes for readability
+Subject: [PATCH 6.12 093/666] net: airoha: Add missing RX_CPU_IDX() configuration in airoha_qdma_cleanup_rx_queue()
 Date: Wed, 20 May 2026 18:15:04 +0200
-Message-ID: <20260520162143.651145704@linuxfoundation.org>
+Message-ID: <20260520162113.241670332@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,250 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252264-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251624-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CBA90599F5A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CDCB4598F6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 456eb494746afd56d3a9dc30271300136e55b96e ]
+[ Upstream commit 656121b155030086b01cfce9bd31b0c925ee6860 ]
 
-LX2160A pinmux is done in groups by various length bitfields within
-configuration registers.
+When the descriptor index written in REG_RX_CPU_IDX() is equal to the one
+stored in REG_RX_DMA_IDX(), the hw will stop since the QDMA RX ring is
+empty.
+Add missing REG_RX_CPU_IDX() configuration in airoha_qdma_cleanup_rx_queue
+routine during QDMA RX ring cleanup.
 
-Each group of pins is named in the reference manual after a primary
-function using soc-specific naming, e.g. IIC1 (for i2c0).
-
-Hardware block numbering starts from zero in device-tree but one in the
-reference manual.
-
-Rename the already defined pinmux nodes originally added for changing
-i2c pins between i2c and gpio functions reflecting the reference manual
-name (IIC) in the node name, and the device-tree name (i2c, gpio) in the
-label.
-
-Specifically, drop the "_scl" suffix from the I2C labels because the
-nodes actually configure both SDA and SCL pins together. Instead add
-"_pins" suffix to avoid conflicts with I2C controller labels.
-
-For GPIO functions, include the specific controller and pin numbers in
-the label to clarify they are generic GPIOs and help spot mistakes.
-
-No functional change intended.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 514aac359987 ("net: airoha: Add missing cleanup bits in airoha_qdma_cleanup_rx_queue()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260408-airoha-cpu-idx-airoha_qdma_cleanup_rx_queue-v1-1-8efa64844308@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 64 +++++++++----------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 6d21982e057b3..59417e00ac93d 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -750,8 +750,8 @@ i2c0: i2c@2000000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c0_scl>;
--			pinctrl-1 = <&i2c0_scl_gpio>;
-+			pinctrl-0 = <&i2c0_pins>;
-+			pinctrl-1 = <&gpio0_3_2_pins>;
- 			scl-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -766,8 +766,8 @@ i2c1: i2c@2010000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c1_scl>;
--			pinctrl-1 = <&i2c1_scl_gpio>;
-+			pinctrl-0 = <&i2c1_pins>;
-+			pinctrl-1 = <&gpio0_31_30_pins>;
- 			scl-gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -782,8 +782,8 @@ i2c2: i2c@2020000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c2_scl>;
--			pinctrl-1 = <&i2c2_scl_gpio>;
-+			pinctrl-0 = <&i2c2_pins>;
-+			pinctrl-1 = <&gpio0_29_28_pins>;
- 			scl-gpios = <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -798,8 +798,8 @@ i2c3: i2c@2030000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c3_scl>;
--			pinctrl-1 = <&i2c3_scl_gpio>;
-+			pinctrl-0 = <&i2c3_pins>;
-+			pinctrl-1 = <&gpio0_27_26_pins>;
- 			scl-gpios = <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -814,8 +814,8 @@ i2c4: i2c@2040000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c4_scl>;
--			pinctrl-1 = <&i2c4_scl_gpio>;
-+			pinctrl-0 = <&i2c4_pins>;
-+			pinctrl-1 = <&gpio0_25_24_pins>;
- 			scl-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -830,8 +830,8 @@ i2c5: i2c@2050000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c5_scl>;
--			pinctrl-1 = <&i2c5_scl_gpio>;
-+			pinctrl-0 = <&i2c5_pins>;
-+			pinctrl-1 = <&gpio0_23_22_pins>;
- 			scl-gpios = <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -846,8 +846,8 @@ i2c6: i2c@2060000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c6_scl>;
--			pinctrl-1 = <&i2c6_scl_gpio>;
-+			pinctrl-0 = <&i2c6_i2c7_pins>;
-+			pinctrl-1 = <&gpio1_18_15_pins>;
- 			scl-gpios = <&gpio1 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -862,8 +862,8 @@ i2c7: i2c@2070000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c6_scl>;
--			pinctrl-1 = <&i2c6_scl_gpio>;
-+			pinctrl-0 = <&i2c6_i2c7_pins>;
-+			pinctrl-1 = <&gpio1_18_15_pins>;
- 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -1709,11 +1709,11 @@ pinmux_i2crv: pinmux@70010012c {
- 			pinctrl-single,register-width = <32>;
- 			pinctrl-single,function-mask = <0x7>;
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 268d3050c0178..d8af267f64f71 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -1641,6 +1641,11 @@ static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
+ 	}
  
--			i2c1_scl: i2c1-scl-pins {
-+			i2c1_pins: iic2-i2c-pins {
- 				pinctrl-single,bits = <0x0 0 0x7>;
- 			};
- 
--			i2c1_scl_gpio: i2c1-scl-gpio-pins {
-+			gpio0_31_30_pins: iic2-gpio-pins {
- 				pinctrl-single,bits = <0x0 0x1 0x7>;
- 			};
- 
-@@ -1721,35 +1721,35 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
- 				pinctrl-single,bits = <0x0 0x6 0x7>;
- 			};
- 
--			i2c2_scl: i2c2-scl-pins {
-+			i2c2_pins: iic3-i2c-pins {
- 				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
- 			};
- 
--			i2c2_scl_gpio: i2c2-scl-gpio-pins {
-+			gpio0_29_28_pins: iic3-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 3) (0x7 << 3)>;
- 			};
- 
--			i2c3_scl: i2c3-scl-pins {
-+			i2c3_pins: iic4-i2c-pins {
- 				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
- 			};
- 
--			i2c3_scl_gpio: i2c3-scl-gpio-pins {
-+			gpio0_27_26_pins: iic4-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 6) (0x7 << 6)>;
- 			};
- 
--			i2c4_scl: i2c4-scl-pins {
-+			i2c4_pins: iic5-i2c-pins {
- 				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
- 			};
- 
--			i2c4_scl_gpio: i2c4-scl-gpio-pins {
-+			gpio0_25_24_pins: iic5-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 9) (0x7 << 9)>;
- 			};
- 
--			i2c5_scl: i2c5-scl-pins {
-+			i2c5_pins: iic6-i2c-pins {
- 				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
- 			};
- 
--			i2c5_scl_gpio: i2c5-scl-gpio-pins {
-+			gpio0_23_22_pins: iic6-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
- 			};
- 
-@@ -1773,19 +1773,19 @@ gpio0_14_12_pins: sdhc1-dir-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
- 			};
- 
--			i2c6_scl: i2c6-scl-pins {
--				pinctrl-single,bits = <0x4 0x2 0x7>;
-+			gpio1_18_15_pins: iic8-iic7-gpio-pins {
-+				pinctrl-single,bits = <0x4 0x1 0x7>;
- 			};
- 
--			i2c6_scl_gpio: i2c6-scl-gpio-pins {
--				pinctrl-single,bits = <0x4 0x1 0x7>;
-+			i2c6_i2c7_pins: iic8-iic7-i2c-pins {
-+				pinctrl-single,bits = <0x4 0x2 0x7>;
- 			};
- 
--			i2c0_scl: i2c0-scl-pins {
-+			i2c0_pins: iic1-i2c-pins {
- 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
- 			};
- 
--			i2c0_scl_gpio: i2c0-scl-gpio-pins {
-+			gpio0_3_2_pins: iic1-gpio-pins {
- 				pinctrl-single,bits = <0x8 (0x1 << 10) (0x1 << 10)>;
- 			};
- 		};
+ 	q->head = q->tail;
++	/* Set RX_DMA_IDX to RX_CPU_IDX to notify the hw the QDMA RX ring is
++	 * empty.
++	 */
++	airoha_qdma_rmw(qdma, REG_RX_CPU_IDX(qid), RX_RING_CPU_IDX_MASK,
++			FIELD_PREP(RX_RING_CPU_IDX_MASK, q->head));
+ 	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
+ 			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
+ }
 -- 
 2.53.0
 
