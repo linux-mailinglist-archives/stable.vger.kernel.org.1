@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL0aMQwfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:28 +0200
+	id 0JHnKecqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C17759A3B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C5259B399
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99F1D36FFCDC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC1403385C5D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447CB3A3E60;
-	Wed, 20 May 2026 17:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1E83EAC82;
+	Wed, 20 May 2026 18:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYGc0uaB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYRzNUOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB36436405A;
-	Wed, 20 May 2026 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E4117A2FC;
+	Wed, 20 May 2026 18:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299021; cv=none; b=m7dCYAv2d9r6PGIA8Ja2zSH+EPonnGNFqLFSQenskVhfFJUasCjUyhpSqxoUl77TSxMcq2fONhELhPCwbdfCbea6jKiKksx8H5lbYPkWe44CtLVTfIhweEZJbQhfeOVdug9feKyQi2SKIz/1VwGdqGXupCzkSTs8qN2WqIlRx/Q=
+	t=1779301979; cv=none; b=b2uGQ9HBOP7SDALD3FEAOYthJ1eNhpQ7d0LNTeP77rdBh92bT4putPyhRIBDgGyINN1nPcdqtl4MlH7jStPObz1C+7cW0AuQYOfaJPMCEc/ONDP5vYy8D71QG3cMF5+LlsytzlC3w5XsnZI9QrwCeYWR72t3mw9t/LUbePdMiw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299021; c=relaxed/simple;
-	bh=CQR55dXvZnCy7bBhvbvc/He+ewZ4CLHR4pz9WpmEZd4=;
+	s=arc-20240116; t=1779301979; c=relaxed/simple;
+	bh=I772Vk4ndTMFfWq5OSQdJye1CQ4xTMlw1r2Yvm9HGXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgJUGJhitaBM6hAjkGdz9K6R+/Ybp7BYHOei8LHEW4n3g0YxShmuKkAxA6tNKcWOLuIgw37iFr0N4zAjt6TtVVEPh26dKUnQDLVSkZMNMtA4rJF9AoX3LciEa2Kv2f7ltm82wrcgy20BQUlNYsUj6DYO3MCTh6jfGChXg2LQFhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYGc0uaB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC2A1F000E9;
-	Wed, 20 May 2026 17:43:39 +0000 (UTC)
+	 MIME-Version; b=Oj7gEQ7ycUSoAe6m1GvKOyV5xDECw/hQtig6F3grig1Ud0Pj+BGy8ayXjQ/rmX61un4dfqEPvlAWdThjjyVaKs+9IH4miSlkXLbPREtJjGO2Q6YTwI3SVnrUUjT3YTjwTUuuRJBK+E7vaCfKhF64sJPk+/aAKRnpQbHF3VFWD64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYRzNUOM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F340C1F000E9;
+	Wed, 20 May 2026 18:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299019;
-	bh=UFsF542/kYqKLYdpX0iq8LEQZiwDGi0LbTzzMz4o+1Q=;
+	s=korg; t=1779301977;
+	bh=4GaJR1BZg7xC5AuS3N0acQ2DmfVPoHNQB2zwBYH3vss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CYGc0uaBLKnBLJAw5mlB1lRDVFSyRWjYL9dDwU3G4sYC0r6fVKbwQH6dr2mkBUvSo
-	 RuUQE6tjjPO+z9r0WdRBfHcYd7B/4PyDKmP3iVoCSH4eJPU/qyUZZ6odHkP8rv3DT7
-	 tAppFZCOK/tgrNI7SUBvYBXJUoqOOkVawmFEjJ8E=
+	b=HYRzNUOMUU7Z2ZPL8RxO0jq9YLBBzhwJcxkU5GCxQAr6i2qZ8e6suU+/ienTYHa/L
+	 dQoJ5VsbsX3AZ9TAGMKVXbYiBcv0YxKvwts/7DZvqQl+2UkTNdafJPPoy4qJdd40KB
+	 DrRbmoADF7Y43wBxJFxGW3wjRux6YHDSob3nmyPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 633/957] tcp: add data-races annotations around tp->reordering, tp->snd_cwnd
+Subject: [PATCH 6.6 093/508] dm cache: fix write hang in passthrough mode
 Date: Wed, 20 May 2026 18:18:36 +0200
-Message-ID: <20260520162148.257901042@linuxfoundation.org>
+Message-ID: <20260520162100.630811449@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251838-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252937-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,121 +91,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3C17759A3B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 15C5259B399
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 829ba1f329cb7cbd56d599a6d225997fba66dc32 ]
+[ Upstream commit 4ca8b8bd952df7c3ccdc68af9bd3419d0839a04b ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE(), WRITE_ONCE() data_race() annotations to keep KCSAN happy.
+The invalidate_remove() function has incomplete logic for handling write
+hit bios after cache invalidation. It sets up the remapping for the
+overwrite_bio but then drops it immediately without submission, causing
+write operations to hang.
 
-Fixes: bb7c19f96012 ("tcp: add related fields into SCM_TIMESTAMPING_OPT_STATS")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by adding a new invalidate_committed() continuation that submits
+the remapped writes to the cache origin after metadata commit completes,
+while using the overwrite_endio hook to ensure proper completion
+sequencing. This maintains existing coherency. Also improve error
+handling in invalidate_complete() to preserve the original error status
+instead of using bio_io_error() unconditionally.
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h      |  2 +-
- net/ipv4/tcp.c         |  8 ++++----
- net/ipv4/tcp_input.c   | 14 ++++++++------
- net/ipv4/tcp_metrics.c |  2 +-
- 4 files changed, 14 insertions(+), 12 deletions(-)
+ drivers/md/dm-cache-target.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 236d9e0d35ed7..18381f4086d04 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1429,7 +1429,7 @@ static inline u32 tcp_snd_cwnd(const struct tcp_sock *tp)
- static inline void tcp_snd_cwnd_set(struct tcp_sock *tp, u32 val)
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index a2fba4ce40d7d..a3a8623eff297 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1463,8 +1463,14 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 			free_prison_cell(cache, mg->cell);
+ 	}
+ 
+-	if (!success && mg->overwrite_bio)
+-		bio_io_error(mg->overwrite_bio);
++	if (mg->overwrite_bio) {
++		// Set generic error if the bio hasn't been issued yet,
++		// e.g., invalidation or metadata commit failed before bio
++		// submission. Otherwise preserve the bio's own error status.
++		if (!success && !mg->overwrite_bio->bi_status)
++			mg->overwrite_bio->bi_status = BLK_STS_IOERR;
++		bio_endio(mg->overwrite_bio);
++	}
+ 
+ 	free_migration(mg);
+ 	defer_bios(cache, &bios);
+@@ -1504,6 +1510,22 @@ static int invalidate_cblock(struct cache *cache, dm_cblock_t cblock)
+ 	return r;
+ }
+ 
++static void invalidate_committed(struct work_struct *ws)
++{
++	struct dm_cache_migration *mg = ws_to_mg(ws);
++	struct cache *cache = mg->cache;
++	struct bio *bio = mg->overwrite_bio;
++	struct per_bio_data *pb = get_per_bio_data(bio);
++
++	if (mg->k.input)
++		invalidate_complete(mg, false);
++
++	init_continuation(&mg->k, invalidate_completed);
++	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
++	dm_hook_bio(&pb->hook_info, bio, overwrite_endio, mg);
++	dm_submit_bio_remap(bio, NULL);
++}
++
+ static void invalidate_remove(struct work_struct *ws)
  {
- 	WARN_ON_ONCE((int)val <= 0);
--	tp->snd_cwnd = val;
-+	WRITE_ONCE(tp->snd_cwnd, val);
- }
- 
- static inline bool tcp_in_slow_start(const struct tcp_sock *tp)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 4695b03f866f8..9e7e5ebcf14d5 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4397,13 +4397,13 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	rate64 = tcp_compute_delivery_rate(tp);
- 	nla_put_u64_64bit(stats, TCP_NLA_DELIVERY_RATE, rate64, TCP_NLA_PAD);
- 
--	nla_put_u32(stats, TCP_NLA_SND_CWND, tcp_snd_cwnd(tp));
--	nla_put_u32(stats, TCP_NLA_REORDERING, tp->reordering);
--	nla_put_u32(stats, TCP_NLA_MIN_RTT, tcp_min_rtt(tp));
-+	nla_put_u32(stats, TCP_NLA_SND_CWND, READ_ONCE(tp->snd_cwnd));
-+	nla_put_u32(stats, TCP_NLA_REORDERING, READ_ONCE(tp->reordering));
-+	nla_put_u32(stats, TCP_NLA_MIN_RTT, data_race(tcp_min_rtt(tp)));
- 
- 	nla_put_u8(stats, TCP_NLA_RECUR_RETRANS,
- 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
--	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, !!tp->rate_app_limited);
-+	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
- 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, tp->snd_ssthresh);
- 	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
- 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 96486eea26724..64e7bcbb42993 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1260,8 +1260,9 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
- 			 tp->sacked_out,
- 			 tp->undo_marker ? tp->undo_retrans : 0);
- #endif
--		tp->reordering = min_t(u32, (metric + mss - 1) / mss,
--				       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
-+		WRITE_ONCE(tp->reordering,
-+			   min_t(u32, (metric + mss - 1) / mss,
-+				 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
- 	}
- 
- 	/* This exciting event is worth to be remembered. 8) */
-@@ -2220,8 +2221,9 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
- 	if (!tcp_limit_reno_sacked(tp))
+ 	int r;
+@@ -1516,10 +1538,8 @@ static void invalidate_remove(struct work_struct *ws)
  		return;
- 
--	tp->reordering = min_t(u32, tp->packets_out + addend,
--			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering));
-+	WRITE_ONCE(tp->reordering,
-+		   min_t(u32, tp->packets_out + addend,
-+			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
- 	tp->reord_seen++;
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
- }
-@@ -2360,8 +2362,8 @@ void tcp_enter_loss(struct sock *sk)
- 	reordering = READ_ONCE(net->ipv4.sysctl_tcp_reordering);
- 	if (icsk->icsk_ca_state <= TCP_CA_Disorder &&
- 	    tp->sacked_out >= reordering)
--		tp->reordering = min_t(unsigned int, tp->reordering,
--				       reordering);
-+		WRITE_ONCE(tp->reordering,
-+			   min_t(unsigned int, tp->reordering, reordering));
- 
- 	tcp_set_ca_state(sk, TCP_CA_Loss);
- 	tp->high_seq = tp->snd_nxt;
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 45b6ecd164126..170ca11edf6b9 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -496,7 +496,7 @@ void tcp_init_metrics(struct sock *sk)
  	}
- 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
- 	if (val && tp->reordering != val)
--		tp->reordering = val;
-+		WRITE_ONCE(tp->reordering, val);
  
- 	crtt = tcp_metric_get(tm, TCP_METRIC_RTT);
- 	rcu_read_unlock();
+-	init_continuation(&mg->k, invalidate_completed);
++	init_continuation(&mg->k, invalidate_committed);
+ 	continue_after_commit(&cache->committer, &mg->k);
+-	remap_to_origin_clear_discard(cache, mg->overwrite_bio, mg->invalidate_oblock);
+-	mg->overwrite_bio = NULL;
+ 	schedule_commit(&cache->committer);
+ }
+ 
 -- 
 2.53.0
 
