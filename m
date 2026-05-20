@@ -1,97 +1,59 @@
-Return-Path: <stable+bounces-251642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJxPMdgcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:04 +0200
+	id 8CVCINzwDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED06599FE7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8071759407F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F1AA34E2601
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 474EC31938F0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D81D30BF68;
-	Wed, 20 May 2026 17:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBE23E9F9E;
+	Wed, 20 May 2026 16:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwzzDe33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do3WYXXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3403312825;
-	Wed, 20 May 2026 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2338366075;
+	Wed, 20 May 2026 16:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298514; cv=none; b=qmHqjlHV8zyGhovMrMRJ0hKIns2R0mpU/2PESgQry5DYUumtEha+qLNO0vb39tZW4fSpKkwEsnVjWfJW7h90qLbVP6jJuKMktDjXlzgh7w3a2DTyTKN4wZFZd3MaaOu91OZ19nU0aNasmS42WRMCjMkfkw2e8WfJkr9aB2x2Pp0=
+	t=1779296098; cv=none; b=mfDrQGpR+Pb4IR3bmXEPRypCWIlzZZW6vF3roL6vMISiP0EuF+RGTImK6MoozhNUfQXErTFoSUmb7jHJ7DJ1eFhilK5LvmE6+63FBNGLpgHRj1c+m3fvmxvtbz5Z3PgEyDNXKmGvDxC7qOrEXC1L/Z2b0owLiKi1YYx7aDeNtHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298514; c=relaxed/simple;
-	bh=h2L+uIYmlUP7T/adroQ7SjHMLbqnY90kLv3p8uuT/O0=;
+	s=arc-20240116; t=1779296098; c=relaxed/simple;
+	bh=0bMxfswXrd3qN36qHwf6ZcMtLn72gMugQymJBf9rSOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKQBA1fshsLaCxntsshIi5Agc2aLPTcNXVFXcBWfs6DechFB5MSxn2DUkG9unMu96Z5/YdZrGH4LqNh9VPthaIpJvncCsnSi8UrmOEbNIbXXKHiop/yEadzRtrmvD57mu/QGkSqdJp/QiEya9PpThHOhzkjw2+8O6ibVlv1XBY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwzzDe33; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269721F000E9;
-	Wed, 20 May 2026 17:35:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0pVhgfW4M/jPYO7fo7cbQwuFNBMrmayBjkyhE678CvmvQY2u0AxeVUWXvR+nJjIznxxM6qflq/baSY3xzlPW5Iy28HfSXtezVy5CJOAag5ggE7irIy40fKBb5U/WjSZ/6OE4hyFjV20w7KLH4ZJauUsKneooxow4HuBkrwhceA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do3WYXXR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8FB1F000E9;
+	Wed, 20 May 2026 16:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298512;
-	bh=oO7JUaLczO4CjK0S+lX3+Bi7cx2NBNqmNd0a4AH4NW8=;
+	s=korg; t=1779296097;
+	bh=1dHMfp81xrFvGHOKe/+aBB5WRtRuePjhY9wBFXCYALw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hwzzDe33PJdf7DfbHcmZg+mD+wnVJsd0mf37Yxmwjy2J5fV36u3e/EZgawKA8Molz
-	 aEqLEwFzXmcD5Zownq8qmoXzYxi+zV/ukf46M8cvtLL3gBuOvHOH0xWO5IKQO9gIbe
-	 OLtOQ4pPv7zl92CtXnz2GqlIpaaUHPsUhvp7wL+A=
+	b=Do3WYXXRnu9jYHEa90DJrPMVNVLownDTeegGqqeQ1860d6qZQEt6WnJHBp0DZp5Iz
+	 wAoTzhs4OwVUeUoheZV3t4Ry65uKEB5mF3rRm1VUdQSdIVGGIIcStbHh9stozzwUka
+	 SLkQ5Uz1zkFvJ6fg8I1U3EizrVyqiSmHA95Y6CkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chris Mason <clm@fb.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Sterba <dsterba@suse.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Jason A. Donenfeld" <jason@zx2c4.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Li Nan <linan122@huawei.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Song Liu <song@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ted Tso <tytso@mit.edu>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 437/957] arm64/xor: fix conflicting attributes for xor_block_template
+Subject: [PATCH 7.0 0670/1146] platform/x86: panasonic-laptop: Fix OPTD notifier registration and cleanup
 Date: Wed, 20 May 2026 18:15:20 +0200
-Message-ID: <20260520162143.998405061@linuxfoundation.org>
+Message-ID: <20260520162203.349503146@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -101,115 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[44];
-	TAGGED_FROM(0.00)[bounces-251642-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250704-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,kernel.org,eecs.berkeley.edu,linux.ibm.com,ghiti.fr,gaisler.com,cambridgegreys.com,arndb.de,alien8.de,arm.com,fb.com,intel.com,davemloft.net,suse.com,gondor.apana.org.au,zytor.com,redhat.com,zx2c4.com,sipsolutions.net,huawei.com,gmail.com,ellerman.id.au,dabbelt.com,linaro.org,nod.at,armlinux.org.uk,mit.edu,xen0n.name,linux-foundation.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4ED06599FE7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 8071759407F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 675a0dd596e712404557286d0a883b54ee28e4f4 ]
+[ Upstream commit 8baeff2c1d33dad8572216c6ad3a7425852507d4 ]
 
-Commit 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
-changes the definition to __ro_after_init instead of const, but failed to
-update the external declaration in xor.h.  This was not found because
-xor-neon.c doesn't include <asm/xor.h>, and can't easily do that due to
-current architecture of the XOR code.
+An ACPI notify handler is leaked if device_create_file() returns an
+error in acpi_pcc_hotkey_add().
 
-Link: https://lkml.kernel.org/r/20260327061704.3707577-4-hch@lst.de
-Fixes: 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Tested-by: Eric Biggers <ebiggers@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chris Mason <clm@fb.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: David Sterba <dsterba@suse.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Li Nan <linan122@huawei.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Magnus Lindholm <linmag7@gmail.com>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Song Liu <song@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Ted Ts'o <tytso@mit.edu>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Also, it is pointless to call pcc_unregister_optd_notifier() in
+acpi_pcc_hotkey_remove() if pcc->platform is NULL and it is better
+to arrange the cleanup code in that function in the same order as
+the rollback code in acpi_pcc_hotkey_add().
+
+Address the above by placing the pcc_register_optd_notifier() call in
+acpi_pcc_hotkey_add() after the device_create_file() return value
+check and placing the pcc_unregister_optd_notifier() call in
+acpi_pcc_hotkey_remove() right before the device_remove_file() call.
+
+Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2411055.ElGaqSPkdT@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/xor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/panasonic-laptop.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/xor.h b/arch/arm64/include/asm/xor.h
-index befcd8a7abc98..7c03207157196 100644
---- a/arch/arm64/include/asm/xor.h
-+++ b/arch/arm64/include/asm/xor.h
-@@ -13,7 +13,7 @@
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index d923ddaa48496..97c0c51b5a4c3 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -1093,9 +1093,10 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 		}
+ 		result = device_create_file(&pcc->platform->dev,
+ 			&dev_attr_cdpower);
+-		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		if (result)
+ 			goto out_platform;
++
++		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 	} else {
+ 		pcc->platform = NULL;
+ 	}
+@@ -1129,10 +1130,10 @@ static void acpi_pcc_hotkey_remove(struct acpi_device *device)
+ 	i8042_remove_filter(panasonic_i8042_filter);
  
- #ifdef CONFIG_KERNEL_MODE_NEON
+ 	if (pcc->platform) {
++		pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		device_remove_file(&pcc->platform->dev, &dev_attr_cdpower);
+ 		platform_device_unregister(pcc->platform);
+ 	}
+-	pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
  
--extern struct xor_block_template const xor_block_inner_neon;
-+extern struct xor_block_template xor_block_inner_neon __ro_after_init;
+ 	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
  
- static void
- xor_neon_2(unsigned long bytes, unsigned long * __restrict p1,
 -- 
 2.53.0
 
