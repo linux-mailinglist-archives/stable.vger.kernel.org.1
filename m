@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wL0rC/0FDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:33 +0200
+	id uNe6Bbn+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B275C597B86
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB41596A42
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A265A30F782D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28F813014761
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535DF425CE6;
-	Wed, 20 May 2026 18:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0DA3F9F21;
+	Wed, 20 May 2026 18:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMEPB5eJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvYHi8cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB02423A93;
-	Wed, 20 May 2026 18:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20113F1ACA;
+	Wed, 20 May 2026 18:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302771; cv=none; b=Jd60RtTmyDN5OIG5m8UgRQaiJRD7fHxBOyaElBmjpSMZ2anwEQzanl/xjZxVyJjMGCY39nTWG0x8bCe/muwn+mB5Uegakkd0F0Fdq4IIYxQY17ZJfrxDmDeRDjbG5EALKira2vLQqbJPHVyt8n6+ygxq8sKKf+nELypGJ776Sdg=
+	t=1779301597; cv=none; b=BTyxOUKrIy3spsEs4ONBG8mgBAuHsGkwL9OY7Y1yWT95BsIBEAo4Q21lHXLGIsizqT2zjQjnibLrV52odj8uaIC6fn9sHd3uVFwxbHFHKFxRem0roHfiW/VJxCyX4LhhAXS9nlFs3zy9MmIx4P3VR0pIPDUPkfKA9hkrizCJ1II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302771; c=relaxed/simple;
-	bh=E8nASBNTIwalgEimevVpsnvDfqUct6t63b83/5d1itg=;
+	s=arc-20240116; t=1779301597; c=relaxed/simple;
+	bh=5aQJChX7CAfQvfgJ98xMxrTIvw38vJkoXWRJqac8rYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBpU9oOamVgjm5J51neArYxoCMeaVjwjQapmQyI+kDmpNZMmY8vOllSr5LjkmcZ7H4S3HjhLFsMX9JU6bdriGxmG306KIN/Ddcf/lG7XL7o1915KDd05lBVzjTf1o3P0ff/9tkCPkzJH9G2Zu6HuDcFpa6U+GMZEWUO1OgK8Fnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMEPB5eJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0851F000E9;
-	Wed, 20 May 2026 18:46:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dODNEkgxFcOIL8eauuSCrFAtKzDLidUJ8Y06l8OvD0PQSYMnjI5Mnp4etU0dqcTjFTeOYva82RPjtdcfcxpuoqKiFHCUT9dNR/NeziIX4FNtFyb77Qzh6zpaAMzd6IE/oemKSU2pIqTvZIU/WJ55wSoiSakMqLYJPqAhkrvysk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvYHi8cK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AD81F00893;
+	Wed, 20 May 2026 18:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302769;
-	bh=poOymMYs6pa0zIIDFGpjwdWRZzPwyvjlIdpcnlKrl8M=;
+	s=korg; t=1779301596;
+	bh=Pd9mfUKkI+fK9MDIHrtbGuE1N+Fna+n48WBk3y6kbKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kMEPB5eJuK67KKnbi6yz10E+pbqJaezKDiVTN2OqpyVcAGBwGq/Jgrryyk3SKp4x+
-	 sPo5NJJcyNT6zui6qo1J686xT2U+OZho+H8m4mVdSvIiTN4iSPknauQg/A8ad3UPqe
-	 IXKNAMvC/bVjqldm2a4FCoe9WEyCsXwUdk1lspaI=
+	b=LvYHi8cKswE6vIYl9oFs/J6kq8W8YtizasVjedsHX59dVRl19eRVphq1fDZOjzFsE
+	 I9ieddgStfHoDTMee/ex9IxKW78Zd4DcguUhMIo2eE+33nxMQ44xGchta/2WCKFV2K
+	 rNya1cqcylzom+GVqlhhJVWGaAJ+kHHM4PcY4jw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 352/508] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
+Subject: [PATCH 6.12 564/666] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0 ring
 Date: Wed, 20 May 2026 18:22:55 +0200
-Message-ID: <20260520162106.263996524@linuxfoundation.org>
+Message-ID: <20260520162123.491692551@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252791-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253244-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bell-sw.com:email]
-X-Rspamd-Queue-Id: B275C597B86
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: CDB41596A42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
+[ Upstream commit e7e90b5839aeb8805ec83bb4da610b8dab8e184d ]
 
-There is a mismatch between the passed arguments and the actual
-nfp_encode_basic_qdr() function parameter names:
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
-                                  int mode, bool addr40, int isld1,
-                                  int isld0)
-  {
-      ...
-
-But "dest_island" and "cpp_tgt" are swapped at every call-site.
-For example:
-
-  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-                              mode, addr40, isld1, isld0);
-
-As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
-type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
-as the destination island ID, which can accidentally match or be outside
-the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
-
-Since code already worked for years, also add extra pr_warn() to error
-paths in nfp_encode_basic_qdr() to help identify any potential address
-verification failures.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b13111de32a9 ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_0")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8d0cac9478a3f046279c657d6a2545de49ae675a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-index 79470f198a62a..9cf19446657c6 100644
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
- 
- 	/* Full Island ID and channel bits overlap? */
- 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
--	if (ret)
-+	if (ret) {
-+		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
- 		return ret;
-+	}
- 
- 	/* The current address won't go where expected? */
--	if (dest_island != -1 && dest_island != v)
-+	if (dest_island != -1 && dest_island != v) {
-+		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
-+			__func__, dest_island, v);
- 		return -EINVAL;
-+	}
- 
- 	/* If dest_island was -1, we don't care where it goes. */
- 	return 0;
-@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * the address but we can verify if the existing
- 			 * contents will point to a valid island.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		iid_lsb = addr40 ? 34 : 26;
-@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 		return 0;
- 	case 1:
- 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		idx_lsb = addr40 ? 39 : 31;
-@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * be set before hand and with them select an island.
- 			 * So we need to confirm that it's at least plausible.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		/* Make sure we compare against isldN values
-@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * iid<1> = addr<30> = channel<0>
- 			 * channel<1> = addr<31> = Index
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		isld[0] &= ~3;
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0.c
+index b147e0eba31da..90f64a46bff7c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0.c
+@@ -724,6 +724,7 @@ static const struct amd_ip_funcs jpeg_v4_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v4_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v4_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_dec_ring_set_wptr,
 -- 
 2.53.0
 
