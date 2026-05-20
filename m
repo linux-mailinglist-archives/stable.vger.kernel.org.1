@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sH8GOK4WDmpb6AUAu9opvQ
-	(envelope-from <stable+bounces-251265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:46 +0200
+	id uPVyJQbmDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42294599620
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B34592801
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E25C33D73DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68D2B30FB262
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8A9366075;
-	Wed, 20 May 2026 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCC333BBAF;
+	Wed, 20 May 2026 16:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1Gedyf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbgwYHiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705B42DC76C;
-	Wed, 20 May 2026 17:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D03C63CB;
+	Wed, 20 May 2026 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297533; cv=none; b=IOpJnnhUE/UEs+PQioY992OuHAa2AHm3WhuIlhQhTNojyByW079Ibkp0FT+wbIP4Gp/CXBR3YGL2Tysj7NfBn58aykxKfoCN/WbeXgcXD9im1kiPadyjR0oPa5wN+CQZTXbM3f5jWOWOHZEbplCFhEOz6RoBbmB2ZOGxT0FggeQ=
+	t=1779295054; cv=none; b=egiscXqUPjoQJ03jbijt/heracb/+l+eRsoJZPUmdmdFQ9hJjxrKD2dUMZ0BxnjC2KVUBzghP2uLdVWfn9CDle5cppryYDdApLvgcXb90Qem+yURF8OPk/apEuSmsAv0Qaq55tKLwBMMhS0K2J8cZIg2LfTVnR+qOCJbl3xY7Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297533; c=relaxed/simple;
-	bh=dwAh/kDjJLJJsDftMJjT02E4V/3N59KcuEOWxxbKUuI=;
+	s=arc-20240116; t=1779295054; c=relaxed/simple;
+	bh=v6feZs4UDutvyUrSIbo1PEV5mDrsYuLK1dEnFWLjMvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lew6pxmdmbDyu0nvW1DMk4M3fOhFGGExxBIZVV7DU9Uyl0Sny49hb8ssJIahe4hwfm0GI7Mc3W8vKIgJM9topqBCd1fBMjoEERH/9AxaiHTSxttc6Ot0aYnkQn4097XXsW5uCC9vjsqUnmF831ZmXyeDhi6KdewV8Uow1fzdqgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1Gedyf8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F61F000E9;
-	Wed, 20 May 2026 17:18:51 +0000 (UTC)
+	 MIME-Version; b=OPMVwp7BxTIUmzrB/R4gdd0Gml8ydAx5jwJSwEiBqk1Cnci9WedhAezdcBNbmSWKL2ipHZlXURcD3dof+LaerZyB4NpnEAzQ3TfhTjhd/4O2oPQz+4sWiJXWqeL9aMvar6GK7of43RlE30aEz1qVLI9wTcm3f8U/ktpIChHBZR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbgwYHiG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15FA1F00893;
+	Wed, 20 May 2026 16:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297532;
-	bh=b9fROuNLzeaV+AkB1TUvwq0REh4VBSpXbkjd9qgXTXQ=;
+	s=korg; t=1779295053;
+	bh=E3Of4IfRUwU/bzp4AupbuAB5ziPsYRRNUskLcTYmHuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1Gedyf8kRB6JyRinRNoHkleD6WxFav38+9zPvgd7eOxV2PLgyIxTF2FaLitt4TVZ
-	 Q5K5DYjMPvLx4wGC9hK6MFSU91+pUpnGue8u4Y1Mf2ofTx8uDboOEKXbzyBSU/qfoD
-	 lUMpWDx4DswLHR44h7AsBZt6KpOgLP6sF4N83uVI=
+	b=bbgwYHiGqMOKL2No/gmYwEvOkOvrYwvC0GFz5FPCjrYtpdiAIRM3uH3rP7qgJLI3T
+	 MExsy/nFIP5nVFBW2XlhqNX5Lmx3aWWyIJDCnAljf2kg/c/0YxPERC3qUsNz8OtGAN
+	 +FWE7rp06jVZ4y6KoXB+tkMAIrghrOGVBs1Bi4uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 040/957] x86/tdx: Fix the typo in TDX_ATTR_MIGRTABLE
+Subject: [PATCH 7.0 0273/1146] drm/bridge: cadence: cdns-mhdp8546-core: Handle HDCP state in bridge atomic check
 Date: Wed, 20 May 2026 18:08:43 +0200
-Message-ID: <20260520162135.429140060@linuxfoundation.org>
+Message-ID: <20260520162154.398311547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,97 +69,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251265-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250301-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 42294599620
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,ti.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email]
+X-Rspamd-Queue-Id: 21B34592801
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Harikrishna Shenoy <h-shenoy@ti.com>
 
-[ Upstream commit 3aecb2e7b948400354399b26f3f1653bd2c1bae0 ]
+[ Upstream commit 4a8edd658489ec2a3d7e20482fa9e8d366153d8d ]
 
-The TD scoped TDCS attributes are defined by bit positions. In the guest
-side of the TDX code, the 'tdx_attributes' string array holds pretty
-print names for these attributes, which are generated via macros and
-defines. Today these pretty print names are only used to print the
-attribute names to dmesg.
+Now that we have DRM_BRIDGE_ATTACH_NO_CONNECTOR framework, handle the
+HDCP state change in bridge atomic check as well to enable correct
+functioning for HDCP in both DRM_BRIDGE_ATTACH_NO_CONNECTOR and
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR case.
 
-Unfortunately there is a typo in the define for the migratable bit.
-Change the defines TDX_ATTR_MIGRTABLE* to TDX_ATTR_MIGRATABLE*. Update
-the sole user, the tdx_attributes array, to use the fixed name.
+Without this patch, when using DRM_BRIDGE_ATTACH_NO_CONNECTOR flag, HDCP
+state changes would not be properly handled during atomic commits,
+potentially leading to HDCP authentication failures or incorrect
+protection status for content requiring HDCP encryption.
 
-Since these defines control the string printed to dmesg, the change is
-user visible. But the risk of breakage is almost zero since it is not
-exposed in any interface expected to be consumed programmatically.
-
-Fixes: 564ea84c8c14 ("x86/tdx: Dump attributes and TD_CTLS on boot")
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://patch.msgid.link/20260303030335.766779-2-xiaoyao.li@intel.com
+Fixes: 6a3608eae6d33 ("drm: bridge: cdns-mhdp8546: Enable HDCP")
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patch.msgid.link/20251209120332.3559893-4-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/debug.c         | 2 +-
- arch/x86/include/asm/shared/tdx.h | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/x86/coco/tdx/debug.c b/arch/x86/coco/tdx/debug.c
-index cef847c8bb67f..28990c2ab0a14 100644
---- a/arch/x86/coco/tdx/debug.c
-+++ b/arch/x86/coco/tdx/debug.c
-@@ -17,7 +17,7 @@ static __initdata const char *tdx_attributes[] = {
- 	DEF_TDX_ATTR_NAME(ICSSD),
- 	DEF_TDX_ATTR_NAME(LASS),
- 	DEF_TDX_ATTR_NAME(SEPT_VE_DISABLE),
--	DEF_TDX_ATTR_NAME(MIGRTABLE),
-+	DEF_TDX_ATTR_NAME(MIGRATABLE),
- 	DEF_TDX_ATTR_NAME(PKS),
- 	DEF_TDX_ATTR_NAME(KL),
- 	DEF_TDX_ATTR_NAME(TPA),
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 8bc074c8d7c6a..11f3cf30b1ac8 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -35,8 +35,8 @@
- #define TDX_ATTR_LASS			BIT_ULL(TDX_ATTR_LASS_BIT)
- #define TDX_ATTR_SEPT_VE_DISABLE_BIT	28
- #define TDX_ATTR_SEPT_VE_DISABLE	BIT_ULL(TDX_ATTR_SEPT_VE_DISABLE_BIT)
--#define TDX_ATTR_MIGRTABLE_BIT		29
--#define TDX_ATTR_MIGRTABLE		BIT_ULL(TDX_ATTR_MIGRTABLE_BIT)
-+#define TDX_ATTR_MIGRATABLE_BIT		29
-+#define TDX_ATTR_MIGRATABLE		BIT_ULL(TDX_ATTR_MIGRATABLE_BIT)
- #define TDX_ATTR_PKS_BIT		30
- #define TDX_ATTR_PKS			BIT_ULL(TDX_ATTR_PKS_BIT)
- #define TDX_ATTR_KL_BIT			31
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 3f5cc4e90927d..c7cd0234d1686 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2123,6 +2123,10 @@ static int cdns_mhdp_atomic_check(struct drm_bridge *bridge,
+ {
+ 	struct cdns_mhdp_device *mhdp = bridge_to_mhdp(bridge);
+ 	const struct drm_display_mode *mode = &crtc_state->adjusted_mode;
++	struct drm_connector_state *old_state, *new_state;
++	struct drm_atomic_state *state = crtc_state->state;
++	struct drm_connector *conn = mhdp->connector_ptr;
++	u64 old_cp, new_cp;
+ 
+ 	mutex_lock(&mhdp->link_mutex);
+ 
+@@ -2142,6 +2146,25 @@ static int cdns_mhdp_atomic_check(struct drm_bridge *bridge,
+ 	if (mhdp->info)
+ 		bridge_state->input_bus_cfg.flags = *mhdp->info->input_bus_flags;
+ 
++	if (conn && mhdp->hdcp_supported) {
++		old_state = drm_atomic_get_old_connector_state(state, conn);
++		new_state = drm_atomic_get_new_connector_state(state, conn);
++		old_cp = old_state->content_protection;
++		new_cp = new_state->content_protection;
++
++		if (old_state->hdcp_content_type != new_state->hdcp_content_type &&
++		    new_cp != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
++			new_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
++			crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
++			crtc_state->mode_changed = true;
++		}
++
++		if (!new_state->crtc) {
++			if (old_cp == DRM_MODE_CONTENT_PROTECTION_ENABLED)
++				new_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
++		}
++	}
++
+ 	mutex_unlock(&mhdp->link_mutex);
+ 	return 0;
+ }
 -- 
 2.53.0
 
