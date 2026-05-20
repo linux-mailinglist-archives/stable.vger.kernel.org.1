@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HlDN6AADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-252224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:40 +0200
+	id mFkmHyv/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-251585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC8B5970C7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA439596BF7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F2B3800DD2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43A93304105E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BF23F23C5;
-	Wed, 20 May 2026 18:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A3C28DC4;
+	Wed, 20 May 2026 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HF4aGvB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYG30VWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C51340A57;
-	Wed, 20 May 2026 18:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C3029D26E;
+	Wed, 20 May 2026 17:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300117; cv=none; b=T7JDtFEmUH8aD8RIGzfSO3vOBoGYpovSArd/Qzs4ult9bKMNXKdxKxJg5ppsrjvv0qn3dn8hVceuRteu3Mg4OktZVnLMv7QOOn+ztCQ/JQoE1zNWvlAfc+B++Z0PRBfNbaYgubz+bcd4Aw1vdnwb6wN2jASZr1wsWTh7Cld+IxQ=
+	t=1779298363; cv=none; b=TjSgVVvKJOsKhaFgCUg929rKN2jkZzBGYybMaZZlv6nCO0EiWfmOJi8nRAlHqneHN3BzqrvHfqRS0Qu59hipxygOqJLBMRE5rI7JoxQMnDoH+sl6T2sudtG+/j5WBZBZUaA5Q0zGvo2z4OuhNyk8k+q3oQpd1GpUmTSH+kWDlRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300117; c=relaxed/simple;
-	bh=LDJHW1IqcIYDJb33Fcf5u1NHIca0aUka/HOo2R4ieHk=;
+	s=arc-20240116; t=1779298363; c=relaxed/simple;
+	bh=os0DK8UNN6MmwmZXJN8YAKsTYfc61bvmfGcrucx4je0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5bONVmZqZfleEe72vxNK2WDd0zKvHxz3Aw07TtDK/nsOz4yFKbyLeBquwSf4OVgLKQCgkWCy2E3ceEaqRijNvMsHeOGXho5vWhMkMesKwxUQA109RuXD/vRGRdEumOpDFz31Uycg8WnjvEdNkbLv5CD2Q1laXvi8doDTIz823I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HF4aGvB7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD221F000E9;
-	Wed, 20 May 2026 18:01:55 +0000 (UTC)
+	 MIME-Version; b=LIGN+DVvDf7YbRi2HqQNIgbNp9IhTzKCXId7A/frC7qDU5KadrD9Kva5V6fzfW5bkElrX5p4WvVqU1Tkph3p2Wckq3if4WpDavgG9BSYAtzLYkIvxvF50Z0G0n1N/aF2ZSeV3zfl/ho+lPWUSiWIcAHpET+YmvvbiXpQ2c8jMHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYG30VWq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FE21F000E9;
+	Wed, 20 May 2026 17:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300116;
-	bh=gkd2Rjt3Kh9MGwASPOPyagIARsiUk90EQwVri02CZQU=;
+	s=korg; t=1779298362;
+	bh=msH0wUfDuIW2OfqlktA+lp3vzqYtNWNRT61SUeabCu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HF4aGvB79OkgHD/ljgE2a04gHaSOuDzeL28wcy+2QoZzFdy4r+xBPLUwVVWSwytV8
-	 PXhrxC9+LsSeaooXgmuacd18rg3KCKtLyLzSF2qF69C4J+so1bJuwJXpVp4XPNMijX
-	 L+o7jjyB7C7VtHQMbEPGNSzBxF8pNIM8ObvistfE=
+	b=rYG30VWq6eObJonLhjL9oA2L3oN482A1DTS1joIi9pQsaFEsgiwPTBZ+BlYr+tpKR
+	 PbRZHYwdQqLzFtGdOrPyvYcu/lgLC8b/qjpC30F7ebxQCCI4jlK/6qPPQlvIvlVlam
+	 n5qRaW6PrrgcaM8haIHoZMZb06+ZCUSK2Bn/Jb1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Felix Fietkau <nbd@nbd.name>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 053/666] wifi: mt76: mt7996: fix use-after-free bugs in mt7996_mac_dump_work()
+Subject: [PATCH 6.18 381/957] arm64: dts: imx8mp-kontron: Drop vmmc-supply to fix SD card on SMARC eval carrier
 Date: Wed, 20 May 2026 18:14:24 +0200
-Message-ID: <20260520162112.388004964@linuxfoundation.org>
+Message-ID: <20260520162142.791049180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252224-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251585-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,zju.edu.cn:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7DC8B5970C7
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,kontron.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: CA439596BF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-[ Upstream commit c8f62f73bbced3a79894655bdb0b625462d956fc ]
+[ Upstream commit d2ce84eecf081056b1d18d7524de52f849281ba7 ]
 
-When the mt7996 pci chip is detaching, the mt7996_crash_data is
-released in mt7996_coredump_unregister(). However, the work item
-dump_work may still be running or pending, leading to UAF bugs
-when the already freed crash_data is dereferenced again in
-mt7996_mac_dump_work().
+The SMARC evaluation carrier provides an SD card power switch that
+complies with the OSM standard definition. The OSM base devicetree
+already describes this correctly.
 
-The race condition can occur as follows:
+Stop overriding the vmmc-supply in the board devicetree and rely on
+the definition from the OSM base DTS instead to fix the power supply
+configuration for the SD card.
 
-CPU 0 (removal path)               | CPU 1 (workqueue)
-mt7996_pci_remove()                | mt7996_sys_recovery_set()
- mt7996_unregister_device()        |  mt7996_reset()
-  mt7996_coredump_unregister()     |   queue_work()
-   vfree(dev->coredump.crash_data) | mt7996_mac_dump_work()
-                                   |  crash_data-> // UAF
-
-Fix this by ensuring dump_work is properly canceled before
-the crash_data is deallocated. Add cancel_work_sync() in
-mt7996_unregister_device() to synchronize with any pending
-or executing dump work.
-
-Fixes: 878161d5d4a4 ("wifi: mt76: mt7996: enable coredump support")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20260131024731.18741-1-duoming@zju.edu.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 6fe1ced5ccab7 ("arm64: dts: Add support for Kontron i.MX8MP SMARC module and eval carrier")
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts     | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 5cd2fb7d9835c..fc2d46b10b720 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -1399,6 +1399,7 @@ int mt7996_register_device(struct mt7996_dev *dev)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+index 2173a36ff6917..74d620dd06b7b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+@@ -249,6 +249,5 @@ &usb3_phy1 {
+ };
  
- void mt7996_unregister_device(struct mt7996_dev *dev)
- {
-+	cancel_work_sync(&dev->dump_work);
- 	cancel_work_sync(&dev->wed_rro.work);
- 	mt7996_unregister_phy(mt7996_phy3(dev), MT_BAND2);
- 	mt7996_unregister_phy(mt7996_phy2(dev), MT_BAND1);
+ &usdhc2 {
+-	vmmc-supply = <&reg_vdd_3v3>;
+ 	status = "okay";
+ };
 -- 
 2.53.0
 
