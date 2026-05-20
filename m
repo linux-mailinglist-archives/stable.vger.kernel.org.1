@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-250337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKtrCIfwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:59 +0200
+	id 8EC5AcsWDmpb6AUAu9opvQ
+	(envelope-from <stable+bounces-251277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78727593F9C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E48959964C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 030E834C0F96
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A08A2329E3DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B59369D6A;
-	Wed, 20 May 2026 16:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840335AC18;
+	Wed, 20 May 2026 17:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0MDOTG+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKqn0t5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F1D2BE02A;
-	Wed, 20 May 2026 16:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4CC356748;
+	Wed, 20 May 2026 17:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295151; cv=none; b=FJtFG0pcntUP2Dr/1zSnVJQyXHZU0CIKo4KXYrs/2NAJwMOJVgNn0aALa+R+o10CipyBhFutODQWfhIvW2F7fqDzgxpC0k7BdIcS+/CDbTNZkLfxvu/WTvSLKCGcoYp8ktU8l39Rji8qwxxZVdtESx4mixIJ+sGdHHKegR4y7tE=
+	t=1779297565; cv=none; b=JCGm2pDoUltCMYxqKNDFfcuw7Y5XKQulKUHGkxmBGHLri6HwzGDzdJBozBmNDTT/wib7+Qe1RFhZxmoIuWgTH/0Q9tOcU76hxNDrycnK8muh3FS9d93ie8XyWbk0OkBkHlj8WZZzo32jkHLXf2SMsmRU4lHKxrpGZ985ydqQ4ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295151; c=relaxed/simple;
-	bh=1R7GXlqgaOSTL8GEQotDj0wq7qcBCpu4cmkTFstFx+E=;
+	s=arc-20240116; t=1779297565; c=relaxed/simple;
+	bh=ACqZcqs0mZQpMezPqIIY0ruasgstDi1V3N8GSQha1m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GlOhbmt1FxUtS7PmcqrnF2oGFK81BMY1B/N6Vy4FraDHeA5sVsKSKLihnVl8f8QlsGNP/zM0xEt5mJAM8/+Can8LzrehoY5F3HoZ2f4cOKoNslti776OJQguzyrHGV2JpEhxSw+JGVJBW358QLogEofUFYynNBGePjhNHiX7IEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0MDOTG+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952B01F00893;
-	Wed, 20 May 2026 16:39:07 +0000 (UTC)
+	 MIME-Version; b=tGF/1eZC7W9dq6Te0gIRwFGvucCjQyI/pnpRb2etwicIP09NEJ98Fp/dQ3XIkDUFuwymQVU6LJD8Hj3U+PjCzQpoSCpGwnt5yn8jNG1TxXyuSaPdUmM9quIHj0mWqlBxG0mvcgeXI7gALxL+ipyLQ2yoGKReqGMG5d5aFlWZb1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKqn0t5l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FB81F000E9;
+	Wed, 20 May 2026 17:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295148;
-	bh=00jase/Rln7E+zq5cj8CEaibyKtPCJirXmrj0TLTZts=;
+	s=korg; t=1779297564;
+	bh=QWAQlqR/AQjnb+JIILeZRyDz2m+g3FJ6Rtxl2gEuKCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p0MDOTG+r93hDmB68XCHa1cReuGfFpkA1hRzNd62JxdjsHyPN3HVfsv5/ZGsC0FwE
-	 OMlWwhAIK5UulFNzL49O+dlEFsPyGT6V+o7+BdXkYSaA+7XKt0TzWY0TpO1NQdQzQD
-	 W4DPpGXt3Unog/gyAbbj0cTBKr7zCo0CdJRG2XT0=
+	b=FKqn0t5lehpozoHz1pt6iQ0MgeO0MmVkYOov1wpLGZpI5jcKYKV3eipI3vc8vXB0o
+	 1+L8+M0PcJyTdNwrqrYWaHZOM+32ZzOzdLNg11rFBIkfjHI+JxfRAVue/M21H0sIa5
+	 CdmSLjUU+vNkhDaKUQbFGMwRyPGGV9QU1AkDUwpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	YiPeng Chai <YiPeng.Chai@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0310/1146] drm/amd/ras: Remove redundant NULL check in pending bad-bank list iteration
+Subject: [PATCH 6.18 077/957] wifi: mt76: mt7996: Reset mtxq->idx if primary link is removed in mt7996_vif_link_remove()
 Date: Wed, 20 May 2026 18:09:20 +0200
-Message-ID: <20260520162155.218679452@linuxfoundation.org>
+Message-ID: <20260520162136.233002293@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250337-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251277-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 78727593F9C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,msgid.link:url]
+X-Rspamd-Queue-Id: 5E48959964C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit fd490bb9e1054705e1b35e6f321cdc713e0c7348 ]
+[ Upstream commit 751a2679b15e3a0fa8fc9175862f0ec40643db68 ]
 
-ras_umc_log_pending_bad_bank() walks through a list of pending ECC
-bad-bank entries. These entries are saved when a bad-bank error cannot
-be processed immediately, for example during a GPU reset.
+Reset WCID index in mt76_txq struct if primary link is removed in
+mt7996_vif_link_remove routine.
 
-Later, this function iterates over the pending list and retries logging
-each bad-bank error. If logging succeeds, the entry is removed from the
-list and the memory for that node is freed.
-
-The loop uses list_for_each_entry_safe(), which already guarantees that
-ecc_node points to a valid list entry while the loop body is executing.
-
-Checking "ecc_node &&" inside the loop is therefore unnecessary and
-redundant.
-
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_umc.c:225 ras_umc_log_pending_bad_bank() warn: variable dereferenced before check 'ecc_node' (see line 223)
-
-Fixes: 7a3f9c0992c4 ("drm/amd/ras: Add umc common ras functions")
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: YiPeng Chai <YiPeng.Chai@amd.com>
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a3316d2fc669f ("wifi: mt76: mt7996: set vif default link_id adding/removing vif links")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251205-mt76-txq-wicd-fix-v2-2-f19ba48af7c1@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/ras/rascore/ras_umc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7996/main.c  | 21 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/ras/rascore/ras_umc.c b/drivers/gpu/drm/amd/ras/rascore/ras_umc.c
-index 2abe8553e479e..4fff0b3af75c1 100644
---- a/drivers/gpu/drm/amd/ras/rascore/ras_umc.c
-+++ b/drivers/gpu/drm/amd/ras/rascore/ras_umc.c
-@@ -222,7 +222,7 @@ int ras_umc_log_pending_bad_bank(struct ras_core_context *ras_core)
- 	mutex_lock(&ras_umc->pending_ecc_lock);
- 	list_for_each_entry_safe(ecc_node,
- 		tmp, &ras_umc->pending_ecc_list, node){
--		if (ecc_node && !ras_umc_log_bad_bank(ras_core, &ecc_node->ecc)) {
-+		if (!ras_umc_log_bad_bank(ras_core, &ecc_node->ecc)) {
- 			list_del(&ecc_node->node);
- 			kfree(ecc_node);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 44c52062c640b..5d4b1d8f3335b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -402,17 +402,28 @@ void mt7996_vif_link_remove(struct mt76_phy *mphy, struct ieee80211_vif *vif,
+ 
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
+ 
+-	if (!mlink->wcid->offchannel &&
++	if (vif->txq && !mlink->wcid->offchannel &&
+ 	    mvif->mt76.deflink_id == link_conf->link_id) {
+ 		struct ieee80211_bss_conf *iter;
++		struct mt76_txq *mtxq;
+ 		unsigned int link_id;
+ 
+ 		mvif->mt76.deflink_id = IEEE80211_LINK_UNSPECIFIED;
++		mtxq = (struct mt76_txq *)vif->txq->drv_priv;
++		/* Primary link will be removed, look for a new one */
+ 		for_each_vif_active_link(vif, iter, link_id) {
+-			if (link_id != IEEE80211_LINK_UNSPECIFIED) {
+-				mvif->mt76.deflink_id = link_id;
+-				break;
+-			}
++			struct mt7996_vif_link *link;
++
++			if (link_id == link_conf->link_id)
++				continue;
++
++			link = mt7996_vif_link(dev, vif, link_id);
++			if (!link)
++				continue;
++
++			mtxq->wcid = link->msta_link.wcid.idx;
++			mvif->mt76.deflink_id = link_id;
++			break;
  		}
+ 	}
+ 
 -- 
 2.53.0
 
