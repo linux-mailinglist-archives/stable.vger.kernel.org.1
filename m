@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLJDECEeDmox6QUAu9opvQ
-	(envelope-from <stable+bounces-251805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:33 +0200
+	id CPr1EX//DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C357059A230
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E034C596CE3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D470363A17D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36C283162FBC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09EF3E123F;
-	Wed, 20 May 2026 17:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86683DA5B6;
+	Wed, 20 May 2026 18:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwNl/YbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQZI9vIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4836D9EA;
-	Wed, 20 May 2026 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51442343880;
+	Wed, 20 May 2026 18:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298936; cv=none; b=rpLW4Vpo9i3j95kY8hWnCmWgClw2OTvd/D8YzyiV2KGzLTYP8RfEKPxgeI9iQnfKWNrXVl3girAGdrNBZhcyGgHkQQG/EP7QgtqIjbyT3U9qS+S1kyjWbTehReCwK3Oixi5uhlHG7EEbYhE6BLkJxaHTu55H9GzeLTgre8R51pc=
+	t=1779301894; cv=none; b=myGlSyem8BS8bJ93wQpKP85rqgFyTvyj5l9EFQSEwZRQJ3thiLHFwkbBsiEV9iLDIh4t4oy2YDCH84aGdSzh/5u4dh3lmrh1mFjXITfQDgGojlFrt9p0B549d9JcqCQABRQBHq/inue5RwAYf2G8SKiPwlEFDMKFWUwMGkNe7Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298936; c=relaxed/simple;
-	bh=YcEsKm9rEee5LbjIs+gFPp6zc8Y1pQib9evrEhHpMTs=;
+	s=arc-20240116; t=1779301894; c=relaxed/simple;
+	bh=Q2ciu+VFh1xMcvdYyMWumNyK0RBtmuwBvobTKEZo1L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9EbYrBAlqo3nwE2t1dWBZUSgZ++doE3X1ZnC0MPQXZpnx2TzNO5ns25IxY16FmKl+pQac3mkR/DD7xOoj/7aEBfemMq3xMzJcESk5MrCb0JcPrXoNM9IBP1cmZuQ6pbTJ5bWAMQjSk6W4paYF+kLxEoHDuThgayCJ4mmo0wPGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwNl/YbF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FF21F000E9;
-	Wed, 20 May 2026 17:42:14 +0000 (UTC)
+	 MIME-Version; b=IAhMPUOWNFNSGV3Tpk/IxcXFKXX3tdfIb61tDoveqCLfN2cwOduN7Gl/Qwm5FncLD8gUX4X8jz0mQdbKZY7/Cg4H2WIoN/eokGUdKQ/+8MmX97ispf4+64uQ8UeSSA2avtYSLwd4VLCZJCNbxl6HH1hCgpw2auYi6X0H0fbf99A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQZI9vIP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866911F000E9;
+	Wed, 20 May 2026 18:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298935;
-	bh=f491yRw2OMsEsaTSr/O1T/NayWDnfkM4e87lzLiw4JA=;
+	s=korg; t=1779301893;
+	bh=pGZNHSfbD/HNGZ0i2Ui/J0Zewaky5HxfO1RkCUReiRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rwNl/YbFbUMlRxJcxueWS8FXInnzZaY0YMFdzGkoB9j0QhAfhhwF6aVcjoavRvfmV
-	 e6Er5q5YDBlDWAGSf/F6Vx87VSER4ESfIBTBtXn4mqHBRYP9/tIHfUfhe8IqgCL2Dy
-	 xI92sacziQZ9r/wrex3JbcsxL0B7P9W/S/vsWeH4=
+	b=GQZI9vIP7r58PZP5yNYhGWi9yLkewjoad+dCx553e8nIwQFsetOGnc8lCxw0ZwJ42
+	 K5MkjoH8H5oDgBv9k4o7ABxmmKlp3gxA6O7bR080cEXL2BxMVJ1958xWQeO8dcpxXS
+	 a/Idk7D0c+sJbBMQPLqjKgjcDja5D+EJRiG+w2Ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 600/957] arm64: dts: imx8mp-icore-mx8mp: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.6 060/508] net: bcmgenet: fix racing timeout handler
 Date: Wed, 20 May 2026 18:18:03 +0200
-Message-ID: <20260520162147.546566580@linuxfoundation.org>
+Message-ID: <20260520162059.901269080@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +68,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251805-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252904-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C357059A230
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tipi-net.de:email,msgid.link:url,broadcom.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E034C596CE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit ea8c90f5c7ceeb6657a8fe564aa7b190dce298a6 ]
+[ Upstream commit 5393b2b5bee2ac51a0043dc7f4ac3475f053d08d ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+The bcmgenet_timeout handler tries to take down all tx queues when
+a single queue times out. This is over zealous and causes many race
+conditions with queues that are still chugging along. Instead lets
+only restart the timed out queue.
 
-Fixes: eefe06b295087 ("arm64: dts: imx8mp: Add Engicam i.Core MX8M Plus SoM")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 13ea657806cf ("net: bcmgenet: improve TX timeout")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
+Link: https://patch.msgid.link/20260406175756.134567-4-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 22 ++++++++-----------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-index a6319824ea2eb..69558ffefa9a6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-@@ -132,7 +132,7 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001c3
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index a5166582e0ab7..e08abde4685ac 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3474,27 +3474,23 @@ static void bcmgenet_dump_tx_queue(struct bcmgenet_tx_ring *ring)
+ static void bcmgenet_timeout(struct net_device *dev, unsigned int txqueue)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+-	u32 int1_enable = 0;
+-	unsigned int q;
++	struct bcmgenet_tx_ring *ring = &priv->tx_rings[txqueue];
++	struct netdev_queue *txq = netdev_get_tx_queue(dev, txqueue);
  
- 	pinctrl_pmic: pmicgrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	  0x41
-+			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	0x1c0
- 		>;
- 	};
+ 	netif_dbg(priv, tx_err, dev, "bcmgenet_timeout\n");
  
+-	for (q = 0; q <= priv->hw_params->tx_queues; q++)
+-		bcmgenet_dump_tx_queue(&priv->tx_rings[q]);
+-
+-	bcmgenet_tx_reclaim_all(dev);
++	bcmgenet_dump_tx_queue(ring);
+ 
+-	for (q = 0; q <= priv->hw_params->tx_queues; q++)
+-		int1_enable |= (1 << q);
++	bcmgenet_tx_reclaim(dev, ring, true);
+ 
+-	/* Re-enable TX interrupts if disabled */
+-	bcmgenet_intrl2_1_writel(priv, int1_enable, INTRL2_CPU_MASK_CLEAR);
++	/* Re-enable the TX interrupt for this ring */
++	bcmgenet_intrl2_1_writel(priv, 1 << txqueue, INTRL2_CPU_MASK_CLEAR);
+ 
+-	netif_trans_update(dev);
++	txq_trans_cond_update(txq);
+ 
+-	BCMGENET_STATS64_INC((&priv->tx_rings[txqueue].stats64), errors);
++	BCMGENET_STATS64_INC((&ring->stats64), errors);
+ 
+-	netif_tx_wake_all_queues(dev);
++	netif_tx_wake_queue(txq);
+ }
+ 
+ #define MAX_MDF_FILTER	17
 -- 
 2.53.0
 
