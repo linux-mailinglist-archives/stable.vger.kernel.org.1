@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-250198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBFOJL3kDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:41 +0200
+	id qAdJIKsNDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-250199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3806359255B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F04DB598869
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADCA5308A410
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:34:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78868335D179
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D202BE02A;
-	Wed, 20 May 2026 16:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7166032B9B5;
+	Wed, 20 May 2026 16:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKyItZfu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BG210Vy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9725E3AC00;
-	Wed, 20 May 2026 16:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0E531F9AE;
+	Wed, 20 May 2026 16:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294801; cv=none; b=RVPGgrIiuP6p/F0rTUUKXWdcP05JnnC9RdBqpYGFt8Lxz3CekLYNJmuf+9YAfxQzLnsjHSSSkIQIdN1lLub9+C428mqhg7Wub3YKH8c4iO1ICRAS4X7m4MGMgYOVTbWplxqTomZsvJcIhyrrN2F/dzW3VQWO3xIkJkjTovjU1FQ=
+	t=1779294804; cv=none; b=d+MI2r66VpMqThukvwfeDpteOLql39Dsyg62rhxCQ2DO3R/6X/n+GfzaFiox+u/j6JQ++U875ZxxbgePgvOTg/jYIE0/khDsnW1v3w4rq9eR6q1X40CbSA5NtbEEMWp/U0U43MbleEgZxk8XfsE+5ZvfVUe4H5GesbrVV5WNzQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294801; c=relaxed/simple;
-	bh=gnpD/a5nPoeu7pOhVmFWnTm2SHue0csLlDWuzVSmKQ0=;
+	s=arc-20240116; t=1779294804; c=relaxed/simple;
+	bh=8FOeMiciDDkHM/oMlL+OEKFvWXAzAoQADOv267TrkLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKnleZQmXqZeIrMWiUDtmQ1my3cJ/xXvPAfGNHNGvswuuwhle0paiehp5Yz2cGq13WEZYP47yunhPUGSOcyo3zpicuhCFmee5n3ftXxFKRvxXY1gmgzHB+ViosZ/g96COhfjeUkIysphozKmKZHqioERWeetyYS14JcVbxOUZRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKyItZfu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089711F000E9;
-	Wed, 20 May 2026 16:33:19 +0000 (UTC)
+	 MIME-Version; b=sacmEt5OySxpF7T5XhrzT8F7W1lo6uoPaPpBMu3upUrzWqf2pFQXGJ61QzWMNo5xtnzsQpLFotpJFyZC70+62zkeHIBNsis5ju75dPAIWjHbkq6mpi5bB4CbZxzjSKnujG+BTyDHSNmQd/bb7GoBK3kC5fZKQwk5aTQfgJIPZ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BG210Vy7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A8B1F000E9;
+	Wed, 20 May 2026 16:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294800;
-	bh=hXafxAbjr/yv/ommeZcPSNZRhJPqbyTYTpWgrZhswC0=;
+	s=korg; t=1779294803;
+	bh=92vqLonM1jXBsjvbAwS9oFfwNIzKeqYNGM8/tacsQFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BKyItZfu0WG+MMmLzszKTks5yyF5RFBsRHbpNCJoH+YN0U96zYaPY05uszKvL85HX
-	 Uqo/pEKU90D+jH3vspRseFLf6QQWr2c87TYvBCQvQAITJLdAOPWD65u0mwVGTPmnAx
-	 86zIesUEXLeqlJNB73d3nNhyaf0F5FnT4S2ebRtE=
+	b=BG210Vy7miwITcqjkUWuoEDpFNU49OmLYFfr2ItLYh2PZ0DCHsjOSsxpm1skVZe3q
+	 gWmG7A9FOWm6uWN5xEvdGBVFz3BwOG4mVYbLPF0GGZL4xBgqDJ7GL0t5OIbqxoY++3
+	 ORGjZJuM1xFuhsoBqBHeenKi51NeyIqU4ctIkqm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0178/1146] netfilter: xt_socket: enable defrag after all other checks
-Date: Wed, 20 May 2026 18:07:08 +0200
-Message-ID: <20260520162152.310798634@linuxfoundation.org>
+Subject: [PATCH 7.0 0179/1146] netfilter: nft_fwd_netdev: check ttl/hl before forwarding
+Date: Wed, 20 May 2026 18:07:09 +0200
+Message-ID: <20260520162152.332128419@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,32 +65,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250199-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250198-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email]
-X-Rspamd-Queue-Id: 3806359255B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F04DB598869
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,82 +101,45 @@ X-Rspamd-Server: lfdr
 
 From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 542be3fa5aff54210a02954c38f07e53ea9bdafd ]
+[ Upstream commit 1dfd95bdf4d18d263aa8fad06bfb9f4d9c992b18 ]
 
-Originally this did not matter because defrag was enabled once per netns
-and only disabled again on netns dismantle.  When this got changed I should
-have adjusted checkentry to not leave defrag enabled on error.
+Drop packets if their ttl/hl is too small for forwarding.
 
-Fixes: de8c12110a13 ("netfilter: disable defrag once its no longer needed")
+Fixes: d32de98ea70f ("netfilter: nft_fwd_netdev: allow to forward packets via neighbour layer")
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_socket.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ net/netfilter/nft_fwd_netdev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/netfilter/xt_socket.c b/net/netfilter/xt_socket.c
-index 76e01f292aaff..811e53bee4085 100644
---- a/net/netfilter/xt_socket.c
-+++ b/net/netfilter/xt_socket.c
-@@ -168,52 +168,41 @@ static int socket_mt_enable_defrag(struct net *net, int family)
- static int socket_mt_v1_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo1 *info = (struct xt_socket_mtinfo1 *) par->matchinfo;
--	int err;
--
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
- 
- 	if (info->flags & ~XT_SOCKET_FLAGS_V1) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V1);
- 		return -EINVAL;
- 	}
--	return 0;
+diff --git a/net/netfilter/nft_fwd_netdev.c b/net/netfilter/nft_fwd_netdev.c
+index 152a9fb4d23af..256e832f1bb99 100644
+--- a/net/netfilter/nft_fwd_netdev.c
++++ b/net/netfilter/nft_fwd_netdev.c
+@@ -116,6 +116,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
+ 			goto out;
+ 		}
+ 		iph = ip_hdr(skb);
++		if (iph->ttl <= 1) {
++			verdict = NF_DROP;
++			goto out;
++		}
 +
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
- 
- static int socket_mt_v2_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo2 *info = (struct xt_socket_mtinfo2 *) par->matchinfo;
--	int err;
--
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
- 
- 	if (info->flags & ~XT_SOCKET_FLAGS_V2) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V2);
- 		return -EINVAL;
- 	}
--	return 0;
+ 		ip_decrease_ttl(iph);
+ 		neigh_table = NEIGH_ARP_TABLE;
+ 		break;
+@@ -132,6 +137,11 @@ static void nft_fwd_neigh_eval(const struct nft_expr *expr,
+ 			goto out;
+ 		}
+ 		ip6h = ipv6_hdr(skb);
++		if (ip6h->hop_limit <= 1) {
++			verdict = NF_DROP;
++			goto out;
++		}
 +
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
- 
- static int socket_mt_v3_check(const struct xt_mtchk_param *par)
- {
- 	const struct xt_socket_mtinfo3 *info =
- 				    (struct xt_socket_mtinfo3 *)par->matchinfo;
--	int err;
- 
--	err = socket_mt_enable_defrag(par->net, par->family);
--	if (err)
--		return err;
- 	if (info->flags & ~XT_SOCKET_FLAGS_V3) {
- 		pr_info_ratelimited("unknown flags 0x%x\n",
- 				    info->flags & ~XT_SOCKET_FLAGS_V3);
- 		return -EINVAL;
- 	}
--	return 0;
-+
-+	return socket_mt_enable_defrag(par->net, par->family);
- }
- 
- static void socket_mt_destroy(const struct xt_mtdtor_param *par)
+ 		ip6h->hop_limit--;
+ 		neigh_table = NEIGH_ND_TABLE;
+ 		break;
 -- 
 2.53.0
 
