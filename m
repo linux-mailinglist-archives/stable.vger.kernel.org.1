@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCplEyQBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:52 +0200
+	id qJQMByf/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1395972AD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C44596BDC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DEF5C3229E76
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0F83312DEF1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47183E123F;
-	Wed, 20 May 2026 17:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5F3DA5B6;
+	Wed, 20 May 2026 18:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2cFFK+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb2fw3ja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F43312825;
-	Wed, 20 May 2026 17:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A9D3FB7E0;
+	Wed, 20 May 2026 18:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298857; cv=none; b=NwDUFfc+Hv0Zq3lL8fc2/zBZ8sGfhl1Np5cleJSXOIesDS4TEh1FS2faeSZYzuzJa4iSeDxKW+WDzzt6Vk220KzEjOC9pVcPADVFcoDL5EXGvigQI0xuezDI99IvoYWpzB2wjieufXzJYsYoaAoG3+GKvWXU291nt7jG7sVBCE4=
+	t=1779301809; cv=none; b=cu93AUlWKhLpF5doumAVpph3nkOpnMdauJeL5vCauFyShj9et0UF1usFbQffAEu5jacC9qh2Na9cBHkFV2SV4c/5LM/TzHkpbC7bKP3jv33YPgMtC8VW5rta1IFETqzfE0oHxRzcYBtf+Aio7qyuMNcoo6YfQ+qTvpTHjllZlxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298857; c=relaxed/simple;
-	bh=zITMwGxhlhNq+XsSVOhx77Su+D145YbSSRpDo5n2XvM=;
+	s=arc-20240116; t=1779301809; c=relaxed/simple;
+	bh=0385wmxQL9d7n1E9pBjBBsh8sAum0ny5RuhxmCU4gi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDt/lMtXVevWIUNzeR6lwpMQdgBVuDAK+AyDlY6g9bag7faqh/L3hB7qaAJNTk+Gbf5Zz+ITrQWIXS4QnHhgAO3pfyaaEB7sJdtzAupk+Tsn19lP1yLIocFiuUfHENHwA7HYXai478XopER3IZ0fX4sy4IKTL5czIN3Y0nCnpQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2cFFK+j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CC51F00893;
-	Wed, 20 May 2026 17:40:55 +0000 (UTC)
+	 MIME-Version; b=fmIJLRKgqk1Y+QCkTgkvVFK1rLCpjybibZj24oLB4yi1LaOKX90P2MgCHguoaX+YIBKSobKgVUOm3QaaWPnF5FazuGDyYvu7/NrLhuKpK6hiQCV+lRHCzU0GoEHzi5PeoeP33YGJNaCZCAZTxBbk+rMEibhNtoDZb68vV2P4yYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yb2fw3ja; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9751F00893;
+	Wed, 20 May 2026 18:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298856;
-	bh=+OaiSXdQI2emhYbVd2Elc0JVxYgifFwQmz1c7H0r+1M=;
+	s=korg; t=1779301808;
+	bh=3jH2xaA4J9rhS7sEzIHx6Ega1uP2i9ZCrWaFL6ONnqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n2cFFK+jktWLc9+JpsxPr4tmbDFC5sfA4BmKqhciVbh4SumtAzT4Im4ga5sbCxznv
-	 87XejV98AvDW136Jw/gcEVxRGXJm3t8I+mkN2V8fD0nUsAa9Ncao3GbiHlZQ+QbUZ0
-	 PjS6xCsMHwNZ3EG5opPFxUS2WPYsTlQyKFmwsJm4=
+	b=yb2fw3javNWN/zRQjUDyutOX/VgQmgybuZ9dHt+0oNz+jH6gz73XsF9tJgclDn4J3
+	 Bt4gWbTEF48HfV7byKYl+Hb9l2/zM0/5LHv70fNTsnwG97FylzUp0qqTK1VV6JY8+d
+	 jI3W+ukaioTP633tD0owpQJcGCb5wS4FrZLwzzD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 568/957] clk: qcom: gcc-sc8180x: Use retention for PCIe power domains
+Subject: [PATCH 6.6 028/508] dpaa2: compile dpaa2 even CONFIG_FSL_DPAA2_ETH=n
 Date: Wed, 20 May 2026 18:17:31 +0200
-Message-ID: <20260520162146.847358986@linuxfoundation.org>
+Message-ID: <20260520162059.199856786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251774-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252872-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,packett.cool:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4A1395972AD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 98C44596BDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit ccb92c78b42edd26225b4d5920847dfee3e1b093 ]
+[ Upstream commit 97daf00745f7f9f261b0e91418de6e79d7826c36 ]
 
-As the PCIe host controller driver does not yet support dealing with the
-loss of state during suspend, use retention for relevant GDSCs.
+CONFIG_FSL_DPAA2_ETH and CONFIG_FSL_DPAA2_SWITCH are not
+associated, but the compilation of FSL_DPAA2_SWITCH depends on
+the compilation of the dpaa2 folder. The files controlled by
+CONFIG_FSL_DPAA2_SWITCH in the dpaa2 folder are not controlled
+by CONFIG_FSL_DPAA2_ETH, except for the files controlled by
+CONFIG_FSL_DPAA2_SWITCH. Therefore, removing the restriction will
+not affect the compilation of the files in the directory.
 
-This fixes the link not surviving upon resume:
-
-    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-    nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS read failed (134)
-    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-    nvme nvme0: Disabling device after reset failure: -19
-
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/20260312112321.370983-5-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: f48298d3fbfaa ("staging: dpaa2-switch: move the driver out of staging")
+Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Link: https://patch.msgid.link/20260312065907.476663-3-caixinchen1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index b116a9c0b2d94..4095a1f54a099 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4199,7 +4199,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+diff --git a/drivers/net/ethernet/freescale/Makefile b/drivers/net/ethernet/freescale/Makefile
+index de7b318422330..d0a259e47960f 100644
+--- a/drivers/net/ethernet/freescale/Makefile
++++ b/drivers/net/ethernet/freescale/Makefile
+@@ -22,6 +22,5 @@ ucc_geth_driver-objs := ucc_geth.o ucc_geth_ethtool.o
+ obj-$(CONFIG_FSL_FMAN) += fman/
+ obj-$(CONFIG_FSL_DPAA_ETH) += dpaa/
  
-@@ -4226,7 +4226,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
-@@ -4235,7 +4235,7 @@ static struct gdsc pcie_2_gdsc = {
- 	.pd = {
- 		.name = "pcie_2_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
-@@ -4253,7 +4253,7 @@ static struct gdsc pcie_3_gdsc = {
- 	.pd = {
- 		.name = "pcie_3_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
+-obj-$(CONFIG_FSL_DPAA2_ETH) += dpaa2/
+-
++obj-y += dpaa2/
+ obj-y += enetc/
 -- 
 2.53.0
 
