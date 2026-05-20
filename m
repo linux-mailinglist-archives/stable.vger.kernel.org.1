@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CEwMUQDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-251951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:56 +0200
+	id uAGbHucmDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AA55975CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E149C59AD4D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B13230A889E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F23F320F6A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656733F20F9;
-	Wed, 20 May 2026 17:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFA33E5ECF;
+	Wed, 20 May 2026 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UopmVZnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4WlJs7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB653F39EE;
-	Wed, 20 May 2026 17:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBD137DE8A;
+	Wed, 20 May 2026 18:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299359; cv=none; b=bfQGKb3Tk31xI0DwQoBc0z0ZD34WYpQHBpgywvVohCTbuCaYsbGMUv7IaPEx3okcNu5/bB527tmF+6uEHKnuiG0EVHM/TWCilf/3Hh+Shr2GTAJ77fITHRGRYp2x7efjQwT7zDKEgEhRX8j7LZdDtZtfq20QIo3Yw3//CZHbuHk=
+	t=1779301063; cv=none; b=KEjQjWdm12fk2oJTgGLAC/ArdeyP0gDiDs21T/lr0BhBTiM4QSsFeVnkjCzsDFc/kHdj+T4y0eEn5MKE5rvIWO026PR/WXUMCPlQItaPQ4l6MHes8PWD+PnE2UMoSC+ZxRwAL7AYdqw0ycukHN26deotH0IFs8xs0NCSecdwYwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299359; c=relaxed/simple;
-	bh=EVJMvzKoxKi4JKRlgUoz49XqGsTA/S5d+PcvA14MEY8=;
+	s=arc-20240116; t=1779301063; c=relaxed/simple;
+	bh=5J1Mjs7yW2nkkazmgqvOsMEKbkgQfBYDpbdcft1Dj9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kffH6DAY5EaFStspBNkLUJUQYfjOmSTBI44+1fZCxeO4Cc0d4cEhrifmZkJqqur/jy9x93NHuJQN+gNL5htOafWG10xUNw/i3/jCUvnoS3bdebF0HOe9DFWXV2MnLxd3luolLS49X8k+InJENcCU7oEpsZrNSZWb0sa6QYtLJGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UopmVZnW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A0D1F000E9;
-	Wed, 20 May 2026 17:49:15 +0000 (UTC)
+	 MIME-Version; b=PNh1PsnCRNuKJgDhGWKz9eg8RkBo3E6NV8uY8rLNbxrH9U2TU3VPfeUVnL86w7j1wcudpmn3oUOoK1l+V7mU4jfOg0jG01XNrJ+/OGMb4sEkvE/9AdISqU9WYE5oc+AgbcAdgDmCGZCBLKQD1uixJ1Om2AkRPn15Z7chZJG8EF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4WlJs7k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15D11F000E9;
+	Wed, 20 May 2026 18:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299355;
-	bh=/hO6YPGsi0rYAa5EumPtu4ABUgPndCvgu5MGI/A7tNI=;
+	s=korg; t=1779301062;
+	bh=WAIg7LtL3zrJdfVhL4xh+DDOfnPWRoduwTj4+jB685U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UopmVZnW8N+RoIguei0dTqrInks5Et9C0KBxXx5ar4KQqv/W0fh6k1In6YxTREPOY
-	 qM+JnHueM6mpYWc3+jfRE/YKXTkDVZyz3M43f8WATQDxgof2BEokDMHbxISYx2sESo
-	 FnEfnG/PXTsxTs9Xh0j7CXkawywt1zvPEaBdmbMY=
+	b=e4WlJs7kgoiacEpAjR11OlJZwTylhqy3CuI+FWwm67Y5wAt5+pSzFDiRSMeWZK2iD
+	 ZvLXdg8ZZfXrr1FjRc+zmZ5OKk3Ke5V2fD794oVw3HIddl3WoB4USSnMp1bkP6IXz4
+	 5jkAdDtDs5+shVJddgwOdMu2aCEAIfBmnkKmzrgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Yin <yinxin.x@bytedance.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 740/957] fsnotify: fix inode reference leak in fsnotify_recalc_mask()
+Subject: [PATCH 6.12 412/666] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
 Date: Wed, 20 May 2026 18:20:23 +0200
-Message-ID: <20260520162150.608425352@linuxfoundation.org>
+Message-ID: <20260520162120.193755230@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +65,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251951-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,gmail.com,suse.cz,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252586-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: E1AA55975CA
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,nxp.com:email,clkspec.np:url]
+X-Rspamd-Queue-Id: E149C59AD4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 4aca914ac152f5d055ddcb36704d1e539ac08977 ]
+[ Upstream commit 4b84d496c804b470124cd3a08e928df6801d8eae ]
 
-fsnotify_recalc_mask() fails to handle the return value of
-__fsnotify_recalc_mask(), which may return an inode pointer that needs
-to be released via fsnotify_drop_object() when the connector's HAS_IREF
-flag transitions from set to cleared.
+The function pll6_bypassed() calls of_parse_phandle_with_args()
+but never calls of_node_put() to release the reference, causing
+a memory leak.
 
-This manifests as a hung task with the following call trace:
+Fix this by adding proper cleanup calls on all exit paths.
 
-  INFO: task umount:1234 blocked for more than 120 seconds.
-  Call Trace:
-   __schedule
-   schedule
-   fsnotify_sb_delete
-   generic_shutdown_super
-   kill_anon_super
-   cleanup_mnt
-   task_work_run
-   do_exit
-   do_group_exit
-
-The race window that triggers the iref leak:
-
-  Thread A (adding mark)              Thread B (removing mark)
-  ──────────────────────              ────────────────────────
-  fsnotify_add_mark_locked():
-    fsnotify_add_mark_list():
-      spin_lock(conn->lock)
-      add mark_B(evictable) to list
-      spin_unlock(conn->lock)
-    return
-
-    /* ---- gap: no lock held ---- */
-
-                                      fsnotify_detach_mark(mark_A):
-                                        spin_lock(mark_A->lock)
-                                        clear ATTACHED flag on mark_A
-                                        spin_unlock(mark_A->lock)
-                                        fsnotify_put_mark(mark_A)
-
-    fsnotify_recalc_mask():
-      spin_lock(conn->lock)
-      __fsnotify_recalc_mask():
-        /* mark_A skipped: ATTACHED cleared */
-        /* only mark_B(evictable) remains */
-        want_iref = false
-        has_iref = true  /* not yet cleared */
-        -> HAS_IREF transitions true -> false
-        -> returns inode pointer
-      spin_unlock(conn->lock)
-      /* BUG: return value discarded!
-       * iput() and fsnotify_put_sb_watched_objects()
-       * are never called */
-
-Fix this by deferring the transition true -> false of HAS_IREF flag from
-fsnotify_recalc_mask() (Thread A) to fsnotify_put_mark() (thread B).
-
-Fixes: c3638b5b1374 ("fsnotify: allow adding an inode mark without pinning inode")
-Signed-off-by: Xin Yin <yinxin.x@bytedance.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://patch.msgid.link/CAOQ4uxiPsbHb0o5voUKyPFMvBsDkG914FYDcs4C5UpBMNm0Vcg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260203-clk-imx6q-v3-1-6cd2696bb371@gmail.com
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/mark.c | 39 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/clk/imx/clk-imx6q.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index cedd84afbede5..78338075f08a1 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -237,7 +237,12 @@ static struct inode *fsnotify_update_iref(struct fsnotify_mark_connector *conn,
- 	return inode;
- }
+diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
+index bf4c1d9c99287..ba696cf34fe3b 100644
+--- a/drivers/clk/imx/clk-imx6q.c
++++ b/drivers/clk/imx/clk-imx6q.c
+@@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *node)
+ 			return false;
  
--static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
-+/*
-+ * Calculate mask of events for a list of marks.
-+ *
-+ * Return true if any of the attached marks want to hold an inode reference.
-+ */
-+static bool __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- {
- 	u32 new_mask = 0;
- 	bool want_iref = false;
-@@ -261,6 +266,34 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 	 */
- 	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
- 
-+	return want_iref;
-+}
-+
-+/*
-+ * Calculate mask of events for a list of marks after attach/modify mark
-+ * and get an inode reference for the connector if needed.
-+ *
-+ * A concurrent add of evictable mark and detach of non-evictable mark can
-+ * lead to __fsnotify_recalc_mask() returning false want_iref, but in this
-+ * case we defer clearing iref to fsnotify_recalc_mask_clear_iref() called
-+ * from fsnotify_put_mark().
-+ */
-+static void fsnotify_recalc_mask_set_iref(struct fsnotify_mark_connector *conn)
-+{
-+	bool has_iref = conn->flags & FSNOTIFY_CONN_FLAG_HAS_IREF;
-+	bool want_iref = __fsnotify_recalc_mask(conn) || has_iref;
-+
-+	(void) fsnotify_update_iref(conn, want_iref);
-+}
-+
-+/*
-+ * Calculate mask of events for a list of marks after detach mark
-+ * and return the inode object if its reference is no longer needed.
-+ */
-+static void *fsnotify_recalc_mask_clear_iref(struct fsnotify_mark_connector *conn)
-+{
-+	bool want_iref = __fsnotify_recalc_mask(conn);
-+
- 	return fsnotify_update_iref(conn, want_iref);
- }
- 
-@@ -297,7 +330,7 @@ void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 
- 	spin_lock(&conn->lock);
- 	update_children = !fsnotify_conn_watches_children(conn);
--	__fsnotify_recalc_mask(conn);
-+	fsnotify_recalc_mask_set_iref(conn);
- 	update_children &= fsnotify_conn_watches_children(conn);
- 	spin_unlock(&conn->lock);
- 	/*
-@@ -415,7 +448,7 @@ void fsnotify_put_mark(struct fsnotify_mark *mark)
- 		/* Update watched objects after detaching mark */
- 		if (sb)
- 			fsnotify_update_sb_watchers(sb, conn);
--		objp = __fsnotify_recalc_mask(conn);
-+		objp = fsnotify_recalc_mask_clear_iref(conn);
- 		type = conn->type;
+ 		if (clkspec.np == node &&
+-		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
++		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
++			of_node_put(clkspec.np);
+ 			break;
++		}
++		of_node_put(clkspec.np);
  	}
- 	WRITE_ONCE(mark->connector, NULL);
+ 
+ 	/* PLL6 bypass is not part of the assigned clock list */
+@@ -249,6 +252,9 @@ static bool pll6_bypassed(struct device_node *node)
+ 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
+ 					 "#clock-cells", index, &clkspec);
+ 
++	if (!ret)
++		of_node_put(clkspec.np);
++
+ 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
+ 		return true;
+ 
 -- 
 2.53.0
 
