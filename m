@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKayKtcADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-252226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:35 +0200
+	id MIdCMyT1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5464597166
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E30594D9D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5EB639076AA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5F123542270
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AF3FB072;
-	Wed, 20 May 2026 18:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9D363C6F;
+	Wed, 20 May 2026 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRYnUsDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xycj0RvH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C759A3FADF7;
-	Wed, 20 May 2026 18:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1674731F9BE;
+	Wed, 20 May 2026 16:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300122; cv=none; b=RILF22z1EUfBCoKxKTVxqjcYH0jO3crpUxs/jPrTAQ8gIM+39Y9DMrSK3PWp7d86QyuWkO/0BBXRK39BhuGxm+1wjr2hk+PS1UNvNMSQktir54Iz3ltSDrAc6mPcYuf7fE+QgVon8gKQ+oA2yeM6pDJxMxO4W2Ikgu+KGzsaGzI=
+	t=1779295956; cv=none; b=B6TKjk2uG+6BXaEG0roCWe4f7s4MIiKiXgekbjiylelJeEayg7Ar3USKRl68XqqEida/jLjhiD0OckICizMsW1UOMipqC4h49Go1QCPfykt8aKcLmLowBgJkfUU6446HtmQHEy+kwPqtV/FesXQ9HfyKlNi5q6+7LOkkv8mld3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300122; c=relaxed/simple;
-	bh=2zK25LyT5flHzK2T/fdyK9px2mI9I8E3E7BwXGHtH4Q=;
+	s=arc-20240116; t=1779295956; c=relaxed/simple;
+	bh=feboqpoIQtROagPAhshHGBn4sQN5SPoiK3Xk5BnwSQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDHPOUrvr7vRm1AORSTRLySdu35uzZjFDGtMbWlp8wwTL/y7JEeOf4D7GJoGhRiNr6idgmr6YxZq7ObkcrLa2ZfKC7fbHzIfnjDb7u0YvUkbMBDfDwDbLHLVv1x4n/SXMZb/wt5EU3kE4IAPZzXKx/H7GD8NfUkAGCHjSJcmJ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRYnUsDQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3894C1F000E9;
-	Wed, 20 May 2026 18:02:01 +0000 (UTC)
+	 MIME-Version; b=IXjpby6a0IeYwPQJVK9zKUTSAIPpus7fX9OQzEJMLb+6b7/YUQ9o4v8tt9PGoQ4aD4v+1Zd4XVw8Bayhm7h2UeJVN4vtf5ADKsGyL3EkP5jyY6dSUXoy3TT+apo5/GXQBkLTHlCOVWwsa7rSoqyQHrQ6mnR+zh5Xc04NPOH4+9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xycj0RvH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4DB1F000E9;
+	Wed, 20 May 2026 16:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300121;
-	bh=huT9eNPGG+dRSH/A2/A2HZ5EnWLqWBejq4CnYk5tAHc=;
+	s=korg; t=1779295955;
+	bh=GrgBk0VyTfN9LyVmYoKSo4aeqn+coXBbNMjRht5koug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GRYnUsDQ8t6rBcx4sBy7AVdm86CuTLwp5iFijrAB50PmBwhkkpGY/hfxnVGhq5hTj
-	 jilvP44Df5aykxnrSYuK1VAqTK5MEHXfF8Q3I5rah10qtAf8+W5wr3MAoquvBptNK4
-	 9i0tk9ny33BMIbs1O9h0FdBrQQpk89W4dtRMzX1A=
+	b=Xycj0RvHQGrj0GrDjhePr2HjiETSsgcKdF1Iqmfq7p3Vt0QCKZ6ZfrBFezoRb9L21
+	 jFHaMWC1LjwokI/cjbMH2gEWNMMaabHoIuLzF+YO8JVILewQknBrrTVQpuSxkwN7Um
+	 r5/RGmHUd2ktx8kZHAjO0qWlMXNscs7u6Ql+y/AQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Hiker Cl <clhiker365@gmail.com>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/666] bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path
-Date: Wed, 20 May 2026 18:14:26 +0200
-Message-ID: <20260520162112.428566203@linuxfoundation.org>
+Subject: [PATCH 7.0 0617/1146] bpf: Fix NULL deref in map_kptr_match_type for scalar regs
+Date: Wed, 20 May 2026 18:14:27 +0200
+Message-ID: <20260520162202.146228672@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +66,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252226-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250647-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B5464597166
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,meta.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 50E30594D9D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Mykyta Yatsenko <yatsenko@meta.com>
 
-[ Upstream commit 8ed82f807bb09d2c8455aaa665f2c6cb17bc6a19 ]
+[ Upstream commit 4d0a375887ab4d49e4da1ff10f9606cab8f7c3ad ]
 
-The DEVMAP_HASH branch in dev_map_redirect_multi() uses
-hlist_for_each_entry_safe() to iterate hash buckets, but this function
-runs under RCU protection (called from xdp_do_generic_redirect_map()
-in softirq context). Concurrent writers (__dev_map_hash_update_elem,
-dev_map_hash_delete_elem) modify the list using RCU primitives
-(hlist_add_head_rcu, hlist_del_rcu).
+Commit ab6c637ad027 ("bpf: Fix a bpf_kptr_xchg() issue with local
+kptr") refactored map_kptr_match_type() to branch on btf_is_kernel()
+before checking base_type(). A scalar register stored into a kptr
+slot has no btf, so the btf_is_kernel(reg->btf) call dereferences
+NULL.
 
-hlist_for_each_entry_safe() performs plain pointer dereferences without
-rcu_dereference(), missing the acquire barrier needed to pair with
-writers' rcu_assign_pointer(). On weakly-ordered architectures (ARM64,
-POWER), a reader can observe a partially-constructed node. It also
-defeats CONFIG_PROVE_RCU lockdep validation and KCSAN data-race
-detection.
+Move the base_type() != PTR_TO_BTF_ID guard before any reg->btf
+access.
 
-Replace with hlist_for_each_entry_rcu() using rcu_read_lock_bh_held()
-as the lockdep condition, consistent with the rcu_dereference_check()
-used in the DEVMAP (non-hash) branch of the same functions. Also fix
-the same incorrect lockdep_is_held(&dtab->index_lock) condition in
-dev_map_enqueue_multi(), where the lock is not held either.
-
-Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260320072645.16731-1-devnexen@gmail.com
+Fixes: ab6c637ad027 ("bpf: Fix a bpf_kptr_xchg() issue with local kptr")
+Reported-by: Hiker Cl <clhiker365@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221372
+Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260416-kptr_crash-v1-1-5589356584b4@meta.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/devmap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
-index 39b7efa396b8e..17f8c9d6e95cc 100644
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -653,7 +653,7 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
- 		for (i = 0; i < dtab->n_buckets; i++) {
- 			head = dev_map_index_hash(dtab, i);
- 			hlist_for_each_entry_rcu(dst, head, index_hlist,
--						 lockdep_is_held(&dtab->index_lock)) {
-+						rcu_read_lock_bh_held()) {
- 				if (!is_valid_dst(dst, xdpf))
- 					continue;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index b26a599be947f..77ddd452b8035 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6000,6 +6000,9 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 	int perm_flags;
+ 	const char *reg_name = "";
  
-@@ -735,7 +735,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
- 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
- 	int excluded_devices[1+MAX_NEST_DEV];
- 	struct hlist_head *head;
--	struct hlist_node *next;
- 	int num_excluded = 0;
- 	unsigned int i;
- 	int err;
-@@ -775,7 +774,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
- 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
- 		for (i = 0; i < dtab->n_buckets; i++) {
- 			head = dev_map_index_hash(dtab, i);
--			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
-+			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
- 				if (is_ifindex_excluded(excluded_devices, num_excluded,
- 							dst->dev->ifindex))
- 					continue;
++	if (base_type(reg->type) != PTR_TO_BTF_ID)
++		goto bad_type;
++
+ 	if (btf_is_kernel(reg->btf)) {
+ 		perm_flags = PTR_MAYBE_NULL | PTR_TRUSTED | MEM_RCU;
+ 
+@@ -6012,7 +6015,7 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 			perm_flags |= MEM_PERCPU;
+ 	}
+ 
+-	if (base_type(reg->type) != PTR_TO_BTF_ID || (type_flag(reg->type) & ~perm_flags))
++	if (type_flag(reg->type) & ~perm_flags)
+ 		goto bad_type;
+ 
+ 	/* We need to verify reg->type and reg->btf, before accessing reg->btf */
 -- 
 2.53.0
 
