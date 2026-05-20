@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO1CErsCDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-251915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:39 +0200
+	id kFB2IV77DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591F9597521
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2279A595D65
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D88A32707D3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 465CA30F1900
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787893F23D5;
-	Wed, 20 May 2026 17:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5A53F789B;
+	Wed, 20 May 2026 18:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZB9gBDc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhOzxC4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB5349AFF;
-	Wed, 20 May 2026 17:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16F02F363F;
+	Wed, 20 May 2026 18:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299218; cv=none; b=ADun/B4yBMb0nkgdvKt+UxFxgqY5dMx5YV0qPA5cB0z9AVdFE2oUwicVaZgVjO2xq24r4Pd3BCs/TOe+SsVheuRzuoQQ38+OBLnYdCh6tYMSaTgJR+YywmyedSQCvkt7gQ645UqcBQzKNzaUAs1BHRnUH/EaXHSVS0toydTxOnA=
+	t=1779300873; cv=none; b=llbaUyiUG/BJhVh51KssSQTEtXdpim0LXHtS6PmSspNVUbzBT5ox4TmXnnIOgzKKbCI1lW7xLAeJFrlRtfP5/KuliXGWNl0wRr89nqf5krW8ZeqkLFs9PTWUK+6UzNwyglfeGSJdC7n+eliJV6Kw7ViYX4u3V4bSkITizPj4Y3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299218; c=relaxed/simple;
-	bh=vcl0fk2bI5oWZlWPSvFeFTp4UwncwW9WCa6yQLibfEM=;
+	s=arc-20240116; t=1779300873; c=relaxed/simple;
+	bh=BMmVks72ZqHtFtSM9Hk4qqmufPkJfGzravrnJVRVutY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtf4ErfUGGi8cnsrVgGxgatNjI5PeSDeo1U1Y3aRmlzDi1ltiR2NNA9Wwm16kXSsvpJdXFw3+z+kQCsPLioSdqhJpz0nsJreKmurBGBfycYNgn1sxB46d3hYcg55lN7fj3iyOhfviSqL8U0mafFGcR3a/B9hhg7JTkmXKNfAKA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZB9gBDc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5371F000E9;
-	Wed, 20 May 2026 17:46:56 +0000 (UTC)
+	 MIME-Version; b=KVPuMpRfaODGXYOet1LvUkX99HkZ7JRBVjV9HGoF0SknyhmqCf+chuoYnX4wNo/K0lRJK26uaK/E1q1xV2+dFt4daAmFb/RkasURYk4ymprKnflA9NOvf2iGRvlUagOZmVRHJK4yhYupqhvq6HXye4HOg/pgFZoMg0bzN8ai8yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhOzxC4l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632EC1F000E9;
+	Wed, 20 May 2026 18:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299217;
-	bh=C81+Y1eQA+I1wZ9yvzzxynBjzu+ZLceZ7DaMfUFModo=;
+	s=korg; t=1779300871;
+	bh=Lt/K5GbhxBsa197eMkDSHympqOR2B5Dp2DYDtplJP0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DZB9gBDc+9hsr/dD4OGznXO7v1ydVcavN+yyZ7fRRxnbvUgWZ3/YDCW5v94+sk7ij
-	 vIQdAZhO0LIX2T7RablC1Cm0Ovv3FqenzdWssCNojsuY40KeVTO+pw166blxnL3/U6
-	 b9oM7UVgxZZwjpXwAz7eeFmgsdIZNOKcxP0VfKYk=
+	b=MhOzxC4lCkTttViQixKUkAmYf1TXCCEwBJ2DfVZRszPskLMZ8APJxjULSfEIVJPcK
+	 C3eFbOa4uI68sKu3eMUbqzsn8APwKlTg0i5kzCnf56lkRm+VM62n2lwiQM5oeqx5by
+	 rfrbTEoMaCqjnLR9VNKhUke1AFOn3ltKOHyahJHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 666/957] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
+Subject: [PATCH 6.12 338/666] mtd: spi-nor: swp: check SR_TB flag when getting tb_mask
 Date: Wed, 20 May 2026 18:19:09 +0200
-Message-ID: <20260520162148.976409704@linuxfoundation.org>
+Message-ID: <20260520162118.558253649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,130 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251915-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-252514-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,suse.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
-X-Rspamd-Queue-Id: 591F9597521
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email]
+X-Rspamd-Queue-Id: 2279A595D65
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit f5ca450087c3baf3651055e7a6de92600f827af3 ]
+[ Upstream commit 94645aa41bf9ecb87c2ce78b1c3405bfb6074a37 ]
 
-In nf_osf_match(), the nf_osf_hdr_ctx structure is initialized once
-and passed by reference to nf_osf_match_one() for each fingerprint
-checked. During TCP option parsing, nf_osf_match_one() advances the
-shared ctx->optp pointer.
+When the chip does not support top/bottom block protect, the tb_mask
+must be set to 0, otherwise SR1 bit5 will be unexpectedly modified.
 
-If a fingerprint perfectly matches, the function returns early without
-restoring ctx->optp to its initial state. If the user has configured
-NF_OSF_LOGLEVEL_ALL, the loop continues to the next fingerprint.
-However, because ctx->optp was not restored, the next call to
-nf_osf_match_one() starts parsing from the end of the options buffer.
-This causes subsequent matches to read garbage data and fail
-immediately, making it impossible to log more than one match or logging
-incorrect matches.
-
-Instead of using a shared ctx->optp pointer, pass the context as a
-constant pointer and use a local pointer (optp) for TCP option
-traversal. This makes nf_osf_match_one() strictly stateless from the
-caller's perspective, ensuring every fingerprint check starts at the
-correct option offset.
-
-Fixes: 1a6a0951fc00 ("netfilter: nfnetlink_osf: add missing fmatch check")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Fixes: 3dd8012a8eeb ("mtd: spi-nor: add TB (Top/Bottom) protect support")
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/mtd/spi-nor/swp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 2305c7d9761eb..832a973c41777 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -64,9 +64,9 @@ struct nf_osf_hdr_ctx {
- static bool nf_osf_match_one(const struct sk_buff *skb,
- 			     const struct nf_osf_user_finger *f,
- 			     int ttl_check,
--			     struct nf_osf_hdr_ctx *ctx)
-+			     const struct nf_osf_hdr_ctx *ctx)
+diff --git a/drivers/mtd/spi-nor/swp.c b/drivers/mtd/spi-nor/swp.c
+index fdc411f2a23c5..7208be75d850f 100644
+--- a/drivers/mtd/spi-nor/swp.c
++++ b/drivers/mtd/spi-nor/swp.c
+@@ -27,8 +27,10 @@ static u8 spi_nor_get_sr_tb_mask(struct spi_nor *nor)
  {
--	const __u8 *optpinit = ctx->optp;
-+	const __u8 *optp = ctx->optp;
- 	unsigned int check_WSS = 0;
- 	int fmatch = FMATCH_WRONG;
- 	int foptsize, optnum;
-@@ -95,17 +95,17 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 	check_WSS = f->wss.wc;
- 
- 	for (optnum = 0; optnum < f->opt_num; ++optnum) {
--		if (f->opt[optnum].kind == *ctx->optp) {
-+		if (f->opt[optnum].kind == *optp) {
- 			__u32 len = f->opt[optnum].length;
--			const __u8 *optend = ctx->optp + len;
-+			const __u8 *optend = optp + len;
- 
- 			fmatch = FMATCH_OK;
- 
--			switch (*ctx->optp) {
-+			switch (*optp) {
- 			case OSFOPT_MSS:
--				mss = ctx->optp[3];
-+				mss = optp[3];
- 				mss <<= 8;
--				mss |= ctx->optp[2];
-+				mss |= optp[2];
- 
- 				mss = ntohs((__force __be16)mss);
- 				break;
-@@ -113,7 +113,7 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 				break;
- 			}
- 
--			ctx->optp = optend;
-+			optp = optend;
- 		} else
- 			fmatch = FMATCH_OPT_WRONG;
- 
-@@ -156,9 +156,6 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 		}
- 	}
- 
--	if (fmatch != FMATCH_OK)
--		ctx->optp = optpinit;
--
- 	return fmatch == FMATCH_OK;
+ 	if (nor->flags & SNOR_F_HAS_SR_TB_BIT6)
+ 		return SR_TB_BIT6;
+-	else
++	else if (nor->flags & SNOR_F_HAS_SR_TB)
+ 		return SR_TB_BIT5;
++	else
++		return 0;
  }
  
+ static u64 spi_nor_get_min_prot_length_sr(struct spi_nor *nor)
 -- 
 2.53.0
 
