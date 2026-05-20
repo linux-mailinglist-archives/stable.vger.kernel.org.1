@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCJWOIfnDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:35 +0200
+	id UP/LGy30DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B820592A83
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E26594AB3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1AA7F304F262
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15F14322C436
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E524352016;
-	Wed, 20 May 2026 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC7A3A3E60;
+	Wed, 20 May 2026 17:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt+wFZap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUuz/A8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E066369D6A;
-	Wed, 20 May 2026 16:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D06A369999;
+	Wed, 20 May 2026 17:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295709; cv=none; b=jyymQeE7iUXNRMU2uq57ZC+74Gyr11sgqz0yx4TguV7UrpUnnE49J7ZjCDvNGfCN4g+e6qwMotY8PBYudXQA8r3d1ISsWDVjkkz5Y6u7D9Qb9Mx2w0WLV49uvyrQj1QQ0YV4K+a0BRoIseANQtZ6q26LaOMQ7ciwzKIKvMBBnMY=
+	t=1779297984; cv=none; b=QYrTZNHZoZJFwxxpYgxvg+pNsTBYX9Nmuke+tesNgY0NR4N6v5zgym0GfNS72p5w/Mj8+kQHaaFiO+kU7VSGeci2sm5DziZNBH7/A4Dw+cuLTi3A7nPSMH2Ob/iooKVT5yUR2PgIrHgUiIPcsO2nww+8mYT6EqXQvxwy/VFCY4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295709; c=relaxed/simple;
-	bh=uEyxiUkQ4x/yKzW1ypweVmGqJhVJX34eHR8sK5GhZS4=;
+	s=arc-20240116; t=1779297984; c=relaxed/simple;
+	bh=3bKkWcQVK2h/EtFal/9xMb6NKMdCyguO8Hx1/hONyWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9hsqqpcP5ZX9xUyU6IcRsFFU5yzz8I1pshDplMJMnyks3HI/Ikm1vuRQ/QypaqgbNnL6jE1PjNoBUt2FSLFqaKPK8WcGBvsXCxG32kOo9DLqIBqqe1AM8tzGQuwJV2x0WoaTCuqHFYDSUnfbqiSe5kRV7EZjRJHI08JAhpS8ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt+wFZap; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B321F000E9;
-	Wed, 20 May 2026 16:48:27 +0000 (UTC)
+	 MIME-Version; b=cmN31OUD/pKge+CiDYxs9R7YG4APMCTGJf1Ql9dBNw9Qz1SEs13Dzm08rRMzVLeY4UC64XcFn84hXSwZoDPgwQYDQ15DZFc/cQKTDZRA2nw5OQn2It1vjV9oF8urpCZZ7h4dTX4l4YVgywMKwqcuK3nHyaZgoCRDT64UvA4x1G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUuz/A8e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A392E1F000E9;
+	Wed, 20 May 2026 17:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295708;
-	bh=bpmJm/NMvBxngTS1Squ62Z3AiGgbngWXxMbS+9kqmxA=;
+	s=korg; t=1779297983;
+	bh=heHOKXe6lpGil16lavXXBW+Y16i0DtFmuSFj+LIzpMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qt+wFZapoLMI+K364X834+JPcZPBO5n9G2mXtXHSIQpYf+TEB2i+GjNHXuVunhwPz
-	 Xj2YJuuEqsNU6/ytlyatIeJ9MmiCJDhNyA5V7U68wOBX1ZNU/Hnp8tjlBB5speH6r2
-	 aBLmm8egNnrcZBeJAKOIxh6AA/N3UPv6s6PPX4Z4=
+	b=NUuz/A8eKGBmDK9QOv7Xsa4b2NoXMSR9yDoWnIyN4HljW5z9YQE2h4ktkkNPWj6Cn
+	 HqgmSaoIGEgzP2Z/y7uw5GvN6Kh/0E3nnilrDbZAt1FY+V6rQV+N651tAjd8buQSeu
+	 uFaknT1jZXGpcpQkFDgiexLgg4kQ0WVDQyV5/caQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luke Wang <ziniu.wang_1@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Alexandru Dadu <alexandru.dadu@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0471/1146] arm64: dts: imx91-11x11-evk: change usdhc tuning step for eMMC and SD
+Subject: [PATCH 6.18 238/957] drm/imagination: Switch reset_reason fields from enum to u32
 Date: Wed, 20 May 2026 18:12:01 +0200
-Message-ID: <20260520162158.852480821@linuxfoundation.org>
+Message-ID: <20260520162139.703362731@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250552-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251439-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,62 +89,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: 7B820592A83
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,imgtec.com:email]
+X-Rspamd-Queue-Id: 24E26594AB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+From: Alexandru Dadu <alexandru.dadu@imgtec.com>
 
-[ Upstream commit 5ab0c76df2403137a6d0fb27a55e03cedf47f44c ]
+[ Upstream commit d2f83a6cd598bf413f1acf34153bd1d71023fbab ]
 
-During system resume, the following errors occurred:
+Update the reset_reason fwif structure fields from enum to u32 to remove
+any ambiguity from the interface (enum is not a fixed size thus is unfit
+for the purpose of the data type).
 
-  [  430.638625] mmc1: error -84 writing Cache Enable bit
-  [  430.643618] mmc1: error -84 doing runtime resume
-
-For eMMC and SD, there are two tuning pass windows and the gap between
-those two windows may only have one cell. If tuning step > 1, the gap may
-just be skipped and host assumes those two windows as a continuous
-windows. This will cause a wrong delay cell near the gap to be selected.
-
-Set the tuning step to 1 to avoid selecting the wrong delay cell.
-
-For SDIO, the gap is sufficiently large, so the default tuning step does
-not cause this issue.
-
-Fixes: 6772c4cffd87 ("arm64: dts: freescale: add i.MX91 11x11 EVK basic support")
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: a26f067feac1f ("drm/imagination: Add FWIF headers")
+Signed-off-by: Alexandru Dadu <alexandru.dadu@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://patch.msgid.link/20260323-b4-firmware-context-reset-notification-handling-v3-2-1a66049a9a65@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/imagination/pvr_rogue_fwif.h        | 8 ++++++--
+ drivers/gpu/drm/imagination/pvr_rogue_fwif_shared.h | 6 +++++-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-index 03f460d62f7a5..6a066a0d86bc2 100644
---- a/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts
-@@ -514,6 +514,7 @@ &usdhc1 {
- 	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
- 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	fsl,tuning-step = <1>;
- 	status = "okay";
+diff --git a/drivers/gpu/drm/imagination/pvr_rogue_fwif.h b/drivers/gpu/drm/imagination/pvr_rogue_fwif.h
+index 172886be4c820..5d590c4c25663 100644
+--- a/drivers/gpu/drm/imagination/pvr_rogue_fwif.h
++++ b/drivers/gpu/drm/imagination/pvr_rogue_fwif.h
+@@ -1347,8 +1347,12 @@ struct rogue_fwif_fwccb_cmd_freelists_reconstruction_data {
+ struct rogue_fwif_fwccb_cmd_context_reset_data {
+ 	/* Context affected by the reset */
+ 	u32 server_common_context_id;
+-	/* Reason for reset */
+-	enum rogue_context_reset_reason reset_reason;
++	/*
++	 * Reason for reset
++	 * The valid values for reset_reason are the ones from
++	 * enum rogue_context_reset_reason
++	 */
++	u32 reset_reason;
+ 	/* Data Master affected by the reset */
+ 	u32 dm;
+ 	/* Job ref running at the time of reset */
+diff --git a/drivers/gpu/drm/imagination/pvr_rogue_fwif_shared.h b/drivers/gpu/drm/imagination/pvr_rogue_fwif_shared.h
+index 6c09c15bf9bd8..f95acd5a1f8e8 100644
+--- a/drivers/gpu/drm/imagination/pvr_rogue_fwif_shared.h
++++ b/drivers/gpu/drm/imagination/pvr_rogue_fwif_shared.h
+@@ -249,7 +249,11 @@ enum rogue_context_reset_reason {
  };
  
-@@ -528,6 +529,7 @@ &usdhc2 {
- 	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_gpio_sleep>;
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	fsl,tuning-step = <1>;
- 	status = "okay";
+ struct rogue_context_reset_reason_data {
+-	enum rogue_context_reset_reason reset_reason;
++	/*
++	 * The valid values for reset_reason are the ones from
++	 * enum rogue_context_reset_reason
++	 */
++	u32 reset_reason;
+ 	u32 reset_ext_job_ref;
  };
  
 -- 
