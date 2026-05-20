@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-252130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YI1qJS36DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:09 +0200
+	id KNvBNegDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-252764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E4F595A5F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DAB5976F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4E6330A4337
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDF2639D7EBB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91E23D75C7;
-	Wed, 20 May 2026 17:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5F33CCFB0;
+	Wed, 20 May 2026 18:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Dsin0lG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLm/8dDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9D04F5E0;
-	Wed, 20 May 2026 17:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5958D3FBEAB;
+	Wed, 20 May 2026 18:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299869; cv=none; b=myvSSMEXWQdfGlmRUuXVoOWX90WwUdiutz+9ueyeEEKFaHV+VsrGjFyHXNLNTWUUQKGHGVRZ3BRijILoGFErL5131VBMKUqJPIdpT49T4C1F6cEhl67x3pxljjEz5hH3czeLTSRmizmrRleNgvUyRnJQyPq98EORWU2iPTSQAQk=
+	t=1779301529; cv=none; b=eT/e7QcX5qWCaE2fPLObdXXtr3qnCux42ctD/DPQ9TiSbbvcc9p/QrAFq9qOsMR6asHmItLEka7TIuQOyasz54MemW/MofMY51torCT4rDESUb01qlIw5Srt+F3ViDpkc6DOQTNvzZDXVOkGiLKenJEzZZxcxigWsBIA2iRTdec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299869; c=relaxed/simple;
-	bh=y7//oqThvCDXK0N9m6texK3HAAgBoVQ+mIQBufqRCeY=;
+	s=arc-20240116; t=1779301529; c=relaxed/simple;
+	bh=fshxD64UpRn2a4XWZartkgm23TIMjWk+T9B+VUpybpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCmcfNO0U8s0RL9esWamN7SjjvFI5DEdrMDgTswDLgHXauQ+EVadZRukfSfcfnRqnUcBlaGhXYkaHJCT2BDC9d9uJWZAaAB+56mRLkpiIQ5/QVVArZXb932BNFImC7QZ44ule0f5bmp/DGcm3MyyLMMBEwZG2U/gRrZrH62gM6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Dsin0lG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F241F000E9;
-	Wed, 20 May 2026 17:57:47 +0000 (UTC)
+	 MIME-Version; b=p9OKNfEuTU6zWPkgS68gnswlKZtIQ2iF1eQZ5GHo9UVe4lbJD0qfjkojM+DOdbFLaA1y9fbh4GYL+mYQ6Lv3E/LHsfRXBPZG6nrhVEaH63b2okOdikxfDd0ZOh7pPBaGfkuNjOe0811NyZs5mqjbnpwID1W+Yv8cwweRQXkE8YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLm/8dDE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C702F1F000E9;
+	Wed, 20 May 2026 18:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299868;
-	bh=11SHJ3svCgksjCx0U60Zt8hVDf4EIMlhqTD2VdAwRhs=;
+	s=korg; t=1779301528;
+	bh=Sr1WcyPLYrONLSJk5aNNLcF71yZucxJnZj/mi25v6Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2Dsin0lGniaNlADDMQt8+2ThmDjVfgZ5z0MKq732QLKH6zSY0lIfyGlzS+NLC+fzk
-	 Wy5myg1eDgu+n/45ad17S7Yw/fxaZYV+MmGtVOyeMlZt5C8DvL6geefNKAfvkbi9jv
-	 na7xQUWCrVi7vBsnDx7eE/WAffquqFRbH/4YqCXE=
+	b=zLm/8dDEa2cqOUGgjfJbG9/6WA+9OkBY00AuQxZ41OmM4wghNhvkbi6XRTGV+ARgc
+	 RQ3m/ft57J+T1U8YJKys8iu0fFlQpW9jcTFn7OHC9b9vQ0jJolVfCafW3SOArgYIwJ
+	 O+rV61hEpe5MN/22KUa7y2EQmHFEJiwEdI4sTVe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.18 916/957] btrfs: only release the dirty pages io tree after successful writes
-Date: Wed, 20 May 2026 18:23:19 +0200
-Message-ID: <20260520162154.443605242@linuxfoundation.org>
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 589/666] iavf: add VIRTCHNL_OP_ADD_VLAN to success completion handler
+Date: Wed, 20 May 2026 18:23:20 +0200
+Message-ID: <20260520162124.029550574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,184 +72,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252764-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252130-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 54E4F595A5F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 61DAB5976F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Petr Oros <poros@redhat.com>
 
-commit 4066c55e109475a06d18a1f127c939d551211956 upstream.
+[ Upstream commit 34d33313b52eeac3a97ad2e3176d523ec70d9283 ]
 
-[WARNING]
-With extra warning on dirty extent buffers at umount (aka, the next
-patch in the series), test case generic/388 can trigger the following
-warning about dirty extent buffers at unmount time:
+The V1 ADD_VLAN opcode had no success handler; filters sent via V1
+stayed in ADDING state permanently.  Add a fallthrough case so V1
+filters also transition ADDING -> ACTIVE on PF confirmation.
 
-  BTRFS critical (device dm-2 state E): emergency shutdown
-  BTRFS error (device dm-2 state E): error while writing out transaction: -30
-  BTRFS warning (device dm-2 state E): Skipping commit of aborted transaction.
-  BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
-  BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=-30 Readonly filesystem
-  BTRFS info (device dm-2 state EA): forced readonly
-  BTRFS info (device dm-2 state EA): last unmount of filesystem 4fbf2e15-f941-49a0-bc7c-716315d2777c
-  ------------[ cut here ]------------
-  WARNING: disk-io.c:3311 at invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs], CPU#8: umount/914368
-  CPU: 8 UID: 0 PID: 914368 Comm: umount Tainted: G           OE       7.1.0-rc1-custom+ #372 PREEMPT(full)  2de38db8d1deae71fde295430a0ff3ab98ccf596
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-  RIP: 0010:invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs]
-  Call Trace:
-   <TASK>
-   close_ctree+0x52e/0x574 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
-   generic_shutdown_super+0x89/0x1a0
-   kill_anon_super+0x16/0x40
-   btrfs_kill_super+0x16/0x20 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
-   deactivate_locked_super+0x2d/0xb0
-   cleanup_mnt+0xdc/0x140
-   task_work_run+0x5a/0xa0
-   exit_to_user_mode_loop+0x123/0x4b0
-   do_syscall_64+0x243/0x7c0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30539776 owner 9 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30621696 owner 257 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30638080 owner 258 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30654464 owner 7 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30703616 owner 2 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30720000 owner 10 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30736384 owner 4 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30752768 owner 11 gen 9 refs 2 flags 0x7
+Critically, add an `if (v_retval) break` guard: the error switch in
+iavf_virtchnl_completion() does NOT return after handling errors,
+it falls through to the success switch.  Without this guard, a
+PF-rejected ADD would incorrectly mark ADDING filters as ACTIVE,
+creating a driver/HW mismatch where the driver believes the filter
+is installed but the PF never accepted it.
 
-I'm using a stripped down version, which seems to trigger the warning
-more reliably:
+For V2, this is harmless: iavf_vlan_add_reject() in the error
+block already kfree'd all ADDING filters, so the success handler
+finds nothing to transition.
 
-  _fsstress_pid=""
-  workload()
-  {
-  	dmesg -C
-  	mkfs.btrfs -f -K $dev > /dev/null
-  	echo 1 > /sys/kernel/debug/clear_warn_once
-  	mount $dev $mnt
-  	$fsstress -w -n 1024 -p 4 -d $mnt &
-  	_fsstress_pid=$!
-  	sleep 0
-  	$godown $mnt
-  	pkill --echo -PIPE fsstress > /dev/null
-  	wait $_fsstress_pid
-  	unset _fsstress_pid
-  	umount $mnt
-
-  	if dmesg | grep -q "WARNING"; then
-  		fail
-  	fi
-  }
-
-  for (( i = 0; i < $runtime; i++ )); do
-  	echo "=== $i/$runtime ==="
-  	workload
-  done
-
-[CAUSE]
-Inside btrfs_write_and_wait_transaction(), we first try to write all
-dirty ebs, then wait for them to finish.
-
-After that we call btrfs_extent_io_tree_release() to free all
-extent states from dirty_pages io tree.
-
-However if we hit an error from btrfs_write_marked_extent(), then we
-still call btrfs_extent_io_tree_release() to clear that dirty_pages io
-tree, which may contain dirty records that we haven't yet submitted.
-
-Furthermore, the later transaction cleanup path will utilize that
-dirty_pages io tree to properly cleanup those dirty ebs, but since it's
-already empty, no dirty ebs are properly cleaned up, thus will later
-trigger the warnings inside invalidate_btree_folios().
-
-[FIX]
-Normally such dirty ebs won't cause problems, as when the iput() is
-called on the btree inode, the dirty ebs will be forcibly written back,
-and since the fs is already in an error status, such writeback will not
-reach disk and finish immediately.
-
-But it's still better to get rid of such dirty ebs, if we ended up with
-dirty ebs but the fs is not in an error status, then such writeback at
-iput() time will be too late, as all workers are already stopped but
-writeback will utilize workers, which will lead to NULL pointer
-dereferences.
-
-Instead of unconditionally calling btrfs_extent_io_tree_release(), only
-call it if btrfs_write_and_wait_transaction() finished successfully, so
-that @dirty_pages extent io tree is kept untouched for transaction
-cleanup.
-
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-4-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c     |    1 +
- fs/btrfs/transaction.c |    9 ++++-----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4646,6 +4646,7 @@ static void btrfs_destroy_marked_extents
- 			free_extent_buffer_stale(eb);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 9ba36e12dabf0..3e6bdd6ba5372 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -2515,9 +2515,13 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		spin_unlock_bh(&adapter->adv_rss_lock);
  		}
- 	}
-+	btrfs_extent_io_tree_release(dirty_pages);
- }
+ 		break;
++	case VIRTCHNL_OP_ADD_VLAN:
+ 	case VIRTCHNL_OP_ADD_VLAN_V2: {
+ 		struct iavf_vlan_filter *f;
  
- static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1268,14 +1268,13 @@ static int btrfs_write_and_wait_transact
- 	blk_finish_plug(&plug);
- 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
- 
--	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
--
- 	if (ret)
- 		return ret;
--	else if (ret2)
-+	if (ret2)
- 		return ret2;
--	else
--		return 0;
++		if (v_retval)
++			break;
 +
-+	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
-+	return 0;
- }
- 
- /*
+ 		spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_ADDING)
+-- 
+2.53.0
+
 
 
 
