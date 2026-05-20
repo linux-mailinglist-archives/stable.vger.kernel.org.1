@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFt0MMHrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:37 +0200
+	id OIt/K/X/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593A45931B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C756596EF1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B9C631061F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3576C3022F42
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1C2F3EE1DA;
-	Wed, 20 May 2026 17:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D30A369D7A;
+	Wed, 20 May 2026 18:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drYsLK36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i44S5GuA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160B63D7D67;
-	Wed, 20 May 2026 17:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5DB30DEAC;
+	Wed, 20 May 2026 18:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296676; cv=none; b=aWBy81xy5VI1h9Gy4lQuSNcms+ogsMg6IxusENKSJ5mZI6c1ItEv9ubTzYo70Ct1IQPDrlw2LdOOZp2VBC/Z97KCSx9cfpV0sjRUxztgJ/38SOs764qmxFLk3C3Hb8K9S866EIW5Sn+6u/uWE79CVl1WjqEaJJcGwplYzlaloow=
+	t=1779302047; cv=none; b=WhB2h13iSGqnch/qJlUUvYXLk926F9RgmeUGl6iMPsw5pF/XZ+qc3gNvQGqpIgEZY1FEoE15eTI9QM/PnuupxKJobqiakcFcCabeAozq7CJ7wHfkfSKeyGj7L0O3YRa99AwdIAFChz92/Z1lK5HrndQKtLUcmWeyZyPKEmFcAhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296676; c=relaxed/simple;
-	bh=awGYmycK++4agAUPoGtL+tj6DumV3AGDyLueI1mytoc=;
+	s=arc-20240116; t=1779302047; c=relaxed/simple;
+	bh=syWvbcj44ejoNCNIJtBoym75dsvqbZR3geVTVxkI7OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfXYcO/tloseHvwfbaATC0G/sSsneiEwbAz7A3JJOavrk17Ez22F+mfj6HnF+NII1aiOsVBh0jYwIW2pEXvPiPqCKCAWPKUb891nHSGQWF+QKIQwaYeGerBHq6G/1UWyjixfTKgGUmrjYDpCd3rgX5/O1LzrgFd2DZUhI147JD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drYsLK36; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3001F00893;
-	Wed, 20 May 2026 17:04:34 +0000 (UTC)
+	 MIME-Version; b=ABA8PCYTEvFddFo73pwkkVTisSR+MWn1AEcLHaW+iAMHA9PRmVXBTEL641tZhsskXC1dbSqCaTXbYS68LaHBStHiDluwWasXS/h8HLRW8ahQzAy5x10snsyI2Ol1k9JpAlHQcN3PJXQYWLQK3GGRV9OKIdvx7GIole9XTyiLOxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i44S5GuA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776C51F000E9;
+	Wed, 20 May 2026 18:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296674;
-	bh=Sn7LSxzjjYTYKrHbTe1ULwcL6654ByeYkJZu8YY6FTw=;
+	s=korg; t=1779302046;
+	bh=QmtjO/LeJI+5xbYj2uQl2mXotFGEPA/2JdYMVYmK8yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=drYsLK36/3EowpXh9d3BOl4b+QD0j2MwOO1e+i9wfeV9MxrZAEHgJOUqGNPUffUxc
-	 XEyGc+X6cc0LANiG/3odlKKXG1FlRNED+dYPEsDB2UQL0rsFnZk4ARDDc8FXPLlRWV
-	 gkE+/l1PeU5n5iulMeBzyMJrF49iZamxiBHUmngQ=
+	b=i44S5GuAKT3Jwnu1XGEJpqobB8Krkc5xSczDR4JiAaA1x84D2uOlsjmZABtmVmA4Y
+	 XlUOPnQKVzbZlBDVY1mBxtRbKXtjLQ8z6Dn7r2qDQ7K4gqRmmtkjjzRdjzd+T/VA0D
+	 jj1pRtYG2kWeTAF8UYd79F7fOYVmqIRGdY1D2IoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
+	Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0889/1146] btrfs: fix bytes_may_use leak in move_existing_remap()
+Subject: [PATCH 6.6 116/508] drm/msm/dpu: fix mismatch between power and frequency
 Date: Wed, 20 May 2026 18:18:59 +0200
-Message-ID: <20260520162208.356497654@linuxfoundation.org>
+Message-ID: <20260520162101.142142645@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250936-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252963-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,harmstone.com:email]
-X-Rspamd-Queue-Id: 593A45931B8
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 2C756596EF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
 
-[ Upstream commit 68a135013bf73dfd6a277f76fc4e088b0f3dfa79 ]
+[ Upstream commit bc1dccc518cc5ab5140fba06c27e7188e0ed342b ]
 
-If the call to btrfs_reserve_extent() in move_existing_remap() returns a
-smaller extent than we asked for, currently we're not undoing the
-bytes_may_use change that we made. Fix this by calling
-btrfs_space_info_update_bytes_may_use() again for the difference.
+During DPU runtime suspend, calling dev_pm_opp_set_rate(dev, 0) drops
+the MMCX rail to MIN_SVS while the core clock frequency remains at its
+original (highest) rate. When runtime resume re-enables the clock, this
+may result in a mismatch between the rail voltage and the clock rate.
 
-Fixes: bbea42dfb91f ("btrfs: move existing remaps before relocating block group")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+For example, in the DPU bind path, the sequence could be:
+  cpu0: dev_sync_state -> rpmhpd_sync_state
+  cpu1:                                     dpu_kms_hw_init
+timeline 0 ------------------------------------------------> t
+
+After rpmhpd_sync_state, the voltage performance is no longer guaranteed
+to stay at the highest level. During dpu_kms_hw_init, calling
+dev_pm_opp_set_rate(dev, 0) drops the voltage, causing the MMCX rail to
+fall to MIN_SVS while the core clock is still at its maximum frequency.
+When the power is re-enabled, only the clock is enabled, leading to a
+situation where the MMCX rail is at MIN_SVS but the core clock is at its
+highest rate. In this state, the rail cannot sustain the clock rate,
+which may cause instability or system crash.
+
+Remove the call to dev_pm_opp_set_rate(dev, 0) from dpu_runtime_suspend
+to ensure the correct vote is restored when DPU resumes.
+
+Fixes: b0530eb11913 ("drm/msm/dpu: Use OPP API to set clk/perf state")
+Signed-off-by: Yuanjie Yang <yuanjie.yang@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/710077/
+Link: https://lore.kernel.org/r/20260309063720.13572-1-yuanjie.yang@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 033f74fd6225c..6e260ccbf50ac 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4182,6 +4182,12 @@ static int move_existing_remap(struct btrfs_fs_info *fs_info,
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+index 6ba289e04b3b2..4d93b5f78893e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+@@ -1316,8 +1316,6 @@ static int __maybe_unused dpu_runtime_suspend(struct device *dev)
+ 	struct msm_drm_private *priv = platform_get_drvdata(pdev);
+ 	struct dpu_kms *dpu_kms = to_dpu_kms(priv->kms);
  
-+	if (ins.offset < length) {
-+		spin_lock(&sinfo->lock);
-+		btrfs_space_info_update_bytes_may_use(sinfo, ins.offset - length);
-+		spin_unlock(&sinfo->lock);
-+	}
-+
- 	dest_addr = ins.objectid;
- 	dest_length = ins.offset;
+-	/* Drop the performance state vote */
+-	dev_pm_opp_set_rate(dev, 0);
+ 	clk_bulk_disable_unprepare(dpu_kms->num_clocks, dpu_kms->clocks);
  
+ 	for (i = 0; i < dpu_kms->num_paths; i++)
 -- 
 2.53.0
 
