@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAqAKC0WDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:37 +0200
+	id yCByLMDlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362C8599534
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AEF592756
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8FDC3292E1D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63A0F30C57E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F493BED26;
-	Wed, 20 May 2026 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E8E372B31;
+	Wed, 20 May 2026 16:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9FIrchc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyGgRtIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61F35F619;
-	Wed, 20 May 2026 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387E5375ACB;
+	Wed, 20 May 2026 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297395; cv=none; b=T36UCvgRuDTHEQGvnixgiYrC4gtmWhUNT7+kxFJBzajSlp2XBtUk3qN3VpI+rV9LQ7BSPDJWMSdp0kiPTHt8Q5PPn+LFR2LNnW0JMwoP4LO9k8qpkDBJL6vklWhdLO1a/OFbi8A4El9GcFnroAratkA2cvKWS99I0QGcpjHFKRw=
+	t=1779294999; cv=none; b=LTrKF8BVwhLnJ+vEnMzieCRiVIaP1lhHTh+jLttXU+3F224DNIG/0BV/xHPi2YycYJ9xkDqy8mxnlagUo5UvpVktS69oJlC0gDLcMu2bizG7/maUfDYr6HTukYv3J8d3D047vqHl3SDpyCnFYm72ngl4g9zfUom3Us7OY81SAEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297395; c=relaxed/simple;
-	bh=495Upsqj3cMyHLl7HIdeJIKAj6mDYP+gPr9KaIo17fA=;
+	s=arc-20240116; t=1779294999; c=relaxed/simple;
+	bh=n0ybVxE0/cu+3jY/LidqQuDblRYCjIOBSV6hp7e0Hnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evi+68T+ATMiwr8dL5bv9pRK/Tm/Bdc2t2z73xkGfaq0YrVryFgbc+dqiX2EZHL/J+6DxHCnI1pXVkvZ3FYvTMxLBa24SVJUIdRDa47l3MDR6Db0c9rtqVI/Jemc9cPlPAiYwTQpsULh29L96hncDUJUvG928Gl9SAPZ8KoOWLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9FIrchc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9009C1F000E9;
-	Wed, 20 May 2026 17:16:33 +0000 (UTC)
+	 MIME-Version; b=jAL9JCnJfZsHzRJeINXBslset05hAC2e+0w5AzMNLNAkIr5AGR1iOZT19iPvYwbg88lVT+6DsQG/KVlALCeZjp+h5NVzmjn6+qFV2rVKLUfxBVbNCVUYnxKFy1j9p5x7Ps3ad89W8LNqO8XVy1rn0LfcDiqm2+Mv7579rjjaTj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyGgRtIl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8631F000E9;
+	Wed, 20 May 2026 16:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297394;
-	bh=JWFp45+OMYazbssMIY7PtIkpkeMiROLv82RFyKe4eLI=;
+	s=korg; t=1779294997;
+	bh=F8gAANpuckwEWdkvbO52SvXl8S2L5RjqjUWA8DLg9ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S9FIrchceoWP4ndguYVFKW+tiTmfQUOPjS9O80fEXYoMzuexeEc97oUq0rQsXeyWr
-	 ypuNdEXk0zez6vXN/2soilykrk5oNBfcXeMx7KBtzlMI5ML2jWrRWTezN6crw0jUlK
-	 ilv9QCJHHal/2XmWkNpeovZ2R4ts9AkhKJ/UJb9A=
+	b=iyGgRtIlshpuhxCF+qNB81RyvsQDct4ylPjHMMDfvHTyjotjx5t3opDKzYk0FYjKH
+	 4dX+FX854vpZDz2lVlTVaHS5SRHMtWZYMFnhubmBhVf1JdIPD0K+y/7Dp/YPky+Xtb
+	 eIYOezK4n1Iq3S97GT6JJZSc+wzmkL1YRsorXQpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 016/957] md: wake raid456 reshape waiters before suspend
-Date: Wed, 20 May 2026 18:08:19 +0200
-Message-ID: <20260520162134.912379773@linuxfoundation.org>
+Subject: [PATCH 7.0 0250/1146] dm cache: fix null-deref with concurrent writes in passthrough mode
+Date: Wed, 20 May 2026 18:08:20 +0200
+Message-ID: <20260520162153.892172047@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,91 +66,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251213-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250280-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email]
-X-Rspamd-Queue-Id: 362C8599534
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 32AEF592756
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit cf86bb53b9c92354904a328e947a05ffbfdd1840 ]
+[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
 
-During raid456 reshape, direct IO across the reshape position can sleep
-in raid5_make_request() waiting for reshape progress while still
-holding an active_io reference. If userspace then freezes reshape and
-writes md/suspend_lo or md/suspend_hi, mddev_suspend() kills active_io
-and waits for all in-flight IO to drain.
+In passthrough mode, when dm-cache starts to invalidate a cache
+entry and bio prison cell lock fails due to concurrent write to
+the same cached block, mg->cell remains NULL. The error path in
+invalidate_complete() attempts to unlock and free the cell
+unconditionally, causing a NULL pointer dereference:
 
-This can deadlock: the IO needs reshape progress to continue, but the
-reshape thread is already frozen, so the active_io reference is never
-dropped and suspend never completes.
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
+RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
+<snip>
+Call Trace:
+ invalidate_complete+0xef/0x430
+ map_bio+0x130f/0x1a10
+ cache_map+0x320/0x6b0
+ __map_bio+0x458/0x510
+ dm_submit_bio+0x40e/0x16d0
+ __submit_bio+0x419/0x870
+<snip>
 
-raid5_prepare_suspend() already wakes wait_for_reshape for dm-raid. Do
-the same for normal md suspend when reshape is already interrupted, so
-waiting raid456 IO can abort, drop its reference, and let suspend
-finish.
+Reproduce steps:
 
-The mdadm test tests/25raid456-reshape-deadlock reproduces the hang.
+1. Create a cache device
 
-Fixes: 714d20150ed8 ("md: add new helpers to suspend/resume array")
-Link: https://lore.kernel.org/linux-raid/20260327140729.2030564-1-yukuai@fnnas.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+Fix by checking if mg->cell is valid before attempting to unlock it.
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/md/dm-cache-target.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 0a3152f21d488..b91ac1b7d7a15 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -486,6 +486,17 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
- 	}
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 935ab79b1d0cd..ae1edffd14eaa 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1462,8 +1462,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 	struct cache *cache = mg->cache;
  
- 	percpu_ref_kill(&mddev->active_io);
-+
-+	/*
-+	 * RAID456 IO can sleep in wait_for_reshape while still holding an
-+	 * active_io reference. If reshape is already interrupted or frozen,
-+	 * wake those waiters so they can abort and drop the reference instead
-+	 * of deadlocking suspend.
-+	 */
-+	if (mddev->pers && mddev->pers->prepare_suspend &&
-+	    reshape_interrupted(mddev))
-+		mddev->pers->prepare_suspend(mddev);
-+
- 	if (interruptible)
- 		err = wait_event_interruptible(mddev->sb_wait,
- 				percpu_ref_is_zero(&mddev->active_io));
+ 	bio_list_init(&bios);
+-	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
+-		free_prison_cell(cache, mg->cell);
++	if (mg->cell) {
++		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
++			free_prison_cell(cache, mg->cell);
++	}
+ 
+ 	if (!success && mg->overwrite_bio)
+ 		bio_io_error(mg->overwrite_bio);
 -- 
 2.53.0
 
