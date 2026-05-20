@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-250714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEtBMsj2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:40 +0200
+	id SIKgEuv7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37990595173
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03F7595EC3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81CCF356837F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 49F883045A80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDF33EE1C0;
-	Wed, 20 May 2026 16:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B103F9F21;
+	Wed, 20 May 2026 18:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vb7FrWDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0+bBI2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64783B6349;
-	Wed, 20 May 2026 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EC83F9267;
+	Wed, 20 May 2026 18:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296124; cv=none; b=fXaSUZVt6x2C4L2dEZXBjcbdQGTuOXMALd0rok0ZtMsC21gHeaS8BThgkorFyTirC6vuz00L6WXs3PDAJbJLYFSfhA3f6JxsSo4NH68gHNiRZ5PeQVWq6QUVTvnx5zfMqUyQ9rvySK1Zk674BrjKTsRFeaHvlskn9UQkr154jQs=
+	t=1779300294; cv=none; b=VPPeDFL7NonJ0aMFhJcUFhe3V1/mDTV0Cw2azIqAyulj6d8d/88u9TM6h8cccVghAvTfGB4KS8199gGAA+wFZmAmIEj/6jtgLaniPOFC/r8AfDPKa3XYdTFbbDSAY8wiO+Fp8vsjG0wdZEVzsZEeJdO8evZcghIz4rWZ4soLxxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296124; c=relaxed/simple;
-	bh=rO5kWmK9x+XOlXzRod0zphxhXMm1MFOITt4O9OmXXTM=;
+	s=arc-20240116; t=1779300294; c=relaxed/simple;
+	bh=gOAE09qxuGWPXPBHWhps6+Uk9wiNfy1HZhZ443mClNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv8xgHBIGeT6U7N3yinQaYP9qfvZrSpBwXfUY1fi3ByKdPZPqv/lcc5g+qVBJJRTioqp3PgW7j3ipw6Mw2uDLoO2M+DsaJt5ABU6HSHpFhAsYKAoQKBFhU+EmA20HV18IRzZPXIYYY8bLDti8ePcyT0krEy4iXqZ5wQ7k+XRcRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vb7FrWDB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A961F000E9;
-	Wed, 20 May 2026 16:55:22 +0000 (UTC)
+	 MIME-Version; b=i/XRUa+Ho2bl3O4fLTIG/5fSfsJCB+5ZE5th8gm7TRsEXfD9Dg8CsLJpzilE1Hf7AuxroWw8jjs9Lz37j2N+/00tiPQ0hVD4DkcwlyJIdFdbuyj7/5QBkmPvNOZLKUfuF4uQ2xl44HkjUXz09ldO6f5tnDBCH9ohQ71pGUXjagg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0+bBI2t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0E41F000E9;
+	Wed, 20 May 2026 18:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296123;
-	bh=Yp+YdY+g2kWstYCMQvX8zFHiJb+jTVFQattAwMCo8YI=;
+	s=korg; t=1779300293;
+	bh=4UYigzVwsiXXU+QMh2libCxVH/Jkf+8mkPG7j9a+fwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vb7FrWDB6fUvV8PPwaAtcrdEHuAzCV3cyLxl9w8TTjx5dP5tWq1dIQi/EzRj+pI0b
-	 KGtsOvdHG7V1rnrrFYMoDqW00PIY8lt6nNK6CWlLhVCPsduJ7raufHwYtYpHAkjZaD
-	 VCpXZPwcvoUFZZ6K+Z6VPsk3wwHIkvaqDn53bySc=
+	b=i0+bBI2tLsxetEEviePEKmW2XwCPj+aocFZTU4tAtkCEMjIs1G3rl+f36uydMznS7
+	 THEtab4K5qrWTYMrN4+hWQ9yjaQzv+UqLpfHshmoNYg3m569yc6zq9RGDBjwpHhTzF
+	 c3H0pDxLCMvXQzRBZIzo8ZmP7+u1fQzPAmazwQQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0679/1146] RDMA/umem: Use consistent DMA attributes when unmapping entries
+Subject: [PATCH 6.12 118/666] drm/komeda: fix integer overflow in AFBC framebuffer size check
 Date: Wed, 20 May 2026 18:15:29 +0200
-Message-ID: <20260520162203.553861851@linuxfoundation.org>
+Message-ID: <20260520162113.777097635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252292-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,92 +87,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 37990595173
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E03F7595EC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
 
-[ Upstream commit 179b32095854d44749dd535502f05d95bbf43775 ]
+[ Upstream commit 779ec12c85c9e4547519e3903a371a3b26a289de ]
 
-The DMA API expects that mapping and unmapping use the same DMA
-attributes. The RDMA umem code did not meet this requirement, so fix
-the mismatch.
+The AFBC framebuffer size validation calculates the minimum required
+buffer size by adding the AFBC payload size to the framebuffer offset.
+This addition is performed without checking for integer overflow.
 
-Fixes: f03d9fadfe13 ("RDMA/core: Add weak ordering dma attr to dma mapping")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+If the addition oveflows, the size check may incorrectly succed and
+allow userspace to provide an undersized drm_gem_object, potentially
+leading to out-of-bounds memory access.
+
+Add usage of check_add_overflow() to safely compute the minimum
+required size and reject the framebuffer if an overflow is detected.
+This makes the AFBC size validation more robust against malformed.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 65ad2392dd6d ("drm/komeda: Added AFBC support for komeda driver")
+Signed-off-by: Alexander Konyukhov <Alexander.Konyukhov@kaspersky.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://lore.kernel.org/r/20260203134907.1587067-1-Alexander.Konyukhov@kaspersky.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem.c | 13 ++++++-------
- include/rdma/ib_umem.h         |  1 +
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index edc34c69f0f23..acf4ce2891b76 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -55,8 +55,7 @@ static void __ib_umem_release(struct ib_device *dev, struct ib_umem *umem, int d
- 
- 	if (dirty)
- 		ib_dma_unmap_sgtable_attrs(dev, &umem->sgt_append.sgt,
--					   DMA_BIDIRECTIONAL,
--					   DMA_ATTR_REQUIRE_COHERENT);
-+					   DMA_BIDIRECTIONAL, umem->dma_attrs);
- 
- 	for_each_sgtable_sg(&umem->sgt_append.sgt, sg, i) {
- 		unpin_user_page_range_dirty_lock(sg_page(sg),
-@@ -170,7 +169,6 @@ struct ib_umem *ib_umem_get(struct ib_device *device, unsigned long addr,
- 	unsigned long lock_limit;
- 	unsigned long new_pinned;
- 	unsigned long cur_base;
--	unsigned long dma_attr = DMA_ATTR_REQUIRE_COHERENT;
- 	struct mm_struct *mm;
- 	unsigned long npages;
- 	int pinned, ret;
-@@ -203,6 +201,10 @@ struct ib_umem *ib_umem_get(struct ib_device *device, unsigned long addr,
- 	umem->iova = addr;
- 	umem->writable   = ib_access_writable(access);
- 	umem->owning_mm = mm = current->mm;
-+	umem->dma_attrs = DMA_ATTR_REQUIRE_COHERENT;
-+	if (access & IB_ACCESS_RELAXED_ORDERING)
-+		umem->dma_attrs |= DMA_ATTR_WEAK_ORDERING;
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+index df5da5a447555..b4f2b89651ff2 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_framebuffer.c
+@@ -4,6 +4,8 @@
+  * Author: James.Qian.Wang <james.qian.wang@arm.com>
+  *
+  */
++#include <linux/overflow.h>
 +
- 	mmgrab(mm);
- 
- 	page_list = (struct page **) __get_free_page(GFP_KERNEL);
-@@ -255,11 +257,8 @@ struct ib_umem *ib_umem_get(struct ib_device *device, unsigned long addr,
- 		}
- 	}
- 
--	if (access & IB_ACCESS_RELAXED_ORDERING)
--		dma_attr |= DMA_ATTR_WEAK_ORDERING;
--
- 	ret = ib_dma_map_sgtable_attrs(device, &umem->sgt_append.sgt,
--				       DMA_BIDIRECTIONAL, dma_attr);
-+				       DMA_BIDIRECTIONAL, umem->dma_attrs);
- 	if (ret)
- 		goto umem_release;
- 	goto out;
-diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
-index 0a8e092c0ea87..e426d451b8932 100644
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -22,6 +22,7 @@ struct ib_umem {
- 	u64 iova;
- 	size_t			length;
- 	unsigned long		address;
-+	unsigned long		dma_attrs;
- 	u32 writable : 1;
- 	u32 is_odp : 1;
- 	u32 is_dmabuf : 1;
+ #include <drm/drm_device.h>
+ #include <drm/drm_fb_dma_helper.h>
+ #include <drm/drm_gem.h>
+@@ -92,7 +94,9 @@ komeda_fb_afbc_size_check(struct komeda_fb *kfb, struct drm_file *file,
+ 	kfb->afbc_size = kfb->offset_payload + n_blocks *
+ 			 ALIGN(bpp * AFBC_SUPERBLK_PIXELS / 8,
+ 			       AFBC_SUPERBLK_ALIGNMENT);
+-	min_size = kfb->afbc_size + fb->offsets[0];
++	if (check_add_overflow(kfb->afbc_size, fb->offsets[0], &min_size)) {
++		goto check_failed;
++	}
+ 	if (min_size > obj->size) {
+ 		DRM_DEBUG_KMS("afbc size check failed, obj_size: 0x%zx. min_size 0x%llx.\n",
+ 			      obj->size, min_size);
 -- 
 2.53.0
 
