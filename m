@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHr9M58uDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:55 +0200
+	id gB36Nc4hDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-252073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467AF59B8DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243FB59A6B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E14F6396D0ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E33E331459BB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376E240758A;
-	Wed, 20 May 2026 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE223E5ECF;
+	Wed, 20 May 2026 17:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAwYIu+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzU5frs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8461402BAA;
-	Wed, 20 May 2026 18:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DB93A3E60;
+	Wed, 20 May 2026 17:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302582; cv=none; b=g/nv+xuHPajyJLwUrlixRPyK9ddhlELyVuJkqInJXoSx7BtRq+7A6xtx2Aq25iecvQ+Fzqs7bycvZbvwmugXsiyvMdKMnJrnvw2EmUxd8a+Vypqf21p+wUd6hReaRPuCrAFbl45sEmXd8dMe5TMwiQVv1lZGseW1fEOd4RVvx3I=
+	t=1779299675; cv=none; b=HcRcxckQtXCf4smbsaBHQ9La3+BYa3jgk0aaZoxsS8OfusvXX8ifURS0xLtp+H/holLtTSWDlcl9UhV63X5cuS9stI6Cdn/+kzkj6ZROyUqy2L8e1RwHRFGBspzsG4teYIRd5zkn/gWFvRtTOsSHe9ngpnYrxnSs9D8SME9j3f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302582; c=relaxed/simple;
-	bh=k3cqNzJ/8TsaXEmSbut49LYXwTXR+3Izi3ZX0GMX2QM=;
+	s=arc-20240116; t=1779299675; c=relaxed/simple;
+	bh=TIAoJvG7P4ZRHDgPL4nBBXHPXnG68zzzEvsq2QyDjEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIqJvImadgjtz+bgBZQCpMqyisC0IXvLCHdOBE48Tb9JrKe5SioXTWBicYznhVnmd7yWF6nyJ7XIDXID5s+SzWPzyhZOQkDTE1WUv8W6B16t9AQ+FiRCm13j9vmf97Aq5rPNYdcSb4YOsHxXef2LloUGpJk0T/CH0UQC8y/t0Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAwYIu+y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACE81F000E9;
-	Wed, 20 May 2026 18:42:59 +0000 (UTC)
+	 MIME-Version; b=aUCyIshicM11uPvc+fJ347D4aer6ftFUlpkKl2528YMq4I1BLQOoqI91M2DCUN9ryK0ik+JHdTPRURDuEnEfLwVbf80wv6zvbd/9DSF9sBfAQ6OAfOOC9Gs8RosnXgB7yo5EJWK5Rb0eSW60dP79sbuvEx4Kk/mukwGbi4kusiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzU5frs9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D251F000E9;
+	Wed, 20 May 2026 17:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302580;
-	bh=cCbd2CJuUWZXALeoYSjYooG7IVHrXTmtQfmgUQzuq2U=;
+	s=korg; t=1779299674;
+	bh=HL18afsGFGCZhDgo48LOCjoCiO3CaTTOnrIuzs3mxTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CAwYIu+yCq1A5RtAI/vFq2fYOzQh1VWQIhH1gSwd3puRWf2cAF3mdSL4wUUuwFQ3V
-	 CMXfnlCt0HTOzLPnaCmOx4sBfeHQyKU/fWj25F5stcrOrhlQKSdnh+UWXdz4V+FDJb
-	 jksRzqxvwQHz1/8oTIOuV2Ny2akENs9YVGN+1+cI=
+	b=mzU5frs93Xsk1Aw4JryQXAv1pogDy2ZxNHw/ZK8IszCROehruesdmSJ+dbaoWauV1
+	 mkBO0p+ZoMyRkV047Cd6X2tM422esKufOYVYqgxt8IcrDBW395b9+la8oaTE2vNeJu
+	 wVAQHfT3/DXaoMZytqc8XXmZt0gJHphQyeSKJUsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Mikityanska <alice@isovalent.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/508] ice: Remove jumbo_remove step from TX path
-Date: Wed, 20 May 2026 18:22:24 +0200
-Message-ID: <20260520162105.592723781@linuxfoundation.org>
+Subject: [PATCH 6.18 862/957] PCI: Initialize temporary device in new_id_store()
+Date: Wed, 20 May 2026 18:22:25 +0200
+Message-ID: <20260520162153.259576594@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253167-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252073-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -89,52 +88,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,isovalent.com:email]
-X-Rspamd-Queue-Id: 467AF59B8DF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qemu.org:url]
+X-Rspamd-Queue-Id: 243FB59A6B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Mikityanska <alice@isovalent.com>
+From: Samiullah Khawaja <skhawaja@google.com>
 
-[ Upstream commit 8b76102c5e00d1f090e0c31d17b060c76d8fa859 ]
+[ Upstream commit f45a49a2380a47332817b7248c61a0ebbc6f0d00 ]
 
-Now that the kernel doesn't insert HBH for BIG TCP IPv6 packets, remove
-unnecessary steps from the ice TX path, that used to check and remove
-HBH.
+When setting new_id of a PCI device driver using sysfs a lockdep splat
+occurs. This is because new_id_store() builds a temporary pci_dev for
+pci_match_device(), which calls device_match_driver_override().  That
+depends on the driver_override.lock added by cb3d1049f4ea ("driver core:
+generalize driver_override in struct device").
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260205133925.526371-8-alice.kernel@fastmail.im
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 1a303baa715e ("ice: fix double-free of tx_buf skb")
+The new driver_override.lock was not initialized in the temporary pci_dev,
+resulting in this lockdep splat.
+
+Initialize the temporary pci_dev to fix this.
+
+Repro:
+
+  Build with CONFIG_LOCKDEP=y, boot with QEMU, and add a new ID:
+
+  # echo "8086 10f5" > /sys/bus/pci/drivers/e1000e/new_id
+
+  INFO: trying to register non-static key.
+  The code is fine but needs lockdep annotation, or maybe
+  you didn't initialize this object before use?
+  turning off the locking correctness validator.
+  CPU: 2 UID: 0 PID: 177 Comm: liveupdate-iomm Not tainted 7.0.0+ #9 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   register_lock_class+0x77e/0x790
+   lock_acquire+0xbf/0x2e0
+   pci_match_device+0x24/0x180
+   new_id_store+0x189/0x1d0
+   kernfs_fop_write_iter+0x14f/0x210
+   vfs_write+0x263/0x5e0
+   ksys_write+0x79/0xf0
+   do_syscall_64+0x117/0xf80
+
+Fixes: 10a4206a2401 ("PCI: use generic driver_override infrastructure")
+Fixes: 8895d3bcb8ba ("PCI: Fail new_id for vendor/device values already built into driver")
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+[bhelgaas: add commit log details and repro, trim backtrace]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260505234327.716630-1-skhawaja@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/pci-driver.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index eae4376c68595..66da8a34be0f1 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -2364,9 +2364,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index fba07a700508f..f9ead94d5ebb6 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -179,6 +179,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	return NULL;
+ }
  
- 	ice_trace(xmit_frame_ring, tx_ring, skb);
++static void _pci_free_device(struct device *dev)
++{
++	kfree(to_pci_dev(dev));
++}
++
+ /**
+  * new_id_store - sysfs frontend to pci_add_dynid()
+  * @driver: target device driver
+@@ -214,11 +219,13 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
+ 		pdev->subsystem_vendor = subvendor;
+ 		pdev->subsystem_device = subdevice;
+ 		pdev->class = class;
++		pdev->dev.release = _pci_free_device;
  
--	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
--		goto out_drop;
--
- 	count = ice_xmit_desc_count(skb);
- 	if (ice_chk_linearize(skb, count)) {
- 		if (__skb_linearize(skb))
++		device_initialize(&pdev->dev);
+ 		if (pci_match_device(pdrv, pdev))
+ 			retval = -EEXIST;
+ 
+-		kfree(pdev);
++		put_device(&pdev->dev);
+ 
+ 		if (retval)
+ 			return retval;
 -- 
 2.53.0
 
