@@ -1,157 +1,160 @@
-Return-Path: <stable+bounces-250008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDfUDxzYDWqj4AUAu9opvQ
-	(envelope-from <stable+bounces-250008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:48 +0200
+	id ODYsFfLXDWp44AUAu9opvQ
+	(envelope-from <stable+bounces-250009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C21359139F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4080591353
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3D7A3070217
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:10:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCF3830CB519
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8CF3F54BB;
-	Wed, 20 May 2026 15:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FBD3EFFC2;
+	Wed, 20 May 2026 15:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nhoD4aR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NNwwy7ww"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E213EFFA7
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289709; cv=none; b=l5uqoNYV+m+4WoXSIFZaQYtsGERuGYM+6nzv0pyfteoTWRFC9SBJPyCrm6NQ7cBa2VefHlzKGjbJ/0Gda8WYYTyhGe0xy+3HGQQO3AK/HV/X0n6M2i3sZsF9L3eOUmQdPyHML04ivIXcuSlGjOT4Y/M7JuzNuTXDt5gNqIDqs2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289709; c=relaxed/simple;
-	bh=OZzjkYErQsKo3a+fLGrXwg5laSqK5ptxcgkQRivtHXY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hDBF3O0+Uq6B/OrsPDMzcqDa+ouCoAClRlCHG7JDpIF53DJBAbtqzBNTpUZlWSgYp413lGxQIMQc9SeyZBxJwrWS6syS/LjIYS0+rbpSQojUwv8FT8OhPhCTvbBxjMzOdd21IgllPW36/3h/2tTyByxmcRi2YCDhca6h3L53t50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nhoD4aR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE501F000E9;
-	Wed, 20 May 2026 15:08:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779289707;
-	bh=f6w5V7sTcj/gw7T/+SC/FgDz9hsWeM76tZE92ejf9LM=;
-	h=Subject:To:Cc:From:Date;
-	b=1nhoD4aRsIc4eGqegx6QRONdVE5C27IyPUGTVcuGz9LNsGpc6qS2KyuAXP5YFg9Yn
-	 Kz4Kcw4B/S2vCODH2oGs7pSyx6G756AQuUG0L91mIEFlHUCURNtX2XjeHPA6zXDMwz
-	 I74QigEm3qPS9cGRyWqPki9TMOjBOCZyjjVjMvZc=
-Subject: FAILED: patch "[PATCH] drm/gma500/oaktrail_lvds: fix i2c adapter leaks on init" failed to apply to 5.10-stable tree
-To: johan@kernel.org,patrik.r.jakobsson@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 May 2026 17:08:23 +0200
-Message-ID: <2026052022-hamburger-unwed-4cf9@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72F3ED3CC
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779290017; cv=pass; b=rdQ6qV6brKXgcz1krX0oJwbj8CgFf15v3qyH6p0p21dR5QHTQ4xV4LoHljl3UESc6Ah6rpWLefSY5LdAW4Il4jgAILhNjTkntzev0ON7O6hHdOdDLvsNexWgMceGxRHUVfAqghDZGPsisq16Trz0LngmKfcd82/WbYgwV+QG9sU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779290017; c=relaxed/simple;
+	bh=0jDm5atvhHuIxeQV8hGmizmK+8RSolpSQCrjOaP+ltM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=efV5CkLZ+prK11ZHsn4Awp2R/jF15k8jIyswstQk4+dLcwLMzC1VL7ggU+bnS3hii04AHCK1OCABIhbfsdLYRSWMSvy+M85aOm08wz6Behxrfq5DKTzso6CcKVqQvOvGKuAxSxTnPZsJ1FqKh3Ybl+9rt2Fjs1CUbkmvTx24U4c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NNwwy7ww; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso194a12.1
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 08:13:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779290014; cv=none;
+        d=google.com; s=arc-20240605;
+        b=anuo30tEZbtP80cbBKdT0ZgRzmKhQ7Zw6kTIvFx+Id3+w0lWT2grk84a58VoC2RrrG
+         6TVdsJXsNQVoIsPXT+43HhmISdP1VIkuCngaJha9hfvhu5//rqYtGmMS0FdSCbFXVJiU
+         XnLt2+nyAd7uBbqYgnMaYMnIV7vcp0qCsQJ5uHZtWB+5xSZtFFBFr6nGfpF4+2amRUQq
+         Gcolnq8Jpnmi1zxJj99aCNrVsSfS0V/Ivg/DqkjsRr2pe+9TeSVHdEeuFYRN0zV1UOCp
+         /HQk1Han6TT2jfvs7RPDRI9n8gaOMP5fJxK2xdyunMoNPwiokkx8+pcSqChjVxdlOTYU
+         qy7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0jDm5atvhHuIxeQV8hGmizmK+8RSolpSQCrjOaP+ltM=;
+        fh=Skow1AlgA3ERaEz4iQXdmOy//szbOiOe06hGKlGfZgM=;
+        b=UNJo2ki2/8aiHmOpseRk5YXN+pCHZhrhkq8q7PMyftGMBOzPRQvrlcIMfIbPS27JTa
+         Cvrml/EECc1VZdPjEPz4syJtzLN2erxc5nEPK0hTdc2A0Qjls+sBYWx8PCqbBWmAybgx
+         sBqrsiDvFY98DqK0ybYyYncYCuL+WyYPcIiXTANlgeKzwVBa6E4pZ174wFuBXRdrK52P
+         odoQsdjpRlif4QmKfNAOp3IYLcWod0lPHBSxcFB+V3FR6yJfiug0vlhHhSC5N/uq4gs+
+         5DGMP0upry3MuFfVYdKxL2h+K9txPE3UqkqPEARRg5gFiaHikZDQg1fVzP3CEOFrZ1xQ
+         vomg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779290014; x=1779894814; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0jDm5atvhHuIxeQV8hGmizmK+8RSolpSQCrjOaP+ltM=;
+        b=NNwwy7wwTGLcUsVkwQqHdrF3IW3iUaL/vxuavvVb75JyG1RtYIswHA8TnpAOlhzVQP
+         /g7l2oLySO2lsPMVbGA1zWQTtpwUVw02dKSdYCcbOzfKwJd5tJg+GWHc3atUQiwOGD82
+         Hj32nRwLlhBnC0ZVArD/jwdGsTfk3Ls1p63302HkKADafPUE87zWncdOmgg+8y55QG7L
+         ilVZj280NxMa/Bjb5E+2e7eFFwWIcgvtWFHMMIKj0fssGC3Igx5AjxTT4dLr9t2IY0EI
+         vXac3SZNj2XiEtCq69tUbnLENzXwMTTF2f9XGzU/JZWr5MiRRnDkTTFGF9npJ9FikOea
+         F/Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779290014; x=1779894814;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0jDm5atvhHuIxeQV8hGmizmK+8RSolpSQCrjOaP+ltM=;
+        b=RmYuz4hl/pvqGwyRllUSkc2VxPcgSrS06gFSTFLb4mc5GUWTOt6TFxYRQ/2/+IUvlE
+         CCSmJNTURZYQnSq3KjsQD4vCtrqXnzholk+cfnk43QdrZVPRm8cyHT1OmJWQHzSNbzTN
+         9vyAMBpOJwOvUiGnJSzvhcxfL3RUkIIV1rF/anxOCqN6STnmz4hBzGZlXleiyvZm/xm4
+         uoH2CzFFyykf2wyUT9xZnmHQyBs9qgEi5RC97K2QeUWD+rzeC8Chd3YjtEo/OmK4x++9
+         haSMy8N7nq+w/B9HLUyA9eogS2MyzbUSIvMW3Bi5cRpD6Wleip2dsvaK8pq2WawRxXxr
+         T3hQ==
+X-Forwarded-Encrypted: i=1; AFNElJ93U3kN9zC3TclRb8pbzoCFYcZAkITE2q2PRri2EhWv0osVuULy81tHuxFC2EY4kutYRdkVVQ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmtdGp9LGIbvsZ0+hGeb9i9OLbvtL3ebLbQR5Yq0yO8bEFLQSt
+	TxtgoQSijzt0v28QMhcvsqaVRj26ph+QeUaTO2AlGrNIGlB1jthu62aQsLhgH1ue5BGx2V1hGnU
+	pnceGnAN4leFk5LvkGsqK1DaRYg4WxD0sOTZJ3kY5
+X-Gm-Gg: Acq92OHln3LuRv1r5JfNhYuQfDhDT0oJP7TOYt/MXkbHyY53CD+frlmXRX3A8zMKOJs
+	Kv5XrhkoQwW9IA5VKdHmVEWhY6EFryTxl3WBWGwo7uG2P3Ox5ozR7Qmsh8ZfMFSyaa9caP7XDp3
+	AuSQqAoNqLrk5yuqK18suWtGBxq2ab30kshBBtKHZcU9GQDuoISx9j8nDaQzl0A4iOhBYzG/u80
+	ejWG4KjucZZEhp5IKexPkw9dxe/k0wjr24tuPWkrYhUYAo+agV1ZLrz7KQay4a//E09/kmHyU0q
+	3KKfXCvxuy8eJzs=
+X-Received: by 2002:a05:6402:52:b0:671:fff6:f82c with SMTP id
+ 4fb4d7f45d1cf-684891acef2mr234306a12.2.1779290013807; Wed, 20 May 2026
+ 08:13:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+References: <20260518143233.16091-1-capyenglishlite@gmail.com>
+ <20260519212328.GA2614626@google.com> <CAEABq7f3agKZqrBiu+UwXHY44mTcK360ryg-i0w=wEc_Lv+T0A@mail.gmail.com>
+In-Reply-To: <CAEABq7f3agKZqrBiu+UwXHY44mTcK360ryg-i0w=wEc_Lv+T0A@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 20 May 2026 08:12:57 -0700
+X-Gm-Features: AVHnY4L6eZ6JdOCJ4YxM5npWqzTWyTozwWpMd7ccTT89uumPUpXazMBZui-XQ2Y
+Message-ID: <CABCJKuej82rrQbQ0eoG+JsY6Fwi0SdVJqduvps7eiPrJ_BgT0A@mail.gmail.com>
+Subject: Re: [PATCH v2] module: decompress: check return value of module_extend_max_pages()
+To: Afi0 <capyenglishlite@gmail.com>
+Cc: linux-modules@vger.kernel.org, chleroy@kernel.org, mcgrof@kernel.org, 
+	dmitry.torokhov@gmail.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250009-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250008-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:email]
-X-Rspamd-Queue-Id: 9C21359139F
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[samitolvanen@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C4080591353
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, May 19, 2026 at 9:11=E2=80=AFPM Afi0 <capyenglishlite@gmail.com> wr=
+ote:
+>
+> Hi,
+>
+> You are right, the commit message overstates the impact. The actual resul=
+t is an immediate kernel oops, not an OOB write into adjacent slab objects.=
+ The fix is still correct - checking the return value avoids the oops. Shal=
+l I send a v3 with a corrected commit message?
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Yes, please send v3.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 84d1c9b416d54afe760ca4c378bd95c89261254c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052022-hamburger-unwed-4cf9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 84d1c9b416d54afe760ca4c378bd95c89261254c Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 8 May 2026 16:44:46 +0200
-Subject: [PATCH] drm/gma500/oaktrail_lvds: fix i2c adapter leaks on init
-
-The LVDS init code looks up an I2C adapter using i2c_get_adapter() and
-tries to read the EDID before falling back to allocating and registering
-its own adapter.
-
-Make sure to drop the references taken by i2c_get_adapter() when falling
-back to allocating an adapter as well as on late errors to allow the
-looked up adapter to be deregistered.
-
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Cc: stable@vger.kernel.org	# 3.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patch.msgid.link/20260508144446.59722-4-johan@kernel.org
-
-diff --git a/drivers/gpu/drm/gma500/oaktrail_lvds.c b/drivers/gpu/drm/gma500/oaktrail_lvds.c
-index 983cc60a1e69..e194d0cce067 100644
---- a/drivers/gpu/drm/gma500/oaktrail_lvds.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_lvds.c
-@@ -367,6 +367,8 @@ void oaktrail_lvds_init(struct drm_device *dev,
- 	if (edid == NULL && dev_priv->lpc_gpio_base) {
- 		ddc_bus = oaktrail_lvds_i2c_init(dev);
- 		if (!IS_ERR(ddc_bus)) {
-+			if (i2c_adap)
-+				i2c_put_adapter(i2c_adap);
- 			i2c_adap = &ddc_bus->base;
- 			edid = drm_get_edid(connector, i2c_adap);
- 		}
-@@ -423,6 +425,8 @@ err_unlock:
- 	mutex_unlock(&dev->mode_config.mutex);
- 	if (!IS_ERR_OR_NULL(ddc_bus))
- 		gma_i2c_destroy(ddc_bus);
-+	else if (i2c_adap)
-+		i2c_put_adapter(i2c_adap);
- 	drm_encoder_cleanup(encoder);
- err_connector_cleanup:
- 	drm_connector_cleanup(connector);
-
+Sami
 
