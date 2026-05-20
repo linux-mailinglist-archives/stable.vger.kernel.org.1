@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-251320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250380-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YB2WBWAZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:16 +0200
+	id GEpwANTxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250380-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E8D599A0A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 684A3594334
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E6D8358F90E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5E7D3753AED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FD53BED26;
-	Wed, 20 May 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B269B372691;
+	Wed, 20 May 2026 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATYtz9+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDkTHOyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB25A369999;
-	Wed, 20 May 2026 17:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7797336A357;
+	Wed, 20 May 2026 16:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297675; cv=none; b=CGojGDj0DA5GLPG2a3Rrg+nedLiHvikc8PCLj5OlH+l9AjCf9yEHHAHXk6ARXCTcyTanJKJB8Mnx2qxLAulJ9gueWnf5WXEHuvBNStfKnVfY3Blz7V9UvpUnkL2wwW5JJNlxw2GVjACjInun/4Uu72W09EKYRAKYZuUfrP7FVPU=
+	t=1779295262; cv=none; b=HG8wOakqiPBcpPFS7UiUEAEvSADaYox6k/F++f0K2FKCsJ4y6qvFS6nRCFRnjXwtHWGrOvuNyTOiou/kDDxM3iYDWLPMB19emzh0hjE9r5CHs5bcneZrEz6iY3D13I9QiwtNI3YeX1kf52Qo5QoKBPapjP4nmgZzglUaDyxWUXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297675; c=relaxed/simple;
-	bh=2W1Rv8p31WEpcQuqaL2q5ilpXZuJaprE7iGY/oveqag=;
+	s=arc-20240116; t=1779295262; c=relaxed/simple;
+	bh=GtR+tyU5gU4rM2AgkakyGNNx0X1JqilACxWDBqIegtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JS2bwL22VPbBGFujcfE7OiKFTkEC1bcDZjcs4NpTl5aGww0CdZwggmqYBBOWhZzfWDrO4Fx3onjVmRoivUnqbODOsimEtdXVxZDIwjhlDv/etvxB/9Hgb+mE+oyKCMJ+CijEe+OxFtCm5kJupt0lH5Mn4KeOHURgWGR5WGMj7Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATYtz9+E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C01E1F000E9;
-	Wed, 20 May 2026 17:21:14 +0000 (UTC)
+	 MIME-Version; b=uj4rKS7Cxw+ocooDHwuS2pHJon4p7FHIoELbyQNMmlBvYQzEZIW98ufoc+6CUvALOwoZUL89J6yPIPPNRdnbYBoGUS7oRLYUE226VXf4jumf70gnoxZJqW3QhU1daLyzVGjijLRD4MiTvddWY+xl6ELH2m+wF3mJ5Ig6RxO9URU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDkTHOyl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9C71F000E9;
+	Wed, 20 May 2026 16:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297674;
-	bh=pTDnYKsTxhrYtYD62xJ1NaMwGUhT1q8oRHZ7XGlBPIQ=;
+	s=korg; t=1779295261;
+	bh=AocsUpdHOGPep7RItUqQ+H79gkswHBqCaa4z9X03ykY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ATYtz9+EzwRKq0HK1gdg/vY7Nyqp2tis2/0IW4HV6322igWCEsr10F6e9a0AAnMOk
-	 GA5dKhSxZoJ2dgEZ3y+D1K1lzzKGRUM6x1Q77fW+YEO7TpEsAHUTDU2C8y4Y2XSgaV
-	 crpkHqph50lM9z40O77QV0Ge4Tx5sWzzpJmjm4EI=
+	b=YDkTHOylc/ueBoloYlXHJ49bWNvyJfyAlzqScImeKVX4vCrNgQAqmjCVCm0YBykc8
+	 5VBXFH0+x8GvA6TabM16jkmFMUi8AHy6ocUrM2ySK8dDqIu3rO8HF6eFu/HkQrYfrg
+	 XFVW7wdWvjHVFjCjRn+G4lmkr5hvJxB2J7BiEfEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 120/957] macvlan: annotate data-races around port->bc_queue_len_used
+Subject: [PATCH 7.0 0353/1146] drm/msm: Reject fb creation from _NO_SHARE objs
 Date: Wed, 20 May 2026 18:10:03 +0200
-Message-ID: <20260520162137.161833826@linuxfoundation.org>
+Message-ID: <20260520162156.188851634@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +65,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251320-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250380-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 75E8D599A0A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 684A3594334
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 1ef5789d9906df3771c99b7f413caaf2bf473ca5 ]
+[ Upstream commit cf50ccdb765b3a6f1cd8e75642b0439fea0263a5 ]
 
-port->bc_queue_len_used is read and written locklessly,
-add READ_ONCE()/WRITE_ONCE() annotations.
+It would be an error to map these into kms->vm.  So reject this as early
+as possible, when creating an fb.
 
-While WRITE_ONCE() in macvlan_fill_info() is not yet needed,
-it is a prereq for future RTNL avoidance.
-
-Fixes: d4bff72c8401 ("macvlan: Support for high multicast packet rate")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260401103809.3038139-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b58e12a66e47 ("drm/msm: Add _NO_SHARE flag")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714264/
+Message-ID: <20260325185926.1265661-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_fb.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 4433b8e95b6ac..e9d288a05e39e 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -352,6 +352,7 @@ static void macvlan_broadcast_enqueue(struct macvlan_port *port,
- 				      const struct macvlan_dev *src,
- 				      struct sk_buff *skb)
- {
-+	u32 bc_queue_len_used = READ_ONCE(port->bc_queue_len_used);
- 	struct sk_buff *nskb;
- 	int err = -ENOMEM;
+diff --git a/drivers/gpu/drm/msm/msm_fb.c b/drivers/gpu/drm/msm/msm_fb.c
+index b3fdb83202ab8..9b681e144c07a 100644
+--- a/drivers/gpu/drm/msm/msm_fb.c
++++ b/drivers/gpu/drm/msm/msm_fb.c
+@@ -219,7 +219,12 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
+ 			 + mode_cmd->offsets[i];
  
-@@ -362,7 +363,7 @@ static void macvlan_broadcast_enqueue(struct macvlan_port *port,
- 	MACVLAN_SKB_CB(nskb)->src = src;
+ 		if (bos[i]->size < min_size) {
+-			ret = -EINVAL;
++			ret = UERR(EINVAL, dev, "plane %d too small", i);
++			goto fail;
++		}
++
++		if (to_msm_bo(bos[i])->flags & MSM_BO_NO_SHARE) {
++			ret = UERR(EINVAL, dev, "Cannot map _NO_SHARE to kms vm");
+ 			goto fail;
+ 		}
  
- 	spin_lock(&port->bc_queue.lock);
--	if (skb_queue_len(&port->bc_queue) < port->bc_queue_len_used) {
-+	if (skb_queue_len(&port->bc_queue) < bc_queue_len_used) {
- 		if (src)
- 			dev_hold(src->dev);
- 		__skb_queue_tail(&port->bc_queue, nskb);
-@@ -1727,7 +1728,8 @@ static int macvlan_fill_info(struct sk_buff *skb,
- 	}
- 	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN, vlan->bc_queue_len_req))
- 		goto nla_put_failure;
--	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN_USED, port->bc_queue_len_used))
-+	if (nla_put_u32(skb, IFLA_MACVLAN_BC_QUEUE_LEN_USED,
-+			READ_ONCE(port->bc_queue_len_used)))
- 		goto nla_put_failure;
- 	if (port->bc_cutoff != 1 &&
- 	    nla_put_s32(skb, IFLA_MACVLAN_BC_CUTOFF, port->bc_cutoff))
-@@ -1787,7 +1789,7 @@ static void update_port_bc_queue_len(struct macvlan_port *port)
- 		if (vlan->bc_queue_len_req > max_bc_queue_len_req)
- 			max_bc_queue_len_req = vlan->bc_queue_len_req;
- 	}
--	port->bc_queue_len_used = max_bc_queue_len_req;
-+	WRITE_ONCE(port->bc_queue_len_used, max_bc_queue_len_req);
- }
- 
- static int macvlan_device_event(struct notifier_block *unused,
 -- 
 2.53.0
 
