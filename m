@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAfNCgb6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:30 +0200
+	id INA9DkIIDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3155595A08
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45256598052
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 46D3C312FDE3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA74332B57EE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CDD3F65E6;
-	Wed, 20 May 2026 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9590D3A453B;
+	Wed, 20 May 2026 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFI765q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYcDGHoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8093E29B8D0;
-	Wed, 20 May 2026 17:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E285332EBD;
+	Wed, 20 May 2026 18:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299816; cv=none; b=IlEX941QigDk1nAy4qxo5eX/1IJHM3+DAToeTr8kDUUSlEdz/ai3ek+RqtXgO2HXFQrdgGKc4bCcBoFa8WBMZ7Zoamz0h0S34c3XF1EfeuffY7AnuAA54etLMnLxTuff0NU2Zvu3aggHLJWWrmJVZo+O9MvpQkzKl8q/g6PK+xs=
+	t=1779301587; cv=none; b=TiOAK56pLtdk7E9y8iefdlRYIF68hlZ0MunOkjST7djdd5ecGS73JqDYNyih99My3v87c0DM+v+UJE/Nvim/JTdU3vmBFpEaoTmi/5EF8kzXc5rjcFwVhxMc79rNlUGJyEO5pptQe7rrzJyaA5JKLqMwx17B5MQmx79geHjBSDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299816; c=relaxed/simple;
-	bh=Nn6/O0vlAbieHmxvq3lQFfMP9BYzPw5TQkL3gtob7qg=;
+	s=arc-20240116; t=1779301587; c=relaxed/simple;
+	bh=K20viUbBKYd862XGCRFxkmgprOSrEuPHMqvxzNGwvS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQdXnoc1ImngW0qSzQWCHD8cPsYDTNaCEDqUbH7DWbD6tjqnO3YEa/hU3KF+AfQ2oQMBwDc/GgD/gsWnqB8HRjZmyYlI4JncP+RrMnBdwmvgkkX7Qkp1c9DYNhkTogHd25R8qZ6Om+Um2+ps8I22VDY/l9PfyH5SROWSPjnSSvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFI765q0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C091F00894;
-	Wed, 20 May 2026 17:56:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ooeo6YhU+7g3sFySAh59cHaKUi0F5x8vTmy7qvAKu5hNkrj34StWJdAFHq2cqZNveoUd/u/p0gxsI1FNaUMv126JZ4uNed0uznJjC3i+4CZzqHm2BQvwCEHIfe9KUQcAviJdt6luzVaj89UGp3Uw2cu7FmQqxCg2tI/BEYkqkFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYcDGHoL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275F1F000E9;
+	Wed, 20 May 2026 18:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299815;
-	bh=hpjjqxy42siUggU8eJuX0k6mb+PiibEnKHaMACa2Oj0=;
+	s=korg; t=1779301586;
+	bh=8vx0EpiQuP26oPF+xg+l0WlVS+GErXoFp5ZgAfaNU88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gFI765q0hDepCWXoVc+69W+xByhKJANbiY7yNPOcYIshqX1TFpMzZAOp6o7ah6ubR
-	 f/1Xspui/GDtPdayLfVEz/yBT76D3YnYD+nw1h6FDYcqNPOVqUtHvAJnwNBOJlX3vr
-	 d3nMsIpNw3oS4OIGl3niNgzpqc8MN9PHu40olvWU=
+	b=gYcDGHoLHm9lh2nC+GRxuhml0VzuLqXfwgszIPBwyrd1fq/oRoLhzBpRSzNRIiHBa
+	 YCIciI0ASOvBEgObjUT/2jYNTF/TxUo0yfP7HqUgNi6l9/gvaSF6dCA78f6IpY5wSm
+	 A3w0AW0J9T8rWpryx8TvyiRa3r0lk6MNajXzfGcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Vlad Poenaru <vlad.wing@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 898/957] fuse: avoid 0x10 fault in fuse_readahead when max_pages == 0
+Subject: [PATCH 6.12 570/666] sctp: discard stale INIT after handshake completion
 Date: Wed, 20 May 2026 18:23:01 +0200
-Message-ID: <20260520162154.048212277@linuxfoundation.org>
+Message-ID: <20260520162123.623777454@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252110-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252786-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C3155595A08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 45256598052
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Poenaru <vlad.wing@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 4ea907108a5c ("fuse: use iomap for readahead") ]
+[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
 
-The upstream fix is the iomap conversion in commit 4ea907108a5c
-("fuse: use iomap for readahead"), which rewrote fuse_readahead()
-entirely and removed the buggy loop along with it.  That refactor
-is too invasive to backport to the pre-iomap readahead path still
-used by 6.18.y (and earlier stable branches), so this is a minimal,
-equivalent fix to the same bug on those branches.
+After an association reaches ESTABLISHED, the peer’s init_tag is already
+known from the handshake. Any subsequent INIT with the same init_tag is
+not a valid restart, but a delayed or duplicate INIT.
 
-When fc->max_read is smaller than PAGE_SIZE (common on aarch64 with
-64K base pages if the FUSE server advertises a small max_read in INIT),
-max_pages = min(fc->max_pages, fc->max_read / PAGE_SIZE) is 0, so
-cur_pages is 0 on every outer iteration.
+Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
+processing them as new association attempts.
 
-fuse_io_alloc(NULL, 0) then calls fuse_folios_alloc(0, ...), which
-calls kzalloc(0, ...) and gets back ZERO_SIZE_PTR == (void *)16.
-The "if (!ia->ap.folios)" guard in fuse_io_alloc does not catch
-ZERO_SIZE_PTR, so fuse_io_alloc happily returns an ia whose
-ap.folios is 0x10.
-
-The inner "while (pages < cur_pages)" loop runs zero times, then
-fuse_send_readpages(ia, ...) dereferences ap->folios[0] in
-folio_pos(), faulting at virtual address 0x10:
-
-  Unable to handle kernel NULL pointer dereference at virtual address
-  0000000000000010
-   fuse_readahead+0x14c/0x490
-   read_pages+0x80/0x318
-   page_cache_ra_unbounded+0x1c0/0x2b0
-   page_cache_ra_order+0xb8/0x368
-   page_cache_sync_ra+0x210/0x320
-   filemap_get_pages+0x290/0xdb0
-   generic_file_read_iter+0xd0/0x540
-   fuse_file_read_iter+0x8c/0x158
-   __arm64_sys_read+0x1a0/0x488
-
-addr2line on the aarch64 vmlinux maps fuse_readahead+0x14c to
-fs/fuse/file.c:897 inlined into :999, i.e. "folio_pos(ap->folios[0])"
-inside fuse_send_readpages.  The faulting instruction "ldr x8, [x8]"
-loads ap->folios[0]; ap->folios was previously loaded as 0x10
-(ZERO_SIZE_PTR).
-
-Without this fix the function would also spin forever, since
-"nr_pages -= pages" makes no progress when pages stays 0; in practice
-the NULL deref masks the spin.
-
-Bail out of the outer loop if cur_pages is 0 -- there is no work we
-can issue via FUSE in this iteration, and remaining folios will be
-handled by read_pages() falling back to ->read_folio.
-
-Fixes: 3eab9d7bc2f4 ("fuse: convert readahead to use folios")
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Vlad Poenaru <vlad.wing@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/sctp/sm_statefuns.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 00ff6374dc76b..50ade371298b3 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -974,6 +974,16 @@ static void fuse_readahead(struct readahead_control *rac)
- 		unsigned cur_pages = min(max_pages, nr_pages);
- 		unsigned int pages = 0;
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 966bd6a44594a..376d4ce5ebb3c 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -1556,6 +1556,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
+ 	/* Tag the variable length parameters.  */
+ 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
  
-+		/*
-+		 * If max_pages == 0 (e.g. fc->max_read < PAGE_SIZE on a
-+		 * 64K-page kernel), cur_pages is 0 and we cannot make
-+		 * progress.  Bailing here avoids passing 0 to fuse_io_alloc,
-+		 * which would return an ia whose ap.folios is ZERO_SIZE_PTR
-+		 * (0x10) -- later dereferenced by fuse_send_readpages.
-+		 */
-+		if (!cur_pages)
-+			break;
++	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
++		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
++		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
++			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
++	}
 +
- 		if (fc->num_background >= fc->congestion_threshold &&
- 		    rac->ra->async_size >= readahead_count(rac))
- 			/*
+ 	/* Verify the INIT chunk before processing it. */
+ 	err_chunk = NULL;
+ 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
 -- 
 2.53.0
 
