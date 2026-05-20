@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J4YEP0TDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-250760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:17 +0200
+	id OFgmHBfzDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15345991AE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F8559476A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A92B4380CE6A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3837A30F7061
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5B83EBF35;
-	Wed, 20 May 2026 16:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7D63E6385;
+	Wed, 20 May 2026 17:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4aszrkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EQrxm28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04352372EDE;
-	Wed, 20 May 2026 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70FC3EAC83;
+	Wed, 20 May 2026 17:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296246; cv=none; b=n3rfirBmwGrjpZvLHpmCOL2zN0sM6Y+i3oygSF/IH+ObzWWhKGv98QLXX7qyKOgWHRDYDdyt393PdIBRzm7M24uhfutOVdvXXvAlpMPsUFccg5dzmmP99Na2qPGPiFbewGu9k3P1OW/P9QilKPcinVkwE3P1u/zDf1ToFhC+KOU=
+	t=1779298649; cv=none; b=lUS841gBQIaLHtNdD6N4C0uvVMsrqXNZiNwwDuhANhzu/AuUITlFHxZFXMEubP2oiRS76U+2fL3lRPE4TMLRwJSLEuPGx7tBbRX5yxM1KaV0QDVVbta9824KyKl/TciJEcFQyfZzAhBFHsChI75ZU0/1A+zA1iQj4QxX6rXk+YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296246; c=relaxed/simple;
-	bh=fhO6JAj0f1URW96SxuRld1IRkU3gLdyzuEfx0SkWyl8=;
+	s=arc-20240116; t=1779298649; c=relaxed/simple;
+	bh=K48PblYCcTGBLCfHI+4nPU8RUQZrCkds3hIFZ+0gthI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXnA4Lajh60dIDyEtqNdj143WUfhmsgd+/346/cfB5/7HhDr3jp6igf8gWq0AO6wvDkMJZ3RTvxhBY7ojJiqVywfkv9SuNOu0yp9Hpn+0SGuTwvhFAs3HJxhjERsTCT5eowT00aEKeato3i4hdRhDTTZavYiG6LfcmOPJiLWTsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4aszrkt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFDB1F000E9;
-	Wed, 20 May 2026 16:57:24 +0000 (UTC)
+	 MIME-Version; b=MGO/EY73FvJQTirFGjzTqkoS9pqGFAmrDXSSaqWV3tAyaHLda3evQ8Dygnja4dMsMUMnk6jKdY5zbAjdNcA7W5pkolUhlUu+4VvudDNrCOf9cnYPVZigGNEVrc43QbkMjA7cjF2/4qcjPIBVhrueE87IrBFh/JGdTMqwK8zTE6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EQrxm28; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0567C1F000E9;
+	Wed, 20 May 2026 17:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296244;
-	bh=BIK2/oiRMj0oi8wXOM7p1jwbrn+9gH+T7nvT8jWsY4Y=;
+	s=korg; t=1779298648;
+	bh=zAillebsjEP3JpQgVMMwKsiQoLDk5C11StH/z7pOC/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q4aszrkthWkFfILbkC8bdWmy6nCJUOQdkh7t1AfPm7GA/CCsnKgMmEX1PWMG5wNum
-	 g1g6LM+UnEZerB+95Tagln2FTPGcgq2qLW9jom7WbNHAQp+aLRWCzj4uw01XSd1fQh
-	 cMeDFYUTRjshxt6BHYtQ9ZthKKN6YTmfDJ0SZwIA=
+	b=1EQrxm28VFv9CzgZ+K76iAgXj/kIPBGWVVQINyAee6zoLVEVmzKWsv1ZLermOSwU1
+	 3KFmfta11hiG2WgPRc7+DupWxB07lMk+rvMlHx+9fDIiLCsUmxbIww+7DONo58ess6
+	 clquj4Z2Ur3TZRkfmBhEfNHUl9PtRhBYaNaglJ/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Hiker Cl <clhiker365@gmail.com>,
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0725/1146] clk: qoriq: avoid format string warning
+Subject: [PATCH 6.18 492/957] bpf: Fix NULL deref in map_kptr_match_type for scalar regs
 Date: Wed, 20 May 2026 18:16:15 +0200
-Message-ID: <20260520162204.611707576@linuxfoundation.org>
+Message-ID: <20260520162145.196888561@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +66,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250760-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251694-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A15345991AE
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,meta.com:email]
+X-Rspamd-Queue-Id: 13F8559476A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mykyta Yatsenko <yatsenko@meta.com>
 
-[ Upstream commit 096abbb6682ee031a0f5ce9f4c71ead9fa63d31e ]
+[ Upstream commit 4d0a375887ab4d49e4da1ff10f9606cab8f7c3ad ]
 
-clang-22 warns about the use of non-variadic format arguments passed into
-snprintf():
+Commit ab6c637ad027 ("bpf: Fix a bpf_kptr_xchg() issue with local
+kptr") refactored map_kptr_match_type() to branch on btf_is_kernel()
+before checking base_type(). A scalar register stored into a kptr
+slot has no btf, so the btf_is_kernel(reg->btf) call dereferences
+NULL.
 
-drivers/clk/clk-qoriq.c:925:39: error: diagnostic behavior may be improved by adding the
-      'format(printf, 7, 8)' attribute to the declaration of 'create_mux_common' [-Werror,-Wmissing-format-attribute]
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
-      | __attribute__((format(printf, 7, 8)))
-  911 |                                              struct mux_hwclock *hwc,
-  912 |                                              const struct clk_ops *ops,
-  913 |                                              unsigned long min_rate,
-  914 |                                              unsigned long max_rate,
-  915 |                                              unsigned long pct80_rate,
-  916 |                                              const char *fmt, int idx)
-  917 | {
-  918 |         struct clk_init_data init = {};
-  919 |         struct clk *clk;
-  920 |         const struct clockgen_pll_div *div;
-  921 |         const char *parent_names[NUM_MUX_PARENTS];
-  922 |         char name[32];
-  923 |         int i, j;
-  924 |
-  925 |         snprintf(name, sizeof(name), fmt, idx);
-      |                                              ^
-drivers/clk/clk-qoriq.c:910:28: note: 'create_mux_common' declared here
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+Move the base_type() != PTR_TO_BTF_ID guard before any reg->btf
+access.
 
-Rework this to pass the 'int idx' as a varargs argument, allowing the
-format string to be verified at the caller location.
-
-Fixes: 0dfc86b3173f ("clk: qoriq: Move chip-specific knowledge into driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: ab6c637ad027 ("bpf: Fix a bpf_kptr_xchg() issue with local kptr")
+Reported-by: Hiker Cl <clhiker365@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221372
+Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260416-kptr_crash-v1-1-5589356584b4@meta.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-qoriq.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-qoriq.c b/drivers/clk/clk-qoriq.c
-index f05631e553106..2524c5c0eb460 100644
---- a/drivers/clk/clk-qoriq.c
-+++ b/drivers/clk/clk-qoriq.c
-@@ -907,13 +907,11 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
- 	return &cg->pll[pll].div[div];
- }
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 153a7c1d32069..ebfa27d4002c5 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5843,6 +5843,9 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 	int perm_flags;
+ 	const char *reg_name = "";
  
--static struct clk * __init create_mux_common(struct clockgen *cg,
--					     struct mux_hwclock *hwc,
--					     const struct clk_ops *ops,
--					     unsigned long min_rate,
--					     unsigned long max_rate,
--					     unsigned long pct80_rate,
--					     const char *fmt, int idx)
-+static struct clk * __init __printf(7, 8)
-+create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
-+		  const struct clk_ops *ops, unsigned long min_rate,
-+		  unsigned long max_rate, unsigned long pct80_rate,
-+		  const char *fmt, ...)
- {
- 	struct clk_init_data init = {};
- 	struct clk *clk;
-@@ -921,8 +919,11 @@ static struct clk * __init create_mux_common(struct clockgen *cg,
- 	const char *parent_names[NUM_MUX_PARENTS];
- 	char name[32];
- 	int i, j;
-+	va_list args;
++	if (base_type(reg->type) != PTR_TO_BTF_ID)
++		goto bad_type;
++
+ 	if (btf_is_kernel(reg->btf)) {
+ 		perm_flags = PTR_MAYBE_NULL | PTR_TRUSTED | MEM_RCU;
  
--	snprintf(name, sizeof(name), fmt, idx);
-+	va_start(args, fmt);
-+	vsnprintf(name, sizeof(name), fmt, args);
-+	va_end(args);
+@@ -5855,7 +5858,7 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 			perm_flags |= MEM_PERCPU;
+ 	}
  
- 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
- 		unsigned long rate;
+-	if (base_type(reg->type) != PTR_TO_BTF_ID || (type_flag(reg->type) & ~perm_flags))
++	if (type_flag(reg->type) & ~perm_flags)
+ 		goto bad_type;
+ 
+ 	/* We need to verify reg->type and reg->btf, before accessing reg->btf */
 -- 
 2.53.0
 
