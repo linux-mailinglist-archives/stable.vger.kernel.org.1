@@ -1,188 +1,156 @@
-Return-Path: <stable+bounces-250027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFXjLLPpDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:04:51 +0200
+	id +IRiAmkfDmpd6QUAu9opvQ
+	(envelope-from <stable+bounces-251866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB75C592E4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:04:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E2959A467
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D17863076B8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:19:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30034378FDA1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A195636403C;
-	Wed, 20 May 2026 16:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E18E3EF0DA;
+	Wed, 20 May 2026 17:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+rBgV8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzEXinQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C6348C7B;
-	Wed, 20 May 2026 16:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133722F0C62;
+	Wed, 20 May 2026 17:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779293946; cv=none; b=HjKISHSUJegHMFvrioaTXY07FV8NS9GgMb2zs/xSVyq4Q9K1DQe2CcL90d1zW7CLeEKFTHA/JDXiwS27FMBALLVjbI8aPj3c/QL5aJD5bCn5TErpVPUROgBu0reQ4g1z05WJ99d5UlSJYPZ/4/qvwr90sifuWqC/KDVvgcb+9L0=
+	t=1779299092; cv=none; b=RVWwIaym+QWMSxv+w2pgRNLdVkCOwbOjyDbcdNuHDQGa0gumGH0v39/zMYBFDlDwWanv3un/UHYSMMl89tBcj6P/jPf0mbAeX6FOFHft/GQoVeUaKtrVofQ9B7Ii4SyIJo6de//3CRnvlQw7GTa5Ow6WwKRLOnpW2gUcNhXNof4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779293946; c=relaxed/simple;
-	bh=Kr/DFL2+ExRUtQ3RU2oBfJ7rA1pWNmPUTKaySl12AtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o/oNQcwpgt93+RQQ4eQLoFO0A9+HoVoIeHEvV7q8FrV/Oqws+NWm5186Jw4d7xxW01D2excgMFmwI1enEwXlZq1gKnpIk5A3J1pQP/RWavlPpL+Z5DsJ443USzXOKwkbLzHHutX4D7nh+Rn2HzaqSPKjMUow0IhRJhNL4dLk9oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+rBgV8u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0AA1F000E9;
-	Wed, 20 May 2026 16:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779293944;
-	bh=ZnVTRos8ozafH6X7RFMHvK+Huyq3OGkoQqbj+82aZAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H+rBgV8umx4ZoRJkuhb6zZKG0wcZpl2wqLh13nJgNv0aQJFiDm0zgoSNcPNyc0+25
-	 QW1IFDJlj63T3isnI4hS6yxZhFpOqtZDmjStTlaYYoZlnPH7d9t4iDk+K5BAfLChk8
-	 XYgSgnblYMkTlR7s0yUfs5osHYff1c2d8x0jdyjCdQqlZG/kVd/34/Npoycnsp1+Bz
-	 EQ60ooOAJbLAbsxdgtEoXXST5zpdeq3ZZz6vgHhd0M5xcimQASyBqFM07VfeqswZDj
-	 dX9oaTEfOzCvWpfuWN3YeldZywhIdnazqMdE0mNF69psQPB0jinRvIL0OYWaZurwMM
-	 LxoY8txJrYccw==
-Date: Wed, 20 May 2026 17:19:00 +0100
-From: Lee Jones <lee@kernel.org>
-To: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>, broonie@kernel.org
-Cc: Dmitry Osipenko <digetx@gmail.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: max77620: Avoid regmap mutex deadlock in power-off
- handler
-Message-ID: <20260520161900.GM2767592@google.com>
-References: <20260520-max77620_poweroff-v1-1-9186a3bcbe9e@tecnico.ulisboa.pt>
- <c8d16352-63a3-4512-b90c-a79e7e96dd3c@gmail.com>
- <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
+	s=arc-20240116; t=1779299092; c=relaxed/simple;
+	bh=y66fZv33uUSNqplkrZwl+umEEKMj2jat4eH+4cLCBPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XzS3376wPvUQlx6HLC5iUEADo1XS6WmXMeshWA8EhGUViG6NeXDyJSgiuegP6xm0qfx1MgukX5qi8cJUdkwcZElGHKXNIC46cB0A1lMCT7Akpwf8OdXDoRTYHIJlHUE0DEzp/G563iAXX64YfJlRt7Z61LpmP/5aVmaJ1ukISV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzEXinQX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F8F1F000E9;
+	Wed, 20 May 2026 17:44:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779299090;
+	bh=z6KFDTbjVkcom1I8qkvEV85ucsDIC1iJPT+juekRH6I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=rzEXinQX+ZazVVsvVrJs1zOOAEqmrdFiBCMKZvhi8H8pMsQOmzkjcRMfsxet6/2/J
+	 9ngCE+QSLoroUgqx6J9GGTNhcTXKgTLqnhga1UT7DAZ3tLSvJuvpOzu5O9eKlPW/A2
+	 QACseF7LUifxWq7vq5VRU3AOO3LjcW1nq0HEW1Ms=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 657/957] net/mlx5: Fix HCA caps leak on notifier init failure
+Date: Wed, 20 May 2026 18:19:00 +0200
+Message-ID: <20260520162148.780425222@linuxfoundation.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250027-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251866-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,ulisboa.pt:email]
-X-Rspamd-Queue-Id: BB75C592E4B
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 53E2959A467
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Mark,
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-On Wed, 20 May 2026, Diogo Ivo wrote:
-> On 5/20/26 16:42, Dmitry Osipenko wrote:
-> > 20.05.2026 17:28, Diogo Ivo пишет:
-> > > max77620_pm_power_off() is called via the sys-off framework as a
-> > > SYS_OFF_MODE_POWER_OFF handler, which runs in an atomic notifier chain
-> > > with IRQs disabled after smp_send_stop(). regmap_update_bits() acquires
-> > > the regmap mutex in this path; if another CPU held that mutex when it
-> > > was stopped, the power-off sequence deadlocks.
-> > > 
-> > > Replace regmap_update_bits() with i2c_smbus_write_byte_data(), which
-> > > bypasses the regmap lock entirely. The I2C core detects the atomic
-> > > context via i2c_in_atomic_xfer_mode() and uses i2c_trylock_bus() rather
-> > > than a blocking acquisition, avoiding the deadlock.
-> > > 
-> > > Tested on Pixel C, powers off correctly.
-> > > 
-> > > Assisted-by: Claude:claude-sonnet-4-6
-> > > Fixes: 744b13107d0d ("mfd: max77620: Provide system power-off functionality")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-> > > ---
-> > > This patch was tested on a local branch that sets pm_power_off =
-> > > max77620_pm_power_off() unconditionally so that the function runs.
-> > > I haven't checked whether the other bits in ONOFFCNFG1 are safe to
-> > > discard at power-off time as I don't have access to the datasheet.
-> > > If someone with access to the datasheet confirms they're not I'll
-> > > respin the patch taking that into account.
-> > > ---
-> > >   drivers/mfd/max77620.c | 10 +++++++---
-> > >   1 file changed, 7 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/mfd/max77620.c b/drivers/mfd/max77620.c
-> > > index 3af2974b3023..8c768968a317 100644
-> > > --- a/drivers/mfd/max77620.c
-> > > +++ b/drivers/mfd/max77620.c
-> > > @@ -487,10 +487,14 @@ static int max77620_read_es_version(struct max77620_chip *chip)
-> > >   static void max77620_pm_power_off(void)
-> > >   {
-> > >   	struct max77620_chip *chip = max77620_scratch;
-> > > +	struct i2c_client *client = to_i2c_client(chip->dev);
-> > > -	regmap_update_bits(chip->rmap, MAX77620_REG_ONOFFCNFG1,
-> > > -			   MAX77620_ONOFFCNFG1_SFT_RST,
-> > > -			   MAX77620_ONOFFCNFG1_SFT_RST);
-> > > +	/*
-> > > +	 * Atomic context: IRQs disabled. Use raw I2C write, bypassing
-> > > +	 * regmap locking entirely.
-> > > +	 */
-> > > +	i2c_smbus_write_byte_data(client, MAX77620_REG_ONOFFCNFG1,
-> > > +				  MAX77620_ONOFFCNFG1_SFT_RST);
-> > >   }
-> > >   static int max77620_probe(struct i2c_client *client)
-> > > 
-> > > ---
-> > > base-commit: 27fa82620cbaa89a7fc11ac3057701d598813e87
-> > > change-id: 20260520-max77620_poweroff-08e39429835f
-> > > 
-> > > Best regards,
-> > > --
-> > > Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-> > 
-> > Kernel parks secondary CPUs before powering off system, hence there
-> > shouldn't be a locking contention.
-> 
-> This patch was motivated by the Sashiko review I got in [1]. Its point
-> here is that there is a possibility for a deadlock scenario in which
-> a secondary CPU obtains the mutex for the regmap and then smp_send_stop()
-> is called before this secondary CPU gets a chance to release the mutex,
-> making it so that when the primary CPU tries to acquire it to issue the
-> write it hangs. Is there something that I am misunderstanding here?
-> 
-> > Have you checked whether regmap_write_bits() works?
-> 
-> Now, in case this is all true this problem is still not something that
-> will usually happen, only when this specific situation holds so
-> generally even regmap_update_bits() was working, and in [1] I sent it
-> out exactly like that. Changing it to regmap_write_bits() would not make
-> any difference.
-> 
-> [1]: https://lore.kernel.org/linux-tegra/20260514-smaug-poweroff-v1-0-30f9a4688966@tecnico.ulisboa.pt/
+------------------
 
-It's my understanding that using the Regmap wrappers _prevents_ locking
-issues, rather than causes them.
+From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
 
-I'm deferring to Mark.
+[ Upstream commit d03fc81a57956248383efec99967d0ae627390a8 ]
 
+mlx5_mdev_init() allocates HCA caps via mlx5_hca_caps_alloc() before
+calling mlx5_notifiers_init(). If notifier initialization fails, the
+error path jumps to err_hca_caps and skips mlx5_hca_caps_free(), leaking
+allocated caps.
+
+Add a dedicated unwind label for notifier-init failure that frees HCA
+caps before continuing the existing cleanup sequence.
+
+Fixes: b6b03097f982 ("net/mlx5: Initialize events outside devlink lock")
+Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260415005022.34764-1-prathameshdeshpande7@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 5903a4af9173b..6e10a6de8ebcc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1878,7 +1878,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+ 
+ 	err = mlx5_notifiers_init(dev);
+ 	if (err)
+-		goto err_hca_caps;
++		goto err_notifiers_init;
+ 
+ 	/* The conjunction of sw_vhca_id with sw_owner_id will be a global
+ 	 * unique id per function which uses mlx5_core.
+@@ -1894,6 +1894,8 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+ 
+ 	return 0;
+ 
++err_notifiers_init:
++	mlx5_hca_caps_free(dev);
+ err_hca_caps:
+ 	mlx5_adev_cleanup(dev);
+ err_adev_init:
 -- 
-Lee Jones
+2.53.0
+
+
+
 
