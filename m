@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-252576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kC+EKlH+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:49 +0200
+	id mG1HEvjtDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E198596830
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041285937F9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 206EC318E26F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD5B9314339B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A433F1ACA;
-	Wed, 20 May 2026 18:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988D33D7D67;
+	Wed, 20 May 2026 17:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp4sGF50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eV37Iak1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF973348C55;
-	Wed, 20 May 2026 18:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4549D3D8918;
+	Wed, 20 May 2026 17:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301037; cv=none; b=b1UZ+veuQaBm9b0exqEZ0KxMvCgVoTtZqWlWlJr69GDZPjtNloX+iQEqkiETGSv4QotNEgSuaG8n7OhkMQzU5Zllua5fayoLLMCpAs8yAmxUqdm37/dDR6LFK7F5ZtfwpCgfmL+LHwtkG84Zm/FfrWj4FV9Yqktap1L/QpvrFMY=
+	t=1779296871; cv=none; b=l7AjZh84vsClMs9exBuv3a/UbjRGAMOoG3rOoZQHfFExkeDzx6iBybmtgpkirL4Pjx7rrV1NYj3lEjev+FFF7h2voKVC/i/2j2EkMSH3K+6PckjHD2NotqUzN3ch+7vYFXlq1J4bG5akGXGhBhRiqY7Nc7dj/Olojdub+joTU8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301037; c=relaxed/simple;
-	bh=NuLtJy/MC5Glv1EFesiISLiv3h/Z9OzJ2aKJl2WGNG0=;
+	s=arc-20240116; t=1779296871; c=relaxed/simple;
+	bh=6x1BJerdDYvHs++NmK9P5xvyl5C3CxvjpQwlv1SklOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e90Blhyjz2pORN+bOLd8gBagIHOJr1/ZeZuAPFe4+KPdbQJQv6ud3KLkHnCIV7joLM98P+XfiUw40zeVWum0qp1BOzz6IHHCvrmlJfZFS4tRwHaZnMWJ/nANL+C2h2r9ztN0cHZvdwMNbNctKGbEHcvhd3CzCl+YeNbKrn2gGNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp4sGF50; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577D91F000E9;
-	Wed, 20 May 2026 18:17:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gFP5irFrU3iZS/EtmbsRITFt6wpv9KM1Ph9LeBoN97ptZGEptKuK5jHRQAv/uguSvF/gbkhcvlj9HexUSMydVuEJTzk5zX8o5HRRlPTjvyv+HeJR8mkxZIaRbem3r032J++RlhIy9ZEn637o2K7ZsDQ+/5wlu5Mm1f5MTKdy0Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eV37Iak1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BE01F000E9;
+	Wed, 20 May 2026 17:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301035;
-	bh=r08N7Fu92awSl74kOUxmGiq6T+gnlBstHPDCPL9cEaM=;
+	s=korg; t=1779296869;
+	bh=jGSqflLEqaqPyGo2JCdA0Zzzrc5ny9kl51C4zXsLHJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yp4sGF50I0AGxK6SvckYk1PFV3LevdT3+w+wKmUN2gzAQ9UCpmKkkGShnv5y/h1Vf
-	 QhZAvRTHrz4AvA3n7Yk+QeqgpLLw4x4YBd2cn7RA0J5QntA+YXuPUl1H8DhgMQpI5v
-	 BzsrBXY+pyBAeXik9GEK3Tfw5TOhzlifptvV1nOg=
+	b=eV37Iak1PveOKTeXevFZkxCh1kYY1aa+YSsyUY/6QbAx2gUfLDGsUAHjjBSAejE6N
+	 PEerdm0WYZEAYFfeSRQe4IlsomSRpc8OBxs9MIl9geE0xuFcnB2xPrxsBbblSoVtuS
+	 l6PF0tbrihX4BDf1ValrpyJISKGvqwG8IGJ9/MrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	White Lewis <liu224806@gmail.com>,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 403/666] clk: qcom: dispcc-sc8280xp: remove CLK_SET_RATE_PARENT from byte_div_clk_src dividers
+Subject: [PATCH 7.0 0964/1146] drm/amdgpu/vcn: set no_user_fence for VCN v2.5 enc/dec rings
 Date: Wed, 20 May 2026 18:20:14 +0200
-Message-ID: <20260520162119.994817874@linuxfoundation.org>
+Message-ID: <20260520162210.051068953@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251011-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252576-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8E198596830
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 041285937F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: White Lewis <liu224806@gmail.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 0b151a6307205eb867250985a910a88787cbf12e ]
+[ Upstream commit 4f317863a3ab212a027d8c8c3cc3af4e3fb95704 ]
 
-The four byte_div_clk_src dividers (disp{0,1}_cc_mdss_byte{0,1}_div_clk_src)
-had CLK_SET_RATE_PARENT set. When the DSI driver calls clk_set_rate() on
-byte_intf_clk, the rate-change propagates through the divider up to the
-parent PLL (byte_clk_src), halving the byte clock rate.
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-A simiar issue had been also encountered on SM8750.
-b8501febdc51 ("clk: qcom: dispcc-sm8750: Drop incorrect CLK_SET_RATE_PARENT on byte intf parent").
-
-Likewise, remove CLK_SET_RATE_PARENT from all four byte divider clocks
-so that clk_set_rate() on the divider adjusts only the divider ratio,
-leaving the parent PLL untouched.
-
-Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
-Signed-off-by: White Lewis <liu224806@gmail.com>
-[pengyu: reword]
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260303115550.9279-1-mitltlatltl@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 28c17d72072b ("drm/amdgpu: add VCN2.5 basic supports")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit efc9dd5590894109bce9a0bfe1fa5592dd6b20b1)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sc8280xp.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
-index f1ca9ae0b33f4..c23cbb983d29e 100644
---- a/drivers/clk/qcom/dispcc-sc8280xp.c
-+++ b/drivers/clk/qcom/dispcc-sc8280xp.c
-@@ -1161,7 +1161,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte0_div_clk_src = {
- 			&disp0_cc_mdss_byte0_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1176,7 +1175,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte0_div_clk_src = {
- 			&disp1_cc_mdss_byte0_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1191,7 +1189,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte1_div_clk_src = {
- 			&disp0_cc_mdss_byte1_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1206,7 +1203,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte1_div_clk_src = {
- 			&disp1_cc_mdss_byte1_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+index 006a154511971..8b8184fe6764b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+@@ -1778,6 +1778,7 @@ static void vcn_v2_5_dec_ring_set_wptr(struct amdgpu_ring *ring)
+ static const struct amdgpu_ring_funcs vcn_v2_5_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v2_5_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v2_5_dec_ring_get_wptr,
+@@ -1879,6 +1880,7 @@ static const struct amdgpu_ring_funcs vcn_v2_5_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v2_5_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v2_5_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v2_5_enc_ring_set_wptr,
 -- 
 2.53.0
 
