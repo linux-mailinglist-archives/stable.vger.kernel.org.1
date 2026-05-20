@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIRyOAYGDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-252369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:42 +0200
+	id SE43HkAUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37D3597BA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF33599220
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 56994320E1EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7370A32A2232
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6823F7AA9;
-	Wed, 20 May 2026 18:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C6E3A383C;
+	Wed, 20 May 2026 16:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyDCbfQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvkxpzRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E432A36A02E;
-	Wed, 20 May 2026 18:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4743A3833;
+	Wed, 20 May 2026 16:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300495; cv=none; b=ZFf00cvwzjrLk3RxswSwXR9CSbTFjW2YALhfkD+wpmlMwP8Xtc7jkrT4t7nbFvOLoQy/P5jtRX2oYLVJ9RxGO+DftadjAIYGi71vlVz9NA0k0qTKUewqkiGdZNtwRCETmVYmA6/peJmflxEa8h/BJZWUzNd/O9fmz3vEQIOnv8Q=
+	t=1779296325; cv=none; b=bnOtGn2KRx1G6WN+x2H5+PgqMlhILOQWVoqP10Uk/xVBfzRiKYvTEw44hZjl4QnmTD+YahIOfIUizabXZt8YVympm4So2UnJlwlpmkO8cI0R9uhPgD5x2gh/X7PTNmgXyxb/X8UTgoNZODEgbJJsk2vhSkUg8TSt/6GweTltOVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300495; c=relaxed/simple;
-	bh=pelow93vsq8E872PIih/Xa67i/4bN+Ul/FyC8FzUc6I=;
+	s=arc-20240116; t=1779296325; c=relaxed/simple;
+	bh=c0EkPkGh7NgAe0i1wR4eDIv19sDGTlonrDyknxaoT5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcUwYSUcbRWHHnJcMKyGdVx/sq34MAmBTo4rsrBW+KSp4JXLtCQVVoZlTPmoVwvGyKUWQhZfZoFIBMtQqgqlbducPCa1fmZqB6llPpVHVlqhYlLDelsw9TVk5xLjAcoFldfVngLGBXeOTDTkz7VVUFqvLx/Sv1vK+H8SnI1TCuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyDCbfQI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9661F000E9;
-	Wed, 20 May 2026 18:08:13 +0000 (UTC)
+	 MIME-Version; b=ICEM0pMAB70Q1FcZicJ6hFBQvvZ9lyI39Q9oZJvFYdkQ2QDjSVn3sziQgyDn4iF+RBKtQlHsVdP7t88pW/dfNneq1z0w609b/xrI09diYfuE46m3I8Aab9uYUFOxpHQnPpGy1EvlsVX/nypwgfbSMZaTO8nbS1KxvzZ6Pc2pCYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvkxpzRH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB301F00896;
+	Wed, 20 May 2026 16:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300493;
-	bh=+uPNBo80AEP9zpfJdRuGaoRT1jPzATVrbFVq7bv33Nk=;
+	s=korg; t=1779296323;
+	bh=kB7edRbC9eBHEjF1viIUCiUKG6aKixPKnfzweVIeyF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IyDCbfQI171+AdV9k2cCzE5YBeIC+m+N0gNfKsBkfiZad4ONfppYZWpPql+/CTYQ+
-	 nXWVPgNXxfasGSdXYIYA4htqyRzyk26BwzpRhOaJOKjgUCJ4V+z0RaiP/b/BoZKXbi
-	 OCH7YKgZuTE6iCUx8x/gaYNy3upAlYmGmyiBhN+8=
+	b=ZvkxpzRHF/uRFKUY+Ke7CIJTTMQZHGNFSnii3a0ud/2DN3fKILwl9ECy68MDrI24T
+	 tWSwWXnfWPvjbdVL8Jram+tetdA8WozhMCgJ6lSM8GdwVdK0uGfIC0u/8fGfgysH2A
+	 M0B+exXgyePi/RprEtnZR8uAlM/q84EW85KfAs08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <gu_0233@qq.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/666] pmdomain: ti: omap_prm: Fix a reference leak on device node
+Subject: [PATCH 7.0 0756/1146] arm64: dts: imx8mp-nitrogen-som: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:16:46 +0200
-Message-ID: <20260520162115.427401430@linuxfoundation.org>
+Message-ID: <20260520162205.320412079@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252369-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250792-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qq.com:email,pd_args.np:url]
-X-Rspamd-Queue-Id: E37D3597BA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: 0BF33599220
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <gu_0233@qq.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 44c28e1c52764fef6dd1c1ada3a248728812e67f ]
+[ Upstream commit 16611eda2c7584a1a7d6f80511d825e5108f026c ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In omap_prm_domain_attach_dev, it does not release the reference.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-Fixes: 58cbff023bfa ("soc: ti: omap-prm: Add basic power domain support")
-Signed-off-by: Felix Gu <gu_0233@qq.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: ab4d874c9f44e ("arm64: dts: imx8mp: Add device tree for Nitrogen8M Plus ENC Carrier Board")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/ti/omap_prm.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/ti/omap_prm.c b/drivers/pmdomain/ti/omap_prm.c
-index b8ceb3c2b81c2..f4e52e92dcbf6 100644
---- a/drivers/pmdomain/ti/omap_prm.c
-+++ b/drivers/pmdomain/ti/omap_prm.c
-@@ -651,6 +651,7 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 	if (pd_args.args_count != 0)
- 		dev_warn(dev, "%s: unusupported #power-domain-cells: %i\n",
- 			 prmd->pd.name, pd_args.args_count);
-+	of_node_put(pd_args.np);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
+index f658309612eff..8465b36d440ae 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-som.dtsi
+@@ -296,7 +296,7 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA		0x400001c3
  
- 	genpd_data = dev_gpd_data(dev);
- 	genpd_data->data = NULL;
+ 	pinctrl_pmic: pmicirqgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_ALE__GPIO3_IO00	0x41
++			MX8MP_IOMUXC_NAND_ALE__GPIO3_IO00	0x1c0
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
