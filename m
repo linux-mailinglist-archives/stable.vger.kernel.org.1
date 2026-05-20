@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-252406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFaFDKMkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:19 +0200
+	id eJtzIzj/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7FD59AA11
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A0B596C2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67AF138155D1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 19034306A4A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E3C3DC4DA;
-	Wed, 20 May 2026 18:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46923DA5B6;
+	Wed, 20 May 2026 18:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yr24fi4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atRNwJrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A98E36CE19;
-	Wed, 20 May 2026 18:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F842348C55;
+	Wed, 20 May 2026 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300592; cv=none; b=uYwVZAcxEc6f55txSemCtxN0PyDZIZXKFgCC081GjOrh/TNITcVdkjqwllAarTk6hQLuVPU48Fh8hEojdKQW3A4MF4S+r8hxF/p3IzUzwvmvkIpCfjVQOBy18mugkU54yI+7pAwQSNeBvbKHWnjjWD7W1eYrw+7+bKr+7Uxnpyg=
+	t=1779301793; cv=none; b=IrQUy7gjBbmnNPC2dELqD1RuaZ0tUOLVsFfpUv3Xuq7dHClIqubGdvGVdlO2JgDAbKTIFPUcESftxNS+Skq2TGM1SGb1fNK+lUhOMO2P1O/2Gb7wdJGPWFs3wO+Iny94Cq1uXGeZMPXAaXjCx9YUA1Ov4gWNxGoOK0fmQRiWgqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300592; c=relaxed/simple;
-	bh=fuouqawZIZJ+o4XWzaF4vitmJvF2f/p2EPX7ADivGJc=;
+	s=arc-20240116; t=1779301793; c=relaxed/simple;
+	bh=e9otPkZty8UgCCl9VYTpSxygTbHw5NaJjtchOw3d35U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3uWXO0rl9zcTpsmbt+dptYMFBD0zmb34eo4Y0Z/L5O59Q6XFgMRtVqIAx/PhCPNtN+umM01PH7Q7LWcFGYBE2pVBzhnEnRnMKO3a95pl1EpYWkaaT/aTeZUy0KR5NjoL2pm/mHSFo5qcmpgCcBmRYdXh2xQY7C5aSQoDiP8wsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yr24fi4o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828691F00893;
-	Wed, 20 May 2026 18:09:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pKemhAuCaFHVrpl65oLsN2fE+BSnShzJcwmmjjs0kUTcRUZk62uUdNGmjlo9lrbXmTd3I4/KlqMPL2SyyNJ1wcazXwWTvZJtM/xkqX7uSVqJKBqX/XjyXLZEBhpmBSnv9ghH8hMK0zYhUOU/riOUu6ae/hxXQyCdjcN3R6KkJJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atRNwJrK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D559B1F000E9;
+	Wed, 20 May 2026 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300591;
-	bh=khd+iqIvl75mG0xzIHRIZJ/4Ig+y0S9IaQbmzCUdV44=;
+	s=korg; t=1779301792;
+	bh=9T/oBmHhpamSuF7vtsVCtI0yaLT770140kCITJXRWGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yr24fi4oQB+7uJotaIY39AIWlSbSU2TvdHpsprDLqIoree9tzdkmIKw0MSigRvItn
-	 IYvU6EGQmtPUopVKPmghpPOtqqsU6YuFVP+nikA83eYFspst53aGxpY9XJ69JInBGh
-	 G7Cf2h+SUXYK7nq6Ard5+EGcn6TajlTRwHMdPgLQ=
+	b=atRNwJrKIKgKdC/mgpw+vngbiJXdb20Px465hcYrRXLx+cWjak7Ud/zIHXtX3I2jb
+	 M6mbeAjxqXhGe49kdP1/9xFtlUo+SCJ2SIL/ICfSXr7RGP/IlKrl9NLujFOpG5I3oj
+	 zbXYbPlJugdYpDnN0JaAxMohcb1jnH3PdnlwcXSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Jean Delvare <jdelvare@suse.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/666] PCI: tegra194: Increase LTSSM poll time on surprise link down
-Date: Wed, 20 May 2026 18:17:24 +0200
-Message-ID: <20260520162116.263263878@linuxfoundation.org>
+Subject: [PATCH 6.6 022/508] firmware: dmi: Correct an indexing error in dmi.h
+Date: Wed, 20 May 2026 18:17:25 +0200
+Message-ID: <20260520162059.070248942@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,141 +65,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252866-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252406-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: CF7FD59AA11
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,alien8.de:email]
+X-Rspamd-Queue-Id: 38A0B596C2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 74dd8efe4d6cead433162147333af989a568aac7 ]
+[ Upstream commit c064abc68e009d2cc18416e7132d9c25e03125b6 ]
 
-On surprise link down, LTSSM state transits from L0 -> Recovery.RcvrLock ->
-Recovery.RcvrSpeed -> Gen1 Recovery.RcvrLock -> Detect. Recovery.RcvrLock
-and Recovery.RcvrSpeed transit times are 24 ms and 48 ms respectively, so
-the total time from L0 to Detect is ~96 ms. Increase the poll timeout to
-120 ms to account for this.
+The entries later in enum dmi_entry_type don't match the SMBIOS
+specification¹.
 
-While at it, add LTSSM state defines for Detect-related states and use them
-in the poll condition. Use readl_poll_timeout() instead of
-readl_poll_timeout_atomic() in tegra_pcie_dw_pme_turnoff() since that path
-runs in non-atomic context.
+The entry for type 33: `64-Bit Memory Error Information` is not present and
+thus the index for all later entries is incorrect.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-3-mmaddireddy@nvidia.com
+Add it.
+
+Also, add missing entry types 43-46, while at it.
+
+  ¹ Search for "System Management BIOS (SMBIOS) Reference Specification"
+
+  [ bp: Drop the flaky SMBIOS spec URL. ]
+
+Fixes: 93c890dbe5287 ("firmware: Add DMI entry types to the headers")
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://patch.msgid.link/20260307141024.819807-2-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 36 +++++++++++++---------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ include/linux/dmi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 8f2f60fc032eb..e64a0360c7ce7 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -137,7 +137,11 @@
- #define APPL_DEBUG_PM_LINKST_IN_L0		0x11
- #define APPL_DEBUG_LTSSM_STATE_MASK		GENMASK(8, 3)
- #define APPL_DEBUG_LTSSM_STATE_SHIFT		3
--#define LTSSM_STATE_PRE_DETECT			5
-+#define LTSSM_STATE_DETECT_QUIET		0x00
-+#define LTSSM_STATE_DETECT_ACT			0x08
-+#define LTSSM_STATE_PRE_DETECT_QUIET		0x28
-+#define LTSSM_STATE_DETECT_WAIT			0x30
-+#define LTSSM_STATE_L2_IDLE			0xa8
- 
- #define APPL_RADM_STATUS			0xE4
- #define APPL_PM_XMT_TURNOFF_STATE		BIT(0)
-@@ -198,7 +202,8 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
- 
--#define LTSSM_TIMEOUT 50000	/* 50ms */
-+#define LTSSM_DELAY_US		10000	/* 10 ms */
-+#define LTSSM_TIMEOUT_US	120000	/* 120 ms */
- 
- #define GEN3_GEN4_EQ_PRESET_INIT	5
- 
-@@ -1614,15 +1619,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 		data &= ~APPL_CTRL_LTSSM_EN;
- 		writel(data, pcie->appl_base + APPL_CTRL);
- 
--		err = readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG,
--						data,
--						((data &
--						APPL_DEBUG_LTSSM_STATE_MASK) >>
--						APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--						LTSSM_STATE_PRE_DETECT,
--						1, LTSSM_TIMEOUT);
-+		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT),
-+			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 		if (err)
--			dev_info(pcie->dev, "Link didn't go to detect state\n");
-+			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
- 	}
- 	/*
- 	 * DBI registers may not be accessible after this as PLL-E would be
-@@ -1710,12 +1714,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	appl_writel(pcie, val, APPL_CTRL);
- 
- 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
--				 ((val & APPL_DEBUG_LTSSM_STATE_MASK) >>
--				 APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--				 LTSSM_STATE_PRE_DETECT,
--				 1, LTSSM_TIMEOUT);
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_L2_IDLE),
-+		LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 	if (ret)
--		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
-+		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
- 
- 	reset_control_assert(pcie->core_rst);
- 
+diff --git a/include/linux/dmi.h b/include/linux/dmi.h
+index 927f8a8b7a1dd..2eedf44e68012 100644
+--- a/include/linux/dmi.h
++++ b/include/linux/dmi.h
+@@ -60,6 +60,7 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_OOB_REMOTE_ACCESS,
+ 	DMI_ENTRY_BIS_ENTRY,
+ 	DMI_ENTRY_SYSTEM_BOOT,
++	DMI_ENTRY_64_MEM_ERROR,
+ 	DMI_ENTRY_MGMT_DEV,
+ 	DMI_ENTRY_MGMT_DEV_COMPONENT,
+ 	DMI_ENTRY_MGMT_DEV_THRES,
+@@ -69,6 +70,10 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_ADDITIONAL,
+ 	DMI_ENTRY_ONBOARD_DEV_EXT,
+ 	DMI_ENTRY_MGMT_CONTROLLER_HOST,
++	DMI_ENTRY_TPM_DEVICE,
++	DMI_ENTRY_PROCESSOR_ADDITIONAL,
++	DMI_ENTRY_FIRMWARE_INVENTORY,
++	DMI_ENTRY_STRING_PROPERTY,
+ 	DMI_ENTRY_INACTIVE = 126,
+ 	DMI_ENTRY_END_OF_TABLE = 127,
+ };
 -- 
 2.53.0
 
