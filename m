@@ -1,60 +1,97 @@
-Return-Path: <stable+bounces-251031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKY6C5r2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:54 +0200
+	id +FY4LdQbDmrP6AUAu9opvQ
+	(envelope-from <stable+bounces-253074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33AE559510B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D740E599E09
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 056CF3162614
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9820C3344C36
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08B8372EDE;
-	Wed, 20 May 2026 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4011F423A85;
+	Wed, 20 May 2026 18:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF58qjlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMJcveyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB133EE1C0;
-	Wed, 20 May 2026 17:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A017E423A6C;
+	Wed, 20 May 2026 18:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296923; cv=none; b=h9EcoBVq6u9rBl0aMoecqWtBUy+L9qGSWRQYRdkLXC/KBevJRdoRjYR5YVkabIvhW71IIwlcCrm1djVZGAdr3/KKCtl2WfwmjXtNJWmPr5EQxd8+YXO/AIf9MAvbHX2TT3Hcavh/KDJln5yCZgeDkmC0zcGz8MD0MCM8n3r3Z9A=
+	t=1779302337; cv=none; b=ZpIZ/brM+mVvAatsFhFACKaWxUoZU+LC/zB7PtQMn+bn+NRDB/j1RgS8VpGh1HaAFWaFTYtDV2gBJCCyBd3a4kKb/dKkDdEM/1TQ+po90vV4CuNv0zJ82vabjy2ufgFFNLOCVFnx9VY0O0McMBmJzCrL34XdeIbU/52mISBN954=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296923; c=relaxed/simple;
-	bh=L7EJMqgJYoiCn3av+LJXTFfkJe9GT0Dt1fkxhroRpek=;
+	s=arc-20240116; t=1779302337; c=relaxed/simple;
+	bh=Jxqy8L9ANGFp0eSnKEybTa4RzR9pY8WsuXYiV199yUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uF4ZOjtCazhCCuTo47MPrT+H0Yk5lVoxM+OAEfMoFjjpWhPIktdkgxekrKGfkU6Sylt2Ze/LIuQpwxONzvMFu348y/qHQDv1z69eHjvKpQuROmzktwO3iwJFR14Ccu9Pqd9ltuJVOQfGX9dO29t2zrH1hHn4i1mfA0mSe9rPdo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF58qjlH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37121F000E9;
-	Wed, 20 May 2026 17:08:41 +0000 (UTC)
+	 MIME-Version; b=DmgjgfS1dMg4Tv+616p1vdbjYnOWl4CBvR8NKvPJIajuaGukidmLqypQnP5nEkA+cc5VeT0hiWxPs9As3aCcSSHhWZK7CHkASuhoBlosVeEvxi2wXUgqEXhdZjBs6pwZe1W0gjkfH6NNTFSCOWi2Myufs2h4hT7vUxqTnjlMPgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMJcveyZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A6F1F0089B;
+	Wed, 20 May 2026 18:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296922;
-	bh=13dEf3ks5FwS6qpnT+bl3w8wEa/yNQiIb2cQAOWsmjw=;
+	s=korg; t=1779302335;
+	bh=nEFNmEaDSksLN0yzhIX/dZ0OL7J/hq2EQiy3Wql5sJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NF58qjlHxpBRWxRAN+gbQxNzOrIS4GK3lnS1xhI3bExQ822tjMt00UBghGHBRmlAg
-	 EBw6IoNroc0vpJBGoid0pEtvgBRzMgGLzaPnj6envyUIvk4w4GV1g1J/70PzavF9QK
-	 IvVj4Gt8HUdhfvQO5e9zxLbPe1Od1A7QBnSqAYcg=
+	b=hMJcveyZVkdYyAtCz9if9jqeEaz6ZhJq4LctkVGAji3KN34dVeCRGqP0VlP2izr5l
+	 plMxlKmdz4uqX3XFx837K/NTccwOSD3ll4d8XgT1Qa54lG8stYgMXaQ7+tRUg/iVfs
+	 /qnPBlgbKLGhzz6cu+LuSzfOjXcFW9G7hUKC0kEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chris Mason <clm@fb.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Sterba <dsterba@suse.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Li Nan <linan122@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Song Liu <song@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ted Tso <tytso@mit.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0983/1146] net: psp: check for device unregister when creating assoc
-Date: Wed, 20 May 2026 18:20:33 +0200
-Message-ID: <20260520162210.476014008@linuxfoundation.org>
+Subject: [PATCH 6.6 211/508] arm64/xor: fix conflicting attributes for xor_block_template
+Date: Wed, 20 May 2026 18:20:34 +0200
+Message-ID: <20260520162103.210969783@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +104,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251031-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[44];
+	TAGGED_FROM(0.00)[bounces-253074-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,kernel.org,eecs.berkeley.edu,linux.ibm.com,ghiti.fr,gaisler.com,cambridgegreys.com,arndb.de,alien8.de,arm.com,fb.com,intel.com,davemloft.net,suse.com,gondor.apana.org.au,zytor.com,redhat.com,zx2c4.com,sipsolutions.net,huawei.com,gmail.com,ellerman.id.au,dabbelt.com,linaro.org,nod.at,armlinux.org.uk,mit.edu,xen0n.name,linux-foundation.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 33AE559510B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D740E599E09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit b89769f936a8fa9e66de72ddc1b71a9745a488e6 ]
+[ Upstream commit 675a0dd596e712404557286d0a883b54ee28e4f4 ]
 
-psp_assoc_device_get_locked() obtains a psp_dev reference via
-psp_dev_get_for_sock() (which uses psp_dev_tryget() under RCU);
-it then acquires psd->lock and drops the reference. Before
-the lock is taken, psp_dev_unregister() can run to completion:
-take psd->lock, clear out state, unlock, drop the registration
-reference.
+Commit 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+changes the definition to __ro_after_init instead of const, but failed to
+update the external declaration in xor.h.  This was not found because
+xor-neon.c doesn't include <asm/xor.h>, and can't easily do that due to
+current architecture of the XOR code.
 
-The expectation is that the lock prevents device unregistration,
-but much like with netdevs special care has to be taken when
-"upgrading" a reference to a locked device. Add the missing
-check if device is still alive. psp_dev_is_registered() exists
-already but had no callers, which makes me wonder if I either
-forgot to add this or lost the check during refactoring...
-
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260427190606.366101-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20260327061704.3707577-4-hch@lst.de
+Fixes: 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: David Sterba <dsterba@suse.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Li Nan <linan122@huawei.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Magnus Lindholm <linmag7@gmail.com>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Song Liu <song@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ted Ts'o <tytso@mit.edu>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/psp/psp_nl.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/xor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
-index 6afd7707ec12e..0cc744a6e1c9b 100644
---- a/net/psp/psp_nl.c
-+++ b/net/psp/psp_nl.c
-@@ -305,8 +305,13 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+diff --git a/arch/arm64/include/asm/xor.h b/arch/arm64/include/asm/xor.h
+index befcd8a7abc98..7c03207157196 100644
+--- a/arch/arm64/include/asm/xor.h
++++ b/arch/arm64/include/asm/xor.h
+@@ -13,7 +13,7 @@
  
- 	psd = psp_dev_get_for_sock(socket->sk);
- 	if (psd) {
--		err = psp_dev_check_access(psd, genl_info_net(info));
--		if (err) {
-+		/* Extra care needed here, psp_dev_get_for_sock() only gives
-+		 * us access to struct psp_dev's memory, which is quite weak.
-+		 */
-+		mutex_lock(&psd->lock);
-+		if (!psp_dev_is_registered(psd) ||
-+		    psp_dev_check_access(psd, genl_info_net(info))) {
-+			mutex_unlock(&psd->lock);
- 			psp_dev_put(psd);
- 			psd = NULL;
- 		}
-@@ -319,7 +324,6 @@ int psp_assoc_device_get_locked(const struct genl_split_ops *ops,
+ #ifdef CONFIG_KERNEL_MODE_NEON
  
- 	id = info->attrs[PSP_A_ASSOC_DEV_ID];
- 	if (psd) {
--		mutex_lock(&psd->lock);
- 		if (id && psd->id != nla_get_u32(id)) {
- 			mutex_unlock(&psd->lock);
- 			NL_SET_ERR_MSG_ATTR(info->extack, id,
+-extern struct xor_block_template const xor_block_inner_neon;
++extern struct xor_block_template xor_block_inner_neon __ro_after_init;
+ 
+ static void
+ xor_neon_2(unsigned long bytes, unsigned long * __restrict p1,
 -- 
 2.53.0
 
