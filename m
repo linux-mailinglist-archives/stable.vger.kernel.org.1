@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uO+pHMscDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:51 +0200
+	id OCG2CaH2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A90F599FB4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35453595120
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 939B031A41B2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 618E2355ED01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F130736405A;
-	Wed, 20 May 2026 17:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A523E314D;
+	Wed, 20 May 2026 16:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJJsN42P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRTrLFcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A4A312825;
-	Wed, 20 May 2026 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A23F889E;
+	Wed, 20 May 2026 16:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298500; cv=none; b=WrZnEOAK3teX7UJlieQIamOexWqXCQP1YZWa8bjiUEx57Dset4Gciy8Y8ppnPI0Ef82OAwaKh5Uoe9MeF4d/GNB8ADs45r8gxJa4CMRZvhRJsrXImQzzyOZ1wyYWpBEKo9qnpefHuK72coV1LTkS2R/C9u5stVuXR0b1h0yxHYU=
+	t=1779296088; cv=none; b=lxatvwfN0mqIvgGmxj2jLc9HpcjZ0CwoFG1BvtFTM0bn9MZH65TBjiAYpttaIpnvOz4geykEBbdd2SwV9mhTgl3Tufp17h9eEp6zN7otP207LTWq9dT9gKoWsvviyKkPpS/2TleMBsVKPhVGbeuBgQN6KeEZvJHlbxe7ZeX9BLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298500; c=relaxed/simple;
-	bh=LiUatfy7N69wOpwJkUzMMVGNPz8n7F6fC7X2VjQ6v9w=;
+	s=arc-20240116; t=1779296088; c=relaxed/simple;
+	bh=HUJsB7W4GlDX05byxb4Qm5Zsn8m1PfA8MLoKo1taScQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rud9aMvslvKySGjHAd4pycZ60b7IU79LBybNs1/ztcoIKLyzHDQWTk6lf25k60n4HmJvmirotMPLBhjSqSzRrT9errv6evxxIAyooesphkT3TKX+xI/2FwXpHzYBTHD0z+GprAlixTKJuezgqhOPh93gQVSEsWAEQNyPvBePKPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJJsN42P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B9E1F000E9;
-	Wed, 20 May 2026 17:34:58 +0000 (UTC)
+	 MIME-Version; b=tXoYA+2+OpYkb1ayCMzjlwpCN5nI6TAo8/vkulJd/C//nq4fR7eI/q5naNky5P22x8DFmEjYhAB1iTQzuVQd1pg9/1rDdJ/K4Te3e0C7Bn3SGNrZDJ0Vht5UDxzUVqLjS3AX5fmPLmHN3aazWCcMDbZX8Ey4Ltjwno+b6baFhbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRTrLFcA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6511F000E9;
+	Wed, 20 May 2026 16:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298499;
-	bh=wmki7QZTxUebcyU+gUz8A22c1LSacHZ7MMvGvn6HyWE=;
+	s=korg; t=1779296086;
+	bh=pMIkQdkOR+XDKps/aQ6bEhE3vSxOnu8HmvcPah7pvqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eJJsN42PSnGPhmLD9S+cd99xsbXYXR36k8qCkfAHymWgQ4tbRCIFnblWPmqJjmmVM
-	 HUffAD5Pc6nHa/Te4wQVjTEuS7oKT031ySwAuElA9E7kG5BvWyRy6csFk11hfLtlGx
-	 bqDV7XCFnqNwMBhoQ8e8a7e0gn/Yx4GY5ZBoRVeY=
+	b=nRTrLFcAIvuoBqiO8KevG+hXV6AxGyJcFlkMEcgCez8Pe4qjGB1L97H9ypEtNgg9i
+	 DaV+iDksEo+N0ckngz5fxILoanF7WmCpUU2+z1arlFGp0kesB+UgmMeyCQGuKzv0T6
+	 xXgUp4FJUj6ICTA7/UoCY2GvkPWSCJczoyzkd53w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 433/957] soc: qcom: llcc: fix v1 SB syndrome register offset
+Subject: [PATCH 7.0 0666/1146] leds: lgm-sso: Remove duplicate assignments for priv->mmap
 Date: Wed, 20 May 2026 18:15:16 +0200
-Message-ID: <20260520162143.911366100@linuxfoundation.org>
+Message-ID: <20260520162203.261429942@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,70 +73,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251637-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250700-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 2A90F599FB4
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 35453595120
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 24e7625df5ce065393249b78930781be593bc381 ]
+[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
 
-The llcc_v1_edac_reg_offset table uses 0x2304c for trp_ecc_sb_err_syn0,
-which is inconsistent with the surrounding TRP ECC registers (0x2034x)
-and with llcc_v2_1_edac_reg_offset, where trp_ecc_sb_err_syn0 is 0x2034c
-adjacent to trp_ecc_error_status0/1 at 0x20344/0x20348.
+Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
 
-Use 0x2034c for llcc v1 so the SB syndrome register follows the expected
-+0x4 progression from trp_ecc_error_status1. This fixes EDAC reading the
-wrong register for SB syndrome reporting.
-
-Fixes: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260330095118.2657362-1-alok.a.tiwari@oracle.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/blink/leds-lgm-sso.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index 857ead56b37d0..d5ce09d6115f0 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -3394,7 +3394,7 @@ static const struct llcc_slice_config x1e80100_data[] = {
- static const struct llcc_edac_reg_offset llcc_v1_edac_reg_offset = {
- 	.trp_ecc_error_status0 = 0x20344,
- 	.trp_ecc_error_status1 = 0x20348,
--	.trp_ecc_sb_err_syn0 = 0x2304c,
-+	.trp_ecc_sb_err_syn0 = 0x2034c,
- 	.trp_ecc_db_err_syn0 = 0x20370,
- 	.trp_ecc_error_cntr_clear = 0x20440,
- 	.trp_interrupt_0_status = 0x20480,
+diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
+index 8923d2df47049..3d9ef9a54805c 100644
+--- a/drivers/leds/blink/leds-lgm-sso.c
++++ b/drivers/leds/blink/leds-lgm-sso.c
+@@ -808,8 +808,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
+ 
+ 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
+ 
+-	priv->mmap = syscon_node_to_regmap(dev->of_node);
+-
+ 	priv->mmap = syscon_node_to_regmap(dev->of_node);
+ 	if (IS_ERR(priv->mmap)) {
+ 		dev_err(dev, "Failed to map iomem!\n");
 -- 
 2.53.0
 
