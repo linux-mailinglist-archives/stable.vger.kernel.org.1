@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMJLHILzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:42 +0200
+	id qKlBCN78DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20CC594891
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F9E596279
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E2F13465EA0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 687E1320D86A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9CC369D6A;
-	Wed, 20 May 2026 16:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B2B3EF0D7;
+	Wed, 20 May 2026 17:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6BzbGf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9BPzblE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEEC41760;
-	Wed, 20 May 2026 16:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A682701C4;
+	Wed, 20 May 2026 17:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295570; cv=none; b=fAhhJAZTjl2HN28Vm+XuwpK07SHLozCnV7wlw8tGKTI/jW5l07LqTDLnEyzF9NBYgJPQCRypZ5ntlEnxxi6ebF9/gO/AfvQy95tm2ed5eoUuWL6D2KUTUfnapMCN0ug9c9rMkD1BmER8E4fhwFHmyYkp8FXvCZIa3WnDvu76fBU=
+	t=1779297976; cv=none; b=N9d7tVf4tWfFDcF47eySVL1kMR7EEye1NHg4KZSjGRvaeihBG6ZK24uYlrGf/8tx+JjUMBUBA6kyW6OJOAFk9Sc+vd3p/5cPyeik6HDp0ThBjGk1QyPXZjSQVBDQ7xStnedf0poBfhMKX54dTssNgbB4ApqzTKH5R4OnY2tBtAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295570; c=relaxed/simple;
-	bh=oZLe96/hLlTXTTotYhW6VaoMt/GbwaVORLjCXgT2sbM=;
+	s=arc-20240116; t=1779297976; c=relaxed/simple;
+	bh=oPoXA0yr6BMBy1k4U5PZyijCn77cA49NbCOTTDwtQkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=esdPwZ4ahoPrqo1Yr5fD+ym1a5Q8SU6n5YE3hOakNXJyuHwvAROCueqQ2nLu4OhppoE55z07JBYyEK8yH+gYddzG1a5OEEhQTJCgwLshaCDVTm1dvaQ8UNj/YcD5GMyGS2YlBgYkhKxRIvm0WX8k3YXb3KPolbqWTLA0nLp5DjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6BzbGf5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7D31F000E9;
-	Wed, 20 May 2026 16:46:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iszvk88IPGnHUWW6sbXcvXOf3Vqgl3BI3gK1zVw0+G0YikSxUMbU4Jd1qIJjE09Ifoe8fbLUIF91fO6RKOypZj5MWWmKRakk8sHV/hPd+A4yoZfv3cc1SnUm4Hw2uGmzIKmLnrGFLsfoJVuAab+4ZruNK3iyAF10xMS0h3nRc7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9BPzblE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B61F000E9;
+	Wed, 20 May 2026 17:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295568;
-	bh=A8oNJlfcV9BXZkqAW7my66nAYul8Al9WIPrh5z0etUU=;
+	s=korg; t=1779297975;
+	bh=gZgobUeXYZnm+5TkKrCF8/gQaPMTpJIAUMljYDS334E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T6BzbGf521F8FtTN+t104I4C9upOXwCnVGKnnrEgEDmmvGYTIzN88fnTWG2BWBVzK
-	 VhXO5QT7UA4bdK2qpXr7zsxfQRqZ/44paXSlQOG0bLBZkVE9g6U+8ACfkUOQJNLuQv
-	 uuJP3cZJk/d7m6z6tQXgvVNNXBaxr5n/Lq+Jo3Fc=
+	b=C9BPzblE2DlEVcdZ2/mgOLOJe6csFeD+mOPdHEmJlxAOcPtaxi61ShBgu361GVOiP
+	 MyH+W2QJMcttLih2bbFAFhUjNFIzsf09NUjRPEs3YIJBvHl1maJrUj5p6HfEdbi9iR
+	 FEIBa69rXgpBc/Pbna+hpK0isYTPl8faN66SMSms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0467/1146] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
-Date: Wed, 20 May 2026 18:11:57 +0200
-Message-ID: <20260520162158.763929280@linuxfoundation.org>
+Subject: [PATCH 6.18 235/957] drm/amdgpu/gfx10: look at the right prop for gfx queue priority
+Date: Wed, 20 May 2026 18:11:58 +0200
+Message-ID: <20260520162139.635745059@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +67,66 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250499-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251436-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_PROHIBIT(0.00)[0.155.187.48:email];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,milecki.pl:email,0.155.164.36:email]
-X-Rspamd-Queue-Id: C20CC594891
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 25F9E596279
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
+[ Upstream commit 355d96cdec5c61fd83f7eb54f1a28e38809645d6 ]
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
-        'mediatek,mt8173-efuse' was expected
-        'mediatek,efuse' was expected
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+Look at hqd_queue_priority rather than hqd_pipe_priority.
+In practice, it didn't matter as both were always set for
+kernel queues, but that will change in the future.
 
-Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: b07d1d73b09e ("drm/amd/amdgpu: Enable high priority gfx queue")
+Reviewed-by：Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-index 4b1685b939891..71ac2b94c6ba3 100644
---- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-@@ -328,7 +328,7 @@ sysirq: interrupt-controller@10200100 {
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 003bcece715eb..234753a10361f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -6751,7 +6751,7 @@ static void gfx_v10_0_gfx_mqd_set_priority(struct amdgpu_device *adev,
+ 	/* set up default queue priority level
+ 	 * 0x0 = low priority, 0x1 = high priority
+ 	 */
+-	if (prop->hqd_pipe_priority == AMDGPU_GFX_PIPE_PRIO_HIGH)
++	if (prop->hqd_queue_priority == AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM)
+ 		priority = 1;
  
- 	efuse: efuse@10206000 {
- 		compatible = "mediatek,mt7623-efuse",
--			     "mediatek,mt8173-efuse";
-+			     "mediatek,efuse";
- 		reg = <0 0x10206000 0 0x1000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+ 	tmp = RREG32_SOC15(GC, 0, mmCP_GFX_HQD_QUEUE_PRIORITY);
 -- 
 2.53.0
 
