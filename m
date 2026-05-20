@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDm3CqLsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-251039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:22 +0200
+	id yCtPNQb5DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63BF5933F9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7FB595732
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9E0A30A9A73
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE0423145665
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBD6231842;
-	Wed, 20 May 2026 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36ED93F871B;
+	Wed, 20 May 2026 17:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeCpMUgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg22pY+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DFF37754D;
-	Wed, 20 May 2026 17:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6893F39EE;
+	Wed, 20 May 2026 17:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296942; cv=none; b=iSGmVaT7pbzHhuELCTdAUOskdhbueCMKTF/q3ASmFJd9bcURsPENYCoqn+AUAgISVvWmSFWClFxTanXFqv8fcDc9se5pWktv+sl9VQJxcLvBYdzDYixo2V2Z7axWg8N/hwM4tmuD+Dx1aW5Ano5Fk533rnaoPb8xQkOeFymWO64=
+	t=1779299506; cv=none; b=QYSbCQYCbvz+1G0opBSGEHI/6VW6xSAjPnXLsOwlYZZ3Z7kxnIxbjupVLGeem4oHyQiEA7NI6azqK9xSSQxKishM896tqXVSBPJabwSO7Z0rYiAeFSCgu/W4hNhX/kztsY4PZRgCObsdO8+aaXkG1O6AtMqEtFmXSkB2UnQ9n24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296942; c=relaxed/simple;
-	bh=suITRy1kBr/HpxfUWm2cY+Rb8eMPN6wx5WZDgEac2+o=;
+	s=arc-20240116; t=1779299506; c=relaxed/simple;
+	bh=1eSyL9j6uImXXqNDXL8+Xac/jv6LQX5x87HvvGvWIOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZbkP7FFSuBgOszgQfY4/yNhRzw177vtHT4A33NLMjNtXM08OHAGhckVh0VVlxfPsvqINIc2cWVJsErqLCc+k5BG/p+XSneZ6gU/ecwodW0R0fKqxJckAvSHkcVNxh3aK5y/WVEmsNfxhKD2gP6Ck/AA7GZQT3ab7NOzj7gNd6G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeCpMUgy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECDA1F000E9;
-	Wed, 20 May 2026 17:09:00 +0000 (UTC)
+	 MIME-Version; b=fSjSjGMgI3AoHUIohG8uB+NpRnYCgE35h/+g2NfW3+EF9bVmktClrjGm2edfLcH6ZXx8MSt9yO4nNoMaOPoq1j6e3riKIw38ji+WZTg8206lfgexE+z+sOH11ESQdqeYuAc8m6bsceLvtkdJUczJkoI6a7nQhrnPrNbbnbBGHz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg22pY+a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523F41F000E9;
+	Wed, 20 May 2026 17:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296941;
-	bh=uHnrM70um2b/0qjO6h+AUupfzMMZAFPQf8ycqonXsIw=;
+	s=korg; t=1779299505;
+	bh=UXY4jiEHeM+LUNj5argwqzQjuTkh72Q35PAiY3OJHAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OeCpMUgy9TJQYzXrciq3GSsAJI52oc1vbE/N9qiTfrlDyoewPJyr1fKrrJPu2ZQ0O
-	 97kyS6EH4h/uGM6vGawpS1BfeA0I/QWcfRW6D+qHxBxvvJiObmomQjX8R2euK8gvHk
-	 O8QCgq6pyggD9JgHA7H2iIZqLU0AVmk+geeI73vk=
+	b=Lg22pY+aIfJSAdtJ+1cntqZ7pNMsFMLPnqQUNgnAjTMqBvHpRk8FkhooeidE64FUJ
+	 L2MzCcBGdOzaiXYPjR5XkgGbWTXtiD+tquV+HmY6vb03B/8v5kTnYGmM+YYxIXncdY
+	 B1X8q01nmtal+sDHOTy9Lc/QNqWEIp11nFpcW1qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0989/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (I)
+Subject: [PATCH 6.18 756/957] ASoC: tas2764: Mark die temp register as volatile
 Date: Wed, 20 May 2026 18:20:39 +0200
-Message-ID: <20260520162210.614190797@linuxfoundation.org>
+Message-ID: <20260520162150.960276873@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,187 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251039-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252009-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,toke.dk:email]
-X-Rspamd-Queue-Id: B63BF5933F9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7A7FB595732
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: James Calligeros <jcalligeros99@gmail.com>
 
-[ Upstream commit 44967ac3785ebef6442377708925181d4a0eb1c8 ]
+[ Upstream commit 4cfb5971c2fbfac061c23fb4224a3a008199de81 ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+Reading the temperature register always returns the first value
+read from the chip due to regcache.
 
-In this first patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for the following fields:
+Mark TAS2764_TEMP as volatile to prevent returning stale, cached
+values when reading the die temp.
 
-- way_hits
-- way_misses
-- way_collisions
-- sparse_flow_count
-- decaying_flow_count
-
-Other annotations are added in following patches, to ease code review.
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 186dfc85f9a8 ("ASoC: tas2764: expose die temp to hwmon")
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20260425-tas27xx-hwmon-fixes-v1-1-83c13b8e8f54@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ sound/soc/codecs/tas2764.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 4ac6c36ca6e41..ac82fe7aafcb3 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -813,7 +813,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
- 		     i++, k = (k + 1) % CAKE_SET_WAYS) {
- 			if (q->tags[outer_hash + k] == flow_hash) {
- 				if (i)
--					q->way_hits++;
-+					WRITE_ONCE(q->way_hits, q->way_hits + 1);
- 
- 				if (!q->flows[outer_hash + k].set) {
- 					/* need to increment host refcnts */
-@@ -831,7 +831,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
- 		for (i = 0; i < CAKE_SET_WAYS;
- 			 i++, k = (k + 1) % CAKE_SET_WAYS) {
- 			if (!q->flows[outer_hash + k].set) {
--				q->way_misses++;
-+				WRITE_ONCE(q->way_misses, q->way_misses + 1);
- 				allocate_src = cake_dsrc(flow_mode);
- 				allocate_dst = cake_ddst(flow_mode);
- 				goto found;
-@@ -841,7 +841,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
- 		/* With no empty queues, default to the original
- 		 * queue, accept the collision, update the host tags.
- 		 */
--		q->way_collisions++;
-+		WRITE_ONCE(q->way_collisions, q->way_collisions + 1);
- 		allocate_src = cake_dsrc(flow_mode);
- 		allocate_dst = cake_ddst(flow_mode);
- 
-@@ -1917,11 +1917,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		if (!flow->set) {
- 			list_add_tail(&flow->flowchain, &b->new_flows);
- 		} else {
--			b->decaying_flow_count--;
-+			WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count - 1);
- 			list_move_tail(&flow->flowchain, &b->new_flows);
- 		}
- 		flow->set = CAKE_SET_SPARSE;
--		b->sparse_flow_count++;
-+		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count + 1);
- 
- 		flow->deficit = cake_get_flow_quantum(b, flow, q->config->flow_mode);
- 	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
-@@ -1929,7 +1929,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		 * in the bulk rotation.
- 		 */
- 		flow->set = CAKE_SET_BULK;
--		b->sparse_flow_count--;
-+		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
- 		b->bulk_flow_count++;
- 
- 		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2149,7 +2149,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		 */
- 		if (flow->set == CAKE_SET_SPARSE) {
- 			if (flow->head) {
--				b->sparse_flow_count--;
-+				WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
- 				b->bulk_flow_count++;
- 
- 				cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2192,27 +2192,27 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
- 
--					b->decaying_flow_count++;
-+					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count + 1);
- 				} else if (flow->set == CAKE_SET_SPARSE ||
- 					   flow->set == CAKE_SET_SPARSE_WAIT) {
--					b->sparse_flow_count--;
--					b->decaying_flow_count++;
-+					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
-+					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count + 1);
- 				}
- 				flow->set = CAKE_SET_DECAYING;
- 			} else {
- 				/* remove empty queue from the flowchain */
- 				list_del_init(&flow->flowchain);
- 				if (flow->set == CAKE_SET_SPARSE ||
--				    flow->set == CAKE_SET_SPARSE_WAIT)
--					b->sparse_flow_count--;
--				else if (flow->set == CAKE_SET_BULK) {
-+				    flow->set == CAKE_SET_SPARSE_WAIT) {
-+					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
-+				} else if (flow->set == CAKE_SET_BULK) {
- 					b->bulk_flow_count--;
- 
- 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
--				} else
--					b->decaying_flow_count--;
--
-+				} else {
-+					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count - 1);
-+				}
- 				flow->set = CAKE_SET_NONE;
- 			}
- 			goto begin;
-@@ -3050,12 +3050,12 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		PUT_TSTAT_U32(BASE_DELAY_US,
- 			      ktime_to_us(ns_to_ktime(b->base_delay)));
- 
--		PUT_TSTAT_U32(WAY_INDIRECT_HITS, b->way_hits);
--		PUT_TSTAT_U32(WAY_MISSES, b->way_misses);
--		PUT_TSTAT_U32(WAY_COLLISIONS, b->way_collisions);
-+		PUT_TSTAT_U32(WAY_INDIRECT_HITS, READ_ONCE(b->way_hits));
-+		PUT_TSTAT_U32(WAY_MISSES, READ_ONCE(b->way_misses));
-+		PUT_TSTAT_U32(WAY_COLLISIONS, READ_ONCE(b->way_collisions));
- 
--		PUT_TSTAT_U32(SPARSE_FLOWS, b->sparse_flow_count +
--					    b->decaying_flow_count);
-+		PUT_TSTAT_U32(SPARSE_FLOWS, READ_ONCE(b->sparse_flow_count) +
-+					    READ_ONCE(b->decaying_flow_count));
- 		PUT_TSTAT_U32(BULK_FLOWS, b->bulk_flow_count);
- 		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, b->unresponsive_flow_count);
- 		PUT_TSTAT_U32(MAX_SKBLEN, b->max_skblen);
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 36e25e48b3546..9f351565dc82d 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -809,6 +809,7 @@ static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
+ 	case TAS2764_SW_RST:
++	case TAS2764_TEMP:
+ 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
+ 	case TAS2764_INT_CLK_CFG:
+ 		return true;
 -- 
 2.53.0
 
