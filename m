@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-253334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAlLEIEIDmrY5gUAu9opvQ
-	(envelope-from <stable+bounces-253334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:17 +0200
+	id 4PLZB0QGDmqv5gUAu9opvQ
+	(envelope-from <stable+bounces-253292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23F45980BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B712A597C3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D705A378A19E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5BE8A32EAA36
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3364F43DA35;
-	Wed, 20 May 2026 18:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DCD3FFAA0;
+	Wed, 20 May 2026 18:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pe2cUmbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LCROW9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7FC40802A;
-	Wed, 20 May 2026 18:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA29A3FE663;
+	Wed, 20 May 2026 18:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303010; cv=none; b=sGJZA0NlpUMfdmLLtc8a34M3DkhIot7Pj7YoG0PBDHBOqOo+uk/2aGH7erU8H46O0O/CWMSQzmqeUT7M0EBq0P8+hpepcziGykVaixy87Q8fRYBKqJF3UAd1eX3Bw4dedd4Gky17wFry5k1FPUf+UrffRwsBOSUQEDDIZVHjp8M=
+	t=1779302898; cv=none; b=bCNqQNSDoOfG/YTPLrP/ly5aPrbdqyUDaRCtjnbjpzGAXQu6k8ED55sScvborw4F0rHIrQu+Fw9avSyRiDKA2F/Ml37y45NGYjj50ekRpMgVTYMSPlTpjurhcOBoTr1WJ1Nx2PalT1cSu56mq0XNxjgnTWLn1qvW6/tCkfsmM9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303010; c=relaxed/simple;
-	bh=nOYY57mc98ZMvSC5UpccqmjbQmiIeZIhVZXSpkdutSo=;
+	s=arc-20240116; t=1779302898; c=relaxed/simple;
+	bh=4+ZVo7JBQedz82/H8SCNQ6RHFBk7Mqi9dOH3cXVgVoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cv60zXD9Ofe+uTI+6wvLwnYaVCBSsDSH5kUQxl2k8zTEv363W9l4fP7EXRl7kbxEdDCDYu3oB/0M0F8DQHtU3q1ETXJB3ddo7TlXwdRNbcRigZLlKtBnlQJ+Iqzvv3628lLhvkqSMAD/EAmBP7B2WrEqhj7cUiCdlIubKlp9/WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe2cUmbA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0696A1F000E9;
-	Wed, 20 May 2026 18:50:05 +0000 (UTC)
+	 MIME-Version; b=ek1ZQbVXr7qmJeO3xogVpOYxY09XPjatMOsG4E9d2R+EDtiwDw/GLXd9jgh3ajuvVkWYSDUT7KljZeGKupQl4OGnDUwWj0F90mchir9fDfIQjJnj193FQwKKxIjeJoGvaDmAAubYmxMqULvu1uAnanf7pIRRwMWvvT1NUIxOKug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LCROW9s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9240B1F00893;
+	Wed, 20 May 2026 18:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779303006;
-	bh=zpInWXrG18iHPd5RdwxAP7K3nD2LroyKoneZJ4IIOPc=;
+	s=korg; t=1779302896;
+	bh=KTAFyQpmUEkEw1zLdUOL2DyCQx4H4Cd7GmijpdrEWbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pe2cUmbATccWKfdmIUV5Qz0u3h8YUoHkDIUaf/6frhq+yTgORANzI68ojmmtw2Wws
-	 od7UOwn5Wq89Uq2zBgMplsNK/CYkfTqLZ6DsDvUNFfJUA6Yu1lubyvMp7kV9WC0jkr
-	 9oLQ1act80ik8IxAm0hFXpCi7oCSrug2rHSB2dAk=
+	b=0LCROW9sMo2FMdCs3DTmLhlRRY7Z2CfffII6u5Yq7E2RPTOzK8D5QrfnUyogQmr/y
+	 PVwcBxa7jRYcgLoRkqJS/UpF0hCalY1sW9TNisXpY5tVbq7rZcmpVYIYBj6SP4aRPZ
+	 +7yYLwwOKcO6RYUDJIt+N1Pov8t4IAeBWeqf871o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Liang Jie <liangjie@lixiang.com>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 441/508] Revert "crypto: nx - Migrate to scomp API"
-Date: Wed, 20 May 2026 18:24:24 +0200
-Message-ID: <20260520162108.154534848@linuxfoundation.org>
+Subject: [PATCH 6.6 442/508] smb: client: correctly handle ErrorContextData as a flexible array
+Date: Wed, 20 May 2026 18:24:25 +0200
+Message-ID: <20260520162108.175482039@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -64,33 +68,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253334-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253292-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lixiang.com,talpey.com,microsoft.com,foxmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D23F45980BE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,lixiang.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,talpey.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B712A597C3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,278 +103,68 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-This reverts commit 268ae55a4c4fbff3ff54f92a4642f497da814f49.
+From: Liang Jie <liangjie@lixiang.com>
 
+[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
+
+The `smb2_symlink_err_rsp` structure was previously defined with
+`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
+field is intended to be a variable-length array based on `ErrorDataLength`.
+This mismatch leads to incorrect pointer arithmetic and potential memory
+access issues when processing error contexts.
+
+Updates the `ErrorContextData` field to be a flexible array
+(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
+casts in the `symlink_data()` function to properly handle the flexible
+array, ensuring correct memory calculations and data handling.
+
+These changes improve the robustness of SMB2 symlink error processing.
+
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Suggested-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Remove the __counted_by_le annotation in v6.6. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/nx/nx-842.c            | 33 ++++++++++++---------------
- drivers/crypto/nx/nx-842.h            | 15 ++++++------
- drivers/crypto/nx/nx-common-powernv.c | 31 +++++++++++++------------
- drivers/crypto/nx/nx-common-pseries.c | 33 ++++++++++++++-------------
- 4 files changed, 54 insertions(+), 58 deletions(-)
+ fs/smb/client/smb2file.c | 4 ++--
+ fs/smb/client/smb2pdu.h  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/nx/nx-842.c b/drivers/crypto/nx/nx-842.c
-index b950fcce8a9be..82214cde2bcd9 100644
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -101,13 +101,9 @@ static int update_param(struct nx842_crypto_param *p,
- 	return 0;
- }
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index 4e7d5c612256d..3a5b62b298063 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -42,14 +42,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
+ 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+ 		do {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+-				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
++				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+ 			}
+ 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
+ 				 __func__, le32_to_cpu(p->ErrorId));
  
--void *nx842_crypto_alloc_ctx(struct nx842_driver *driver)
-+int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver)
- {
--	struct nx842_crypto_ctx *ctx;
--
--	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
--	if (!ctx)
--		return ERR_PTR(-ENOMEM);
-+	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+-			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
++			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+ 		} while (p < end);
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
+index 076d9e83e1a04..2eb15f3a7fe66 100644
+--- a/fs/smb/client/smb2pdu.h
++++ b/fs/smb/client/smb2pdu.h
+@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
+ struct smb2_error_context_rsp {
+ 	__le32 ErrorDataLength;
+ 	__le32 ErrorId;
+-	__u8  ErrorContextData; /* ErrorDataLength long array */
++	__u8  ErrorContextData[];
+ } __packed;
  
- 	spin_lock_init(&ctx->lock);
- 	ctx->driver = driver;
-@@ -118,23 +114,22 @@ void *nx842_crypto_alloc_ctx(struct nx842_driver *driver)
- 		kfree(ctx->wmem);
- 		free_page((unsigned long)ctx->sbounce);
- 		free_page((unsigned long)ctx->dbounce);
--		kfree(ctx);
--		return ERR_PTR(-ENOMEM);
-+		return -ENOMEM;
- 	}
- 
--	return ctx;
-+	return 0;
- }
--EXPORT_SYMBOL_GPL(nx842_crypto_alloc_ctx);
-+EXPORT_SYMBOL_GPL(nx842_crypto_init);
- 
--void nx842_crypto_free_ctx(void *p)
-+void nx842_crypto_exit(struct crypto_tfm *tfm)
- {
--	struct nx842_crypto_ctx *ctx = p;
-+	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
- 
- 	kfree(ctx->wmem);
- 	free_page((unsigned long)ctx->sbounce);
- 	free_page((unsigned long)ctx->dbounce);
- }
--EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
-+EXPORT_SYMBOL_GPL(nx842_crypto_exit);
- 
- static void check_constraints(struct nx842_constraints *c)
- {
-@@ -251,11 +246,11 @@ static int compress(struct nx842_crypto_ctx *ctx,
- 	return update_param(p, slen, dskip + dlen);
- }
- 
--int nx842_crypto_compress(struct crypto_scomp *tfm,
-+int nx842_crypto_compress(struct crypto_tfm *tfm,
- 			  const u8 *src, unsigned int slen,
--			  u8 *dst, unsigned int *dlen, void *pctx)
-+			  u8 *dst, unsigned int *dlen)
- {
--	struct nx842_crypto_ctx *ctx = pctx;
-+	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct nx842_crypto_header *hdr =
- 				container_of(&ctx->header,
- 					     struct nx842_crypto_header, hdr);
-@@ -436,11 +431,11 @@ static int decompress(struct nx842_crypto_ctx *ctx,
- 	return update_param(p, slen + padding, dlen);
- }
- 
--int nx842_crypto_decompress(struct crypto_scomp *tfm,
-+int nx842_crypto_decompress(struct crypto_tfm *tfm,
- 			    const u8 *src, unsigned int slen,
--			    u8 *dst, unsigned int *dlen, void *pctx)
-+			    u8 *dst, unsigned int *dlen)
- {
--	struct nx842_crypto_ctx *ctx = pctx;
-+	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct nx842_crypto_header *hdr;
- 	struct nx842_crypto_param p;
- 	struct nx842_constraints c = *ctx->driver->constraints;
-diff --git a/drivers/crypto/nx/nx-842.h b/drivers/crypto/nx/nx-842.h
-index 58137ffd3835b..25fa70b2112cf 100644
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -3,6 +3,7 @@
- #ifndef __NX_842_H__
- #define __NX_842_H__
- 
-+#include <crypto/algapi.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/module.h>
-@@ -100,8 +101,6 @@
- #define LEN_ON_SIZE(pa, size)	((size) - ((pa) & ((size) - 1)))
- #define LEN_ON_PAGE(pa)		LEN_ON_SIZE(pa, PAGE_SIZE)
- 
--struct crypto_scomp;
--
- static inline unsigned long nx842_get_pa(void *addr)
- {
- 	if (!is_vmalloc_addr(addr))
-@@ -180,13 +179,13 @@ struct nx842_crypto_ctx {
- 	struct nx842_driver *driver;
- };
- 
--void *nx842_crypto_alloc_ctx(struct nx842_driver *driver);
--void nx842_crypto_free_ctx(void *ctx);
--int nx842_crypto_compress(struct crypto_scomp *tfm,
-+int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver);
-+void nx842_crypto_exit(struct crypto_tfm *tfm);
-+int nx842_crypto_compress(struct crypto_tfm *tfm,
- 			  const u8 *src, unsigned int slen,
--			  u8 *dst, unsigned int *dlen, void *ctx);
--int nx842_crypto_decompress(struct crypto_scomp *tfm,
-+			  u8 *dst, unsigned int *dlen);
-+int nx842_crypto_decompress(struct crypto_tfm *tfm,
- 			    const u8 *src, unsigned int slen,
--			    u8 *dst, unsigned int *dlen, void *ctx);
-+			    u8 *dst, unsigned int *dlen);
- 
- #endif /* __NX_842_H__ */
-diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
-index fd0a98b2fb1b2..8c859872c1839 100644
---- a/drivers/crypto/nx/nx-common-powernv.c
-+++ b/drivers/crypto/nx/nx-common-powernv.c
-@@ -9,7 +9,6 @@
- 
- #include "nx-842.h"
- 
--#include <crypto/internal/scompress.h>
- #include <linux/timer.h>
- 
- #include <asm/prom.h>
-@@ -1032,21 +1031,23 @@ static struct nx842_driver nx842_powernv_driver = {
- 	.decompress =	nx842_powernv_decompress,
- };
- 
--static void *nx842_powernv_crypto_alloc_ctx(void)
-+static int nx842_powernv_crypto_init(struct crypto_tfm *tfm)
- {
--	return nx842_crypto_alloc_ctx(&nx842_powernv_driver);
-+	return nx842_crypto_init(tfm, &nx842_powernv_driver);
- }
- 
--static struct scomp_alg nx842_powernv_alg = {
--	.base.cra_name		= "842",
--	.base.cra_driver_name	= "842-nx",
--	.base.cra_priority	= 300,
--	.base.cra_module	= THIS_MODULE,
--
--	.alloc_ctx		= nx842_powernv_crypto_alloc_ctx,
--	.free_ctx		= nx842_crypto_free_ctx,
--	.compress		= nx842_crypto_compress,
--	.decompress		= nx842_crypto_decompress,
-+static struct crypto_alg nx842_powernv_alg = {
-+	.cra_name		= "842",
-+	.cra_driver_name	= "842-nx",
-+	.cra_priority		= 300,
-+	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
-+	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
-+	.cra_module		= THIS_MODULE,
-+	.cra_init		= nx842_powernv_crypto_init,
-+	.cra_exit		= nx842_crypto_exit,
-+	.cra_u			= { .compress = {
-+	.coa_compress		= nx842_crypto_compress,
-+	.coa_decompress		= nx842_crypto_decompress } }
- };
- 
- static __init int nx_compress_powernv_init(void)
-@@ -1106,7 +1107,7 @@ static __init int nx_compress_powernv_init(void)
- 		nx842_powernv_exec = nx842_exec_vas;
- 	}
- 
--	ret = crypto_register_scomp(&nx842_powernv_alg);
-+	ret = crypto_register_alg(&nx842_powernv_alg);
- 	if (ret) {
- 		nx_delete_coprocs();
- 		return ret;
-@@ -1127,7 +1128,7 @@ static void __exit nx_compress_powernv_exit(void)
- 	if (!nx842_ct)
- 		vas_unregister_api_powernv();
- 
--	crypto_unregister_scomp(&nx842_powernv_alg);
-+	crypto_unregister_alg(&nx842_powernv_alg);
- 
- 	nx_delete_coprocs();
- }
-diff --git a/drivers/crypto/nx/nx-common-pseries.c b/drivers/crypto/nx/nx-common-pseries.c
-index 0d26aafd08863..7e98f174f69b9 100644
---- a/drivers/crypto/nx/nx-common-pseries.c
-+++ b/drivers/crypto/nx/nx-common-pseries.c
-@@ -11,7 +11,6 @@
- #include <asm/vio.h>
- #include <asm/hvcall.h>
- #include <asm/vas.h>
--#include <crypto/internal/scompress.h>
- 
- #include "nx-842.h"
- #include "nx_csbcpb.h" /* struct nx_csbcpb */
-@@ -1009,21 +1008,23 @@ static struct nx842_driver nx842_pseries_driver = {
- 	.decompress =	nx842_pseries_decompress,
- };
- 
--static void *nx842_pseries_crypto_alloc_ctx(void)
-+static int nx842_pseries_crypto_init(struct crypto_tfm *tfm)
- {
--	return nx842_crypto_alloc_ctx(&nx842_pseries_driver);
-+	return nx842_crypto_init(tfm, &nx842_pseries_driver);
- }
- 
--static struct scomp_alg nx842_pseries_alg = {
--	.base.cra_name		= "842",
--	.base.cra_driver_name	= "842-nx",
--	.base.cra_priority	= 300,
--	.base.cra_module	= THIS_MODULE,
--
--	.alloc_ctx		= nx842_pseries_crypto_alloc_ctx,
--	.free_ctx		= nx842_crypto_free_ctx,
--	.compress		= nx842_crypto_compress,
--	.decompress		= nx842_crypto_decompress,
-+static struct crypto_alg nx842_pseries_alg = {
-+	.cra_name		= "842",
-+	.cra_driver_name	= "842-nx",
-+	.cra_priority		= 300,
-+	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
-+	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
-+	.cra_module		= THIS_MODULE,
-+	.cra_init		= nx842_pseries_crypto_init,
-+	.cra_exit		= nx842_crypto_exit,
-+	.cra_u			= { .compress = {
-+	.coa_compress		= nx842_crypto_compress,
-+	.coa_decompress		= nx842_crypto_decompress } }
- };
- 
- static int nx842_probe(struct vio_dev *viodev,
-@@ -1071,7 +1072,7 @@ static int nx842_probe(struct vio_dev *viodev,
- 	if (ret)
- 		goto error;
- 
--	ret = crypto_register_scomp(&nx842_pseries_alg);
-+	ret = crypto_register_alg(&nx842_pseries_alg);
- 	if (ret) {
- 		dev_err(&viodev->dev, "could not register comp alg: %d\n", ret);
- 		goto error;
-@@ -1119,7 +1120,7 @@ static void nx842_remove(struct vio_dev *viodev)
- 	if (caps_feat)
- 		sysfs_remove_group(&viodev->dev.kobj, &nxcop_caps_attr_group);
- 
--	crypto_unregister_scomp(&nx842_pseries_alg);
-+	crypto_unregister_alg(&nx842_pseries_alg);
- 
- 	spin_lock_irqsave(&devdata_mutex, flags);
- 	old_devdata = rcu_dereference_check(devdata,
-@@ -1251,7 +1252,7 @@ static void __exit nx842_pseries_exit(void)
- 
- 	vas_unregister_api_pseries();
- 
--	crypto_unregister_scomp(&nx842_pseries_alg);
-+	crypto_unregister_alg(&nx842_pseries_alg);
- 
- 	spin_lock_irqsave(&devdata_mutex, flags);
- 	old_devdata = rcu_dereference_check(devdata,
+ /* ErrorId values */
 -- 
 2.53.0
 
