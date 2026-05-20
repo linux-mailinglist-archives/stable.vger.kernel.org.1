@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-251797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHlWJKYeDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:50:46 +0200
+	id 8JOzGG0GDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-252437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E8559A2F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:50:45 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7848C597CB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0295C3764DB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 028F43103774
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9083ED3A4;
-	Wed, 20 May 2026 17:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258973F889E;
+	Wed, 20 May 2026 18:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neMv8xWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJVAkgx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848E36D9EA;
-	Wed, 20 May 2026 17:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24FA3ED3B8;
+	Wed, 20 May 2026 18:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298915; cv=none; b=TDC2TwzqwYl6eq24OCru2gl9AXZlpCXPMhe4CWekm+3on+goGnqLWr266jw7XPM0070Cau9iz/OE8/O7Y5xAVUM1diz3y6U165XWDVJKa9IgCv0fAlZvgcXBzGTkQYyPKnjrNgQt7rdFa5NxKeNjnxEIcjAuW4uoRYB4vuW5ZDU=
+	t=1779300670; cv=none; b=WYDnla/p+ZDtTG7TMLwr439e5W0si3cwHel6rjzqyR1fNVJMoJN72jdrRq9q58nVLj0hgskDopMKV5pa9sUlBqMP8fGw7gdhcSUGeaTrZj/we/FZsVWD8i1Iy81GetPOMmnNsJo66NS3Qf4YuKn2R1oxX8VDqJzffOPGZHzGtQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298915; c=relaxed/simple;
-	bh=zDj+QGL2L1bsoWuF3bo/rW+59LImxsDb84d94NNSXZs=;
+	s=arc-20240116; t=1779300670; c=relaxed/simple;
+	bh=cN+Sw/m38KfL22GJTS+Ebx5BSSqzDGMrX32kqv+JEgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DloNnlQ7xWlI+3gc2qXtavD1uVflNLVAV6VMEcLcuxSiBJiPAxWq1PQoWHnc45ICNfYeEnZ7SjeqUgVnBQw9Kp4ZSEpwMXjRXRok7D7nDTrcD/kDZl14T6IZGnRbNpR86lK7J1zi+5yQq6UnTuhj4Z79Y4Fhjc2n0YaJKMmytmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neMv8xWl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0166F1F000E9;
-	Wed, 20 May 2026 17:41:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q5olIFVok1i68/MRVOYuRsTsYffobqY6k+tDFIA3p9vezv3K2qD2RBo8mzDYjSBHCTO3kmed01obSdubHBRbeDUJ28oxE6Ove/6dqX0LsKkkMDKUcqo4TaJMZCWrTIA1N3HfkJVKiMepYjXSdP7Vn6407WRPZHCkHJltpavll4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJVAkgx7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A341F000E9;
+	Wed, 20 May 2026 18:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298914;
-	bh=gQ7BEp9TkisrUWuL/625XE/47YUd/BxkXw0OWg0HUHU=;
+	s=korg; t=1779300669;
+	bh=0fSasMTJcy3AxIirBK6DDK2MAjl1E538YTZ6mzTmte8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=neMv8xWlnPkS3C3ImGu2mSVfwng883kyNYYnMigYOBptzDiruZh+7BSLZVfzCYTAQ
-	 xmwOHpuSNX/mx3S0VNXnFhrhhsYpyAJH7XxScLEY5lt3EZYljF6QLEMZyJGv60Tbrj
-	 37etkXFXng8HaDAfj9HDaZhzV0O2hFVqvggoY+w8=
+	b=tJVAkgx7EwpoE5kf0jbbz10aV/FLLeZdtLVuGNE8/3/jkTWjj4h0CEweh8XEmrelD
+	 w5eRsOcYx+k7yvF8mRzdZY7Lhg3iXsGvBW4u6b42AbTHft3NTnoz4bXcQg0XYMhQtb
+	 nrJoREXYjTXHCKhySSquz8JnREQ7qs89sb4zbO+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sami Mujawar <sami.mujawar@arm.com>,
-	Jagdish Gediya <Jagdish.Gediya@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 592/957] virt: arm-cca-guest: fix error check for RSI_INCOMPLETE
+Subject: [PATCH 6.12 264/666] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
 Date: Wed, 20 May 2026 18:17:55 +0200
-Message-ID: <20260520162147.368417446@linuxfoundation.org>
+Message-ID: <20260520162116.939322076@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251797-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252437-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E7E8559A2F8
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_PROHIBIT(0.00)[0.155.187.48:email];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,milecki.pl:email,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,0.155.164.36:email]
+X-Rspamd-Queue-Id: 7848C597CB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sami Mujawar <sami.mujawar@arm.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit e534e9d13d0b7bdbb2cccdace7b96b769a10540e ]
+[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
 
-The RSI interface can return RSI_INCOMPLETE when a report spans
-multiple granules. This is an expected condition and should not be
-treated as a fatal error.
+Fix following validation error:
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
+        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
+        'mediatek,mt8173-efuse' was expected
+        'mediatek,efuse' was expected
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
 
-Currently, arm_cca_report_new() checks for `info.result != RSI_SUCCESS`
-and bails out, which incorrectly flags RSI_INCOMPLETE as a failure.
-Fix the check to only break out on results other than RSI_SUCCESS or
-RSI_INCOMPLETE.
-
-This ensures partial reports are handled correctly and avoids spurious
--ENXIO errors when generating attestation reports.
-
-Fixes: 7999edc484ca ("virt: arm-cca-guest: TSM_REPORT support for realms")
-Signed-off-by: Sami Mujawar <sami.mujawar@arm.com>
-Reported-by: Jagdish Gediya <Jagdish.Gediya@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/arm-cca-guest/arm-cca-guest.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-index 0c9ea24a200c9..66d00b6ceb789 100644
---- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-+++ b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
-@@ -157,7 +157,8 @@ static int arm_cca_report_new(struct tsm_report *report, void *data)
- 		} while (info.result == RSI_INCOMPLETE &&
- 			 info.offset < RSI_GRANULE_SIZE);
+diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+index fd7a89cc337d6..a60b1d6879ffe 100644
+--- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
++++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+@@ -328,7 +328,7 @@ sysirq: interrupt-controller@10200100 {
  
--		if (info.result != RSI_SUCCESS) {
-+		/* Break out in case of failure */
-+		if (info.result != RSI_SUCCESS && info.result != RSI_INCOMPLETE) {
- 			ret = -ENXIO;
- 			token_size = 0;
- 			goto exit_free_granule_page;
+ 	efuse: efuse@10206000 {
+ 		compatible = "mediatek,mt7623-efuse",
+-			     "mediatek,mt8173-efuse";
++			     "mediatek,efuse";
+ 		reg = <0 0x10206000 0 0x1000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
 -- 
 2.53.0
 
