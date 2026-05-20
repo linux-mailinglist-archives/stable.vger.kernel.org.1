@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kO8KOZUQDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:50:45 +0200
+	id +CNhMvAaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83505598C95
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC88599CC2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF5453794B01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F221326F785
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F97370AF4;
-	Wed, 20 May 2026 16:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A7E3C6A5C;
+	Wed, 20 May 2026 17:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bK1so3Hl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi3g/P00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1294331F9BE;
-	Wed, 20 May 2026 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7C836A376;
+	Wed, 20 May 2026 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295533; cv=none; b=BmHBsPUNhIYBvC0sJ1hDvTJ+GwxVIj+mF4T9j08Rp22IXv1VTt890PEnqHe+UK33KMtd/sm0mSWf8gsekfhyzsyww4hQrjqlDKSk18tlEiCokhAg1U32KauO4LqYdkF5SVUHo13zYH8LvufPg/84iiKVH+SV3xPlvjXbOv+NWZk=
+	t=1779298053; cv=none; b=Vcg+2s36EdiHSZzIAR53PjIfXHWCYDuBwISThoqi5RXJ6Epoh/urhm9znHacsdraStuyCxgFoEpq2ll1iO0KEBB7G3t3bTEDN70U1PFIzLhD4ttwTW0k4+/UwYTyK7r017S8CdJkH30P7e561tNvYVzhFePv51XX9qyiYiptt+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295533; c=relaxed/simple;
-	bh=zx0GtGJD4e2R+oevWi7YXfRiNi2+E0fZPEN9H3ndLlM=;
+	s=arc-20240116; t=1779298053; c=relaxed/simple;
+	bh=9xyVdKrmb2JDH+JN/x7mA68a3knPt0h3vPsGw+Hv8bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpY62J3IjfHsR0CVWNj/bnsTA6zsBn9eOXwO1pWcNR7kXPI7wsqFTYBo6E8PHvhYCtdBXQqb9ck+/PxKJ6yYdhp4bsaqSpFba5hmFBX2KBxZBXn1ZI4XmU73XUY9Eqp1vrPH5kMvB/evFbN5mXh5R2Bpfq8Ab3HkjBSPmDJUjfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK1so3Hl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780D31F000E9;
-	Wed, 20 May 2026 16:45:31 +0000 (UTC)
+	 MIME-Version; b=Q5tSkSB40I4gFQmZODWCz/9B6B4lVD8+Y+1ytVXtKZcSg2/cJT+0v6N6mG8iC1T/30biG576AXxipoGDRZqrm8TnZHVlILfD14GyHTCOaZLHkmEEzfAsHUwSclLfiLxxLgRQYXF81RMjnAqrq1OcMBpYBS5ppGmyAlJHRUet6Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi3g/P00; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D20E1F00896;
+	Wed, 20 May 2026 17:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295532;
-	bh=gdDfpewL76VCo6Sznu0cng3sFRJheCSiDgm66mt2hOA=;
+	s=korg; t=1779298051;
+	bh=YAp+HwmXg4yTSmpGzY+UgbZxDqZOkA6BUVp3Fv7M99w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bK1so3HlSzQ8qc2IG4lOUFX9sUETp51oQNPFI9NDEIp2qcMcCCuXrT8Lm1WqgAA2j
-	 +80uDy/b9eLJpIQ7yWegBnKgQmmotgkJWgHELzNy5DMxKE6JWBKEIgWVNOrMlmYV6X
-	 cM6/85wsR6OiyL0r5vr0EAbCUsUkmJoSJlcHYNUs=
+	b=fi3g/P00vAfrvW+c5e/GSTXh/rIHRYlV6QFMlfx96TjlvfGlyxO3FUAvQnHJSma++
+	 0M8akcVzvG1UWIODp3pzDochUr+zUTgG3ZHo6gRVf0rmO+9uz7grAA0LROmRww/Hxd
+	 MtEMLI0a8W0kozHEDwULaE2L6SNK9BSDQ5bhhUtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0455/1146] rtla/utils: Fix resource leak in set_comm_sched_attr()
+Subject: [PATCH 6.18 222/957] crypto: inside-secure/eip93 - register hash before authenc algorithms
 Date: Wed, 20 May 2026 18:11:45 +0200
-Message-ID: <20260520162158.498035085@linuxfoundation.org>
+Message-ID: <20260520162139.357224307@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,94 +68,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250485-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251465-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,gondor.apana.org.au,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 83505598C95
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3DC88599CC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 5b6dc659ad792c72b3ff1be8039ae2945e030928 ]
+[ Upstream commit 5377032914b29b4643adece0ff1dfc67e36700f4 ]
 
-The set_comm_sched_attr() function opens the /proc directory via
-opendir() but fails to call closedir() on its successful exit path.
-If the function iterates through all processes without error, it
-returns 0 directly, leaking the DIR stream pointer.
+Register hash before hmac and authenc algorithms. This will ensure
+selftests pass at startup. Previously, selftests failed on the
+crypto_alloc_ahash() function since the associated algorithm was
+not yet registered.
 
-Fix this by refactoring the function to use a single exit path. A
-retval variable is introduced to track the success or failure status.
-All exit points now jump to a unified out label that calls closedir()
-before the function returns, ensuring the resource is always freed.
+Fixes following error:
+...
+[   18.375811] alg: self-tests for authenc(hmac(sha1),cbc(aes)) using authenc(hmac(sha1-eip93),cbc(aes-eip93)) failed (rc=-2)
+[   18.382140] alg: self-tests for authenc(hmac(sha224),rfc3686(ctr(aes))) using authenc(hmac(sha224-eip93),rfc3686(ctr(aes-eip93))) failed (rc=-2)
+[   18.395029] alg: aead: authenc(hmac(sha256-eip93),cbc(des-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
+[   18.409734] alg: aead: authenc(hmac(md5-eip93),cbc(des3_ede-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
+...
 
-Fixes: dada03db9bb19 ("rtla: Remove procps-ng dependency")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20260309195040.1019085-18-wander@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/utils.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/crypto/inside-secure/eip93/eip93-main.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-index 22d2182c729e5..53e45eabae03c 100644
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -360,22 +360,23 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
+diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
+index b7fd9795062d4..76858bb4fcc22 100644
+--- a/drivers/crypto/inside-secure/eip93/eip93-main.c
++++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
+@@ -36,6 +36,14 @@ static struct eip93_alg_template *eip93_algs[] = {
+ 	&eip93_alg_cbc_aes,
+ 	&eip93_alg_ctr_aes,
+ 	&eip93_alg_rfc3686_aes,
++	&eip93_alg_md5,
++	&eip93_alg_sha1,
++	&eip93_alg_sha224,
++	&eip93_alg_sha256,
++	&eip93_alg_hmac_md5,
++	&eip93_alg_hmac_sha1,
++	&eip93_alg_hmac_sha224,
++	&eip93_alg_hmac_sha256,
+ 	&eip93_alg_authenc_hmac_md5_cbc_des,
+ 	&eip93_alg_authenc_hmac_sha1_cbc_des,
+ 	&eip93_alg_authenc_hmac_sha224_cbc_des,
+@@ -52,14 +60,6 @@ static struct eip93_alg_template *eip93_algs[] = {
+ 	&eip93_alg_authenc_hmac_sha1_rfc3686_aes,
+ 	&eip93_alg_authenc_hmac_sha224_rfc3686_aes,
+ 	&eip93_alg_authenc_hmac_sha256_rfc3686_aes,
+-	&eip93_alg_md5,
+-	&eip93_alg_sha1,
+-	&eip93_alg_sha224,
+-	&eip93_alg_sha256,
+-	&eip93_alg_hmac_md5,
+-	&eip93_alg_hmac_sha1,
+-	&eip93_alg_hmac_sha224,
+-	&eip93_alg_hmac_sha256,
+ };
  
- 		if (strtoi(proc_entry->d_name, &pid)) {
- 			err_msg("'%s' is not a valid pid", proc_entry->d_name);
--			goto out_err;
-+			retval = 1;
-+			goto out;
- 		}
- 		/* procfs_is_workload_pid confirmed it is a pid */
- 		retval = __set_sched_attr(pid, attr);
- 		if (retval) {
- 			err_msg("Error setting sched attributes for pid:%s\n", proc_entry->d_name);
--			goto out_err;
-+			goto out;
- 		}
- 
- 		debug_msg("Set sched attributes for pid:%s\n", proc_entry->d_name);
- 	}
--	return 0;
- 
--out_err:
-+	retval = 0;
-+out:
- 	closedir(procfs);
--	return 1;
-+	return retval;
- }
- 
- #define INVALID_VAL	(~0L)
+ inline void eip93_irq_disable(struct eip93_device *eip93, u32 mask)
 -- 
 2.53.0
 
