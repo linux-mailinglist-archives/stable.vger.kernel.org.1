@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFBqOkYCDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:42 +0200
+	id 6Mb6Bbf9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634B7597453
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AD45965F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98FD131300A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE8DE33190AE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798DD3FC5D7;
-	Wed, 20 May 2026 18:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318063E5ECF;
+	Wed, 20 May 2026 17:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wviswlJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnfYLPCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367083FC5D4;
-	Wed, 20 May 2026 18:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC6D3C4576;
+	Wed, 20 May 2026 17:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302339; cv=none; b=U5UAJR60P9g0mJ4vnz87L4Fu5Wam42Mqf+L2Zgl2AunjpZXL0dnQ/Ptqc+p2LY/bMZCz6IjRNAFsSem5I9FBMqtczQlGjX/yVzVEW/+aH841aNLkhri0e5qRpGjLCLJhs2jzQ+sSkftoJsYYpNcLPP0+xex93taqjTOiymRUJrc=
+	t=1779299428; cv=none; b=KUTI96S5J8gnJhQi+rmxm34RfkBX+SDg+eHdr1bvuT4jigiYRxW+HaMaNCchlY+1Jb3hoLIRDsjcx1i/P9D9Suqa+arRoYtSRSTkVggHoBNQ666QGuaBR7KivUVri8pmoChnlXqt6gBo9jXf7DrcoCV1JmZWbBKQaqcBqWd7Ozo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302339; c=relaxed/simple;
-	bh=uDc9AueAL4+plFpLKWO1EdDOX0YbV0L7DR1C8sQKQ5w=;
+	s=arc-20240116; t=1779299428; c=relaxed/simple;
+	bh=+i5D3SW1vmxQgFcLs6334tuP00/FX8ehWK7eC1xz3AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hx/GQfh1VP9ab0PwVKsJgEBmIzg9wOAYfbFeuoFIUvm83jLfHzFLqqoT3swquwEmPHuPha4zWBO17Ks+eps80x84LzdOTJj7Ht2QyOxh1LNQUS2uPeTKxgBtddZ6zH/VChnHOk1KEW9nC2+6gX18M+XOcFO5RT3xzXbQ4e+XJGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wviswlJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA1F1F008A3;
-	Wed, 20 May 2026 18:38:57 +0000 (UTC)
+	 MIME-Version; b=BZGK/5ehZVx+O04/rl/kc2cMqFL2c0Et6QsQaAu/g4V46nuBGtXwaJy7DmPFQyC98LXrSRNt1Fq+QVEIvnuWtgHS6YdYfmT1Mk4oFnHU1RjJZcK/CIr9mvlaekstoaukd4PHGMqDvGul68Xw2avpsGe1HYGx2YlvY6+11rbC1qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnfYLPCB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2AA1F00897;
+	Wed, 20 May 2026 17:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302337;
-	bh=2bTdPhUsmVAEbk3e40XlH5q5c2/1x0lcmT9KXw4XQ3k=;
+	s=korg; t=1779299426;
+	bh=Qkgd/aZx360ltAeWYO2AjybTI980aHIxe+MiIH3JvP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0wviswlJ76YWMsEfPY1WXjGu2GgqXbvaxNOWCw/kOgvPvK/252O0aSg37daJWKybr
-	 hjZouzzr3iLsVUreumTmJMvabdGjWe7l/xRd4SjLgWCmIR+djJMpgiYrISQsoq4gDd
-	 kd0i2UYGRvtNVTIr4eHMuIrbwDQi4rK8N4F7VUVs=
+	b=YnfYLPCBWUJ8wbkaP7C3CI+LaLX7eemUL75dhNi67WWSYfyK6iCgH4wRJk/e2bVCA
+	 FlJ9k+TaPD3SIbeeodd0drXLzWYcG4UAOExjjIpGVK9aEaO7FgYKON4RBsvkwoDBA9
+	 FqF0X/r0S6B5z5T2Xar3lBvO36r5zckd8l7x5d+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/508] mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation
+Subject: [PATCH 6.18 769/957] net/sched: netem: fix slot delay calculation overflow
 Date: Wed, 20 May 2026 18:20:52 +0200
-Message-ID: <20260520162103.612077078@linuxfoundation.org>
+Message-ID: <20260520162151.239623516@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253075-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251979-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 634B7597453
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A7AD45965F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 3620d67b48493c6252bbc873dc88dde81641d56b ]
+[ Upstream commit 51e94e1e2fef351c74d69eb53666df808d26af95 ]
 
-After commit 5273cc6df984 ("mtd: spi-nor: core: Call
-spi_nor_post_sfdp_fixups() only when SFDP is defined")
-spi_nor_post_sfdp_fixups() isn't called anymore if no SFDP is detected.
+get_slot_next() computes a random delay between min_delay and
+max_delay using:
 
-Update the documentation accordingly.
+  get_random_u32() * (max_delay - min_delay) >> 32
 
-Fixes: 5273cc6df984 ("mtd: spi-nor: core: Call spi_nor_post_sfdp_fixups() only when SFDP is defined")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+This overflows signed 64-bit arithmetic when the delay range exceeds
+approximately 2.1 seconds (2^31 nanoseconds), producing a negative
+result that effectively disables slot-based pacing. This is a
+realistic configuration for WAN emulation (e.g., slot 1s 5s).
+
+Use mul_u64_u32_shr() which handles the widening multiply without
+overflow.
+
+Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-6-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_netem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 6c478331e494e..398383ba0d8d6 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -420,7 +420,7 @@ struct spi_nor_flash_parameter {
-  *                   number of dummy cycles in read register ops.
-  * @smpt_map_id: called after map ID in SMPT table has been determined for the
-  *               case the map ID is wrong and needs to be fixed.
-- * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-+ * @post_sfdp: called after SFDP has been parsed (is not called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-  *             when information provided by the SFDP/flash_info tables are
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 41d60e904090d..6e221bdfb3871 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -658,9 +658,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
+ 
+ 	if (!q->slot_dist)
+ 		next_delay = q->slot_config.min_delay +
+-				(get_random_u32() *
+-				 (q->slot_config.max_delay -
+-				  q->slot_config.min_delay) >> 32);
++			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
++					get_random_u32(), 32);
+ 	else
+ 		next_delay = tabledist(q->slot_config.dist_delay,
+ 				       (s32)(q->slot_config.dist_jitter),
 -- 
 2.53.0
 
