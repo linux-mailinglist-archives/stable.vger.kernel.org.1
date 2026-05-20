@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-253329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6C/IFUweDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-253329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:49:16 +0200
+	id sP7MEFwJDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-253364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC9D59A295
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:49:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60745598230
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3FF8433AE42E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85E4139D8C21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2D1407CD9;
-	Wed, 20 May 2026 18:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C761A3FF89A;
+	Wed, 20 May 2026 18:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR83aEIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arxdYzmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F865407579;
-	Wed, 20 May 2026 18:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BB403EB2;
+	Wed, 20 May 2026 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302997; cv=none; b=U0OOW6Dym2K5jQjx3g+9hfy7hceGNlSHUIHHV3VOYLRa7Sx/eiMNlS2YRysRfVL+8CiPgo1Ij5+K7jYv3R0JqT/8SWwdk3hnqAoveR7QJ+4rIISQSGRAX4ht1dQg6VNcoVHEhqZR4rwi1ZM1uizIMrt3fscaGhpWRJy3KAQNaFE=
+	t=1779303088; cv=none; b=NeMDbYXXeHL4XLVQCUf4/lfW0GExzNi79jHfVQQcmOlObZ24GCBn9zFL6i9p3gViS4+0Ox3uBsuviOknf1dzkf0v4NQ5l6ljEQ5wqlSaC6jsmTXAg5ZlO0ihaKWPFGXwMdke5/0nTDmPnPj0OTFH1A47zKzFP5Ty+7Js+7vfTts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302997; c=relaxed/simple;
-	bh=FTytzraHbsBb7vjqCRStSrNitNowHh+pjmTb7febIY8=;
+	s=arc-20240116; t=1779303088; c=relaxed/simple;
+	bh=ISpo2iBKbxGblHKprRUpdTHkjMLHsPyOku3BVIluH7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVaezP9U2EL39e2AItMrLoD5IHxhdbNbJscaw+nKl1jO//6j2rSdQNfuMjtPaIQhYnfjnlFw1g6MfUPJ//zA2d+q+odpksoDtPreiwzqmBXY8wuEaMYILjbPqDkwVQId9sWwQFn50x9VR9oClqKe9JM9a/IJ0L66hN4Pmol8sz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR83aEIT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA95D1F000E9;
-	Wed, 20 May 2026 18:49:52 +0000 (UTC)
+	 MIME-Version; b=miXS0Ci0m5RUzktGMtoIYHlSWRcUa438d4Ssdx8jhQrr8ejMfz1LeQaxkE52sxA8AlWLC5I/RS7Jtfqe3NplKNwHwuyfgiV2zfS22E7PKzrR4yAI7Tj93rxt0F+aLtNXy0ZZFVxqiBpL3P9xzZAYiPo5crOS78gqiWKeJ83s36o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arxdYzmE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF1C1F00893;
+	Wed, 20 May 2026 18:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302993;
-	bh=qyQoUxRCI7M4zYZSXK7HwvqQ1I0m6W0MOuQAopiK8BA=;
+	s=korg; t=1779303085;
+	bh=G0c18LOqf1WcdJw1X1TUBSc9WeXzwwOn2bxil5dvmqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QR83aEITttHI5d5gEakKo1FhNgV+KwkDIgSeKKrfApLQb5wGddxNa2s3fYEK+QLYD
-	 ijity7Q8Bhm3+BTfL+M0PYKs7dy2/+XAkG9oOpIdxGvt9Gg+/Vvlx+4s6A4srwmLuW
-	 vJU/sH/z1W3yw36A7I7tQ81xjJC2pgTB7tRAEN0I=
+	b=arxdYzmE44s3kqYI2cKrCx9zyw6D5qK36fbS4X6Rjy7TSm3VoNVQEwPoQXLR6MHeg
+	 hzpd1MCTCJRsYU+vbwRrxlfDnkgTB4MBlhwE7QOTNn3Tm1RSwiTlm0qoXWBs/xC/s1
+	 6lpZARIrUwrOOfijI3P5mUM3u/NVP6OoyC1rvVP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
 	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 476/508] libceph: Fix potential out-of-bounds access in crush_decode()
-Date: Wed, 20 May 2026 18:24:59 +0200
-Message-ID: <20260520162108.908065814@linuxfoundation.org>
+Subject: [PATCH 6.6 477/508] libceph: handle rbtree insertion error in decode_choose_args()
+Date: Wed, 20 May 2026 18:25:00 +0200
+Message-ID: <20260520162108.929061257@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -68,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253329-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253364-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5DC9D59A295
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 60745598230
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,25 +102,23 @@ X-Rspamd-Server: lfdr
 
 From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-commit 4c79fc2d598694bda845b46229c9d48b65042970 upstream.
+commit d289478cfc0bcf81c7914200d6abdcb78bd04ded upstream.
 
-A message of type CEPH_MSG_OSD_MAP containing a crush map with at least
-one bucket has two fields holding the bucket algorithm. If the values
-in these two fields differ, an out-of-bounds access can occur. This is
-the case because the first algorithm field (alg) is used to allocate
-the correct amount of memory for a bucket of this type, while the second
-algorithm field inside the bucket (b->alg) is used in the subsequent
-processing.
+A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
+contains a CRUSH map. The received CRUSH map may optionally contain
+choose_args that get decoded in decode_choose_args(). In this function,
+num_choose_arg_maps is read from the message, and a corresponding number
+of crush_choose_arg_maps gets decoded afterwards. Each
+crush_choose_arg_map has a choose_args_index, which serves as the key
+when inserting it into the choose_args rbtree of the decoded crush_map.
+If a (potentially corrupted) message contains two crush_choose_arg_maps
+with the same index, the assertion in insert_choose_arg_map() triggers a
+kernel BUG when trying to insert the second crush_choose_arg_map.
 
-This patch fixes the issue by adding a check that compares alg and
-b->alg and aborts the processing in case they differ. Furthermore,
-b->alg is set to 0 in this case, because the destruction of the crush
-map also uses this field to determine the bucket type, which can again
-result in an out-of-bounds access when trying to free the memory pointed
-to by the fields of the bucket. To correctly free the memory allocated
-for the bucket in such a case, the corresponding call to kfree is moved
-from the algorithm-specific crush_destroy_bucket functions to the
-generic crush_destroy_bucket().
+This patch fixes the issue by switching to the non-asserting rbtree
+insertion function and rejecting the message if the insertion fails.
+
+[ idryomov: changelog ]
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
@@ -128,71 +126,23 @@ Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/crush/crush.c |    6 +-----
- net/ceph/osdmap.c      |    4 ++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/ceph/osdmap.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/ceph/crush/crush.c
-+++ b/net/ceph/crush/crush.c
-@@ -47,7 +47,6 @@ int crush_get_bucket_item_weight(const s
- void crush_destroy_bucket_uniform(struct crush_bucket_uniform *b)
- {
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_list(struct crush_bucket_list *b)
-@@ -55,14 +54,12 @@ void crush_destroy_bucket_list(struct cr
- 	kfree(b->item_weights);
- 	kfree(b->sum_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_tree(struct crush_bucket_tree *b)
- {
- 	kfree(b->h.items);
- 	kfree(b->node_weights);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw(struct crush_bucket_straw *b)
-@@ -70,14 +67,12 @@ void crush_destroy_bucket_straw(struct c
- 	kfree(b->straws);
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw2(struct crush_bucket_straw2 *b)
- {
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket(struct crush_bucket *b)
-@@ -99,6 +94,7 @@ void crush_destroy_bucket(struct crush_b
- 		crush_destroy_bucket_straw2((struct crush_bucket_straw2 *)b);
- 		break;
- 	}
-+	kfree(b);
- }
- 
- /**
 --- a/net/ceph/osdmap.c
 +++ b/net/ceph/osdmap.c
-@@ -518,6 +518,10 @@ static struct crush_map *crush_decode(vo
- 		b->id = ceph_decode_32(p);
- 		b->type = ceph_decode_16(p);
- 		b->alg = ceph_decode_8(p);
-+		if (b->alg != alg) {
-+			b->alg = 0;
-+			goto bad;
+@@ -395,7 +395,10 @@ static int decode_choose_args(void **p,
+ 				goto e_inval;
+ 		}
+ 
+-		insert_choose_arg_map(&c->choose_args, arg_map);
++		if (!__insert_choose_arg_map(&c->choose_args, arg_map)) {
++			ret = -EEXIST;
++			goto fail;
 +		}
- 		b->hash = ceph_decode_8(p);
- 		b->weight = ceph_decode_32(p);
- 		b->size = ceph_decode_32(p);
+ 	}
+ 
+ 	return 0;
 
 
 
