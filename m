@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AH6tMzEGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:25 +0200
+	id qB41O2P5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-250847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76E3597C01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E371595848
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62FEC312CBCB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA25233ED5C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63732F363F;
-	Wed, 20 May 2026 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB193A3833;
+	Wed, 20 May 2026 17:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="db7g2Z78"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVGdFbWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98747331220;
-	Wed, 20 May 2026 18:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DAF34A3BF;
+	Wed, 20 May 2026 17:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300628; cv=none; b=i8xgf3bJfTK3xhjpzmsIL4rTPlbq72Pl8WsP6hciDN4iN5opM8wBYgP731deZRZItvqe5mpc+DVSJXDTATLaMxsKEhLB9GxrpVq8MEKIE/ZXWWa8c3/GX4VJm90V2bfLrPl0SntgSDqB01vobwvpJRfppEpe1X19CKjZjAztBdQ=
+	t=1779296462; cv=none; b=phIvGVg5z8E4Sf+DCPkinhNTuTw/uZllA1R28zWuLlijVmmVgauLOM+mVuzAhI6V0uu/OGRau26jRPWV6+abBTHxmZOG81lDZErvRYqSSchAEO7FqF9ZVDYOLKn0wmyje53EI82oNoZp8J4RNgrqAQcF/Fn0y3tERebMrV+Svp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300628; c=relaxed/simple;
-	bh=KFyrfXK+8h1JDyz3LoUBMH9ONP2uRO9QJ2Sz2llzPUI=;
+	s=arc-20240116; t=1779296462; c=relaxed/simple;
+	bh=5hFCSCZBKQ2yS5YaTubBW+JKb4g5tVthHNAh1fmh7Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITy+8lez+L0nYmx4paZJY8zNeClM/PHmvFZ7bMVfOs5AgT24WU0hfHAfHJsXNHQ0F4srCapYojcrFd0V7Qi9vOj3yBBHjTAIwMDiapYwLeUOdne2YlBudqMjA8voqfBjB8ZpJ0aca8dKODvhd+dOEqL85tt5ykmEY9OoXHdKxB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=db7g2Z78; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACE11F000E9;
-	Wed, 20 May 2026 18:10:26 +0000 (UTC)
+	 MIME-Version; b=MmUyL7SizPwoY+YFGd1kVH/VsbNsSiv02LFnGu6fw44kWweNX05xk4gsahFEKVxNzb95oof4bPj4k3wtsYQMMoxGEBvEnNqWtKwrVc+sgreUIH4RfaXrBZ9PYZOEKMgphG0tsuP1zns5FhlgdZPnM6U2RnzZSIrTdADGJE7y11k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVGdFbWc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD8F1F000E9;
+	Wed, 20 May 2026 17:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300627;
-	bh=KKwHl5doEKM362jPtT/2/4e0sgocpCaY28xOt8YRWYU=;
+	s=korg; t=1779296461;
+	bh=qxQDs0aMUO17JShKeg23CWh2LQCZgtkPjRA2b3vA8ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=db7g2Z78WB9/M+4zOpn4Anmd1+mKJxWXxnTcN0XbNKjTvnnseBEH6AkxaHL0+Wh7d
-	 anc0zETgBMK7KUW8tW6PVB3VVVrn85rVA2QytQNWjRwD9kTRBZ3j8NI7YCTkWSxU9V
-	 rDGuYOMsIHAZeDxGi6blY0fZoEcH1cJspSO3x4GA=
+	b=eVGdFbWcgvitMgnMqXQNPz3GKCXWM6Xnc0IriBeUiw8QTcjiDrXBobycmdT6+BalE
+	 eAmAJLcFYEwYVn21I6obkzpvUpzNwj0ml5iKXzWxn8b9ZMfVmg44/ddMUyaHCWfrR0
+	 ubf//E1NsHJZh5ziLuLYUnrym9RleQoGq1bBPWqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/666] spi: mtk-snfi: unregister ECC engine on probe failure and remove() callback
+Subject: [PATCH 7.0 0807/1146] pppoe: drop PFC frames
 Date: Wed, 20 May 2026 18:17:37 +0200
-Message-ID: <20260520162116.550499876@linuxfoundation.org>
+Message-ID: <20260520162206.489248616@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +67,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252421-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250847-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: C76E3597C01
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,msgid.link:url]
+X-Rspamd-Queue-Id: 8E371595848
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Qingfang Deng <qingfang.deng@linux.dev>
 
-[ Upstream commit ab00febad191d7a4400aa1c3468279fb508258d4 ]
+[ Upstream commit cc1ff87bce1ccd38410ab10960f576dcd17db679 ]
 
-mtk_snand_probe() registers the on-host NAND ECC engine, but teardown was
-missing from both probe unwind and remove-time cleanup. Add a devm cleanup
-action after successful registration so
-nand_ecc_unregister_on_host_hw_engine() runs automatically on probe
-failures and during device removal.
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the current PPPoE driver assumes an
+uncompressed (2-byte) protocol field. However, the generic PPP layer
+function ppp_input() is not aware of the negotiation result, and still
+accepts PFC frames.
 
-Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/20263f885f1a9c9d559f95275298cd6de4b11ed5.1775546401.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If a peer with a broken implementation or an attacker sends a frame with
+a compressed (1-byte) protocol field, the subsequent PPP payload is
+shifted by one byte. This causes the network header to be 4-byte
+misaligned, which may trigger unaligned access exceptions on some
+architectures.
+
+To reduce the attack surface, drop PPPoE PFC frames. Introduce
+ppp_skb_is_compressed_proto() helper function to be used in both
+ppp_generic.c and pppoe.c to avoid open-coding.
+
+Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260415022456.141758-2-qingfang.deng@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mtk-snfi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ppp/ppp_generic.c |  2 +-
+ drivers/net/ppp/pppoe.c       |  8 +++++++-
+ include/linux/ppp_defs.h      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
-index c5677fd94e5e1..8234064921f36 100644
---- a/drivers/spi/spi-mtk-snfi.c
-+++ b/drivers/spi/spi-mtk-snfi.c
-@@ -1307,6 +1307,13 @@ static const struct spi_controller_mem_caps mtk_snand_mem_caps = {
- 	.ecc = true,
- };
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index c2024684b10d5..192a5b94783e3 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2260,7 +2260,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+  */
+ static void __ppp_decompress_proto(struct sk_buff *skb)
+ {
+-	if (skb->data[0] & 0x01)
++	if (ppp_skb_is_compressed_proto(skb))
+ 		*(u8 *)skb_push(skb, 1) = 0x00;
+ }
  
-+static void mtk_unregister_ecc_engine(void *data)
-+{
-+	struct nand_ecc_engine *eng = data;
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 4275b393a4544..6992b3f647819 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -424,7 +424,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_mac_header_len(skb) < ETH_HLEN)
+ 		goto drop;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
+ 		goto drop;
+ 
+ 	ph = pppoe_hdr(skb);
+@@ -434,6 +434,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->len < len)
+ 		goto drop;
+ 
++	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
++	 * Drop PFC frames.
++	 */
++	if (ppp_skb_is_compressed_proto(skb))
++		goto drop;
 +
-+	nand_ecc_unregister_on_host_hw_engine(eng);
+ 	if (pskb_trim_rcsum(skb, len))
+ 		goto drop;
+ 
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index b7e57fdbd4139..b1d1f46d7d3be 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -8,6 +8,7 @@
+ #define _PPP_DEFS_H_
+ 
+ #include <linux/crc-ccitt.h>
++#include <linux/skbuff.h>
+ #include <uapi/linux/ppp_defs.h>
+ 
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
+@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
+ 	return !!((proto & 0x0101) == 0x0001);
+ }
+ 
++/**
++ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
++ * @skb: skb to check
++ *
++ * Check if the PPP protocol field is compressed (the least significant
++ * bit of the most significant octet is 1). skb->data must point to the PPP
++ * protocol header.
++ *
++ * Return: Whether the PPP protocol field is compressed.
++ */
++static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++{
++	return unlikely(skb->data[0] & 0x01);
 +}
 +
- static irqreturn_t mtk_snand_irq(int irq, void *id)
- {
- 	struct mtk_snand *snf = id;
-@@ -1447,6 +1454,13 @@ static int mtk_snand_probe(struct platform_device *pdev)
- 		goto release_ecc;
- 	}
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, mtk_unregister_ecc_engine,
-+				       &ms->ecc_eng);
-+	if (ret) {
-+		dev_err_probe(&pdev->dev, ret, "failed to add ECC unregister action\n");
-+		goto release_ecc;
-+	}
-+
- 	ctlr->num_chipselect = 1;
- 	ctlr->mem_ops = &mtk_snand_mem_ops;
- 	ctlr->mem_caps = &mtk_snand_mem_caps;
+ #endif /* _PPP_DEFS_H_ */
 -- 
 2.53.0
 
