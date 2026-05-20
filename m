@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-251057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPk8CUDuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:16 +0200
+	id 6KD+NjYcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B66593902
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C8E599E82
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 75232318176E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 20FBC335DABD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68C13E6385;
-	Wed, 20 May 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35634449EB6;
+	Wed, 20 May 2026 18:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2Qs0O8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B34VJ6GR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C21D364E89;
-	Wed, 20 May 2026 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDBC3FE345;
+	Wed, 20 May 2026 18:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296989; cv=none; b=mZ7ZK/EAujZshuYxxEYkEwLUvHmybA5EPARv44P8nl6uMIBTuW417R75xH5CS/omZ23Nmq81SMWq60Wy9Em5oKHp/ObgUOI/IfgquB9jFK44v3XCjBLGd8oxGON/XkbtyyC1A36MdlHncafHD/Pud8P8y7yBuVLHarfEXUd9aK8=
+	t=1779302358; cv=none; b=AAcc27ZhucmD/rqDU/gxFq+6m2YcKmLMLAx9oUuFBH5qjBrryt+Y1N8qxuuf7JlwMOIGOeLHsCvcSLwhM7jb7nr727CKAo0u/bfb4POTCMRP/44uR+PKsibEGVrki1Op2CDfbbk3V+ykFLMfluHmB0f/NDC923y7hNDt5lqOMc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296989; c=relaxed/simple;
-	bh=TXKYppm6K8OLgxHAhhnI+/QXmL2xNuYkWuBjBHF2AeU=;
+	s=arc-20240116; t=1779302358; c=relaxed/simple;
+	bh=zegP+j/Fz3MW8P0DyLeWA67rHXrN8gzuuSCg46dgtVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s40pe+U6WEWE8rFfq335noHtsaDU+LwBjNORbRN7rUCaRDI92rYm7FAOGQ+PRxlLRVbsWM5v8llgirMjH/Xtnpjdc6stQ9Bf+f/BQ/m47w9N7Rlj43QOZEo5npvroERG14H3nVHMsgaDpt6nwr6WG/cTUz02zVPQ+vo1GzJqibw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2Qs0O8V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1891F000E9;
-	Wed, 20 May 2026 17:09:47 +0000 (UTC)
+	 MIME-Version; b=IUKPaCg3VScFiKLwqEwSmZhannZuydAs3SUOHEJ0Ek5cJ9EAzgclsz41t0R2+Hur3gfMR++TO7ITodV03b6lxEBOxGtbBukHEl9eJVheTAL8QHIWJ2sRJIjeyaAsrNN+AlOo1eMhDUH0ghsm3CHcAXldqJb6MfS0cCsjjQwClVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B34VJ6GR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186A81F000E9;
+	Wed, 20 May 2026 18:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296988;
-	bh=slC+UZKx09CAlM/HCDAAqldqeb57Wzck9eFjM/ji2BM=;
+	s=korg; t=1779302356;
+	bh=vVnXyuFqR9roJkfNJGBF+xjZ7QzhGmo1IMZnodvmRpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F2Qs0O8VrVLTXG8mZjf9fEOQf1hnJkItcVU9006TWn9XCeSh1bHno8JFDgx2/p7zM
-	 EI5oX74RDGaStGd+tP/fV8VWa/OEAN5/PDNwpdEEPRx2r9q/IojMscwLY0cdhQIY19
-	 9q1lr4T7c6foFzy924qziJlmslOqeHp7cV8FnMWk=
+	b=B34VJ6GRuXmSKRA5saqJPD4UJ0X2APTgStdNre4LgsH811tE6Xlz81YGRz+2e35LH
+	 PgtmPCrJMVFcpNmHZ4sVgLkAlLF7ZKtK8wuTVSsWEGIiazhSKZy+u1SIJGWlFvvqBy
+	 nn3CJsX5YPUntJR7qWHuMXp61mdvEWIahAShKJgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Song Liu <song@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1009/1146] drm/xe: Drop registration of guc_submit_wedged_fini from xe_guc_submit_wedge()
+Subject: [PATCH 6.6 236/508] bpf, riscv: Remove redundant bpf_flush_icache() after pack allocator finalize
 Date: Wed, 20 May 2026 18:20:59 +0200
-Message-ID: <20260520162211.067401941@linuxfoundation.org>
+Message-ID: <20260520162103.763789990@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,137 +67,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,huawei.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251057-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253082-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: E4B66593902
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: E3C8E599E82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit a0fc362f095330f7b3f68ac0c55ef8da18290c87 ]
+[ Upstream commit 46ee1342b887c9387a933397d846ff6c9584322c ]
 
-xe_guc_submit_wedge() runs in the DMA-fence signaling path, where
-GFP_KERNEL memory allocations are not permitted. However, registering
-guc_submit_wedged_fini via drmm_add_action_or_reset() triggers such an
-allocation.
+bpf_flush_icache() calls flush_icache_range() to clean the data cache
+and invalidate the instruction cache for the JITed code region. However,
+since commit 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the
+BPF JIT"), this flush is redundant.
 
-Avoid this by moving the logic from guc_submit_wedged_fini() into
-guc_submit_fini(), where wedged exec queue references are dropped during
-normal teardown.
+bpf_jit_binary_pack_finalize() copies the JITed instructions to the ROX
+region via bpf_arch_text_copy() -> patch_text_nosync(), and
+patch_text_nosync() already calls flush_icache_range() on the written
+range. The subsequent bpf_flush_icache() repeats the same cache
+maintenance on an overlapping range.
 
-Fixes: 8ed9aaae39f3 ("drm/xe: Force wedged state and block GT reset upon any GPU hang")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patch.msgid.link/20260326210116.202585-3-matthew.brost@intel.com
-(cherry picked from commit 4a706bd93c4fb156a13477e26ffdf2e633edeb10)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Remove the redundant bpf_flush_icache() call and its now-unused
+definition.
+
+Fixes: 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the BPF JIT")
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Tested-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260413191111.3426023-3-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 33 ++++++++----------------------
- 1 file changed, 9 insertions(+), 24 deletions(-)
+ arch/riscv/net/bpf_jit.h      | 6 ------
+ arch/riscv/net/bpf_jit_core.c | 7 -------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 4867a97583903..82412c8dfd37d 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -260,24 +260,12 @@ static void guc_submit_sw_fini(struct drm_device *drm, void *arg)
+diff --git a/arch/riscv/net/bpf_jit.h b/arch/riscv/net/bpf_jit.h
+index a5ce1ab76ecee..c444c79596703 100644
+--- a/arch/riscv/net/bpf_jit.h
++++ b/arch/riscv/net/bpf_jit.h
+@@ -11,7 +11,6 @@
+ 
+ #include <linux/bpf.h>
+ #include <linux/filter.h>
+-#include <asm/cacheflush.h>
+ 
+ static inline bool rvc_enabled(void)
+ {
+@@ -97,11 +96,6 @@ static inline void bpf_fill_ill_insns(void *area, unsigned int size)
+ 	memset(area, 0, size);
  }
  
- static void guc_submit_fini(void *arg)
+-static inline void bpf_flush_icache(void *start, void *end)
 -{
--	struct xe_guc *guc = arg;
--
--	/* Forcefully kill any remaining exec queues */
--	xe_guc_ct_stop(&guc->ct);
--	guc_submit_reset_prepare(guc);
--	xe_guc_softreset(guc);
--	xe_guc_submit_stop(guc);
--	xe_uc_fw_sanitize(&guc->fw);
--	xe_guc_submit_pause_abort(guc);
+-	flush_icache_range((unsigned long)start, (unsigned long)end);
 -}
 -
--static void guc_submit_wedged_fini(void *arg)
+ /* Emit a 4-byte riscv instruction. */
+ static inline void emit(const u32 insn, struct rv_jit_context *ctx)
  {
- 	struct xe_guc *guc = arg;
- 	struct xe_exec_queue *q;
- 	unsigned long index;
- 
-+	/* Drop any wedged queue refs */
- 	mutex_lock(&guc->submission_state.lock);
- 	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
- 		if (exec_queue_wedged(q)) {
-@@ -287,6 +275,14 @@ static void guc_submit_wedged_fini(void *arg)
+diff --git a/arch/riscv/net/bpf_jit_core.c b/arch/riscv/net/bpf_jit_core.c
+index 7b70ccb7fec34..f57b95e830ac0 100644
+--- a/arch/riscv/net/bpf_jit_core.c
++++ b/arch/riscv/net/bpf_jit_core.c
+@@ -182,13 +182,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 			prog = orig_prog;
+ 			goto out_offset;
  		}
- 	}
- 	mutex_unlock(&guc->submission_state.lock);
-+
-+	/* Forcefully kill any remaining exec queues */
-+	xe_guc_ct_stop(&guc->ct);
-+	guc_submit_reset_prepare(guc);
-+	xe_guc_softreset(guc);
-+	xe_guc_submit_stop(guc);
-+	xe_uc_fw_sanitize(&guc->fw);
-+	xe_guc_submit_pause_abort(guc);
- }
- 
- static const struct xe_exec_queue_ops guc_exec_queue_ops;
-@@ -1272,10 +1268,8 @@ static void disable_scheduling_deregister(struct xe_guc *guc,
- void xe_guc_submit_wedge(struct xe_guc *guc)
- {
- 	struct xe_device *xe = guc_to_xe(guc);
--	struct xe_gt *gt = guc_to_gt(guc);
- 	struct xe_exec_queue *q;
- 	unsigned long index;
--	int err;
- 
- 	xe_gt_assert(guc_to_gt(guc), guc_to_xe(guc)->wedged.mode);
- 
-@@ -1287,15 +1281,6 @@ void xe_guc_submit_wedge(struct xe_guc *guc)
- 		return;
- 
- 	if (xe->wedged.mode == XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET) {
--		err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
--					       guc_submit_wedged_fini, guc);
--		if (err) {
--			xe_gt_err(gt, "Failed to register clean-up on wedged.mode=%s; "
--				  "Although device is wedged.\n",
--				  xe_wedged_mode_to_string(XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET));
--			return;
--		}
--
- 		mutex_lock(&guc->submission_state.lock);
- 		xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
- 			if (xe_exec_queue_get_unless_zero(q))
+-		/*
+-		 * The instructions have now been copied to the ROX region from
+-		 * where they will execute.
+-		 * Write any modified data cache blocks out to memory and
+-		 * invalidate the corresponding blocks in the instruction cache.
+-		 */
+-		bpf_flush_icache(jit_data->ro_header, ctx->ro_insns + ctx->ninsns);
+ 		for (i = 0; i < prog->len; i++)
+ 			ctx->offset[i] = ninsns_rvoff(ctx->offset[i]);
+ 		bpf_prog_fill_jited_linfo(prog, ctx->offset);
 -- 
 2.53.0
 
