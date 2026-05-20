@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCytBFIvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:54 +0200
+	id 0MDvFVMpDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:36:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6C59B9EF
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6102859B178
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C43CF3409CA9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03558375C71A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA704266B5;
-	Wed, 20 May 2026 18:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23DC3D1CC6;
+	Wed, 20 May 2026 18:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naFs1opc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biG3zvxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AE5425CF5;
-	Wed, 20 May 2026 18:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDAA3F9F21;
+	Wed, 20 May 2026 18:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302818; cv=none; b=M/0fgY7QLrT/fcqbAcJqnDAE5AcUH6TqqKm3j7cTye/tyqXoN4JiiNuslorM1iJcPQv9ZzTPVYB2UOtf8UVr/ac2GyrPWVPRMLYakeY0lPc+o4lzmoMZ/CmrQo4jCU+iv/rF08lR+qB8HdRdF5crmH+4TTu0erXw9g6VzbeXTL0=
+	t=1779301616; cv=none; b=bAq9cnhzHTw9m2MGSjXdo0KSTDDxZ/09K1dtB19zHneWrJ07pcX6rRIB5A7496zgyEFjqc5VlBRtnJyEhLu5d/9bE+9brDQ0BR+9nkMgJ8SIwlie/ATHK8A9eQCtWccGSG3dKr+JVf/Pa+ZrDfHqp0ogT7QhEOaqRBd1W7FOX+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302818; c=relaxed/simple;
-	bh=A3IRdmKIpCaaMU4Syk57QwK0gDDxtKMuhS1bzHqNw5A=;
+	s=arc-20240116; t=1779301616; c=relaxed/simple;
+	bh=C5wYCUxyJxOR5r01S2iTYBh8v9Tiky0MY2feN1mGE10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/u9GpUYgUGpRpkwxw8H5kIlUlfF86uWqrqslZyJ8rP2DNeHHrkXXGe5hFDcIE4yKnORmGYy2AH+gCFTNRjhoUOhJOMcrENT5VQ7RG1vzg2QHNxMEvz6LHc1frDaw5Inw2JL5jpsu19wlL/SMH//EIZUdS/VOoEW/I20ZjluDxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naFs1opc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1F41F00894;
-	Wed, 20 May 2026 18:46:56 +0000 (UTC)
+	 MIME-Version; b=FaH6cV6fszGw4ip/cRwX0esRqMn+X/p/YZXxbDOKbxOYk4gnMLPdYgZKoUamYclCJ5o4fQ/N5x92cqVfKVm1wIKTW1GBBfsYcFqfZBRWPqn+w2IwTyk5kanjVlRvaUdWAnth4zI1Sv5vAh8Hoiq+/anHHtaNb5E84wXLmPCoIok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biG3zvxJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3FDE1F00894;
+	Wed, 20 May 2026 18:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302817;
-	bh=oK26YeHXQjOtbWIpLlAaBJhzBi1oJZEL/QowVdNDmCU=;
+	s=korg; t=1779301615;
+	bh=DOBmwCZWZhU6wYAr9K2SYkJmZDpk5PpGv6AhBkZJab8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=naFs1opcnbjM2NQteea1GxRmgd3iJVlFDsttjB4XQ2JZibIKaWjmD9wIMCeCCPxOC
-	 ei4OuzJkADBGufuSIIKUrzFfDRxf2qqNJWcU1bn0NFInkShoX6/0qWUWplV73bffjz
-	 Ax5B0HsvwWLk78i/lQpNSBANgZ1w8jl2jXivSwTs=
+	b=biG3zvxJfEzF/1Ze+H+5/bwALZ812/FiCDF74shZLRSE0cX7u7iY5zwUsV9zPHQ8P
+	 0FaxCLL/xwHS0oQGEQ5+8yoZ8D1FC5aarAEI0Pd40M34pzjDzp5RvKpjjQq/OxBPCp
+	 jjuSvmEDW6PzmGn6WclZTZU25xxcJJhYd7Yq8U5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Beniamino Galvani <b.galvani@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 411/508] ipv4: rename and move ip_route_output_tunnel()
+Subject: [PATCH 6.12 623/666] ata: libata-scsi: fix requeue of deferred ATA PASS-THROUGH commands
 Date: Wed, 20 May 2026 18:23:54 +0200
-Message-ID: <20260520162107.514605004@linuxfoundation.org>
+Message-ID: <20260520162124.776166106@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,247 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252798-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253262-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
-X-Rspamd-Queue-Id: 6BA6C59B9EF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6102859B178
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beniamino Galvani <b.galvani@gmail.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit bf3fcbf7e7a08015d3b169bad6281b29d45c272d ]
+[ Upstream commit 8ebf408e7d463eee02c348a3c8277b95587b710d ]
 
-At the moment ip_route_output_tunnel() is used only by bareudp.
-Ideally, other UDP tunnel implementations should use it, but to do so
-the function needs to accept new parameters that are specific for UDP
-tunnels, such as the ports.
+Commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+introduced ata_scsi_requeue_deferred_qc() to handle commands deferred
+during resets or NCQ failures. This deferral logic completed commands
+with DID_SOFT_ERROR to trigger a retry in the SCSI mid-layer.
 
-Prepare for these changes by renaming the function to
-udp_tunnel_dst_lookup() and move it to file
-net/ipv4/udp_tunnel_core.c.
+However, DID_SOFT_ERROR is subject to scsi_cmd_retry_allowed() checks.
+ATA PASS-THROUGH commands sent via SG_IO ioctl have scmd->allowed set
+to zero. This causes the mid-layer to fail the command immediately
+instead of retrying, even though the command was never actually issued
+to the hardware.
 
-Suggested-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Switch to DID_REQUEUE to ensure these commands are inserted back into
+the request queue regardless of retry limits.
+
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c      |  8 +++----
- include/net/route.h        |  6 -----
- include/net/udp_tunnel.h   |  6 +++++
- net/ipv4/route.c           | 48 --------------------------------------
- net/ipv4/udp_tunnel_core.c | 48 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 58 insertions(+), 58 deletions(-)
+ drivers/ata/libata-scsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index cfbc0240126ef..bbc246d27f88a 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -325,8 +325,8 @@ static int bareudp_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	if (!sock)
- 		return -ESHUTDOWN;
- 
--	rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr, info,
--				    IPPROTO_UDP, use_cache);
-+	rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr, info,
-+				   IPPROTO_UDP, use_cache);
- 
- 	if (IS_ERR(rt))
- 		return PTR_ERR(rt);
-@@ -505,8 +505,8 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct rtable *rt;
- 		__be32 saddr;
- 
--		rt = ip_route_output_tunnel(skb, dev, bareudp->net, &saddr,
--					    info, IPPROTO_UDP, use_cache);
-+		rt = udp_tunnel_dst_lookup(skb, dev, bareudp->net, &saddr,
-+					   info, IPPROTO_UDP, use_cache);
- 		if (IS_ERR(rt))
- 			return PTR_ERR(rt);
- 
-diff --git a/include/net/route.h b/include/net/route.h
-index 27c17aff0bbe1..22d8095a3a81e 100644
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -136,12 +136,6 @@ static inline struct rtable *__ip_route_output_key(struct net *net,
- 
- struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
- 				    const struct sock *sk);
--struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
--				      struct net_device *dev,
--				      struct net *net, __be32 *saddr,
--				      const struct ip_tunnel_info *info,
--				      u8 protocol, bool use_cache);
--
- struct dst_entry *ipv4_blackhole_route(struct net *net,
- 				       struct dst_entry *dst_orig);
- 
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 0e6eb40cd7778..42a03485c5975 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -161,6 +161,12 @@ int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
- 
- void udp_tunnel_sock_release(struct socket *sock);
- 
-+struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
-+				     struct net_device *dev,
-+				     struct net *net, __be32 *saddr,
-+				     const struct ip_tunnel_info *info,
-+				     u8 protocol, bool use_cache);
-+
- struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
- 				    __be16 flags, __be64 tunnel_id,
- 				    int md_size);
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 55ea367f95b3b..f134c59f839e2 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2918,54 +2918,6 @@ struct rtable *ip_route_output_flow(struct net *net, struct flowi4 *flp4,
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index b55443e31f403..f3d0979082cb5 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1705,7 +1705,7 @@ void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
+ 	/*
+ 	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
+ 	 * do not try to be smart about what to do with this deferred command
+-	 * and simply retry it by completing it with DID_SOFT_ERROR.
++	 * and simply requeue it by completing it with DID_REQUEUE.
+ 	 */
+ 	if (!qc)
+ 		return;
+@@ -1714,7 +1714,7 @@ void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
+ 	ap->deferred_qc = NULL;
+ 	cancel_work(&ap->deferred_qc_work);
+ 	ata_qc_free(qc);
+-	scmd->result = (DID_SOFT_ERROR << 16);
++	scmd->result = (DID_REQUEUE << 16);
+ 	scsi_done(scmd);
  }
- EXPORT_SYMBOL_GPL(ip_route_output_flow);
  
--struct rtable *ip_route_output_tunnel(struct sk_buff *skb,
--				      struct net_device *dev,
--				      struct net *net, __be32 *saddr,
--				      const struct ip_tunnel_info *info,
--				      u8 protocol, bool use_cache)
--{
--#ifdef CONFIG_DST_CACHE
--	struct dst_cache *dst_cache;
--#endif
--	struct rtable *rt = NULL;
--	struct flowi4 fl4;
--	__u8 tos;
--
--#ifdef CONFIG_DST_CACHE
--	dst_cache = (struct dst_cache *)&info->dst_cache;
--	if (use_cache) {
--		rt = dst_cache_get_ip4(dst_cache, saddr);
--		if (rt)
--			return rt;
--	}
--#endif
--	memset(&fl4, 0, sizeof(fl4));
--	fl4.flowi4_mark = skb->mark;
--	fl4.flowi4_proto = protocol;
--	fl4.daddr = info->key.u.ipv4.dst;
--	fl4.saddr = info->key.u.ipv4.src;
--	tos = info->key.tos;
--	fl4.flowi4_tos = RT_TOS(tos);
--
--	rt = ip_route_output_key(net, &fl4);
--	if (IS_ERR(rt)) {
--		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
--		return ERR_PTR(-ENETUNREACH);
--	}
--	if (rt->dst.dev == dev) { /* is this necessary? */
--		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
--		ip_rt_put(rt);
--		return ERR_PTR(-ELOOP);
--	}
--#ifdef CONFIG_DST_CACHE
--	if (use_cache)
--		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
--#endif
--	*saddr = fl4.saddr;
--	return rt;
--}
--EXPORT_SYMBOL_GPL(ip_route_output_tunnel);
--
- /* called with rcu_read_lock held */
- static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
- 			struct rtable *rt, u32 table_id, dscp_t dscp,
-diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
-index 1e7e4aecdc48a..96f93f92b6ced 100644
---- a/net/ipv4/udp_tunnel_core.c
-+++ b/net/ipv4/udp_tunnel_core.c
-@@ -204,4 +204,52 @@ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb,  unsigned short family,
- }
- EXPORT_SYMBOL_GPL(udp_tun_rx_dst);
- 
-+struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
-+				     struct net_device *dev,
-+				     struct net *net, __be32 *saddr,
-+				     const struct ip_tunnel_info *info,
-+				     u8 protocol, bool use_cache)
-+{
-+#ifdef CONFIG_DST_CACHE
-+	struct dst_cache *dst_cache;
-+#endif
-+	struct rtable *rt = NULL;
-+	struct flowi4 fl4;
-+	__u8 tos;
-+
-+#ifdef CONFIG_DST_CACHE
-+	dst_cache = (struct dst_cache *)&info->dst_cache;
-+	if (use_cache) {
-+		rt = dst_cache_get_ip4(dst_cache, saddr);
-+		if (rt)
-+			return rt;
-+	}
-+#endif
-+	memset(&fl4, 0, sizeof(fl4));
-+	fl4.flowi4_mark = skb->mark;
-+	fl4.flowi4_proto = protocol;
-+	fl4.daddr = info->key.u.ipv4.dst;
-+	fl4.saddr = info->key.u.ipv4.src;
-+	tos = info->key.tos;
-+	fl4.flowi4_tos = RT_TOS(tos);
-+
-+	rt = ip_route_output_key(net, &fl4);
-+	if (IS_ERR(rt)) {
-+		netdev_dbg(dev, "no route to %pI4\n", &fl4.daddr);
-+		return ERR_PTR(-ENETUNREACH);
-+	}
-+	if (rt->dst.dev == dev) { /* is this necessary? */
-+		netdev_dbg(dev, "circular route to %pI4\n", &fl4.daddr);
-+		ip_rt_put(rt);
-+		return ERR_PTR(-ELOOP);
-+	}
-+#ifdef CONFIG_DST_CACHE
-+	if (use_cache)
-+		dst_cache_set_ip4(dst_cache, &rt->dst, fl4.saddr);
-+#endif
-+	*saddr = fl4.saddr;
-+	return rt;
-+}
-+EXPORT_SYMBOL_GPL(udp_tunnel_dst_lookup);
-+
- MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
