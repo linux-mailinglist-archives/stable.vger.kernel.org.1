@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOZoD832DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:45 +0200
+	id KK/EE/kcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A053F59517A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB24359A03A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C468F37F761F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED42334F491C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF7F3EEAC6;
-	Wed, 20 May 2026 16:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A698329D26E;
+	Wed, 20 May 2026 17:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9vD0BRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvhMQzLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FB43A383C;
-	Wed, 20 May 2026 16:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC3030BF68;
+	Wed, 20 May 2026 17:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296132; cv=none; b=ZxvdtTnPekPjekKg8BV8r/XMZrIVGsVVXe/sPmDVI6qsBgiGSICO+2xi6YfuJcnXZJJy2/dCyzEvYZxQiaD1x05jAcpTG9k5SKBbkHJCq4W5g7gMT0g9AZHr4zhwTroMOlFT9md8zQZedDzWXoXWkIdKGwiOAMVrxY95ei7z2To=
+	t=1779298537; cv=none; b=HDALg1IRPzwUwJfsenGUZxlvfWND81MD6zZZbeMEw1Ld8YIUJd1NdTXVwt9eVb4Z7rLOhp9KP2yzFW1TWKv50x7F3+XEFkJM7Y4OxHbM9P/qOHKckR1g84Zti3ZFF/utAf5xzft3rSs4y5fcGODyCh0MQD0AiQKYIHEyZKRIINU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296132; c=relaxed/simple;
-	bh=eO/1EJuyOt1gEtmRCkOAbN+87KbgenXoyMw4ok0RlIo=;
+	s=arc-20240116; t=1779298537; c=relaxed/simple;
+	bh=dvvrr9TcetFsvlOFFiDeFGmp7NYsQouJ803XW3m0DrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ehWN81Cn9w6iJDxe+kB7YnHUF0b8XpdLrl1xFQPrRD3af7RfjAgF43nGBCbOHKIeGmn5ZNMDXzFR4chjwDFOlxqMZYOIbRl6vxj0PMhtykuXYtj21vjHWnqCmDkcv5iLeVQ2/9rZXNmEhMqWYmNhng/GkKgghVwIfUJ5lPDuZnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9vD0BRI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB921F000E9;
-	Wed, 20 May 2026 16:55:30 +0000 (UTC)
+	 MIME-Version; b=sygYK3ZXHAZSr6GBLGR+hWGGEm/3ksqlugHXGyTlEUAgNIiOzM/N3L55233697yr/xNpWuPpiCNwpg8ZSvdjzWpwOZZ7mYLX4npqLNtu5LH51tdtyT3/+erAHfHeO9teyykFXMmzLzyZGcpbx6UjLzZbomROoO1RDOhV9kc8Wv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvhMQzLJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40781F000E9;
+	Wed, 20 May 2026 17:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296131;
-	bh=8WDXGv/9kGuP/pwjws0uAbPX1VVMbPsdZ/tIy3/SX4A=;
+	s=korg; t=1779298536;
+	bh=YAcK0+CY/gASevpDJXT9Jc1Ocb1d5hLsxL5DNDD+Qhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W9vD0BRIheLDg3qZ5X38xc7dqK/MRuselPEt13lt8Z6lmAAJv1jvQnYPmY4EDHqkd
-	 Z+HNVn23mObs0o3ILgrLPyMR9Xop7fKJ4NIRKc0J0JRttvU5d1xhEwEAVRZ1H9Cnf4
-	 7t4/YWCrUEX6d74i5V7CfV46CFe02rYp+QyW7Uic=
+	b=lvhMQzLJcVedgIjiDErQs/0p9y+u6U1agsBurXXR+oXFDDE0jXY3MCKT7iPBcWA5P
+	 7XGxW6S5fA2xrPZKRWM6IbdMO6P1osw87wkoTSFsIqVzTLyHZ6rTCRBkAD82SWkIa8
+	 +KgiFmweQj2ilyfJpaYLbZO9QkQwVn8YH6XkN0dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Luke Jones <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0682/1146] platform/x86: asus-wmi: adjust screenpad power/brightness handling
+Subject: [PATCH 6.18 449/957] dmaengine: mxs-dma: Fix missing return value from of_dma_controller_register()
 Date: Wed, 20 May 2026 18:15:32 +0200
-Message-ID: <20260520162203.623888309@linuxfoundation.org>
+Message-ID: <20260520162144.257208991@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250717-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251651-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: A053F59517A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: BB24359A03A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 130d29c5627cd50e786e926ad7ef66322c5a0c09 ]
+[ Upstream commit ab2bf6d4c0a0152907b18d25c1b118ea5ea779df ]
 
-Fix illogical screen off control by hardcoding 0 and 1 depending on the
-requested brightness and also do not rely on the last screenpad power
-state to issue screen brightness commands.
+Propagate the return value of of_dma_controller_register() in probe()
+instead of ignoring it.
 
-Fixes: 2c97d3e55b70 ("platform/x86: asus-wmi: add support for ASUS screenpad")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Luke Jones <luke@ljones.dev>
-Link: https://patch.msgid.link/20260302174431.349816-2-denis.benato@linux.dev
-Link: https://patch.msgid.link/20260326231154.856729-2-ethantidmore06@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: a580b8c5429a6 ("dmaengine: mxs-dma: add dma support for i.MX23/28")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260225-mxsdma-module-v3-2-8f798b13baa6@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 34 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ drivers/dma/mxs-dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 7c0915e097bae..f3c54290c58d2 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -4419,32 +4419,24 @@ static int read_screenpad_brightness(struct backlight_device *bd)
- 
- static int update_screenpad_bl_status(struct backlight_device *bd)
- {
--	struct asus_wmi *asus = bl_get_data(bd);
--	int power, err = 0;
--	u32 ctrl_param;
-+	u32 ctrl_param = bd->props.brightness;
-+	int err = 0;
- 
--	power = read_screenpad_backlight_power(asus);
--	if (power < 0)
--		return power;
-+	if (bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 1, NULL);
-+		if (err < 0)
-+			return err;
- 
--	if (bd->props.power != power) {
--		if (power != BACKLIGHT_POWER_ON) {
--			/* Only brightness > 0 can power it back on */
--			ctrl_param = asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT,
--						    ctrl_param, NULL);
--		} else {
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
--		}
--	} else if (power == BACKLIGHT_POWER_ON) {
--		/* Only set brightness if powered on or we get invalid/unsync state */
--		ctrl_param = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
- 		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT, ctrl_param, NULL);
-+		if (err < 0)
-+			return err;
+diff --git a/drivers/dma/mxs-dma.c b/drivers/dma/mxs-dma.c
+index cfb9962417ef6..53f572b6b6fc6 100644
+--- a/drivers/dma/mxs-dma.c
++++ b/drivers/dma/mxs-dma.c
+@@ -824,6 +824,7 @@ static int mxs_dma_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(mxs_dma->dma_device.dev,
+ 			"failed to register controller\n");
++		return ret;
  	}
  
--	/* Ensure brightness is stored to turn back on with */
--	if (err == 0)
--		asus->driver->screenpad_brightness = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
-+	if (!bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
-+		if (err < 0)
-+			return err;
-+	}
- 
- 	return err;
- }
+ 	dev_info(mxs_dma->dma_device.dev, "initialized\n");
 -- 
 2.53.0
 
