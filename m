@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-253232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AF3CJhQvDmpo7wUAu9opvQ
-	(envelope-from <stable+bounces-253232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:52 +0200
+	id MNajMoX2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCA759B967
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4946B5950E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35BBD288F9C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A82D5307038A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6F14218A5;
-	Wed, 20 May 2026 18:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB093BE64B;
+	Wed, 20 May 2026 17:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUm9VEZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nLSQT7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7A7270545;
-	Wed, 20 May 2026 18:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD88036D4E1;
+	Wed, 20 May 2026 17:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302743; cv=none; b=Ha821OhZ9rla+xw7+1eErXKfBw5RmAVs3vNIeL38TzhMuRqegTC4ATvWr/MhF+wGouTmaQrVr3N6xMgJ9bQqUOGm5Ke1BxowcSzAQDMaR/rJEELIQG8ODaR1j0WdLjKIP/Y0m1ficBYi50YqWGIG2H1MMIw9grlDLfMd7WD++dk=
+	t=1779299882; cv=none; b=OhqUFjru+apqeTwLMtB2ybrcJdotVKN9guUSbVbeoc66iMtprxuHXTjTMGNkwCXdL6+4CWlfgcnchizspkVhs0jZV0L68hnMtsWuXskt5CwUKGNlOWBhe8JB5eBUiqdxgDI2rLTWbyC1eGbeTcsLE2VSLx7rIXylX9R/LSHQm4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302743; c=relaxed/simple;
-	bh=HHbTM+ukerrNlOgknOwp/s/VHyp2Ml43pgH1nK67M+k=;
+	s=arc-20240116; t=1779299882; c=relaxed/simple;
+	bh=k+ZJof8SwwwwVI/ztw17voOsKD4kBHOZSRkkFNG+aeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhY/t651limL4QYCMKVakw6RvfRz5Px520r7x7T14z8UNOPrpYf1VFEEwp1r3id8D0o2vzBr284Y1X1zYbtycALbDlAzlv6sRXhPF3TLnBSPed+P1j7++NZJGOddipgkY5uEwRUNC79LkSvNhK0M7d+ax8hc0Ns2yO4gwbgUykQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUm9VEZG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526DA1F000E9;
-	Wed, 20 May 2026 18:45:40 +0000 (UTC)
+	 MIME-Version; b=qmZ6r6WW7ZCM+UnHWeTlllKRzgngU1WIsM7T8xXOvQBLBNvIOht8ZHVC/MF3rBPN/Xms8KBH4JmP8YHhJC28LIE2uwDmV7vapb6HgKci4N0Ss3EaOm6ZfV4vZ1PV5NznNgQPy6cbyJnCLHH/6O3brahrDEYsuqpCkN9z2PJpRNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nLSQT7W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BD11F000E9;
+	Wed, 20 May 2026 17:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302740;
-	bh=d+i8xmxgDDVgZZIZS2APGtnLjxn/D4uVZ0QoLN5Z83I=;
+	s=korg; t=1779299881;
+	bh=wZr3qP+3IcEDWoY9UFxrDfAMsLCXTMYjPZlWjHk03jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nUm9VEZGzVWND4DDq7wdnr8+Kk7fLVgzMRIhcT3J8peCUzE1LZ56U9skyHZiC7+tV
-	 JKeJiNdnbHOJHWJAk/fjnQ9JU3eMKVMGu9AL1i7XaqnZMXvvwAKRHAYO11m+JBGvfH
-	 oZCESFmnpdcARG5aqy2o3py0b4fTbiXqNvWh/ekg=
+	b=1nLSQT7Wu16sDBAQxvoL+iw2yIRS3Luy72vt3oVviiR5MAtzLGmXv4lIAxlves69t
+	 Uxw8IoZGVg8eSf4o+4GjeUcxees0r8LkFAGGnUQ4T/gv5RpZtoJVkFcvs/hX56T2y4
+	 paVyhLYs3mMggaTY4CoWV7/vgQXAYQxo8n9Ns56U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 381/508] net/sched: netem: fix probability gaps in 4-state loss model
+	Rohan Kakulawaram <rohanka@google.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.18 921/957] x86/kexec: Push kjump return address even for non-kjump kexec
 Date: Wed, 20 May 2026 18:23:24 +0200
-Message-ID: <20260520162106.877189215@linuxfoundation.org>
+Message-ID: <20260520162154.554155012@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +70,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253232-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252135-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,networkplumber.org:email]
-X-Rspamd-Queue-Id: ECCA759B967
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amazon.co.uk:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alien8.de:email]
+X-Rspamd-Queue-Id: 4946B5950E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 732b463449fd0ef90acd13cda68eab1c91adb00c ]
+commit 786a45757dcdf8f2beb9d4a6db605db16c18b2b4 upstream.
 
-The 4-state Markov chain in loss_4state() has gaps at the boundaries
-between transition probability ranges. The comparisons use:
+The version of purgatory code shipped by kexec-tools attempts to look above
+the top of its stack to find a return address for a kjump, even in a non-kjump
+kexec.
 
-  if (rnd < a4)
-  else if (a4 < rnd && rnd < a1 + a4)
+After the commit in Fixes: the word above the stack might not be there,
+leading to a fault (which is at least now caught by my exception-handling code
+in kexec).
 
-When rnd equals a boundary value exactly, neither branch matches and
-no state transition occurs. The redundant lower-bound check (a4 < rnd)
-is already implied by being in the else branch.
+That commit fixed things for the actual kjump path, but no longer
+"gratuitously" pushes the unused return address to the stack in the non-kjump
+path. Put that *back* in the non-kjump path, to prevent purgatory from
+crashing when trying to access it.
 
-Remove the unnecessary lower-bound comparisons so the ranges are
-contiguous and every random value produces a transition, matching
-the GI (General and Intuitive) loss model specification.
-
-This bug goes back to original implementation of this model.
-
-Fixes: 661b79725fea ("netem: revised correlated loss generator")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-2-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2cacf7f23a02 ("x86/kexec: Fix stack and handling of re-entry point for ::preserve_context")
+Reported-by: Rohan Kakulawaram <rohanka@google.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Rohan Kakulawaram <rohanka@google.com>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/32d627134143ffd957891cb697138e839c623211.camel@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/relocate_kernel_64.S |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 7361f90c8c1a1..a1b2912e2b6c7 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -226,10 +226,10 @@ static bool loss_4state(struct netem_sched_data *q)
- 		if (rnd < clg->a4) {
- 			clg->state = LOST_IN_GAP_PERIOD;
- 			return true;
--		} else if (clg->a4 < rnd && rnd < clg->a1 + clg->a4) {
-+		} else if (rnd < clg->a1 + clg->a4) {
- 			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
--		} else if (clg->a1 + clg->a4 < rnd) {
-+		} else {
- 			clg->state = TX_IN_GAP_PERIOD;
- 		}
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -133,6 +133,14 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_ma
+ 	 * %r13 original CR4 when relocate_kernel() was invoked
+ 	 */
  
-@@ -246,9 +246,9 @@ static bool loss_4state(struct netem_sched_data *q)
- 	case LOST_IN_BURST_PERIOD:
- 		if (rnd < clg->a3)
- 			clg->state = TX_IN_BURST_PERIOD;
--		else if (clg->a3 < rnd && rnd < clg->a2 + clg->a3) {
-+		else if (rnd < clg->a2 + clg->a3) {
- 			clg->state = TX_IN_GAP_PERIOD;
--		} else if (clg->a2 + clg->a3 < rnd) {
-+		} else {
- 			clg->state = LOST_IN_BURST_PERIOD;
- 			return true;
- 		}
--- 
-2.53.0
-
++	/*
++	 * Set return address to 0 if not preserving context. The purgatory
++	 * shipped in kexec-tools will unconditionally look for the return
++	 * address on the stack and set a kexec_jump_back_entry= command
++	 * line option if it's non-zero. There's no other way that it can
++	 * tell a preserve-context (kjump) kexec from a normal one.
++	 */
++	pushq	$0
+ 	/* store the start address on the stack */
+ 	pushq   %rdx
+ 
 
 
 
