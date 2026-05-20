@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-252744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251147-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OiAJG4XDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:58 +0200
+	id iOEeGHkVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-251147-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E28459973C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C72C5993D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7053232A81D0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1E0E3141DFE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01A73F660B;
-	Wed, 20 May 2026 18:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01703264EB;
+	Wed, 20 May 2026 17:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp9cIBoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAqTVUxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19CC3FD14C;
-	Wed, 20 May 2026 18:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6223368B6;
+	Wed, 20 May 2026 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301478; cv=none; b=bsSLaVhTVE5kiM6sqTG7cajKn1yaxBk9HN1qIozl2oR9281Wei2JvKwdJMuTt3DdJVGBYnA0GNgvwYLLpFiwVOrIj82mrfpfdPxgQVi4xqUXchlDYTktg1mb4D7jzlNtysc7dN9tqP2M8KQaA2BJKbCXo2TiwLx+edyDRxEcIiw=
+	t=1779297221; cv=none; b=ox6+8U+QMwptNX8OwRm8BfzGj/4oj3Zvg67hOFovmAfy/WecF2aVQ4k9x6S6BB68iyGvvwtYTdw7WpykdZKHA4BE+tBGiw58psiKlyjxeFMMYXebEZ90Tb0W5hGVxmQnWxQgmI7CMO843jVWZzVOmdMCYizawwURT60wVWE7dLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301478; c=relaxed/simple;
-	bh=+qnbKOW8jP17FDNnKm0L09LR6yQjDsVcoatReAPK49g=;
+	s=arc-20240116; t=1779297221; c=relaxed/simple;
+	bh=D3JSrIKCd6/vrS2Q8SO20GrxgzTnQ5EPgtQ3tok7DsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyr1H4HQ9XamBbFRakHUvFucXegHmDWJQzmpUCfUjJPgDEtflYAI5l/pslsM9divnKQj19nUC5qD54sLHlvfwwzLMgV5aikbTHBvhbc5FfpERQEB2cpNhH0sqBAUWi8Gwy27rEW1VOt34kHPeEEXk4J5nWHdtRt7JEYPSaGz3hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp9cIBoL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135651F000E9;
-	Wed, 20 May 2026 18:24:34 +0000 (UTC)
+	 MIME-Version; b=s5hVk8wNdml1WWNhwXUX1kwXTv2lHHjvODwZrg2FWJucxEymkAz+O2juGjV1hWhEx7gIZcxHsmfZgT+UUXaF346YDZ0euLbcKDUuvtDz5FcdktGDzu/lulT79Qu7KAHYp+bU9/+I4r18tMnawUUiahWnx+9GWV7adD9yQI2O3rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAqTVUxe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15E31F000E9;
+	Wed, 20 May 2026 17:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301475;
-	bh=34fias831304GMDm130DejGozLjjZ7XLWsUiK6EWBVg=;
+	s=korg; t=1779297220;
+	bh=Vokc+4OrEfvfQuul6xJipMyzp3iiHby8QQF4it1rY3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vp9cIBoLAhoQfqg1PCZTBoLykaxkoSRIN11/nBCUYGXNduINXkKFP+gaGNglO2i0P
-	 o74cu71hGXLsOWpl4CoNxCdly4O8goMSzqch/8IUT5yO+kg6xmIGzEpM6rm5CfMVqo
-	 R6w2x32Z76ehS8/tQrCkktvCUi73AXhARZtIbTBw=
+	b=EAqTVUxeSM92aRZA6FC7tO2HQeQOs99B7lydWTYcCU9KO+dh0HJT5v7ebKV9HMnqI
+	 rsttN8J3XDVUzJ2Co8XsQQX1krZvKZDyDAFtlG3s4c8HILvqO3oo4NdgHFRduWyNdk
+	 d87xZRreRhmEp/em6+gIuEcuUoNNQHH68mGXxscA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>,
-	Taegyu Kim <tmk5904@psu.edu>,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 527/666] drm/sysfb: ofdrm: fix PCI device reference leaks
-Date: Wed, 20 May 2026 18:22:18 +0200
-Message-ID: <20260520162122.692395081@linuxfoundation.org>
+	Markus Kramer <linux@markus-kramer.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 1089/1146] ALSA: hda/realtek: Add quirk for Samsung Galaxy Book5 360 headphone
+Date: Wed, 20 May 2026 18:22:19 +0200
+Message-ID: <20260520162212.882240229@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +65,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252744-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251147-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,suse.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9E28459973C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email]
+X-Rspamd-Queue-Id: 1C72C5993D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Markus Kramer <linux@markus-kramer.de>
 
-[ Upstream commit 4aa8110000b0d215deef8eed283565dd0c1def88 ]
+commit fd87b510f5f543125ecf51e7c706a9f4bc3352be upstream.
 
-display_get_pci_dev_of() gets a referenced PCI device via
-pci_get_device(). Drop that reference when pci_enable_device() fails and
-release it during the managed teardown path after pci_disable_device().
+The Samsung Galaxy Book5 360 (NP750QHA, PCI subsystem ID 0x144d:0xc902)
+has severe audio distortion on the 3.5mm headphone jack. Applying
+ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET corrects the output path
+configuration, consistent with fixes already applied to other Samsung
+Galaxy Book models using the same ALC256 codec.
 
-Without that, ofdrm leaks the pci_dev reference on both the error path
-and the normal cleanup path.
-
-Fixes: c8a17756c425 ("drm/ofdrm: Add ofdrm for Open Firmware framebuffers")
-Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260420002513.216-1-dbgh9129@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/thesofproject/linux/issues/5648
+Signed-off-by: Markus Kramer <linux@markus-kramer.de>
+Link: https://patch.msgid.link/20260513222818.14351-1-linux@markus-kramer.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/ofdrm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-index 35996f7eedac0..cc90e0035d034 100644
---- a/drivers/gpu/drm/tiny/ofdrm.c
-+++ b/drivers/gpu/drm/tiny/ofdrm.c
-@@ -350,6 +350,7 @@ static void ofdrm_pci_release(void *data)
- 	struct pci_dev *pcidev = data;
- 
- 	pci_disable_device(pcidev);
-+	pci_dev_put(pcidev);
- }
- 
- static int ofdrm_device_init_pci(struct ofdrm_device *odev)
-@@ -375,6 +376,7 @@ static int ofdrm_device_init_pci(struct ofdrm_device *odev)
- 	if (ret) {
- 		drm_err(dev, "pci_enable_device(%s) failed: %d\n",
- 			dev_name(&pcidev->dev), ret);
-+		pci_dev_put(pcidev);
- 		return ret;
- 	}
- 	ret = devm_add_action_or_reset(&pdev->dev, ofdrm_pci_release, pcidev);
--- 
-2.53.0
-
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7448,6 +7448,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x144d, 0xc870, "Samsung Galaxy Book2 Pro (NP950XED)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc886, "Samsung Galaxy Book3 Pro (NP964XFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x144d, 0xc902, "Samsung Galaxy Book5 360 (NP750QHA)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc1ca, "Samsung Galaxy Book3 Pro 360 (NP960QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1cb, "Samsung Galaxy Book3 Pro 360 (NP965QFG)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1cc, "Samsung Galaxy Book3 Ultra (NT960XFH)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
 
 
 
