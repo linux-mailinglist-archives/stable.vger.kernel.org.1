@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNSzJOn+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:21 +0200
+	id +OkvIPbsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D512596B21
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BE35934DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 767BA3016272
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C41053171D28
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB7D3FB7D2;
-	Wed, 20 May 2026 18:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B273ED5C8;
+	Wed, 20 May 2026 17:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cH62UBPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKof5KtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F03C3FB060;
-	Wed, 20 May 2026 18:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A3B31CA4E;
+	Wed, 20 May 2026 17:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301770; cv=none; b=CjwtMsQomNJhR7kCihMx2PLwneUzGsZNSNOZMXr0R9sd00Fjkl3/Wj2WVdKGizJTa0TPFcga6DLpxGsWE9TE7PS+P37KR5nMjfrPvaIWu580+qGTduubqhGAyb7sqYSONQ32vRAvVPIfsjV7e3+RNEANmPr/14cj53JLS8v7B6s=
+	t=1779296407; cv=none; b=Is9VChf+1SWryOKgNBsrdBLohch0735DfMez5lgqRGD8AJioXQoYQutGZ2BZB5ZSVSTG3v7CZX4TP9u0aq1Qsfp8odF3TAbj1/ILVk5adauK2MT7LLHB9IHlAScIIPzmb4+Bs7dGCbgqHOsLVie1YYfTpDdGnLEX4AkNYWG5PCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301770; c=relaxed/simple;
-	bh=GZwqZkXSUuHDnSFpVFJfZzrJxj48nZST9Fp9+vzsCzY=;
+	s=arc-20240116; t=1779296407; c=relaxed/simple;
+	bh=+Wg/3s5ZlnuENRFD5HZajq76WlviFVzM1Bsdy+KCNlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjiHt9C/QMhhABMpRlf2gREa2cN0dqTJLXwS3HW1XynufDMn+sipYdQLVP96xbfFBExYCbmzVTyqBLtA1FXhoFvlgSl/nO2IWC3zVYiaJMUDBoolVGUzlCbzGsuTB+GjenFK2Jnob++/mYSiu39d7xlG+iAR3ehePAD9/UuUZNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cH62UBPN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5141F00897;
-	Wed, 20 May 2026 18:29:27 +0000 (UTC)
+	 MIME-Version; b=MJYKPT9C6HooRg6CYoeIDXQGb8GuKi3ATuQDK4NCMkyoCvfIetsCVC0/gbeMIY5A/S8cxAzfuqOlDiMqhF8GtJQqo1zudueBBQRpeYyRU059IBmdEF4/Xtu+Z3QpjlYN54a6xy0ha6ie2TFV7mebLtgg51nriPQmfnBzJc6fpLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKof5KtQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD4E1F000E9;
+	Wed, 20 May 2026 17:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301768;
-	bh=r63F6l99d7O7uLpmD8MvhIWPf4lxMv00aBiOEDhipwM=;
+	s=korg; t=1779296406;
+	bh=cFES1C/HBnnIR9mIl2zqatd6CSrJKeyMQxPoURuecWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cH62UBPNOaGX4Fc6IekCuvquGMDhD2smtPTBYq91knCHqy0m0PgVKoY4L1B9HI+mu
-	 weFiIfs5ol3ICo/NGNURso4+4cfYNgeNMISQQCFDag9u0njbXJHUb3rg9sui2WbQ6F
-	 xkS7rERtnBla2zG1XWgwZKaS5R2us5AXtV1Kp4jQ=
+	b=iKof5KtQnwSVrcbAm2A1ZOG5i7FiA6kkMGLToXH5aPy3yhqIResnNJD4xKucIWSGO
+	 Efl/mFAhHecuBzTRxjbr+ZMZClG5+VTBmkjAyB+6vewqNI9nofmF3DroUqQc2kzjJn
+	 JJ6kBmxPFr5Oi+JT9y2jclvDXmLazc/2/9EKIzLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/508] s390/cio: make sch->lock spinlock pointer a member
-Date: Wed, 20 May 2026 18:17:17 +0200
-Message-ID: <20260520162058.893660992@linuxfoundation.org>
+Subject: [PATCH 7.0 0788/1146] tcp: annotate data-races around tp->dsack_dups
+Date: Wed, 20 May 2026 18:17:18 +0200
+Message-ID: <20260520162206.056539575@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,850 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252857-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250826-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1D512596B21
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 43BE35934DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Halil Pasic <pasic@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b8fa3e90965eeb2f83aa637ba0d0d6fd2a524004 ]
+[ Upstream commit a984705ca88b976bf1087978fd98b7f3993da88c ]
 
-The lock member of struct subchannel used to be a spinlock, but became
-a pointer to a spinlock with commit 2ec2298412e1 ("[S390] subchannel
-lock conversion."). This might have been justified back then, but with
-the current state of affairs, there is no reason to manage a separate
-spinlock object.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Let's simplify things and pull the spinlock back into struct subchannel.
-
-Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231101115751.2308307-1-pasic@linux.ibm.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: ac4d8bb6e2e1 ("s390/cio: use generic driver_override infrastructure")
+Fixes: 7e10b6554ff2 ("tcp: add dsack blocks received stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-10-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/chsc.c         | 18 ++++-----
- drivers/s390/cio/chsc_sch.c     |  6 +--
- drivers/s390/cio/cio.c          |  6 +--
- drivers/s390/cio/cio.h          |  2 +-
- drivers/s390/cio/css.c          | 36 +++++-------------
- drivers/s390/cio/device.c       | 66 ++++++++++++++++-----------------
- drivers/s390/cio/device_pgid.c  | 12 +++---
- drivers/s390/cio/eadm_sch.c     | 36 +++++++++---------
- drivers/s390/cio/vfio_ccw_drv.c |  8 ++--
- drivers/s390/cio/vfio_ccw_fsm.c | 24 ++++++------
- 10 files changed, 99 insertions(+), 115 deletions(-)
+ net/ipv4/tcp.c       | 2 +-
+ net/ipv4/tcp_input.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
-index 0abd77f4b6646..2988a699e3ef2 100644
---- a/drivers/s390/cio/chsc.c
-+++ b/drivers/s390/cio/chsc.c
-@@ -219,16 +219,16 @@ EXPORT_SYMBOL_GPL(chsc_sadc);
- 
- static int s390_subchannel_remove_chpid(struct subchannel *sch, void *data)
- {
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	if (sch->driver && sch->driver->chp_event)
- 		if (sch->driver->chp_event(sch, data, CHP_OFFLINE) != 0)
- 			goto out_unreg;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	return 0;
- 
- out_unreg:
- 	sch->lpm = 0;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	css_schedule_eval(sch->schid);
- 	return 0;
- }
-@@ -258,10 +258,10 @@ void chsc_chp_offline(struct chp_id chpid)
- 
- static int __s390_process_res_acc(struct subchannel *sch, void *data)
- {
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	if (sch->driver && sch->driver->chp_event)
- 		sch->driver->chp_event(sch, data, CHP_ONLINE);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 
- 	return 0;
- }
-@@ -292,10 +292,10 @@ static void s390_process_res_acc(struct chp_link *link)
- 
- static int process_fces_event(struct subchannel *sch, void *data)
- {
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	if (sch->driver && sch->driver->chp_event)
- 		sch->driver->chp_event(sch, data, CHP_FCES_EVENT);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	return 0;
- }
- 
-@@ -769,11 +769,11 @@ static void __s390_subchannel_vary_chpid(struct subchannel *sch,
- 
- 	memset(&link, 0, sizeof(struct chp_link));
- 	link.chpid = chpid;
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 	if (sch->driver && sch->driver->chp_event)
- 		sch->driver->chp_event(sch, &link,
- 				       on ? CHP_VARY_ON : CHP_VARY_OFF);
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- }
- 
- static int s390_subchannel_vary_chpid_off(struct subchannel *sch, void *data)
-diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index 180ab899289c5..902237d0baefe 100644
---- a/drivers/s390/cio/chsc_sch.c
-+++ b/drivers/s390/cio/chsc_sch.c
-@@ -211,10 +211,10 @@ static int chsc_async(struct chsc_async_area *chsc_area,
- 
- 	chsc_area->header.key = PAGE_DEFAULT_KEY >> 4;
- 	while ((sch = chsc_get_next_subchannel(sch))) {
--		spin_lock(sch->lock);
-+		spin_lock(&sch->lock);
- 		private = dev_get_drvdata(&sch->dev);
- 		if (private->request) {
--			spin_unlock(sch->lock);
-+			spin_unlock(&sch->lock);
- 			ret = -EBUSY;
- 			continue;
- 		}
-@@ -239,7 +239,7 @@ static int chsc_async(struct chsc_async_area *chsc_area,
- 		default:
- 			ret = -ENODEV;
- 		}
--		spin_unlock(sch->lock);
-+		spin_unlock(&sch->lock);
- 		CHSC_MSG(2, "chsc on 0.%x.%04x returned cc=%d\n",
- 			 sch->schid.ssid, sch->schid.sch_no, cc);
- 		if (ret == -EINPROGRESS)
-diff --git a/drivers/s390/cio/cio.c b/drivers/s390/cio/cio.c
-index 81ef9002f0640..7843c69abee6c 100644
---- a/drivers/s390/cio/cio.c
-+++ b/drivers/s390/cio/cio.c
-@@ -550,7 +550,7 @@ static irqreturn_t do_cio_interrupt(int irq, void *dummy)
- 		return IRQ_HANDLED;
- 	}
- 	sch = phys_to_virt(tpi_info->intparm);
--	spin_lock(sch->lock);
-+	spin_lock(&sch->lock);
- 	/* Store interrupt response block to lowcore. */
- 	if (tsch(tpi_info->schid, irb) == 0) {
- 		/* Keep subchannel information word up to date. */
-@@ -562,7 +562,7 @@ static irqreturn_t do_cio_interrupt(int irq, void *dummy)
- 			inc_irq_stat(IRQIO_CIO);
- 	} else
- 		inc_irq_stat(IRQIO_CIO);
--	spin_unlock(sch->lock);
-+	spin_unlock(&sch->lock);
- 
- 	return IRQ_HANDLED;
- }
-@@ -667,7 +667,7 @@ struct subchannel *cio_probe_console(void)
- 	if (IS_ERR(sch))
- 		return sch;
- 
--	lockdep_set_class(sch->lock, &console_sch_key);
-+	lockdep_set_class(&sch->lock, &console_sch_key);
- 	isc_register(CONSOLE_ISC);
- 	sch->config.isc = CONSOLE_ISC;
- 	sch->config.intparm = (u32)virt_to_phys(sch);
-diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
-index fa8df50bb49e3..a9057a5b670a6 100644
---- a/drivers/s390/cio/cio.h
-+++ b/drivers/s390/cio/cio.h
-@@ -83,7 +83,7 @@ enum sch_todo {
- /* subchannel data structure used by I/O subroutines */
- struct subchannel {
- 	struct subchannel_id schid;
--	spinlock_t *lock;	/* subchannel lock */
-+	spinlock_t lock;	/* subchannel lock */
- 	struct mutex reg_mutex;
- 	enum {
- 		SUBCHANNEL_TYPE_IO = 0,
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index e50592c3d30ca..4e63e6d45e6e1 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -148,16 +148,10 @@ int for_each_subchannel_staged(int (*fn_known)(struct subchannel *, void *),
- 
- static void css_sch_todo(struct work_struct *work);
- 
--static int css_sch_create_locks(struct subchannel *sch)
-+static void css_sch_create_locks(struct subchannel *sch)
- {
--	sch->lock = kmalloc(sizeof(*sch->lock), GFP_KERNEL);
--	if (!sch->lock)
--		return -ENOMEM;
--
--	spin_lock_init(sch->lock);
-+	spin_lock_init(&sch->lock);
- 	mutex_init(&sch->reg_mutex);
--
--	return 0;
- }
- 
- static void css_subchannel_release(struct device *dev)
-@@ -167,7 +161,6 @@ static void css_subchannel_release(struct device *dev)
- 	sch->config.intparm = 0;
- 	cio_commit_config(sch);
- 	kfree(sch->driver_override);
--	kfree(sch->lock);
- 	kfree(sch);
- }
- 
-@@ -219,9 +212,7 @@ struct subchannel *css_alloc_subchannel(struct subchannel_id schid,
- 	sch->schib = *schib;
- 	sch->st = schib->pmcw.st;
- 
--	ret = css_sch_create_locks(sch);
--	if (ret)
--		goto err;
-+	css_sch_create_locks(sch);
- 
- 	INIT_WORK(&sch->todo_work, css_sch_todo);
- 	sch->dev.release = &css_subchannel_release;
-@@ -233,19 +224,17 @@ struct subchannel *css_alloc_subchannel(struct subchannel_id schid,
- 	 */
- 	ret = dma_set_coherent_mask(&sch->dev, DMA_BIT_MASK(31));
- 	if (ret)
--		goto err_lock;
-+		goto err;
- 	/*
- 	 * But we don't have such restrictions imposed on the stuff that
- 	 * is handled by the streaming API.
- 	 */
- 	ret = dma_set_mask(&sch->dev, DMA_BIT_MASK(64));
- 	if (ret)
--		goto err_lock;
-+		goto err;
- 
- 	return sch;
- 
--err_lock:
--	kfree(sch->lock);
- err:
- 	put_device(&sch->dev);
- 	return ERR_PTR(ret);
-@@ -604,12 +593,12 @@ static void css_sch_todo(struct work_struct *work)
- 
- 	sch = container_of(work, struct subchannel, todo_work);
- 	/* Find out todo. */
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	todo = sch->todo;
- 	CIO_MSG_EVENT(4, "sch_todo: sch=0.%x.%04x, todo=%d\n", sch->schid.ssid,
- 		      sch->schid.sch_no, todo);
- 	sch->todo = SCH_TODO_NOTHING;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	/* Perform todo. */
- 	switch (todo) {
- 	case SCH_TODO_NOTHING:
-@@ -617,9 +606,9 @@ static void css_sch_todo(struct work_struct *work)
- 	case SCH_TODO_EVAL:
- 		ret = css_evaluate_known_subchannel(sch, 1);
- 		if (ret == -EAGAIN) {
--			spin_lock_irq(sch->lock);
-+			spin_lock_irq(&sch->lock);
- 			css_sched_sch_todo(sch, todo);
--			spin_unlock_irq(sch->lock);
-+			spin_unlock_irq(&sch->lock);
- 		}
- 		break;
- 	case SCH_TODO_UNREG:
-@@ -1028,12 +1017,7 @@ static int __init setup_css(int nr)
- 	css->pseudo_subchannel->dev.parent = &css->device;
- 	css->pseudo_subchannel->dev.release = css_subchannel_release;
- 	mutex_init(&css->pseudo_subchannel->reg_mutex);
--	ret = css_sch_create_locks(css->pseudo_subchannel);
--	if (ret) {
--		kfree(css->pseudo_subchannel);
--		device_unregister(&css->device);
--		goto out_err;
--	}
-+	css_sch_create_locks(css->pseudo_subchannel);
- 
- 	dev_set_name(&css->pseudo_subchannel->dev, "defunct");
- 	ret = device_register(&css->pseudo_subchannel->dev);
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 3942aa4921769..93307ca75c10b 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -751,7 +751,7 @@ static int io_subchannel_initialize_dev(struct subchannel *sch,
- 	mutex_init(&cdev->reg_mutex);
- 
- 	atomic_set(&priv->onoff, 0);
--	cdev->ccwlock = sch->lock;
-+	cdev->ccwlock = &sch->lock;
- 	cdev->dev.parent = &sch->dev;
- 	cdev->dev.release = ccw_device_release;
- 	cdev->dev.bus = &ccw_bus_type;
-@@ -767,9 +767,9 @@ static int io_subchannel_initialize_dev(struct subchannel *sch,
- 		goto out_put;
- 	}
- 	priv->flags.initialized = 1;
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	sch_set_cdev(sch, cdev);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	return 0;
- 
- out_put:
-@@ -854,9 +854,9 @@ static void io_subchannel_register(struct ccw_device *cdev)
- 		CIO_MSG_EVENT(0, "Could not register ccw dev 0.%x.%04x: %d\n",
- 			      cdev->private->dev_id.ssid,
- 			      cdev->private->dev_id.devno, ret);
--		spin_lock_irqsave(sch->lock, flags);
-+		spin_lock_irqsave(&sch->lock, flags);
- 		sch_set_cdev(sch, NULL);
--		spin_unlock_irqrestore(sch->lock, flags);
-+		spin_unlock_irqrestore(&sch->lock, flags);
- 		mutex_unlock(&cdev->reg_mutex);
- 		/* Release initial device reference. */
- 		put_device(&cdev->dev);
-@@ -907,9 +907,9 @@ static void io_subchannel_recog(struct ccw_device *cdev, struct subchannel *sch)
- 	atomic_inc(&ccw_device_init_count);
- 
- 	/* Start async. device sensing. */
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	ccw_device_recognition(cdev);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- }
- 
- static int ccw_device_move_to_sch(struct ccw_device *cdev,
-@@ -924,12 +924,12 @@ static int ccw_device_move_to_sch(struct ccw_device *cdev,
- 		return -ENODEV;
- 
- 	if (!sch_is_pseudo_sch(old_sch)) {
--		spin_lock_irq(old_sch->lock);
-+		spin_lock_irq(&old_sch->lock);
- 		old_enabled = old_sch->schib.pmcw.ena;
- 		rc = 0;
- 		if (old_enabled)
- 			rc = cio_disable_subchannel(old_sch);
--		spin_unlock_irq(old_sch->lock);
-+		spin_unlock_irq(&old_sch->lock);
- 		if (rc == -EBUSY) {
- 			/* Release child reference for new parent. */
- 			put_device(&sch->dev);
-@@ -947,9 +947,9 @@ static int ccw_device_move_to_sch(struct ccw_device *cdev,
- 			      sch->schib.pmcw.dev, rc);
- 		if (old_enabled) {
- 			/* Try to re-enable the old subchannel. */
--			spin_lock_irq(old_sch->lock);
-+			spin_lock_irq(&old_sch->lock);
- 			cio_enable_subchannel(old_sch, (u32)virt_to_phys(old_sch));
--			spin_unlock_irq(old_sch->lock);
-+			spin_unlock_irq(&old_sch->lock);
- 		}
- 		/* Release child reference for new parent. */
- 		put_device(&sch->dev);
-@@ -957,19 +957,19 @@ static int ccw_device_move_to_sch(struct ccw_device *cdev,
- 	}
- 	/* Clean up old subchannel. */
- 	if (!sch_is_pseudo_sch(old_sch)) {
--		spin_lock_irq(old_sch->lock);
-+		spin_lock_irq(&old_sch->lock);
- 		sch_set_cdev(old_sch, NULL);
--		spin_unlock_irq(old_sch->lock);
-+		spin_unlock_irq(&old_sch->lock);
- 		css_schedule_eval(old_sch->schid);
- 	}
- 	/* Release child reference for old parent. */
- 	put_device(&old_sch->dev);
- 	/* Initialize new subchannel. */
--	spin_lock_irq(sch->lock);
--	cdev->ccwlock = sch->lock;
-+	spin_lock_irq(&sch->lock);
-+	cdev->ccwlock = &sch->lock;
- 	if (!sch_is_pseudo_sch(sch))
- 		sch_set_cdev(sch, cdev);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	if (!sch_is_pseudo_sch(sch))
- 		css_update_ssd_info(sch);
- 	return 0;
-@@ -1080,9 +1080,9 @@ static int io_subchannel_probe(struct subchannel *sch)
- 	return 0;
- 
- out_schedule:
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	css_sched_sch_todo(sch, SCH_TODO_UNREG);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	return 0;
- }
- 
-@@ -1096,10 +1096,10 @@ static void io_subchannel_remove(struct subchannel *sch)
- 		goto out_free;
- 
- 	ccw_device_unregister(cdev);
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	sch_set_cdev(sch, NULL);
- 	set_io_private(sch, NULL);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- out_free:
- 	dma_free_coherent(&sch->dev, sizeof(*io_priv->dma_area),
- 			  io_priv->dma_area, io_priv->dma_area_dma);
-@@ -1206,7 +1206,7 @@ static void io_subchannel_quiesce(struct subchannel *sch)
- 	struct ccw_device *cdev;
- 	int ret;
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	cdev = sch_get_cdev(sch);
- 	if (cio_is_console(sch->schid))
- 		goto out_unlock;
-@@ -1223,15 +1223,15 @@ static void io_subchannel_quiesce(struct subchannel *sch)
- 		ret = ccw_device_cancel_halt_clear(cdev);
- 		if (ret == -EBUSY) {
- 			ccw_device_set_timeout(cdev, HZ/10);
--			spin_unlock_irq(sch->lock);
-+			spin_unlock_irq(&sch->lock);
- 			wait_event(cdev->private->wait_q,
- 				   cdev->private->state != DEV_STATE_QUIESCE);
--			spin_lock_irq(sch->lock);
-+			spin_lock_irq(&sch->lock);
- 		}
- 		ret = cio_disable_subchannel(sch);
- 	}
- out_unlock:
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- }
- 
- static void io_subchannel_shutdown(struct subchannel *sch)
-@@ -1467,7 +1467,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 	enum io_sch_action action;
- 	int rc = -EAGAIN;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 	if (!device_is_registered(&sch->dev))
- 		goto out_unlock;
- 	if (work_pending(&sch->todo_work))
-@@ -1521,7 +1521,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 	default:
- 		break;
- 	}
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 	/* All other actions require process context. */
- 	if (!process)
- 		goto out;
-@@ -1537,9 +1537,9 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 		break;
- 	case IO_SCH_UNREG_CDEV:
- 	case IO_SCH_UNREG_ATTACH:
--		spin_lock_irqsave(sch->lock, flags);
-+		spin_lock_irqsave(&sch->lock, flags);
- 		sch_set_cdev(sch, NULL);
--		spin_unlock_irqrestore(sch->lock, flags);
-+		spin_unlock_irqrestore(&sch->lock, flags);
- 		/* Unregister ccw device. */
- 		ccw_device_unregister(cdev);
- 		break;
-@@ -1568,9 +1568,9 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 			put_device(&cdev->dev);
- 			goto out;
- 		}
--		spin_lock_irqsave(sch->lock, flags);
-+		spin_lock_irqsave(&sch->lock, flags);
- 		ccw_device_trigger_reprobe(cdev);
--		spin_unlock_irqrestore(sch->lock, flags);
-+		spin_unlock_irqrestore(&sch->lock, flags);
- 		/* Release reference from get_ccwdev_by_dev_id() */
- 		put_device(&cdev->dev);
- 		break;
-@@ -1580,7 +1580,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
- 	return 0;
- 
- out_unlock:
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- out:
- 	return rc;
- }
-@@ -1876,9 +1876,9 @@ static void ccw_device_todo(struct work_struct *work)
- 			css_schedule_eval(sch->schid);
- 		fallthrough;
- 	case CDEV_TODO_UNREG:
--		spin_lock_irq(sch->lock);
-+		spin_lock_irq(&sch->lock);
- 		sch_set_cdev(sch, NULL);
--		spin_unlock_irq(sch->lock);
-+		spin_unlock_irq(&sch->lock);
- 		ccw_device_unregister(cdev);
- 		break;
- 	default:
-diff --git a/drivers/s390/cio/device_pgid.c b/drivers/s390/cio/device_pgid.c
-index 3862961697eb6..ad90045873e25 100644
---- a/drivers/s390/cio/device_pgid.c
-+++ b/drivers/s390/cio/device_pgid.c
-@@ -698,29 +698,29 @@ int ccw_device_stlck(struct ccw_device *cdev)
- 		return -ENOMEM;
- 	init_completion(&data.done);
- 	data.rc = -EIO;
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	rc = cio_enable_subchannel(sch, (u32)virt_to_phys(sch));
- 	if (rc)
- 		goto out_unlock;
- 	/* Perform operation. */
- 	cdev->private->state = DEV_STATE_STEAL_LOCK;
- 	ccw_device_stlck_start(cdev, &data, &buffer[0], &buffer[32]);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	/* Wait for operation to finish. */
- 	if (wait_for_completion_interruptible(&data.done)) {
- 		/* Got a signal. */
--		spin_lock_irq(sch->lock);
-+		spin_lock_irq(&sch->lock);
- 		ccw_request_cancel(cdev);
--		spin_unlock_irq(sch->lock);
-+		spin_unlock_irq(&sch->lock);
- 		wait_for_completion(&data.done);
- 	}
- 	rc = data.rc;
- 	/* Check results. */
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	cio_disable_subchannel(sch);
- 	cdev->private->state = DEV_STATE_BOXED;
- out_unlock:
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	kfree(buffer);
- 
- 	return rc;
-diff --git a/drivers/s390/cio/eadm_sch.c b/drivers/s390/cio/eadm_sch.c
-index 826364d2facd8..1caedf931a5f0 100644
---- a/drivers/s390/cio/eadm_sch.c
-+++ b/drivers/s390/cio/eadm_sch.c
-@@ -101,12 +101,12 @@ static void eadm_subchannel_timeout(struct timer_list *t)
- 	struct eadm_private *private = from_timer(private, t, timer);
- 	struct subchannel *sch = private->sch;
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	EADM_LOG(1, "timeout");
- 	EADM_LOG_HEX(1, &sch->schid, sizeof(sch->schid));
- 	if (eadm_subchannel_clear(sch))
- 		EADM_LOG(0, "clear failed");
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- }
- 
- static void eadm_subchannel_set_timeout(struct subchannel *sch, int expires)
-@@ -163,16 +163,16 @@ static struct subchannel *eadm_get_idle_sch(void)
- 	spin_lock_irqsave(&list_lock, flags);
- 	list_for_each_entry(private, &eadm_list, head) {
- 		sch = private->sch;
--		spin_lock(sch->lock);
-+		spin_lock(&sch->lock);
- 		if (private->state == EADM_IDLE) {
- 			private->state = EADM_BUSY;
- 			list_move_tail(&private->head, &eadm_list);
--			spin_unlock(sch->lock);
-+			spin_unlock(&sch->lock);
- 			spin_unlock_irqrestore(&list_lock, flags);
- 
- 			return sch;
- 		}
--		spin_unlock(sch->lock);
-+		spin_unlock(&sch->lock);
- 	}
- 	spin_unlock_irqrestore(&list_lock, flags);
- 
-@@ -190,7 +190,7 @@ int eadm_start_aob(struct aob *aob)
- 	if (!sch)
- 		return -EBUSY;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 	eadm_subchannel_set_timeout(sch, EADM_TIMEOUT);
- 	ret = eadm_subchannel_start(sch, aob);
- 	if (!ret)
-@@ -203,7 +203,7 @@ int eadm_start_aob(struct aob *aob)
- 	css_sched_sch_todo(sch, SCH_TODO_EVAL);
- 
- out_unlock:
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	return ret;
- }
-@@ -221,7 +221,7 @@ static int eadm_subchannel_probe(struct subchannel *sch)
- 	INIT_LIST_HEAD(&private->head);
- 	timer_setup(&private->timer, eadm_subchannel_timeout, 0);
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	set_eadm_private(sch, private);
- 	private->state = EADM_IDLE;
- 	private->sch = sch;
-@@ -229,11 +229,11 @@ static int eadm_subchannel_probe(struct subchannel *sch)
- 	ret = cio_enable_subchannel(sch, (u32)virt_to_phys(sch));
- 	if (ret) {
- 		set_eadm_private(sch, NULL);
--		spin_unlock_irq(sch->lock);
-+		spin_unlock_irq(&sch->lock);
- 		kfree(private);
- 		goto out;
- 	}
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 
- 	spin_lock_irq(&list_lock);
- 	list_add(&private->head, &eadm_list);
-@@ -248,7 +248,7 @@ static void eadm_quiesce(struct subchannel *sch)
- 	DECLARE_COMPLETION_ONSTACK(completion);
- 	int ret;
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	if (private->state != EADM_BUSY)
- 		goto disable;
- 
-@@ -256,11 +256,11 @@ static void eadm_quiesce(struct subchannel *sch)
- 		goto disable;
- 
- 	private->completion = &completion;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 
- 	wait_for_completion_io(&completion);
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	private->completion = NULL;
- 
- disable:
-@@ -269,7 +269,7 @@ static void eadm_quiesce(struct subchannel *sch)
- 		ret = cio_disable_subchannel(sch);
- 	} while (ret == -EBUSY);
- 
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- }
- 
- static void eadm_subchannel_remove(struct subchannel *sch)
-@@ -282,9 +282,9 @@ static void eadm_subchannel_remove(struct subchannel *sch)
- 
- 	eadm_quiesce(sch);
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	set_eadm_private(sch, NULL);
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 
- 	kfree(private);
- }
-@@ -309,7 +309,7 @@ static int eadm_subchannel_sch_event(struct subchannel *sch, int process)
- 	struct eadm_private *private;
- 	unsigned long flags;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 	if (!device_is_registered(&sch->dev))
- 		goto out_unlock;
- 
-@@ -325,7 +325,7 @@ static int eadm_subchannel_sch_event(struct subchannel *sch, int process)
- 		private->state = EADM_IDLE;
- 
- out_unlock:
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	return 0;
- }
-diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_drv.c
-index 43601816ea4e4..a3e25bdd6a76b 100644
---- a/drivers/s390/cio/vfio_ccw_drv.c
-+++ b/drivers/s390/cio/vfio_ccw_drv.c
-@@ -65,14 +65,14 @@ int vfio_ccw_sch_quiesce(struct subchannel *sch)
- 		 * cancel/halt/clear completion.
- 		 */
- 		private->completion = &completion;
--		spin_unlock_irq(sch->lock);
-+		spin_unlock_irq(&sch->lock);
- 
- 		if (ret == -EBUSY)
- 			wait_for_completion_timeout(&completion, 3*HZ);
- 
- 		private->completion = NULL;
- 		flush_workqueue(vfio_ccw_work_q);
--		spin_lock_irq(sch->lock);
-+		spin_lock_irq(&sch->lock);
- 		ret = cio_disable_subchannel(sch);
- 	} while (ret == -EBUSY);
- 
-@@ -249,7 +249,7 @@ static int vfio_ccw_sch_event(struct subchannel *sch, int process)
- 	unsigned long flags;
- 	int rc = -EAGAIN;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 	if (!device_is_registered(&sch->dev))
- 		goto out_unlock;
- 
-@@ -264,7 +264,7 @@ static int vfio_ccw_sch_event(struct subchannel *sch, int process)
- 	}
- 
- out_unlock:
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 
- 	return rc;
- }
-diff --git a/drivers/s390/cio/vfio_ccw_fsm.c b/drivers/s390/cio/vfio_ccw_fsm.c
-index 757b73141246d..09877b46181d4 100644
---- a/drivers/s390/cio/vfio_ccw_fsm.c
-+++ b/drivers/s390/cio/vfio_ccw_fsm.c
-@@ -25,7 +25,7 @@ static int fsm_io_helper(struct vfio_ccw_private *private)
- 	unsigned long flags;
- 	int ret;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 
- 	orb = cp_get_orb(&private->cp, sch);
- 	if (!orb) {
-@@ -72,7 +72,7 @@ static int fsm_io_helper(struct vfio_ccw_private *private)
- 		ret = ccode;
- 	}
- out:
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 	return ret;
- }
- 
-@@ -83,7 +83,7 @@ static int fsm_do_halt(struct vfio_ccw_private *private)
- 	int ccode;
- 	int ret;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 
- 	VFIO_CCW_TRACE_EVENT(2, "haltIO");
- 	VFIO_CCW_TRACE_EVENT(2, dev_name(&sch->dev));
-@@ -111,7 +111,7 @@ static int fsm_do_halt(struct vfio_ccw_private *private)
- 	default:
- 		ret = ccode;
- 	}
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 	return ret;
- }
- 
-@@ -122,7 +122,7 @@ static int fsm_do_clear(struct vfio_ccw_private *private)
- 	int ccode;
- 	int ret;
- 
--	spin_lock_irqsave(sch->lock, flags);
-+	spin_lock_irqsave(&sch->lock, flags);
- 
- 	VFIO_CCW_TRACE_EVENT(2, "clearIO");
- 	VFIO_CCW_TRACE_EVENT(2, dev_name(&sch->dev));
-@@ -147,7 +147,7 @@ static int fsm_do_clear(struct vfio_ccw_private *private)
- 	default:
- 		ret = ccode;
- 	}
--	spin_unlock_irqrestore(sch->lock, flags);
-+	spin_unlock_irqrestore(&sch->lock, flags);
- 	return ret;
- }
- 
-@@ -376,18 +376,18 @@ static void fsm_open(struct vfio_ccw_private *private,
- 	struct subchannel *sch = to_subchannel(private->vdev.dev->parent);
- 	int ret;
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 	sch->isc = VFIO_CCW_ISC;
- 	ret = cio_enable_subchannel(sch, (u32)(unsigned long)sch);
- 	if (ret)
- 		goto err_unlock;
- 
- 	private->state = VFIO_CCW_STATE_IDLE;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	return;
- 
- err_unlock:
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	vfio_ccw_fsm_event(private, VFIO_CCW_EVENT_NOT_OPER);
- }
- 
-@@ -397,7 +397,7 @@ static void fsm_close(struct vfio_ccw_private *private,
- 	struct subchannel *sch = to_subchannel(private->vdev.dev->parent);
- 	int ret;
- 
--	spin_lock_irq(sch->lock);
-+	spin_lock_irq(&sch->lock);
- 
- 	if (!sch->schib.pmcw.ena)
- 		goto err_unlock;
-@@ -409,12 +409,12 @@ static void fsm_close(struct vfio_ccw_private *private,
- 		goto err_unlock;
- 
- 	private->state = VFIO_CCW_STATE_STANDBY;
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	cp_free(&private->cp);
- 	return;
- 
- err_unlock:
--	spin_unlock_irq(sch->lock);
-+	spin_unlock_irq(&sch->lock);
- 	vfio_ccw_fsm_event(private, VFIO_CCW_EVENT_NOT_OPER);
- }
- 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 368b576cfe369..a5231c685f90b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4499,7 +4499,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 			  TCP_NLA_PAD);
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
+ 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+-	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
++	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index b9bd42f9d08b5..285baeb060a06 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1247,7 +1247,7 @@ static u32 tcp_dsack_seen(struct tcp_sock *tp, u32 start_seq,
+ 	else if (tp->tlp_high_seq && tp->tlp_high_seq == end_seq)
+ 		state->flag |= FLAG_DSACK_TLP;
+ 
+-	tp->dsack_dups += dup_segs;
++	WRITE_ONCE(tp->dsack_dups, tp->dsack_dups + dup_segs);
+ 	/* Skip the DSACK if dup segs weren't retransmitted by sender */
+ 	if (tp->dsack_dups > tp->total_retrans)
+ 		return 0;
 -- 
 2.53.0
 
