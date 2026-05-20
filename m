@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AANxNjf9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:07 +0200
+	id MLlSKGX0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3775963AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C119594B4C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3A9FA3174DF0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB5DA3076176
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C123F86F4;
-	Wed, 20 May 2026 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C7328DC4;
+	Wed, 20 May 2026 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ln09xFAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKGbTaIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5363F88B5;
-	Wed, 20 May 2026 18:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5779D363C4C;
+	Wed, 20 May 2026 17:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300715; cv=none; b=AEsC7Ee5ijyAuKIxKaGDNk3UkDTFCJTUZlsLxqffwK+PllHoVjWCdbkcvpsT+MHMrKrOXdrykzVLjEyVE55RC7C7Z8AkHsbZZJQY3d5n7LcuUEW6zCBFd4Ul2/MRue1WHkGXzvYf559TubGJtE76NwX9uWug9We5PDlrvJKrpBQ=
+	t=1779298960; cv=none; b=hTd6BZ32NYa8mJaNXduTiGRpLN3eYwhfIhMVtdaF3KgldxRLk20+8W0pG4DAeVRM+KgvNoxolldIzJReQKVsHGUxBfyfKKgJl6lWqFZv18G0hf+HrgkczDwnZ3DujULd2Y0dEn8m2X3ys9d7EvrePO/aL7Tuk6JO1bnDu1PQSUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300715; c=relaxed/simple;
-	bh=MfH7kx6JA62cQwfE26zl4OVjyG6KBRZraNoS1Ld1OGc=;
+	s=arc-20240116; t=1779298960; c=relaxed/simple;
+	bh=v4mQmTa5+I4kOGxy0Elw0uEO9QysLXfdNvwUqp9kbhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSqq2uRtSLeTxgWk6ow3YWa9DC89rRGzIDUjN4ynXNS+rTFl9DPWMgz/7ChfkBWrjUafzTrcwtI066AxKId95yGav+wKHtXlI6CT98fjFDtRszqsSGML3+4yL+L0DtRPV1UgV4ZI1qQMY1xVChwazIAz2NTnMUCZqqnxS2rfFA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ln09xFAw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D61E1F000E9;
-	Wed, 20 May 2026 18:11:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KYodklkUOeLMvH9lFBZOcE216zskJqND6L9J5sK3JoaxlW8H0k+pmFN3r3EBVT+BnNafesHG963S9V2GFgfyVxotc9fxY2AH1/0hGZZJKdUoaQpmQjwqsK6liT+tV/f+mZmN5gniE0rBx0wNOQIELohn4ZOflIUxqzbABV5fyjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKGbTaIj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4DA1F000E9;
+	Wed, 20 May 2026 17:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300714;
-	bh=tXXoN2MdG0ZtdQUiRNyyXN8DxrQz8Le+GzFVTDYn4o4=;
+	s=korg; t=1779298959;
+	bh=kgBpexKwJ6/gjf6GK58CTzfmZTmw2N77usx3OlwW8ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ln09xFAw4td1/QyKTCF+rv5KVz5IJU8UB29zNLmOvgmeDqXVQVE5qKLpHs5pjTmsE
-	 U8Y8tAS6z03IjUjwJ5cWBBBLMbXfc80GmwvZd6L5Q0xKhFOfeUOWW4TWuHHt9uGAkC
-	 c0/OLwwAB5tkb7iWE0KzJEaMPWeaJP0gd6WZniOM=
+	b=WKGbTaIjfnBUetXtezpk4uGPD+Eiz2fOS6cS5+VNAtQiQQA9lbfKZvlRj/lWHpq4V
+	 m+s+c3acaHWeyu3GIxqxdOatw+qg0JXzR+VxJEIW7FVk1sFHtYDYlm+PMxRA/bKQ8R
+	 BtbN2aoiHgnWFOWZKJExaf/nbNJ+76zZS+0dLq8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Brian Masney <bmasney@redhat.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/666] soc: qcom: ocmem: register reasons for probe deferrals
+Subject: [PATCH 6.18 608/957] PCMCIA: Fix garbled log messages for KERN_CONT
 Date: Wed, 20 May 2026 18:18:11 +0200
-Message-ID: <20260520162117.283375239@linuxfoundation.org>
+Message-ID: <20260520162147.720413625@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252454-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251814-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: BA3775963AB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,dominikbrodowski.net:email]
+X-Rspamd-Queue-Id: 3C119594B4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 9dfd69cd89cd6afa4723be9098979abeef3bb8c6 ]
+[ Upstream commit bfeaa6814bd3f9a1f6d525b3b35a03b9a0368961 ]
 
-Instead of printing messages to the dmesg, let the message be recorded
-as a reason for the OCMEM client deferral.
+For years the PCMCIA info messages are messed up by superfluous
+newlines. While f2e6cf76751d ("pcmcia: Convert dev_printk to
+dev_<level>") converted the code to pr_cont(), dev_info enforces a \n
+via vprintk_store setting LOG_NEWLINE, breaking subsequent pr_cont.
 
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260323-ocmem-v1-2-ad9bcae44763@oss.qualcomm.com
-[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix by logging the device name manually to allow pr_cont to work for
+more readable and not \n distorted logs.
+
+Fixes: f2e6cf76751d ("pcmcia: Convert dev_printk to dev_<level>")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pcmcia/rsrc_nonstatic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index 7bcd0c71d7f64..ed77fdc76c9b2 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -196,10 +196,10 @@ struct ocmem *of_get_ocmem(struct device *dev)
- 	}
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index da494fe451baf..efc439c748862 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -188,7 +188,7 @@ static void do_io_probe(struct pcmcia_socket *s, unsigned int base,
+ 	int any;
+ 	u_char *b, hole, most;
  
- 	pdev = of_find_device_by_node(devnode->parent);
--	if (!pdev) {
--		dev_err(dev, "Cannot find device node %s\n", devnode->name);
--		return ERR_PTR(-EPROBE_DEFER);
--	}
-+	if (!pdev)
-+		return dev_err_ptr_probe(dev, -EPROBE_DEFER,
-+					 "Cannot find device node %s\n",
-+					 devnode->name);
+-	dev_info(&s->dev, "cs: IO port probe %#x-%#x:", base, base+num-1);
++	pr_info("%s: cs: IO port probe %#x-%#x:", dev_name(&s->dev), base, base+num-1);
  
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
+ 	/* First, what does a floating port look like? */
+ 	b = kzalloc(256, GFP_KERNEL);
+@@ -410,8 +410,8 @@ static int do_mem_probe(struct pcmcia_socket *s, u_long base, u_long num,
+ 	struct socket_data *s_data = s->resource_data;
+ 	u_long i, j, bad, fail, step;
+ 
+-	dev_info(&s->dev, "cs: memory probe 0x%06lx-0x%06lx:",
+-		 base, base+num-1);
++	pr_info("%s: cs: memory probe 0x%06lx-0x%06lx:",
++	       dev_name(&s->dev), base, base+num-1);
+ 	bad = fail = 0;
+ 	step = (num < 0x20000) ? 0x2000 : ((num>>4) & ~0x1fff);
+ 	/* don't allow too large steps */
 -- 
 2.53.0
 
