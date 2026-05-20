@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePr8DekMDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:05 +0200
+	id GB03KrUDDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-251997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54994598735
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A26B559768B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40DD333745F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA37B30F3CBB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E357E3FFAC0;
-	Wed, 20 May 2026 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB343F23A4;
+	Wed, 20 May 2026 17:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODvlqWiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXuFLBog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE863F8706;
-	Wed, 20 May 2026 18:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3710A233933;
+	Wed, 20 May 2026 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302381; cv=none; b=I8txvVI6NZrXn1mM21Ms7pk84fvwxQrAC+Usc4hrW/vljOyaGyEgPTJrfb5+ShYSEf0W910qxO9yvf+3IRzL0PKAiYh7DCu+s7aG3Eb6UpJNV6mKzRA1rdJF+Y1vDZk/ziUMCHF2ETrmo22r0PKgx8A9Of0yDdWeCHodR0mdJaA=
+	t=1779299475; cv=none; b=NfMMW2z8hevrUBC/CCPkoGJP7G1CCDZ+uVNJvIUi6V/vMVE19SEovoXjZBdy/Ika58wlyYR/vDjtvnTR5kQikfv+7Xh3MEYDnEwqNsj092TR1fsNLym68atyYFweyWVs2RCJMyhe2wzHfqI7PIRHZtLes7UIIGqH3eBvD73zKo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302381; c=relaxed/simple;
-	bh=R7AVEkwPleYOLD1Lmu3sLII6cPtqIKOvY3dOUkX43uM=;
+	s=arc-20240116; t=1779299475; c=relaxed/simple;
+	bh=qcO4gRc9ne+5EJBy4A1MbayQBHLTmlbk4HfMGr0QRUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/PJsKoJD3tJVYGfDfZgC5BtaJDRZJkTh4lYfEqUWMcg2QSXQJBTotqEMiwjCCxwhV+sKNEmUCIw5FQFqltJzP6odqyBfGzFqhzu4lMb9/2Pc5bAmq8Sm4EFcuZX+WvU5RzGfKTpbMxwGo4fwiBqyq+XB/swMvw53zZVbPpder0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODvlqWiU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039F81F000E9;
-	Wed, 20 May 2026 18:39:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EfhVE8gaSomoai0zLb79U0HC9LRlhntSMruZpAjWiVjZjep9LEI5hSEfWdB0cLRBkC/1WVJl4rz4/fh+NbWMKPgZIqryUYNcsIocH+OLIUuIzKizkelxb8LerinoI+Mrn/wzjqvlPZKEawrda5LfMfByhQ5k0GB5qLod5Tw3KqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXuFLBog; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B18B1F000E9;
+	Wed, 20 May 2026 17:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302380;
-	bh=6epOETupvezAWJkqbx0Z59qEfQ/XtHq9LjsMBeyizG4=;
+	s=korg; t=1779299474;
+	bh=VbIkundHLaAqFqqSNZ9xORWg1aX0wGKUN0/i5yYIYwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ODvlqWiUhWyszsCJ1PHEYPL5ThJoQ9WAdSMdDtUZoi1XvjqlROknEeeWX1qI1FFF9
-	 u2+W2Y/2W78frbat0j3KtZy4sLcN4rktp7JlAlUc6nmzj5y1CCto5HKXmO2FavjC8b
-	 cb/0nmijj7xMsbZhtw/6LB9li4MyCgGAjZY2fnvA=
+	b=TXuFLBogqj81UiCjAcTTV0ulyDHWtXta+jduQrKiDSFuu0Jbw1E/D2FUP6yEjfbci
+	 bvd9mvrilUTqnH9Zgw4XJcNvuwM+15W9S8fKFsgcWEyD1EyGsY4AJ1uRXVvi7xDrMG
+	 uu1XwnMT/Ml88pnLn1Uiaq3hVlPEdkpd9mHmaohE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/508] pinctrl: pinctrl-pic32: Fix resource leak
-Date: Wed, 20 May 2026 18:21:07 +0200
-Message-ID: <20260520162103.939272420@linuxfoundation.org>
+Subject: [PATCH 6.18 785/957] netpoll: fix IPv6 local-address corruption
+Date: Wed, 20 May 2026 18:21:08 +0200
+Message-ID: <20260520162151.584472855@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253091-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251997-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 54994598735
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A26B559768B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit fe5560688f3ba98364c7de7b4f8dc240ffd1ff75 ]
+[ Upstream commit 3bc179bc7146c26c9dff75d2943d10528274e301 ]
 
-Fix three possible resource leaks by using the devres version of
-clk_prepare_enable(). Also, update error message accordingly.
+netpoll_setup() decides whether to auto-populate the local source
+address by testing np->local_ip.ip, which only inspects the first 4
+bytes of the union inet_addr storage.
 
-Detected by Smatch:
-drivers/pinctrl/pinctrl-pic32.c:2211 pic32_pinctrl_probe() warn:
-'pctl->clk' from clk_prepare_enable() not released on lines: 2208.
+For an IPv6 netpoll whose caller-supplied local address has a zero
+high-32 bits (::1, ::<suffix>, IPv4-mapped ::ffff:a.b.c.d, etc.), this
+misdetects the address as unset (which they are not, but the first
+4 bytes are empty), calls netpoll_take_ipv6() and overwrites it with
+whatever matching link-local/global address the device happens to expose
+first.
 
-drivers/pinctrl/pinctrl-pic32.c:2274 pic32_gpio_probe() warn:
-'bank->clk' from clk_prepare_enable() not released on lines: 2264,2272.
+Introduce a helper netpoll_local_ip_unset() that picks the correct
+family-aware test (ipv6_addr_any() for IPv6, !.ip for IPv4) and use it
+from netpoll_setup().
 
-Fixes: 2ba384e6c3810 ("pinctrl: pinctrl-pic32: Add PIC32 pin control driver")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Reproducer is something like:
+
+  echo "::2" > local_ip
+  echo 1     > enabled
+  cat local_ip
+  # before this fix: 2001:db8::1   (caller-supplied ::2 was clobbered)
+  # after  this fix: ::2
+
+Fixes: b7394d2429c1 ("netpoll: prepare for ipv6")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260424-netpoll_fix-v1-1-3a55348c625f@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-pic32.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+ net/core/netpoll.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-pic32.c b/drivers/pinctrl/pinctrl-pic32.c
-index bf827ab081a1d..f87b5964e8b31 100644
---- a/drivers/pinctrl/pinctrl-pic32.c
-+++ b/drivers/pinctrl/pinctrl-pic32.c
-@@ -2173,16 +2173,10 @@ static int pic32_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(pctl->reg_base))
- 		return PTR_ERR(pctl->reg_base);
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 6b1f470264c12..854e37c41653b 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -706,6 +706,23 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
+ 	return 0;
+ }
  
--	pctl->clk = devm_clk_get(&pdev->dev, NULL);
-+	pctl->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(pctl->clk)) {
- 		ret = PTR_ERR(pctl->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(pctl->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
++/*
++ * Test whether the caller left np->local_ip unset, so that
++ * netpoll_setup() should auto-populate it from the egress device.
++ *
++ * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
++ * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
++ * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
++ * doing so would misclassify a caller-supplied address as unset and
++ * silently overwrite it with whatever address the device exposes.
++ */
++static bool netpoll_local_ip_unset(const struct netpoll *np)
++{
++	if (np->ipv6)
++		return ipv6_addr_any(&np->local_ip.in6);
++	return !np->local_ip.ip;
++}
++
+ int netpoll_setup(struct netpoll *np)
+ {
+ 	struct net *net = current->nsproxy->net_ns;
+@@ -750,7 +767,7 @@ int netpoll_setup(struct netpoll *np)
+ 		rtnl_lock();
  	}
  
-@@ -2238,16 +2232,10 @@ static int pic32_gpio_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	bank->clk = devm_clk_get(&pdev->dev, NULL);
-+	bank->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(bank->clk)) {
- 		ret = PTR_ERR(bank->clk);
--		dev_err(&pdev->dev, "clk get failed\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(bank->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "clk enable failed\n");
-+		dev_err(&pdev->dev, "Failed to get and enable clock\n");
- 		return ret;
- 	}
- 
+-	if (!np->local_ip.ip) {
++	if (netpoll_local_ip_unset(np)) {
+ 		if (!np->ipv6) {
+ 			err = netpoll_take_ipv4(np, ndev);
+ 			if (err)
 -- 
 2.53.0
 
