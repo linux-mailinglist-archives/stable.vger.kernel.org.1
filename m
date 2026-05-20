@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-252206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Mq0MaT4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:36 +0200
+	id oPSVBznoDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5726C595603
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93725592B93
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B62E8313C0E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8530E30AE925
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386643F8707;
-	Wed, 20 May 2026 18:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478BE372EDE;
+	Wed, 20 May 2026 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/P1VM01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sD0S+/aE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08413F4DDB;
-	Wed, 20 May 2026 18:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB663D7D7E;
+	Wed, 20 May 2026 16:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300069; cv=none; b=AGL2BkBGmz3FHTh+o4kWdwoqzyCm/GfsgYyH/DokzK6AaSc738iXz1gw2fw8Tybsbcvmfqqn+akatVYygcW7E1k+Xkc2Ipu6iyBvJM6m85h64kT9c2NZZtj4u6ovVdmwsPytAS35BEF7PtpIxneoJwwLumUmC5CRPHgBn1rlSG0=
+	t=1779295833; cv=none; b=rrYIYBpIPDak/nv4mMfMnd9DCzLWmFnl/ASl1bVYnon0adUWrKwWav1SnkWynFHnGZ9MTXKoRsqKrICelvvCQz0VlxT4yRMuyVRC6u9t+pJKTcXNaXCRFuRB8fYEbFa2prOEj1hgyFsfMlzyrfIaKKDK/3jN5E6f5jrBeEuRtNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300069; c=relaxed/simple;
-	bh=xHbWFv8EUsgmbxQTnIBNoJ3y8Npc5BwaqoLPOIoW4RQ=;
+	s=arc-20240116; t=1779295833; c=relaxed/simple;
+	bh=T+y02x0otsRwO4U1L2OvOG4u1bLnOB79fXsYrzuv45A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvqrLQICW+YuHbPZUB16wK7ZuoQxZyflkf42S3vnUlmqrDFTUNOhrVWjyfDvSezMAQgsCExp4enfOfiR7DO0hxfduVS5Y/OsWEpJSoDfG7oY/TB025TI6JcmIADoJKhNzDoqf98Xi4Kt3E1jJvfQSLhwiazjlboPKJZZpIu24iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/P1VM01; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EDA1F000E9;
-	Wed, 20 May 2026 18:01:08 +0000 (UTC)
+	 MIME-Version; b=afYDnISu/NGrGV3i9j7yafp37qCJG6U7o5rAtertoZIENSyNyFCsejoEZmoQcFo+ka211f4TSh9lHILYEqpgAIHfjJFdTm+4kY0L9LvmIkEoH4YiUDS7jhYEEUoSortdhiecKSNgrZpQAT4tTlGW0FaHOTkni++78J1QXX5OJ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sD0S+/aE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4330B1F000E9;
+	Wed, 20 May 2026 16:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300068;
-	bh=x3xJkkK9BUWZZNcfUIzMKvLmOu4isYhrzL+yP2EOR28=;
+	s=korg; t=1779295831;
+	bh=0w9XbyINWOUT12yr9c/umGjCsnQS/WaXo0Le+RmCpUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q/P1VM01s9iXO3j8WEwywMja3Xe2r0MNKdGxkzMhm6geuGQGH43T3flZA4sv8xrv6
-	 WR96i4MqlpSRiQ+Gxt2cJcaX/xv7HE+U1HAe7By/BdNAh02gD2AnlI4BMLgeBnypiC
-	 ZQ8GoRbakspX9L7mM8B+jS/IXGWiUmIGRVdXSiDU=
+	b=sD0S+/aE0DY5RYppST/RBpcomlc3Ar/jJIbQ066MYlsXdP532U2F26xzCGjryKPpz
+	 tW8cDcj7v2ejkR+ADzKgDnsEJ1ruezFjrLICKWwFxSN1SErbbsjdmolQycu6uUYUZb
+	 e+ODGMyT0tF3RjkJ7lBsaeGDiqZhXwqaxdpCo6oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackie Liu <liuyun01@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/666] blk-cgroup: fix disk reference leak in blkcg_maybe_throttle_current()
+Subject: [PATCH 7.0 0570/1146] ocfs2: validate bg_bits during freefrag scan
 Date: Wed, 20 May 2026 18:13:40 +0200
-Message-ID: <20260520162111.433555719@linuxfoundation.org>
+Message-ID: <20260520162201.085555963@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +73,153 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250599-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252206-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kernel.dk:email,kylinos.cn:email,lst.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5726C595603
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,evilplan.org:email]
+X-Rspamd-Queue-Id: 93725592B93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jackie Liu <liuyun01@kylinos.cn>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 23308af722fefed00af5f238024c11710938fba3 ]
+[ Upstream commit 8f687eeed3da3012152b0f9473f578869de0cd7b ]
 
-Add the missing put_disk() on the error path in
-blkcg_maybe_throttle_current(). When blkcg lookup, blkg lookup, or
-blkg_tryget() fails, the function jumps to the out label which only
-calls rcu_read_unlock() but does not release the disk reference acquired
-by blkcg_schedule_throttle() via get_device(). Since current->throttle_disk
-is already set to NULL before the lookup, blkcg_exit() cannot release
-this reference either, causing the disk to never be freed.
+[BUG]
+A crafted filesystem can trigger an out-of-bounds bitmap walk when
+OCFS2_IOC_INFO is issued with OCFS2_INFO_FL_NON_COHERENT.
 
-Restore the reference release that was present as blk_put_queue() in the
-original code but was inadvertently dropped during the conversion from
-request_queue to gendisk.
+BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: use-after-free in test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+Read of size 8 at addr ffff888031bce000 by task syz.0.636/1435
+Call Trace:
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xd1/0x650 mm/kasan/report.c:482
+ kasan_report+0xfb/0x140 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:186 [inline]
+ kasan_check_range+0x11c/0x200 mm/kasan/generic.c:200
+ __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+ ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+ ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+ ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+ ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+ ocfs2_info_handle+0x18d/0x2a0 fs/ocfs2/ioctl.c:828
+ ocfs2_ioctl+0x632/0x6e0 fs/ocfs2/ioctl.c:913
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ ...
 
-Fixes: f05837ed73d0 ("blk-cgroup: store a gendisk to throttle in struct task_struct")
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260331085054.46857-1-liu.yun@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[CAUSE]
+ocfs2_info_freefrag_scan_chain() uses on-disk bg_bits directly as the
+bitmap scan limit. The coherent path reads group descriptors through
+ocfs2_read_group_descriptor(), which validates the descriptor before
+use. The non-coherent path uses ocfs2_read_blocks_sync() instead and
+skips that validation, so an impossible bg_bits value can drive the
+bitmap walk past the end of the block.
+
+[FIX]
+Compute the bitmap capacity from the filesystem format with
+ocfs2_group_bitmap_size(), report descriptors whose bg_bits exceeds
+that limit, and clamp the scan to the computed capacity. This keeps the
+freefrag report going while avoiding reads beyond the buffer.
+
+Link: https://lkml.kernel.org/r/20260410034220.3825769-1-gality369@gmail.com
+Fixes: d24a10b9f8ed ("Ocfs2: Add a new code 'OCFS2_INFO_FREEFRAG' for o2info ioctl.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ocfs2/ioctl.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 9a198001cfa56..a0fbb427a7a62 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1985,6 +1985,7 @@ void blkcg_maybe_throttle_current(void)
- 	return;
- out:
- 	rcu_read_unlock();
-+	put_disk(disk);
- }
+diff --git a/fs/ocfs2/ioctl.c b/fs/ocfs2/ioctl.c
+index bfed0fb35f9bd..cbe59d2316663 100644
+--- a/fs/ocfs2/ioctl.c
++++ b/fs/ocfs2/ioctl.c
+@@ -441,13 +441,16 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_group_desc *bg = NULL;
  
- /**
+-	unsigned int max_bits, num_clusters;
++	unsigned int max_bits, max_bitmap_bits, num_clusters;
+ 	unsigned int offset = 0, cluster, chunk;
+ 	unsigned int chunk_free, last_chunksize = 0;
+ 
+ 	if (!le32_to_cpu(rec->c_free))
+ 		goto bail;
+ 
++	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
++					      osb->s_feature_incompat);
++
+ 	do {
+ 		if (!bg)
+ 			blkno = le64_to_cpu(rec->c_blkno);
+@@ -479,6 +482,19 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 			continue;
+ 
+ 		max_bits = le16_to_cpu(bg->bg_bits);
++
++		/*
++		 * Non-coherent scans read raw blocks and do not get the
++		 * bg_bits validation from
++		 * ocfs2_read_group_descriptor().
++		 */
++		if (max_bits > max_bitmap_bits) {
++			mlog(ML_ERROR,
++			     "Group desc #%llu has %u bits, max bitmap bits %u\n",
++			     (unsigned long long)blkno, max_bits, max_bitmap_bits);
++			max_bits = max_bitmap_bits;
++		}
++
+ 		offset = 0;
+ 
+ 		for (chunk = 0; chunk < chunks_in_group; chunk++) {
 -- 
 2.53.0
 
