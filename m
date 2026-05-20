@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IOROpn3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:09 +0200
+	id GHa0KzXqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7FD595365
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575E8592EDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C1EA3105002
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 38392315D2F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D073E3DD504;
-	Wed, 20 May 2026 17:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5913EA953;
+	Wed, 20 May 2026 16:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpYJKgdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3Ih7RIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D923EAC83;
-	Wed, 20 May 2026 17:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4033EAC8F;
+	Wed, 20 May 2026 16:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298644; cv=none; b=Vaol1QBsJJA+qq+YnanjRNl22hDxTWx0Obulfg0DohLn6YRQMUO6JVrTrzUCv9yTczERdlylSYGAjTMJr517W1M0cczIyrv1IoOQ1DGoFhX3LX5H1HTCYCADAAbGD3tl5vFCU5mv3sFAFSJKJLyhUKHG8UYcxAp6+cXh+tDbwNw=
+	t=1779296103; cv=none; b=owDGUlsq0jkLW2LKx/7J55p2g9FcGQImucxFC2pLz/r0KIATe2v2YZin34mCZnldT7u/WZse7j0sDUSeCNhnOzeqfdhuu4KIPrDW7m2Gp1v0mWgvM866YMiKynBjIY2sT3AYeKnmAYKoGAfOHc3cI0lLnqUs/Y6cNZRwpno3l/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298644; c=relaxed/simple;
-	bh=H8rOeRsQOnMog98f3Ns3Autlh9L+OGovkaQbZFLjW8A=;
+	s=arc-20240116; t=1779296103; c=relaxed/simple;
+	bh=E13KsS+ghHiDyaQvJUAVmGAOGAUKeom2lrKYeG0pPVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwH0ZS2YdjwrOb8y8eT+VaAbv8B21Y6Dyk0Gf8DGc5Fg8x9Z2wZaGeRoibdentwe19xoHNZXUTEN01jPSeCZaWAO70/ldeW3lxAInErOg7mzcz69haTZ1vCLn/UXuANDkabtn4X3mSRPto2IrKqmdwE070ljieoWENj7PoNQdz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpYJKgdv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABDA1F000E9;
-	Wed, 20 May 2026 17:37:22 +0000 (UTC)
+	 MIME-Version; b=RAuzgGzNnMSoI5/d6BRqJWHAxQI+TLGk+A1c/x+g8iBFcRk/wVcHW2kT5vLa+vloPU/xtoABZz/jWJPDYnBKtEa3HyTHWlJ1oUAEmXMKqzLAvqjqu9/xD4E6br2qIFynhj2PTMgQH477Wnk8WQw5RdcUgzNSlsgrcqk+ICPRONw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3Ih7RIY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248D81F000E9;
+	Wed, 20 May 2026 16:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298643;
-	bh=YcGZJYfsX7BBV9TnFM1z/p1rMO6xtNH9WvaTNf/vlgY=;
+	s=korg; t=1779296102;
+	bh=tXUj1hFOjQKlz+Z4M9caHixF8lTqW0bwU2kUWd/ZG8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tpYJKgdvdQzRuJwGUnNem7nM3MJhH4Pw7iR1beZahCL+/ow5cLeqA6nO8pYac1Wh/
-	 WxDEeIH5bZopRiS+JCphDzcln54oLU/v/gxoO5tkdfhDWOmF37k8x/AgX7x4JY8Q+R
-	 FXQTBwKR3R9a/Pw9vVwjpv5K0uUSLczUDyeuiROg=
+	b=s3Ih7RIYg/BpeRcoWSvUE729nhp8XmPuiXSaKjIqWIEG61epw+ASvGLcJkqOym2wP
+	 sJT5OU4AgYQ78+LTcVY73TFidhq1D+6gk+o5tVGCEQfTdEaGIROh/jTiFXH1stK9Qa
+	 ha1grxEUOLqueiaWLYvnvNSg/V9n+7IM3lU/elvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kees Cook <kees@kernel.org>,
+	syzbot+c1e9aedbd913fadad617@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 438/957] slab: Introduce kmalloc_obj() and family
-Date: Wed, 20 May 2026 18:15:21 +0200
-Message-ID: <20260520162144.020633866@linuxfoundation.org>
+Subject: [PATCH 7.0 0672/1146] fs/ntfs3: fix missing run load for vcn0 in attr_data_get_block_locked()
+Date: Wed, 20 May 2026 18:15:22 +0200
+Message-ID: <20260520162203.393748646@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,198 +65,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251692-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250706-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,paragon-software.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,c1e9aedbd913fadad617];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8D7FD595365
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
+X-Rspamd-Queue-Id: 575E8592EDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 2932ba8d9c99875b98c951d9d3fd6d651d35df3a ]
+[ Upstream commit d7ea8495fd307b58f8867acd81a1b40075b1d3ba ]
 
-Introduce type-aware kmalloc-family helpers to replace the common
-idioms for single object and arrays of objects allocation:
+When a compressed or sparse attribute has its clusters frame-aligned,
+vcn is rounded down to the frame start using cmask, which can result
+in vcn != vcn0. In this case, vcn and vcn0 may reside in different
+attribute segments.
 
-	ptr = kmalloc(sizeof(*ptr), gfp);
-	ptr = kmalloc(sizeof(struct some_obj_name), gfp);
-	ptr = kzalloc(sizeof(*ptr), gfp);
-	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
-	ptr = kcalloc(count, sizeof(*ptr), gfp);
+The code already handles the case where vcn is in a different segment
+by loading its runs before allocation. However, it fails to load runs
+for vcn0 when vcn0 resides in a different segment than vcn. This causes
+run_lookup_entry() to return SPARSE_LCN for vcn0 since its segment was
+never loaded into the in-memory run list, triggering the WARN_ON(1).
 
-These become, respectively:
+Fix this by adding a missing check for vcn0 after the existing vcn
+segment check. If vcn0 falls outside the current segment range
+[svcn, evcn1), find and load the attribute segment containing vcn0
+before performing the run lookup.
 
-	ptr = kmalloc_obj(*ptr, gfp);
-	ptr = kmalloc_obj(*ptr, gfp);
-	ptr = kzalloc_obj(*ptr, gfp);
-	ptr = kmalloc_objs(*ptr, count, gfp);
-	ptr = kzalloc_objs(*ptr, count, gfp);
+The following scenario triggers the bug:
+  attr_data_get_block_locked()
+    vcn = vcn0 & cmask        <- vcn != vcn0 after frame alignment
+    load runs for vcn segment <- vcn0 segment not loaded!
+    attr_allocate_clusters()  <- allocation succeeds
+    run_lookup_entry(vcn0)    <- vcn0 not in run -> SPARSE_LCN
+    WARN_ON(1)                <- bug fires here!
 
-Beyond the other benefits outlined below, the primary ergonomic benefit
-is the elimination of needing "sizeof" nor the type name, and the
-enforcement of assignment types (they do not return "void *", but rather
-a pointer to the type of the first argument). The type name _can_ be
-used, though, in the case where an assignment is indirect (e.g. via
-"return"). This additionally allows[1] variables to be declared via
-__auto_type:
-
-	__auto_type ptr = kmalloc_obj(struct foo, gfp);
-
-Internal introspection of the allocated type now becomes possible,
-allowing for future alignment-aware choices to be made by the allocator
-and future hardening work that can be type sensitive. For example,
-adding __alignof(*ptr) as an argument to the internal allocators so that
-appropriate/efficient alignment choices can be made, or being able to
-correctly choose per-allocation offset randomization within a bucket
-that does not break alignment requirements.
-
-Link: https://lore.kernel.org/all/CAHk-=wiCOTW5UftUrAnvJkr6769D29tF7Of79gUjdQHS_TkF5A@mail.gmail.com/ [1]
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Link: https://patch.msgid.link/20251203233036.3212363-1-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Stable-dep-of: 0b49c7d0ae69 ("lib: kunit_iov_iter: fix memory leaks")
+Reported-by: syzbot+c1e9aedbd913fadad617@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c1e9aedbd913fadad617
+Fixes: c380b52f6c57 ("fs/ntfs3: Change new sparse cluster processing")
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/process/deprecated.rst | 24 ++++++++++++
- include/linux/slab.h                 | 58 ++++++++++++++++++++++++++++
- 2 files changed, 82 insertions(+)
+ fs/ntfs3/attrib.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/process/deprecated.rst b/Documentation/process/deprecated.rst
-index 1f7f3e6c9cda9..91c628fa2d59c 100644
---- a/Documentation/process/deprecated.rst
-+++ b/Documentation/process/deprecated.rst
-@@ -372,3 +372,27 @@ The helper must be used::
- 			DECLARE_FLEX_ARRAY(struct type2, two);
- 		};
- 	};
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 6cb9bc5d605c2..76e581d3961d0 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -1152,6 +1152,21 @@ int attr_data_get_block_locked(struct ntfs_inode *ni, CLST vcn, CLST clen,
+ 			if (err)
+ 				goto out;
+ 		}
 +
-+Open-coded kmalloc assignments for struct objects
-+-------------------------------------------------
-+Performing open-coded kmalloc()-family allocation assignments prevents
-+the kernel (and compiler) from being able to examine the type of the
-+variable being assigned, which limits any related introspection that
-+may help with alignment, wrap-around, or additional hardening. The
-+kmalloc_obj()-family of macros provide this introspection, which can be
-+used for the common code patterns for single, array, and flexible object
-+allocations. For example, these open coded assignments::
++		if (vcn0 < svcn || evcn1 <= vcn0) {
++			struct ATTRIB *attr2;
 +
-+	ptr = kmalloc(sizeof(*ptr), gfp);
-+	ptr = kzalloc(sizeof(*ptr), gfp);
-+	ptr = kmalloc_array(count, sizeof(*ptr), gfp);
-+	ptr = kcalloc(count, sizeof(*ptr), gfp);
-+	ptr = kmalloc(sizeof(struct foo, gfp);
++			attr2 = ni_find_attr(ni, attr_b, &le_b, ATTR_DATA, NULL,
++					       0, &vcn0, &mi);
++			if (!attr2) {
++				err = -EINVAL;
++				goto out;
++			}
++			err = attr_load_runs(attr2, ni, run, NULL);
++			if (err)
++				goto out;
++		}
 +
-+become, respectively::
-+
-+	ptr = kmalloc_obj(*ptr, gfp);
-+	ptr = kzalloc_obj(*ptr, gfp);
-+	ptr = kmalloc_objs(*ptr, count, gfp);
-+	ptr = kzalloc_objs(*ptr, count, gfp);
-+	__auto_type ptr = kmalloc_obj(struct foo, gfp);
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 2482992248dc9..cbb64a2698f5d 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -12,6 +12,7 @@
- #ifndef _LINUX_SLAB_H
- #define	_LINUX_SLAB_H
- 
-+#include <linux/bug.h>
- #include <linux/cache.h>
- #include <linux/gfp.h>
- #include <linux/overflow.h>
-@@ -965,6 +966,63 @@ static __always_inline __alloc_size(1) void *kmalloc_noprof(size_t size, gfp_t f
- void *kmalloc_nolock_noprof(size_t size, gfp_t gfp_flags, int node);
- #define kmalloc_nolock(...)			alloc_hooks(kmalloc_nolock_noprof(__VA_ARGS__))
- 
-+/**
-+ * __alloc_objs - Allocate objects of a given type using
-+ * @KMALLOC: which size-based kmalloc wrapper to allocate with.
-+ * @GFP: GFP flags for the allocation.
-+ * @TYPE: type to allocate space for.
-+ * @COUNT: how many @TYPE objects to allocate.
-+ *
-+ * Returns: Newly allocated pointer to (first) @TYPE of @COUNT-many
-+ * allocated @TYPE objects, or NULL on failure.
-+ */
-+#define __alloc_objs(KMALLOC, GFP, TYPE, COUNT)				\
-+({									\
-+	const size_t __obj_size = size_mul(sizeof(TYPE), COUNT);	\
-+	(TYPE *)KMALLOC(__obj_size, GFP);				\
-+})
-+
-+/**
-+ * kmalloc_obj - Allocate a single instance of the given type
-+ * @VAR_OR_TYPE: Variable or type to allocate.
-+ * @GFP: GFP flags for the allocation.
-+ *
-+ * Returns: newly allocated pointer to a @VAR_OR_TYPE on success, or NULL
-+ * on failure.
-+ */
-+#define kmalloc_obj(VAR_OR_TYPE, GFP)			\
-+	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), 1)
-+
-+/**
-+ * kmalloc_objs - Allocate an array of the given type
-+ * @VAR_OR_TYPE: Variable or type to allocate an array of.
-+ * @COUNT: How many elements in the array.
-+ * @GFP: GFP flags for the allocation.
-+ *
-+ * Returns: newly allocated pointer to array of @VAR_OR_TYPE on success,
-+ * or NULL on failure.
-+ */
-+#define kmalloc_objs(VAR_OR_TYPE, COUNT, GFP)		\
-+	__alloc_objs(kmalloc, GFP, typeof(VAR_OR_TYPE), COUNT)
-+
-+/* All kzalloc aliases for kmalloc_(obj|objs|flex). */
-+#define kzalloc_obj(P, GFP)				\
-+	__alloc_objs(kzalloc, GFP, typeof(P), 1)
-+#define kzalloc_objs(P, COUNT, GFP)			\
-+	__alloc_objs(kzalloc, GFP, typeof(P), COUNT)
-+
-+/* All kvmalloc aliases for kmalloc_(obj|objs|flex). */
-+#define kvmalloc_obj(P, GFP)				\
-+	__alloc_objs(kvmalloc, GFP, typeof(P), 1)
-+#define kvmalloc_objs(P, COUNT, GFP)			\
-+	__alloc_objs(kvmalloc, GFP, typeof(P), COUNT)
-+
-+/* All kvzalloc aliases for kmalloc_(obj|objs|flex). */
-+#define kvzalloc_obj(P, GFP)				\
-+	__alloc_objs(kvzalloc, GFP, typeof(P), 1)
-+#define kvzalloc_objs(P, COUNT, GFP)			\
-+	__alloc_objs(kvzalloc, GFP, typeof(P), COUNT)
-+
- #define kmem_buckets_alloc(_b, _size, _flags)	\
- 	alloc_hooks(__kmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), _flags, NUMA_NO_NODE))
+ 		da = false; /* no delalloc for compressed file. */
+ 	}
  
 -- 
 2.53.0
