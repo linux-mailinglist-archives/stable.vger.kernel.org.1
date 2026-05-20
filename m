@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB7bMsj+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:48 +0200
+	id kERCKqH9DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6D9596A7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ED05965AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 960A338A2A52
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E31253151B8F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC823F1AD9;
-	Wed, 20 May 2026 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CE83FE652;
+	Wed, 20 May 2026 18:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjwoOeBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C0I+10q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C1829B8D0;
-	Wed, 20 May 2026 17:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980E53FE35F;
+	Wed, 20 May 2026 18:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299699; cv=none; b=hPzXsskk6C5hd0CkVjOam3sqdAUCDVGcofQhNbX0p3Ga5rZ1CkSGMHWXqnBJfZIoqpu8vOFqT1f1cZ1O1IjPGuDmLoVb5oDPCscff6SLhk/rg53TD3I9Tp6UcCkF0HcfVlUB2vgKU7uK8TpUMWf6R0blyoBUrR9PteGdwTHJ37Y=
+	t=1779301406; cv=none; b=YV1CGEXx3o0uaU0NDrPPkiTbtVSbVm6x2HvjZglnCAoWnFmOTVk4E/A74Hz7GRErixn9t7jZpemK0AmEs8+Vji3V7w67d+KO4WdyGis7bqYZofEfe0EPioQQlnd89qSiq7riXEegcTR8lPDoTnx9ltBED6/E/0twvX089aTirbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299699; c=relaxed/simple;
-	bh=gt1wBtAwCimi8lYUovj7SF/18uRUwN6imhWFCvIRgzE=;
+	s=arc-20240116; t=1779301406; c=relaxed/simple;
+	bh=thgKPePakzIY5l7K8QF0UJQ7qB8IBs+Qm11LTN6vbbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/+qBLV7f7wdouM0mPQijkx5f45L9/bzH0oicBNkON8MBcvDURqhDPIjuF7RHlMQ6xFwUay7ULtmlPylrkanPfiYh8o+4lax8cyYbONeb4WDKzN8PBrz6lpOzZU1XDND3X/rz4Lpikp8IFyoFAxxHyFh/GiHeR1YRi3yba1Lbbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjwoOeBd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6FF1F000E9;
-	Wed, 20 May 2026 17:54:57 +0000 (UTC)
+	 MIME-Version; b=PfareasSoad50xcQfxm2DSlxshIlel/DiYBHpr4GKkpvK3AiTbXajihuuDFzgMk+GrNcFfSuVmfL/D7O2wU+kp19SJbCwt+c/MxiOLtXletnIccV+cYFu/dQlYJm/ql5G06pYAibPZaLKFL2O2MPFsejH2qJbby2osWL4BKpdDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C0I+10q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6811F00894;
+	Wed, 20 May 2026 18:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299698;
-	bh=5Pi8rpgMBaD3/tY9Rcfe5kqe9x95+pOwdJ2FHVHMw58=;
+	s=korg; t=1779301404;
+	bh=lMm4jqabV16UWf4wYCpjWNfL2fzqRxL5tUiEDYcRNgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MjwoOeBdBCO2wRHPHk6hKJyc+c1VQlVCwv41cKRkt8rM/HhrndVC3YRK8tWbEsy8N
-	 Lh05FRq9rdCi1VfsfoiD4qcZvySMF2BVlQN3AkE9TCWoZXfr5NwdI6b2N9CoguuLT9
-	 SxXbbZGEHx899JRn7J+Qeba/kuI1VIappBtwTnnc=
+	b=1C0I+10qPF3ozNU0kfRH995d5ArNa7XcQ1jAJ/OO6RoV3Z4c12MKyGQmc+ku1vdwN
+	 d4NuNVVa0lw9m5HFNDoantbB2qk+VViL7PkKFhftO6xYuxIetffYKaSe2H++59dH1e
+	 bBdBaSOmGJlQnJNBt6AXspH7YGY4wSFbjvVRBEvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paul Geurts <paul.geurts@prodrive-technologies.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Greer <mgreer@animalcreek.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 870/957] net: airoha: Move ndesc initialization at end of airoha_qdma_init_tx()
+Subject: [PATCH 6.12 542/666] NFC: trf7970a: Ignore antenna noise when checking for RF field
 Date: Wed, 20 May 2026 18:22:33 +0200
-Message-ID: <20260520162153.434319374@linuxfoundation.org>
+Message-ID: <20260520162123.018904855@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252082-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252717-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,76 +87,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6F6D9596A7D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,prodrive-technologies.com:email]
+X-Rspamd-Queue-Id: 39ED05965AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Paul Geurts <paul.geurts@prodrive-technologies.com>
 
-[ Upstream commit f329924bb49458c65297f1361f545816a5b90998 ]
+[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
 
-If queue entry list allocation fails in airoha_qdma_init_tx_queue routine,
-airoha_qdma_cleanup_tx_queue() will trigger a NULL pointer dereference
-accessing the queue entry array. The issue is due to the early ndesc
-initialization in airoha_qdma_init_tx_queue(). Fix the issue moving ndesc
-initialization at end of airoha_qdma_init_tx routine.
+The main channel Received Signal Strength Indicator (RSSI) measurement
+is used to determine whether an RF field is present or not. RSSI != 0
+is interpreted as an RF Field is present. This does not take RF noise
+and measurement inaccuracy into account, and results in false positives
+in the field.
 
-Fixes: 3f47e67dff1f7 ("net: airoha: Add the capability to consume out-of-order DMA tx descriptors")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260417-airoha_qdma_cleanup_tx_queue-fix-net-v4-1-e04bcc2c9642@kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Define a noise level and make sure the RF field is only interpreted as
+present when the RSSI is above the noise level.
+
+Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
+Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nfc/trf7970a.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index b4dfab2702cb9..3f97a0135f7f8 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1019,27 +1019,27 @@ static int airoha_qdma_init_tx_queue(struct airoha_queue *q,
- 	dma_addr_t dma_addr;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 9e1a34e23af26..6b8311f526a5e 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -311,6 +311,7 @@
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
+ #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
++#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
  
- 	spin_lock_init(&q->lock);
--	q->ndesc = size;
- 	q->qdma = qdma;
- 	q->free_thr = 1 + MAX_SKB_FRAGS;
- 	INIT_LIST_HEAD(&q->tx_list);
+ #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
+ #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
+@@ -1253,7 +1254,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
+ 	if (ret)
+ 		return ret;
  
--	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
-+	q->entry = devm_kzalloc(eth->dev, size * sizeof(*q->entry),
- 				GFP_KERNEL);
- 	if (!q->entry)
- 		return -ENOMEM;
- 
--	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
-+	q->desc = dmam_alloc_coherent(eth->dev, size * sizeof(*q->desc),
- 				      &dma_addr, GFP_KERNEL);
- 	if (!q->desc)
- 		return -ENOMEM;
- 
--	for (i = 0; i < q->ndesc; i++) {
-+	for (i = 0; i < size; i++) {
- 		u32 val = FIELD_PREP(QDMA_DESC_DONE_MASK, 1);
- 
- 		list_add_tail(&q->entry[i].list, &q->tx_list);
- 		WRITE_ONCE(q->desc[i].ctrl, cpu_to_le32(val));
- 	}
-+	q->ndesc = size;
- 
- 	/* xmit ring drop default setting */
- 	airoha_qdma_set(qdma, REG_TX_RING_BLOCKING(qid),
+-	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
++	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
+ 		*is_rf_field = true;
+ 	else
+ 		*is_rf_field = false;
 -- 
 2.53.0
 
