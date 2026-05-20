@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHdbGiv0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:31 +0200
+	id +JXkGeokDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95FA594AAC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039D159AAC1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C7EE30FEFCC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4603822E27
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86BB3ED5C8;
-	Wed, 20 May 2026 17:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A253E5ECF;
+	Wed, 20 May 2026 18:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAd2ypUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnPmgxVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640473EFD09;
-	Wed, 20 May 2026 17:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8641D36D4E1;
+	Wed, 20 May 2026 18:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298873; cv=none; b=VcIzf1kkc4/NVi+n1DwJ2X07naDrNKDnR0IkunXvoB9E+ZuVZlPt5IF8XxWT33NmbAuopZf+zEflEqTISW5wLnmV4G4EREZARCpH0RRrQ+Ag6OLEZAOvhdaYlh3wKr9ydCQwpayReUH0nR/kBiuAey0Yus1EQHB6IX4ekWEtYEk=
+	t=1779300526; cv=none; b=ZgIPVt2buXe2f2maD3aTW9m+l+8TkCIxPxm6GHDSVChtd+qR2FUkBmQ+giAu2HMr4yGPtQzUbagxD7B5+UGqIaAlumcS5lu8KH2UAYcqDzXbbRVRfny9Nk1A0ug4grmEO+Mc7RNW1ldky5QxTY1I9QTcuQRPGcu19C0rG076itY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298873; c=relaxed/simple;
-	bh=STq1/a8T2IXCvdKKnCNZ6cUDdekMfJbkgi5D4I2kJ7Y=;
+	s=arc-20240116; t=1779300526; c=relaxed/simple;
+	bh=9PQtl2RqIK9cce/L9hBfaVVESbJ0PzfjWdr+Aj88oVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V96GRgXQQ8a9QaemJ0ie76bLZ1NkNTdIVT0WgNJpK1l6pfiRWF3CBOeDL1TnTYU9qrcBYJ0UTkr7/2hxOxuU6/flFDTOkZUseO2Ev4S6T94qYlPjVyPZFK6PzH2dCPloHloL2yjrVrLr1ok9tEHL+Ajkf7HltOPUfKF3rHDtLQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAd2ypUu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EF01F000E9;
-	Wed, 20 May 2026 17:41:11 +0000 (UTC)
+	 MIME-Version; b=uKKufZn8hMNOgbwVbhGOFJEUdcTMyYS3hu4ZSsm+y8+DjLHwJZ97FFQ7dwA0v+MBcFGRRVxRtT8JQnhVuCP6i9FgXrSBkyDq+NFDX9WXCCBdIgJ4q25qp4RevM4qyPJU/sm9xMRtnPWnkxz/iAVWJqtSYS8mp9paaRVh6kEopkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnPmgxVU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D941F000E9;
+	Wed, 20 May 2026 18:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298872;
-	bh=4Lg/L8tXEqZD2w6iZeTcRiOafRXoHMMtSMjYJ8Trxko=;
+	s=korg; t=1779300525;
+	bh=uG6GwTjx9QeL8rAT463lGM9qqAErgoeR/Ku/UhMAH5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAd2ypUuR3f8YDDbwa7zO0HjnuMvL81K1HaQ7C6T2n8Sr+T7PdVnkB/rPlpu/af1G
-	 KYnuNKVuLecVwnlfjXAM1QNcIZFf7+yhUR+IDwEbbCQmMPYr22nEjYsSt9MPDd4mtT
-	 lfSkjFAnkq3OIOHWQKQ4dGqtZ1O4ALZV8061x5RM=
+	b=hnPmgxVUS2g12aTuCXGmYIWyJ2QVuIQ8TEpUCf0F0ndI20r5rITiu6m6ZxtuPgWaN
+	 h0Sym0xbje3/e9xFjo+bf21QcO07ub63+ZS5708i6rEWzRkIP+fIu6sVb9m1RM2hc2
+	 V4Tpbw4K+PV8y7OXs0fSUw/g9ND4Msf9re/p7N0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 534/957] usb: typec: ps883x: Fix Oops at unbind
+Subject: [PATCH 6.12 206/666] ASoC: fsl_easrc: Fix value type in fsl_easrc_iec958_get_bits()
 Date: Wed, 20 May 2026 18:16:57 +0200
-Message-ID: <20260520162146.114666528@linuxfoundation.org>
+Message-ID: <20260520162115.671551759@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252381-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251780-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E95FA594AAC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: 039D159AAC1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 381133848a033c2086cf9cafb226f425bd0414ff ]
+[ Upstream commit aa21fe4a81458cf469c2615b08cbde5997dde25a ]
 
-When trying to unbind a device in order to bind to it vfio-platform as:
+The value type of controls "Context 0 IEC958 Bits Per Sample" should be
+integer, not enumerated, the issue is found by the mixer-test.
 
-  echo bc0000.geniqup  > /sys/bus/platform/devices/bc0000.geniqup/driver/unbind
-
-I get the following Oops:
-
-[  436.478639] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-[  436.487762] Mem abort info:
-[  436.490716]   ESR = 0x0000000096000004
-[  436.494595]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  436.500071]   SET = 0, FnV = 0
-[  436.503250]   EA = 0, S1PTW = 0
-[  436.506505]   FSC = 0x04: level 0 translation fault
-[  436.511533] Data abort info:
-[  436.514558]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  436.520215]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  436.525436]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  436.530918] user pgtable: 4k pages, 48-bit VAs, pgdp=00000008861a9000
-[  436.537554] [0000000000000020] pgd=0000000000000000, p4d=0000000000000000
-[  436.544548] Internal error: Oops: 0000000096000004 [#1]  SMP
-[  436.550374] Modules linked in:
-[  436.553542] CPU: 2 UID: 0 PID: 671 Comm: bash Tainted: G        W           7.0.0-rc3-g56fcdd0911a5-dirty #2 PREEMPT
-[  436.564440] Tainted: [W]=WARN
-[  436.567515] Hardware name: LENOVO 91B6CTO1WW/3796, BIOS O6NKT3BA 05/02/2025
-[  436.574675] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  436.581841] pc : ps883x_retimer_remove+0x14/0x94
-[  436.586605] lr : i2c_device_remove+0x28/0x84
-[  436.591017] sp : ffff8000847137c0
-
-That's because the ps883x_retimer_remove() retrieves the driver data
-from i2c_get_clientdata() which was never set at probe. So, add
-i2c_set_clientdata() at the end of the probe.
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 257a087c8b52 ("usb: typec: Add support for Parade PS8830 Type-C Retimer")
-Link: https://patch.msgid.link/20260313155534.1916773-1-smostafa@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-11-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/ps883x.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_easrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/mux/ps883x.c b/drivers/usb/typec/mux/ps883x.c
-index ad59babf7ccec..f1f65d4e5729b 100644
---- a/drivers/usb/typec/mux/ps883x.c
-+++ b/drivers/usb/typec/mux/ps883x.c
-@@ -411,6 +411,7 @@ static int ps883x_retimer_probe(struct i2c_client *client)
- 		goto err_switch_unregister;
- 	}
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 0f8c5210e358e..1b47d2002fac6 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -73,7 +73,7 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
  
-+	i2c_set_clientdata(client, retimer);
+-	ucontrol->value.enumerated.item[0] = easrc_priv->bps_iec958[mc->regbase];
++	ucontrol->value.integer.value[0] = easrc_priv->bps_iec958[mc->regbase];
+ 
  	return 0;
- 
- err_switch_unregister:
+ }
 -- 
 2.53.0
 
