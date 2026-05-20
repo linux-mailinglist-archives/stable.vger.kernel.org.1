@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCjnJGf/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:27 +0200
+	id wNvMGdkkDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D078596C98
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B3259AAAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0716C319E098
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FB5F33EED91
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3333F1AB8;
-	Wed, 20 May 2026 17:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2833E32B9B5;
+	Wed, 20 May 2026 18:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZnHg8gj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6oFILFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFFC3ED5C8;
-	Wed, 20 May 2026 17:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D122A331220;
+	Wed, 20 May 2026 18:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298747; cv=none; b=edo59k0ZgPdYSvVqvnF4rhX8HMC5Q/LU95/orBY1/5l7uh/xXnfJaeu+6+pGf+Wkc01VwwNYpmH1fIn1tte7Q+jIeoSxnxhxbi2giTUc49EcpceRu08dN0OzuhRQAREDnLg8NYnB3fee1Oi9FThAxdC8s40QvLanxN2qEfgWUfw=
+	t=1779300502; cv=none; b=ESxTc76akisDL/SyFu/N2MncA843w7mkToBtjBnSKGzcD7lh8Nr+Hr34sVDqSnDdzuZOYyuADeR/kDU3LSf9ydPuc8Bfu/Vuc5UeQunIL7ASaBX29t9AxVZuMM7yKJ2vGm1KYs0S9EWvtrjlaSTfjxLf9quH7xaP8tMw5IKZGEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298747; c=relaxed/simple;
-	bh=Q6WAKmcZhZPEhiRIMN2e4F7307ahk+tycQ7MHMHYHJw=;
+	s=arc-20240116; t=1779300502; c=relaxed/simple;
+	bh=5+5lBUnpPJ33s6CHKz0EhIICF+gaAouJfioEq9JzeDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csaJ2vh636jpmpBYX1QfvSX/zW7SFgaYdxaBXwcY4FM/YOs9PT3fKCCb2iOVGlGgkhUpT6ZxGlbtN+QPGX0q2qOXZjsPdcLJDtBavCYGTNA/bqU9JvFlUwuCwjOAf3aJ2e+EZC+pcMARBFX4/8bzg+UFWShd6cJf4RRD2gIZ3KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZnHg8gj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716931F000E9;
-	Wed, 20 May 2026 17:39:05 +0000 (UTC)
+	 MIME-Version; b=Etbk2Ol0mrKs3XEDKusL926nuK1skvv9nG4TnCo9tSaNSc1zssCqGeRon+pzts76QlN7SMIJ7j0U09EZJD7qXkSaqy8fgIFyymzNwFsGoHd2bV/dbI06FRwrCcabDoya7yy8AdaVwNZoRnpYCphbr3ZO/1ZTd+SpSt/Mzpb82tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6oFILFW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AC21F000E9;
+	Wed, 20 May 2026 18:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298745;
-	bh=O/JOVQJP7nn3NPi5CnBSpoNXGMg2rAtR7q9HJLVoCRA=;
+	s=korg; t=1779300501;
+	bh=GWRPbIY2g5ks5bIM+rpS9BiE9Rxp13kLslrFY7GuwFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fZnHg8gjmREP35fg0DO2RKzj289J7aKgnouxAvTv2fmKTBom9MnQctECNIWcNvpBk
-	 K/3o4+W/qIMyQ1oa1casaF0yyC3QdUQrxtSMORdpfA788bkxpIlBWawrm0LD/mZJqL
-	 nEeaRYAAuwERZ3dRAsebVhJhaIYDKqNlrIQAaAzA=
+	b=F6oFILFW79sCnEPtqPMilrdpalPxl80r65Pe4lYwredV1OvrmaKfI3PUnASDWdsfg
+	 EvpEA6WBSQfAX8AkG5LXgoozKMPG7ZgqZnllDLMeLVBTd2ddIWp4qeAfsQDfdbXDv+
+	 1sn5QbSfrfesAbIUfzacdaYAY7zaLc/vvLfACsUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jorge Marques <jorge.marques@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 526/957] i3c: master: Fix error codes at send_ccc_cmd
+Subject: [PATCH 6.12 198/666] ASoC: fsl_micfil: Add access property for "VAD Detected"
 Date: Wed, 20 May 2026 18:16:49 +0200
-Message-ID: <20260520162145.941429819@linuxfoundation.org>
+Message-ID: <20260520162115.494684579@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,157 +66,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252372-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251732-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,analog.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: 9D078596C98
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: E2B3259AAAB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Marques <jorge.marques@analog.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
+[ Upstream commit c7661bfc7422443df394c01e069ae4e5c3a7f04c ]
 
-i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
-Mx codes) to the ret variable, cascading down multiple methods until
-reaching methods that explicitly stated they would return 0 on success
-or negative error code. For example, the call chain:
+Add access property SNDRV_CTL_ELEM_ACCESS_READ for control "VAD
+Detected", which doesn't support put operation, otherwise there will be
+issue with mixer-test.
 
-  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
-  master->ops.enable_ibi <- i3c_master_enec_locked <-
-  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
-
-Fix this by returning the ret value, callers can still read the cmd->err
-value if ret is negative.
-
-All corner cases where the Mx codes do need to be handled individually,
-are resolved in previous commits. Those corner cases are all scenarios
-when I3C_ERROR_M2 is expected and acceptable.
-The prerequisite patches for the fix are:
-
-  i3c: master: Move rstdaa error suppression
-  i3c: master: Move entdaa error suppression
-  i3c: master: Move bus_init error suppression
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 32 +++++++++++++-------------------
- 1 file changed, 13 insertions(+), 19 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 425e36b36009b..4ecbabcec48b4 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -826,11 +826,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
- 	cmd->err = I3C_ERROR_UNKNOWN;
- }
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 7cfe77b57b3c2..a52e30aa6e086 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -395,7 +395,13 @@ static const struct snd_kcontrol_new fsl_micfil_snd_controls[] = {
+ 	SOC_SINGLE("HWVAD ZCD Adjustment", REG_MICFIL_VAD0_ZCD, 8, 15, 0),
+ 	SOC_SINGLE("HWVAD ZCD And Behavior Switch",
+ 		   REG_MICFIL_VAD0_ZCD, 4, 1, 0),
+-	SOC_SINGLE_BOOL_EXT("VAD Detected", 0, hwvad_detected, NULL),
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.name = "VAD Detected",
++		.info = snd_soc_info_bool_ext,
++		.get = hwvad_detected,
++	},
+ };
  
-+/**
-+ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
-+ * @master: master used to send frames on the bus
-+ * @cmd: command to send
-+ *
-+ * Return: 0 in case of success, or a negative error code otherwise.
-+ *         I3C Mx error codes are stored in cmd->err.
-+ */
- static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 					  struct i3c_ccc_cmd *cmd)
- {
--	int ret;
--
- 	if (!cmd || !master)
- 		return -EINVAL;
- 
-@@ -848,15 +854,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 	    !master->ops->supports_ccc_cmd(master, cmd))
- 		return -EOPNOTSUPP;
- 
--	ret = master->ops->send_ccc_cmd(master, cmd);
--	if (ret) {
--		if (cmd->err != I3C_ERROR_UNKNOWN)
--			return cmd->err;
--
--		return ret;
--	}
--
--	return 0;
-+	return master->ops->send_ccc_cmd(master, cmd);
- }
- 
- static struct i2c_dev_desc *
-@@ -960,8 +958,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_entdaa_locked(struct i3c_master_controller *master)
- {
-@@ -1013,8 +1010,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
- 			    u8 evts)
-@@ -1034,8 +1030,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
- 			   u8 evts)
-@@ -1060,8 +1055,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_defslvs_locked(struct i3c_master_controller *master)
- {
+ static int fsl_micfil_use_verid(struct device *dev)
 -- 
 2.53.0
 
