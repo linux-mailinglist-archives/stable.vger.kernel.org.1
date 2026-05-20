@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DNcGascDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:19 +0200
+	id UJMZEhsTDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B8F599F6A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95C7599072
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D23832DB3ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1DDC328C302
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAEC359A6F;
-	Wed, 20 May 2026 17:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB033E95A4;
+	Wed, 20 May 2026 16:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFDTin5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggiQu2kj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9C0312825;
-	Wed, 20 May 2026 17:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16EE366075;
+	Wed, 20 May 2026 16:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298472; cv=none; b=Yv+Nv7Cpf1PJTB9/BkhFZDPch382geUHG6z4W2+XoBSiCGCUjqvxQkrd5f8UixmnC1vM+Z3GoST5OAT67iOFZEfIeDVlg/Ij/yZZ4BgNeHHuF1H9wsxATpUAg+lYjIZRl7k+23WuSfq2aDlAKdrQHE4B9WT8qbkZDx7xXJLdl50=
+	t=1779296058; cv=none; b=eXgYNCzdYJdlCEYWnm/3jh8SIQrSm/Jsf1rhzXFQVS6YIroL2fuoNtmqAKdLcwEobEJfNfniHMAtqe02whvh37i3W7gcZZlJWqpLkctcNoWx8i/WQrewbpySGYFZYZ3PnBY4shHrl3mmPqDqsLkfx+uta3qlxDlQz7XJLE7KFuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298472; c=relaxed/simple;
-	bh=yPJjXOqqjmDynlX8Xl3yLea0p5yxe2ptu5cenbr2E00=;
+	s=arc-20240116; t=1779296058; c=relaxed/simple;
+	bh=xqH8izd76JXPjjhxJccKoBWrjna2FG4E5WFpU/nB/AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIcoMpB3OcQ/JGFYb/egLzYKSxl/eIscsfwh2ZpJ9l78QM43KoSWm81aE2CMx81svU7HVzjMHo4afOEN96POCf5gU2qmqMeQfuv7qeTBJmp9P10J+EDf7B+SE7sgtfZbaPNzhir4oYk6IW+BmNYf6l0IvOnjMk9inpyeMwIHpek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFDTin5O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AC61F000E9;
-	Wed, 20 May 2026 17:34:30 +0000 (UTC)
+	 MIME-Version; b=p12G9IsKWb2nRoUXYWOZ2YbFvGYRuim5ZuUINVDUSQGPddpSqTF9SgNclKVJU+6OzWjghP+sznhezswzufodSUVbCdxWznleQhI22ZTmKqZT0MMxC1lCUQWMZ0LaVnmhW3DBkGgMcpw8NjmTLwezlgwfN1JHEnMi6hmCnBEbooA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggiQu2kj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E541F000E9;
+	Wed, 20 May 2026 16:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298470;
-	bh=P7OrmDYpFMvJldGe1ybKXh+e2MINXKKc40GE7jvd35g=;
+	s=korg; t=1779296057;
+	bh=8zg/He0MWDmtcWjhG7go8idu+1Bzp9pP3Mx2pHBTQzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BFDTin5OGpJjRlsHluo26mYVU2jPwqDt2aQLSjlp2jL2ybAj8Fr1xI8I+HCSH4I7t
-	 2ohJ8tXeEPJ76Kmw6r/JuvsKeo3Q9IQDftWQ7dx8Z0IS0pvdf/gexmGggw0a3d/Sie
-	 8EAvz0Is3y0aQ4DzPhqWPmefGw6+/kYQpWzFzR1Q=
+	b=ggiQu2kjOzC2/6XXe22kwdNgDgCo7oyNJ7Dbu/xMSeQeNsLTHgh9hMwXs+aG1E2B9
+	 k3mKkGb+tVLAQsdPd4bZS9ZdZ8F0tETse9KaAqrrKuvXU/IQ+FDsfGvS8zOHpfbZCB
+	 V9oohO6dMQDzvDdreWuKyUjN/u5bAjC/sFeAlE/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Felix Gu <ustc.gu@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 423/957] arm64: dts: lx2160a: change zeros to hexadecimal in pinmux nodes
+Subject: [PATCH 7.0 0656/1146] i3c: master: dw-i3c: Fix missing reset assertion in remove() callback
 Date: Wed, 20 May 2026 18:15:06 +0200
-Message-ID: <20260520162143.694643943@linuxfoundation.org>
+Message-ID: <20260520162203.028033149@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +66,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pengutronix.de,gmail.com,nxp.com,bootlin.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251626-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250689-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[solid-run.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,70010012c:email]
-X-Rspamd-Queue-Id: F1B8F599F6A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pengutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,nxp.com:email]
+X-Rspamd-Queue-Id: A95C7599072
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 03241620d2b9915c9e3463dbc56e9eb95ad43c08 ]
+[ Upstream commit bef1eef667186cedb0bc6d152464acb3c97d5f72 ]
 
-Replace some stray zeros from decimal to hexadecimal format within
-pinmux nodes.
+The reset line acquired during probe is currently left deasserted when
+the driver is unbound.
 
-No functional change intended.
+Switch to devm_reset_control_get_optional_exclusive_deasserted() to
+ensure the reset is automatically re-asserted by the devres core when
+the driver is removed.
 
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260320-dw-i3c-v3-1-477040c2e3f5@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index e7790a94e888f..536f4bfad9a67 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1718,7 +1718,7 @@ pinmux_i2crv: pinmux@70010012c {
- 			pinctrl-single,function-mask = <0x7>;
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index d6bdb32397fb9..3379cb16eeca5 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1606,13 +1606,11 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 	if (IS_ERR(master->pclk))
+ 		return PTR_ERR(master->pclk);
  
- 			i2c1_pins: iic2-i2c-pins {
--				pinctrl-single,bits = <0x0 0 0x7>;
-+				pinctrl-single,bits = <0x0 0x0 0x7>;
- 			};
+-	master->core_rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
+-								    "core_rst");
++	master->core_rst = devm_reset_control_get_optional_exclusive_deasserted(&pdev->dev,
++										"core_rst");
+ 	if (IS_ERR(master->core_rst))
+ 		return PTR_ERR(master->core_rst);
  
- 			gpio0_31_30_pins: iic2-gpio-pins {
-@@ -1730,7 +1730,7 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
- 			};
+-	reset_control_deassert(master->core_rst);
+-
+ 	spin_lock_init(&master->xferqueue.lock);
+ 	INIT_LIST_HEAD(&master->xferqueue.list);
  
- 			i2c2_pins: iic3-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 3)>;
- 			};
+@@ -1624,7 +1622,7 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 			       dw_i3c_master_irq_handler, 0,
+ 			       dev_name(&pdev->dev), master);
+ 	if (ret)
+-		goto err_assert_rst;
++		return ret;
  
- 			gpio0_29_28_pins: iic3-gpio-pins {
-@@ -1738,7 +1738,7 @@ gpio0_29_28_pins: iic3-gpio-pins {
- 			};
+ 	platform_set_drvdata(pdev, master);
  
- 			i2c3_pins: iic4-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 6)>;
- 			};
+@@ -1673,9 +1671,6 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
  
- 			gpio0_27_26_pins: iic4-gpio-pins {
-@@ -1746,7 +1746,7 @@ gpio0_27_26_pins: iic4-gpio-pins {
- 			};
- 
- 			i2c4_pins: iic5-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 9)>;
- 			};
- 
- 			gpio0_25_24_pins: iic5-gpio-pins {
-@@ -1754,7 +1754,7 @@ gpio0_25_24_pins: iic5-gpio-pins {
- 			};
- 
- 			i2c5_pins: iic6-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 12)>;
- 			};
- 
- 			gpio0_23_22_pins: iic6-gpio-pins {
+-err_assert_rst:
+-	reset_control_assert(master->core_rst);
+-
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
 -- 
 2.53.0
 
