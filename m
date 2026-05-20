@@ -1,259 +1,402 @@
-Return-Path: <stable+bounces-249810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4K3IK1GUDWoMzwUAu9opvQ
-	(envelope-from <stable+bounces-249810-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:00:33 +0200
+	id EJ4qDrSWDWoMzwUAu9opvQ
+	(envelope-from <stable+bounces-249811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:10:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D7758C074
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:00:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9141458C213
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D08633016512
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:00:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F12FF303A935
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9490E3D9DB1;
-	Wed, 20 May 2026 11:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B893DA7D3;
+	Wed, 20 May 2026 11:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o6txoL/I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eh6GDSVo"
 X-Original-To: stable@vger.kernel.org
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010049.outbound.protection.outlook.com [52.101.193.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62733AFCE2;
-	Wed, 20 May 2026 11:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779274826; cv=fail; b=f/+o2TwLzK6Kue5aPXvt47y9Y92AGcRFbnpVgdie+OIOjxqw2FhvimtouK6h0ZnoIbkc1gM56nT+IDdRcv6Uwk6oKi3Yk4p0gFqd+CJd54j/FESoBC73dEMxxXLyXAZ/xwUfwLy9QlkpWms8wE/fB2ETiVzzwI7hlZov6jScz7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779274826; c=relaxed/simple;
-	bh=JSXWbFYNpsCm6JYQtxjpuksunc9r3wEWYu5BhzaM5S8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eq3x0S1aCSFgVg5CzRMtkOVZSSYc3tpCAgelUP9a/i6NlZisAOnxAp9GrCFGKc96gSiFKW00nYkXoQPgLLicXO2h84U1zciJK37w1nQf4+xv0IqGhx3WTv/bYso64XIlZOYIdyM1aOLi2PGxeC6d7Z9vCV+1UdeXDqT4t3oQgnE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o6txoL/I; arc=fail smtp.client-ip=52.101.193.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l4THSbgkMpYmJA1DvPx3LICOD1aqdcH4kdp7UyXcaHoZONJ+nXgmIoNVYa6WZ6sg8O8jqmge2TYJjVKqjBT60IAc/bb1K8UVzpMN2T7Lgcz6tPOq460TJV0GBR7UT1Wz/HkJk/HFx4m9LFu3PZWMegW5jp0wFEgsVSWAYU2EXePWmDH/GoHDLuMNbL8mh/C5glLu5MM7av7rkn76cFMVWGx++Zm+ll4lIHZU6vYjw1Nx5tkDsxJy8sE3i/ci+8YWuNM71lFcSZhMXu8NNnE1QmjX7i2pPI1NwHqJ/b2lt0IZwu9i2yOn+iydB/5B3Nvwr5jo0raVpftRgCB2ZU0mOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cfTfZjFO8mbhEiCu+l1R9CuG+d1AtNZs3+W5W4/KP6U=;
- b=jcAnLRS8pybm0mxahSzIF1eQnRwel155A+tHUoBrKzVljlEtrh/Jaq9b9jC0cBkP4cSc/5ZAiXBB00hB+xQrP1W9+l96X/FAMstpO5uhoc+LTJSKVAencQGKGIhs+Ym8Afx96qjrnzKTS0cCBqjwAP+YgvqIY5Xd5ybj7Otwbwt37IZ2ldWIRLlk0Zgye3dy9MZmNbCA0qng0mdnIgibZVWxe94bv/tt9t50H/THOSWfLXkNjJsBjdFQkN6E+btug9oMH1tzAp7ZMulPb/htmo7yWLAq7m9wIZTnjzCjQxigKM5IsbsMwwdMRv+WdwI9BXoUskzMI7dX1XSyWIkR2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cfTfZjFO8mbhEiCu+l1R9CuG+d1AtNZs3+W5W4/KP6U=;
- b=o6txoL/IJds3fbV0BvHLD2lyfpQl4nrDqdns5DveHhayUywHwM4cAMwBmYhOUBWfyBMRX6l4FPfz2ZPNNMDP7M3FAS3/qXqdNX2Kx28C0GoZ6Urzh2ASvuy/yeFlyRmnEoHwdkg2cOFkb6Bs/7GevUf096/r7Hz0BFdfARYA9K4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS0PR12MB8441.namprd12.prod.outlook.com (2603:10b6:8:123::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.22; Wed, 20 May
- 2026 11:00:18 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0025.022; Wed, 20 May 2026
- 11:00:18 +0000
-Message-ID: <1832e5a8-db85-4b66-a5f0-08043c4aed54@amd.com>
-Date: Wed, 20 May 2026 13:00:10 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
- updates
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260519082247.34470-1-kartikey406@gmail.com>
- <2e23513c-9d59-4891-acfe-9f1fbcbce778@amd.com>
- <f6bcef23-5510-4aad-bf6a-4e1ecfc8d474@collabora.com>
- <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
- <f37bdc63-3575-49e5-aa5b-7b93428b293d@collabora.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <f37bdc63-3575-49e5-aa5b-7b93428b293d@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR06CA0025.namprd06.prod.outlook.com
- (2603:10b6:208:23d::30) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A983D3A4520;
+	Wed, 20 May 2026 11:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779275313; cv=none; b=ABv9KgDV9pIayg8B3/dnorx6wEVEm0iMX2O+s6LhRbSea1uqZa5OSeqDeICn8DWGGIncqjXWm3Fn4b/BWU1ktzUechuaz3gJVAOH95RFxA7R7PChV9/FuhdcDK+7QWTo1smODs2Sos0t3K6k79t30jMYV7bzJvuDuPcQ0m/94DU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779275313; c=relaxed/simple;
+	bh=s9gIFjuqSq7HcN7GhoLjSkrZcGPyBmjz7TS5KGEoZWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kkfWsRy09/eRA1T4G5tYyiX8iXBsxbqhHST2g75Fb0Rl9MStsjvYBX6NQtvtuXa3Rlt420AIjIGCJXJolbcn0yksJT/6PdG63a5Clx+ggKS+LBXVlNc8TX3gas63wK0SAxpqeknI9SYJ+1YdNEZb3PoIsc0PYXv/PkM2EttHj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eh6GDSVo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5798A1F000E9;
+	Wed, 20 May 2026 11:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779275311;
+	bh=DZDmUbfH2zCPIuRupE0bKTHndS0jrMizmuFeowVAL0Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eh6GDSVoeFK1YXqKcBXJP141Rwf3EB8VYyCLvgVPBVSPfTlGMPde6eb7WilvdECex
+	 S/WhoWkMcOEPTp+0J0ImXLGSamjj1goxKhhMI88+3aKOEKvAZDcWVMVXNmBr+Zrubu
+	 T/fnT5gPBybspdMjxhl63PJqt3iDAcSU+GMF3R9W8b/zZ0oOQBjyRUePSYaj0TCe4x
+	 JXB4SErdDWPuQdPJ/tCaG7dzWKKplWedSUHcdLOhOcKZ+6TSxjOuUhko6HcehRuwC8
+	 b8tkJTWDGtT3MahpUYLgCn2n176qv934GHjNB6270MOPZnePd3l7Hk0Hh0DITRmGlU
+	 x3d9yY6g4ebSQ==
+Date: Wed, 20 May 2026 12:08:22 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Stepan Ionichev <sozdayvek@gmail.com>, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: pressure: rohm-bm1390: notify trigger on all
+ error paths
+Message-ID: <20260520120822.351aa58f@jic23-huawei>
+In-Reply-To: <61d9cec3-6aed-416f-9604-94fe94cb2e3b@gmail.com>
+References: <20260517160801.269-1-sozdayvek@gmail.com>
+	<20260518094238.1986-1-sozdayvek@gmail.com>
+	<20260518161516.53f21777@jic23-huawei>
+	<61d9cec3-6aed-416f-9604-94fe94cb2e3b@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB8441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22d59778-09b0-43bf-011b-08deb65efaa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|18002099003|11063799006|921020|4143699003|22082099003|56012099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	DYVAcUBO/AOfVREIe31HM3srn1blo7KOP4k0bIiuzW3m2vFQCiTqqGPMS87xJkmZURPReydk89CTyTGX2ZFCmHRGOfWmS9B7TLCyV/ezg3FdDIj6ZtUS01IrQZhgM4jjRxu3w2dfbLi0m/pylDDKlaSVKXFdKXycWxf7NIg6tYengY21mPvA/1xHbENUfVibKfEY4yn4439yjidnEg/Z42teS20LQDt4ouOerPEd+YOAKyHnK8wHLpGxdUDsg7JIbUAu5UXxilkLWLreVATgPiGYfUkj6D0RBDPdBqfuTsGRq8h6evMPdFAkIihUJwzC5q4RvNqFCncdtLsL6i9JflynG3noMhESv2i6YDmu4ubKF3mJSXHTk7xjgkYiE8ajgpeHI5cpCODPQTu93SU1rA3i0hhynJPT6SVIFnRQId1hfGGXReNhlZS+NTTkHCbgU3CpLWU2hfcWjDIm1FxSxjqFsqQ0g+vet+u2V9gZYaJfSzogm03OCnZd6Guyuv/8lJJA+4vMizAGbMWWtvb9jAF48GxJb9hZuxjiySBbxXYOyLAsoAi0EusekRPMGBcQaY+VieOhclQmjuRtA53/R6pCUt/oYW4bsR7u3KKZB9RKB5Qky94sBrpROxAuu0cca0IWtBIPA2f/RnKp0zX6pUrK8gU0vvoNdX6y6YD/QwjSFQaHj9HDJ6eRPumshxJgUomle9QTCxYc42rdeGT9xNaqm7442UxLDO6Z7q/KzV0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(18002099003)(11063799006)(921020)(4143699003)(22082099003)(56012099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MEFtK3FkMmRpMm0vRWpiTm1GTWpFVEFXeXlLSnMrYXZPV3hTSkc5dGhYc2F4?=
- =?utf-8?B?c0NiOFVoNTJuQnJnVU9xd1FaeERGRHQzeDBoSHNNbGE4TFZaKzY3bkpmbkx4?=
- =?utf-8?B?R3ozMEJucU9PdkQySTdPQWM1WlVvcG9obGN5dzJnU1c1MitDZjNkcVVkeStO?=
- =?utf-8?B?UWxnV2JId2tCUlF0ZzFMdUx2RHFtN2t3cHBYdmduUnFSSng1YzhRY1dtMkNT?=
- =?utf-8?B?bFBScVlCaUhINEh1bkFmME0wNHRERnQxQW8yTFBKR2o1Rkg2ajc0Qjd2ei9q?=
- =?utf-8?B?Ym8xV29OTTlTU3ZPVzVPbVJYcWZPb1g1eCtOZ1lOUDM0QXozU2ZoNVpEZmtX?=
- =?utf-8?B?VWdBd3dDSFN3eXYrbDZVYzlMUmFCbXo1bHpvZzJvNU5kMFVzMW5nYUg3UEFj?=
- =?utf-8?B?Z081MDZxSU1OY2p5VkllaFozYkNDM2YxY2VNTm9lMVJYbVJHbHVTQWF3ZWVI?=
- =?utf-8?B?MnFqMGNTMVllUVJFZ0lxa2t6b0ZiWmZlTkJPQ0k2ZHgxUnUyOW96ZThmNHNz?=
- =?utf-8?B?US9KcEl0VzU2dzZBaGd1anAvL2pnYTFJMHZXT01FeXBOR2VnWi9jOENaTWZj?=
- =?utf-8?B?Z3pFd2s5SVhPbDRWWFF6emFiYTQ4QU9mRkRHdXhCTzZRdDFVNE1BSnRJM0FC?=
- =?utf-8?B?bkxjMFF1Mk05b0lvSWxkeWJvd2lwbDc3Z2x0Q3o0NHZhUXhLTDdBelFJcCta?=
- =?utf-8?B?K2p5dWdPbFB3YXNsSmlwTzNwaWhkei9ScFBQdkVaV3U1TTZReHNRZ2NTcnJD?=
- =?utf-8?B?Zm5nZTBkUEJ1M3ZzckhwUEhoL3llUmNnRnNEN1hwdC9hVkt6WEFyb0Nha0Fu?=
- =?utf-8?B?ZU12TjNvY016V1M4NVZPRXNOS3dEWEc5R2VkV0Y4Rzc4dnA5NzVsakg1MzVy?=
- =?utf-8?B?K09XemhWRDNCKzRSbUJNRE83K2RwVisybVgzM0d3OExnTXJCS3QxMGlWZmxn?=
- =?utf-8?B?Z1ZwMU9sODU1NVBMZDN6am1ERkNjWUEyY1Nxek0zVy84aEFmc29EaG9iY1Ba?=
- =?utf-8?B?ZFpaOWh5MzNGV1lUblpzOTJiNzNEZnd2dFgyR291OUJuSjdrU2N0c0c5bTFV?=
- =?utf-8?B?Y3FXc2Zyc2xuWFUvMTdyeUN2MzZBL3oyQnIwZkpWM0NVbGxhaU5hdHlYWEs4?=
- =?utf-8?B?eGtoWlRtK0oyUHUxK29XNXZzMmdCSU00RFlPdlZjRmVtaG43Yk52Q1ZNR1NZ?=
- =?utf-8?B?QnAzQmE1eFBCTkYvUnNvVDlnQTZmZVlSTEc1cm5uL3FBSCtSeUl2UDZNM2M2?=
- =?utf-8?B?dm02WElrR0FmMVhZOS91OVpjRm9PUEhIZ3l5eHd5TmxiKzRwUUVoMEdIL0hw?=
- =?utf-8?B?S1FJVk5MeXdNOG1IRkhTS1JZaVRnWnVXSXBGam13Z3ZDT1FEQ2h5Y2hlTThJ?=
- =?utf-8?B?c2UyZUpxZnV4ZXBSc0RSM3pBdVB4SWNza1JsYmxLTDZxNyt6aW1qUU1QSEJv?=
- =?utf-8?B?dVl1V2J3a3crblVtMW4yY1ZIeU9Jd25lZVdCS2pnRFJwV1hNcThzdWxVR0JP?=
- =?utf-8?B?dUM0NWVrOXZ1SHFTZ2E3TFpBZVAxUWhpN2xTSHk4TUxiZm5CZmF1Q1RiV1F1?=
- =?utf-8?B?NEZnb1dNKzFjZFdBY3JhT3ZWOXFOVFVWY3U0MWh5d3RMa1BHRGkwaGFpT2NY?=
- =?utf-8?B?V1dVcDh4SEdNbGVqNjR6dnk0RHFzclN0Zy9QL3M4SU4zVDk1V0YxZk1tc0pZ?=
- =?utf-8?B?YmE3bXdzMlN5RUVUTlNVdStaRVdqcnZodzUyZk1FR1BGQTg4aEFvaGR6MUJh?=
- =?utf-8?B?d0Y5Y05kb2kySXhiMnFkNDg4QkFnemUwTUxGMlZSVGI0d29ZZjA0QmxtOCtM?=
- =?utf-8?B?RkJHMk05enAwSW1UejF6QXErNEYrb2RObTZYUXMxYW5wMk0yaER0emwyL1pj?=
- =?utf-8?B?MEpPYjFvQ0ZZNElxbzBOR21GWWI0U0JHQXpXTDBnYTIxQUtUNi9jd3R3cDdM?=
- =?utf-8?B?bll4UDFRTm9CakV3MW10Ty9haUNxSVRCaHRvYTdVMDA5bXlBSFhxOG4xb3Aw?=
- =?utf-8?B?RklQUklsTnRVMmVkbmUxbTZLbk1ZQUM5RWx1RFQxSXZDOWVPS3B4dlpST3JK?=
- =?utf-8?B?b1VMaUoxQ05FaGpsT3VSNHlBaHZQb3BDZEJmMWMrZnRFYk9kTkxWMkRaTm4x?=
- =?utf-8?B?TWhUT09MWVVKbk1abDNkNlBSclFSRFdZYytOV1Q0c3kvMTJockNlcVVvVkVs?=
- =?utf-8?B?cHFkZndLNmpyeWEvVFU3N1BzczlpMUtHSDcvd3lnRFc5a2xiVDV2S3hndXJP?=
- =?utf-8?B?Y2tJaEo5QkNyamI3YW5aMWN0cmI3djBWTkw5ellkV25SMUdBeDFGYUJlQzZi?=
- =?utf-8?Q?fy3ybZw0NHjxYc+5CZ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22d59778-09b0-43bf-011b-08deb65efaa7
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 11:00:18.2804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8lrN/A3XyxzTpivp4xHUXTiAxoPEz5MElyS9qr/POnEAfoErPDe2Yf5lSiWzDq6n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8441
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249810-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[collabora.com,gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org];
+	TAGGED_FROM(0.00)[bounces-249811-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:mid,amd.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 16D7758C074
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9141458C213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 10:12, Dmitry Osipenko wrote:
-> On 5/20/26 10:05, Christian König wrote:
->> On 5/20/26 08:50, Dmitry Osipenko wrote:
->>> On 5/19/26 11:27, Christian König wrote:
->>>> On 5/19/26 10:22, Deepanshu Kartikey wrote:
->>>>> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
->>>>> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
->>>>> ignore its return value. The function can fail with -EINTR from
->>>>> dma_resv_lock_interruptible() (signal during lock wait) or with
->>>>> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
->>>>> leaving the resv lock not held. The queue path then walks the object
->>>>> array and calls dma_resv_add_fence(), which requires the lock held;
->>>>> with lockdep enabled this trips dma_resv_assert_held():
->>>>>
->>>>>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
->>>>>   Call Trace:
->>>>>    virtio_gpu_array_add_fence
->>>>>    virtio_gpu_queue_ctrl_sgs
->>>>>    virtio_gpu_queue_fenced_ctrl_buffer
->>>>>    virtio_gpu_cursor_plane_update
->>>>>    drm_atomic_helper_commit_planes
->>>>>    drm_atomic_helper_commit_tail
->>>>>    commit_tail
->>>>>    drm_atomic_helper_commit
->>>>>    drm_atomic_commit
->>>>>    drm_atomic_helper_update_plane
->>>>>    __setplane_atomic
->>>>>    drm_mode_cursor_universal
->>>>>    drm_mode_cursor_common
->>>>>    drm_mode_cursor_ioctl
->>>>>    drm_ioctl
->>>>>    __x64_sys_ioctl
->>>>>
->>>>> Beyond the WARN, mutating the dma_resv fence list without the lock
->>>>> races with concurrent readers/writers and can corrupt the list.
->>>>
->>>> Well why are you trying to add a fence on an atomic mode set in the first place?
->>>>
->>>> That is usually an illegal operation here.
->>> That is pre-existing in the driver. It performs draw operation and in
->>> some cases waits for the completion during atomic. Whether all that
->>> syncing is correct is hard to say immediately as some of it may be
->>> historical edge cases.
->>
->> I'm not not so deeply in the atomic mode setting stuff but it strongly sounds like that this is seriously broken.
->>
->> The background is that the atomic mode set framework allows an output dma_fence which is signaled when the commit is finished.
->>
->> So when you allocate a fence slot and add a new fence to finish the atomic commit it is trivially possible that this cycles back and waits for the atomic commit to finish. In other words you have a deadlock.
->>
->> You probably need specially crafted userspace with the right timing to trigger that, but such issues are usually a rather big no-no and need to be fixed in the long term.
->>
->> Try to add dma_fence_begin_signaling() and dma_fence_end_signaling() annotation and enable lockdep, the tool should be able to point out if and what exactly goes wrong.
->>
->> The usual fix is to prepare everything before commit_tail is called (alloc memory, create, reserve slot, add dma_fence etc....) and then just send out the prepared commands later on.
+On Tue, 19 May 2026 08:48:13 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+> Thanks Jonathan,
 > 
-> We tried with moving resv alloc to prepare_fb() in a previous patch
-> version, it resulted in a non-trivial deadlocks. The goal of this patch
-> is to fix immediate problem with a minimal code change.
+> Your post give me something to think about ;)
 
-Yeah, totally fine with me to get that fixed first.
+This is a can of worms.  More below.
 
-> What you're saying is correct, but it may require a rather big
-> refactoring of the code. In general, everything works okay today, so not
-> really an urgent problem.
+I'm unconcerned as long as (and ideally someone should check it)
+we can get of being stuck by unbind/rebind of driver.  Anything
+else is best effort.
 
-It's just a potential issue and when the AI bots keep evolving like they already do they will sooner or later start to point that out as well.
 
-Regards,
-Christian.
+> 
+> On 18/05/2026 18:15, Jonathan Cameron wrote:
+> > On Mon, 18 May 2026 14:42:38 +0500
+> > Stepan Ionichev <sozdayvek@gmail.com> wrote:
+> >   
+> >> bm1390_trigger_handler() returns from three error paths without
+> >> calling iio_trigger_notify_done(). The success path at the end
+> >> does, so on a single transient regmap or read failure the trigger
+> >> use_count is never decremented, and the !atomic_read(&trig->use_count)
+> >> guard in iio_trigger_poll_chained() drops every subsequent dispatch.
+> >> The buffered-data flow stays wedged until the trigger is detached.
+> >>
+> >> Funnel all returns through a single done label that calls
+> >> iio_trigger_notify_done() and reports the outcome via IRQ_RETVAL().
+> >>
+> >> Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>  
+> > 
+> > These error path 'fixes' are fixes for hardware failure - so if anything
+> > they are hardending  against a possible error condition. I don't mind
+> > that bit it's not a bug to not do this so fixes tag an stable are not
+> > appropriate for any of these.
+> > 
+> > Note however that hardening against these conditions is not this simple.
+> > It takes careful analysis of exactly how the hardware behaves and what
+> > each error condition 'might' mean.  Whilst they are probably harmless
+> > I'm also very dubious about taking them without comprehensive testing
+> > on the particular device.
+> >   
+> >> ---
+> >> v2:
+> >> - Use a bool and IRQ_RETVAL() instead of irqreturn_t (Andy)
+> >>
+> >> v1: https://lore.kernel.org/all/20260517160801.269-1-sozdayvek@gmail.com/
+> >>
+> >>   drivers/iio/pressure/rohm-bm1390.c | 15 ++++++++++-----
+> >>   1 file changed, 10 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/pressure/rohm-bm1390.c b/drivers/iio/pressure/rohm-bm1390.c
+> >> index 08146ca0f..81368e578 100644
+> >> --- a/drivers/iio/pressure/rohm-bm1390.c
+> >> +++ b/drivers/iio/pressure/rohm-bm1390.c
+> >> @@ -626,12 +626,15 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
+> >>   	struct iio_poll_func *pf = p;
+> >>   	struct iio_dev *idev = pf->indio_dev;
+> >>   	struct bm1390_data *data = iio_priv(idev);
+> >> +	bool handled = true;
+> >>   	int ret, status;
+> >>   
+> >>   	/* DRDY is acked by reading status reg */
+> >>   	ret = regmap_read(data->regmap, BM1390_REG_STATUS, &status);  
+> > So question 1.
+> > - What actually is device state if this read fails?  We have no idea.
+> >    It might have failed on the 'to device' path in which case the device
+> >    didn't see the read.  Or it might have failed on the 'from device path'.
+> > 
+> > Gets more complex...
+> >   
+> >> -	if (ret || !status)
+> >> -		return IRQ_NONE;  
+> > 
+> > The trigger in use might well be the dataready trigger provided by this driver
+> > (though I note this device has no validate callbacks so we do allow other
+> > triggers - that may or may not be a bug!)  I really dislike read to clear
+> > register designs as they make this stuff more complex.  
+> 
+> I have a strong feeling it should be the dataready. Still, I have no 
+> idea about actual systems using this driver, so I am a bit cautious 
+> adding new restrictions.
+
+If we can show it is broken with any of the other triggers then
+we can add the restriction without it being a potential regression. Not sure
+if that is doable - easiest way would be to just try it and see.
+
+
+> 
+> > Anyhow question 2:
+> > - What happens if we don't clear it and do acknowledge the interrupt plus
+> > ack the trigger (which is what iio_trigger_done() is doing?
+> >    Two obvious options - wedged device, it re interrupts immediately.
+> > If we are wedged, then meh device dead. Without adding retry loops
+> > (don't) recovery path is reset the driver by unbinding and rebinding.  
+> 
+> The BM1390 keeps the IRQ pin asserted.
+> 
+> > Fun follow up is what happens if having acked the data ready trigger
+> > by this read, we get another read before getting to iio_trigger_notify_done()?
+> > 
+> > Quite possibly we wedge.  
+> 
+> I see. This isn't fun at all. Even more so if the trigger use-count now 
+> prevents us from calling the handler, and returning further IRQ_NONEs, 
+> preventing the safety-mechanism intended to disable the offending IRQ. I 
+> have a feeling there is IRQF_ONESHOT set though, so perhaps we are safe 
+> from this (when no error path is taken in the handler).
+
+Good point.
+
+You are right (I think!) that saves us if using the trigger in this driver
+because the trigger is fired by iio_trigger_poll_nested()/handle_nested_irq()
+which runs the thread_fn()s for (pollfunc threads) in the thread belonging
+to the trigger interrupt.
+
+If we had a trigger that was doing in the top half (iio_trigger_poll()) then
+it would get messier but I think that could only slew the data by a sample
+which isn't too bad (as we don't need this interrupt to happen). 
+
+If we return an error because we know it's not our interrupt then we should
+be fine anyway because our interrupt will turn up later (as long as that
+is in the trigger itself).
+
+> 
+> > This drivers trigger may be missing a reenable() callback
+> > (which would typically reread the status register to clear any such interrupt).  
+> 
+> Which works for case where we "get another read before getting to 
+> iio_trigger_notify_done()" - but not for a case where we might have the 
+> bus stuck, causing read errors.
+
+If bus is stuck, I'm of the view recovery unlikely and if it really is a once
+in a blue moon thing, unbind and rebind the driver.
+
+> 
+> > Whether it does is again a device implementation specific thing.
+> > 
+> >   
+> >> +	if (ret || !status) {
+> >> +		handled = false;
+> >> +		goto done;
+> >> +	}
+> >>   
+> >>   	dev_dbg(data->dev, "DRDY trig status 0x%x\n", status);
+> >>   
+> >> @@ -639,7 +642,8 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
+> >>   		ret = bm1390_pressure_read(data, &data->buf.pressure);
+> >>   		if (ret) {
+> >>   			dev_warn(data->dev, "sample read failed %d\n", ret);
+> >> -			return IRQ_NONE;
+> >> +			handled = false;
+> >> +			goto done;  
+> > 
+> > Hopefully all this stuff is unrelated to the trigger.  For these it is fair to
+> > ack the trigger and the interrupt.  Curiously the driver does it partly for the
+> > next one (IRQ_HANDLED).  
+> 
+> I would keep the IRQ_NONE here because, if we keep constantly failing 
+> the reads, then the bus is likely to be unerliable - and disabling the 
+> useless IRQ is probably very sane thing to do. It should help debugging. 
+> What comes to acking the trigger - I am starting to agree with Stepan, 
+> we should probably ack the trigger in any case. If we don't ack the 
+> trigger, then the IRQ_NONE does not serve the purpose it is intended for.
+
+The interrupt that we'd get spurious detection on here would not be the device
+one it would be the software emulated one deep in the iio trigger stuff.
+
+Might still be useful for debug. Anyone fancy hacking an error in and reporting
+back what we actually get from the debug hardware?  (with that trigger acked
+as you suggest?)
+
+
+> 
+> >>   		}
+> >>   	}
+> >>   
+> >> @@ -648,15 +652,16 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
+> >>   				       &data->buf.temp, sizeof(data->buf.temp));
+> >>   		if (ret) {
+> >>   			dev_warn(data->dev, "temp read failed %d\n", ret);
+> >> -			return IRQ_HANDLED;
+> >> +			goto done;
+> >>   		}
+> >>   	}
+> >>   
+> >>   	iio_push_to_buffers_with_ts(idev, &data->buf, sizeof(data->buf),
+> >>   				    data->timestamp);
+> >> +done:
+> >>   	iio_trigger_notify_done(idev->trig);
+> >>   
+> >> -	return IRQ_HANDLED;
+> >> +	return IRQ_RETVAL(handled);  
+> > If we are doing this Andy's suggestion of a helper is neater.
+> > 
+> > Anyhow, upshot is to get this stuff right requires device specific knowledge.  
+> 
+> And time... :)
+
+Absolutely - I see it as value add, so its a business decision to work
+through all these or not.
+
+> 
+> > Ideally the author tests injecting errors at each point to verify if the
+> > data capture survives.  However, it's up to a driver author to decide if they
+> > care.  There are normally dozens of paths in a driver that will result in needing
+> > a reset (unbind/bind for most IIO drivers) - that's expensive, complex, fragile
+> > handling code to maintain, so personally I consider it optional.  
+> 
+> I am not going to try adding any such recovery code in driver. I am 
+> afraid it would be way too complex for me to maintain (with my memory, 
+> code I've seen last month is new Today) for the added benefit. If we 
+> have such a delicate system where this type of 'failure recovery w/o 
+> reset' is required, then such code should (in my opinion) be system 
+> specific and not generic. Most of the device users will never benefit 
+> from it, but will need to look at it...
+> 
+> What I DO care is the IRQ gets disabled (from host side) if it can't be 
+> acked (from device side). That shouldn't be so complex (although, it 
+> seems it is more complex I thought when I wrote this driver).
+> 
+> After all this babbling I've done - if I understood it right, omitting 
+> the call to iio_trigger_notify_done() will prevent further returns of 
+> the IRQ_NONE, even if the IRQ stays asserted. So yes, I would definitely 
+> like to see this fix getting in.
+
+I think you are right on this, but I'd kind of like someone to hammer
+some hardware to verify it. I'm not set up to do that today (even in
+emulation) but could get to it at some point. 
+
+The bit that makes me a bit doubtful is if this is a level interrupt
+and the clear is in the trigger handler I think we get an interrupt
+storm anyway - even with IRQ_NONE because that IRQ_NONE is for the
+nested interrupt.  We keep return IRQ_HANDLED from the main thread irq
+despite not actually doing anything.
+
+That's hard behavior to fix in the core as that skip is intended for
+annoying free running edge triggers - which are only ones where this race
+'should' happen. Those can run faster than we can actually read data
+and so we want to drop a scan.   Maybe we could cap the number
+that are skipped so we eventually report a problem from
+iio_trigger_poll_nested() or push that decision up to the caller?
+This would rely on not call iio_trigger_poll_done() in IRQ_NONE on
+the 'software' interrupts in that pollfuncs come from.
+
+bool iio_trigger_poll_nested(struct iio_trigger *trig)
+{
+	int i;
+
+	if (!atomic_read(&trig->use_count)) {
+		atomic_set(&trig->use_count, CONFIG_IIO_CONSUMERS_PER_TRIGGER);
+
+		for (i = 0; i < CONFIG_IIO_CONSUMERS_PER_TRIGGER; i++) {
+			if (trig->subirqs[i].enabled)
+				handle_nested_irq(trig->subirq_base + i);
+			else
+				iio_trigger_notify_done(trig);
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
+
+Then check that in the caller. That will tell us someone didn't finish
+the previous trigger. Note it's still not fun because if we let other consumers
+use the trigger, one of those might be running slow and do we want to throttle
+the capture to every other interrupt (which incidentally means the
+clear should be in the trigger irq handler, not the one grabbing the data).
+Ah - that's a good reason to add a validate_device to the trigger.  It is
+broken anyway for other devices using this trigger.
+
+This feels like yet another case where we need some docs on best
+practice and acceptable options.
+
+Gah. I hate analysing error paths in complex flows. Lunch time!
+
+Jonathan
+
+> 
+> Thanks guys for giving me a lesson again!
+> 
+> >   
+> >>   }
+> >>   
+> >>   /* Get timestamps and wake the thread if we need to read data */  
+> >   
+> 
+> Yours,
+> 	-- Matti
+> 
+> ---
+> Matti Vaittinen
+> Linux kernel developer at ROHM Semiconductors
+> Oulu Finland
+> 
+> ~~ When things go utterly wrong vim users can always type :help! ~~
+
 
