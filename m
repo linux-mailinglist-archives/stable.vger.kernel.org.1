@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGHiFxMeDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:19 +0200
+	id YCytIFfwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC67E59A210
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52671593EC8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FBD2347724D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1527D3130703
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FD336405A;
-	Wed, 20 May 2026 17:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A857F3F54C9;
+	Wed, 20 May 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fEhd1PL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boCWO7t7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40973D7D7B;
-	Wed, 20 May 2026 17:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4153A16B6;
+	Wed, 20 May 2026 17:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298920; cv=none; b=JAxqT9+vDvqbMwUSh39kFwkWONMuoQU8F8MXdco4yt8hF03eqoHA0YmBi/06dG7kiAVZtqy2vlTCd8VSAoqVAZhrq8X4iOWW8TTu9/20FbS4qFDLyEqF0PPJQqe16fUO4nelBOkwQBsLYGxcrUNGL/DoPvyBZXrCFaCoQ3pjdQc=
+	t=1779296623; cv=none; b=CaEk/jtoc+L5m6+T2zsT2+0Hd0nJFSuoNE/YIrMQsle6H3N6tu7Tw1LptaZ6i2JyVQ9Mu292lZbI4H+68f1cBkskPmVOxpdf2pgwRLDEOl7TDj+23oiDVwxaZMjXGUCMpz/F6OEieuLVlAdGjxZB9byV/EOGUyj+ZQ0W9mz2Jfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298920; c=relaxed/simple;
-	bh=u8vmvsomaQmRFZwJWFcy+Gc5uUiVTdZ4Sp/gk8uFd4Y=;
+	s=arc-20240116; t=1779296623; c=relaxed/simple;
+	bh=h/lqeavsH0csq6gAfPKNDLaX46SX0Kj0H7PbFMw2wa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ys0yLBW8yhx7xrqmM6E/DRZ6GMolDMXoHi80XWW7FUIBVM3Vm2ryoOE52qtbEB/5ZkWK285EH8itkooWHB8Sl0rKS+Vk1Cf6PJ7ws5yeC3MOcq0Qn6N20dgv4SQscKYsWhUmH+pBEGZk/vVegBM69UloC9zGlg5M1CtautBts6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fEhd1PL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357861F000E9;
-	Wed, 20 May 2026 17:41:59 +0000 (UTC)
+	 MIME-Version; b=RmUMhQsX6kDq/RFEotOWj9mRQp2gUHnH6lvYs6PuNBjdQticWtDhzftX4rRbEHqZTlO/bKrjlh3yt+Yi6Q6CigDUCV9GYb50CU3XsFHCNyIiMLjwWWJJIZUjAwDinpvU96i9FpoRx19nCpOJ8HXhdzfnUShOgzu5MmlLdsl/PHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boCWO7t7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A4E1F000E9;
+	Wed, 20 May 2026 17:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298919;
-	bh=QraMoZePlVHNq4Y4gs64ptu6E2oYWrvECzFWOiaxu5w=;
+	s=korg; t=1779296622;
+	bh=+BY00HR6VAW69g8m2narP1PyzWo0zPzluyMh1QrLopE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0fEhd1PL9x6Ufh+l3+m0s3rB2WwomBQo7Q2+b4fbSeFpsN+wRm5nk4Mox/zCOPSi2
-	 r9bdVnamyZPzrMmmrqtYcV5Xy2t2obrt/zytF5salX/tM/JgfJ9cBZr2Zu+ns0uuu0
-	 isg+FqWl/tS+uSVFd3rEJJOUpwKd8fj1Q7+ZXsRI=
+	b=boCWO7t7pRuUIwXIj+HNOCAN43zHI6U9e3/1zkvxQpOik5iNE7WA3pccj4wDNNAOB
+	 3N1nM/HPc0g1nECDSmGjhr6O4fx2TK1pgbdiHOX7Dx1h3LHGPazXZbkiLdZFmVrAYa
+	 JeNYc2w0NJpVJBeD4/kRZch9FyyweaYh+ptM9E80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Manorit Chawdhry <m-chawdhry@ti.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 594/957] crypto: sa2ul - Fix AEAD fallback algorithm names
+Subject: [PATCH 7.0 0827/1146] ksmbd: destroy async_ida in ksmbd_conn_free()
 Date: Wed, 20 May 2026 18:17:57 +0200
-Message-ID: <20260520162147.410671967@linuxfoundation.org>
+Message-ID: <20260520162206.947560579@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251799-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-250909-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CC67E59A210
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 52671593EC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 8451ab6ad686ffdcdf9ddadaa446a79ab48e5590 ]
+[ Upstream commit b32c8db48212a34998c36d0bbc05b29d5c407ef5 ]
 
-For authenc AEAD algorithms, sa2ul is trying to register very specific
--ce version as a fallback. This causes registration failure on SoCs
-which do not have ARMv8-CE enabled/available. Change the fallback
-algorithm from the specific driver name to generic algorithm name so
-that the kernel can allocate any available fallback.
+When per-connection async_ida was converted from a dynamically
+allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
+removed from the connection teardown path but no matching
+ida_destroy() was added.  The connection is therefore freed with the
+IDA's backing xarray still intact.
 
-Fixes: d2c8ac187fc92 ("crypto: sa2ul - Add AEAD algorithm support")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Reviewed-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The kernel IDA API expects ida_init() and ida_destroy() to be paired
+over an object's lifetime, so add the missing cleanup before the
+connection is freed.
+
+No leak has been observed in testing; this is a pairing fix to match
+the IDA lifetime rules, not a response to a reproduced regression.
+
+Fixes: d40012a83f87 ("cifsd: declare ida statically")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sa2ul.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/connection.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index fdc0b24860691..52fe4baeff934 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -1744,13 +1744,13 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
- static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
- {
- 	return sa_cra_init_aead(tfm, "sha1",
--				"authenc(hmac(sha1-ce),cbc(aes-ce))");
-+				"authenc(hmac(sha1),cbc(aes))");
- }
- 
- static int sa_cra_init_aead_sha256(struct crypto_aead *tfm)
- {
- 	return sa_cra_init_aead(tfm, "sha256",
--				"authenc(hmac(sha256-ce),cbc(aes-ce))");
-+				"authenc(hmac(sha256),cbc(aes))");
- }
- 
- static void sa_exit_tfm_aead(struct crypto_aead *tfm)
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 9d7e8a0812721..fb9918e5d9871 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -98,6 +98,15 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
+ 	kfree(conn->preauth_info);
+ 	kfree(conn->mechToken);
+ 	if (atomic_dec_and_test(&conn->refcnt)) {
++		/*
++		 * async_ida is embedded in struct ksmbd_conn, so pair
++		 * ida_destroy() with the final kfree() rather than with
++		 * the unconditional field teardown above.  This keeps
++		 * the IDA valid for the entire lifetime of the struct,
++		 * even while other refcount holders (oplock / vfs
++		 * durable handles) still reference the connection.
++		 */
++		ida_destroy(&conn->async_ida);
+ 		conn->transport->ops->free_transport(conn->transport);
+ 		kfree(conn);
+ 	}
 -- 
 2.53.0
 
