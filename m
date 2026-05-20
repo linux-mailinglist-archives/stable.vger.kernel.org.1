@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-250192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODUcMGPoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:15 +0200
+	id uKiZMonuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE079592C05
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C1F5939D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B55CA32025E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:34:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AFE43613053
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851D9370D43;
-	Wed, 20 May 2026 16:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26F73CCFB0;
+	Wed, 20 May 2026 16:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWn/H62E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YNNTjVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05A62BE02A;
-	Wed, 20 May 2026 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903313CC9E9;
+	Wed, 20 May 2026 16:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294786; cv=none; b=U0iCP3MUVl4W1+Ls9Vpe9Ux0Es5h37CtlPwBsBOALAGacGN/1h2/EjLQhmQp/cvRf9+fWncD1gUziI54Rmnf1LVMOUZBj2gK4qvFUjxWTIGnjqW+ihnOqRGh7lCx7ClUjKBP2Ribiop8rzxq1kE9JqWKQG+lFbOjTtqZiRy+Cbw=
+	t=1779294680; cv=none; b=Rh7QZ7OMfYLTHUoK8KJvhm1V3E0vkqUESA2zXNVoWlIRjWEQRShzNFNuHLIzDhupMWkyaNvsXbdggSsDIpfHJapzki8D9ak9iMeEVOvxB7VqLSFC62aLOOBOuaEXTrTHsvqM9HH9mLyyLhROM9oXJTvU3ux8kJ2Omjtr1eqDwu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294786; c=relaxed/simple;
-	bh=X+SOnrVgkrH6izXsVbOE63MvZzaYhMGy0XmPDq1E84I=;
+	s=arc-20240116; t=1779294680; c=relaxed/simple;
+	bh=Gmvux0jRIJqCAZHFRkxbJ/Dm/6HTkxpe4kZ9GI2YMug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwO/HIi4j7Gce/Vxw+i+1GTuwWvvlB3nT1JiNLFBdsRkhgv4ASVZxjRIsvfSi9vKdw0nFBRgSCFWKTCY74PzlHWNJ2X9PrR2ETEUQ42OCGt2NLuPuI6CFxddVsPtVNuYp0HWh0mLlyh2I4bRLQjmhTgj0Nyq2qr9KH9Yb6J8Vq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWn/H62E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E8E1F000E9;
-	Wed, 20 May 2026 16:33:04 +0000 (UTC)
+	 MIME-Version; b=eTtnQosP9YLT5w9Yp6fAg8jlB32+8UXs1qArZki1hWaptEFa9GaB+p/UPo7SYR1NU3hmjKmaTMa4lYX3FW4eWLMboeiLwB1yzDqGfLXWT5OKkf56mbqifd6nh3/gttY+xhMienohle4oSU2HnBfoigtyDMWqrlCcupzSgAI7hvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YNNTjVK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021291F00893;
+	Wed, 20 May 2026 16:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294784;
-	bh=Myzlm5m7UybRV0YKv5Pi6oUlZ2OTYyXMZ3eRZRk1WnM=;
+	s=korg; t=1779294679;
+	bh=202LZ7FkOgKBzIOE0vhQcM7mCkSrfsZZWCqWgf2QIA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uWn/H62EW/bOY4XInkFrn4uth/Ws3TfYxikmlQb3ki10wQxJJ8JEFZfV0hjxP1J3d
-	 bODoJ1OjJIQJbSPvNd/EOMxUiaspqEfNmJFgEjljUR9o5elzUd9U9+bAStG9N/0Pie
-	 bV+RQQZH/mh2zaDJ6fk9EGoIRNWz3mTBCKeZWmWY=
+	b=2YNNTjVKJKdm8Ci8dW4hwyA3rzf1ZDJM1VK2lam3aQAurbZQ0ipc9Nv6tgUrUIwON
+	 bWAKgy+s/0udYnCWXvcxtVlNqpurTlCLf+rqQNxg2lR0CC1bk3VCUr23tv58VBVQWv
+	 bhe2VYci5Vfqj4k6qlw7D4ZqYgRyZqqnYU0iBFEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Amery Hung <ameryhung@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0131/1146] bpf: Fix refcount check in check_struct_ops_btf_id()
-Date: Wed, 20 May 2026 18:06:21 +0200
-Message-ID: <20260520162151.290315836@linuxfoundation.org>
+Subject: [PATCH 7.0 0132/1146] selftests/bpf: Fix sockmap_multi_channels reliability
+Date: Wed, 20 May 2026 18:06:22 +0200
+Message-ID: <20260520162151.312656839@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,31 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,inria.fr,etsalapatis.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250192-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250152-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email]
-X-Rspamd-Queue-Id: BE079592C05
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,shopee.com:email]
+X-Rspamd-Queue-Id: 29C1F5939D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,37 +100,73 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 25e3e1f1096089a64901ae1faa7b7b13446653db ]
+[ Upstream commit d9d7125e445dc06c2d9bd3dbd070dcbcd41a540f ]
 
-The current implementation only checks whether the first argument is
-refcounted. Fix this by iterating over all arguments.
+Previously I added a FIONREAD test for sockmap, but it can occasionally
+fail in CI [1].
 
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Fixes: 38f1e66abd184 ("bpf: Do not allow tail call in strcut_ops program with __ref argument")
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Acked-by: Amery Hung <ameryhung@gmail.com>
-Link: https://lore.kernel.org/r/20260320130219.63711-1-keisuke.nishimura@inria.fr
+The test sends 10 bytes in two segments (2 + 8). For UDP, FIONREAD only
+reports the length of the first datagram, not the total queued data.
+The original code used recv_timeout() expecting all 10 bytes, but under
+high system load, the second datagram may not yet be processed by the
+protocol stack, so recv would only return the first 2-byte datagram,
+causing a size mismatch failure.
+
+Fix this by receiving exactly the expected bytes (matching FIONREAD) in
+the first recv. The remaining datagram is then consumed in a second recv
+block, which is only reachable for UDP since TCP's expected already
+equals sizeof(buf).
+
+Test:
+./test_progs -a sockmap_basic
+410/1   sockmap_basic/sockmap create_update_free:OK
+...
+Summary: 1/35 PASSED, 0 SKIPPED, 0 FAILED
+
+[1] https://github.com/kernel-patches/bpf/actions/runs/22919385910/job/66515395423
+
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Fixes: 17e2ce02bf56 ("selftests/bpf: Add tests for FIONREAD and copied_seq")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://lore.kernel.org/r/20260312072549.6766-1-jiayuan.chen@linux.dev
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/sockmap_basic.c    | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index e3814152b52f8..23b35605ae377 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -24897,7 +24897,7 @@ static int check_struct_ops_btf_id(struct bpf_verifier_env *env)
- 	}
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+index dd3c757859f6b..d2846579285f2 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
+@@ -1298,10 +1298,23 @@ static void test_sockmap_multi_channels(int sotype)
+ 	avail = wait_for_fionread(p1, expected, IO_TIMEOUT_SEC);
+ 	ASSERT_EQ(avail, expected, "ioctl(FIONREAD) full return");
  
- 	for (i = 0; i < st_ops_desc->arg_info[member_idx].cnt; i++) {
--		if (st_ops_desc->arg_info[member_idx].info->refcounted) {
-+		if (st_ops_desc->arg_info[member_idx].info[i].refcounted) {
- 			has_refcounted_arg = true;
- 			break;
- 		}
+-	recvd = recv_timeout(p1, rcv, sizeof(rcv), MSG_DONTWAIT, 1);
+-	if (!ASSERT_EQ(recvd, sizeof(buf), "recv_timeout(p1)") ||
++	recvd = recv_timeout(p1, rcv, expected, MSG_DONTWAIT, 1);
++	if (!ASSERT_EQ(recvd, expected, "recv_timeout(p1)") ||
+ 	    !ASSERT_OK(memcmp(buf, rcv, recvd), "data mismatch"))
+ 		goto end;
++
++	/* process remaining data for udp if secondary data is available */
++	expected = sizeof(buf) - expected;
++	if (expected) {
++		avail = wait_for_fionread(p1, expected, IO_TIMEOUT_SEC);
++		ASSERT_EQ(avail, expected, "second ioctl(FIONREAD) full return");
++
++		recvd = recv_timeout(p1, rcv, expected, MSG_DONTWAIT, 1);
++		if (!ASSERT_EQ(recvd, expected, "second recv_timeout(p1)") ||
++		    !ASSERT_OK(memcmp(buf + sizeof(buf) - expected, rcv, recvd),
++			       "second data mismatch"))
++			goto end;
++	}
+ end:
+ 	if (c0 >= 0)
+ 		close(c0);
 -- 
 2.53.0
 
