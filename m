@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Fi4KKXzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:17 +0200
+	id QKJMCCokDmoo6gUAu9opvQ
+	(envelope-from <stable+bounces-252364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF37594903
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D35959A936
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 39A45323A74F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A53E035B5274
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148083D9DD1;
-	Wed, 20 May 2026 16:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EA33D5647;
+	Wed, 20 May 2026 18:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp9gTIGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioOl+0RW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2712369D6E;
-	Wed, 20 May 2026 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334CE3F9296;
+	Wed, 20 May 2026 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296311; cv=none; b=GV0SuljRaufclofoH5Vi8PsCT50turCfN73LYZuZo6zxYX9lsBjInxQSRTOkhUBo0Vw5ZdCmhBJphiemIVdWzBqs8GwHzKI6QkBUG+ndfHTXsiFdzvs77D6uLTvG/yKsWk0+Jy8xRbwfplhz+EtvhsI4bOH+eso3PagtQkC3w8E=
+	t=1779300482; cv=none; b=SPDEVmzaYu9VLCqTxbwq9Gqyuf72cLWilCHK1FvlQTLEKAZEo9fZ8EV4bpdjmLBrTMAF+OOi1QjdglrIyga9kYL/WAxR7S/5Lng/vaimsoeVc+iNKInWC/T+k8hq0JRFBdkTaI575oO9pdsFhpJqmNiNjogCBUepmTAygku2Yjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296311; c=relaxed/simple;
-	bh=bv18WOzk2fRABz03uZNjZ/U4qs/Z3MgOBU5SLO1mrq8=;
+	s=arc-20240116; t=1779300482; c=relaxed/simple;
+	bh=qDh9CAl0ehkmzIl3gFNv2XttPXEBjorovhEb/isg/2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+EjR0I53T29AM0ZEUUo94dDXx//kFbbHJ/kVAf32p67cMDhjkwJCmLRFRZTEcIyN2IAi4cAONi1dZsG0ht/kLX5Z02qzRvefDq5Cp6cDFk8iLZtzJHix8WcdWzQsjQWM/Cqu5Fm1SnAGbEH5Wl7WHi6rg3yYXrVafO9mtBJuF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp9gTIGC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4312C1F000E9;
-	Wed, 20 May 2026 16:58:30 +0000 (UTC)
+	 MIME-Version; b=ZwqIarpj+BG7DgWQEjoLHyjf1YrGgwYELwYt0ULNnX15IX3NyuK+X94sXF5rH36QMyYq0FKWEb2Wjr0v+WyhKg8HJMsyo0Sxx7JYHRCBhhJ0CzvwdD0SE6Mbyldm5INDy7fTA9EaeJTm56mPd9KRO2E8AaxuzEk19SPd0iNqCQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioOl+0RW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6FC1F00893;
+	Wed, 20 May 2026 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296310;
-	bh=FA/IVUY9f2a3Ug3Es47rMaa7reHCBLJiY1emuLtyzz8=;
+	s=korg; t=1779300480;
+	bh=JoGLKXKysYntG2P64WORhZ7r//cJFwsINYa0gyjaG0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qp9gTIGCkl6fuvEWAhj+/NaS+/IGgQNxogWgyTWHPwTqfoJL7P3dOINRABY2AI+Wv
-	 2AMe4BJ7eBN6VnHCpzAwvBOEbEAqET8mTV7qY+GvPBGVa1k/T/GKadDeA+ocBwtU8b
-	 IjYwt2e5OKkK2lu5xHiVxjBsUMyWptxuNUjzr5s0=
+	b=ioOl+0RWdFxQOHq4i5MH3aXmayNav1KZdQzBmVaWWL5JXY8Bz3f8If1l8ST+HK3s7
+	 56cD6kFX1uFg3zA+uXwIKkw4I1tLBh8nXArXC7cGOMomyRbobqQ/zC3BEH/L106Ee9
+	 Nx/ME0p7sENyW1BLJXUSx7WqIfTzgl1oFtn/OhtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0752/1146] arm64: dts: imx8mp-navqp: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.12 191/666] drm/msm/a6xx: Fix HLSQ register dumping
 Date: Wed, 20 May 2026 18:16:42 +0200
-Message-ID: <20260520162205.230172633@linuxfoundation.org>
+Message-ID: <20260520162115.340929641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250787-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252364-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: DFF37594903
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7D35959A936
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 741d6ac1a2a2e0f3e2cae5eef3516cdd75119e83 ]
+[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there will be interrupt storm for i.MX8MP NAVQP. Per schematic, there
-is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
-PUE and PU together to make pull up work properly.
+Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
+we are always reading TP state when we wanted SP or HLSQ state.
 
-Fixes: 682729a9d506d ("arm64: dts: freescale: Add device tree for Emcraft Systems NavQ+ Kit")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Suggested-by: Connor Abbott <cwabbott0@gmail.com>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714236/
+Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-navqp.dts | 2 +-
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
-index 4a4f7c1adc23f..9dedb9f11145e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
-@@ -356,7 +356,7 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c3
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 5d7d2f5a2a1f8..8f104f7fcaa29 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -996,7 +996,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
+ 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
+ 	int i, regcount = 0;
  
- 	pinctrl_pmic: pmicgrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x1c0
- 		>;
- 	};
+-	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
++	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
  
+ 	for (i = 0; i < regs->count; i += 2) {
+ 		u32 count = RANGE(regs->registers, i);
 -- 
 2.53.0
 
