@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oEVtFh0ZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:09 +0200
+	id wK+0OjAPDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E339859998D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4E2598B22
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A67DA31A0E36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ABBA34D61FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B03A6EE0;
-	Wed, 20 May 2026 17:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C488134041C;
+	Wed, 20 May 2026 16:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnv7yBM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxjVVs8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA9636F421;
-	Wed, 20 May 2026 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C794221F2F;
+	Wed, 20 May 2026 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297607; cv=none; b=bpCkk4jb08iyQ56PCZt393kjEzkjCTFDh7urRt4iojb75mzStvs4beDXWPUxDr+2epR4N21xQy7eALRkZPP8XjtRAbn5zFpAFADRonod6J30RmW7wWKFsYEM5jyjaEft3ZcQjo+FJ8ftgvAEe6lM0yc54ah7GTAkPrxW5LRgajc=
+	t=1779295204; cv=none; b=jO3P11iK6L652ci0T4kH1/QMF7N4An2lZji6Zii7hNMWaRtiLv0LhcWmtFncSvNP2SOlcDBgeBLagihhIr6Y3Kz/rg0McKMslJRxmuKozVBv4Icq0tbuMAlsPllrAqfSrqqXG5lkzKkgz+mpraJlzD9KbBubGNpqACAainQlMmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297607; c=relaxed/simple;
-	bh=Fh9YSNBNhFEPmPtN2f1W4jd9YOxU6NcifXKSx5Xfi0w=;
+	s=arc-20240116; t=1779295204; c=relaxed/simple;
+	bh=t9VM728qd/TFMhbmtgTXVqOIBLcDC55Y9ZY90OfLEhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzJoVpm+TetkUCPo+0Pif4YKJGtDet/GW0vd+gcz6opMkBz156MIAAwMpK53kcyQuNKtKgNePZ5IAJFDTysp6dKxXzj9L9/7d8L2cvPL8W+fcm28BjsHGGR9qJy9draqYMczSf0RUqOl+xsf9znxiVS2hd/wLQDcLa9OPANeHcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnv7yBM/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB91F00893;
-	Wed, 20 May 2026 17:20:05 +0000 (UTC)
+	 MIME-Version; b=FSCWLKo9LSX6M4GzmhHmS8d9wnftsvM9o7Nsg+Zdgjki1UluVS7u8s7RV2ejynIEDTYvplrC5jW4dOmJSlfYcCF/mk6x6h/qwdiTwuHwaqJsWNgGhkhMBzzRFKARh0X3HBygxA+sZDNm+0vkl71Wlcqs8BjVH/5LDmc4dOUdb+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxjVVs8h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F9E1F000E9;
+	Wed, 20 May 2026 16:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297606;
-	bh=c3BV0Jr5p6U4CcIqGjprnNbc3+iUDYLdtmhtx+fTxn8=;
+	s=korg; t=1779295203;
+	bh=GtkoCc94NdwJkIffZeCiRpaTaSzNc83pg+jskIB9NqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mnv7yBM/WCq8skejf58V8ByALQtTtRYhR0a02R27f9Kddh11A6Iu9wGZB3qCuILLA
-	 KKtPks7BwW2FOAH3bsoYNVHCbReZnaiQvD55WAMzjmg5gWMLXCLKhGhzVkUWQ78YtH
-	 GdfsR3TfWEreomdjNX4cegV2LyuYdQgyFWMGK5/o=
+	b=MxjVVs8hXYHH75YijlzO6vB5V/tsxgJXCH90Rnr2yq5VCbvAASWTe6LXGcuACkSdn
+	 l9O+wEDYHYWKy+OXu/lUmt33hqoMhznxYyu1Z4whcXcs99fRuvuGmbYpNR70kbguWK
+	 azFHEYz+y2vN33q5WlbU5msCn0u6MpJ7RYAQXxsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 096/957] wifi: mt76: mt7996: fix struct mt7996_mcu_uni_event
+Subject: [PATCH 7.0 0329/1146] PCI: qcom: Advertise Hotplug Slot Capability with no Command Completion support
 Date: Wed, 20 May 2026 18:09:39 +0200
-Message-ID: <20260520162136.641570269@linuxfoundation.org>
+Message-ID: <20260520162155.642689283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251293-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250358-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -92,60 +92,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nbd.name:email,mediatek.com:email]
-X-Rspamd-Queue-Id: E339859998D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6F4E2598B22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
-[ Upstream commit efbd5bf395f4e6b45a87f3835d4c2e28170c77c5 ]
+[ Upstream commit 33a76fc3c3e61386524479b99f35423bd3d9a895 ]
 
-The cid field is defined as a two-byte value in the firmware.
+Qcom PCIe Root Ports advertise hotplug capability in hardware, but do not
+support hotplug command completion. As a result, the hotplug commands
+issued by the pciehp driver never gets completion notification, leading to
+repeated timeout warnings and multi-second delays during boot and
+suspend/resume.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20260203155532.1098290-2-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Commit a54db86ddc153 ("PCI: qcom: Do not advertise hotplug capability for
+IPs v2.7.0 and v1.9.0") mistakenly assumed that the Root Ports doesn't
+support Hotplug due to timeouts and disabled the Hotplug functionality
+altogether. But the Root Ports does support reporting Hotplug events like
+DL_Up/Down events.
+
+So to fix the command completion timeout issues, just set the No Command
+Completed Support (NCCS) bit and enable Hotplug in Slot Capability field
+back.
+
+Fixes: a54db86ddc153 ("PCI: qcom: Do not advertise hotplug capability for IPs v2.7.0 and v1.9.0")
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+[mani: renamed function, commit log and added comment]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # Hamoa CRD, tunneled link
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260314-hotplug-v1-1-96ac87d93867@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.h | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 321098496a39e..c2d15128784bc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -233,7 +233,7 @@ mt7996_mcu_parse_response(struct mt76_dev *mdev, int cmd,
- 		event = (struct mt7996_mcu_uni_event *)skb->data;
- 		ret = le32_to_cpu(event->status);
- 		/* skip invalid event */
--		if (mcu_cmd != event->cid)
-+		if (mcu_cmd != le16_to_cpu(event->cid))
- 			ret = -EAGAIN;
- 	} else {
- 		skb_pull(skb, sizeof(struct mt7996_mcu_rxd));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index abfd7e5a775b3..7b51d7346bcaa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -25,8 +25,8 @@ struct mt7996_mcu_rxd {
- };
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 67a16af69ddc7..9fdfc88ac1512 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -350,15 +350,20 @@ static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+ }
  
- struct mt7996_mcu_uni_event {
--	u8 cid;
--	u8 __rsv[3];
-+	__le16 cid;
-+	u8 __rsv[2];
- 	__le32 status; /* 0: success, others: fail */
- } __packed;
+-static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
++static void qcom_pcie_set_slot_nccs(struct dw_pcie *pci)
+ {
+ 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	u32 val;
  
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
++	/*
++	 * Qcom PCIe Root Ports do not support generating command completion
++	 * notifications for the Hot-Plug commands. So set the NCCS field to
++	 * avoid waiting for the completions.
++	 */
+ 	val = readl(pci->dbi_base + offset + PCI_EXP_SLTCAP);
+-	val &= ~PCI_EXP_SLTCAP_HPC;
++	val |= PCI_EXP_SLTCAP_NCCS;
+ 	writel(val, pci->dbi_base + offset + PCI_EXP_SLTCAP);
+ 
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+@@ -558,7 +563,7 @@ static int qcom_pcie_post_init_2_1_0(struct qcom_pcie *pcie)
+ 	writel(CFG_BRIDGE_SB_INIT,
+ 	       pci->dbi_base + AXI_MSTR_RESP_COMP_CTRL1);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -638,7 +643,7 @@ static int qcom_pcie_post_init_1_0_0(struct qcom_pcie *pcie)
+ 		writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT);
+ 	}
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -731,7 +736,7 @@ static int qcom_pcie_post_init_2_3_2(struct qcom_pcie *pcie)
+ 	val |= EN;
+ 	writel(val, pcie->parf + PARF_AXI_MSTR_WR_ADDR_HALT_V2);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
+@@ -1037,7 +1042,7 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
+ 		writel(WR_NO_SNOOP_OVERRIDE_EN | RD_NO_SNOOP_OVERRIDE_EN,
+ 				pcie->parf + PARF_NO_SNOOP_OVERRIDE);
+ 
+-	qcom_pcie_clear_hpc(pcie->pci);
++	qcom_pcie_set_slot_nccs(pcie->pci);
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
