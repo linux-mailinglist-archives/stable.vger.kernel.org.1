@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-253164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAVkE5wuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:52 +0200
+	id OAfuMcAhDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-252069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB34459B8D1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA0C59A6A0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B95939705E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D88C31D2279
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C6C406272;
-	Wed, 20 May 2026 18:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E4F3F23C5;
+	Wed, 20 May 2026 17:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRdmWUDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNwRfK/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34973FC5B1;
-	Wed, 20 May 2026 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A33F0A83;
+	Wed, 20 May 2026 17:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302573; cv=none; b=ufftOte7Go6U5x0usd8Cpwmlij6mu7L3FpNQfFQoLOs0d/AeJhjlKnHL8C70NGbaJKHxMGJ8Me/xoKxuw1Ocr/vVm0sGR6TAVepIgTsyBN32OZI2cUZzQH1APMbjla/ujsY3SGo95WN7KSiFt1OQfPxNqKyB69HTiwEyo+9eWFk=
+	t=1779299665; cv=none; b=QBEm9fF1wnUptCMOKnZCIS+DVlK0eF6f1I9c0OfMys15kH8SDs53G+mKlsf5wLciiqRTZ0wSv1uQv0O5je6Rb6cndqCK5T1lWb+Q/4E9hPs6EAsq/Twm+vgSbnOivM79ccoj0Do67Ral0s1tZmkui6c98ezHDUr607YOhSF8RNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302573; c=relaxed/simple;
-	bh=AaMdk4L2eKOq0Y0QjnXDfxLtOp750A2XyFL2hkcIC/c=;
+	s=arc-20240116; t=1779299665; c=relaxed/simple;
+	bh=/Mp6kZPzz1cO1tJEin+HrkFJvMnrP/0w4yj3624xYMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCmC5A5mGq8v8iiod0rTbZgjzPyZibsiyCiHb3a8a2o2/wGkyC/jrGzS56FohckG4FS2+LCC/czrHXM/uNBexSGhbR0nYL9Xvx45q0BKT0qTxVV+qtd8TkJ6wTWp4tyv9QHKXsUiZsuepmiKOx3TGxFoW9A24unvmQrNH3LwTxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRdmWUDY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3321F000E9;
-	Wed, 20 May 2026 18:42:51 +0000 (UTC)
+	 MIME-Version; b=AnJhSkDJoriAm20vIiOWeXE/fN9lLZvbtdB3PB3e9cMdunClAlf42h2B8OzWhweCzcsM0OiKlYdU0wjfXl+rDlP0AMWXALgXzAZ8vGHgdehuy8QrE3nIPVnLCqjQM+HHn5QWj6Q3U87Vke6WiGS6cQJY7tDbDsBCaJlBOvQOCps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNwRfK/y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487281F000E9;
+	Wed, 20 May 2026 17:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302572;
-	bh=zmOlqkI3GPrRwmlBxV6TOTw7VFgGtFBSN/JnTet/NX4=;
+	s=korg; t=1779299663;
+	bh=Xe5JX+Dk2xVu+7u0UfF3UnozZuIeSX3nwBr30Snh8sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sRdmWUDYcvo4ugyZn3tkVQkwBvoumZnb/yDrs6bxTK1viR/HQ/X1WVUmHqxlQlGJd
-	 05OJval3Kd8SfQTJILcceLhQIVI7jxZCUwH3DyUzBUO0QvPnxCy4ctaC3saAxopY/r
-	 BAUBJzhJpAekZPsayfWYhrfAWTpLLod0tPqmzK2g=
+	b=iNwRfK/yBYhV1hNebu8fXCWRVrEpg9C9nCmDO2+ty/Ai3WlZJSO8Fm1PzFqT0xot+
+	 DE/7Z1E+X2QBE88f1W3DLEwnrnCc9Or4vnHk3PkZ0IsX5mkwXETDYp5LP/mW7TYpiO
+	 LcW/uVPrJL0fzAGeAizcurJb63VI5h6NB1uvCmys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moses <p@1g4.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/508] crypto: ccp - copy IV using skcipher ivsize
+Subject: [PATCH 6.18 841/957] iavf: rename IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
 Date: Wed, 20 May 2026 18:22:04 +0200
-Message-ID: <20260520162105.164038110@linuxfoundation.org>
+Message-ID: <20260520162152.801361758@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253164-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252069-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -88,58 +92,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
-X-Rspamd-Queue-Id: AB34459B8D1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 2FA0C59A6A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moses <p@1g4.org>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit a7a1f3cdd64d8a165d9b8c9e9ad7fb46ac19dfc4 ]
+[ Upstream commit 70d62b669f1f9080a25278fc90b64309f4ae8959 ]
 
-AF_ALG rfc3686-ctr-aes-ccp requests pass an 8-byte IV to the driver.
+Rename the IAVF_VLAN_IS_NEW state to IAVF_VLAN_ADDING to better
+describe what the state represents: an ADD request has been sent to
+the PF and is waiting for a response.
 
-ccp_aes_complete() restores AES_BLOCK_SIZE bytes into the caller's IV
-buffer while RFC3686 skciphers expose an 8-byte IV, so the restore
-overruns the provided buffer.
+This is a pure rename with no behavioral change, preparing for a
+cleanup of the VLAN filter state machine.
 
-Use crypto_skcipher_ivsize() to copy only the algorithm's IV length.
-
-Fixes: 2b789435d7f3 ("crypto: ccp - CCP AES crypto API support")
-Signed-off-by: Paul Moses <p@1g4.org>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-1-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: f2ce65b9b917 ("iavf: stop removing VLAN filters from PF on interface down")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-crypto-aes.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h          | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/ccp/ccp-crypto-aes.c b/drivers/crypto/ccp/ccp-crypto-aes.c
-index 918e223f21b65..5a48155ea796a 100644
---- a/drivers/crypto/ccp/ccp-crypto-aes.c
-+++ b/drivers/crypto/ccp/ccp-crypto-aes.c
-@@ -29,8 +29,11 @@ static int ccp_aes_complete(struct crypto_async_request *async_req, int ret)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index e9fb0a0919e37..47a862ca5e2c3 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -158,7 +158,7 @@ struct iavf_vlan {
+ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_INVALID,
+ 	IAVF_VLAN_ADD,		/* filter needs to be added */
+-	IAVF_VLAN_IS_NEW,	/* filter is new, wait for PF answer */
++	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+ 	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+ 	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
+ 	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 291b21230b65f..9dab61f198c0d 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -746,7 +746,7 @@ static void iavf_vlan_add_reject(struct iavf_adapter *adapter)
  
--	if (ctx->u.aes.mode != CCP_AES_MODE_ECB)
--		memcpy(req->iv, rctx->iv, AES_BLOCK_SIZE);
-+	if (ctx->u.aes.mode != CCP_AES_MODE_ECB) {
-+		size_t ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(req));
-+
-+		memcpy(req->iv, rctx->iv, ivsize);
-+	}
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-		if (f->state == IAVF_VLAN_IS_NEW) {
++		if (f->state == IAVF_VLAN_ADDING) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+@@ -811,7 +811,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 			if (f->state == IAVF_VLAN_ADD) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 				if (i == count)
+ 					break;
+ 			}
+@@ -872,7 +872,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 				vlan->tpid = f->vlan.tpid;
  
- 	return 0;
- }
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 			}
+ 		}
+ 
+@@ -2906,7 +2906,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 
+ 		spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_IS_NEW)
++			if (f->state == IAVF_VLAN_ADDING)
+ 				f->state = IAVF_VLAN_ACTIVE;
+ 		}
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
 -- 
 2.53.0
 
