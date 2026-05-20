@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFWNLKLrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:06 +0200
+	id ANE/CLT8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E27593171
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC8B5961D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 826F7301603D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A35E37992FD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615D23A3E9C;
-	Wed, 20 May 2026 17:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674573F1AB8;
+	Wed, 20 May 2026 17:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z38Lc+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRCmctdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C97A3F20E5;
-	Wed, 20 May 2026 17:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEE4349AFF;
+	Wed, 20 May 2026 17:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296700; cv=none; b=CwXJ5waBQ7uvYa0gFS3warMqO5gd/+ZS68cFNFuJ6GnF+8UoobbKmVvMQsQ7jVztK1zIDCiV5o3kWzFmk6ozkbp3QXS09mT6WWCZrV4C05dtx64oG75I/p5oAlOU3pTaTzSG8a4xbyAxOzkXp/J7IAg9iwegVoi9YEEII8LxSXo=
+	t=1779299176; cv=none; b=jWiXiVRHq4CjbQMboFU3KeJdkFs9TOYqlS4MTn9bfYz7Ka4jK3dlhDGhAdv8l36pc+pKfjJlF371mgFzY+rGlIi1Z98GR20HeJwLl1cQhOUJg5Wb/tNmukSaAx5ekIan7SSlnL2qlZC01VJElkpICck+zOusHscoZBSNQkvL724=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296700; c=relaxed/simple;
-	bh=QkESb/m5ZLqdzr+A8Jrh9XRPjxKqZg2KOrRdEirmeAk=;
+	s=arc-20240116; t=1779299176; c=relaxed/simple;
+	bh=OIK6fYivEkEByqiRwIvzrXGRldLrtY3c0L3qEXnuqmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrttrYJIwqxUnuBSJJFL9OrIJVcGvc/FPhKQ25GP4QUFxn92T9WXYjQspe79ZWBkPsvdU1hBrsLtS0TAfY1pvooPHKt4HE5RiowIRllufcy3uxObWdiPh8Mld43gzy/Cap4Hw+VFVaV/PWVcXtItEVn3dY0AIVsKeCcPV3Tn+Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z38Lc+V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B9C1F00893;
-	Wed, 20 May 2026 17:04:58 +0000 (UTC)
+	 MIME-Version; b=gHdBspvChYXueKbcvI7ZlVT2Av3oTJNGsdE9rDXXS/Fbzns8HdsEs5A0d5V74YfxjEy5EZT/Qz4pHLkRS7FsjcrGNIUcsz42s3ezKQHAr+NqdmpjVrPeZ6jGTI89tQs/Zk2GUOd6DjWfnlgtabL6jgrdZKzz6MTuuWL52g0Muy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRCmctdU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DCC1F000E9;
+	Wed, 20 May 2026 17:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296698;
-	bh=TLBqnwb2WEiG/kohbp7iD11+cNf8h0rwxlP+LzDw2ds=;
+	s=korg; t=1779299175;
+	bh=N3HIKl831OdrmmbP+Z0MoOKwfH0iWPZHXcK8Qh7g+PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0z38Lc+VvUiDo+W+xRHaRR0H2uCN8Z8RzBuylvaXjwh2RbYVX//JIEcN6HeptCXSC
-	 0Y6U1REff0N30EIKNo0u4cQ+Gk101vx3AZZ+WKwfhG5ZgpAsXJxUy1R9i4F1MA3S7/
-	 DFiPoVDBqhjujn305doyyS1Nz0CTAOU5aAK+WN6E=
+	b=PRCmctdU2RM4dFz0H5wPBo5iwWDCEn6rJOf0MEmMs/dO16xNseRw4TdStf1ub0NFf
+	 Gx/8p32jhg8+e3LbUr7bBHf54AfXrsih6V50Zxj8XSQR9mr6pEF0U78mIbSRp1Mpa8
+	 Fkbf+jnyLtBXEJqmkjslnBFSsKm9PI2r7of1Zldg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0897/1146] rculist: add list_splice_rcu() for private lists
+Subject: [PATCH 6.18 664/957] netfilter: nat: use kfree_rcu to release ops
 Date: Wed, 20 May 2026 18:19:07 +0200
-Message-ID: <20260520162208.535222904@linuxfoundation.org>
+Message-ID: <20260520162148.931332635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250945-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251898-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,89 +86,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 57E27593171
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8FC8B5961D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f902877b635551513729bdf9a8d1422c4aab7741 ]
+[ Upstream commit 6eda0d771f94267f73f57c94630aa47e90957915 ]
 
-This patch adds a helper function, list_splice_rcu(), to safely splice
-a private (non-RCU-protected) list into an RCU-protected list.
+Florian Westphal says:
 
-The function ensures that only the pointer visible to RCU readers
-(prev->next) is updated using rcu_assign_pointer(), while the rest of
-the list manipulations are performed with regular assignments, as the
-source list is private and not visible to concurrent RCU readers.
+"Historically this is not an issue, even for normal base hooks: the data
+path doesn't use the original nf_hook_ops that are used to register the
+callbacks.
 
-This is useful for moving elements from a private list into a global
-RCU-protected list, ensuring safe publication for RCU readers.
-Subsystems with some sort of batching mechanism from userspace can
-benefit from this new function.
+However, in v5.14 I added the ability to dump the active netfilter
+hooks from userspace.
 
-The function __list_splice_rcu() has been added for clarity and to
-follow the same pattern as in the existing list_splice*() interfaces,
-where there is a check to ensure that the list to splice is not
-empty. Note that __list_splice_rcu() has no documentation for this
-reason.
+This code will peek back into the nf_hook_ops that are available
+at the tail of the pointer-array blob used by the datapath.
 
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+The nat hooks are special, because they are called indirectly from
+the central nat dispatcher hook. They are currently invisible to
+the nfnl hook dump subsystem though.
+
+But once that changes the nat ops structures have to be deferred too."
+
+Update nf_nat_register_fn() to deal with partial exposition of the hooks
+from error path which can be also an issue for nfnetlink_hook.
+
+Fixes: e2cf17d3774c ("netfilter: add new hook nfnl subsystem")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: a6134e62dba2 ("netfilter: nf_tables: join hook list via splice_list_rcu() in commit phase")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rculist.h | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ net/ipv4/netfilter/iptable_nat.c  |  4 ++--
+ net/ipv6/netfilter/ip6table_nat.c |  4 ++--
+ net/netfilter/nf_nat_core.c       | 10 ++++++----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/rculist.h b/include/linux/rculist.h
-index 2abba7552605c..e3bc442256922 100644
---- a/include/linux/rculist.h
-+++ b/include/linux/rculist.h
-@@ -261,6 +261,35 @@ static inline void list_replace_rcu(struct list_head *old,
- 	old->prev = LIST_POISON2;
+diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
+index a5db7c67d61be..625a1ca13b1ba 100644
+--- a/net/ipv4/netfilter/iptable_nat.c
++++ b/net/ipv4/netfilter/iptable_nat.c
+@@ -79,7 +79,7 @@ static int ipt_nat_register_lookups(struct net *net)
+ 			while (i)
+ 				nf_nat_ipv4_unregister_fn(net, &ops[--i]);
+ 
+-			kfree(ops);
++			kfree_rcu(ops, rcu);
+ 			return ret;
+ 		}
+ 	}
+@@ -100,7 +100,7 @@ static void ipt_nat_unregister_lookups(struct net *net)
+ 	for (i = 0; i < ARRAY_SIZE(nf_nat_ipv4_ops); i++)
+ 		nf_nat_ipv4_unregister_fn(net, &ops[i]);
+ 
+-	kfree(ops);
++	kfree_rcu(ops, rcu);
  }
  
-+static inline void __list_splice_rcu(struct list_head *list,
-+				     struct list_head *prev,
-+				     struct list_head *next)
-+{
-+	struct list_head *first = list->next;
-+	struct list_head *last = list->prev;
-+
-+	last->next = next;
-+	first->prev = prev;
-+	next->prev = last;
-+	rcu_assign_pointer(list_next_rcu(prev), first);
-+}
-+
-+/**
-+ * list_splice_rcu - splice a non-RCU list into an RCU-protected list,
-+ *                   designed for stacks.
-+ * @list:	the non RCU-protected list to splice
-+ * @head:	the place in the existing RCU-protected list to splice
-+ *
-+ * The list pointed to by @head can be RCU-read traversed concurrently with
-+ * this function.
-+ */
-+static inline void list_splice_rcu(struct list_head *list,
-+				   struct list_head *head)
-+{
-+	if (!list_empty(list))
-+		__list_splice_rcu(list, head, head->next);
-+}
-+
- /**
-  * __list_splice_init_rcu - join an RCU-protected list into an existing list.
-  * @list:	the RCU-protected list to splice
+ static int iptable_nat_table_init(struct net *net)
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index e119d4f090cc8..5be723232df8f 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -81,7 +81,7 @@ static int ip6t_nat_register_lookups(struct net *net)
+ 			while (i)
+ 				nf_nat_ipv6_unregister_fn(net, &ops[--i]);
+ 
+-			kfree(ops);
++			kfree_rcu(ops, rcu);
+ 			return ret;
+ 		}
+ 	}
+@@ -102,7 +102,7 @@ static void ip6t_nat_unregister_lookups(struct net *net)
+ 	for (i = 0; i < ARRAY_SIZE(nf_nat_ipv6_ops); i++)
+ 		nf_nat_ipv6_unregister_fn(net, &ops[i]);
+ 
+-	kfree(ops);
++	kfree_rcu(ops, rcu);
+ }
+ 
+ static int ip6table_nat_table_init(struct net *net)
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index e6b24586d2fed..8e36b4e3e5c47 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -1228,9 +1228,11 @@ int nf_nat_register_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
+ 		ret = nf_register_net_hooks(net, nat_ops, ops_count);
+ 		if (ret < 0) {
+ 			mutex_unlock(&nf_nat_proto_mutex);
+-			for (i = 0; i < ops_count; i++)
+-				kfree(nat_ops[i].priv);
+-			kfree(nat_ops);
++			for (i = 0; i < ops_count; i++) {
++				priv = nat_ops[i].priv;
++				kfree_rcu(priv, rcu_head);
++			}
++			kfree_rcu(nat_ops, rcu);
+ 			return ret;
+ 		}
+ 
+@@ -1294,7 +1296,7 @@ void nf_nat_unregister_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
+ 		}
+ 
+ 		nat_proto_net->nat_hook_ops = NULL;
+-		kfree(nat_ops);
++		kfree_rcu(nat_ops, rcu);
+ 	}
+ unlock:
+ 	mutex_unlock(&nf_nat_proto_mutex);
 -- 
 2.53.0
 
