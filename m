@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252112-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJKQOYL+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:38 +0200
+	id wK4rARL/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252112-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785CA59691F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D39E596B77
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D52F30F750E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6553138B1022
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF38B340A57;
-	Wed, 20 May 2026 18:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFC03F86F4;
+	Wed, 20 May 2026 17:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkZtCUOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBy4hcci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B6433BBCF;
-	Wed, 20 May 2026 18:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A603F54A7;
+	Wed, 20 May 2026 17:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301592; cv=none; b=Fks6t2oEFM9dVBFb0byKS4NMtbqMVDL1v2ipv1qvZChn+yl8yRXh1RnsFtpkOv3Bo585HehZznjzd00/mVUJFrT+wdWS8s6PW1lz3+Nq86+uAi6mV3KQA4qXCKRr3lS5YlV7YCquJZJkR9xqZpM5ktlDr/hwj3Q90jDyL8igSGo=
+	t=1779299822; cv=none; b=FcmrAk5lsCUO+obZ9/NjYev5fD9oRdwaFl1l4CHbI7bZae0ygRY4xBpO5qplkc0k6j9Ji3AcPgC+Mg2MNV8DMkpEwqi9WTRSN+UzpyfnEWvwZGHgDcTVD2hGtJAV7F+vJl8vb1ve3VsszWN17oCBpwjnxKZ2RzhsJqp0tPGXPpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301592; c=relaxed/simple;
-	bh=th4BmuqVS4VNqkxhK3FOx9I5/BfLl0MwXihVTj9JRW8=;
+	s=arc-20240116; t=1779299822; c=relaxed/simple;
+	bh=UF9F8v0rrWvm6Q1WaEqzbZou4Z42gKWk0oLWsTy5tX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qW4/7ys6L1cUxC7MJET59OdJyaXxFqU8/PH1YAFnJfEjCK9TWq6rmCnxzPfLwWMaPQmztMjpBo1kEchZF/+S4Rj2QW38825nu4xEQj01uEx99yoWntBW7oUOGdvQXiVvJ/WkBjOjT85pDRBi/6KJ6OoAW8KjKFh1XvQznIbQziY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkZtCUOJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BD61F000E9;
-	Wed, 20 May 2026 18:26:30 +0000 (UTC)
+	 MIME-Version; b=HYoMLLBStOc47gEASBhIpFIJw7yF3c2IFPuN4hLn675/uXyBe3LIE4itG16jvCdIDJqJdoV+FMEWRxqfirX6h1AXLuenCHNg8lmdCTDxu0shTO3fiZHiN7qaZO8B3/oiElItj3vtbkjKDcvW43h+zUxKz29/wbQanzseFYD+utc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBy4hcci; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC3F1F000E9;
+	Wed, 20 May 2026 17:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301591;
-	bh=KXH4la87VMBwhQGoKuxy15n0CNO2MRXFapDHmLMcWJM=;
+	s=korg; t=1779299820;
+	bh=zOEhVFo7d15mrL8t7RsAMAnP1Jl4N30Y2c1XEPMgjlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IkZtCUOJHakXi6f+qIFSihMO9sLOgwxJQxbyR1zqksK3iUh93XMEeq7rWquxOKpZH
-	 sZeOJWIKtvSlmkG/GUWuockKQjukfH2A+3Eu/lK+fQ5KYR8R+FjIbrEliBwWwiGq/C
-	 GL9OsNDViW06nKj268PrQ8I6s8n0uig8MpRQTwvA=
+	b=tBy4hccigQUijc54wrPmORqelR1R6SqUfaJ2VV7NvtkkUdz9opJbUoWwmaSfwMJwI
+	 9jXr9BIonP2K/Al+9tjiPk35XKMFAZRu6fYAkZo04M+k9HW/luLTmXmXKExzW20Mkp
+	 +mZmyx1SajpwEqPxkxjpqRumcSIIViNvp/4c8nug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 572/666] net/sched: sch_cake: annotate data-races in cake_dump_stats() (V)
+Subject: [PATCH 6.18 900/957] media: staging: imx: configure src_mux in csi_start
 Date: Wed, 20 May 2026 18:23:03 +0200
-Message-ID: <20260520162123.667260780@linuxfoundation.org>
+Message-ID: <20260520162154.091994000@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +65,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252788-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252112-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,toke.dk:email]
-X-Rspamd-Queue-Id: 785CA59691F
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pengutronix.de:email]
+X-Rspamd-Queue-Id: 6D39E596B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit a6c95b833dc17e84d16a8ac0f40fd0931616a52d ]
+[ Upstream commit ebeec2b000a90cd8aae86d1931ff5ef23af8284e ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+After media_pipeline_start() was called, the media graph is assumed to
+be validated. It won't be validated again if a second stream starts.
 
-In this final patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for cparams.target and cparams.interval.
+The imx-media-csi driver, however, changes hardware configuration in the
+link_validate() callback. This can result in started streams with
+misconfigured hardware.
 
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In the concrete example, the ipu2_csi1 is driven by a parallel video
+input. After the media pipeline has been started with this
+configuration, a second stream is configured to use ipu1_csi0 with
+MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
+of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
+already running, link_validate won't be called, and the ipu1_csi0 won't
+be reconfigured. The resulting video is broken, because the ipu1_csi0 is
+misconfigured, but no error is reported.
+
+Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
+that input to ipu1_csi0 is configured correctly when starting the
+stream. This is a local reconfiguration in ipu1_csi0 and is possible
+while the media pipeline is running.
+
+Since csi_start() is called with priv->lock already locked,
+csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
+dropped.
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/staging/media/imx/imx-media-csi.c | 44 ++++++++++++-----------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index ee8d662db747c..ba1a5c15e6cab 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -2297,10 +2297,11 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
+index 55a7d8f38465b..1bc644f73a9d1 100644
+--- a/drivers/staging/media/imx/imx-media-csi.c
++++ b/drivers/staging/media/imx/imx-media-csi.c
+@@ -744,6 +744,28 @@ static int csi_setup(struct csi_priv *priv,
+ 	return 0;
+ }
  
- 	byte_target_ns = (byte_target * rate_ns) >> rate_shft;
++static void csi_set_src(struct csi_priv *priv,
++			struct v4l2_mbus_config *mbus_cfg)
++{
++	bool is_csi2;
++
++	is_csi2 = !is_parallel_bus(mbus_cfg);
++	if (is_csi2) {
++		/*
++		 * NOTE! It seems the virtual channels from the mipi csi-2
++		 * receiver are used only for routing by the video mux's,
++		 * or for hard-wired routing to the CSI's. Once the stream
++		 * enters the CSI's however, they are treated internally
++		 * in the IPU as virtual channel 0.
++		 */
++		ipu_csi_set_mipi_datatype(priv->csi, 0,
++					  &priv->format_mbus[CSI_SINK_PAD]);
++	}
++
++	/* select either parallel or MIPI-CSI2 as input to CSI */
++	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
++}
++
+ static int csi_start(struct csi_priv *priv)
+ {
+ 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+@@ -760,6 +782,8 @@ static int csi_start(struct csi_priv *priv)
+ 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
+ 	output_fi = &priv->frame_interval[priv->active_output_pad];
  
--	b->cparams.target = max((byte_target_ns * 3) / 2, target_ns);
--	b->cparams.interval = max(rtt_est_ns +
--				     b->cparams.target - target_ns,
--				     b->cparams.target * 2);
-+	WRITE_ONCE(b->cparams.target,
-+		   max((byte_target_ns * 3) / 2, target_ns));
-+	WRITE_ONCE(b->cparams.interval,
-+		   max(rtt_est_ns + b->cparams.target - target_ns,
-+		       b->cparams.target * 2));
- 	b->cparams.mtu_time = byte_target_ns;
- 	b->cparams.p_inc = 1 << 24; /* 1/256 */
- 	b->cparams.p_dec = 1 << 20; /* 1/4096 */
-@@ -2930,9 +2931,9 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		PUT_TSTAT_U32(BACKLOG_BYTES, b->tin_backlog);
++	csi_set_src(priv, &mbus_cfg);
++
+ 	/* start upstream */
+ 	ret = v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
+ 	ret = (ret && ret != -ENOIOCTLCMD) ? ret : 0;
+@@ -1130,7 +1154,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+ {
+ 	struct csi_priv *priv = v4l2_get_subdevdata(sd);
+ 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
+-	bool is_csi2;
+ 	int ret;
  
- 		PUT_TSTAT_U32(TARGET_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.target)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.target))));
- 		PUT_TSTAT_U32(INTERVAL_US,
--			      ktime_to_us(ns_to_ktime(b->cparams.interval)));
-+			      ktime_to_us(ns_to_ktime(READ_ONCE(b->cparams.interval))));
+ 	ret = v4l2_subdev_link_validate_default(sd, link,
+@@ -1145,25 +1168,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
+ 		return ret;
+ 	}
  
- 		PUT_TSTAT_U32(SENT_PACKETS, b->packets);
- 		PUT_TSTAT_U32(DROPPED_PACKETS, b->tin_dropped);
+-	mutex_lock(&priv->lock);
+-
+-	is_csi2 = !is_parallel_bus(&mbus_cfg);
+-	if (is_csi2) {
+-		/*
+-		 * NOTE! It seems the virtual channels from the mipi csi-2
+-		 * receiver are used only for routing by the video mux's,
+-		 * or for hard-wired routing to the CSI's. Once the stream
+-		 * enters the CSI's however, they are treated internally
+-		 * in the IPU as virtual channel 0.
+-		 */
+-		ipu_csi_set_mipi_datatype(priv->csi, 0,
+-					  &priv->format_mbus[CSI_SINK_PAD]);
+-	}
+-
+-	/* select either parallel or MIPI-CSI2 as input to CSI */
+-	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
+-
+-	mutex_unlock(&priv->lock);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
