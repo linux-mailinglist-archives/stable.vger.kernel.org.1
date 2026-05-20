@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKJJHdUFDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:53 +0200
+	id 0Dy3IqETDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FFA597B31
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114EC59910F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92CEB328CEAC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B20A637F74C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7496A3A6B6D;
-	Wed, 20 May 2026 18:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8A53ED3B8;
+	Wed, 20 May 2026 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8lsGh3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSZwn09k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9AF331220;
-	Wed, 20 May 2026 18:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB5F34EF05;
+	Wed, 20 May 2026 16:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300426; cv=none; b=EkMuES1AjbBxEeylHtv2qkEPMk8FAZzm8iRuHhJde/q+w2kk0HgmcCS3wmH5KY9rLdO46U/UUzMPI4o3eB2Xki5j7TUQvBD5tCsUkz7xLLm8Iw6HpLhU4wwubvGEIlqXFmeRppCHXANC1zaVlep5UXWMbg0aPfu30qhIJAQHJ5g=
+	t=1779296130; cv=none; b=mxF71ISbapAl+y6JdT9KX31Nxl3LJcla4EJbtHOq5wA9F8G+gzAgg+wFifOq2Uok0U+PD6uxFBWIyiDP6KFRyZna6FQA1ekx0Vgmfx0QPYQLKf0H//ZKlgN7EGdRL+oq5s4eClczRCPqLRyKYF8e4RULZnN72hxBnYphHYkbxmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300426; c=relaxed/simple;
-	bh=G0ttr6sph585/H5ALdAlRYWr0m1Qn8z87cyLMQZHyz0=;
+	s=arc-20240116; t=1779296130; c=relaxed/simple;
+	bh=iiBDbnKpZbnUc9uKjlpv5dsqUDMKBCBkZGUkrAG1F6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7rP3p3i9wrD78yIfRpPnk7jrBMsnGYIZqW09/P7ptTo7YTSNsIPQ8Ln6n3fVEgK6FclqvrlvDXEmvlpoj6K0CId0AdjI+fIZcVLpwmFB16QRdhBRcat71faK8kVbiHwdc1hqXMpRyDtBh7V/zA5P5Iog9bNuMS7+v/jxT9CHNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8lsGh3W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9113C1F000E9;
-	Wed, 20 May 2026 18:07:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XMTjIYyQNBpB08HQhEvX6rptFnZHFQO1Sp0C4kuF+SerbLdtEbypLlXqrpX6UNTC8r9dn4kxWf4DGDdtXodkCXq1TYgOZkQXxPRk5aufut4BY3F2WJTIdML4OaBycA9swn76RWf5C0TJdhSJAIxcot+rdbDzG2Ynfpshmi0uKbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSZwn09k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513B01F000E9;
+	Wed, 20 May 2026 16:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300425;
-	bh=jMgY1cGEvZ4Suz03RLADJHlnmgC2HaPG3apLtUiOj6o=;
+	s=korg; t=1779296128;
+	bh=eg4j1fAXBWdoY6DTeOwufBIrtNebyVz5UlQR/nTlddg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n8lsGh3WUd8uleE2wOQGrH9hsYg3RhuU4YK4oEZvhOngU7tI28i7xQ7bTbetnZ7pv
-	 BS2O5SWtloBA6ikzOCLNKHdefsODXh0y0f7fTuQkl4Wuq4jVDTvDPGAp/yP3AJginb
-	 GKMuuoW9oFzkdocOy0tai7iEmaTfClsh7IjMSH9Y=
+	b=zSZwn09kc0bYDpxgVif0ZaN/0L6WtSWtRdhLs6HDsMGt8MNOR1rqi1/7Sdm+1t3MV
+	 GKr7HCaSzDLUuc2GEXBkO5CW8ee4DPpD5BHlicEV5UL+zZudtY+8zghjntPzBFiW4q
+	 qvwM15OdENvdHbw2sf0xpRm5cba2JTMhLDp3Bi/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	=?UTF-8?q?Damien=20Ri=C3=A9gel?= <damien.riegel@silabs.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/666] ASoC: SOF: ipc3: Use standard dev_dbg API
-Date: Wed, 20 May 2026 18:15:30 +0200
-Message-ID: <20260520162113.797102020@linuxfoundation.org>
+Subject: [PATCH 7.0 0681/1146] greybus: raw: fix use-after-free if write is called after disconnect
+Date: Wed, 20 May 2026 18:15:31 +0200
+Message-ID: <20260520162203.599694334@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252342-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250716-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 87FFA597B31
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 114EC59910F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Baluta <daniel.baluta@nxp.com>
+From: Damien Riégel <damien.riegel@silabs.com>
 
-[ Upstream commit 55c39835ee0ef94593a78f6ea808138d476f3b81 ]
+[ Upstream commit 84265cbd96b97058ef67e3f8be3933667a000835 ]
 
-Use standard dev_dbg API because it gives better debugging
-information and allows dynamic control of prints.
+If a user writes to the chardev after disconnect has been called, the
+kernel panics with the following trace (with
+CONFIG_INIT_ON_FREE_DEFAULT_ON=y):
 
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20240926090252.106040-1-daniel.baluta@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 07c774dd64ba ("ASoC: soc-compress: use function to clear symmetric params")
+        BUG: kernel NULL pointer dereference, address: 0000000000000218
+         ...
+        Call Trace:
+         <TASK>
+         gb_operation_create_common+0x61/0x180
+         gb_operation_create_flags+0x28/0xa0
+         gb_operation_sync_timeout+0x6f/0x100
+         raw_write+0x7b/0xc7 [gb_raw]
+         vfs_write+0xcf/0x420
+         ? task_mm_cid_work+0x136/0x220
+         ksys_write+0x63/0xe0
+         do_syscall_64+0xa4/0x290
+         entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Disconnect calls gb_connection_destroy, which ends up freeing the
+connection object. When gb_operation_sync is called in the write file
+operations, its gets a freed connection as parameter and the kernel
+panics.
+
+The gb_connection_destroy cannot be moved out of the disconnect
+function, as the Greybus subsystem expect all connections belonging to a
+bundle to be destroyed when disconnect returns.
+
+To prevent this bug, use a rw lock to synchronize access between write
+and disconnect. This guarantees that the write function doesn't try
+to use a disconnected connection.
+
+Fixes: e806c7fb8e9b ("greybus: raw: add raw greybus kernel driver")
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Damien Riégel <damien.riegel@silabs.com>
+Link: https://patch.msgid.link/20260324140039.40001-2-damien.riegel@silabs.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/greybus/raw.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/ipc3.c b/sound/soc/sof/ipc3.c
-index 83c22d4a48304..7de5e3d285e73 100644
---- a/sound/soc/sof/ipc3.c
-+++ b/sound/soc/sof/ipc3.c
-@@ -226,7 +226,7 @@ static inline void ipc3_log_header(struct device *dev, u8 *text, u32 cmd)
- static void sof_ipc3_dump_payload(struct snd_sof_dev *sdev,
- 				  void *ipc_data, size_t size)
- {
--	printk(KERN_DEBUG "Size of payload following the header: %zu\n", size);
-+	dev_dbg(sdev->dev, "Size of payload following the header: %zu\n", size);
- 	print_hex_dump_debug("Message payload: ", DUMP_PREFIX_OFFSET,
- 			     16, 4, ipc_data, size, false);
+diff --git a/drivers/staging/greybus/raw.c b/drivers/staging/greybus/raw.c
+index 47a9845546811..459aed0f12401 100644
+--- a/drivers/staging/greybus/raw.c
++++ b/drivers/staging/greybus/raw.c
+@@ -21,6 +21,8 @@ struct gb_raw {
+ 	struct list_head list;
+ 	int list_data;
+ 	struct mutex list_lock;
++	struct rw_semaphore disconnect_lock;
++	bool disconnected;
+ 	struct cdev cdev;
+ 	struct device dev;
+ };
+@@ -200,6 +202,7 @@ static int gb_raw_probe(struct gb_bundle *bundle,
+ 
+ 	INIT_LIST_HEAD(&raw->list);
+ 	mutex_init(&raw->list_lock);
++	init_rwsem(&raw->disconnect_lock);
+ 
+ 	raw->connection = connection;
+ 	greybus_set_drvdata(bundle, raw);
+@@ -235,6 +238,11 @@ static void gb_raw_disconnect(struct gb_bundle *bundle)
+ 	struct raw_data *temp;
+ 
+ 	cdev_device_del(&raw->cdev, &raw->dev);
++
++	down_write(&raw->disconnect_lock);
++	raw->disconnected = true;
++	up_write(&raw->disconnect_lock);
++
+ 	gb_connection_disable(connection);
+ 	gb_connection_destroy(connection);
+ 
+@@ -277,11 +285,22 @@ static ssize_t raw_write(struct file *file, const char __user *buf,
+ 	if (count > MAX_PACKET_SIZE)
+ 		return -E2BIG;
+ 
++	down_read(&raw->disconnect_lock);
++
++	if (raw->disconnected) {
++		retval = -ENODEV;
++		goto exit;
++	}
++
+ 	retval = gb_raw_send(raw, count, buf);
+ 	if (retval)
+-		return retval;
++		goto exit;
+ 
+-	return count;
++	retval = count;
++exit:
++	up_read(&raw->disconnect_lock);
++
++	return retval;
  }
+ 
+ static ssize_t raw_read(struct file *file, char __user *buf, size_t count,
 -- 
 2.53.0
 
