@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IUOAWD5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:44 +0200
+	id AOYNL1cGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B3C595840
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F28597C62
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CA67730D3415
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 282F5265D81
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7B23F4DDA;
-	Wed, 20 May 2026 17:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694C40244F;
+	Wed, 20 May 2026 18:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK028uRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hf3fngdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82655233933;
-	Wed, 20 May 2026 17:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336D3FE352;
+	Wed, 20 May 2026 18:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299530; cv=none; b=Z2aAYgLAZQJZm0uu8ZoU23f0X5ZiwzPpj3DaNO27PjvySnqTv+URNu55Ix09iC6WJat25KmLOSaSIrQj4ahkMiQ3qZ2MKMLknsaKBSp6RyBXctRM+8XO8DeJKUo24C9FGnCJEIaMdT/L/+DkIUHLNFIDkv28BJobtqelYdAPJ9o=
+	t=1779302439; cv=none; b=NpZ8vl7fK4+mUikMntfDcPCATj75pql7/JjCfWQQ86xKmj4jQwsqEbPW3iLc0b9bCKEhSRbMY9Sg1hSKIyPXx8/1+brEvhLsjSRMOdUYIURMKmh4sTjN3JGYdu9E4+S4IB85/JUNhQ+Z2S/zRoQTBUamphLohzN7jHSjD1zEm+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299530; c=relaxed/simple;
-	bh=2z7fnD2E7g+CUER9HsCClIdGLi8IpV+H4l8hwgGKuTY=;
+	s=arc-20240116; t=1779302439; c=relaxed/simple;
+	bh=99uApC/8eMRWYVAMlEXFdSGF0b0AoimQu9TqPISqwMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=etB1lmuzpztx2CBaL2Z9boa/cojAfHpZ3nrxBroLefPf8zsnym5l6TMOavAktjN60eIfwgvCTV47F/FwxW+hinAXNzUq25TpS/C9w9p2/dFgTFC+4vNg7CYp0q7UzyVcyQ+AVIviaKIb2SMawngnpsuqKEPN/nFtQeG8qaNBWFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK028uRd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76191F000E9;
-	Wed, 20 May 2026 17:52:08 +0000 (UTC)
+	 MIME-Version; b=lcje+3tLdQ1gLkDl0B1soSFoCazhwsplp++VE+R6WnfQ38yykPXvLy73IO/5j1CzC91v1Q5z0Cqv3HBwVGgaB6jxWpCx/1DpqTZ8uePHA+HaaEM9V68cDKOr8WDO5t2qFJ+EZd1vqrp2RLlVwNC+Z14tJTdH7R1Qyw/SISpCCzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hf3fngdN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4601F00896;
+	Wed, 20 May 2026 18:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299529;
-	bh=CrySXuX0xqxIhPF/2+f9ByEXUjM2/4EhlgB966X9rM0=;
+	s=korg; t=1779302438;
+	bh=Vy/+WAr+ukmcXbgeSL9MQHOsdmmIbRvcAALepxasdu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QK028uRdSh8aAhBTONsIVHE9JF/YbWoWSpFlhFidAxAQYGBkBlN6VOXIaSTNFgbqI
-	 kCudVtj34thcSdg3Aq1AlVC5GIdb4v7uHrFiwBrEKaHlDIzdzF9OLuq5JqjE34jywG
-	 +oS9riwqUZPrP+iNRVpcBgbVNKkUe0JjdOwIty+0=
+	b=hf3fngdN8dOBaZuEQnQofyPmrv1n9Dl0KH/kzBHPxgxEIzxFv1gsrlpBJxAL9xqzz
+	 JqCgvgpXBmipSbyFOsvY+4VPq0IcllDpkVsrtqOWl/6Pe81Al9HR8fdvBhaaA6qiUg
+	 LQqdXXuvdnnuTtaQoX71rfQYpnhISWMNX2dTP9I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 808/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v3.0 ring
+Subject: [PATCH 6.6 268/508] fs/ntfs3: terminate the cached volume label after UTF-8 conversion
 Date: Wed, 20 May 2026 18:21:31 +0200
-Message-ID: <20260520162152.090429260@linuxfoundation.org>
+Message-ID: <20260520162104.453092553@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252018-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253113-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 05B3C595840
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,paragon-software.com:email]
+X-Rspamd-Queue-Id: 22F28597C62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit a2baf12eec41f246689e6a3f8619af1200031576 ]
+[ Upstream commit a6cd43fe9b083fa23fe1595666d5738856cb261a ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+ntfs_fill_super() loads the on-disk volume label with utf16s_to_utf8s()
+and stores the result in sbi->volume.label. The converted label is later
+exposed through ntfs3_label_show() using %s, but utf16s_to_utf8s() only
+returns the number of bytes written and does not add a trailing NUL.
 
-Fixes: dfd57dbf44dd ("drm/amdgpu: add JPEG3.0 support for Sienna_Cichlid")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4d7d774f100efb5089c86a1fb8c5bf47c63fc9ef)
+If the converted label fills the entire fixed buffer,
+ntfs3_label_show() can read past the end of sbi->volume.label while
+looking for a terminator.
+
+Terminate the cached label explicitly after a successful conversion and
+clamp the exact-full case to the last byte of the buffer.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ntfs3/super.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c
-index d1a011c40ba23..af231d093a3ce 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v3_0.c
-@@ -594,6 +594,7 @@ static const struct amd_ip_funcs jpeg_v3_0_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v3_0_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v3_0_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v3_0_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v3_0_dec_ring_set_wptr,
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 0b96d0f995c61..a4cc56df549a6 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1228,8 +1228,13 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 				      le32_to_cpu(attr->res.data_size) >> 1,
+ 				      UTF16_LITTLE_ENDIAN, sbi->volume.label,
+ 				      sizeof(sbi->volume.label));
+-		if (err < 0)
++		if (err < 0) {
+ 			sbi->volume.label[0] = 0;
++		} else if (err >= sizeof(sbi->volume.label)) {
++			sbi->volume.label[sizeof(sbi->volume.label) - 1] = 0;
++		} else {
++			sbi->volume.label[err] = 0;
++		}
+ 	} else {
+ 		/* Should we break mounting here? */
+ 		//err = -EINVAL;
 -- 
 2.53.0
 
