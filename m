@@ -1,60 +1,71 @@
-Return-Path: <stable+bounces-251370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOCmIwfxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:07 +0200
+	id UGROBwzuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8A6594119
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4C459383F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 683A63136BB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E01FF315C622
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBDD369999;
-	Wed, 20 May 2026 17:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEC03EFD05;
+	Wed, 20 May 2026 16:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTbQeiXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKJzTfiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC10364E89;
-	Wed, 20 May 2026 17:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DB33EDACC;
+	Wed, 20 May 2026 16:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297802; cv=none; b=TIuKxBWnMjaUntMrht9hxO1go22wQo1q2efljmdlnvyncGf3OSRItx3+tp8l3MwTcbfX3GDC7LZ1LBoED7Q5D7fIyX1AeYC/kEH6JN9P9Lpjl8xnkXsSJRb8PkAt/l3McxOOLSMrELBFJE+xX3cfVoJy1aiCb0GKl7cvKNLEZa8=
+	t=1779295386; cv=none; b=RGFGTbzv6PZD7ablEORsDhSU4qBkPSAiLbt1S36LM6Io2kAkmfmdDvYCiRPJG/E2End/tIw385iWHoxMYwvGHtUToqAurRIoDpFpPuDX0KhHyMgbJEyQ9JdrzeInxVc0eLo69DXb0RQVLkxD3okmY+7c2PjMm4oSol6/D+Gz04U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297802; c=relaxed/simple;
-	bh=q3VGHD0AMvyrS1iyD5mLA45GKPw/lMyZir20I1ZrNOs=;
+	s=arc-20240116; t=1779295386; c=relaxed/simple;
+	bh=XzAGIkn1SvUIFHBU1zGqxnzjpY66Ao9O9bCviukkfJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLzg21Uod5IWxhvO1mh85Ux4JUP8P97pmNlFVIco5r7h3ckBY3XdajtaCh+jpk2axLYWYTD2E0CsQBOfuHMMrYgiDFCsTNg2GLge6U8MF9bz5DC796aGatnEnz24XRid0a8QU3CEv24PMBz26UBefTqJneh4NOG33jO/nmPsHpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTbQeiXt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA581F000E9;
-	Wed, 20 May 2026 17:23:20 +0000 (UTC)
+	 MIME-Version; b=Ks4dJKkg1ZsB7zm3oZTZQ46nZUbssmA2JmTlk8ft/j26P4oMrDg84ENLa4zvn75LVW2yRnT5Iy7cetVc/diDFIPNoEq42PnDqJXTqcvodguKy9TiAkPgWpoIKAQQI6Oc5atr8WkRgQtq6UVPfJteKc/twKPof6y8x8mL1zW0F1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKJzTfiK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766A51F000E9;
+	Wed, 20 May 2026 16:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297801;
-	bh=75Q0A3D5qn9SRL/Cf8ons3rjCXNMgpaay/Ld2MnKrf0=;
+	s=korg; t=1779295385;
+	bh=CzA0wYNShvyOsHIs64oITrH4tvl/+T8cKfjT8b6R7iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FTbQeiXt++R8UE0a1xpUalRGOErtm7Zr+3WZl/BwX5i3QVVAzEyQY1gWgjuHyz7M/
-	 dOZS2t9eAx+li9beoSl0PF5tpfb/ACJMqj/B1OhwlImlJYc7kfw9oRKU0Hr1fKK/Ra
-	 z95bbMFa08WuHAPJNmcg4j1u8z0lxhjzbi9YXKaw=
+	b=gKJzTfiKZkkWthR3m2q20fBd6c9r4/axVMEIaJDWtLWgzu2sFH+N+EECsrAx98L40
+	 CuHnO84k3/y+7p60BeAfN6ruah7bBGDOg3+H7j1TtnMK9wIa1eU032pPQ34jG78pBB
+	 gdWrRwuSZLyB7Q66QGZN8ZCaEfuhzmBkPltQkV7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	SeongJae Park <sj@kernel.org>,
+	wang lian <lianux.mm@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 167/957] net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
+Subject: [PATCH 7.0 0400/1146] Docs/admin-guide/mm/damn/lru_sort: fix intervals autotune parameter name
 Date: Wed, 20 May 2026 18:10:50 +0200
-Message-ID: <20260520162138.173839176@linuxfoundation.org>
+Message-ID: <20260520162157.253874966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +76,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251370-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-250427-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.dev,google.com,lwn.net,oracle.com,suse.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 0A8A6594119
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1B4C459383F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit de08f9585692813bd41ee654fca0487664c4de30 ]
+[ Upstream commit d7f00084f6863a243b396200c81e83ae302c5a76 ]
 
-The 'val' variable gets overwritten multiple times, discarding previous
-values. Looking at the git log shows these should be combined with |=
-instead.
+The section name should be the same as the parameter name.  Fix it.
 
-Fixes: 9265a4f0f0b4 ("net: ipa: define even more IPA register fields")
-Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=4
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20260307195356.203753-6-sj@kernel.org
+Fixes: ed581147a417 ("Docs/admin-guide/mm/damon/lru_sort: document intervals autotuning")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Acked-by: wang lian <lianux.mm@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/mm/damon/lru_sort.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-index 25500c5a6928e..30fe12e3582b2 100644
---- a/drivers/net/ipa/ipa_main.c
-+++ b/drivers/net/ipa/ipa_main.c
-@@ -361,7 +361,7 @@ static void ipa_qtime_config(struct ipa *ipa)
- {
- 	const struct reg *reg;
- 	u32 offset;
--	u32 val;
-+	u32 val = 0;
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 63977a89025e5..5f38910c0ba7e 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -95,8 +95,8 @@ increases and decreases the effective level of the quota aiming the LRU
  
- 	/* Timer clock divider must be disabled when we change the rate */
- 	reg = ipa_reg(ipa, TIMERS_XO_CLK_DIV_CFG);
-@@ -374,8 +374,8 @@ static void ipa_qtime_config(struct ipa *ipa)
- 		val |= reg_bit(reg, DPL_TIMESTAMP_SEL);
- 	}
- 	/* Configure tag and NAT Qtime timestamp resolution as well */
--	val = reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
--	val = reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
+ Disabled by default.
  
- 	iowrite32(val, ipa->reg_virt + reg_offset(reg));
+-Auto-tune monitoring intervals
+-------------------------------
++autotune_monitoring_intervals
++-----------------------------
  
+ If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
+ sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
 -- 
 2.53.0
 
