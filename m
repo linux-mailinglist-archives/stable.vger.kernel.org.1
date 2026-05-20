@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEf2FzvvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:27 +0200
+	id GN6WO9IZDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9DA593C4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B071599B14
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C383830A4065
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 332EC33577C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72093EEAC6;
-	Wed, 20 May 2026 16:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E39369999;
+	Wed, 20 May 2026 17:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw5JoBu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwTYf+Hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB96363C6F;
-	Wed, 20 May 2026 16:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F1E364E89;
+	Wed, 20 May 2026 17:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295378; cv=none; b=imW3fm5VcRkguLHwQ2MEAFtZa7/tz7MCANC9i0jTjzxrd5lk0r5u8tzwWirm8AW80udv/dK0EJHsTgdWUWVVsqPeQqB16vyOLqsby7O1hR6PJ7I/J5M4IjiAm30n8r+cCF7cNa4sIKpK73y1lwPLUGgloUBgGW1MB9R12PWNVkk=
+	t=1779297792; cv=none; b=aCfPD7Jd2UnPR0ZEq6bzdATV+33fzpoS61JDDJUcJeOWnnKyqr0GARhpMM5G8JAn5NGZ8XHwTo3usmgUwyDHviJLRWqYvS5SGmTF2cu4YQb9Nu9AGYUktX7SHEmVnLFK9Hpc84bputlukBkxw7jhwq60DE5IvDGacCq2/QHNXtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295378; c=relaxed/simple;
-	bh=GoWZf30J7luQ8nNQ3msENtJE9sEfC6Bv27Vf5B74fBM=;
+	s=arc-20240116; t=1779297792; c=relaxed/simple;
+	bh=aXzXoZiWoojCIUP2Iu7cRr1o9jZFlaDAgYV8H8jFItY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeAMtJS+GvLv9cTF0E0XftMFVzeBtY1qQ1tDjXEk6E7Z4AJypODwTW24lz4RZfEhtfoYnExIIOT5lLp1fJTwD8C8iM+sDpUp2BTCM9a94nP8PIlNlaJd73iA8+WaLXDLk107uBghQZzs3GE2I9aqSmghVsGLHtXwxyqu0p0oO8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw5JoBu8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BA61F000E9;
-	Wed, 20 May 2026 16:42:56 +0000 (UTC)
+	 MIME-Version; b=LvXCch8gF1unEEaw3oDdqrtfLrsNMFF8qmX0yPzHRTMIcBUeIb61RarG+JyeZo1cd49csK8VPobPCN50dMfPVrwTCTXsAISOxuoYErfPJdY1BYAhIF8xKybA+G5nT+/PKDKkMhq/jJESORbAaUvRYWpnZA/wxm2Y967PSoBdVq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwTYf+Hi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738BC1F000E9;
+	Wed, 20 May 2026 17:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295377;
-	bh=R0+JjRZrhOzzmDobxqrpn/Wlm4+WJRaXsleKNPx1b/Y=;
+	s=korg; t=1779297791;
+	bh=YgiiHH/eFIbx66cZXrBC6CDrPdLj/C8jC6MepjxE6vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lw5JoBu8n+QoLd3JcW5hgqhk0/0aQ4nPlqJ964H6Jl+TGcPGTfF+AUm68eAsVkjVg
-	 vxjjDYyM91OMM1pU5CzRaTO++ecN19IUjZb5jdS8TwKjExWJwposGZhtVbhUDmEZpS
-	 qzh6OoBj47Uhz2KjB1XoksjkmdgNJxsJo6ip+UkI=
+	b=hwTYf+HiWaiMLOlxHRovVieJvujOeaVokoJkETqZhDjXBAqHXXJGkuvD6qW7MUqN9
+	 a34mzcWVhPWe3vM1ASYgnMcdhlF3/V9jx+zv6l6FfZBwuJP5/HojhVf3670D8qHZKO
+	 M/xuAQLFCwX79GlzXdYmrFByM2BicDGUhmn5hdbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com,
+	Greg Jumper <greg.jumper@oracle.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0397/1146] gpu: nova-core: bitfield: fix broken Default implementation
+Subject: [PATCH 6.18 164/957] net/rds: Restrict use of RDS/IB to the initial network namespace
 Date: Wed, 20 May 2026 18:10:47 +0200
-Message-ID: <20260520162157.183912965@linuxfoundation.org>
+Message-ID: <20260520162138.109364884@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +66,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250424-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251366-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,da8e060735ae02c8f3d1];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 6E9DA593C4B
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4B071599B14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliot Courtney <ecourtney@nvidia.com>
+From: Greg Jumper <greg.jumper@oracle.com>
 
-[ Upstream commit de0aca13509bf47a2d49bc7a26d56079c758c95f ]
+[ Upstream commit ebf71dd4aff46e8e421d455db3e231ba43d2fa8a ]
 
-The current implementation does not actually set the default values for
-the fields in the bitfield.
+Prevent using RDS/IB in network namespaces other than the initial one.
+The existing RDS/IB code will not work properly in non-initial network
+namespaces.
 
-Fixes: 3fa145bef533 ("gpu: nova-core: register: generate correct `Default` implementation")
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-Link: https://patch.msgid.link/20260401-fix-bitfield-v2-1-2fa68c98114a@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: d5a8ac28a7ff ("RDS-TCP: Make RDS-TCP work correctly when it is set up in a netns other than init_net")
+Reported-by: syzbot+da8e060735ae02c8f3d1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=da8e060735ae02c8f3d1
+Signed-off-by: Greg Jumper <greg.jumper@oracle.com>
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260408080420.540032-3-achender@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/bitfield.rs | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/rds/af_rds.c | 10 ++++++++--
+ net/rds/ib.c     |  4 ++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
-index 16e143658c511..02efdcf78d894 100644
---- a/drivers/gpu/nova-core/bitfield.rs
-+++ b/drivers/gpu/nova-core/bitfield.rs
-@@ -314,12 +314,11 @@ macro_rules! bitfield {
-         /// Returns a value for the bitfield where all fields are set to their default value.
-         impl ::core::default::Default for $name {
-             fn default() -> Self {
--                #[allow(unused_mut)]
--                let mut value = Self(Default::default());
-+                let value = Self(Default::default());
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index 4a7217fbeab6f..7a0f5150e9103 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -357,7 +357,8 @@ static int rds_cong_monitor(struct rds_sock *rs, sockptr_t optval, int optlen)
+ 	return ret;
+ }
  
-                 ::kernel::macros::paste!(
-                 $(
--                value.[<set_ $field>](Default::default());
-+                let value = value.[<set_ $field>](Default::default());
-                 )*
-                 );
+-static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
++static int rds_set_transport(struct net *net, struct rds_sock *rs,
++			     sockptr_t optval, int optlen)
+ {
+ 	int t_type;
  
+@@ -373,6 +374,10 @@ static int rds_set_transport(struct rds_sock *rs, sockptr_t optval, int optlen)
+ 	if (t_type < 0 || t_type >= RDS_TRANS_COUNT)
+ 		return -EINVAL;
+ 
++	/* RDS/IB is restricted to the initial network namespace */
++	if (t_type != RDS_TRANS_TCP && !net_eq(net, &init_net))
++		return -EPROTOTYPE;
++
+ 	rs->rs_transport = rds_trans_get(t_type);
+ 
+ 	return rs->rs_transport ? 0 : -ENOPROTOOPT;
+@@ -433,6 +438,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
+ 			  sockptr_t optval, unsigned int optlen)
+ {
+ 	struct rds_sock *rs = rds_sk_to_rs(sock->sk);
++	struct net *net = sock_net(sock->sk);
+ 	int ret;
+ 
+ 	if (level != SOL_RDS) {
+@@ -461,7 +467,7 @@ static int rds_setsockopt(struct socket *sock, int level, int optname,
+ 		break;
+ 	case SO_RDS_TRANSPORT:
+ 		lock_sock(sock->sk);
+-		ret = rds_set_transport(rs, optval, optlen);
++		ret = rds_set_transport(net, rs, optval, optlen);
+ 		release_sock(sock->sk);
+ 		break;
+ 	case SO_TIMESTAMP_OLD:
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 996f007cd516b..ce5be43c5fbac 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -494,6 +494,10 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+ {
+ 	struct rds_ib_device *rds_ibdev = NULL;
+ 
++	/* RDS/IB is restricted to the initial network namespace */
++	if (!net_eq(net, &init_net))
++		return -EPROTOTYPE;
++
+ 	if (ipv6_addr_v4mapped(addr)) {
+ 		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
+ 		if (rds_ibdev) {
 -- 
 2.53.0
 
