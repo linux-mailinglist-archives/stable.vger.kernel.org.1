@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-251766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NgdLg/0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:03 +0200
+	id 4OpcI68UDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A90E594A6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21355992D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 888AE30ED716
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD4ED35B8992
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB67736405A;
-	Wed, 20 May 2026 17:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED70E35950;
+	Wed, 20 May 2026 17:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEFcZnRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qx15kUlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAF63EFD3D;
-	Wed, 20 May 2026 17:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B713F1AC4;
+	Wed, 20 May 2026 17:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298837; cv=none; b=j5Xowpkxznj31tKYLkQAsNfFyeFPM8ELcGEGeZq/J8dMBiwGbqiJ/ZMBcYKF0O+H/wp2UcElnFK/6LwejRgo1UoBWU6gnc+lAJQRtOYNpL7wShQJwz73w/TYuwXfd1WHwXDmxDnBQsgN90yr23Dazsbn3jTl8czyb9AXTQ+ODZU=
+	t=1779296423; cv=none; b=tScsgG1ThOiebkAvWqSEtQ29EIOzbBSu+L9UGbL9df0x4qcWxw5sDMUBKiAFDShNL+6F5+UTnpzjfPmk1crWu4iVwxcal1tgyTPuRb7tuyFP7hQOZy5Ci8zzl2EM+m86XIz4LTfjMngo8HAq25wKghLc2wmCvl+HbNy7Hr+lSoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298837; c=relaxed/simple;
-	bh=ylLnzi4Bed70JPmCzUR7CQvvzD00npUGGUvoGryWY5Q=;
+	s=arc-20240116; t=1779296423; c=relaxed/simple;
+	bh=i5GirM/KuNsYXDGWE+BATTxYbEnE0utKCsc8ua9F8V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWOUP9RU7OgTOJvaBosFhmZqSLzCAqUbNbx335VaGmiaAEow9URW6TXt616c4iMeeo7wvSdrg4uCJNlbuQz12yms4pNasLmW6v/A+R8+rD/JQ/gx4CefuJKYePm8C6p/rz6lhpJ+EJmMKmyB2NbBX7913LToyHXacHJbOdHeZfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEFcZnRo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92ED1F000E9;
-	Wed, 20 May 2026 17:40:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HOWdAU32IoxmXAr8U04PgppU/BFTEzGfy5eBx2t2dqOU6ohlFlDXTZ133pFGYBQuhcpN84QQJUosjiIYKGlGbI40i6Q7nREAf70CH11ehUyMnAx/NWDkMpfIaYUq50Fe7GnZBe9hRTdtVIGuBpowGCkBAHlEbIyRvp8klzzoxow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qx15kUlM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712461F000E9;
+	Wed, 20 May 2026 17:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298835;
-	bh=q5je49NazLetAJZUuBFhHarMPJTxHVp6qxLrk2Q/Gc4=;
+	s=korg; t=1779296421;
+	bh=ak7bq0RQrTJjfDplLXyJe13InKK+E5dAgj+6XxS+ZkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QEFcZnRo/E8LzqsdXRKywZFB68hudwthkeFWUYcGCKtSex9rI1QMs91oM7T6ITQfb
-	 jL5de/lFhEQUMFvVr6bHvEHjIdUQlHbfh6jHgKvkv/PknbkVD8VHD+VMvUJpFyRNrR
-	 mqYl8yu9z4FVf/wG0sVOtrsCqB1uIIpxYdRUs4Js=
+	b=Qx15kUlMLkpn3xkPXFCvR1C5CGJpZt6BRWmBY1QuIFXvGLfpLkDzeP7GtXLx9EiMy
+	 go2qPIM5b9IZvnz+24vpLWSsihHmiamnb3k985eGC75/GvF5jSnykOHJYvnZq+M5Od
+	 gXL2/+vgIgToKXRR0cW7Jzo4ccg+s6cWOiTQkcH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 561/957] clk: renesas: r9a09g057: Fix ordering of module clocks array
+Subject: [PATCH 7.0 0794/1146] ice: fix adjust timer programming for E830 devices
 Date: Wed, 20 May 2026 18:17:24 +0200
-Message-ID: <20260520162146.697180888@linuxfoundation.org>
+Message-ID: <20260520162206.194063874@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +67,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251766-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250832-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,renesas.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email]
-X-Rspamd-Queue-Id: 2A90E594A6B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: D21355992D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-[ Upstream commit 79cac2b8dc1d9f63fbf6c6793e423052118cc51a ]
+[ Upstream commit 885c5e57924dc040b23d0ad0d8388f0e35772159 ]
 
-The r9a09g057_mod_clks array is sorted by CPG_CLKON register number and
-bit position.  Move the RTC and RSPI module clock entries to their
-correct position to restore the array sort order.
+Fix incorrect 'adjust the timer' programming sequence for E830 devices
+series. Only shadow registers GLTSYN_SHADJ were programmed in the
+current implementation. According to the specification [1], write to
+command GLTSYN_CMD register is also required with CMD field set to
+"Adjust the Time" value, for the timer adjustment to take the effect.
 
-Fixes: 2efea3b35cc9 ("clk: renesas: r9a09g057: Add entries for RSCIs")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260125190314.26729-1-ovidiu.panait.rb@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 1b4f047dc401 ("clk: renesas: r9a09g057: Remove entries for WDT{0,2,3}")
+The flow was broken for the adjustment less than S32_MAX/MIN range
+(around +/- 2 seconds). For bigger adjustment, non-atomic programming
+flow is used, involving set timer programming. Non-atomic flow is
+implemented correctly.
+
+Testing hints:
+Run command:
+	phc_ctl /dev/ptpX get adj 2 get
+Expected result:
+	Returned timestamps differ at least by 2 seconds
+
+[1] Intel® Ethernet Controller E830 Datasheet rev 1.3, chapter 9.7.5.4
+https://cdrdv2.intel.com/v1/dl/getContent/787353?explicitVersion=true
+
+Fixes: f00307522786 ("ice: Implement PTP support for E830 devices")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-1-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a09g057-cpg.c | 40 ++++++++++++++---------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a09g057-cpg.c b/drivers/clk/renesas/r9a09g057-cpg.c
-index ac3d309365b45..647e394727f6b 100644
---- a/drivers/clk/renesas/r9a09g057-cpg.c
-+++ b/drivers/clk/renesas/r9a09g057-cpg.c
-@@ -245,6 +245,26 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
- 						BUS_MSTOP(5, BIT(13))),
- 	DEF_MOD("wdt_3_clk_loco",		CLK_QEXTAL, 5, 2, 2, 18,
- 						BUS_MSTOP(5, BIT(13))),
-+	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
-+						BUS_MSTOP(3, BIT(11) | BIT(12))),
-+	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
-+						BUS_MSTOP(11, BIT(2))),
-+	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
-+						BUS_MSTOP(11, BIT(2))),
-+	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
-+						BUS_MSTOP(11, BIT(2))),
- 	DEF_MOD("rsci0_pclk",			CLK_PLLCLN_DIV16, 5, 13, 2, 29,
- 						BUS_MSTOP(11, BIT(3))),
- 	DEF_MOD("rsci0_tclk",			CLK_PLLCLN_DIV16, 5, 14, 2, 30,
-@@ -345,26 +365,6 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
- 						BUS_MSTOP(11, BIT(12))),
- 	DEF_MOD("rsci9_ps_ps1_n",		CLK_PLLCLN_DIV64, 8, 14, 4, 14,
- 						BUS_MSTOP(11, BIT(12))),
--	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
--						BUS_MSTOP(3, BIT(11) | BIT(12))),
--	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
--						BUS_MSTOP(11, BIT(2))),
--	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
--						BUS_MSTOP(11, BIT(2))),
--	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
--						BUS_MSTOP(11, BIT(2))),
- 	DEF_MOD("scif_0_clk_pck",		CLK_PLLCM33_DIV16, 8, 15, 4, 15,
- 						BUS_MSTOP(3, BIT(14))),
- 	DEF_MOD("i3c_0_pclkrw",			CLK_PLLCLN_DIV16, 9, 0, 4, 16,
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 61c0a0d93ea89..5a5c511ccbb6e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -5381,8 +5381,8 @@ int ice_ptp_write_incval_locked(struct ice_hw *hw, u64 incval)
+  */
+ int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
+ {
++	int err = 0;
+ 	u8 tmr_idx;
+-	int err;
+ 
+ 	tmr_idx = hw->func_caps.ts_func_info.tmr_index_owned;
+ 
+@@ -5399,8 +5399,8 @@ int ice_ptp_adj_clock(struct ice_hw *hw, s32 adj)
+ 		err = ice_ptp_prep_phy_adj_e810(hw, adj);
+ 		break;
+ 	case ICE_MAC_E830:
+-		/* E830 sync PHYs automatically after setting GLTSYN_SHADJ */
+-		return 0;
++		/* E830 sync PHYs automatically after setting cmd register */
++		break;
+ 	case ICE_MAC_GENERIC:
+ 		err = ice_ptp_prep_phy_adj_e82x(hw, adj);
+ 		break;
 -- 
 2.53.0
 
