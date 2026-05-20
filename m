@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-251015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD91HH7sDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-251015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:46 +0200
+	id cBF2KwbuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EB9593395
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E34593821
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2ACE314509A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE6FF3091B06
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C133F1ADC;
-	Wed, 20 May 2026 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B463D75D3;
+	Wed, 20 May 2026 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HM9Dsl9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFTMHOFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750E2364E89;
-	Wed, 20 May 2026 17:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1749B3BBA0E;
+	Wed, 20 May 2026 17:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296881; cv=none; b=M6AY35/Qx4FD7TzBNepM8zzQiX/6PNSs/EO2akmkyX7+jNfQhQ+FGPxjPdhPPfKHq3SKU48vdf4G/D//g6fvvjpytqtOxd3a/rZV0pSiw5EAtWWHJQjs9PprVtVq0brlWptik6VyiXUJBzb33eEkCFbNIrE5q+oH1B7NwySopPE=
+	t=1779296884; cv=none; b=aghhzDutDdLq0e2n/uzLMuCRWBjcgafcCH978Sm+tL3OOwDa5yw73trde93Spa1m6cxUR7XXo6Mb9WYdbyaQwvOBKpZh4Kqk5aU3yuomzRabdK5/ggR53B6IpTrZMAVQmQM+gnFbziH/oldoAr95ASmFMwNGTCQAkM/cBN6b8Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296881; c=relaxed/simple;
-	bh=vTxmVEomq0JdXoyntcwG9IiA9pNC9CIKwi1IqFbm2Vg=;
+	s=arc-20240116; t=1779296884; c=relaxed/simple;
+	bh=b+hLZTNx5v1ACl9RMe3A6Vgsjg8S62iSv1Azuie+1ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=typJyFueKwFcXb74GvGv1nys8ngbTNgmk5xL6APEIuxDyHZPVzAmO00bxudQUHOVevT+wAd1b28kw2K8Xe4VvNH9kwl/icxWBuEjl9yKhuztOTQLejckLZH1tKiCu6zNGaqMVsseEd+Dbe0HIR7ZfHYkLVCU2aVGoMbEq6ie02Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HM9Dsl9N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D828E1F000E9;
-	Wed, 20 May 2026 17:07:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kqaYLEE+cVwSK1cUFY1pNv4kXdA5y3MgtfyX6lTwepZt8fZS+ks0aeU3ewLmpjYGQ77PYT9oXqqoc/LvFfFeYIFbSfy+fcIs4r19/LkdHbnFd9TTtigvsphN5+0XDQYJnnkijDLDyDmuU/os5ZD0YdtXg4aEDzLt5sABkhjwaoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFTMHOFl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C51F000E9;
+	Wed, 20 May 2026 17:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296880;
-	bh=SgKkirF085lRjxdLW0dbWhXvgFbzMcWOOr4k5fqIXtQ=;
+	s=korg; t=1779296883;
+	bh=tvz68vsM1Q1vSUPtS+m2aITl5Tgo5DXUMp9N23eTjPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HM9Dsl9NiEVJZSrAgATsBaIMXwgKOzJuWHqQLMtDVW/pGBPrCJkNAeE+3tSdae4LV
-	 itTZfOtCuzjoi+B9JILn2orBRVfnbSxGCIUiQdd3hGvMiHwwYAaDO8vHEXSN7RiAbb
-	 B1nBOIhqYePdp8Y/aKeLyzsEB+dBpGh7idygdRaY=
+	b=DFTMHOFlGFL5/6iEicBMEdJE3Mjy7sULh5ZxJs0AKrBuePYTIHv+MyfHA3pei4FJw
+	 Sk4WLbau4m2RSbjPn01VST6SeeQtzNVz6USm9ZPSBInR4KQFkvcVrFObFZO32Hi55L
+	 HrbjmUqpQg/UpH3lQ82Y59LqWzOU0uNWfVw7vros=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0968/1146] drm/amdgpu/vcn: set no_user_fence for VCN v4.0.5 enc ring
-Date: Wed, 20 May 2026 18:20:18 +0200
-Message-ID: <20260520162210.136441071@linuxfoundation.org>
+Subject: [PATCH 7.0 0969/1146] drm/amdgpu/vcn: set no_user_fence for VCN v5.0.0 enc ring
+Date: Wed, 20 May 2026 18:20:19 +0200
+Message-ID: <20260520162210.158031627@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,12 +69,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251015-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251016-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 10EB9593395
+X-Rspamd-Queue-Id: 43E34593821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,34 +102,34 @@ X-Rspamd-Server: lfdr
 
 From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 589a254bf3e88204c8402b9cbccd5e23a0af990f ]
+[ Upstream commit 8cae0ce77de492d7c31c1532a2e80c0c6e7e58cb ]
 
 VCN encoder and decoder rings do not support 64-bit user fence writes,
 reject CS submissions with user fences.
 
-Fixes: 547aad32edac ("drm/amdgpu: add VCN4 ip block support")
+Fixes: b6d1a0632051 ("drm/amdgpu: add VCN_5_0_0 IP block support")
 Reviewed-by: Christian König <christian.koenig@amd.com>
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 084d94ac93707bdda07efb5cee786f632de4219b)
+(cherry picked from commit 49b1fbbb5a071197ee71e2d70959b1cb29bdc317)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index 1f6a22983c0dd..1571cc5a148c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -1483,6 +1483,7 @@ static struct amdgpu_ring_funcs vcn_v4_0_5_unified_ring_vm_funcs = {
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+index 6109124f852e5..d5f49fa33bee4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -1207,6 +1207,7 @@ static const struct amdgpu_ring_funcs vcn_v5_0_0_unified_ring_vm_funcs = {
  	.type = AMDGPU_RING_TYPE_VCN_ENC,
  	.align_mask = 0x3f,
  	.nop = VCN_ENC_CMD_NO_OP,
 +	.no_user_fence = true,
- 	.get_rptr = vcn_v4_0_5_unified_ring_get_rptr,
- 	.get_wptr = vcn_v4_0_5_unified_ring_get_wptr,
- 	.set_wptr = vcn_v4_0_5_unified_ring_set_wptr,
+ 	.get_rptr = vcn_v5_0_0_unified_ring_get_rptr,
+ 	.get_wptr = vcn_v5_0_0_unified_ring_get_wptr,
+ 	.set_wptr = vcn_v5_0_0_unified_ring_set_wptr,
 -- 
 2.53.0
 
