@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-253119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WA6NFh4FDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:50 +0200
+	id UIyBLqz6DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83A2597994
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD847595B80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80B7031BA5DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B24AC30CB789
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DF14028CB;
-	Wed, 20 May 2026 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73A934B40F;
+	Wed, 20 May 2026 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN3JIUDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnAeCdX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19ABA37DE8A;
-	Wed, 20 May 2026 18:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A3836A352;
+	Wed, 20 May 2026 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302455; cv=none; b=fPuCRDuOV5eLxrap5pPmEm9W+IzqN0T06Saua0KeOeCFcAYYWeaKTUU6OkHdLTWnApsDihcd5U8XglmweWRKGvx0MK38TLev2UsNYnHd7Sl5p2gJvamXEqrUEMGue5r0nnKc/IiI6I2Lf84QSezwZprsimLXZbrFODzxG5/ACLs=
+	t=1779297047; cv=none; b=tr79CBDxW7MwVUTdkGEmBXQ+LbHewXAqB1Sa30+o4j95zBxRPxRi3M4kL82ZwrM8ZEiDQS/Km/uIC3fUzDET+v0YLKpUx5ZpWNLkc27coopseTJ9qqFrmjM4FvlcwC85pulHsw7u4SZO23iGUvmGjD28elAlRiegNGAyeKXAq/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302455; c=relaxed/simple;
-	bh=y8TCZdjB0Jwe5nsvvQtjb9gyuUDwXeeCVsRVZaqkxSA=;
+	s=arc-20240116; t=1779297047; c=relaxed/simple;
+	bh=AvMrL5rk8IlChiulO2CEIPAU/0GmPoqExXxbiguM0lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBogrdI+cjVl9dngqS56k5lRzAt3rwl9cCaUssx6gM+4Zu7eNdrchJQ8QMbqpEnLGCfy1I/6hsIU+WPSG3uY1TRjYtFFpmpdRiLImKzleY/i86lFSWDDr3Fcj5QC65KQ+hWt5zrFaDi0m0KBrn0d8+tJHDvGbMSkhH9cfQ8R8YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN3JIUDw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9401F000E9;
-	Wed, 20 May 2026 18:40:53 +0000 (UTC)
+	 MIME-Version; b=UuU5sSA+A9G4e3jVfEqdp/GtUGBAa3t2R6HhoFuHtyOR14oTwIubqsvfu8oRghtRAIqQNtLx4Cl6kN5adNzgtKtMJtukF8URR8rfyUTudQq6j/dZu57BW/uQamzjLy/CYJRPdZmDisZHqDQAvmAlGWD1JkAVKiPHNK/FRdmXBa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnAeCdX6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B361F000E9;
+	Wed, 20 May 2026 17:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302454;
-	bh=DvEi1H5Ltae3JHQYJquWs4Q8NfC3gykaogpJJ41kUbk=;
+	s=korg; t=1779297046;
+	bh=gR8Q2h3VEI2L+Ua2GYAdkkrDfnAni00GLLZozOjZgP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sN3JIUDwnrBYpyDYYPs8LdNnsN0cU1rQXt3yVbzzPPK4vBlGigqLWUNPJuzmckWOO
-	 x1gQOg8sU3UJFFN1uSY54W85k4ICkvAlCUJGJJUkpq9KkvtXbQ8oyWjou0NlwDut+z
-	 QufJ7+u+ltejsYooGnFQxdOVXC6Q6YR3YNqsc1j0=
+	b=UnAeCdX605XocOW6f9Ij8LmFXInUBL+G/JYw+i29LPdZYgPtPk4OUzNCGvIl6el5M
+	 1A8UO2fw6eRRQW6sanOp+T5rxrHd/RXaZwFqziuh1DoLN0nhRFlC5a64x2vrlgTU5t
+	 J4o1Tf3MX8igv8Vp06Aog8vjlTnuiPzpa76SqitU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/508] ipmi: ssif_bmc: change log level to dbg in irq callback
+Subject: [PATCH 7.0 1029/1146] dpll: export __dpll_pin_change_ntf() for use under dpll_lock
 Date: Wed, 20 May 2026 18:21:19 +0200
-Message-ID: <20260520162104.194051247@linuxfoundation.org>
+Message-ID: <20260520162211.517271918@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,146 +71,114 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253119-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251080-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,minyard.net:email,bytedance.com:email]
-X-Rspamd-Queue-Id: B83A2597994
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: BD847595B80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit c9c99b7b7051eb7121b3224bfce181fb023b0269 ]
+[ Upstream commit 620055cb1036a6125fd912e7a14b47a6572b809b ]
 
-Long-running tests indicate that this logging can occasionally disrupt
-timing and lead to request/response corruption.
+Export __dpll_pin_change_ntf() so that drivers can send pin change
+notifications from within pin callbacks, which are already called
+under dpll_lock. Using dpll_pin_change_ntf() in that context would
+deadlock.
 
-Irq handler need to be executed as fast as possible,
-most I2C slave IRQ implementations are byte-level, logging here
-can significantly affect transfer behavior and timing. It is recommended
-to use dev_dbg() for these messages.
+Add lockdep_assert_held() to catch misuse without the lock held.
 
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Message-ID: <20260403090603.3988423-4-zhangjian.3032@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Acked-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-9-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/dpll/dpll_netlink.c | 10 ++++++++++
+ drivers/dpll/dpll_netlink.h |  2 --
+ include/linux/dpll.h        |  1 +
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index a13dc48120581..5d5444b567a04 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -568,7 +568,7 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
- 		len = ssif_bmc->request.len + part->length;
- 		/* Do the bound check here, not allow the request len exceed 254 bytes */
- 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
--			dev_warn(&ssif_bmc->client->dev,
-+			dev_dbg(&ssif_bmc->client->dev,
- 				 "Warn: Request exceeded 254 bytes, aborting");
- 			/* Request too long, aborting */
- 			ssif_bmc->aborting =  true;
-@@ -614,7 +614,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -623,7 +623,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index 83cbd64abf5a4..95ae786e98aab 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -842,11 +842,21 @@ int dpll_pin_delete_ntf(struct dpll_pin *pin)
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
+ }
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -658,7 +658,7 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -683,7 +683,7 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	} else if (ssif_bmc->state == SSIF_START ||
- 		   ssif_bmc->state == SSIF_REQ_RECVING ||
- 		   ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -698,7 +698,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
++/**
++ * __dpll_pin_change_ntf - notify that the pin has been changed
++ * @pin: registered pin pointer
++ *
++ * Context: caller must hold dpll_lock. Suitable for use inside pin
++ *          callbacks which are already invoked under dpll_lock.
++ * Return: 0 if succeeds, error code otherwise.
++ */
+ int __dpll_pin_change_ntf(struct dpll_pin *pin)
  {
- 	if (ssif_bmc->state == SSIF_READY ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -708,7 +708,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
++	lockdep_assert_held(&dpll_lock);
+ 	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+ }
++EXPORT_SYMBOL_GPL(__dpll_pin_change_ntf);
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -737,7 +737,7 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
- 	    ssif_bmc->state == SSIF_ABORTING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_READY;
-@@ -804,7 +804,7 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
- 		break;
+ /**
+  * dpll_pin_change_ntf - notify that the pin has been changed
+diff --git a/drivers/dpll/dpll_netlink.h b/drivers/dpll/dpll_netlink.h
+index dd28b56d27c56..a9cfd55f57fc4 100644
+--- a/drivers/dpll/dpll_netlink.h
++++ b/drivers/dpll/dpll_netlink.h
+@@ -11,5 +11,3 @@ int dpll_device_delete_ntf(struct dpll_device *dpll);
+ int dpll_pin_create_ntf(struct dpll_pin *pin);
  
- 	default:
--		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
-+		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
- 		break;
- 	}
+ int dpll_pin_delete_ntf(struct dpll_pin *pin);
+-
+-int __dpll_pin_change_ntf(struct dpll_pin *pin);
+diff --git a/include/linux/dpll.h b/include/linux/dpll.h
+index 2ce295b46b8cd..8f97120ee7b37 100644
+--- a/include/linux/dpll.h
++++ b/include/linux/dpll.h
+@@ -276,6 +276,7 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
  
+ int dpll_device_change_ntf(struct dpll_device *dpll);
+ 
++int __dpll_pin_change_ntf(struct dpll_pin *pin);
+ int dpll_pin_change_ntf(struct dpll_pin *pin);
+ 
+ int register_dpll_notifier(struct notifier_block *nb);
 -- 
 2.53.0
 
