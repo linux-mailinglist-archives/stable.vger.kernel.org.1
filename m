@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCamAVjmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:32 +0200
+	id yNN1KtDwDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5C5592878
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14624594044
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82E45311D476
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AAD3A3167613
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E5B2F0C62;
-	Wed, 20 May 2026 16:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61193BED26;
+	Wed, 20 May 2026 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu+nZSu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdSoU7lL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92011CDFCA;
-	Wed, 20 May 2026 16:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C55E35C1A0;
+	Wed, 20 May 2026 17:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295097; cv=none; b=ekL4NitXd7tod50jE6A4dLKQXZaZN8jyUZuzAiZCkYtrDMTwXPFmQZvU0yOVUZ0r61LppyjQn2zt1EmgTxE7jxnpUwQXgMnNyW8ooUaX1MlPOCMCGoWfa8nAKZb7cnatPG7p7v0ZNPlNeGkCZw+ic6YoeTGuaNFCkY/K00Vn5eA=
+	t=1779297499; cv=none; b=tB7BsiyxVUyHl3yuDlIttQ6uOC7ngNC8KAuxbgpgMNg/CzeKo2erwFiDdYxNqMvIgl30wZ0poE2+METIqut52BIPz5SRKFJBPkutdOMJUn24YCOCfyPO2lBkFNgYc02sNkPJzkJwXfvdC3APwbGleQVZvj12jkd0aDQM9uAufNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295097; c=relaxed/simple;
-	bh=D7pXPqYAvtvPtP6BwTOAxNAkDTP/d7rucvs3TCYoPUk=;
+	s=arc-20240116; t=1779297499; c=relaxed/simple;
+	bh=E94hPZJF3suVGIrEcU5bluhNgtqssSe50PzG1kg3a/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Id6nsHhjmCUR6VPo6Bb86Jhu9bJ4NWdxHTxBeVFj4FIA8ocqnUEq7xuNI9Be5/lj8AGC/0H1Ua3qR1fLWQPY0UQeUXOrrKYidnrUG+x4ksdWFeMqScTi3WwOvrIg4dLTtKo3G4QlBXxdqRRLpeDM5eVoYpgfHU+SVq3RVrooOgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu+nZSu3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCDF1F000E9;
-	Wed, 20 May 2026 16:38:14 +0000 (UTC)
+	 MIME-Version; b=C79rkWTL1Og9P2CrI9whrUJkXDLHztGUKMIt3OjApRdORmTH19ItB9VvCDKW9DdyK9QCuSkHLjM8tlJVZo9NqqXs41P6lQSfuJg2P/OKWVyoiq2qv/U9b2ijS1Ai/97CMzVCwkAPT2PeeCc0Wtbfd7jLqdn7AKvEFuSM/s1p2ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdSoU7lL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF41C1F000E9;
+	Wed, 20 May 2026 17:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295095;
-	bh=fWgbj9Msah27PbJ6umVZveFKk1z6OEyJz5uSTMT+Q24=;
+	s=korg; t=1779297497;
+	bh=g8cE+ozKX+0zEmtmMh3fPYa6ooaJtJy5ZG7DC5gOF1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xu+nZSu3KsRph3B+b6byQf5tyTZS+Bv1rpV2H9vVnynHndiwi3J//y7lZ37ZnDD9l
-	 fh7hx8CQ735/7a5lQf8/jbdWAeZHxnjcPMhMrqKImNVurvn0DIy1Rq3eG3chXn0qgH
-	 D+MMyDuKyl3zB/YGDA/TTTIP0SfaI/YgBVmSgEz0=
+	b=ZdSoU7lLfW/xFWtl4f/w3rfUSgilGX4H7A4ffj3K3jKN3GTgj6W4mC5lVNm9A9j3+
+	 v3Epx15J728sRnQr0hhbm1i8M8Exr/YN6O4HVhQ47JJ14cznhOqTlU+8IXYamPsaZV
+	 uAXew/hCC/5ppAdOAKr6vNqIpBgHal4UCQOlCeKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Madieu <john.madieu.xa@bp.renesas.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 7.0 0288/1146] dt-bindings: PCI: renesas,r9a08g045s33-pcie: Fix naming properties
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 055/957] wifi: rtlwifi: pci: fix possible use-after-free caused by unfinished irq_prepare_bcn_tasklet
 Date: Wed, 20 May 2026 18:08:58 +0200
-Message-ID: <20260520162154.734697739@linuxfoundation.org>
+Message-ID: <20260520162135.752144120@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,136 +68,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251252-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,renesas.com:email,microchip.com:email]
-X-Rspamd-Queue-Id: 8A5C5592878
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 14624594044
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Madieu <john.madieu.xa@bp.renesas.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit bb1b0f47f6822864c1689f46348efa42c5d4074c ]
+[ Upstream commit 039cd522dc70151da13329a5e3ae19b1736f468a ]
 
-Fix a typo in interrupt-names: "ser_cor" should be "serr_cor" (System
-Error Correctable).
+The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
+scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
+But it is never killed in rtl_pci_deinit(). When the rtlwifi card
+probe fails or is being detached, the ieee80211_hw is deallocated.
+However, irq_prepare_bcn_tasklet may still be running or pending,
+leading to use-after-free when the freed ieee80211_hw is accessed
+in _rtl_pci_prepare_bcn_tasklet().
 
-Also convert interrupt-names, clock-names, and reset-names properties
-from "description" to "const" to enable proper validation with
-dtbs_check.
+Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
+ensure that irq_prepare_bcn_tasklet is properly terminated before
+the ieee80211_hw is released.
 
-Fixes: e7534e790557 ("dt-bindings: PCI: Add Renesas RZ/G3S PCIe controller binding")
-Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # RZ/V2N EVK
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260306143423.19562-6-john.madieu.xa@bp.renesas.com
+The issue was identified through static analysis.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260223045522.48377-1-duoming@zju.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/pci/renesas,r9a08g045-pcie.yaml  | 50 +++++++++----------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/pci/renesas,r9a08g045-pcie.yaml b/Documentation/devicetree/bindings/pci/renesas,r9a08g045-pcie.yaml
-index d668782546a23..d1eb92995e2c3 100644
---- a/Documentation/devicetree/bindings/pci/renesas,r9a08g045-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/renesas,r9a08g045-pcie.yaml
-@@ -41,22 +41,22 @@ properties:
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index d080469264cf8..f0010336e78c1 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -1674,6 +1674,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
  
-   interrupt-names:
-     items:
--      - description: serr
--      - description: ser_cor
--      - description: serr_nonfatal
--      - description: serr_fatal
--      - description: axi_err
--      - description: inta
--      - description: intb
--      - description: intc
--      - description: intd
--      - description: msi
--      - description: link_bandwidth
--      - description: pm_pme
--      - description: dma
--      - description: pcie_evt
--      - description: msg
--      - description: all
-+      - const: serr
-+      - const: serr_cor
-+      - const: serr_nonfatal
-+      - const: serr_fatal
-+      - const: axi_err
-+      - const: inta
-+      - const: intb
-+      - const: intc
-+      - const: intd
-+      - const: msi
-+      - const: link_bandwidth
-+      - const: pm_pme
-+      - const: dma
-+      - const: pcie_evt
-+      - const: msg
-+      - const: all
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
++	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+ }
  
-   interrupt-controller: true
- 
-@@ -67,8 +67,8 @@ properties:
- 
-   clock-names:
-     items:
--      - description: aclk
--      - description: pm
-+      - const: aclk
-+      - const: pm
- 
-   resets:
-     items:
-@@ -82,13 +82,13 @@ properties:
- 
-   reset-names:
-     items:
--      - description: aresetn
--      - description: rst_b
--      - description: rst_gp_b
--      - description: rst_ps_b
--      - description: rst_rsm_b
--      - description: rst_cfg_b
--      - description: rst_load_b
-+      - const: aresetn
-+      - const: rst_b
-+      - const: rst_gp_b
-+      - const: rst_ps_b
-+      - const: rst_rsm_b
-+      - const: rst_cfg_b
-+      - const: rst_load_b
- 
-   power-domains:
-     maxItems: 1
 -- 
 2.53.0
 
