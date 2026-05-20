@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OeEEnXtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250913-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:53 +0200
+	id mODXHRgJDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-252891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:18:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5B559365D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F0059819F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:18:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D9D6B30D99AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7DBED3225ACC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524993A6EE0;
-	Wed, 20 May 2026 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C48347514;
+	Wed, 20 May 2026 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdPckLsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJsMLdyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E093E33A6F2;
-	Wed, 20 May 2026 17:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6E343880;
+	Wed, 20 May 2026 18:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296634; cv=none; b=NEifaog9GvscEhBMXp+XBXjB9gxGEdl6VESagC1mo87mzEamTJdqnhEhW5R/rHwBDy4JQdA6ohoDLOvCRwbUyry+KiQCJM9ZG1I8NN+riY2HX5IuN+yxBzd/mm1TjmuJX96kMccHkMwylscDmACMz0ZYQ8lNBHm1m0550OAXXno=
+	t=1779301859; cv=none; b=Hna4/zFoiOLl7w4yEXAdpRW7T/8mf8VUWCPFRDZTr8wnDZF5pAPJzhScld/ZSWyRzn8zIy35zW7+xf6gJnshezGAeUicg6E8u4l138UxxkSwNxcRkpLKiRVbTg9qjRqgrYk8G8jRzeVjWZZ0vwrsuf7TKnfCpIuolOgoK7eWahE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296634; c=relaxed/simple;
-	bh=r+DBm+J5sqAOhe/weI30WRQY26hmZndLbtcuLjOKN7I=;
+	s=arc-20240116; t=1779301859; c=relaxed/simple;
+	bh=yEmYS3weftUjkMRpzSplNbfJFZSfL15WyUAboaL/71E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHMIY/e/rW4KTU6htTbAQGGNlCdFPnI1fs+31ZPa2FeGBL20iRgnEyRFHlW40YfQqw+xQKrvgKoYHQZ4ZrqS36Ka++XGxEWgqnoK4k0N7tGKKB5H7pxoEXG+IKNHZJNUeUH1UCdokA49PvohOoJjE8Tk8hUbRlYQtVLHTMD1OiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdPckLsF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D0B1F000E9;
-	Wed, 20 May 2026 17:03:52 +0000 (UTC)
+	 MIME-Version; b=lLp+ezOEpf6PBq2PlXH4OOTbHhne85yJlLF4G2tPM+MGkcbI+0ORr8jmJfmN7isFoYIO/5++4tdtIQFAwijlxAJ5CqvbNMx6saOcdGrnzJUZcUBqgDqxtlc2TTKYuMxd7N6EPGrTqyauP3eMLNM9T9Jp0mojaFa7v+8b9Ec4lRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJsMLdyt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6251F000E9;
+	Wed, 20 May 2026 18:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296632;
-	bh=TkBwuxZcpveCGjf47fj7pJ6B+JzqFklTv0DDe6sk67s=;
+	s=korg; t=1779301858;
+	bh=jmBMr1au7sQViUF1SZ+YMxqxU4fBX5Ae34m9ptg3JCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NdPckLsFgT+wvfInxTnGZU3SNF3Z5V0lbN+Ucsq2NKH6FnEvts1ntVYPg2A8iqWPX
-	 ugfpoeF05nWpXq+2Ug5b1V2xzFYPloTWP0jrsTCykEk8zawYA5db6r4wQRyn7mFpjL
-	 04p+/PsMjDH6I4WnEq+u1ZPDj/kBZ/5Nh5IOGWus=
+	b=XJsMLdytme6Os+eHiiJEsSuoJYMjM5k+b8HMXCwDDv3Tip8JO5emY94m3GchJ/qKj
+	 UgCU4K4U7HLpXE1OecwIfaN40zHHQJLoSaVc/Qfo+6EaS5jmkkFX6/ZBrdZlb7vwuw
+	 CmppYcsw16RfMFXSWsY8o8MuNmqq0EpKu36PVBVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	MingTao Huang <mintaohuang@tencent.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0821/1146] net/sched: sch_dualpi2: drain both C-queue and L-queue in dualpi2_change()
+Subject: [PATCH 6.6 048/508] bpf: Fix stale offload->prog pointer after constant blinding
 Date: Wed, 20 May 2026 18:17:51 +0200
-Message-ID: <20260520162206.811573957@linuxfoundation.org>
+Message-ID: <20260520162059.636386153@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,116 +66,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nokia-bell-labs.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250913-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252891-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: DD5B559365D
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,tencent.com:email]
+X-Rspamd-Queue-Id: 98F0059819F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: MingTao Huang <mintaohuang@tencent.com>
 
-[ Upstream commit 478ed6b7d2577439c610f91fa8759a4c878a4264 ]
+[ Upstream commit a1aa9ef47c299c5bbc30594d3c2f0589edf908e6 ]
 
-Fix dualpi2_change() to correctly enforce updated limit and memlimit
-values after a configuration change of the dualpi2 qdisc.
+When a dev-bound-only BPF program (BPF_F_XDP_DEV_BOUND_ONLY) undergoes
+JIT compilation with constant blinding enabled (bpf_jit_harden >= 2),
+bpf_jit_blind_constants() clones the program. The original prog is then
+freed in bpf_jit_prog_release_other(), which updates aux->prog to point
+to the surviving clone, but fails to update offload->prog.
 
-Before this patch, dualpi2_change() always attempted to dequeue packets
-via the root qdisc (C-queue) when reducing backlog or memory usage, and
-unconditionally assumed that a valid skb will be returned. When traffic
-classification results in packets being queued in the L-queue while the
-C-queue is empty, this leads to a NULL skb dereference during limit or
-memlimit enforcement.
+This leaves offload->prog pointing to the freed original program. When
+the network namespace is subsequently destroyed, cleanup_net() triggers
+bpf_dev_bound_netdev_unregister(), which iterates ondev->progs and calls
+__bpf_prog_offload_destroy(offload->prog). Accessing the freed prog
+causes a page fault:
 
-This is fixed by first dequeuing from the C-queue path if it is
-non-empty. Once the C-queue is empty, packets are dequeued directly from
-the L-queue. Return values from qdisc_dequeue_internal() are checked for
-both queues. When dequeuing from the L-queue, the parent qdisc qlen and
-backlog counters are updated explicitly to keep overall qdisc statistics
-consistent.
+BUG: unable to handle page fault for address: ffffc900085f1038
+Workqueue: netns cleanup_net
+RIP: 0010:__bpf_prog_offload_destroy+0xc/0x80
+Call Trace:
+__bpf_offload_dev_netdev_unregister+0x257/0x350
+bpf_dev_bound_netdev_unregister+0x4a/0x90
+unregister_netdevice_many_notify+0x2a2/0x660
+...
+cleanup_net+0x21a/0x320
 
-Fixes: 320d031ad6e4 ("sched: Struct definition and parsing of dualpi2 qdisc")
-Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260413075740.2234828-1-hxzene@gmail.com/
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Link: https://patch.msgid.link/20260417152551.71648-1-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The test sequence that triggers this reliably is:
+
+1. Set net.core.bpf_jit_harden=2 (echo 2 > /proc/sys/net/core/bpf_jit_harden)
+2. Run xdp_metadata selftest, which creates a dev-bound-only XDP
+   program on a veth inside a netns (./test_progs -t xdp_metadata)
+3. cleanup_net -> page fault in __bpf_prog_offload_destroy
+
+Dev-bound-only programs are unique in that they have an offload structure
+but go through the normal JIT path instead of bpf_prog_offload_compile().
+This means they are subject to constant blinding's prog clone-and-replace,
+while also having offload->prog that must stay in sync.
+
+Fix this by updating offload->prog in bpf_jit_prog_release_other(),
+alongside the existing aux->prog update. Both are back-pointers to
+the prog that must be kept in sync when the prog is replaced.
+
+Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+Signed-off-by: MingTao Huang <mintaohuang@tencent.com>
+Link: https://lore.kernel.org/r/tencent_BCF692F45859CCE6C22B7B0B64827947D406@qq.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_dualpi2.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ kernel/bpf/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-index 6d7e6389758dc..d200c08ce50a1 100644
---- a/net/sched/sch_dualpi2.c
-+++ b/net/sched/sch_dualpi2.c
-@@ -872,11 +872,35 @@ static int dualpi2_change(struct Qdisc *sch, struct nlattr *opt,
- 	old_backlog = sch->qstats.backlog;
- 	while (qdisc_qlen(sch) > sch->limit ||
- 	       q->memory_used > q->memory_limit) {
--		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
-+		struct sk_buff *skb = NULL;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 3011add7c4a88..d708cf3e6207f 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1422,6 +1422,8 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other)
+ 	 * know whether fp here is the clone or the original.
+ 	 */
+ 	fp->aux->prog = fp;
++	if (fp->aux->offload)
++		fp->aux->offload->prog = fp;
+ 	bpf_prog_clone_free(fp_other);
+ }
  
--		q->memory_used -= skb->truesize;
--		qdisc_qstats_backlog_dec(sch, skb);
--		rtnl_qdisc_drop(skb, sch);
-+		if (qdisc_qlen(sch) > qdisc_qlen(q->l_queue)) {
-+			skb = qdisc_dequeue_internal(sch, true);
-+			if (unlikely(!skb)) {
-+				WARN_ON_ONCE(1);
-+				break;
-+			}
-+			q->memory_used -= skb->truesize;
-+			rtnl_qdisc_drop(skb, sch);
-+		} else if (qdisc_qlen(q->l_queue)) {
-+			skb = qdisc_dequeue_internal(q->l_queue, true);
-+			if (unlikely(!skb)) {
-+				WARN_ON_ONCE(1);
-+				break;
-+			}
-+			/* L-queue packets are counted in both sch and
-+			 * l_queue on enqueue; qdisc_dequeue_internal()
-+			 * handled l_queue, so we further account for sch.
-+			 */
-+			--sch->q.qlen;
-+			qdisc_qstats_backlog_dec(sch, skb);
-+			q->memory_used -= skb->truesize;
-+			rtnl_qdisc_drop(skb, q->l_queue);
-+			qdisc_qstats_drop(sch);
-+		} else {
-+			WARN_ON_ONCE(1);
-+			break;
-+		}
- 	}
- 	qdisc_tree_reduce_backlog(sch, old_qlen - qdisc_qlen(sch),
- 				  old_backlog - sch->qstats.backlog);
 -- 
 2.53.0
 
