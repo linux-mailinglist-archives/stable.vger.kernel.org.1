@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBYcGAwQDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:28 +0200
+	id aIoEJ2MXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37495598C18
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FEB59971D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CFF931B1B86
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A28935B75E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C933D7D7B;
-	Wed, 20 May 2026 16:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61B43BA246;
+	Wed, 20 May 2026 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZRigppe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSJnnwIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A0D3D8137;
-	Wed, 20 May 2026 16:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6CD366075;
+	Wed, 20 May 2026 17:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295336; cv=none; b=D7ZLEWHwsSzA8PgK/mfUp0EhdBODhb7L4GuoTJfG921lJ17oBb4D/JaIpAshmLVG3t3maDGyiwVKi4gwHJtMqh7e81MUv0cfCuy+aQMUBgRneqWfNe7DS8nYgSn5fEb9oWtUe++lnN1ZWTBcpqNrBaVd6vYD3fM+CymuH8VJIO4=
+	t=1779297739; cv=none; b=eL07oUA5It4MKoPAN2dFikiE5YesR+z9NGR2YdMzBhELOSKbLN3+daGOrbpIg+sVAWeBcVy0wcu7Nivy2PVntZLV2GF7agbSss3KyABm5Xu1YiokQZJU1T0E0rAaFZQ2rcuA2RYTWxQvCYm41TpkvraTSxBt0gng9R4s4u7yWtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295336; c=relaxed/simple;
-	bh=QRvOznyWXIsSlONrVFbNuK82wTctApy7MjqZf62mX+c=;
+	s=arc-20240116; t=1779297739; c=relaxed/simple;
+	bh=OJUBo0CyJnOij67LKKFf7k6It1AlWv0QG0a5WyvixTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCOxVN+XxRAf5frM+EILMhzaTGNYXt3ce7PolP/CCoyhgK4JM8XNJlOin6WgY6I9R15K5MnBcBM5z5tKUAWljVWm1y3R8+ysEYWk+L+I+VYha3keNdLtaOIXoeuvl9QtGru/o4jiEDrZDSrjNgXDvkTjHZ2CKl+5avXSG691VN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZRigppe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57091F000E9;
-	Wed, 20 May 2026 16:42:14 +0000 (UTC)
+	 MIME-Version; b=YUhVynUiq+kmgLQpVbB5KeFjlkAOAhVnOznAbnTPWBw+nODy2rF0i5f3RZzui4VPIgDmoPFb1SW6lwZ7lPBHZcNo9+IdcXbEmQ20wJ1juT3CWDfss27gfNnTktXNRc8g6lbTowthsbjUfrMOArPLkVtFS5Lh7afOwfw00bu3kWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSJnnwIC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF45C1F00893;
+	Wed, 20 May 2026 17:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295335;
-	bh=IRMxsw7bloxJGw8mTIOrSU2JEcNcVOkxY/Y5WyJl8u0=;
+	s=korg; t=1779297738;
+	bh=1tzKuovqeQpI0tnhuXJh4vagfPfj6Gtmx7HGTxeybxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QZRigppe9noPoCVJtUcMYam/NVHNXLT4St4qCCOEdNWICJ3KHG4LUZBr4GzOC7FLp
-	 BFW2j/oGffqTMjtZxiBjKKYycloDhOxjk1ntWHjroGvpENXQgB/tJGgdZw0hYPoVLX
-	 NtOjuMqrKgyhbFw346Pt7LotKX5P9JK8TPS6E798=
+	b=oSJnnwICIJGDofT2Th20XZe6JY2Ax14sXDEW/15YTu62SswOXMs2HXpOY719c4kPi
+	 gxk9GL8loKETPSgg06HN1F7uo7L4CqY4hFaFI0eKBe/q5Ca62yTEZnsRkkc9Ve4a2r
+	 9i+A3Tq99906yC9wveWeV3ADWAqUEUcCXd1Vm8Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Sechang Lim <rhkrqnwk98@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0379/1146] ASoC: fsl_easrc: Change the type for iec958 channel status controls
+Subject: [PATCH 6.18 146/957] bpf: Fix RCU stall in bpf_fd_array_map_clear()
 Date: Wed, 20 May 2026 18:10:29 +0200
-Message-ID: <20260520162156.778361668@linuxfoundation.org>
+Message-ID: <20260520162137.720585659@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,223 +65,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250408-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251345-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 37495598C18
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 13FEB59971D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit 47f28a5bd154a95d5aa563dde02a801bd32ddb81 ]
+[ Upstream commit 4406942e65ca128c56c67443832988873c21d2e9 ]
 
-Use the type SNDRV_CTL_ELEM_TYPE_IEC958 for iec958 channel status
-controls, the original type will cause mixer-test to iterate all 32bit
-values, which costs a lot of time. And using IEC958 type can reduce the
-control numbers.
+Add a missing cond_resched() in bpf_fd_array_map_clear() loop.
 
-Also enable pm runtime before updating registers to make the regmap cache
-data align with the value in hardware.
+For PROG_ARRAY maps with many entries this loop calls
+prog_array_map_poke_run() per entry which can be expensive, and
+without yielding this can cause RCU stalls under load:
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-12-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  rcu: Stack dump where RCU GP kthread last ran:
+  CPU: 0 UID: 0 PID: 30932 Comm: kworker/0:2 Not tainted 6.14.0-13195-g967e8def1100 #2 PREEMPT(undef)
+  Workqueue: events prog_array_map_clear_deferred
+  RIP: 0010:write_comp_data+0x38/0x90 kernel/kcov.c:246
+  Call Trace:
+   <TASK>
+   prog_array_map_poke_run+0x77/0x380 kernel/bpf/arraymap.c:1096
+   __fd_array_map_delete_elem+0x197/0x310 kernel/bpf/arraymap.c:925
+   bpf_fd_array_map_clear kernel/bpf/arraymap.c:1000 [inline]
+   prog_array_map_clear_deferred+0x119/0x1b0 kernel/bpf/arraymap.c:1141
+   process_one_work+0x898/0x19d0 kernel/workqueue.c:3238
+   process_scheduled_works kernel/workqueue.c:3319 [inline]
+   worker_thread+0x770/0x10b0 kernel/workqueue.c:3400
+   kthread+0x465/0x880 kernel/kthread.c:464
+   ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:153
+   ret_from_fork_asm+0x19/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
+
+Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
+Fixes: da765a2f5993 ("bpf: Add poke dependency tracking for prog array maps")
+Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
+Link: https://lore.kernel.org/r/20260407103823.3942156-1-rhkrqnwk98@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 118 +++++++++++++++++++++++++++-----------
- 1 file changed, 84 insertions(+), 34 deletions(-)
+ kernel/bpf/arraymap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 3086cb758beb6..114a6c0b6b730 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -78,17 +78,47 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
- 	return 0;
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 80b1765a31596..248ab6854cf24 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -1006,8 +1006,10 @@ static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+ 	int i;
+ 
+-	for (i = 0; i < array->map.max_entries; i++)
++	for (i = 0; i < array->map.max_entries; i++) {
+ 		__fd_array_map_delete_elem(map, &i, need_defer);
++		cond_resched();
++	}
  }
  
-+static int fsl_easrc_iec958_info(struct snd_kcontrol *kcontrol,
-+				 struct snd_ctl_elem_info *uinfo)
-+{
-+	uinfo->type = SNDRV_CTL_ELEM_TYPE_IEC958;
-+	uinfo->count = 1;
-+	return 0;
-+}
-+
- static int fsl_easrc_get_reg(struct snd_kcontrol *kcontrol,
- 			     struct snd_ctl_elem_value *ucontrol)
- {
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
--	unsigned int regval;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	int ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS0(mc->regbase), &regval[0]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS1(mc->regbase), &regval[1]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS2(mc->regbase), &regval[2]);
-+	if (ret)
-+		return ret;
- 
--	regval = snd_soc_component_read(component, mc->regbase);
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS3(mc->regbase), &regval[3]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS4(mc->regbase), &regval[4]);
-+	if (ret)
-+		return ret;
- 
--	ucontrol->value.integer.value[0] = regval;
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS5(mc->regbase), &regval[5]);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
- }
-@@ -100,22 +130,62 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
- 	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
--	unsigned int regval = ucontrol->value.integer.value[0];
--	bool changed;
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	bool changed, changed_all = false;
- 	int ret;
- 
--	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
--				       GENMASK(31, 0), regval, &changed);
--	if (ret != 0)
-+	ret = pm_runtime_resume_and_get(component->dev);
-+	if (ret)
- 		return ret;
- 
--	return changed;
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS0(mc->regbase),
-+				       GENMASK(31, 0), regval[0], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS1(mc->regbase),
-+				       GENMASK(31, 0), regval[1], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS2(mc->regbase),
-+				       GENMASK(31, 0), regval[2], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS3(mc->regbase),
-+				       GENMASK(31, 0), regval[3], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS4(mc->regbase),
-+				       GENMASK(31, 0), regval[4], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS5(mc->regbase),
-+				       GENMASK(31, 0), regval[5], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+err:
-+	pm_runtime_put_autosuspend(component->dev);
-+
-+	if (ret != 0)
-+		return ret;
-+	else
-+		return changed_all;
- }
- 
- #define SOC_SINGLE_REG_RW(xname, xreg) \
- {	.iface = SNDRV_CTL_ELEM_IFACE_PCM, .name = (xname), \
- 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE, \
--	.info = snd_soc_info_xr_sx, .get = fsl_easrc_get_reg, \
-+	.info = fsl_easrc_iec958_info, .get = fsl_easrc_get_reg, \
- 	.put = fsl_easrc_set_reg, \
- 	.private_value = (unsigned long)&(struct soc_mreg_control) \
- 		{ .regbase = xreg, .regcount = 1, .nbits = 32, \
-@@ -146,30 +216,10 @@ static const struct snd_kcontrol_new fsl_easrc_snd_controls[] = {
- 	SOC_SINGLE_VAL_RW("Context 2 IEC958 Bits Per Sample", 2),
- 	SOC_SINGLE_VAL_RW("Context 3 IEC958 Bits Per Sample", 3),
- 
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS0", REG_EASRC_CS0(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS0", REG_EASRC_CS0(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS0", REG_EASRC_CS0(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS0", REG_EASRC_CS0(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS1", REG_EASRC_CS1(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS1", REG_EASRC_CS1(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS1", REG_EASRC_CS1(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS1", REG_EASRC_CS1(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS2", REG_EASRC_CS2(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS2", REG_EASRC_CS2(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS2", REG_EASRC_CS2(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS2", REG_EASRC_CS2(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS3", REG_EASRC_CS3(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS3", REG_EASRC_CS3(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS3", REG_EASRC_CS3(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS3", REG_EASRC_CS3(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS4", REG_EASRC_CS4(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS4", REG_EASRC_CS4(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS4", REG_EASRC_CS4(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS4", REG_EASRC_CS4(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS5", REG_EASRC_CS5(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS5", REG_EASRC_CS5(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS5", REG_EASRC_CS5(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS5", REG_EASRC_CS5(3)),
-+	SOC_SINGLE_REG_RW("Context 0 IEC958 CS", 0),
-+	SOC_SINGLE_REG_RW("Context 1 IEC958 CS", 1),
-+	SOC_SINGLE_REG_RW("Context 2 IEC958 CS", 2),
-+	SOC_SINGLE_REG_RW("Context 3 IEC958 CS", 3),
- };
- 
- /*
+ static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
 -- 
 2.53.0
 
