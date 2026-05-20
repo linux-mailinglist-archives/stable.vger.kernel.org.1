@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AC0HCLv6DWrt5AUAu9opvQ
-	(envelope-from <stable+bounces-251091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:31 +0200
+	id IFb8NxD5DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3D4595B97
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E36C59575D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6AB631741B2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 95F6C314BDED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2EA3D6CB7;
-	Wed, 20 May 2026 17:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAD3F39C9;
+	Wed, 20 May 2026 17:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQWbEVWb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpDCDSSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C943C6A5C;
-	Wed, 20 May 2026 17:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469C33F20F9;
+	Wed, 20 May 2026 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297076; cv=none; b=hJ1U87NLHvNfCBTkQzF1Zy5pbPzBe9a2vT+H9EWUalsCv5iDww5B6PIFTYYWpEEnpDi1zkdQWtJIQ4v4RM5oD7ksYPdx0I+8ZZMnLtD7G9OzgTHUOo5BmjjKHIi/8xnMgCwSrRgksQkX/jBfuRfyp/X1Ao3TfUtFa/6pWROfnCM=
+	t=1779299525; cv=none; b=nPoCRxcN0bNUZ3WRkxfM6+F+DEwjMgAd5sEkqrL7Tnfo98mamIar2XrHf2SCmMNW8jtk/8EAVaZTbis1lPxK9IHGyRt7BmKnc/1LrrhaYZmrscpylOVEF/ey1kmOcXH45P5G/XY62Iy9stt5syC5bTjxsFqgm6+pa3LKxxE+OnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297076; c=relaxed/simple;
-	bh=QiuSIJks/im+KylqlSpOG7k6W1V75uJlUQcd47aAWZw=;
+	s=arc-20240116; t=1779299525; c=relaxed/simple;
+	bh=7P58it20zphk2h1NS90XJobpWCiQu+8njAwiBqs40X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiL95TSL7flsVOSxI/AooVJmIYoVETYnC3G3NPeXqQePwouflxOMIasXGOD9fmNdxhRccTtUqJ6j2lthQGwMr0hO/ILzEB8PBA0xWggybDny40CogkiV2JmCmquB50axH8etIg2xxyQcvOVZxRDu9PNRw7tLFwNEIzo+C+pl0Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQWbEVWb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD331F000E9;
-	Wed, 20 May 2026 17:11:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rrLhXQEj99aZ4dUsNyZtjcqRvRZwQxMGBkV/X+qFLG3JJsMw2u+w1x5/zOefYDkzF3How+15YuJlV/+LWZdvy2+7jweoWLwEnunY9tXKtd8sPNmAOfMctLZr4voAp4HcH3HLLJp1NyvL7Ew/y/6ZV7889MoiuzeQWMNQ/qxt3EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpDCDSSh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D661F000E9;
+	Wed, 20 May 2026 17:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297075;
-	bh=Vztf8gTI/72N3pxenzds5pQ/H3nshz49csVWVPLeGq8=;
+	s=korg; t=1779299524;
+	bh=6uTc5/xS1JjyDiorFC7kC8NVztT5clKUrtDZFu5qh20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VQWbEVWbmwXQerfqQKbVYv1pfovokyweKAdtGi3Vi4tUT+fP7lSwz++glgc3/IrdH
-	 An3oiBpmogoWJ4Rwtp7ZwYxQJsuZvAdC6dBzjSXAvbO+P08pMWLPfGniKGqJYMCHlN
-	 YFEft6qCcSHU4+RTh/gFsBhdAZRk4V7k78b8rGk8=
+	b=DpDCDSShoDO5KUOBCJHUh+y/4l+ydfhQ7lqX9WcYoFmBXjTEVKa08zz6vGeBiZpPn
+	 UnSRhOe+5kWREyTVj/WOC3hp/jpfabl07XRKc0m5nlwBj55d6NkJaKylFA8gImK24L
+	 Az1JxMITM6/hnaFrJUACaByzON3JmwFml2suT+G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1039/1146] net/sched: sch_pie: annotate more data-races in pie_dump_stats()
+Subject: [PATCH 6.18 806/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v2.0 ring
 Date: Wed, 20 May 2026 18:21:29 +0200
-Message-ID: <20260520162211.744641532@linuxfoundation.org>
+Message-ID: <20260520162152.047762400@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252016-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251091-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 2E3D4595B97
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9E36C59575D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 6d4106e8df94c0c52cf3ca6a6a0d01567fb3844e ]
+[ Upstream commit e5f612dc91650561fe2b5b76dd6d2898ec9ad480 ]
 
-My prior patch missed few READ_ONCE()/WRITE_ONCE() annotations.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-Fixes: 5154561d9b11 ("net/sched: sch_pie: annotate data-races in pie_dump_stats()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430080056.35104-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6ac27241106b ("drm/amdgpu: add JPEG v2.0 function supports")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 96179da0c6b059eb31706a0abe8dd6381c533143)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_pie.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index 73650200482f4..40149edecbd5a 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -219,16 +219,14 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
- 	 * packet timestamp.
- 	 */
- 	if (!params->dq_rate_estimator) {
--		vars->qdelay = now - pie_get_enqueue_time(skb);
-+		WRITE_ONCE(vars->qdelay,
-+			   backlog ? now - pie_get_enqueue_time(skb) : 0);
- 
- 		if (vars->dq_tstamp != DTIME_INVALID)
- 			dtime = now - vars->dq_tstamp;
- 
- 		vars->dq_tstamp = now;
- 
--		if (backlog == 0)
--			vars->qdelay = 0;
--
- 		if (dtime == 0)
- 			return;
- 
-@@ -376,7 +374,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
- 		delta += MAX_PROB / (100 / 2);
- 
--	vars->prob += delta;
-+	WRITE_ONCE(vars->prob, vars->prob + delta);
- 
- 	if (delta > 0) {
- 		/* prevent overflow */
-@@ -401,7 +399,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 
- 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
- 		/* Reduce drop probability to 98.4% */
--		vars->prob -= vars->prob / 64;
-+		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
- 
- 	WRITE_ONCE(vars->qdelay, qdelay);
- 	vars->backlog_old = backlog;
-@@ -501,7 +499,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct pie_sched_data *q = qdisc_priv(sch);
- 	struct tc_pie_xstats st = {
--		.prob		= q->vars.prob << BITS_PER_BYTE,
-+		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
- 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
- 				   NSEC_PER_USEC,
- 		.packets_in	= READ_ONCE(q->stats.packets_in),
-@@ -512,7 +510,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	};
- 
- 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
--	st.dq_rate_estimating = q->params.dq_rate_estimator;
-+	st.dq_rate_estimating = READ_ONCE(q->params.dq_rate_estimator);
- 
- 	/* unscale and return dq_rate in bytes per sec */
- 	if (st.dq_rate_estimating)
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
+index 27c76bd424cfb..1e214b493402c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
+@@ -802,6 +802,7 @@ static const struct amd_ip_funcs jpeg_v2_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v2_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v2_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v2_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v2_0_dec_ring_set_wptr,
 -- 
 2.53.0
 
