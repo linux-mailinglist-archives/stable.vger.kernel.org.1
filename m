@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBBME0IZDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-251310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:46 +0200
+	id YPNHKCbyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972045999B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91A7594443
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1BA33580AE9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD41431CD270
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26833A6EE0;
-	Wed, 20 May 2026 17:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130AC3D88FC;
+	Wed, 20 May 2026 16:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wj3Za727"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wNtOblT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EDB30BF68;
-	Wed, 20 May 2026 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBED3D8918;
+	Wed, 20 May 2026 16:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297649; cv=none; b=VaIcB5Zu3Jqi42tmGm/y2S2elEy30aFU/BaBVru/hDJVmkMjsTIjJAVqBp757kEVadwzbU3ucCquIaQ6Esa7TWQ78/u53i2db8OVbI/+JHBvLD4e2NIqm2iTY9Q59xuNoOSW9WBO7QAhKngN6vEePrO5KC3zt/KWtGVPSSC7f5s=
+	t=1779295339; cv=none; b=HoSOtaIVjgZrWPYjrzXgD/alD/7wY2dle+nmiX2QieAImaZSDGP4OtvV6WyxpgF/YEPKbkDtlZ9FohtHS9c1lAmAtLtNftkJcG273fQ7SpNqvEOM5vDtOaD/FFxApD0TqwI/k61zaa6jJbv++ydK1s1phr9qjMvWtGAVE1GKgzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297649; c=relaxed/simple;
-	bh=1LHY+CDyKVCvq0aORMgBBnRvod6jXPw4cG1qRQ4BouU=;
+	s=arc-20240116; t=1779295339; c=relaxed/simple;
+	bh=l5dCDV4r6owS+INVM44bAKIa1F1sH1ub6oAKNRbQ7Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wyd9S/MhgOZLb9VAHUBQu7aKnBhflcmrpFVIeBlwu05aK8aVjcRNqQvpRJ+YTIbkFNglRB1bNwNDQX+zJoUNkqX04morDWNZxWMfoypMf8gBn77k4KgyCanSEx7eG4FqRhIppDscludpqmPkbIpoF8G2MSrDdk99jjVGcWtlbPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wj3Za727; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60F21F000E9;
-	Wed, 20 May 2026 17:20:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uDEA+4RYq3bmXb1kJO/05MRN6iIinR1p3Dl5QIKbXdm8T4FDtm+vOeUe704FIq6vK4WGtVSEsm6uEvvLeW+UwH0OFXSLsPohDuR/hp4chaNw+oNeE/azdyfaVjZEtuRV6EBNXQiyc88G2ky33NmHx79VqTr031LnQe84ODE9DDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wNtOblT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596951F00893;
+	Wed, 20 May 2026 16:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297648;
-	bh=o0aW7a+I7Uf+UDaProDqsOG3zvmLfPXaLBiahDBahl0=;
+	s=korg; t=1779295337;
+	bh=NjaEwTqPFsBTwgAv1gdNqsapLEcpuqudSpLivyOPITY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wj3Za727eSXoN324C9oUCWJQvCpRaECLroatZieQdPZ06m/dXYA+z3jQYmxKhTeZe
-	 uup6neec8VqAjxBux5X4fOOijBC4sLNQKx5yno6qqF6/ik4SGODOOyrakQYZmg7cNi
-	 kHiTxGF++VlX+HEJD0zodQNsX9j7fCWk8oN1kjfg=
+	b=0wNtOblTuOfTxrr2LeiL1umbQtlIxAuUUZtnpzZ+v0F9jxSZflYEpB7KW6d7nOWAY
+	 6p2DFWGwgOqzeuRzcRdR9ANvLCmK1wSWAbU/CKpU7o/dhPLyA/vszmj9cbYAa3o4TQ
+	 +fDNFhUGnCU4H+RgdBvdD6vpEHo+zGpyAh4ZhoqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"haoyu.lu" <hechushiguitu666@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 111/957] bpf,arc_jit: Fix missing newline in pr_err messages
+Subject: [PATCH 7.0 0344/1146] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
 Date: Wed, 20 May 2026 18:09:54 +0200
-Message-ID: <20260520162136.967950548@linuxfoundation.org>
+Message-ID: <20260520162155.985941554@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251310-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 972045999B8
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: D91A7594443
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: haoyu.lu <hechushiguitu666@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b6b5e0ebd429d66ce37ae5af649a74ea1f041d92 ]
+[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
 
-Add missing newline to pr_err messages in ARC JIT.
+On a specific Radeon R9 390X board, the GPU can "randomly" hang
+while gaming. Initially I thought this was a RADV bug and tried
+to work around this in Mesa:
+commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
 
-Fixes: f122668ddcce ("ARC: Add eBPF JIT support")
-Signed-off-by: haoyu.lu <hechushiguitu666@gmail.com>
-Link: https://lore.kernel.org/r/20260324122703.641-1-hechushiguitu666@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+However, I got some feedback from other users who are reporting
+that the above mitigation causes a significant performance
+regression for them, and they didn't experience the hang on their
+GPU in the first place.
+
+After some further investigation, it turns out that the problem
+is that the highest SCLK DPM level on this board isn't stable.
+Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
+and has a negligible impact on performance compared to the Mesa
+patch. (Note that increasing the voltage can also work around it,
+but we felt that lowering the SCLK is the safer option.)
+
+To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
+and set this field for the affected board. The capped SCLK value
+correctly appears on the sysfs interface and shows up in GUI
+tools such as LACT.
+
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/net/bpf_jit_arcv2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
+ 2 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arc/net/bpf_jit_arcv2.c b/arch/arc/net/bpf_jit_arcv2.c
-index 6d989b6d88c69..7ee50aeae5a45 100644
---- a/arch/arc/net/bpf_jit_arcv2.c
-+++ b/arch/arc/net/bpf_jit_arcv2.c
-@@ -2427,7 +2427,7 @@ u8 arc_prologue(u8 *buf, u32 usage, u16 frame_size)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 563482f5d35fd..bc6acdb52c269 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -787,7 +787,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
+ 		hwmgr->dyn_state.vddc_dependency_on_mclk;
+ 	struct phm_cac_leakage_table *std_voltage_table =
+ 		hwmgr->dyn_state.cac_leakage_table;
+-	uint32_t i;
++	uint32_t i, clk;
  
- #ifdef ARC_BPF_JIT_DEBUG
- 	if ((usage & BIT(ARC_R_FP)) && frame_size == 0) {
--		pr_err("FP is being saved while there is no frame.");
-+		pr_err("FP is being saved while there is no frame.\n");
- 		BUG();
- 	}
- #endif
-@@ -2454,7 +2454,7 @@ u8 arc_epilogue(u8 *buf, u32 usage, u16 frame_size)
+ 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
+ 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
+@@ -804,10 +804,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
+ 	data->dpm_table.sclk_table.count = 0;
  
- #ifdef ARC_BPF_JIT_DEBUG
- 	if ((usage & BIT(ARC_R_FP)) && frame_size == 0) {
--		pr_err("FP is being saved while there is no frame.");
-+		pr_err("FP is being saved while there is no frame.\n");
- 		BUG();
- 	}
- #endif
-@@ -2868,7 +2868,7 @@ u8 gen_jmp_64(u8 *buf, u8 rd, u8 rs, u8 cond, u32 curr_off, u32 targ_off)
- 		break;
- 	default:
- #ifdef ARC_BPF_JIT_DEBUG
--		pr_err("64-bit jump condition is not known.");
-+		pr_err("64-bit jump condition is not known.\n");
- 		BUG();
- #endif
- 	}
-@@ -2948,7 +2948,7 @@ u8 gen_jmp_32(u8 *buf, u8 rd, u8 rs, u8 cond, u32 curr_off, u32 targ_off)
- 	 */
- 	if (cond >= ARC_CC_LAST) {
- #ifdef ARC_BPF_JIT_DEBUG
--		pr_err("32-bit jump condition is not known.");
-+		pr_err("32-bit jump condition is not known.\n");
- 		BUG();
- #endif
- 		return 0;
+ 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
++		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
++
+ 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
+-				allowed_vdd_sclk_table->entries[i].clk) {
++				clk) {
+ 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
+-				allowed_vdd_sclk_table->entries[i].clk;
++				clk;
+ 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
+ 			data->dpm_table.sclk_table.count++;
+ 		}
+@@ -3006,6 +3008,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
+ 	return 0;
+ }
+ 
++static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
++{
++	struct amdgpu_device *adev = hwmgr->adev;
++	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
++
++	data->sclk_cap = 0xffffffff;
++
++	if (hwmgr->od_enabled)
++		return;
++
++	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
++	if (adev->pdev->device == 0x67B0 &&
++	    adev->pdev->subsystem_vendor == 0x1043)
++		data->sclk_cap = 104000; /* 1040 MHz */
++
++	if (data->sclk_cap != 0xffffffff)
++		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
++}
++
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -3017,6 +3038,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		return -ENOMEM;
+ 
+ 	hwmgr->backend = data;
++	smu7_set_sclk_cap(hwmgr);
+ 	smu7_patch_voltage_workaround(hwmgr);
+ 	smu7_init_dpm_defaults(hwmgr);
+ 
+@@ -3903,7 +3925,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
+ 
+ 	/* Performance levels are arranged from low to high. */
+ 	performance_level->memory_clock = memory_clock;
+-	performance_level->engine_clock = engine_clock;
++	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
+ 
+ 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
+index d9e8b386bd4d3..66adabeab6a3a 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
+@@ -234,6 +234,7 @@ struct smu7_hwmgr {
+ 	uint32_t                       pcie_gen_cap;
+ 	uint32_t                       pcie_lane_cap;
+ 	uint32_t                       pcie_spc_cap;
++	uint32_t                       sclk_cap;
+ 	struct smu7_leakage_voltage          vddc_leakage;
+ 	struct smu7_leakage_voltage          vddci_leakage;
+ 	struct smu7_leakage_voltage          vddcgfx_leakage;
 -- 
 2.53.0
 
