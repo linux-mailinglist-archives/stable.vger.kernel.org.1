@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-251482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDqmHHnzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:33 +0200
+	id QNOGOKzxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170BA594860
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCC45942E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55C5931382C4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D07F30B50EE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2473E0C70;
-	Wed, 20 May 2026 17:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27C43A3833;
+	Wed, 20 May 2026 17:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkGtDr8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9rQHbDu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FC439B975;
-	Wed, 20 May 2026 17:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9042B36F421;
+	Wed, 20 May 2026 17:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298097; cv=none; b=M1eRtCi8Vm3Tcq7eWWAH+0oj9toXzADMYHG3NAPbywgJBGB4IngGzrMWQ0KGMXuvSLRF48ld8nBXin3U4is2Pm1SLaVJr4ESuF1xf/zMgk7LpKOTUhRxFocSq9Obm8v4glE2si/87TPS8n0Lf6Pl1yCxB8L3rKCVaXSZupw/IDo=
+	t=1779298100; cv=none; b=c50GcpUREK2sx8MVgDo+Sju9BKldzaH7PfXQKjRQ7YStMDiuAVxoek4j3yEsBy8SeD2gGOWjmFbDn7MiEw+ofrKSO9cRFO/o/PCTz5e3sOeZIHqh4J2VNjZ+liMktruhGDEI/rEjSM72/LmPJNf4o5JPRpB5mreEhQzsi7V/6MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298097; c=relaxed/simple;
-	bh=Xgve9LxBsdkOduduivjEYbet2IPR8PWQhEHeSstTuW4=;
+	s=arc-20240116; t=1779298100; c=relaxed/simple;
+	bh=6bORIgttPQM6s/R4zy93f3dqKDO5LMH+MjS0WCKEyrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkhIt/lE0RIGk3IGle7fEsFT0PQpKwsNxyMDNy7q6qjpMOLLQAZ6jlwHk8tApjrk7g7inwQjW7Tiy0ADlmvsnoOuC9k+/UwOsrMF5igWnbRRcConnF+MYe8sV3pGfidRKzQFaitIkDXEO0sv2GSbZYHVAeknnfG2XHsR+Hlbmpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkGtDr8/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567F21F000E9;
-	Wed, 20 May 2026 17:28:16 +0000 (UTC)
+	 MIME-Version; b=irpUXCgWOafzKpvrIy4jamjtpQlxMxLntQbC9g6nwLJj9ABx9UgP1cuajnMQLd7hyN7lv0NSVujnFYRgFsdHU3a5IFCB87humeUDVz9qpCkmjSnMdmqmaekKvgka844Xj2+tjEnT6T70yd9G9mpCuAV/oHKrQ3zvSGkBoR76MGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9rQHbDu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC361F00893;
+	Wed, 20 May 2026 17:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298096;
-	bh=yNcDSDF8p8OxC3WXHnEODfW5D48On4IVBdLweVHK0aE=;
+	s=korg; t=1779298099;
+	bh=Vki3s5WV08TAEhGO3tXPCTfRgHM/7I9CzufmupTKxzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NkGtDr8/2cXIh1H5LDHaKDhaK9GU+UE7Z8H4N6+UehLvZZXG1xhd+myrpqF8nmrZw
-	 hkU7oOQ0IStEAKfKfKmETU4FEpawzAxCh8wLcPmLRmCZr40WA1GJPWlCjk6pYkrsi6
-	 LqqDbPgMOIsfHgM9bt0YjJSndWj5zoYzTkaZkOUw=
+	b=y9rQHbDupyr8MyQY/xGxiPy5C06DtziDW//CxZevPdMQFz/6jXPeM2zzkn0Kcm2qV
+	 JwFZ1W5uY4DtY/lZdIuXB31lqogdqPOLTGPIza6vw+eXqRbZFILmKDnNeB0oPjUSWT
+	 MlPOwYgtbE0qZvuvu8GNWlQ/gMm/qN2pkedWxfEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 281/957] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
-Date: Wed, 20 May 2026 18:12:44 +0200
-Message-ID: <20260520162140.632966814@linuxfoundation.org>
+Subject: [PATCH 6.18 282/957] PM: domains: De-constify fields in struct dev_pm_domain_attach_data
+Date: Wed, 20 May 2026 18:12:45 +0200
+Message-ID: <20260520162140.656382280@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -65,36 +64,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251482-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251483-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,nxp.com:email]
-X-Rspamd-Queue-Id: 170BA594860
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6DCC45942E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,35 +99,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
+[ Upstream commit 1877d3f258cbb57d64e275754fb9b18b089ce72d ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+It doesn't really make sense to keep u32 fields to be marked as const.
+Having the const fields prevents their modification in the driver. Instead
+the whole struct can be defined as const, if it is constant.
 
-Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Fixes: 161e16a5e50a ("PM: domains: Add helper functions to attach/detach multiple PM domains")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/scu-pd.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/pm_domain.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 01d465d88f60d..3ec33667a308c 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
- 		return;
+diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+index f67a2cb7d7814..5ed1753a7cb47 100644
+--- a/include/linux/pm_domain.h
++++ b/include/linux/pm_domain.h
+@@ -49,8 +49,8 @@
  
- 	imx_con_rsrc = specs.args[0];
-+	of_node_put(specs.np);
- }
+ struct dev_pm_domain_attach_data {
+ 	const char * const *pd_names;
+-	const u32 num_pd_names;
+-	const u32 pd_flags;
++	u32 num_pd_names;
++	u32 pd_flags;
+ };
  
- static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
+ struct dev_pm_domain_list {
 -- 
 2.53.0
 
