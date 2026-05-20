@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-251811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFlENskeDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:21 +0200
+	id oIliDyMVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDAA59A327
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D59599344
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 163073508A38
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07BA2337CD02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B834C3D7D7B;
-	Wed, 20 May 2026 17:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07C03EEAC6;
+	Wed, 20 May 2026 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vRNfTU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWrGuSeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C9E363C4C;
-	Wed, 20 May 2026 17:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E8A3F7A9F;
+	Wed, 20 May 2026 17:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298952; cv=none; b=apm9n4ZNWzD6BK6lOA8mq+WtfTDQhRBLRdJG8liZd98o/9FFaMjiKcePxnIwJsA2BM40yS1UqbjBoT47OlGnFdXhN/K2n/GfmGOHtjtaxTiw2LmQ/hP0ZxN+P+RBsT6h/GI5JZW8jXjKz/+cS7lQGcA6CEsu8NCYrEV+Kn/EJhs=
+	t=1779296539; cv=none; b=iuHyVk2++WR6iYvawCSBwuf6Le8kb1v4cDHyrzzp8VC8l3Da7lRaisiJ9q381sDMIgga3g5NrRcvHJ+fIypWb0rmy0gFEDLcrfSTtyd4HKEdQwq6YQX1eOTLb/ZzuLdEuMhJBNLbCWdejt3ic6u5+XtdYrARNNhthwYPMPt77JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298952; c=relaxed/simple;
-	bh=a+GsLqmB1e76SerArkJeQfaUG2+HaxMNbtVimI/Zik8=;
+	s=arc-20240116; t=1779296539; c=relaxed/simple;
+	bh=VVJ0NZX1mFCDlILyf5QtOG01kuJl/zRK/D2x3mjnPCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrEc2lPKBp/BpZ5783sVusIb9+2WA0zA4fDTYgRd0p14A2H7xH7ZwvpX0I8TTe/EnT5bV6CYFy/TaHDUEiAvqMneA2RzfBqYIthT4avMATfUUehaUJMMFif/IfAXF/quG/ue1Cn2OSJCdtfuRkt/9EeiuwXzi015lzAsj6XZbD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vRNfTU3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9511F000E9;
-	Wed, 20 May 2026 17:42:30 +0000 (UTC)
+	 MIME-Version; b=QImxcCr3J9rBSshhuLkcYsqPl1NtUcG/a3mMHWhS9TnbjiC3H1fq7G5O34B+/S62QAUrlorwG1/UcCO77SMTGp848EXD4c2pAlJN/P8rTzwiQY9Gk0aXSvGzgn76+cxAkpEMbPzaukH3bJ2GdpXnwmd0H34UErAaItR0TuaEWZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWrGuSeY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1991F000E9;
+	Wed, 20 May 2026 17:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298951;
-	bh=w6du0ELgf6iPc9b7EZkXamR7ilk7OSeDPZxIiTGuj5M=;
+	s=korg; t=1779296537;
+	bh=rQPgzjXO5/ApL61otSYho3aSdUEIXUZps18bgxGoPXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1vRNfTU3mmN96xR7DX4enk5V8EHwi9EwPgQn3Bn48qilYLEgNVdOPv7oi5AqquNB3
-	 7i6/yMnl+x040Hmqlr4UIHkGR7QYN/N0n0JBqVj+MNy2D9lKB7hNnZv4Kg3HUsw2K8
-	 FEKgeqegFfpXpkvDjhsyirfvYC4lavnkTyrn+z5k=
+	b=dWrGuSeYMf8+TKh9GBSuMbjSMyOZ0Pml5VZpxZdvzSpEpEjZLLOBQ/2MVjUvjnQys
+	 EAdsfsYYDUZHGCk2nlu611SkuomiHVX5f4mUIfO3iph/k6nJbeZ6Pot1c7p7H5moHm
+	 G+k/H23Z5+0O9ERzgtSVq/0Iy5+NP8dcUgjZbGxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Petr Oros <poros@redhat.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 605/957] arm64: dts: imx8mp-ultra-mach-sbc: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 7.0 0838/1146] ice: fix ice_ptp_read_tx_hwtstamp_status_eth56g
 Date: Wed, 20 May 2026 18:18:08 +0200
-Message-ID: <20260520162147.655278872@linuxfoundation.org>
+Message-ID: <20260520162207.197723254@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +70,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251811-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250877-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.25:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,i.mx:url]
-X-Rspamd-Queue-Id: 4DDAA59A327
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 92D59599344
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit daaf41ee72fb5fad936e7051a015cccae9b33937 ]
+[ Upstream commit 1f75dbc53f68f0fb2acd99f92315e426a3d0b446 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+The ice_ptp_read_tx_hwtstamp_status_eth56g function calls
+ice_read_phy_eth56g with a PHY index. However the function actually expects
+a port index. This causes the function to read the wrong PHY_PTP_INT_STATUS
+registers, and effectively makes the status wrong for the second set of
+ports from 4 to 7.
 
-Fixes: d1c1400bd3b8b ("arm64: dts: imx8mp: Add initial support for Ultratronik imx8mp-ultra-mach-sbc board")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The ice_read_phy_eth56g function uses the provided port index to determine
+which PHY device to read. We could refactor the entire chain to take a PHY
+index, but this would impact many code sites. Instead, multiply the PHY
+index by the number of ports, so that we read from the first port of each
+PHY.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260420-jk-iwl-net-2026-04-20-ptp-e825c-phy-interrupt-fixes-v1-4-bc2240f42251@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
-index 9ecec1a418781..3e6f9c88cc200 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-ultra-mach-sbc.dts
-@@ -275,7 +275,7 @@ pmic@25 {
- 		reg = <0x25>;
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupt-parent = <&gpio1>;
--		interrupts = <3 GPIO_ACTIVE_LOW>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 4795af06b983e..24fb7a3e14d63 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2219,13 +2219,19 @@ int ice_ptp_read_tx_hwtstamp_status_eth56g(struct ice_hw *hw, u32 *ts_status)
+ 	*ts_status = 0;
  
- 		/*
- 		 * i.MX 8M Plus Data Sheet for Consumer Products
-@@ -739,7 +739,7 @@ MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x40	/* NFC_INT */
+ 	for (phy = 0; phy < params->num_phys; phy++) {
++		u8 port;
+ 		int err;
  
- 	pinctrl_pmic: pmic-grp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40	/* #PMIC_INT */
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0	/* #PMIC_INT */
- 		>;
- 	};
+-		err = ice_read_phy_eth56g(hw, phy, PHY_PTP_INT_STATUS, &status);
++		/* ice_read_phy_eth56g expects a port index, so use the first
++		 * port of the PHY
++		 */
++		port = phy * hw->ptp.ports_per_phy;
++
++		err = ice_read_phy_eth56g(hw, port, PHY_PTP_INT_STATUS, &status);
+ 		if (err)
+ 			return err;
  
+-		*ts_status |= (status & mask) << (phy * hw->ptp.ports_per_phy);
++		*ts_status |= (status & mask) << port;
+ 	}
+ 
+ 	ice_debug(hw, ICE_DBG_PTP, "PHY interrupt err: %x\n", *ts_status);
 -- 
 2.53.0
 
