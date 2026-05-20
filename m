@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHtcKtYnDmp56gUAu9opvQ
-	(envelope-from <stable+bounces-252659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:58 +0200
+	id aMrhMV8GDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3FA59AED2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F621597C90
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C16B32F4AEA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AC3E395DD9F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039D63D1CC6;
-	Wed, 20 May 2026 18:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEBF4028D2;
+	Wed, 20 May 2026 18:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rUE/kFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+wjAt08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917003F9280;
-	Wed, 20 May 2026 18:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B952637DE8A;
+	Wed, 20 May 2026 18:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301255; cv=none; b=O1idIunWY5hgpqxMOx63KM6fCyn5LHNbGA0ND0unctE9l82ggZMaojjg+AfKUIu0VHtoa3YBbI6u+zrOKs9cfmHraj1K0LxINkXuv22J/c6FRWrunpcLoDIehvR2kWmP6W4vNY9E9BkEYAIsfO/p+qsPFniNzkDnlAgMCt+MmMI=
+	t=1779302457; cv=none; b=sXizZDZcNqZeL3OJcSqjHT2RrzuAC/0Z6+qYbTI2BdSzye19kH+eUZpzUhG/JmTSq+NCgR0ceSQzYdVDt2k+7EHNcKww446ovS9KdiNG6YlhD2ZtraAi5F+7OhvdZ4JqI1Od1Fv8F/3La5Vfc+M24sJvFpafhVJLMQ7U0U7UWdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301255; c=relaxed/simple;
-	bh=ja3mMve0uVgP82/Vb6YuUmS2iLUPdrV/e8g8fOSTHQs=;
+	s=arc-20240116; t=1779302457; c=relaxed/simple;
+	bh=e7q0J7phOWx6/kWnBCSnfgGbqzs8qY0daLAR9oj5g9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jsRCld9XfOvcgjVW3rG038eL9x4PZyTqVf+ktTuozBaAdAQJxJAuJ579LldNbXPY5vUDW4Ljh0Nf9vaQOlbodcVkS3oc2oU1HKm3aRQ5volyJp76FiGLOmqKrS5bwUb4uUrHdmByNsvWCP7BjhfDGXPmhpIIgnDHdzMibh0kgbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rUE/kFx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED75A1F000E9;
-	Wed, 20 May 2026 18:20:53 +0000 (UTC)
+	 MIME-Version; b=DqR2VLcb11GtbhyPAK8X0Ko48e60EI2blr5ZRJWulB5+9mwD0o6GRxqUCtxotrfDPLl6ubW7eiPS2hpN/kgVp0X5olJrm6Z6EbrzANjyW8YGuaLIuKWUeSNsSNPx5hnXa+3wK3Z8wN3qPzmGKE17Z3pWPA2xpt1Qp8dKpnycM5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+wjAt08; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A18C1F000E9;
+	Wed, 20 May 2026 18:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301254;
-	bh=XTnV9yqTtzzoDLPhp0mPSjiXD0RgFQ/jBjN1D5G/9SA=;
+	s=korg; t=1779302456;
+	bh=S8GQsGAlYAzjmEd2UodGTz+lv3kqH8BkuwPRQGpteGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2rUE/kFxhQocGneIQMb1E2Dw8lBX747uCfLS2dd4p2JNQqVo26pSO4oDGFJqVFK/q
-	 cZNPPbYIGRyN400jpofo8pee0dHgCYvbj6ONRxV1xpUlx5dehLC0xKBmEmmqrRI4H/
-	 zpRu+x93Tbzs7TfY6nHfhr4GHASroVlntxwAgtV4=
+	b=m+wjAt08TTX7yzK1ItH3krlBNyeJOekr38DRE4XK1Pt2BTdGvBhPfFoCccQq+2kKr
+	 KbT66Hwb9Njyf9dEJ0xEGGyFlAFgbhJCwG+MYw7/pV5kD4tKoPZ3Se1vh1Ulk1jYsb
+	 vGZJNx6vcCjkisAjCmP/Nj2Hu3kV4QnUAkQT1PeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 486/666] net/sched: sch_pie: annotate data-races in pie_dump_stats()
+Subject: [PATCH 6.6 274/508] scsi: sg: Fix sysctl sg-big-buff register during sg_init()
 Date: Wed, 20 May 2026 18:21:37 +0200
-Message-ID: <20260520162121.798523478@linuxfoundation.org>
+Message-ID: <20260520162104.581441206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253120-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -92,167 +92,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
-X-Rspamd-Queue-Id: 3C3FA59AED2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 4F621597C90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 5154561d9b119f781249f8e845fecf059b38b483 ]
+[ Upstream commit 3033c471aaf675254efaa0da431e95d91a104b41 ]
 
-pie_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+Commit 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c") made
+a mistake. sysctl sg-big-buff was not created because the call to
+register_sg_sysctls() was placed on the wrong code path.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
-
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
-
-tc_pie_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142944.4009941-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260127062044.3034148-2-yangerkun@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/pie.h   |  2 +-
- net/sched/sch_pie.c | 38 +++++++++++++++++++-------------------
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ drivers/scsi/sg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/pie.h b/include/net/pie.h
-index 01cbc66825a40..1f3db0c355149 100644
---- a/include/net/pie.h
-+++ b/include/net/pie.h
-@@ -104,7 +104,7 @@ static inline void pie_vars_init(struct pie_vars *vars)
- 	vars->dq_tstamp = DTIME_INVALID;
- 	vars->accu_prob = 0;
- 	vars->dq_count = DQCOUNT_INVALID;
--	vars->avg_dq_rate = 0;
-+	WRITE_ONCE(vars->avg_dq_rate, 0);
- }
- 
- static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)
-diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
-index db61cbc21b138..abb8cdb409c48 100644
---- a/net/sched/sch_pie.c
-+++ b/net/sched/sch_pie.c
-@@ -89,7 +89,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	bool enqueue = false;
- 
- 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
--		q->stats.overlimit++;
-+		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
- 		goto out;
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 799773a879188..f958bdf09587d 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1693,13 +1693,13 @@ init_sg(void)
+ 	sg_sysfs_valid = 1;
+ 	rc = scsi_register_interface(&sg_interface);
+ 	if (0 == rc) {
++		register_sg_sysctls();
+ #ifdef CONFIG_SCSI_PROC_FS
+ 		sg_proc_init();
+ #endif				/* CONFIG_SCSI_PROC_FS */
+ 		return 0;
  	}
- 
-@@ -101,7 +101,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		/* If packet is ecn capable, mark it if drop probability
- 		 * is lower than 10%, else drop it.
- 		 */
--		q->stats.ecn_mark++;
-+		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
- 		enqueue = true;
- 	}
- 
-@@ -111,15 +111,15 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		if (!q->params.dq_rate_estimator)
- 			pie_set_enqueue_time(skb);
- 
--		q->stats.packets_in++;
-+		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
- 		if (qdisc_qlen(sch) > q->stats.maxq)
--			q->stats.maxq = qdisc_qlen(sch);
-+			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
- 
- 		return qdisc_enqueue_tail(skb, sch);
- 	}
- 
- out:
--	q->stats.dropped++;
-+	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
- 	q->vars.accu_prob = 0;
- 	return qdisc_drop(skb, sch, to_free);
- }
-@@ -262,11 +262,11 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
- 			count = count / dtime;
- 
- 			if (vars->avg_dq_rate == 0)
--				vars->avg_dq_rate = count;
-+				WRITE_ONCE(vars->avg_dq_rate, count);
- 			else
--				vars->avg_dq_rate =
-+				WRITE_ONCE(vars->avg_dq_rate,
- 				    (vars->avg_dq_rate -
--				     (vars->avg_dq_rate >> 3)) + (count >> 3);
-+				     (vars->avg_dq_rate >> 3)) + (count >> 3));
- 
- 			/* If the queue has receded below the threshold, we hold
- 			 * on to the last drain rate calculated, else we reset
-@@ -376,7 +376,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	if (delta > 0) {
- 		/* prevent overflow */
- 		if (vars->prob < oldprob) {
--			vars->prob = MAX_PROB;
-+			WRITE_ONCE(vars->prob, MAX_PROB);
- 			/* Prevent normalization error. If probability is at
- 			 * maximum value already, we normalize it here, and
- 			 * skip the check to do a non-linear drop in the next
-@@ -387,7 +387,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 	} else {
- 		/* prevent underflow */
- 		if (vars->prob > oldprob)
--			vars->prob = 0;
-+			WRITE_ONCE(vars->prob, 0);
- 	}
- 
- 	/* Non-linear drop in probability: Reduce drop probability quickly if
-@@ -398,7 +398,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
- 		/* Reduce drop probability to 98.4% */
- 		vars->prob -= vars->prob / 64;
- 
--	vars->qdelay = qdelay;
-+	WRITE_ONCE(vars->qdelay, qdelay);
- 	vars->backlog_old = backlog;
- 
- 	/* We restart the measurement cycle if the following conditions are met
-@@ -497,21 +497,21 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 	struct pie_sched_data *q = qdisc_priv(sch);
- 	struct tc_pie_xstats st = {
- 		.prob		= q->vars.prob << BITS_PER_BYTE,
--		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
-+		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
- 				   NSEC_PER_USEC,
--		.packets_in	= q->stats.packets_in,
--		.overlimit	= q->stats.overlimit,
--		.maxq		= q->stats.maxq,
--		.dropped	= q->stats.dropped,
--		.ecn_mark	= q->stats.ecn_mark,
-+		.packets_in	= READ_ONCE(q->stats.packets_in),
-+		.overlimit	= READ_ONCE(q->stats.overlimit),
-+		.maxq		= READ_ONCE(q->stats.maxq),
-+		.dropped	= READ_ONCE(q->stats.dropped),
-+		.ecn_mark	= READ_ONCE(q->stats.ecn_mark),
- 	};
- 
- 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
- 	st.dq_rate_estimating = q->params.dq_rate_estimator;
- 
- 	/* unscale and return dq_rate in bytes per sec */
--	if (q->params.dq_rate_estimator)
--		st.avg_dq_rate = q->vars.avg_dq_rate *
-+	if (st.dq_rate_estimating)
-+		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
- 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
+ 	class_unregister(&sg_sysfs_class);
+-	register_sg_sysctls();
+ err_out:
+ 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
+ 	return rc;
 -- 
 2.53.0
 
