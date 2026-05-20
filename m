@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kA6GNSb5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:46 +0200
+	id iJrCEK3uDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC7659579B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFFCB593A44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3EC133154D02
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E53383185BC8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94003F54C7;
-	Wed, 20 May 2026 17:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167D93F2117;
+	Wed, 20 May 2026 17:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKY9axgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8O16RWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4373F39C9;
-	Wed, 20 May 2026 17:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27313F20E5;
+	Wed, 20 May 2026 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299538; cv=none; b=VF9rxbu47zgKFM8uCu7nCVHGokhTfiug4SldmoTNMEnVFc4KX1LFA0PLh/Hz2saiQ38bHklRiz8g6onFhujxovVNXUBUfzhpAanXyJnxgd49AZ0bntwKfwEy1EVm4U9ElKdCqCdLCtLC7i0jrF6bk83PyTGU1ziDYC/YTtzi9Is=
+	t=1779297131; cv=none; b=BHWrb1Cn3Iw5eUpBq3XEh8zKkq5zCe6mVpaydRrHoHCk7b4rcmc222in/NuTVY3VPOqCHwcqJc5Sh57IYdP9dSnpaZadwundSyVGroyQckdrf0aJQUc495tAVGfTd9b5GhJgi41rpw8P4xOwrImQ+9+Yz7L42het738drriFmfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299538; c=relaxed/simple;
-	bh=2398BNZn+5dj5D5+Nu9cbAiVEXNafX6RwHnriZn4p9w=;
+	s=arc-20240116; t=1779297131; c=relaxed/simple;
+	bh=zx6CxE2u0LMykU+6oGju41hnNOwR4FC5rV7qQsTkQ8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ELnA2rNMg4+XYaT2eiLX7S/Pyh52t+RVSCXmq/mzZ8MIr3xoOjihm4LKkqgbNlN3Md0lTV6vZ2fM0ZF+1SStCdBfNB0xXDtdvf58gTfTCuknlnsm98YLG5ij4zv0nFD9MbLtSMuJLlwtbvFqIxTqdpUAaMDJc+rzx6B1fwswir8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKY9axgV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22A01F000E9;
-	Wed, 20 May 2026 17:52:16 +0000 (UTC)
+	 MIME-Version; b=J8z5rHOR2iI3EcgLIg4QGyNX1OTLnwczMSUcUuUrkDueVbvwoNlrR+6WZrGqnhFi/9uPJZlA/rEAYoTACVmrMmC2NGU5PYSBwQ4O3lP1Efb9SloagjHPgf1KYiAgFG9H2skmtytVCoaQvbJ/J1sTDtrvs2J1+LXSqLiIWxkgKcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8O16RWk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A6D1F000E9;
+	Wed, 20 May 2026 17:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299537;
-	bh=70fzr7MfReA1ahZdyDVyENTzGG8gRhD7js03uyhxBMk=;
+	s=korg; t=1779297130;
+	bh=KJzUEDvMQam8dFoEpbU+oVY7zYn9nuqHzPEs3mQ8n74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wKY9axgVJzsEwj8zPtddJbQ2Q6koy77xgGg9sR4xtDGuz/XzRvUp8dyy+0hplui/+
-	 AWAVqa1slMAMzKr8FRxn/fQS3oHGdL71lH/qGEi9JUKELCT5zVasj1+VKWpJMygKBY
-	 1TON5CYjmF6l1KJIrRfsjkqEKBfGyl5hqrMsx6lw=
+	b=k8O16RWk4V3ecq4oU4GNq+uwNhyeephPQhEGZOSG7nnfVIeYZUruV9xJRS9kmajlM
+	 M5M6EuSctpA/aTlylHVPEEmgA0ZDSJr6xjyvWX30DWqktNqVJDBzNmq6p6gKnyG3Tn
+	 T+ZJ7VGcIHfkj06L1A6NIiVHWu9u9PhE1jazhim4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 811/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0.5 ring
-Date: Wed, 20 May 2026 18:21:34 +0200
-Message-ID: <20260520162152.154841870@linuxfoundation.org>
+	Guopeng Zhang <zhangguopeng@kylinos.cn>,
+	Tejun Heo <tj@kernel.org>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 7.0 1045/1146] cgroup/cpuset: Reset DL migration state on can_attach() failure
+Date: Wed, 20 May 2026 18:21:35 +0200
+Message-ID: <20260520162211.879461501@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252021-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-251113-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	NEURAL_SPAM(0.00)[1.000];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: ADC7659579B
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huaweicloud.com:email]
+X-Rspamd-Queue-Id: CFFCB593A44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Guopeng Zhang <zhangguopeng@kylinos.cn>
 
-[ Upstream commit b65b7f3f3c18f797f81a2af7c97e2079900ad6db ]
+commit 4a39eda5fdd867fc39f3c039714dd432cee00268 upstream.
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
+state in the destination cpuset while walking the taskset.
 
-Fixes: 8f98a715da8e ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_5")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f05d0a4f21fc720116d6e238f23308b199891058)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a later task_can_attach() or security_task_setscheduler() check
+fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
+and does not call cpuset_cancel_attach() for it. The partially
+accumulated state is then left behind and can be consumed by a later
+attach, corrupting cpuset DL task accounting and pending DL bandwidth
+accounting.
+
+Reset the pending DL migration state from the common error exit when
+ret is non-zero. Successful can_attach() keeps the state for
+cpuset_attach() or cpuset_cancel_attach().
+
+Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/cgroup/cpuset.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-index 54fd9c800c40a..a43582b9c876c 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-@@ -804,6 +804,7 @@ static const struct amd_ip_funcs jpeg_v4_0_5_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v4_0_5_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v4_0_5_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v4_0_5_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v4_0_5_dec_ring_set_wptr,
--- 
-2.53.0
-
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -3050,16 +3050,13 @@ static int cpuset_can_attach(struct cgro
+ 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
+ 
+ 		if (unlikely(cpu >= nr_cpu_ids)) {
+-			reset_migrate_dl_data(cs);
+ 			ret = -EINVAL;
+ 			goto out_unlock;
+ 		}
+ 
+ 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
+-		if (ret) {
+-			reset_migrate_dl_data(cs);
++		if (ret)
+ 			goto out_unlock;
+-		}
+ 
+ 		cs->dl_bw_cpu = cpu;
+ 	}
+@@ -3070,7 +3067,10 @@ out_success:
+ 	 * changes which zero cpus/mems_allowed.
+ 	 */
+ 	cs->attach_in_progress++;
++
+ out_unlock:
++	if (ret)
++		reset_migrate_dl_data(cs);
+ 	mutex_unlock(&cpuset_mutex);
+ 	return ret;
+ }
 
 
 
