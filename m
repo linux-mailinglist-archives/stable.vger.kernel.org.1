@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EL0OGwuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:04 +0200
+	id 2Kw2Df0nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1B859B889
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607CB59AF16
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 793C1306535E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94F5E34B3CE9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3569402B92;
-	Wed, 20 May 2026 18:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C4E3F4DD6;
+	Wed, 20 May 2026 18:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HkI21Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDlnpyC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E696402B8E;
-	Wed, 20 May 2026 18:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426C23D88FC;
+	Wed, 20 May 2026 18:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302494; cv=none; b=roNm2y1hGFuLdiqJGnLfL/nrAs8q/5kSyw/NvIClD+fIvMmYdxd2HAVIjHzU0pbAJLZXvpuXjhuHIwsreCRLSoSUU/1EeVpCzVW6JIWnfWuzV4C6yt587hrYbsxLbaf2HhqmeBehbe7IVcGq9/lh8eMe9QFkBmpst2jge1rRyPU=
+	t=1779301292; cv=none; b=bj7qGYOODxTHoP/bORXGPCoMmpznrQZlodM16ZGRmzwr36M36Y+FRWOinDIAJWZA4MM4HV+m3Ir/gbOKpJyPtpq2fgrYsUE2XYpNh14wLiifu57k9nQrWP4vyzfg7bGTM3PPPbydKPn0FpQb/xEaUf9wp2VsH55XAugvJhDl650=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302494; c=relaxed/simple;
-	bh=IbSO4ixGG27XYIpezuN1RQwzunyhHATAfTtwjc5+sIg=;
+	s=arc-20240116; t=1779301292; c=relaxed/simple;
+	bh=hUEcYLiurQiykA3pC/soJ8bi+UJVZRR7xTuRqSw9mBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+DniYqVGANe7FpyUv2w8tPNv4GFIYAxLb5WsiL/H4DLt4LErefuCeuilTKZuxqH/2ckf1ijrMBREMZEctxW2hP8g6G25X5bBKmYqj7MKshbc61fpM8oVyvKWywFFklzGBnUDUEolTcxtNstYrRMVUTdVI4ZqFoK8MoJltDHX/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HkI21Gu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71D61F000E9;
-	Wed, 20 May 2026 18:41:32 +0000 (UTC)
+	 MIME-Version; b=ER64RwYKByAqKIg2+YJEGPAkUSjxBbI1h+YGO3iLzE+nPUCcF6KeiuOB/FsAB+6emU/YNPIZaNyH8T9odhsgOIyMdvUcA0r+YrP+KtrKSnvu3wxFtXOOJPbwtZ8hHlXUXrkDvj6c8/yq4F/1HXgnGa3lc0kubn3eUeIKK67XCXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDlnpyC+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75751F000E9;
+	Wed, 20 May 2026 18:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302493;
-	bh=LgFIb6TQLcDiv/knYffaAUsPRtZHC7ViqB9l/ro5dtk=;
+	s=korg; t=1779301291;
+	bh=b0jBY6T9LpyEJ6sUwcFoh359vXk15dVcSf2rN4G3d1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0HkI21GuEjIPJP00XFQG45sc+1dy6z9TGZof/8tekMJe4fwiLXotrH38zRUf3V+TZ
-	 b+Kiyr/rStEB8VPYbSHd+vR6U4H6IR9Ux7+boIUQpE1eMg7iKxZXWrHjZ8ksrNb7sW
-	 p7+6ZrkQN30OCkjL7PGflcyx84U2cIadrCvN/rtw=
+	b=wDlnpyC+09YQ9v+x4KaawIPxp/o5q/zMSspGJAlkd1cYm8cMMmYZyDlf/V3vNsRF8
+	 8SySwdwy3TLDm6f8O3JvE36Ff9bMyLY0I1OLo+K9SS1jnEvhIBIJleoluTqzb2J0y3
+	 dVlij+IDF+Q55ANUbWZR6gSQlvfSjElQ7UsYahmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kees Cook <kees@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Bae Yeonju <iwasbaeyz@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/508] clk: qoriq: avoid format string warning
+Subject: [PATCH 6.12 499/666] fs/adfs: validate nzones in adfs_validate_bblk()
 Date: Wed, 20 May 2026 18:21:50 +0200
-Message-ID: <20260520162104.861520939@linuxfoundation.org>
+Message-ID: <20260520162122.074952710@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253134-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252674-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,armlinux.org.uk,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4F1B859B889
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 607CB59AF16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Bae Yeonju <iwasbaeyz@gmail.com>
 
-[ Upstream commit 096abbb6682ee031a0f5ce9f4c71ead9fa63d31e ]
+[ Upstream commit dd9d3e16c2d5fa166e13dce07413be51f42c8f5d ]
 
-clang-22 warns about the use of non-variadic format arguments passed into
-snprintf():
+Reject ADFS disc records with a zero zone count during boot block
+validation, before the disc record is used.
 
-drivers/clk/clk-qoriq.c:925:39: error: diagnostic behavior may be improved by adding the
-      'format(printf, 7, 8)' attribute to the declaration of 'create_mux_common' [-Werror,-Wmissing-format-attribute]
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
-      | __attribute__((format(printf, 7, 8)))
-  911 |                                              struct mux_hwclock *hwc,
-  912 |                                              const struct clk_ops *ops,
-  913 |                                              unsigned long min_rate,
-  914 |                                              unsigned long max_rate,
-  915 |                                              unsigned long pct80_rate,
-  916 |                                              const char *fmt, int idx)
-  917 | {
-  918 |         struct clk_init_data init = {};
-  919 |         struct clk *clk;
-  920 |         const struct clockgen_pll_div *div;
-  921 |         const char *parent_names[NUM_MUX_PARENTS];
-  922 |         char name[32];
-  923 |         int i, j;
-  924 |
-  925 |         snprintf(name, sizeof(name), fmt, idx);
-      |                                              ^
-drivers/clk/clk-qoriq.c:910:28: note: 'create_mux_common' declared here
-  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+When nzones is 0, adfs_read_map() passes it to kmalloc_array(0, ...)
+which returns ZERO_SIZE_PTR, and adfs_map_layout() then writes to
+dm[-1], causing an out-of-bounds write before the allocated buffer.
 
-Rework this to pass the 'int idx' as a varargs argument, allowing the
-format string to be verified at the caller location.
+adfs_validate_dr0() already rejects nzones != 1 for old-format
+images.  Add the equivalent check to adfs_validate_bblk() for
+new-format images so that a crafted image with nzones == 0 is
+rejected at probe time.
 
-Fixes: 0dfc86b3173f ("clk: qoriq: Move chip-specific knowledge into driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Found by syzkaller.
+
+Fixes: f6f14a0d71b0 ("fs/adfs: map: move map-specific sb initialisation to map.c")
+Signed-off-by: Bae Yeonju <iwasbaeyz@gmail.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-qoriq.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/adfs/super.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/clk-qoriq.c b/drivers/clk/clk-qoriq.c
-index 4dcde305944c4..318acd176a2ef 100644
---- a/drivers/clk/clk-qoriq.c
-+++ b/drivers/clk/clk-qoriq.c
-@@ -906,13 +906,11 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
- 	return &cg->pll[pll].div[div];
+diff --git a/fs/adfs/super.c b/fs/adfs/super.c
+index f0b999a4961b2..998ea8a2f8337 100644
+--- a/fs/adfs/super.c
++++ b/fs/adfs/super.c
+@@ -343,6 +343,9 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
+ 	if (adfs_checkdiscrecord(dr))
+ 		return -EILSEQ;
+ 
++	if ((dr->nzones | dr->nzones_high << 8) == 0)
++		return -EILSEQ;
++
+ 	*drp = dr;
+ 	return 0;
  }
- 
--static struct clk * __init create_mux_common(struct clockgen *cg,
--					     struct mux_hwclock *hwc,
--					     const struct clk_ops *ops,
--					     unsigned long min_rate,
--					     unsigned long max_rate,
--					     unsigned long pct80_rate,
--					     const char *fmt, int idx)
-+static struct clk * __init __printf(7, 8)
-+create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
-+		  const struct clk_ops *ops, unsigned long min_rate,
-+		  unsigned long max_rate, unsigned long pct80_rate,
-+		  const char *fmt, ...)
- {
- 	struct clk_init_data init = {};
- 	struct clk *clk;
-@@ -920,8 +918,11 @@ static struct clk * __init create_mux_common(struct clockgen *cg,
- 	const char *parent_names[NUM_MUX_PARENTS];
- 	char name[32];
- 	int i, j;
-+	va_list args;
- 
--	snprintf(name, sizeof(name), fmt, idx);
-+	va_start(args, fmt);
-+	vsnprintf(name, sizeof(name), fmt, args);
-+	va_end(args);
- 
- 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
- 		unsigned long rate;
 -- 
 2.53.0
 
