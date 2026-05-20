@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-253058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HwiDbYJDmrY5gUAu9opvQ
-	(envelope-from <stable+bounces-253058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:26 +0200
+	id sKU9Eq0gDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-251964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319905982FE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35A859A5A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E4B932F8B7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09D153741D03
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AEF3F8704;
-	Wed, 20 May 2026 18:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C340B3F39F5;
+	Wed, 20 May 2026 17:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffxmPOQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzGXl5Yg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E493EEAD8;
-	Wed, 20 May 2026 18:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF673F23A4;
+	Wed, 20 May 2026 17:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302294; cv=none; b=n0lKDgjZCEc9aQxzgsVB+vkFaQSX3oIxsZXIppEPbOKnkvx98cXG51P//BHSYu/Kb9jv3k3mhcQVtdf+etVNd5sHBzzt47Cwm8yeLzYIJK64A325oM/L+b9SOc++mVbAJzDwmXsRo8fkQAE8a8mCGP/X3pviy99RqOcNGOLNpyM=
+	t=1779299388; cv=none; b=I6aWTzyqS/OLsFuw89zFeG7Fvhwlfa7Z2ho/WRzpBgY+LgqtAHZqgW/haZFSluG9tfgwlxLzheJCZ+w7NdIKOiVbZ00J9TpujuLJswf5Uy20xGBl8zVlfJ6cqr8nfFNZNr4jWkALPE2xQlmK0DSsunJr4yf7o3AoDyOt6FmINTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302294; c=relaxed/simple;
-	bh=2B518yxfsGdxMB5Uti+o/vRY8NBNhw2RQ2u3mqWf9CM=;
+	s=arc-20240116; t=1779299388; c=relaxed/simple;
+	bh=N9NW18o1MwtLyMGvudtOL/P+LAzX2DCXIgdExzG6ZXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJi5CqQrj0bpj8nHQc20LI0emVsroqWZXHmXhz4L7RiFd0kLZsfq2Fn4SwVpxKnCz3bHXP5evhqlc1KhxAp21gkFYM8EvCssoYF1Yh6yaRwyEV3NmvfNHwsZom+gw4amUwvbR0eTFmM2xpHOi7JBXMzjx8iC3xd1mIwardFm+q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffxmPOQr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A543E1F000E9;
-	Wed, 20 May 2026 18:38:12 +0000 (UTC)
+	 MIME-Version; b=GjA6B44qQ7Tifjoi9XXVb/x7cu6lJDZuwQXUMfyP83VVWs7Sc31WxMwTgV4umDn+if0C1LmQzXO6C0s6KPxP+zZzo8PtExdhhDDzhh76BH+l2rt7JMsGP6oqyoBuU8svMdJCV8i6b8LXxeVWKO5wBuFX3lWw0bQv335lpBNGDA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzGXl5Yg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AAC1F000E9;
+	Wed, 20 May 2026 17:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302293;
-	bh=bmGcnoBdAJi1cnqmEmWZ/cDr0ZmQQdLs8fk/M9ykbFw=;
+	s=korg; t=1779299387;
+	bh=agjgR+vvzUNbZBXPTvvpT1AgFU0HL7w+r1WRkbd12do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ffxmPOQrouGzFZWrIF247q0k59aW6tv2wHmMJDHjpthEmbnSXAtYf5uoWPqfeq3cU
-	 LfZ7+UjFbkNfTVg5FoIYdPMaICDVr7TPV60n7AIMNk+n6GxDM/jkvI+l/GBx1eSD+/
-	 9KdYkbiSGgECTExYIk7+//LZn7a75GYfRt0AMFRc=
+	b=RzGXl5Yg2hx1W0wWSSAoJiomR0g7RFkenjxvsl5QO+0T02sHpN4eDI2Dft3L/Bt35
+	 j/vSTJiEDx8uwv9gqBhahtzmaWJsaIkCBhKHVMjUaVfZ4jhm7UmRljHnsnADTNUskt
+	 /EwU3hdvQ0aDSs8ksRONOBC+umyUuecUVHMjGePc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Haixin Xu <jerryxucs@gmail.com>,
-	Stephan Mueller <smueller@chronox.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/508] crypto: jitterentropy - replace long-held spinlock with mutex
+Subject: [PATCH 6.18 711/957] virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET
 Date: Wed, 20 May 2026 18:19:54 +0200
-Message-ID: <20260520162102.343593920@linuxfoundation.org>
+Message-ID: <20260520162149.964504635@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,140 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253058-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251964-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,chronox.de,gondor.apana.org.au,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chronox.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email,apana.org.au:email]
-X-Rspamd-Queue-Id: 319905982FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A35A859A5A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haixin Xu <jerryxucs@gmail.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 01d798e9feb30212952d4e992801ba6bd6a82351 ]
+[ Upstream commit 3bc06da858ef17cfe94b49efc0d9713727012835 ]
 
-jent_kcapi_random() serializes the shared jitterentropy state, but it
-currently holds a spinlock across the jent_read_entropy() call. That
-path performs expensive jitter collection and SHA3 conditioning, so
-parallel readers can trigger stalls as contending waiters spin for
-the same lock.
+When netif_is_rxfh_configured() is true (i.e., the user has explicitly
+configured the RSS indirection table), virtnet_set_queues() skips the
+RSS update path and falls through to the VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET
+command to change the number of queue pairs. However, it does not update
+vi->rss_trailer.max_tx_vq to reflect the new queue_pairs value.
 
-To prevent non-preemptible lock hold, replace rng->jent_lock with a
-mutex so contended readers sleep instead of spinning on a shared lock
-held across expensive entropy generation.
+This causes a mismatch between vi->curr_queue_pairs and
+vi->rss_trailer.max_tx_vq. Any subsequent RSS reconfiguration (e.g.,
+via ethtool -X) calls virtnet_commit_rss_command(), which sends the
+stale max_tx_vq to the device, silently reverting the queue count.
 
-Fixes: bb5530e40824 ("crypto: jitterentropy - add jitterentropy RNG")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Haixin Xu <jerryxucs@gmail.com>
-Reviewed-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reproduction:
+1. User configured RSS
+  ethtool -X eth0 equal 8
+2. VQ_PAIRS_SET path; max_tx_vq stays 16
+  ethtool -L eth0 combined 12
+3. RSS commit uses max_tx_vq=16 instead of 12
+  ethtool -X eth0 equal 4
+
+Fix this by updating vi->rss_trailer.max_tx_vq after a successful
+VQ_PAIRS_SET command when RSS is enabled, keeping it in sync with
+curr_queue_pairs.
+
+Fixes: 50bfcaedd78e ("virtio_net: Update rss when set queue")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/20260416212121.29073-1-brett.creeley@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy-kcapi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/virtio_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index dd05faf00571f..8ae5245081f6a 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -42,6 +42,7 @@
- #include <linux/fips.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/slab.h>
- #include <linux/time.h>
- #include <crypto/internal/rng.h>
-@@ -182,7 +183,7 @@ int jent_read_random_block(void *hash_state, char *dst, unsigned int dst_len)
-  ***************************************************************************/
- 
- struct jitterentropy {
--	spinlock_t jent_lock;
-+	struct mutex jent_lock;
- 	struct rand_data *entropy_collector;
- 	struct crypto_shash *tfm;
- 	struct shash_desc *sdesc;
-@@ -192,7 +193,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
- {
- 	struct jitterentropy *rng = crypto_tfm_ctx(tfm);
- 
--	spin_lock(&rng->jent_lock);
-+	mutex_lock(&rng->jent_lock);
- 
- 	if (rng->sdesc) {
- 		shash_desc_zero(rng->sdesc);
-@@ -207,7 +208,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
- 	if (rng->entropy_collector)
- 		jent_entropy_collector_free(rng->entropy_collector);
- 	rng->entropy_collector = NULL;
--	spin_unlock(&rng->jent_lock);
-+	mutex_unlock(&rng->jent_lock);
- }
- 
- static int jent_kcapi_init(struct crypto_tfm *tfm)
-@@ -217,7 +218,7 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
- 	struct shash_desc *sdesc;
- 	int size, ret = 0;
- 
--	spin_lock_init(&rng->jent_lock);
-+	mutex_init(&rng->jent_lock);
- 
- 	/*
- 	 * Use SHA3-256 as conditioner. We allocate only the generic
-@@ -252,7 +253,6 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
- 		goto err;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 0cfe7ab59412c..aed65dbf3fca0 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3828,6 +3828,12 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 			 queue_pairs);
+ 		return -EINVAL;
  	}
- 
--	spin_lock_init(&rng->jent_lock);
- 	return 0;
- 
- err:
-@@ -267,7 +267,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
- 	struct jitterentropy *rng = crypto_rng_ctx(tfm);
- 	int ret = 0;
- 
--	spin_lock(&rng->jent_lock);
-+	mutex_lock(&rng->jent_lock);
- 
- 	ret = jent_read_entropy(rng->entropy_collector, rdata, dlen);
- 
-@@ -293,7 +293,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
- 		ret = -EINVAL;
- 	}
- 
--	spin_unlock(&rng->jent_lock);
-+	mutex_unlock(&rng->jent_lock);
- 
- 	return ret;
- }
++
++	/* Keep max_tx_vq in sync so that a later RSS command does not
++	 * revert queue_pairs to a stale value.
++	 */
++	if (vi->has_rss)
++		vi->rss_trailer.max_tx_vq = cpu_to_le16(queue_pairs);
+ succ:
+ 	vi->curr_queue_pairs = queue_pairs;
+ 	if (dev->flags & IFF_UP) {
 -- 
 2.53.0
 
