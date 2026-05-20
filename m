@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Mn3Lo7/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:06 +0200
+	id UFLlGIH/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E21596D18
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31BE8596CF1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8780D324F7C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C5AE305EFF0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AE53ED3A4;
-	Wed, 20 May 2026 17:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8335331A41;
+	Wed, 20 May 2026 18:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbNn1eX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnZSjx6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015AA36405A;
-	Wed, 20 May 2026 17:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FA6343880;
+	Wed, 20 May 2026 18:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298905; cv=none; b=UfEMxdR98e90+ORUd6nGlD1eVv85w3XQoTzTFEn64mulS8/atbYnB9qxpB1BUtiSzjRB/jplo+ujzDwSpjBMr+jWR8ZpEayRHGuDW7dbXZMNUO7xoX7vkEg4Z08BOFba+b08mSOD+Vu4eFX8gLzckf7iebS+owl3n/+2uvFPAT0=
+	t=1779301862; cv=none; b=tZt+QOqKU4sjrG5Dm5LSJwJEWiyIaRmWxoKtQ+VnlUAjV+254fD5pPE+jtnSmgR3HcVc7TW4Hnc4neTO1GJomEWRJstiqmxu6s+ZvreHtmuDrbzi+pLz16D9kiXm26F5Msym54STxr50ryT43h+ic1YWb8f+ZOFVyqBl4jzj+iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298905; c=relaxed/simple;
-	bh=InKMPdLkJlBEJgI00isYzF2DXBUdP8mwbUngQrR61j0=;
+	s=arc-20240116; t=1779301862; c=relaxed/simple;
+	bh=Jm6VgjiqEg2fCRR5ILkl2NldvtBRQJHdqtP3wEnHhLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXel5nUOxnEonZ5daK9yqM5sCWMS9CN4iyLJrLGwQnU4V5SJFjG6vGaW8TwIuSbSAa68RSOh6i/SgpxzKIdNSbkk5hYIiu0+fO7xgLkq+BfXlltNB47+LL0vq0OMp1j1u8w+MQffzTudJ0nYSS1APb+jXeSgSeNMMSlKJPvWwws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbNn1eX4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670041F000E9;
-	Wed, 20 May 2026 17:41:43 +0000 (UTC)
+	 MIME-Version; b=IZxdxvmO4YAo4LX2olcVpojAj/48h2MrAaJGZpcwYEbZ/CfdvNcWk/mDLJ1grKzpebMIqM4ZxZ6V3oCVwIe2y/3Cvo5DOURD2i+GimrHAWhZL38tR+qKg0gzrqKxn/DzOvxvYCePoq8206mmW/wvha4udqXaxRs9ZL7fCPpE4Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnZSjx6M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F8A1F000E9;
+	Wed, 20 May 2026 18:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298903;
-	bh=686+Gt4yF+LsEGGmNuvWXtUWIYFgQKaXXgMbIqdHlFA=;
+	s=korg; t=1779301861;
+	bh=EfHt3X48OZV+7u9s1XJX53ogGJZ17Pqxt2jPOsGw5AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UbNn1eX4+fDgQhL2UM+i7F9JxCcAbMISq+G1RQCRHVm/nvTVdev2uePj7Cs2sf8B6
-	 OQHcTdJZ64QPPkvELWTgk09jWz+1cSK7eQ4mbUe2YDKEP3usYIuaA8gNZT+HY45SrI
-	 jo9w2V77ZSIRTP04knmpGGc6aFwIwkULHn4Qh4oY=
+	b=WnZSjx6MILjQYNwpIEIFo24flouuvMWZO9c5MQhtgjKxJebwWJdKtD1jUucQ7FBG6
+	 7zLbJkqqQELzwYYdSzV4PwfcNUQbCey0r1Gd64iWkot1A/dwngxcBTPju3JXY6QUuE
+	 2rzaarZ+4OG5n5mDo4L/P68Q+64WOkgd7BfXQpQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 589/957] f2fs: allow empty mount string for Opt_usr|grp|projjquota
+Subject: [PATCH 6.6 049/508] wifi: brcmfmac: Fix error pointer dereference
 Date: Wed, 20 May 2026 18:17:52 +0200
-Message-ID: <20260520162147.305468614@linuxfoundation.org>
+Message-ID: <20260520162059.657098180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +69,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252892-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251793-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 06E21596D18
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,intel.com:email,broadcom.com:email]
+X-Rspamd-Queue-Id: 31BE8596CF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 2a3db1e02ce08c14af04da70bb99e8a0a31eb9e8 ]
+[ Upstream commit dd8592fc6007a451c3e4b9025de365e39de8178a ]
 
-The fsparam_string_empty() gives an error when mounting without string, since
-its type is set to fsparam_flag in VFS. So, let's allow the flag as well.
+The function brcmf_chip_add_core() can return an error pointer and is
+not checked. Add checks for error pointer.
 
-This addresses xfstests/f2fs/015 and f2fs/021.
+Detected by Smatch:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1010 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
 
-Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1013 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1016 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1019 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c:1022 brcmf_chip_recognition() error:
+'core' dereferencing possible ERR_PTR()
+
+Fixes: cb7cf7be9eba7 ("brcmfmac: make chip related functions host interface independent")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20260217023043.73631-1-ethantidmore06@gmail.com
+[add missing wifi: prefix]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ .../wireless/broadcom/brcm80211/brcmfmac/chip.c   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 7e04ae8f32f0e..cb8e8a587ba9e 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -285,9 +285,12 @@ static const struct fs_parameter_spec f2fs_param_specs[] = {
- 	fsparam_flag("usrquota", Opt_usrquota),
- 	fsparam_flag("grpquota", Opt_grpquota),
- 	fsparam_flag("prjquota", Opt_prjquota),
--	fsparam_string_empty("usrjquota", Opt_usrjquota),
--	fsparam_string_empty("grpjquota", Opt_grpjquota),
--	fsparam_string_empty("prjjquota", Opt_prjjquota),
-+	fsparam_string("usrjquota", Opt_usrjquota),
-+	fsparam_flag("usrjquota", Opt_usrjquota),
-+	fsparam_string("grpjquota", Opt_grpjquota),
-+	fsparam_flag("grpjquota", Opt_grpjquota),
-+	fsparam_string("prjjquota", Opt_prjjquota),
-+	fsparam_flag("prjjquota", Opt_prjjquota),
- 	fsparam_flag("nat_bits", Opt_nat_bits),
- 	fsparam_enum("jqfmt", Opt_jqfmt, f2fs_param_jqfmt),
- 	fsparam_enum("alloc_mode", Opt_alloc, f2fs_param_alloc_mode),
-@@ -931,26 +934,26 @@ static int f2fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		ctx_set_opt(ctx, F2FS_MOUNT_PRJQUOTA);
- 		break;
- 	case Opt_usrjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, USRQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
- 	case Opt_grpjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, GRPQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
- 	case Opt_prjjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, PRJQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+index 2ef92ef25517e..4dbb1898f3065 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/chip.c
+@@ -1006,18 +1006,33 @@ static int brcmf_chip_recognition(struct brcmf_chip_priv *ci)
+ 
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_CHIPCOMMON,
+ 					   SI_ENUM_BASE_DEFAULT, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_SDIO_DEV,
+ 					   BCM4329_CORE_BUS_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_INTERNAL_MEM,
+ 					   BCM4329_CORE_SOCRAM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_ARM_CM3,
+ 					   BCM4329_CORE_ARM_BASE, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 
+ 		core = brcmf_chip_add_core(ci, BCMA_CORE_80211, 0x18001000, 0);
++		if (IS_ERR(core))
++			return PTR_ERR(core);
++
+ 		brcmf_chip_sb_corerev(ci, core);
+ 	} else if (socitype == SOCI_AI) {
+ 		ci->iscoreup = brcmf_chip_ai_iscoreup;
 -- 
 2.53.0
 
