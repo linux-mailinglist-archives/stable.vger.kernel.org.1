@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILv7I9IdDmoa6QUAu9opvQ
-	(envelope-from <stable+bounces-251755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:14 +0200
+	id uNjBKlUYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F81C59A192
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3306599874
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2964F3500442
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5B5A33092F26
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BB2374178;
-	Wed, 20 May 2026 17:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029B5348C55;
+	Wed, 20 May 2026 18:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGBr1XfG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndbK6lkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1C436D9EA;
-	Wed, 20 May 2026 17:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970EA368968;
+	Wed, 20 May 2026 18:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298807; cv=none; b=CruGAVatj6ZforUZKGu7+LpYJo7sBfOkqjhO/Z59r7rehmWKTpQj+m1D3HFxvt8FrFZ9g+ZQ6kwGn2prgYf0F/2FZbiquDgTeWnHuE773mnzkO/KFr9OKUQEM4OkA7NPO3wxq4nBZijTt8Sh2o7En1zTDc5ITs0ZMEhWstCy6MQ=
+	t=1779301761; cv=none; b=aYeVfXRANQ+SzDvtzYvclX7WKJ1o4tf6f+RXYBUZCKaYeeTUu0VK3VpCrH3WWEn/+9bkg4VNceHKSfdY+ISNsPQWEJMOH2oGJvydnl0vUnXSVxWXL8kHncAGXyf31ZazfHJClsR1ikCqsFX0CB8440H5xinXSGoD/Tfy0/iwmxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298807; c=relaxed/simple;
-	bh=X15LCvcBBRm3f9hwgww8bj60coE7Hz/ybYz4izLaDDk=;
+	s=arc-20240116; t=1779301761; c=relaxed/simple;
+	bh=kzdCPZT0GIs5crRnvY9OS65yvXcP6BZcH1fU3atHKbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEAZd0DJrShgaysTQmwQRQa6YzoPpKkrlNsuxSl/HbhvPUSC2uyFv+xFr9rcUailA6t3zu8XhtXTYKCBG5JHj9JZBEOf708AMQacWoBEag/7nY1OEHh6/YBotSRuO6fUf44CfTDgavf89XLF226QfCFUrYWlSn8U3Up+/vrNnIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGBr1XfG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDE21F000E9;
-	Wed, 20 May 2026 17:40:05 +0000 (UTC)
+	 MIME-Version; b=G0MpYtZvbnSuB7PyvNaQjShMYsEohQl+mf7q8H607JJwpxN8tMM7PO1yIXVJWN/CDunpoCxZg8WGw6ZhK/r5va6H2vKtdHgBSRVAqrzJjjhGBCweVYacTFFP61UXF4gTNcYUAANCkntJRKQJ91t11DyHJArqC/0IFkJwy7GBfrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndbK6lkS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C5D1F000E9;
+	Wed, 20 May 2026 18:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298806;
-	bh=2Ku6LufMI05PHM5z48Vl8pCxasp0ih4kqxpCe+pn0sA=;
+	s=korg; t=1779301760;
+	bh=zXmTh2dMU4aC6JAmo48Kxo+rRlaBuVhGFcr61vFgmDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DGBr1XfGU73MPYLeyD5NmANo27T6xQp9vhdsLK63y3SUbDR4uyObI3S6p0c5MhD5G
-	 BTqJDc88h3AwK7ewVBevib9+o0bdvHHOlkrOmyZEQt0zXEgUF8NQjrMbYeBmobzfrn
-	 pFmkP2JiozPyE29pI2Wl70W5TxIUUGlGlXLYJb+Y=
+	b=ndbK6lkSrL6oHc6Z6iYR6ANND8XJ3lI+t4GWc07Kxvw4s/y0Cfgy1xAgVhyxYJfBT
+	 bQYhSAcbxgVUeAw+AfcvgZwVILtgg+ybI9pO1gjufrT2+d/7Giw9yI8crRZvs424jZ
+	 CZfop2LcqOne5d33CLyeOOQaz98tbKxqAQyPo2Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 551/957] clk: sunxi-ng: sun55i-a523-r: Add missing r-spi module clock
+Subject: [PATCH 6.6 011/508] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
 Date: Wed, 20 May 2026 18:17:14 +0200
-Message-ID: <20260520162146.482099784@linuxfoundation.org>
+Message-ID: <20260520162058.827468380@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +66,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252853-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251755-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0F81C59A192
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: B3306599874
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@kernel.org>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit fb20ccf70cf695f178d7c32e2d33b376560df0ff ]
+[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
 
-When the PRCM clk driver was added, somehow the r-spi module clock
-was skipped over.
+of_property_read_u32 returns 0 on success. The current check returns
+-EINVAL if the property is read successfully.
 
-Add it so that r-spi can actually work.
+Fix the check by removing ! from of_property_read_u32
 
-Fixes: 8cea339cfb81 ("clk: sunxi-ng: add support for the A523/T527 PRCM CCU")
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20260217093004.3239051-1-wens@kernel.org
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
+Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/thermal/spear_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c b/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-index 0339c4af0fe5b..db0e36d8838e7 100644
---- a/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun55i-a523-r.c
-@@ -83,9 +83,22 @@ static SUNXI_CCU_MUX_DATA_WITH_GATE(r_pwmctrl_clk, "r-pwmctrl",
- static SUNXI_CCU_GATE_HW(bus_r_pwmctrl_clk, "bus-r-pwmctrl",
- 			 &r_apb0_clk.common.hw, 0x13c, BIT(0), 0);
+diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
+index 96d99289799a1..a935002c2bdbe 100644
+--- a/drivers/thermal/spear_thermal.c
++++ b/drivers/thermal/spear_thermal.c
+@@ -93,7 +93,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
+ 	struct device_node *np = pdev->dev.of_node;
+ 	int ret = 0, val;
  
--/* SPI clock is /M/N (same as new MMC?) */
-+static const struct clk_parent_data r_spi_parents[] = {
-+	{ .fw_name = "hosc" },
-+	{ .fw_name = "pll-periph" },
-+	{ .name = "pll-periph0-300M" },
-+	{ .name = "pll-periph1-300M" },
-+	{ .name = "pll-audio" },
-+};
-+static SUNXI_CCU_DUALDIV_MUX_GATE(r_spi_clk, "r-spi", r_spi_parents, 0x150,
-+				  0, 5,		/* M */
-+				  8, 5,		/* P */
-+				  24, 3,	/* mux */
-+				  BIT(31),	/* gate */
-+				  0);
- static SUNXI_CCU_GATE_HW(bus_r_spi_clk, "bus-r-spi",
- 			 &r_ahb_clk.common.hw, 0x15c, BIT(0), 0);
-+
- static SUNXI_CCU_GATE_HW(bus_r_spinlock_clk, "bus-r-spinlock",
- 			 &r_ahb_clk.common.hw, 0x16c, BIT(0), 0);
- static SUNXI_CCU_GATE_HW(bus_r_msgbox_clk, "bus-r-msgbox",
-@@ -138,6 +151,7 @@ static struct ccu_common *sun55i_a523_r_ccu_clks[] = {
- 	&bus_r_twd_clk.common,
- 	&r_pwmctrl_clk.common,
- 	&bus_r_pwmctrl_clk.common,
-+	&r_spi_clk.common,
- 	&bus_r_spi_clk.common,
- 	&bus_r_spinlock_clk.common,
- 	&bus_r_msgbox_clk.common,
-@@ -169,6 +183,7 @@ static struct clk_hw_onecell_data sun55i_a523_r_hw_clks = {
- 		[CLK_BUS_R_TWD]		= &bus_r_twd_clk.common.hw,
- 		[CLK_R_PWMCTRL]		= &r_pwmctrl_clk.common.hw,
- 		[CLK_BUS_R_PWMCTRL]	= &bus_r_pwmctrl_clk.common.hw,
-+		[CLK_R_SPI]		= &r_spi_clk.common.hw,
- 		[CLK_BUS_R_SPI]		= &bus_r_spi_clk.common.hw,
- 		[CLK_BUS_R_SPINLOCK]	= &bus_r_spinlock_clk.common.hw,
- 		[CLK_BUS_R_MSGBOX]	= &bus_r_msgbox_clk.common.hw,
+-	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
++	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
+ 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
