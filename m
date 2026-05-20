@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOYNL1cGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:03 +0200
+	id GKjPMzAoDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:31:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F28597C62
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4597B59AF80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 282F5265D81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0638B33344AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694C40244F;
-	Wed, 20 May 2026 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C072D7386;
+	Wed, 20 May 2026 18:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hf3fngdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmNNqSrm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336D3FE352;
-	Wed, 20 May 2026 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670A6372B31;
+	Wed, 20 May 2026 18:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302439; cv=none; b=NpZ8vl7fK4+mUikMntfDcPCATj75pql7/JjCfWQQ86xKmj4jQwsqEbPW3iLc0b9bCKEhSRbMY9Sg1hSKIyPXx8/1+brEvhLsjSRMOdUYIURMKmh4sTjN3JGYdu9E4+S4IB85/JUNhQ+Z2S/zRoQTBUamphLohzN7jHSjD1zEm+0=
+	t=1779301350; cv=none; b=jKAPEkfmbu/S1KIT4oyL9do+ZIzVzdRlzyykXlT1zq9n2x3+ugn9xKyFXSUJSgtCDptwJ2OaBtpS/bmaiPkxwkHvszM2pvbT9wDRFlOBZ+zbaIAWGGK9y7iVwHQz4ehs9cVZYjbASAQIXF4xbgRNmoXcyF3yY4BHJGFc4FiYppc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302439; c=relaxed/simple;
-	bh=99uApC/8eMRWYVAMlEXFdSGF0b0AoimQu9TqPISqwMs=;
+	s=arc-20240116; t=1779301350; c=relaxed/simple;
+	bh=+6qLZiDQ3C0gMrr+KL7OINcBKxessFeuQJYPM0s6j3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcje+3tLdQ1gLkDl0B1soSFoCazhwsplp++VE+R6WnfQ38yykPXvLy73IO/5j1CzC91v1Q5z0Cqv3HBwVGgaB6jxWpCx/1DpqTZ8uePHA+HaaEM9V68cDKOr8WDO5t2qFJ+EZd1vqrp2RLlVwNC+Z14tJTdH7R1Qyw/SISpCCzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hf3fngdN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4601F00896;
-	Wed, 20 May 2026 18:40:37 +0000 (UTC)
+	 MIME-Version; b=MeqOm4lQGHF6tPxYSrYF7958mUF3uoSwi3uIFAKunZmJokddKXkQnIH7CNwH/lpzzdw3WOS4sk+BNHvZj3TOiDoqR1ixdT0zD8YgHB/s7AeV3v0uNfabWKQjNCEOowAGMicGdEp6PfYhmr1fDxqrEweJ2igeFZXyGo/ssIe6k60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmNNqSrm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B131F000E9;
+	Wed, 20 May 2026 18:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302438;
-	bh=Vy/+WAr+ukmcXbgeSL9MQHOsdmmIbRvcAALepxasdu8=;
+	s=korg; t=1779301349;
+	bh=NNAeqabFzzYCyRRiIpQPkcG1vvBBHZd0hPWMgiWCNq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hf3fngdN8dOBaZuEQnQofyPmrv1n9Dl0KH/kzBHPxgxEIzxFv1gsrlpBJxAL9xqzz
-	 JqCgvgpXBmipSbyFOsvY+4VPq0IcllDpkVsrtqOWl/6Pe81Al9HR8fdvBhaaA6qiUg
-	 LQqdXXuvdnnuTtaQoX71rfQYpnhISWMNX2dTP9I0=
+	b=CmNNqSrmL7LQ6CjEokJRu7/Zuh+mZuStRSKF/1y0uRC7Xo53dvuZMqGxrkHLOJHmt
+	 hn9gV0qEd09weDYu97EGF0wEW/8rJngLHaOTCIW6maTwWz7BIExhJuIk7JIsvcmApg
+	 LYY661UXx63dvtyw3Ngi7SffFfzI7tAczkq6ydMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/508] fs/ntfs3: terminate the cached volume label after UTF-8 conversion
+Subject: [PATCH 6.12 480/666] ksmbd: fix durable fd leak on ClientGUID mismatch in durable v2 open
 Date: Wed, 20 May 2026 18:21:31 +0200
-Message-ID: <20260520162104.453092553@linuxfoundation.org>
+Message-ID: <20260520162121.669457277@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +67,97 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253113-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252696-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,paragon-software.com:email]
-X-Rspamd-Queue-Id: 22F28597C62
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4597B59AF80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit a6cd43fe9b083fa23fe1595666d5738856cb261a ]
+[ Upstream commit 804054d19886ac6628883d82410f6ee42a818664 ]
 
-ntfs_fill_super() loads the on-disk volume label with utf16s_to_utf8s()
-and stores the result in sbi->volume.label. The converted label is later
-exposed through ntfs3_label_show() using %s, but utf16s_to_utf8s() only
-returns the number of bytes written and does not add a trailing NUL.
+ksmbd_lookup_fd_cguid() returns a ksmbd_file with its refcount
+incremented via ksmbd_fp_get(). parse_durable_handle_context() in
+the DURABLE_REQ_V2 case properly releases this reference on every
+path inside the ClientGUID-match branch, either by calling
+ksmbd_put_durable_fd() or by transferring ownership to dh_info->fp
+for a successful reconnect. However, when an entry exists in the
+global file table with the same CreateGuid but a different
+ClientGUID, the code simply falls through to the new-open path
+without dropping the reference obtained from ksmbd_lookup_fd_cguid().
 
-If the converted label fills the entire fixed buffer,
-ntfs3_label_show() can read past the end of sbi->volume.label while
-looking for a terminator.
+Per MS-SMB2 section 3.3.5.9.10 ("Handling the
+SMB2_CREATE_DURABLE_HANDLE_REQUEST_V2 Create Context"), the server
+MUST locate an Open whose Open.CreateGuid matches the request's
+CreateGuid AND whose Open.ClientGuid matches the ClientGuid of the
+connection that received the request. If no such Open is found, the
+server MUST continue with the normal open execution phase. A
+CreateGuid hit with a ClientGUID mismatch is therefore the
+"Open not found" case: proceeding with a new open is correct, but
+the reference obtained purely as a side effect of the lookup must
+not be leaked.
 
-Terminate the cached label explicitly after a successful conversion and
-clamp the exact-full case to the last byte of the buffer.
+Repeated requests that hit this mismatch pin global_ft entries,
+prevent __ksmbd_close_fd() from ever running for the corresponding
+files, and defeat the durable scavenger, leading to long-lived
+resource leaks.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Release the reference in the mismatch path and clear dh_info->fp so
+subsequent logic does not mistake a non-matching lookup result for
+a reconnect target.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 0b96d0f995c61..a4cc56df549a6 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -1228,8 +1228,13 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 				      le32_to_cpu(attr->res.data_size) >> 1,
- 				      UTF16_LITTLE_ENDIAN, sbi->volume.label,
- 				      sizeof(sbi->volume.label));
--		if (err < 0)
-+		if (err < 0) {
- 			sbi->volume.label[0] = 0;
-+		} else if (err >= sizeof(sbi->volume.label)) {
-+			sbi->volume.label[sizeof(sbi->volume.label) - 1] = 0;
-+		} else {
-+			sbi->volume.label[err] = 0;
-+		}
- 	} else {
- 		/* Should we break mounting here? */
- 		//err = -EINVAL;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 29fbdada7259a..700d9da3c65a9 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2849,6 +2849,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 					dh_info->reconnected = true;
+ 					goto out;
+ 				}
++				ksmbd_put_durable_fd(dh_info->fp);
++				dh_info->fp = NULL;
+ 			}
+ 
+ 			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
 -- 
 2.53.0
 
