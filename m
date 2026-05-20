@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DoBMEEYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:29 +0200
+	id 4NYZDBLmDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5A159986B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F71F592816
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67F7D3138A53
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 885B830B1EA9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D390335C1A0;
-	Wed, 20 May 2026 17:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA21F245005;
+	Wed, 20 May 2026 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qutoYyaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pA2yaGKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4DB33BBAF;
-	Wed, 20 May 2026 17:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABC0356754;
+	Wed, 20 May 2026 16:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297413; cv=none; b=f1NkJZqwMwY0xwSa3NAW+ceCyoBqwXqkttzsViZzJuD8yN/+mCX0tcGd05AEVZbe/EKfhAmFDOttpWqwu0BaCNH2sWHbi7mNBv29Yr3cGl+oCrVVt0aEjKiZI3JidgA1o8RtNfZnwlAV1J1gnPNZaL0nlpfNkdIykhKnSPRT3Rk=
+	t=1779295053; cv=none; b=dPvTg4vki9hEZ74u6UhyP/kB51h813TeIz4n8S3iFnvoh9nkpdnWBewSk/V38GJ+Z+koilj0p8+WeoX2WsxLACMaMfCUY2tstb0eRQ6dxM8YmtSkVnRbzuoJMhzoHeyaikZ8Iw81YxQLiiSTtZn5UCdIHA719+UUw2wl4UExKJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297413; c=relaxed/simple;
-	bh=3e0SiiXT8S1URB/5OEwtjNtc/DJyZf9WmkGyduON0nM=;
+	s=arc-20240116; t=1779295053; c=relaxed/simple;
+	bh=GBjRhF79gpGn9q7otPnmLnkVmdlurmqINal1ZcHZE+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdzP+R3n2AHtYTnYoXsceSD2h4E7GK/4e0OKA6CihRWLCyN26zFVzWEZ3tVGh3quIqTcbuiI/Ys9LqzWslBolA3w4XEzFNU8iuWsaNOI8fHnh4QB6F3y5ra4HXD52XkomvEKX1nsj0jLBnhO7XpnFBPUkuM82bsbtBFqadC9yPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qutoYyaz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1061E1F000E9;
-	Wed, 20 May 2026 17:16:51 +0000 (UTC)
+	 MIME-Version; b=k7c8V8uG7oF9i/F+3OjjS8imR15HsQXSDI0jaSQ6Q/x0V4IqZopeITWRV2bh537cudVq4IA92q6SyUl7RcV/t1rtGn9czEXBCNmDrWN/SfHl28GkE81tEl1PjHbBolsYhjHBazi08j7GO+WVgpUU9Zs5laVLRGKcmYxsWXL7K+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pA2yaGKR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1127E1F000E9;
+	Wed, 20 May 2026 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297412;
-	bh=CgztJkNO0PZS5phY54eKgKs8cu0VO+XOfGpAOJswAWg=;
+	s=korg; t=1779295050;
+	bh=SoXaFUe/M/Pbnu/Y/othf/7lP+8xJLg0Cdj2msUEvxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qutoYyazIjdpflhrHSvLAKcOCNp+9kII5R5TCbGgImu+SHjR2+eazWCgBysbwHcAL
-	 TN58XC43iVa1yA/q5pVOtohziXEeQ+Lh3Du3UT8L9YjfQuXLgPnUV0ZqJiMvvDo9Mp
-	 lY1Ne/os730TruRbhmRL+GfUuRlMHkIA+8J+NpmY=
+	b=pA2yaGKRWswbD+LmwACTtVqqjLXU3iC4FM7W13sn+8TA3x0pWUsNZ6QtBUOnefn3x
+	 boNByYwQibkStOkgECInJAeBi93POLXWswKBzGWc1YZtEBQD2/Yw91OYqL8mZuLUYA
+	 DEYDAjbBq2o+J8vQ0wULfUdS+NQocgPHX73JbZQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/957] devres: fix missing node debug info in devm_krealloc()
+Subject: [PATCH 7.0 0255/1146] dm cache: fix dirty mapping checking in passthrough mode switching
 Date: Wed, 20 May 2026 18:08:25 +0200
-Message-ID: <20260520162135.041687076@linuxfoundation.org>
+Message-ID: <20260520162154.003735959@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +66,182 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251220-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250300-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: EC5A159986B
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0F71F592816
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit f813ec9e84b4d0ca81ec1da94ab07bfb4a29266c ]
+[ Upstream commit 322586745bd1a0e5f3559fd1635fdeb4dbd1d6b8 ]
 
-Fix missing call to set_node_dbginfo() for new devres nodes created by
-devm_krealloc().
+As mentioned in commit 9b1cc9f251af ("dm cache: share cache-metadata
+object across inactive and active DM tables"), dm-cache assumed table
+reload occurs after suspension, while LVM's table preload breaks this
+assumption. The dirty mapping check for passthrough mode was designed
+around this assumption and is performed during table creation, causing
+the check to fail with preload while metadata updates are ongoing. This
+risks loading dirty mappings into passthrough mode, resulting in data
+loss.
 
-Fixes: f82485722e5d ("devres: provide devm_krealloc()")
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20260202235210.55176-2-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reproduce steps:
+
+1. Create a writeback cache with zero migration_threshold to produce
+   dirty mappings
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writeback smq \
+2 migration_threshold 0"
+
+2. Preload a table in passthrough mode
+
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+
+3. Write to the first cache block to make it dirty
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+4. Resume the inactive table. Now it's possible to load the dirty block
+   into passthrough mode.
+
+dmsetup resume cache
+
+Fix by moving the checks to the preresume phase to support table
+preloading. Also remove the unused function dm_cache_metadata_all_clean.
+
+Fixes: 2ee57d587357 ("dm cache: add passthrough mode")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-cache-metadata.c | 11 -----------
+ drivers/md/dm-cache-metadata.h |  5 -----
+ drivers/md/dm-cache-target.c   | 25 ++++++++-----------------
+ 3 files changed, 8 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index c948c88d39560..9893d656302d9 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -940,6 +940,8 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
- 	if (!new_dr)
- 		return NULL;
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 57158c02d096e..1b86e80c89cca 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1714,17 +1714,6 @@ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *
+ 	return r;
+ }
  
-+	set_node_dbginfo(&new_dr->node, "devm_krealloc_release", new_size);
+-int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result)
+-{
+-	int r;
+-
+-	READ_LOCK(cmd);
+-	r = blocks_are_unmapped_or_clean(cmd, 0, cmd->cache_blocks, result);
+-	READ_UNLOCK(cmd);
+-
+-	return r;
+-}
+-
+ void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd)
+ {
+ 	WRITE_LOCK_VOID(cmd);
+diff --git a/drivers/md/dm-cache-metadata.h b/drivers/md/dm-cache-metadata.h
+index 5f77890207fed..2f107e7c67d0a 100644
+--- a/drivers/md/dm-cache-metadata.h
++++ b/drivers/md/dm-cache-metadata.h
+@@ -135,11 +135,6 @@ int dm_cache_get_metadata_dev_size(struct dm_cache_metadata *cmd,
+  */
+ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *p);
+ 
+-/*
+- * Query method.  Are all the blocks in the cache clean?
+- */
+-int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result);
+-
+ int dm_cache_metadata_needs_check(struct dm_cache_metadata *cmd, bool *result);
+ int dm_cache_metadata_set_needs_check(struct dm_cache_metadata *cmd);
+ void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 32d22c7b9a07d..e479ac22b97cc 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2499,23 +2499,8 @@ static int cache_create(struct cache_args *ca, struct cache **result)
+ 		goto bad;
+ 	}
+ 
+-	if (passthrough_mode(cache)) {
+-		bool all_clean;
+-
+-		r = dm_cache_metadata_all_clean(cache->cmd, &all_clean);
+-		if (r) {
+-			*error = "dm_cache_metadata_all_clean() failed";
+-			goto bad;
+-		}
+-
+-		if (!all_clean) {
+-			*error = "Cannot enter passthrough mode unless all blocks are clean";
+-			r = -EINVAL;
+-			goto bad;
+-		}
+-
++	if (passthrough_mode(cache))
+ 		policy_allow_migrations(cache->policy, false);
+-	}
+ 
+ 	spin_lock_init(&cache->lock);
+ 	bio_list_init(&cache->deferred_bios);
+@@ -2842,6 +2827,12 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
+ 	struct cache *cache = context;
+ 
+ 	if (dirty) {
++		if (passthrough_mode(cache)) {
++			DMERR("%s: cannot enter passthrough mode unless all blocks are clean",
++			      cache_device_name(cache));
++			return -EBUSY;
++		}
 +
- 	/*
- 	 * The spinlock protects the linked list against concurrent
- 	 * modifications but not the resource itself.
+ 		set_bit(from_cblock(cblock), cache->dirty_bitset);
+ 		atomic_inc(&cache->nr_dirty);
+ 	} else
+@@ -3075,7 +3066,7 @@ static int cache_preresume(struct dm_target *ti)
+ 					   load_filtered_mapping, cache);
+ 		if (r) {
+ 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
+-			if (r != -EFBIG)
++			if (r != -EFBIG && r != -EBUSY)
+ 				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
+ 			return r;
+ 		}
 -- 
 2.53.0
 
