@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AGqC70ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:09 +0200
+	id qEsZNEX4DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DA2597106
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C52559552F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C87613199F64
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44A6E30F3E03
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72003E123F;
-	Wed, 20 May 2026 17:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247723EFD09;
+	Wed, 20 May 2026 16:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM3PZzfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQJgs0VB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664883EFD3D;
-	Wed, 20 May 2026 17:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E142E3EAC83;
+	Wed, 20 May 2026 16:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298744; cv=none; b=B3qTmXFtxHIfJnNjpxmZP+LZeEUpYhz2V0N7/NrZlRd75q9Kn/tiiB/g6FvQc/mOFHZRjnYRiehwjOSbM7CYeAJDD0SjlYqoCaxOWDeKRlu/0epk2g6B+WEbjaFMJ4DubtGAQa7C3rWjO/lHWk2Iovt9Uvvsu6nu3g381sH1tLM=
+	t=1779296332; cv=none; b=tYDa3/yE/2EpBpah3TiivGvKNDJxkmBourDbP4jzLwc3LOAfWmPO9kNRZeuuV4SBLPYbF9lxT3tSoxRyyx17YcsuUkQlo0lSGnqrsaxpQDbHbGpD3DIWEcj8dXADCU6g8CbYyW2bY3JxxjaegL/676moktiSBdPq8QS4hqmEgxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298744; c=relaxed/simple;
-	bh=JmbxJAdyi35ytRNidajJ+OB8xE6QV+6beZiI55CEOqw=;
+	s=arc-20240116; t=1779296332; c=relaxed/simple;
+	bh=Hvfc3JJ0nz6A0CHlEtAmClbA/RyhuK+YOPZ69HTCpFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzm6sSUrFd+P721+3402DAZ0AyE4umeHIjVVfLjU7g19EkaUQY4SG6a1a+PcHTSGVQVZZ6MUyXXhSKFxMoTxGAa1XD9F4vWWsIrJQrBTxTQBRZGZFKcaBZuHZvglp4CtzWoMseRsDyUnHUOwWzFjhi71chiP7Nz08zriayJLYjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM3PZzfT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5CC1F000E9;
-	Wed, 20 May 2026 17:39:02 +0000 (UTC)
+	 MIME-Version; b=RxTA3LZWMJLI4RVpY7dassM70+xChykX4SmKb0kNyvVzSfX2tUzJU8iqVxioFlyw94cIYZqBnSUZlWI+ynpGtgaDWlyQH9eyFHUN8R76C9j04aW8kjrqPSQLY10kL9CHMIgzFIoojo9BH/wCEM+2pVN+NTksCYp/LxVzjhooNi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQJgs0VB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9641F000E9;
+	Wed, 20 May 2026 16:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298743;
-	bh=3hz0EsOurOHVW0yP/L7hGmfwP37TuEGPrqlLWIrkSJY=;
+	s=korg; t=1779296331;
+	bh=/Y2U0MPTIeEwzIxJiL8KaS83x9y2kCA0cY1BlPcoCXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CM3PZzfTgUDw6tynRdMTyTdsNPVZPByjY+yumJAuRHD46WQuajl8ifF1O2njlcnH4
-	 thvWNWhtf8b+CgEkdF1oz9Iuk6ogKI03f8fZmKGPvdxlVGyXcFceubmreF/amHTjVg
-	 7X6h+lsAJRJaQODoqQVVvUZPkmWTWA2cVqFb3OMs=
+	b=RQJgs0VBXjeR9FFsXieGSEula1vbSMKk0NFkXxDC3bg+yjMvkoa5VPBdt8swFrgDS
+	 8IZ5RAZ2FxhCXYCCxdzjnZctnzIHt99ZnO4DHAtofSe5OeHrZKYuniZ7CaZGD9jVuF
+	 tBGYX2kVpBaTTooT6qaA/VpDtzLEfkHA77YQEZCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 525/957] i3c: dw: Fix memory leak in dw_i3c_master_i3c_xfers()
-Date: Wed, 20 May 2026 18:16:48 +0200
-Message-ID: <20260520162145.919518972@linuxfoundation.org>
+Subject: [PATCH 7.0 0759/1146] arm64: dts: imx8mp-dhcom-som: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:16:49 +0200
+Message-ID: <20260520162205.387846766@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +64,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251731-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250795-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email]
-X-Rspamd-Queue-Id: 35DA2597106
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8C52559552F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 256cc1f1305a8e5dcadf8ca208d04a3acadd26f1 ]
+[ Upstream commit f9ed5afc988da3e22543725e35be6addbb0497bc ]
 
-The dw_i3c_master_i3c_xfers() function allocates memory for the xfer
-structure using dw_i3c_master_alloc_xfer(). If pm_runtime_resume_and_get()
-fails, the function returns without freeing the allocated xfer, resulting
-in a memory leak.
+PMIC_nINT is low level triggered, but the current PAD settings is
+PE=0,PUE=0,FSEL_1_FAST_SLEW_RATE=1,SION=1. So PAD needs to be configured
+as PULL UP with PULL Enable, no need SION. Correct it.
 
-Since dw_i3c_master_free_xfer() is a thin wrapper around kfree(), use
-the __free(kfree) cleanup attribute to handle the free automatically on
-all exit paths.
-
-Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260404-dw-i3c-2-v3-1-8f7d146549c1@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 8d6712695bc8e ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index c6cfcacb18106..585f320119741 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -6,6 +6,7 @@
-  */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+index f8303b7e2bd22..0a6a60670f762 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+@@ -989,7 +989,7 @@ MX8MP_IOMUXC_SAI5_RXC__GPIO3_IO20		0x22
+ 	pinctrl_pmic: dhcom-pmic-grp {
+ 		fsl,pins = <
+ 			/* PMIC_nINT */
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40000090
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
+ 		>;
+ 	};
  
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/err.h>
-@@ -905,7 +906,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
- 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
- 	struct dw_i3c_master *master = to_dw_i3c_master(m);
- 	unsigned int nrxwords = 0, ntxwords = 0;
--	struct dw_i3c_xfer *xfer;
- 	int i, ret = 0;
- 
- 	if (!i3c_nxfers)
-@@ -925,7 +925,7 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
- 	    nrxwords > master->caps.datafifodepth)
- 		return -EOPNOTSUPP;
- 
--	xfer = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
-+	struct dw_i3c_xfer *xfer __free(kfree) = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
- 	if (!xfer)
- 		return -ENOMEM;
- 
-@@ -976,7 +976,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
- 	}
- 
- 	ret = xfer->ret;
--	dw_i3c_master_free_xfer(xfer);
- 
- 	pm_runtime_put_autosuspend(master->dev);
- 	return ret;
 -- 
 2.53.0
 
