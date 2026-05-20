@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-251077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mABPLAz3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:48 +0200
+	id SPHjI7v8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A9B595218
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062B3596209
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C3E59326915D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D46030DC499
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E865D3A6EE0;
-	Wed, 20 May 2026 17:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326A348C55;
+	Wed, 20 May 2026 18:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDqY9GtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXk4pia7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821923A4526;
-	Wed, 20 May 2026 17:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286513A6B99;
+	Wed, 20 May 2026 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297039; cv=none; b=IdMsdT9BjbnbGMvSsg5ZyQdrQ17tsyEuKDmkWnrmktC9MaosW7GoVRSLdQUsSzrqSQ76I5OOcRRVP4Sh5pMtyymdaHR467G886Ti5Kpu/rtwCnisQu2vEDRvNQD9PvDUxmgKAy+Nb6QIeO7neuyM6AsUZX9iKckM27w6rrpWbKQ=
+	t=1779301208; cv=none; b=ENV30dOZe19FbQvwcvtrGrTe+VwM2Rx5zTflvCGFxSNt8IIbAqKHCtsPA/EC9uKErWHf2UvXTuj7e+TGyNpU1nPbprBPtNuODE6lG0vongyFRAALBn/6FNgSxrlknnXT1YeeHa/V/dytxQ9CzLKgGM/bUrNDNoH38uGK6XRT1YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297039; c=relaxed/simple;
-	bh=pRMo647xnhVF4xcTloFUZuk61ATQ413WJbetDJHCFxg=;
+	s=arc-20240116; t=1779301208; c=relaxed/simple;
+	bh=qve7sQOsKuqFbLRXgarZPIjSQMGagLkys6LwnbfxOVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKaXNalZO7lrr1GYVL9X2qvfBDObV4A3du9O6MsjisYvjHDhOsThd8gnx3D247SgeMMYivsBy+yPVGikyPeOK6hzAo53t6CT56U59GLbOkS8G8QqAX/R9qMtWrJc5CAIFfBpfq0INwWzyzqjAuRuS1qJr4ysz4MHSmAB72hld/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDqY9GtP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3A71F000E9;
-	Wed, 20 May 2026 17:10:37 +0000 (UTC)
+	 MIME-Version; b=T8+RrL9mPRgApqsO2uQZacVfaNPT5Jo1F3cjQklZdiitcKvOJ8F+RkX8A4mnzlBNPQ8jr7nsEYDnHCzqj+aF3nFQycKGwgyuLa88afYGTe/GoQ317wOI7iT1aH2aI02Q9y5mI7zz9IlT9TCAaOmquxh7R0fqaqPfuW9+50ewfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXk4pia7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2061F000E9;
+	Wed, 20 May 2026 18:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297038;
-	bh=ha5tRcaKHahVjTi6HJUmA3vDTPrHjrpYDNblmyXoL5U=;
+	s=korg; t=1779301207;
+	bh=qjBw1vATadvOtPL7tnCuM3KmnAhg1HwVnrKrDBpN8cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pDqY9GtPm3oZFAKPYlbuNonIkHxtJMHPzco3KXJrlUTcalHXkJEe+VcF/DCZn08Y2
-	 Ul9fcJHhPoUqGZrHwunUAKxIZ0BzknXZ3WFRoCHPADW8yfS3K/sh8cfZqi2quxj9yV
-	 WpkTKXzhQlTUmAsxCDXkptPnCG0MEpFQbBoH60SY=
+	b=qXk4pia7AWep22CgjhI9mqrhwaEYG/ikKpIR+fIw20viDWzSOQJUe5eL+YP9Nd4Mu
+	 HLUa55nW93ofEkMEHQ/IHvTOwwvzPKe/LTmv+x2OPukSPZ9tW1p5F36iwFB37fv1/2
+	 oWeq/pZnomn//afpkzrBFZ0baehCF03clxQ/BhE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1027/1146] ice: fix SMA and U.FL pin state changes affecting paired pin
+Subject: [PATCH 6.12 466/666] openvswitch: cap upcall PID array size and pre-size vport replies
 Date: Wed, 20 May 2026 18:21:17 +0200
-Message-ID: <20260520162211.472329091@linuxfoundation.org>
+Message-ID: <20260520162121.368624244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,169 +70,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252641-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251077-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: E5A9B595218
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 062B3596209
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 6f9d8393c9f50fbc68b9c9e99f78ca5a7b43ff44 ]
+[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
 
-SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
-SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
-only have one active pin at a time: SMA1 output and U.FL1 output share
-the same CGU output, SMA2 input and U.FL2 input share the same CGU
-input.  The PCA9575 register bits determine which connector in each
-pair owns the signal path.
+The vport netlink reply helpers allocate a fixed-size skb with
+nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
+array via ovs_vport_get_upcall_portids().  Since
+ovs_vport_set_upcall_portids() accepts any non-zero multiple of
+sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
+array large enough to overflow the reply buffer, causing nla_put() to
+fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
+unprivileged user namespaces enabled (e.g., Ubuntu default), this is
+reachable via unshare -Urn since OVS vport mutation operations use
+GENL_UNS_ADMIN_PERM.
 
-The driver does not account for this pairing in two places:
+ kernel BUG at net/openvswitch/datapath.c:2414!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
+ RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
+ Call Trace:
+  <TASK>
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
+  genl_rcv_msg (net/netlink/genetlink.c:1194)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  genl_rcv (net/netlink/genetlink.c:1219)
+  netlink_unicast (net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  __sys_sendto (net/socket.c:2206)
+  __x64_sys_sendto (net/socket.c:2209)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception
 
-ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
-backing CGU pin without checking whether the U.FL pin is currently
-active.  Disconnecting an already inactive U.FL pin flips bits that
-the paired SMA pin relies on, breaking its connection.
+Reject attempts to set more PIDs than nr_cpu_ids in
+ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
+size in ovs_vport_cmd_msg_size() based on that bound, similar to the
+existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
+used by the per-CPU dispatch configuration on the datapath side
+(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
+two sides stay consistent.
 
-ice_dpll_sma_direction_set() does not propagate direction changes to
-the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
-never managed, so U.FL2 stays disconnected after SMA2 switches to
-output.  For both pairs the backing CGU pin of the U.FL side is never
-enabled when a direction change activates it, so userspace sees the
-pin as disconnected even though the routing is correct.
-
-Fix by guarding the U.FL disconnect path against inactive pins and by
-updating the paired U.FL pin fully on SMA direction changes: manage
-ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
-CGU pin whenever the peer becomes active.
-
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-8-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 50 ++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+ net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
+ net/openvswitch/vport.c    |  3 +++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 498ec2c045f38..3f8cd5b8298b5 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -1171,6 +1171,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 				      enum dpll_pin_direction direction,
- 				      struct netlink_ext_ack *extack)
- {
-+	struct ice_dplls *d = &p->pf->dplls;
-+	struct ice_dpll_pin *peer;
- 	u8 data;
- 	int ret;
- 
-@@ -1189,8 +1191,9 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 	case ICE_DPLL_PIN_SW_2_IDX:
- 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
- 			data &= ~ICE_SMA2_DIR_EN;
-+			data |= ICE_SMA2_UFL2_RX_DIS;
- 		} else {
--			data &= ~ICE_SMA2_TX_EN;
-+			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
- 			data |= ICE_SMA2_DIR_EN;
- 		}
- 		break;
-@@ -1202,6 +1205,34 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
- 		ret = ice_dpll_pin_state_update(p->pf, p,
- 						ICE_DPLL_PIN_TYPE_SOFTWARE,
- 						extack);
-+	if (ret)
-+		return ret;
-+
-+	/* When a direction change activates the paired U.FL pin, enable
-+	 * its backing CGU pin so the pin reports as connected. Without
-+	 * this the U.FL routing is correct but the CGU pin stays disabled
-+	 * and userspace sees the pin as disconnected.  Do not disable the
-+	 * backing pin when U.FL becomes inactive because the SMA pin may
-+	 * still be using it.
-+	 */
-+	peer = &d->ufl[p->idx];
-+	if (peer->active) {
-+		struct ice_dpll_pin *target;
-+		enum ice_dpll_pin_type type;
-+
-+		if (peer->output) {
-+			target = peer->output;
-+			type = ICE_DPLL_PIN_TYPE_OUTPUT;
-+		} else {
-+			target = peer->input;
-+			type = ICE_DPLL_PIN_TYPE_INPUT;
-+		}
-+		ret = ice_dpll_pin_enable(&p->pf->hw, target,
-+					  d->eec.dpll_idx, type, extack);
-+		if (!ret)
-+			ret = ice_dpll_pin_state_update(p->pf, target,
-+							type, extack);
-+	}
- 
- 	return ret;
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 8d3c01f0e2aa1..607b5ca70ea54 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2157,9 +2157,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	return err;
  }
-@@ -1253,6 +1284,14 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA1_MASK;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL1 is not active, setting TX_EN
-+			 * while DIR_EN is set would also deactivate
-+			 * the paired SMA1 output.
-+			 */
-+			if (data & (ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA1_TX_EN;
- 			enable = false;
- 		} else {
-@@ -1267,6 +1306,15 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
- 			data &= ~ICE_SMA2_UFL2_RX_DIS;
- 			enable = true;
- 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
-+			/* Skip if U.FL2 is not active, setting
-+			 * UFL2_RX_DIS could also disable the paired
-+			 * SMA2 input.
-+			 */
-+			if (!(data & ICE_SMA2_DIR_EN) ||
-+			    (data & ICE_SMA2_UFL2_RX_DIS)) {
-+				ret = 0;
-+				goto unlock;
-+			}
- 			data |= ICE_SMA2_UFL2_RX_DIS;
- 			enable = false;
- 		} else {
+ 
++static size_t ovs_vport_cmd_msg_size(void)
++{
++	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
++
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
++	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
++	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
++
++	/* OVS_VPORT_ATTR_STATS */
++	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
++
++	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
++	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
++	 */
++	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
++				  nla_total_size_64bit(sizeof(u64)));
++
++	/* OVS_VPORT_ATTR_UPCALL_PID */
++	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
++
++	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
++	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
++	 */
++	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
++				  nla_total_size(nla_total_size(0)));
++
++	return msgsize;
++}
++
+ static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+ {
+-	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+ }
+ 
+ /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
+@@ -2169,7 +2200,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
+ 	struct sk_buff *skb;
+ 	int retval;
+ 
+-	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	skb = ovs_vport_cmd_alloc_info();
+ 	if (!skb)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 2a996858a9145..469bc1fda726e 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -407,6 +407,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
+ 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+ 		return -EINVAL;
+ 
++	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
++		return -EINVAL;
++
+ 	old = ovsl_dereference(vport->upcall_portids);
+ 
+ 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
 -- 
 2.53.0
 
