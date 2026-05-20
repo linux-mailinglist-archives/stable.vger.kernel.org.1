@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-250423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLsEIGroDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:22 +0200
+	id AEf2FzvvDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E8F592C31
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9DA593C4B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A51483056644
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C383830A4065
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C5352016;
-	Wed, 20 May 2026 16:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72093EEAC6;
+	Wed, 20 May 2026 16:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFKGez4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw5JoBu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34873ED5C5;
-	Wed, 20 May 2026 16:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB96363C6F;
+	Wed, 20 May 2026 16:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295375; cv=none; b=BqWJ2x0ErHjIda4wn9th32Rh1m3wPutcKvRXac8GWKeaJSQJYJds7y4zXY/zUdzosFJvUSM+1u/lLZ413q0vG5yOQ2VaRkxRCkuI0+6o6VDkWGecdUtA0V7t7YPyEVBkVcrrVcSJNrrs2V37ufAmP6bCocXSKU1DWmdNvFGjcY8=
+	t=1779295378; cv=none; b=imW3fm5VcRkguLHwQ2MEAFtZa7/tz7MCANC9i0jTjzxrd5lk0r5u8tzwWirm8AW80udv/dK0EJHsTgdWUWVVsqPeQqB16vyOLqsby7O1hR6PJ7I/J5M4IjiAm30n8r+cCF7cNa4sIKpK73y1lwPLUGgloUBgGW1MB9R12PWNVkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295375; c=relaxed/simple;
-	bh=mQtZIXL44/DMqijN/CjAAePOS+B/koJBuykGCnFdiYY=;
+	s=arc-20240116; t=1779295378; c=relaxed/simple;
+	bh=GoWZf30J7luQ8nNQ3msENtJE9sEfC6Bv27Vf5B74fBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcTL7J7kw8ZUgHC5QTBDo53mcfttXevUz0kyZPswpiB1V5EwQQ8uW2rAb0XwkSOaI94HyHwjP2mCnhCcQoBpLUSW6t4JxM8J5/auOLc/vSnWW5bzIZoqS3zMReYbYA4d/6Q1nRUTr9BBVArscT3WeQPNJAQtgKvZZMYiWo3eIzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFKGez4R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230AC1F000E9;
-	Wed, 20 May 2026 16:42:53 +0000 (UTC)
+	 MIME-Version; b=ZeAMtJS+GvLv9cTF0E0XftMFVzeBtY1qQ1tDjXEk6E7Z4AJypODwTW24lz4RZfEhtfoYnExIIOT5lLp1fJTwD8C8iM+sDpUp2BTCM9a94nP8PIlNlaJd73iA8+WaLXDLk107uBghQZzs3GE2I9aqSmghVsGLHtXwxyqu0p0oO8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw5JoBu8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BA61F000E9;
+	Wed, 20 May 2026 16:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295374;
-	bh=UOuyeTL2XQH5nw2NABMKxXXOzXG+YC90AnJZe8l/T+g=;
+	s=korg; t=1779295377;
+	bh=R0+JjRZrhOzzmDobxqrpn/Wlm4+WJRaXsleKNPx1b/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tFKGez4RswTLsfgTMYnxCbWiVkxQCjTw1RJ21DgnQ5E3Vcb0YC8Bm7ocdBw1RF63t
-	 dPfis5wjl4rP5W0RBOPkbx3bvPgSXzt2eaGC4ihCCoI7MBvexP1HRllhA7ZT1YZWcT
-	 OfaDc3D96J9PqlXLcpW3dfKx3mEvJhGTdIGkbWp4=
+	b=Lw5JoBu8n+QoLd3JcW5hgqhk0/0aQ4nPlqJ964H6Jl+TGcPGTfF+AUm68eAsVkjVg
+	 vxjjDYyM91OMM1pU5CzRaTO++ecN19IUjZb5jdS8TwKjExWJwposGZhtVbhUDmEZpS
+	 qzh6OoBj47Uhz2KjB1XoksjkmdgNJxsJo6ip+UkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0396/1146] PCI: mediatek-gen3: Prevent leaking IRQ domains when IRQ not found
-Date: Wed, 20 May 2026 18:10:46 +0200
-Message-ID: <20260520162157.161351331@linuxfoundation.org>
+Subject: [PATCH 7.0 0397/1146] gpu: nova-core: bitfield: fix broken Default implementation
+Date: Wed, 20 May 2026 18:10:47 +0200
+Message-ID: <20260520162157.183912965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250423-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250424-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,msgid.link:url,chromium.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 41E8F592C31
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 6E9DA593C4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,53 +99,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Eliot Courtney <ecourtney@nvidia.com>
 
-[ Upstream commit 5573c44cb3fd01a9f62d569ae9ac870ef5f0e0ba ]
+[ Upstream commit de0aca13509bf47a2d49bc7a26d56079c758c95f ]
 
-In mtk_pcie_setup_irq(), the IRQ domains are allocated before the
-controller's IRQ is fetched. If the latter fails, the function
-directly returns an error, without cleaning up the allocated domains.
+The current implementation does not actually set the default values for
+the fields in the bitfield.
 
-Hence, reverse the order so that the IRQ domains are allocated after the
-controller's IRQ is found.
-
-This was flagged by Sashiko during a review of "[PATCH v6 0/7] PCI:
-mediatek-gen3: add power control support".
-
-Fixes: 814cceebba9b ("PCI: mediatek-gen3: Add INTx support")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260324052002.4072430-1-wenst%40chromium.org
-Link: https://patch.msgid.link/20260324093542.18523-1-wenst@chromium.org
+Fixes: 3fa145bef533 ("gpu: nova-core: register: generate correct `Default` implementation")
+Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+Link: https://patch.msgid.link/20260401-fix-bitfield-v2-1-2fa68c98114a@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek-gen3.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/nova-core/bitfield.rs | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
-index 75ddb8bee168f..e45c43ccc84c2 100644
---- a/drivers/pci/controller/pcie-mediatek-gen3.c
-+++ b/drivers/pci/controller/pcie-mediatek-gen3.c
-@@ -851,14 +851,14 @@ static int mtk_pcie_setup_irq(struct mtk_gen3_pcie *pcie)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	int err;
+diff --git a/drivers/gpu/nova-core/bitfield.rs b/drivers/gpu/nova-core/bitfield.rs
+index 16e143658c511..02efdcf78d894 100644
+--- a/drivers/gpu/nova-core/bitfield.rs
++++ b/drivers/gpu/nova-core/bitfield.rs
+@@ -314,12 +314,11 @@ macro_rules! bitfield {
+         /// Returns a value for the bitfield where all fields are set to their default value.
+         impl ::core::default::Default for $name {
+             fn default() -> Self {
+-                #[allow(unused_mut)]
+-                let mut value = Self(Default::default());
++                let value = Self(Default::default());
  
--	err = mtk_pcie_init_irq_domains(pcie);
--	if (err)
--		return err;
--
- 	pcie->irq = platform_get_irq(pdev, 0);
- 	if (pcie->irq < 0)
- 		return pcie->irq;
+                 ::kernel::macros::paste!(
+                 $(
+-                value.[<set_ $field>](Default::default());
++                let value = value.[<set_ $field>](Default::default());
+                 )*
+                 );
  
-+	err = mtk_pcie_init_irq_domains(pcie);
-+	if (err)
-+		return err;
-+
- 	irq_set_chained_handler_and_data(pcie->irq, mtk_pcie_irq_handler, pcie);
- 
- 	return 0;
 -- 
 2.53.0
 
