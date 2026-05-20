@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CHyGh/yDWrj4wUAu9opvQ
-	(envelope-from <stable+bounces-251600-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:47 +0200
+	id wOM3ASkADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E7D59442E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884DD596F92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C560312CF21
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D4AC38E536F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16986366075;
-	Wed, 20 May 2026 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E540A3F4DC0;
+	Wed, 20 May 2026 18:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9SO/99C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdntewXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7388359A6F;
-	Wed, 20 May 2026 17:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAB63D75C7;
+	Wed, 20 May 2026 18:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298403; cv=none; b=oLvR/SA55RHKjRFmUMVMcg4N/WaLsh+A2HutWd/QVWoLaGDjHcZrZUlN6YT4tjxCzqgSUEsV+ZO6TNhxCPpSbfmxYNOyiWfuT82bKtBaxtJ9Wlh1+zsVObnYz918/Ctdvr+Mq7hwyQ5JonyIQiaQ3Mc2NaY2VPncJacCiOiE0G8=
+	t=1779300048; cv=none; b=RuMiMHHeRi6jXmD+NwGpDlbyHje78J2o1c6lbXkFAoknIbAjVXYvtoDxmV5U13m43M0053zlUzduSQJyn1nQ0OKjnCMTlIvhivEgj2DZxxIjtYr0bEaXA4dLDWPPORfZXdY5x+3aSrB0QVWdzWKXwmCWpQjyh2NxVsucz75SGZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298403; c=relaxed/simple;
-	bh=ZQGMuJL6ZB9PZaHt2alWmBI3O9H19MFDCQp9zRXWhvU=;
+	s=arc-20240116; t=1779300048; c=relaxed/simple;
+	bh=gwSurPaYmSRFvEFv30x2vToPGJP6KS7nis+MrPZu05k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgwscF9WSlwHhQ8JBcVxcEJet6/F7XwOX8Z2JXWvi7/cLh6XjnUOyxZmeyccv1mllw8pH8zkDyCUrmE3o8GX8gUOmwfxQ/GeKa9tH3/+wUUfwLddWoMO/ezMH03d7kxWThkmIcGCk4gfvLmw6znAQWq02U2abSqFAK/R8GkgEwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9SO/99C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EFD1F000E9;
-	Wed, 20 May 2026 17:33:21 +0000 (UTC)
+	 MIME-Version; b=logIvn5Z1a5RkS65OBPj89lge2eftpatvt2nN2GRyaQOmXXJdd7xOllqePMjtuFfXOATPxFJyv933l14j//Bjn8f8eaCEjHela9drtpbNcjsS8mXNDUP4yHU4KTyuCVyCtImpbcC8fhVgoWSgsJYiyZt5XGIelfwOtQBpXqtqlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdntewXu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215A01F000E9;
+	Wed, 20 May 2026 18:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298402;
-	bh=9ZhhidQuWc3gTzIbd5jzGLcAX6Es4mXUbPRs0y8D5ds=;
+	s=korg; t=1779300047;
+	bh=Fp6kSsUUUr110Kgwb+asla3u9xL9qqTwNmD13stksWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e9SO/99CO5XGhW/1n/pBoMTxd0GmkL6aLwb1S1EngZzX3HLiJLxy7VQXZ9JKA5eio
-	 ZXrJYoRxD1msIWmomVNnsV5pa6udn91WUc+cWywtrWYP89SaiVADX/Tj+yczyQRqrL
-	 oFHRuFpCJGelPAymjSiR3xzTMLsZG0DMfycNNNVY=
+	b=kdntewXuMWtuZkNddm7hx/DZMHCVbhroBkkmk37SSc1bR3wTklYdxNxQqAct2TAuj
+	 +aNCa8qoZlHSns+UZioADjeQWhHBe8Q1uCB7CxbSFi5ikDNfksRUPxZSb1mHE3KC4t
+	 DEwYuSYofEHFNmSwqFeAL3D7ZKwrLeQMiJJhVE2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Richard Clark <richard.xnu.clark@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 355/957] quota: Fix race of dquot_scan_active() with quota deactivation
+Subject: [PATCH 6.12 027/666] hrtimers: Update the return type of enqueue_hrtimer()
 Date: Wed, 20 May 2026 18:13:58 +0200
-Message-ID: <20260520162142.228717873@linuxfoundation.org>
+Message-ID: <20260520162111.823521575@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,182 +64,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251600-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252198-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linutronix.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D7E7D59442E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email]
+X-Rspamd-Queue-Id: 884DD596F92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Richard Clark <richard.xnu.clark@gmail.com>
 
-[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
+[ Upstream commit da7100d3bf7d6f5c49ef493ea963766898e9b069 ]
 
-dquot_scan_active() can race with quota deactivation in
-quota_release_workfn() like:
+The return type should be 'bool' instead of 'int' according to the calling
+context in the kernel, and its internal implementation, i.e. :
 
-  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
-  ==============================      ==============================
-  spin_lock(&dq_list_lock);
-  list_replace_init(
-    &releasing_dquots, &rls_head);
-    /* dquot X on rls_head,
-       dq_count == 0,
-       DQ_ACTIVE_B still set */
-  spin_unlock(&dq_list_lock);
-  synchronize_srcu(&dquot_srcu);
-                                      spin_lock(&dq_list_lock);
-                                      list_for_each_entry(dquot,
-                                          &inuse_list, dq_inuse) {
-                                        /* finds dquot X */
-                                        dquot_active(X) -> true
-                                        atomic_inc(&X->dq_count);
-                                      }
-                                      spin_unlock(&dq_list_lock);
-  spin_lock(&dq_list_lock);
-  dquot = list_first_entry(&rls_head);
-  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
+	return timerqueue_add();
 
-The problem is not only a cosmetic one as under memory pressure the
-caller of dquot_scan_active() can end up working on freed dquot.
+which is a bool-return function.
 
-Fix the problem by making sure the dquot is removed from releasing list
-when we acquire a reference to it.
+[ tglx: Adjust function arguments ]
 
-Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Richard Clark <richard.xnu.clark@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/Z2ppT7me13dtxm1a@MBC02GN1V4Q05P
+Stable-dep-of: f2e388a019e4 ("hrtimer: Reduce trace noise in hrtimer_start()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
- include/linux/quotaops.h |  9 +--------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+ kernel/time/hrtimer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 6c4a6ee1fa2b6..45a46dc4de4ef 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -363,6 +363,31 @@ static inline int dquot_active(struct dquot *dquot)
- 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
- }
- 
-+static struct dquot *__dqgrab(struct dquot *dquot)
-+{
-+	lockdep_assert_held(&dq_list_lock);
-+	if (!atomic_read(&dquot->dq_count))
-+		remove_free_dquot(dquot);
-+	atomic_inc(&dquot->dq_count);
-+	return dquot;
-+}
-+
-+/*
-+ * Get reference to dquot when we got pointer to it by some other means. The
-+ * dquot has to be active and the caller has to make sure it cannot get
-+ * deactivated under our hands.
-+ */
-+struct dquot *dqgrab(struct dquot *dquot)
-+{
-+	spin_lock(&dq_list_lock);
-+	WARN_ON_ONCE(!dquot_active(dquot));
-+	dquot = __dqgrab(dquot);
-+	spin_unlock(&dq_list_lock);
-+
-+	return dquot;
-+}
-+EXPORT_SYMBOL_GPL(dqgrab);
-+
- static inline int dquot_dirty(struct dquot *dquot)
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 640d2ea4bd1fa..6abd0d2807f5d 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1091,11 +1091,10 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
+  * The timer is inserted in expiry order. Insertion into the
+  * red black tree is O(log(n)). Must hold the base lock.
+  *
+- * Returns 1 when the new timer is the leftmost timer in the tree.
++ * Returns true when the new timer is the leftmost timer in the tree.
+  */
+-static int enqueue_hrtimer(struct hrtimer *timer,
+-			   struct hrtimer_clock_base *base,
+-			   enum hrtimer_mode mode)
++static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
++			    enum hrtimer_mode mode)
  {
- 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
-@@ -641,15 +666,14 @@ int dquot_scan_active(struct super_block *sb,
- 			continue;
- 		if (dquot->dq_sb != sb)
- 			continue;
--		/* Now we have active dquot so we can just increase use count */
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqput(old_dquot);
- 		old_dquot = dquot;
- 		/*
- 		 * ->release_dquot() can be racing with us. Our reference
--		 * protects us from new calls to it so just wait for any
--		 * outstanding call and recheck the DQ_ACTIVE_B after that.
-+		 * protects us from dquot_release() proceeding so just wait for
-+		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
- 		 */
- 		wait_on_dquot(dquot);
- 		if (dquot_active(dquot)) {
-@@ -717,7 +741,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
- 			 * use count */
--			dqgrab(dquot);
-+			__dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
- 			err = dquot_write_dquot(dquot);
- 			if (err && !ret)
-@@ -963,9 +987,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_LOOKUPS);
- 	} else {
--		if (!atomic_read(&dquot->dq_count))
--			remove_free_dquot(dquot);
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_CACHE_HITS);
- 		dqstats_inc(DQST_LOOKUPS);
-diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
-index c334f82ed385a..f9c0f9d7c9d93 100644
---- a/include/linux/quotaops.h
-+++ b/include/linux/quotaops.h
-@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
- bool dquot_initialize_needed(struct inode *inode);
- void dquot_drop(struct inode *inode);
- struct dquot *dqget(struct super_block *sb, struct kqid qid);
--static inline struct dquot *dqgrab(struct dquot *dquot)
--{
--	/* Make sure someone else has active reference to dquot */
--	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
--	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
--	atomic_inc(&dquot->dq_count);
--	return dquot;
--}
-+struct dquot *dqgrab(struct dquot *dquot);
- 
- static inline bool dquot_is_busy(struct dquot *dquot)
- {
+ 	debug_activate(timer, mode);
+ 	WARN_ON_ONCE(!base->cpu_base->online);
 -- 
 2.53.0
 
