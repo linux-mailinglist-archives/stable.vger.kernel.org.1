@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-250993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMliAOLtDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:42 +0200
+	id 4HwiDbYJDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-253058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776C0593776
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:41 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 319905982FE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2F54313702E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E4B932F8B7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400E03F23CC;
-	Wed, 20 May 2026 17:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AEF3F8704;
+	Wed, 20 May 2026 18:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcqwhWvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffxmPOQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F33D3F54DA;
-	Wed, 20 May 2026 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E493EEAD8;
+	Wed, 20 May 2026 18:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296825; cv=none; b=ohv7DfgXVAHBh33CsfPszyeU+P6aaC4yFkNXCcpXbkNXdlsmlFjhRvv47UQ7q2PLkEUJMWdAczB33D1+0OrYak1MuEoXFWvVnhh5+zpCK6irDZSFHOb8mx0szn0BlLMiEocO6YtXCi/AuH90paza3T45xOdJQFeKtLIgFwRaZ1A=
+	t=1779302294; cv=none; b=n0lKDgjZCEc9aQxzgsVB+vkFaQSX3oIxsZXIppEPbOKnkvx98cXG51P//BHSYu/Kb9jv3k3mhcQVtdf+etVNd5sHBzzt47Cwm8yeLzYIJK64A325oM/L+b9SOc++mVbAJzDwmXsRo8fkQAE8a8mCGP/X3pviy99RqOcNGOLNpyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296825; c=relaxed/simple;
-	bh=Avfau9X31vKvl99SV6FBXTtR8ecWdyTtPbKbL6+max0=;
+	s=arc-20240116; t=1779302294; c=relaxed/simple;
+	bh=2B518yxfsGdxMB5Uti+o/vRY8NBNhw2RQ2u3mqWf9CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qe4DcNIEwHkksOWLq4w3BWmGb4Z1KfkZEkr5usIe+qo0WFli3/oPg7vTt4Z2YB6DsxeQl0XOymWmC1ppXlE4sDJslTHikyOs8z2dJRKAqaYl1rRuUa81v6I3oYL/g97/tLdJsOjUyy8c+YQKvr60HlSyQ1TaSaXPW65xGRRxQ3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcqwhWvs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9921F000E9;
-	Wed, 20 May 2026 17:07:01 +0000 (UTC)
+	 MIME-Version; b=JJi5CqQrj0bpj8nHQc20LI0emVsroqWZXHmXhz4L7RiFd0kLZsfq2Fn4SwVpxKnCz3bHXP5evhqlc1KhxAp21gkFYM8EvCssoYF1Yh6yaRwyEV3NmvfNHwsZom+gw4amUwvbR0eTFmM2xpHOi7JBXMzjx8iC3xd1mIwardFm+q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffxmPOQr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A543E1F000E9;
+	Wed, 20 May 2026 18:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296822;
-	bh=T4s1S0jiy/bX07vFfu5kvxJkpajs0WgcZ/NOr253BfY=;
+	s=korg; t=1779302293;
+	bh=bmGcnoBdAJi1cnqmEmWZ/cDr0ZmQQdLs8fk/M9ykbFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BcqwhWvs++psD8/4MPlSr5bGHlzvJoHO/ThXuuHsjX8kvuKD+gNXgCRBRryOFk82t
-	 gN9bh2M7seL7350vs4OCffx2UXnms4J99qG/PYD5YLzdtfp6JS4cFujCrPiw/QKwHj
-	 prQOBWFZ+/PGb6lonvY6IAX3VN1v7aSWNETcAAFc=
+	b=ffxmPOQrouGzFZWrIF247q0k59aW6tv2wHmMJDHjpthEmbnSXAtYf5uoWPqfeq3cU
+	 LfZ7+UjFbkNfTVg5FoIYdPMaICDVr7TPV60n7AIMNk+n6GxDM/jkvI+l/GBx1eSD+/
+	 9KdYkbiSGgECTExYIk7+//LZn7a75GYfRt0AMFRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haixin Xu <jerryxucs@gmail.com>,
+	Stephan Mueller <smueller@chronox.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0944/1146] spi: amlogic-spisg: initialize completion before requesting IRQ
+Subject: [PATCH 6.6 171/508] crypto: jitterentropy - replace long-held spinlock with mutex
 Date: Wed, 20 May 2026 18:19:54 +0200
-Message-ID: <20260520162209.596814062@linuxfoundation.org>
+Message-ID: <20260520162102.343593920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +69,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250993-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253058-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,chronox.de,gondor.apana.org.au,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 776C0593776
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chronox.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lzu.edu.cn:email,apana.org.au:email]
+X-Rspamd-Queue-Id: 319905982FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Haixin Xu <jerryxucs@gmail.com>
 
-[ Upstream commit 8d0189c1ea98b56481eb809e3d1bdbf85557e819 ]
+[ Upstream commit 01d798e9feb30212952d4e992801ba6bd6a82351 ]
 
-Move init_completion(&spisg->completion) to before devm_request_irq()
-to avoid a potential race condition where an interrupt could fire
-before the completion structure is initialized.
+jent_kcapi_random() serializes the shared jitterentropy state, but it
+currently holds a spinlock across the jent_read_entropy() call. That
+path performs expensive jitter collection and SHA3 conditioning, so
+parallel readers can trigger stalls as contending waiters spin for
+the same lock.
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To prevent non-preemptible lock hold, replace rng->jent_lock with a
+mutex so contended readers sleep instead of spinning on a shared lock
+held across expensive entropy generation.
+
+Fixes: bb5530e40824 ("crypto: jitterentropy - add jitterentropy RNG")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haixin Xu <jerryxucs@gmail.com>
+Reviewed-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amlogic-spisg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ crypto/jitterentropy-kcapi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index e15d7112bb55c..0280868f7edf5 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -794,6 +794,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
+diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
+index dd05faf00571f..8ae5245081f6a 100644
+--- a/crypto/jitterentropy-kcapi.c
++++ b/crypto/jitterentropy-kcapi.c
+@@ -42,6 +42,7 @@
+ #include <linux/fips.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/slab.h>
+ #include <linux/time.h>
+ #include <crypto/internal/rng.h>
+@@ -182,7 +183,7 @@ int jent_read_random_block(void *hash_state, char *dst, unsigned int dst_len)
+  ***************************************************************************/
  
- 	dma_set_max_seg_size(&pdev->dev, SPISG_BLOCK_MAX);
+ struct jitterentropy {
+-	spinlock_t jent_lock;
++	struct mutex jent_lock;
+ 	struct rand_data *entropy_collector;
+ 	struct crypto_shash *tfm;
+ 	struct shash_desc *sdesc;
+@@ -192,7 +193,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
+ {
+ 	struct jitterentropy *rng = crypto_tfm_ctx(tfm);
  
-+	init_completion(&spisg->completion);
- 	ret = devm_request_irq(&pdev->dev, irq, aml_spisg_irq, 0, NULL, spisg);
- 	if (ret) {
- 		dev_err(&pdev->dev, "irq request failed\n");
-@@ -806,8 +807,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 		goto out_clk;
+-	spin_lock(&rng->jent_lock);
++	mutex_lock(&rng->jent_lock);
+ 
+ 	if (rng->sdesc) {
+ 		shash_desc_zero(rng->sdesc);
+@@ -207,7 +208,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
+ 	if (rng->entropy_collector)
+ 		jent_entropy_collector_free(rng->entropy_collector);
+ 	rng->entropy_collector = NULL;
+-	spin_unlock(&rng->jent_lock);
++	mutex_unlock(&rng->jent_lock);
+ }
+ 
+ static int jent_kcapi_init(struct crypto_tfm *tfm)
+@@ -217,7 +218,7 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
+ 	struct shash_desc *sdesc;
+ 	int size, ret = 0;
+ 
+-	spin_lock_init(&rng->jent_lock);
++	mutex_init(&rng->jent_lock);
+ 
+ 	/*
+ 	 * Use SHA3-256 as conditioner. We allocate only the generic
+@@ -252,7 +253,6 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
+ 		goto err;
  	}
  
--	init_completion(&spisg->completion);
--
- 	pm_runtime_put(&spisg->pdev->dev);
- 
+-	spin_lock_init(&rng->jent_lock);
  	return 0;
+ 
+ err:
+@@ -267,7 +267,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+ 	struct jitterentropy *rng = crypto_rng_ctx(tfm);
+ 	int ret = 0;
+ 
+-	spin_lock(&rng->jent_lock);
++	mutex_lock(&rng->jent_lock);
+ 
+ 	ret = jent_read_entropy(rng->entropy_collector, rdata, dlen);
+ 
+@@ -293,7 +293,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	spin_unlock(&rng->jent_lock);
++	mutex_unlock(&rng->jent_lock);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
