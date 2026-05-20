@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gP3EHLb5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:10 +0200
+	id QAeqDqD+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE5B59594A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8115969A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0ADF930D9D9C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E900303ECC5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04F13F20FA;
-	Wed, 20 May 2026 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224BD3FA5D5;
+	Wed, 20 May 2026 18:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zisBDZgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ycvk/43+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5587C39B483;
-	Wed, 20 May 2026 17:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A703F8706;
+	Wed, 20 May 2026 18:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299633; cv=none; b=VqOB5wK2VgLno5k0TBRu12ULEEd5mQM7DJZTa6feHsclHShdfYGzOH9hNzALUWutyDqQKPU1Xr2bnX+QynP7fazDiK0gQiiZLZzmkHNZ+vhGaHEbeBtRDln26Netkyjq0kSDA96lkaxrczyE/E4J1I7hzpPYUFFqyPI73qMEv5k=
+	t=1779301210; cv=none; b=hGnSeeMEwtA502+t6ow+CH24kSX0BdWuF7j+pTzzaMKGHlEwTzHlMQTVW8g3WJ6WYRMFfLbcKBTEFU9xW7TDzQVgJEuILYLt9khjdgSOPVjgwguOCSAox6jS5P9mNNMJgtGzavERodYYYAec6yKh5E0EqQKymRnIIgIf3uT2gcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299633; c=relaxed/simple;
-	bh=Y1wpM5kIazpydffhqTPj+z/bN0vQm5ZPuJIe9sXOgUc=;
+	s=arc-20240116; t=1779301210; c=relaxed/simple;
+	bh=XL0AKu7ZfRwAk7itWrlGD9HnMBwOmfWboU5VPRRyMzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uR3q45cLMzs2isKktbghH0rpVrFobxud/DUIbJjEmE/Fr5B0AnIAmBbF1ZUDUdDMVQNWNQSXYpW4dFcetAYcUPWL9S9aDdeq5aGpAxQMQYnNdid6HEtd7Scy4rglDmJDPPDBFWRGpJhDg5JJL104bjvMYHfYdU71nsEgVLU8N5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zisBDZgz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD291F000E9;
-	Wed, 20 May 2026 17:53:51 +0000 (UTC)
+	 MIME-Version; b=M9roXgh/t7dWPJ9wX8kmavEV/B+kanIXTAu0gRvmZ7yVwFFUp7ajoncIebxyULnmVjAdIT0mXVFydAhnPkjj1Q0ufC0q0ZBou5DWu/xPE9ihTYEn1Jw2tbAvB6OfsPTn2gEuR+5hiychnyA3HGL3a5NgnYsnae7EbO/F4pt9M8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ycvk/43+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3722D1F000E9;
+	Wed, 20 May 2026 18:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299632;
-	bh=9ORD673BQ9tu6lPqsatCrKnRk6gEznRy4/3hdBib3XQ=;
+	s=korg; t=1779301209;
+	bh=XGz5WaWwP7pmYphnbSfAa1S54z9GL/luUpQLa8SUeZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zisBDZgzIcQGWjAApLYTMZEhRgwetcBQxA8N/dBUrX57xpYISliewMpwEd5D8+JHt
-	 nqvjxW4Unuxy5NxlSk0iVdJ2W2owivHYeuLKWZ0bv1WID855yajXQSLvRb9jHDVA4L
-	 cgiAghn2LUQ3OOhk+diLTzmzDomGqZYDBVYvcFJ8=
+	b=Ycvk/43+JKk2LJ1XaF+5qq99YsWmcC0Zcrj9ZDwiBm0Enn1TC/TY++FMrxRJE7sbQ
+	 xprZXwSnekNWfXHpXwTduTkfoilGS+WruqDPerr0++9gakCMUzqYbeZbCy0mto5oT1
+	 YncbyHOHTe+cgpLhS1IDlDmaH+22Shzjs6ov2Sl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 795/957] md/md-bitmap: add a none backend for bitmap grow
+Subject: [PATCH 6.12 467/666] netfilter: nft_osf: restrict it to ipv4
 Date: Wed, 20 May 2026 18:21:18 +0200
-Message-ID: <20260520162151.803920565@linuxfoundation.org>
+Message-ID: <20260520162121.391226249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,391 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252642-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252057-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 9FE5B59594A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: EC8115969A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f2926a533d03fe70d753b512b713e06a2aa174af ]
+[ Upstream commit b336fdbb7103fb1484e1dcb6741151d4b5a41e35 ]
 
-Add a real none bitmap backend that exposes the common bitmap sysfs
-group and use it to keep bitmap/location available when an array has no
-bitmap.
+This expression only supports for ipv4, restrict it.
 
-Then switch the bitmap location sysfs path to move only between none
-and the classic bitmap backend, using the no-sysfs bitmap helpers while
-merging or unmerging the internal bitmap sysfs group.
-
-This restores mdadm --grow bitmap addition through bitmap/location.
-
-Fixes: fb8cc3b0d9db ("md/md-bitmap: delay registration of bitmap_ops until creating bitmap")
-Reviewed-by: Su Yue <glass.su@suse.com>
-Link: https://lore.kernel.org/r/20260425024615.1696892-4-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 108 ++++++++++++++++++++++++++++++++++++++---
- drivers/md/md.c        |  42 +++++++++++++---
- drivers/md/md.h        |   3 ++
- 3 files changed, 137 insertions(+), 16 deletions(-)
+ net/netfilter/nft_osf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 7a96600949139..35943f5f68347 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -216,6 +216,7 @@ struct bitmap {
- };
+diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
+index 1c0b493ef0a99..bdc2f6c90e2f7 100644
+--- a/net/netfilter/nft_osf.c
++++ b/net/netfilter/nft_osf.c
+@@ -28,6 +28,11 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	struct nf_osf_data data;
+ 	struct tcphdr _tcph;
  
- static struct workqueue_struct *md_bitmap_wq;
-+static struct attribute_group md_bitmap_internal_group;
- 
- static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
- 			   int chunksize, bool init);
-@@ -2581,6 +2582,30 @@ static int bitmap_resize(struct mddev *mddev, sector_t blocks, int chunksize)
- 	return __bitmap_resize(bitmap, blocks, chunksize, false);
- }
- 
-+static bool bitmap_none_enabled(void *data, bool flush)
-+{
-+	return false;
-+}
-+
-+static int bitmap_none_create(struct mddev *mddev)
-+{
-+	return 0;
-+}
-+
-+static int bitmap_none_load(struct mddev *mddev)
-+{
-+	return 0;
-+}
-+
-+static void bitmap_none_destroy(struct mddev *mddev)
-+{
-+}
-+
-+static int bitmap_none_get_stats(void *data, struct md_bitmap_stats *stats)
-+{
-+	return -ENOENT;
-+}
-+
- static ssize_t
- location_show(struct mddev *mddev, char *page)
- {
-@@ -2619,7 +2644,11 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
- 			goto out;
- 		}
- 
--		bitmap_destroy(mddev);
-+		sysfs_unmerge_group(&mddev->kobj, &md_bitmap_internal_group);
-+		md_bitmap_destroy_nosysfs(mddev);
-+		mddev->bitmap_id = ID_BITMAP_NONE;
-+		if (!mddev_set_bitmap_ops_nosysfs(mddev))
-+			goto none_err;
- 		mddev->bitmap_info.offset = 0;
- 		if (mddev->bitmap_info.file) {
- 			struct file *f = mddev->bitmap_info.file;
-@@ -2655,16 +2684,25 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
- 			}
- 
- 			mddev->bitmap_info.offset = offset;
--			rv = bitmap_create(mddev);
-+			md_bitmap_destroy_nosysfs(mddev);
-+			mddev->bitmap_id = ID_BITMAP;
-+			if (!mddev_set_bitmap_ops_nosysfs(mddev))
-+				goto bitmap_err;
-+
-+			rv = md_bitmap_create_nosysfs(mddev);
- 			if (rv)
--				goto out;
-+				goto create_err;
- 
--			rv = bitmap_load(mddev);
-+			rv = mddev->bitmap_ops->load(mddev);
- 			if (rv) {
- 				mddev->bitmap_info.offset = 0;
--				bitmap_destroy(mddev);
--				goto out;
-+				goto load_err;
- 			}
-+
-+			rv = sysfs_merge_group(&mddev->kobj,
-+					       &md_bitmap_internal_group);
-+			if (rv)
-+				goto merge_err;
- 		}
- 	}
- 	if (!mddev->external) {
-@@ -2680,6 +2718,22 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
- 	if (rv)
- 		return rv;
- 	return len;
-+
-+merge_err:
-+	mddev->bitmap_info.offset = 0;
-+load_err:
-+	md_bitmap_destroy_nosysfs(mddev);
-+create_err:
-+	mddev->bitmap_info.offset = 0;
-+	mddev->bitmap_id = ID_BITMAP_NONE;
-+	if (!mddev_set_bitmap_ops_nosysfs(mddev))
-+		rv = -ENOENT;
-+	goto out;
-+bitmap_err:
-+	rv = -ENOENT;
-+none_err:
-+	mddev->bitmap_info.offset = 0;
-+	goto out;
- }
- 
- static struct md_sysfs_entry bitmap_location =
-@@ -2988,6 +3042,27 @@ static const struct attribute_group *bitmap_groups[] = {
- 	NULL,
- };
- 
-+static const struct attribute_group *bitmap_none_groups[] = {
-+	&md_bitmap_common_group,
-+	NULL,
-+};
-+
-+static struct bitmap_operations bitmap_none_ops = {
-+	.head = {
-+		.type	= MD_BITMAP,
-+		.id	= ID_BITMAP_NONE,
-+		.name	= "none",
-+	},
-+
-+	.enabled		= bitmap_none_enabled,
-+	.create			= bitmap_none_create,
-+	.load			= bitmap_none_load,
-+	.destroy		= bitmap_none_destroy,
-+	.get_stats		= bitmap_none_get_stats,
-+
-+	.groups			= bitmap_none_groups,
-+};
-+
- static struct bitmap_operations bitmap_ops = {
- 	.head = {
- 		.type	= MD_BITMAP,
-@@ -3034,16 +3109,33 @@ static struct bitmap_operations bitmap_ops = {
- 
- int md_bitmap_init(void)
- {
-+	int err;
-+
- 	md_bitmap_wq = alloc_workqueue("md_bitmap", WQ_MEM_RECLAIM | WQ_UNBOUND,
- 				       0);
- 	if (!md_bitmap_wq)
- 		return -ENOMEM;
- 
--	return register_md_submodule(&bitmap_ops.head);
-+	err = register_md_submodule(&bitmap_none_ops.head);
-+	if (err)
-+		goto err_wq;
-+
-+	err = register_md_submodule(&bitmap_ops.head);
-+	if (err)
-+		goto err_none;
-+
-+	return 0;
-+
-+err_none:
-+	unregister_md_submodule(&bitmap_none_ops.head);
-+err_wq:
-+	destroy_workqueue(md_bitmap_wq);
-+	return err;
- }
- 
- void md_bitmap_exit(void)
- {
--	destroy_workqueue(md_bitmap_wq);
- 	unregister_md_submodule(&bitmap_ops.head);
-+	unregister_md_submodule(&bitmap_none_ops.head);
-+	destroy_workqueue(md_bitmap_wq);
- }
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 213221abc44c3..b7d47c018a12f 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -712,7 +712,7 @@ static void md_bitmap_sysfs_del(struct mddev *mddev)
- 	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->groups[0]);
- }
- 
--static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
-+bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
- {
- 	struct md_submodule_head *head;
- 
-@@ -4274,7 +4274,7 @@ bitmap_type_show(struct mddev *mddev, char *page)
- 
- 	xa_lock(&md_submodule);
- 	xa_for_each(&md_submodule, i, head) {
--		if (head->type != MD_BITMAP)
-+		if (head->type != MD_BITMAP || head->id == ID_BITMAP_NONE)
- 			continue;
- 
- 		if (mddev->bitmap_id == head->id)
-@@ -6408,7 +6408,7 @@ static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
- 	return id;
- }
- 
--static int md_bitmap_create_nosysfs(struct mddev *mddev)
-+int md_bitmap_create_nosysfs(struct mddev *mddev)
- {
- 	enum md_submodule_id orig_id = mddev->bitmap_id;
- 	enum md_submodule_id sb_id;
-@@ -6417,8 +6417,10 @@ static int md_bitmap_create_nosysfs(struct mddev *mddev)
- 	if (mddev->bitmap_id == ID_BITMAP_NONE)
- 		return -EINVAL;
- 
--	if (!mddev_set_bitmap_ops_nosysfs(mddev))
-+	if (!mddev_set_bitmap_ops_nosysfs(mddev)) {
-+		mddev->bitmap_id = orig_id;
- 		return -ENOENT;
-+	}
- 
- 	err = mddev->bitmap_ops->create(mddev);
- 	if (!err)
-@@ -6432,8 +6434,10 @@ static int md_bitmap_create_nosysfs(struct mddev *mddev)
- 	mddev->bitmap_ops = NULL;
- 
- 	sb_id = md_bitmap_get_id_from_sb(mddev);
--	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
-+	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id) {
-+		mddev->bitmap_id = orig_id;
- 		return err;
-+	}
- 
- 	pr_info("md: %s: bitmap version mismatch, switching from %d to %d\n",
- 		mdname(mddev), orig_id, sb_id);
-@@ -6467,7 +6471,7 @@ static int md_bitmap_create(struct mddev *mddev)
- 	return 0;
- }
- 
--static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
-+void md_bitmap_destroy_nosysfs(struct mddev *mddev)
- {
- 	if (!md_bitmap_registered(mddev))
- 		return;
-@@ -6485,6 +6489,16 @@ static void md_bitmap_destroy(struct mddev *mddev)
- 	md_bitmap_destroy_nosysfs(mddev);
- }
- 
-+static void md_bitmap_set_none(struct mddev *mddev)
-+{
-+	mddev->bitmap_id = ID_BITMAP_NONE;
-+	if (!mddev_set_bitmap_ops_nosysfs(mddev))
++	if (nft_pf(pkt) != NFPROTO_IPV4) {
++		regs->verdict.code = NFT_BREAK;
 +		return;
++	}
 +
-+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
-+		md_bitmap_sysfs_add(mddev);
-+}
-+
- int md_run(struct mddev *mddev)
- {
- 	int err;
-@@ -6694,6 +6708,10 @@ int md_run(struct mddev *mddev)
- 	if (mddev->sb_flags)
- 		md_update_sb(mddev, 0);
+ 	if (pkt->tprot != IPPROTO_TCP) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+@@ -114,7 +119,6 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
  
-+	if (IS_ENABLED(CONFIG_MD_BITMAP) && !mddev->bitmap_info.file &&
-+	    !mddev->bitmap_info.offset)
-+		md_bitmap_set_none(mddev);
-+
- 	md_new_event();
- 	return 0;
- 
-@@ -7638,7 +7656,8 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
- {
- 	int err = 0;
- 
--	if (!md_bitmap_registered(mddev))
-+	if (!md_bitmap_registered(mddev) ||
-+	    mddev->bitmap_id == ID_BITMAP_NONE)
- 		return -EINVAL;
- 
- 	if (mddev->pers) {
-@@ -7703,10 +7722,12 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
- 
- 			if (err) {
- 				md_bitmap_destroy(mddev);
-+				md_bitmap_set_none(mddev);
- 				fd = -1;
- 			}
- 		} else if (fd < 0) {
- 			md_bitmap_destroy(mddev);
-+			md_bitmap_set_none(mddev);
- 		}
- 	}
- 
-@@ -8013,12 +8034,16 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
- 				mddev->bitmap_info.default_offset;
- 			mddev->bitmap_info.space =
- 				mddev->bitmap_info.default_space;
-+			mddev->bitmap_id = ID_BITMAP;
- 			rv = md_bitmap_create(mddev);
- 			if (!rv)
- 				rv = mddev->bitmap_ops->load(mddev);
- 
--			if (rv)
-+			if (rv) {
- 				md_bitmap_destroy(mddev);
-+				mddev->bitmap_info.offset = 0;
-+				md_bitmap_set_none(mddev);
-+			}
- 		} else {
- 			struct md_bitmap_stats stats;
- 
-@@ -8046,6 +8071,7 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
- 			}
- 			md_bitmap_destroy(mddev);
- 			mddev->bitmap_info.offset = 0;
-+			md_bitmap_set_none(mddev);
- 		}
- 	}
- 	md_update_sb(mddev, 1);
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index 9d66afb8cc6e6..da312d4692858 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -932,6 +932,9 @@ extern void md_allow_write(struct mddev *mddev);
- extern void md_wait_for_blocked_rdev(struct md_rdev *rdev, struct mddev *mddev);
- extern void md_set_array_sectors(struct mddev *mddev, sector_t array_sectors);
- extern int md_check_no_bitmap(struct mddev *mddev);
-+bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev);
-+int md_bitmap_create_nosysfs(struct mddev *mddev);
-+void md_bitmap_destroy_nosysfs(struct mddev *mddev);
- extern int md_integrity_register(struct mddev *mddev);
- extern int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale);
- 
+ 	switch (ctx->family) {
+ 	case NFPROTO_IPV4:
+-	case NFPROTO_IPV6:
+ 	case NFPROTO_INET:
+ 		hooks = (1 << NF_INET_LOCAL_IN) |
+ 			(1 << NF_INET_PRE_ROUTING) |
 -- 
 2.53.0
 
