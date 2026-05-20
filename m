@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Fw/Na4qDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:42:06 +0200
+	id MAbqJe8lDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:21:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA4959B360
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:42:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1502C59ABFA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3B8B353AC92
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1324A385D8C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F85340407;
-	Wed, 20 May 2026 18:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D8433B97A;
+	Wed, 20 May 2026 18:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbgBM2uC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3kbkSBb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC3717A2FC;
-	Wed, 20 May 2026 18:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765542F363F;
+	Wed, 20 May 2026 18:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301997; cv=none; b=u1oe9fAgD4ESMZ2sQmj9u2/dGG0XUU4/YE4m+vNPYE8fn7LURjEsv5eBsmXmbXzl12lKCv4wlmwI83E5bmshJf0TyEDLuxONnKq1xxAU4w9XgLdzkKGCofAELitsS3FsvxDLUsGZkHBT6i72bDTeX4e+czZ0CNSa9Xw5tI0icPo=
+	t=1779300794; cv=none; b=NgmC802vJHPU8C9o6ALJ6RnHido/DtYjmfrsqDnuSwOb/RatbGgLFToDbq6MgHDM9RonrGGqhns8P4C7CTTh04F8t63JULSRN/C6tYjuChcmj5fZoW3rc9IFloNbh4BfnlFQiPuFdMby6Pcz7FxFcYwg/+DFVCgkVh7RUEG/Af0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301997; c=relaxed/simple;
-	bh=VaNbChZv9TlxS9DcuQaRaocNhRWIZY/RJDOz6DKBHAE=;
+	s=arc-20240116; t=1779300794; c=relaxed/simple;
+	bh=vgUOnvYWiTQNLXbFxIFxuHqtbf/2TSlYiOz2BUHPA50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2VgOoIwJQZk6VT+dym/WdcEHkf6tof5QKpZpAE6NdPLtnTqJSIVvXK/n4/XuF26ri0ar1zI/tO0z4+rAVLyOenPigh2mvHN5bMQL5ceeC+cPvLnDRBG/C+LEB3f4up2PN0lL10NOuJHiLqXQ/08nbfF75nQbQm1Tazo0tZWXc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbgBM2uC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3021F000E9;
-	Wed, 20 May 2026 18:33:15 +0000 (UTC)
+	 MIME-Version; b=rtvEsTv/eL4yEeUKR0LDK1hOO/UW/IfwV12hyQvedfDitSUDCnKGR2/n3s0SVK3H3QzSnQRoTYITrPP9x6lMDGPIEeZvZJkLIdNvAD7zkWIalfUAdnb7OUiV977BQvy7QlR1mKfFiGFL0iWc0CE7rW6Gyz+C0XGb2x1vgEbXWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3kbkSBb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB69A1F00893;
+	Wed, 20 May 2026 18:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301995;
-	bh=c6/BdUPT8Beq3V3X9Ey5eHvjqdF/Xvxu9Nt/fGnwj0s=;
+	s=korg; t=1779300793;
+	bh=GI2ex3HV6DI7bwnzrJNK/tXBgD7/BMjHsJ4lSFVPHKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lbgBM2uCsLKoG0e71BJwkV1E4/qTim4lPIDyq7uJDUqNds99nthD/EFZHXhICROCc
-	 rGJAWf8cAfEZaiZWPm8F2BggsFQXInBCJfGcNqwcjQqYgjR2OocpQAOa5TNebFT3XF
-	 I5IYu1dZJm7cGzUUile0hvSSbZx8aYj6z1sKwSgc=
+	b=v3kbkSBbdRb85EWFubLDR+SKEBDsJi9ifqD/D5teb/WEwE5U78hqu+ZGLIWNpeloh
+	 zXGcs07opmpKqHMWtd+L/1QQMFjCbfNf+SJBoao48vNQFYdAcEddTpwmC5geI0uGGA
+	 4zVv+DEencWdEC2r7gse/2D7BabVscJNGCVaUbow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/508] dm cache metadata: fix memory leak on metadata abort retry
+Subject: [PATCH 6.12 311/666] arm64: dts: qcom: sm8250: Add missing CPU7 3.09GHz OPP
 Date: Wed, 20 May 2026 18:18:42 +0200
-Message-ID: <20260520162100.762180647@linuxfoundation.org>
+Message-ID: <20260520162117.961635243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,153 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252944-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252484-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4BA4959B360
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,pm.me:email]
+X-Rspamd-Queue-Id: 1502C59ABFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Alexander Koskovich <AKoskovich@pm.me>
 
-[ Upstream commit 044ca491d4086dc5bf233e9fcb71db52df32f633 ]
+[ Upstream commit b683730e27ba4f91986c4c92f5cb7297f1e01a6d ]
 
-When failing to acquire the root_lock in dm_cache_metadata_abort because
-the block_manager is read-only, the temporary block_manager created
-outside the root_lock is not properly released, causing a memory leak.
+This resolves the following error seen on the ASUS ROG Phone 3:
 
-Reproduce steps:
+cpu cpu7: Voltage update failed freq=3091200
+cpu cpu7: failed to update OPP for freq=3091200
 
-This can be reproduced by reloading a new table while the metadata
-is read-only. While the second call to dm_cache_metadata_abort is
-caused by lack of support for table preload in dm-cache, mentioned
-in commit 9b1cc9f251af ("dm cache: share cache-metadata object across
-inactive and active DM tables"), it exposes the memory leak in
-dm_cache_metadata_abort when the function is called multiple times.
-Specifically, dm-cache fails to sync the new cache object's mode during
-preresume, creating the reproducer condition.
-
-This issue could also occur through concurrent metadata_operation_failed
-calls due to races in cache mode updates, but the table preload scenario
-below provides a reliable reproducer.
-
-1. Create a cache device with some faulty trailing metadata blocks
-
-dmsetup create cmeta <<EOF
-0 200 linear /dev/sdc 0
-200 7992 error
-EOF
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 131072 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 1 writethrough smq 0"
-
-2. Suspend and resume the cache to start a new metadata transaction and
-   trigger metadata io errors on the next metadata commit.
-
-dmsetup suspend cache
-dmsetup resume cache
-
-3. Write to the cache device to update metadata
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --size 64k
-
-4. Preload the same table
-
-dmsetup reload cache --table "$(dmsetup table cache)"
-
-5. Resume the new table. This triggers the memory leak.
-
-dmsetup suspend cache
-dmsetup resume cache
-
-kmemleak logs:
-
-<snip>
-unreferenced object 0xffff8880080c2010 (size 16):
-  comm "dmsetup", pid 132, jiffies 4294982580
-  hex dump (first 16 bytes):
-    00 38 b9 07 80 88 ff ff 6a 6b 6b 6b 6b 6b 6b a5 ...
-  backtrace (crc 3118f31c):
-    kmemleak_alloc+0x28/0x40
-    __kmalloc_cache_noprof+0x3d9/0x510
-    dm_block_manager_create+0x51/0x140
-    dm_cache_metadata_abort+0x85/0x320
-    metadata_operation_failed+0x103/0x1e0
-    cache_preresume+0xacd/0xe70
-    dm_table_resume_targets+0xd3/0x320
-    __dm_resume+0x1b/0xf0
-    dm_resume+0x127/0x170
-<snip>
-
-Fixes: 352b837a5541 ("dm cache: Fix ABBA deadlock between shrink_slab and dm_cache_metadata_abort")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260307-sm8250-cpu7-opp-v1-1-435f5f6628a1@pm.me
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-metadata.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
-index c9d13a30ce86d..74078b90653f3 100644
---- a/drivers/md/dm-cache-metadata.c
-+++ b/drivers/md/dm-cache-metadata.c
-@@ -1023,6 +1023,12 @@ static bool cmd_write_lock(struct dm_cache_metadata *cmd)
- 			return;			\
- 	} while (0)
- 
-+#define WRITE_LOCK_OR_GOTO(cmd, label)		\
-+	do {					\
-+		if (!cmd_write_lock((cmd)))	\
-+			goto label;		\
-+	} while (0)
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index e17937f76806c..9995fc515e113 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -664,6 +664,11 @@ cpu7_opp20: opp-2841600000 {
+ 			opp-hz = /bits/ 64 <2841600000>;
+ 			opp-peak-kBps = <8368000 51609600>;
+ 		};
 +
- #define WRITE_UNLOCK(cmd) \
- 	up_write(&(cmd)->root_lock)
++		cpu7_opp21: opp-3091200000 {
++			opp-hz = /bits/ 64 <3091200000>;
++			opp-peak-kBps = <8368000 51609600>;
++		};
+ 	};
  
-@@ -1822,11 +1828,8 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
- 	new_bm = dm_block_manager_create(cmd->bdev, DM_CACHE_METADATA_BLOCK_SIZE << SECTOR_SHIFT,
- 					 CACHE_MAX_CONCURRENT_LOCKS);
- 
--	WRITE_LOCK(cmd);
--	if (cmd->fail_io) {
--		WRITE_UNLOCK(cmd);
--		goto out;
--	}
-+	/* cmd_write_lock() already checks fail_io with cmd->root_lock held */
-+	WRITE_LOCK_OR_GOTO(cmd, out);
- 
- 	__destroy_persistent_data_objects(cmd, false);
- 	old_bm = cmd->bm;
+ 	firmware {
 -- 
 2.53.0
 
