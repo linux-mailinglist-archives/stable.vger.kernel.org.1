@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG6kN1IVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:58 +0200
+	id gHtcKtYnDmp56gUAu9opvQ
+	(envelope-from <stable+bounces-252659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4888259938F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3FA59AED2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E99C230B063A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C16B32F4AEA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DEC3F787F;
-	Wed, 20 May 2026 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 039D63D1CC6;
+	Wed, 20 May 2026 18:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhsATwHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rUE/kFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EDE3F5BF0;
-	Wed, 20 May 2026 17:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917003F9280;
+	Wed, 20 May 2026 18:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297160; cv=none; b=CqzMTyuhRczVnnxDkompLNuJ676yB6wQf+moGTEeSV5wHdeqCpbaKF5GjFY1GjKsfRzk13tN+7G3e0ieI2X77mUj1ApAuhIXKnGBZaGLQN4jeD99tz291/oRXpVLhFCl9oM1mF7TLBkf0aQAxGCFM2qjtfp7tq2HPVTf9WYjhiA=
+	t=1779301255; cv=none; b=O1idIunWY5hgpqxMOx63KM6fCyn5LHNbGA0ND0unctE9l82ggZMaojjg+AfKUIu0VHtoa3YBbI6u+zrOKs9cfmHraj1K0LxINkXuv22J/c6FRWrunpcLoDIehvR2kWmP6W4vNY9E9BkEYAIsfO/p+qsPFniNzkDnlAgMCt+MmMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297160; c=relaxed/simple;
-	bh=QbtX3gO0UVHCpi6cTma/gYA6/QcwDdunoPY5nW6bjg8=;
+	s=arc-20240116; t=1779301255; c=relaxed/simple;
+	bh=ja3mMve0uVgP82/Vb6YuUmS2iLUPdrV/e8g8fOSTHQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gW9UXOCp1M4EbLyzTcRUNQnebrIi6CnpDCopkYD5f8y7OAQUp0J5BCe3W1jRSJvTev4081f0k+bL2DdXRGi+5MxVoLUCnrc9PqtCbJXo8iYX8pChGCY3Mrp6KMkzBTwXjFFyQUYNQvzDhl3A88eP1VHE28P5ZrmbJbuoc9W6Mfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhsATwHx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC1A1F000E9;
-	Wed, 20 May 2026 17:12:39 +0000 (UTC)
+	 MIME-Version; b=jsRCld9XfOvcgjVW3rG038eL9x4PZyTqVf+ktTuozBaAdAQJxJAuJ579LldNbXPY5vUDW4Ljh0Nf9vaQOlbodcVkS3oc2oU1HKm3aRQ5volyJp76FiGLOmqKrS5bwUb4uUrHdmByNsvWCP7BjhfDGXPmhpIIgnDHdzMibh0kgbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rUE/kFx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED75A1F000E9;
+	Wed, 20 May 2026 18:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297159;
-	bh=njGeHpQOvZhsBy8Uj0VmEzjYcUGSNocifVbB76FcxQ4=;
+	s=korg; t=1779301254;
+	bh=XTnV9yqTtzzoDLPhp0mPSjiXD0RgFQ/jBjN1D5G/9SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UhsATwHxl8IMq5whRBgehj/ZONHmVWzNLFGrBIp5UvsH5rp/hz3sXwzWmQI5EPJ0j
-	 ov5fzAzo88uqwXa2nwfp6bVyUmw9mPr3F4pN6HeLSb6Yy63Pr8u4tEcgtPrxwEISBO
-	 qF64Qe1bcQSGOkkU1uWb3d45Xr8+Wq0o++cjgPEk=
+	b=2rUE/kFxhQocGneIQMb1E2Dw8lBX747uCfLS2dd4p2JNQqVo26pSO4oDGFJqVFK/q
+	 cZNPPbYIGRyN400jpofo8pee0dHgCYvbj6ONRxV1xpUlx5dehLC0xKBmEmmqrRI4H/
+	 zpRu+x93Tbzs7TfY6nHfhr4GHASroVlntxwAgtV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Xiasong <lixiasong1@huawei.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 7.0 1046/1146] netfilter: nf_conntrack_sip: get helper before allocating expectation
-Date: Wed, 20 May 2026 18:21:36 +0200
-Message-ID: <20260520162211.902881524@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 486/666] net/sched: sch_pie: annotate data-races in pie_dump_stats()
+Date: Wed, 20 May 2026 18:21:37 +0200
+Message-ID: <20260520162121.798523478@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +67,195 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252659-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 4888259938F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
+X-Rspamd-Queue-Id: 3C3FA59AED2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Xiasong <lixiasong1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit eb6317739b1ea3ab28791e1f91b24781905fa815 upstream.
+[ Upstream commit 5154561d9b119f781249f8e845fecf059b38b483 ]
 
-process_register_request() allocates an expectation and then checks
-whether a conntrack helper is available. If helper lookup fails, the
-function returns early and the allocated expectation is left behind.
+pie_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Reorder the code to fetch and validate helper before calling
-nf_ct_expect_alloc(). This keeps the logic simpler and removes the leak
-path while preserving existing behavior.
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Fixes: e14575fa7529 ("netfilter: nf_conntrack: use rcu accessors where needed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_pie_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142944.4009941-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_sip.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/net/pie.h   |  2 +-
+ net/sched/sch_pie.c | 38 +++++++++++++++++++-------------------
+ 2 files changed, 20 insertions(+), 20 deletions(-)
 
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1367,6 +1367,10 @@ static int process_register_request(stru
- 		goto store_cseq;
+diff --git a/include/net/pie.h b/include/net/pie.h
+index 01cbc66825a40..1f3db0c355149 100644
+--- a/include/net/pie.h
++++ b/include/net/pie.h
+@@ -104,7 +104,7 @@ static inline void pie_vars_init(struct pie_vars *vars)
+ 	vars->dq_tstamp = DTIME_INVALID;
+ 	vars->accu_prob = 0;
+ 	vars->dq_count = DQCOUNT_INVALID;
+-	vars->avg_dq_rate = 0;
++	WRITE_ONCE(vars->avg_dq_rate, 0);
+ }
+ 
+ static inline struct pie_skb_cb *get_pie_cb(const struct sk_buff *skb)
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index db61cbc21b138..abb8cdb409c48 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -89,7 +89,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	bool enqueue = false;
+ 
+ 	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
+-		q->stats.overlimit++;
++		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
+ 		goto out;
  	}
  
-+	helper = rcu_dereference(nfct_help(ct)->helper);
-+	if (!helper)
-+		return NF_DROP;
-+
- 	exp = nf_ct_expect_alloc(ct);
- 	if (!exp) {
- 		nf_ct_helper_log(skb, ct, "cannot alloc expectation");
-@@ -1377,10 +1381,6 @@ static int process_register_request(stru
- 	if (sip_direct_signalling)
- 		saddr = &ct->tuplehash[!dir].tuple.src.u3;
+@@ -101,7 +101,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		/* If packet is ecn capable, mark it if drop probability
+ 		 * is lower than 10%, else drop it.
+ 		 */
+-		q->stats.ecn_mark++;
++		WRITE_ONCE(q->stats.ecn_mark, q->stats.ecn_mark + 1);
+ 		enqueue = true;
+ 	}
  
--	helper = rcu_dereference(nfct_help(ct)->helper);
--	if (!helper)
--		return NF_DROP;
--
- 	nf_ct_expect_init(exp, SIP_EXPECT_SIGNALLING, nf_ct_l3num(ct),
- 			  saddr, &daddr, proto, NULL, &port);
- 	exp->timeout.expires = sip_timeout * HZ;
+@@ -111,15 +111,15 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!q->params.dq_rate_estimator)
+ 			pie_set_enqueue_time(skb);
+ 
+-		q->stats.packets_in++;
++		WRITE_ONCE(q->stats.packets_in, q->stats.packets_in + 1);
+ 		if (qdisc_qlen(sch) > q->stats.maxq)
+-			q->stats.maxq = qdisc_qlen(sch);
++			WRITE_ONCE(q->stats.maxq, qdisc_qlen(sch));
+ 
+ 		return qdisc_enqueue_tail(skb, sch);
+ 	}
+ 
+ out:
+-	q->stats.dropped++;
++	WRITE_ONCE(q->stats.dropped, q->stats.dropped + 1);
+ 	q->vars.accu_prob = 0;
+ 	return qdisc_drop(skb, sch, to_free);
+ }
+@@ -262,11 +262,11 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 			count = count / dtime;
+ 
+ 			if (vars->avg_dq_rate == 0)
+-				vars->avg_dq_rate = count;
++				WRITE_ONCE(vars->avg_dq_rate, count);
+ 			else
+-				vars->avg_dq_rate =
++				WRITE_ONCE(vars->avg_dq_rate,
+ 				    (vars->avg_dq_rate -
+-				     (vars->avg_dq_rate >> 3)) + (count >> 3);
++				     (vars->avg_dq_rate >> 3)) + (count >> 3));
+ 
+ 			/* If the queue has receded below the threshold, we hold
+ 			 * on to the last drain rate calculated, else we reset
+@@ -376,7 +376,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+ 		if (vars->prob < oldprob) {
+-			vars->prob = MAX_PROB;
++			WRITE_ONCE(vars->prob, MAX_PROB);
+ 			/* Prevent normalization error. If probability is at
+ 			 * maximum value already, we normalize it here, and
+ 			 * skip the check to do a non-linear drop in the next
+@@ -387,7 +387,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	} else {
+ 		/* prevent underflow */
+ 		if (vars->prob > oldprob)
+-			vars->prob = 0;
++			WRITE_ONCE(vars->prob, 0);
+ 	}
+ 
+ 	/* Non-linear drop in probability: Reduce drop probability quickly if
+@@ -398,7 +398,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 		/* Reduce drop probability to 98.4% */
+ 		vars->prob -= vars->prob / 64;
+ 
+-	vars->qdelay = qdelay;
++	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+ 
+ 	/* We restart the measurement cycle if the following conditions are met
+@@ -497,21 +497,21 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+ 		.prob		= q->vars.prob << BITS_PER_BYTE,
+-		.delay		= ((u32)PSCHED_TICKS2NS(q->vars.qdelay)) /
++		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.maxq		= q->stats.maxq,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
++		.packets_in	= READ_ONCE(q->stats.packets_in),
++		.overlimit	= READ_ONCE(q->stats.overlimit),
++		.maxq		= READ_ONCE(q->stats.maxq),
++		.dropped	= READ_ONCE(q->stats.dropped),
++		.ecn_mark	= READ_ONCE(q->stats.ecn_mark),
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+ 	st.dq_rate_estimating = q->params.dq_rate_estimator;
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+-	if (q->params.dq_rate_estimator)
+-		st.avg_dq_rate = q->vars.avg_dq_rate *
++	if (st.dq_rate_estimating)
++		st.avg_dq_rate = READ_ONCE(q->vars.avg_dq_rate) *
+ 				 (PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
+-- 
+2.53.0
+
 
 
 
