@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id rccSFcH/DWqA5QUAu9opvQ
-	(envelope-from <stable+bounces-252917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:57 +0200
+	id wFmJDCTwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC924596E13
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01760593E52
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBC9F30B9D64
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB35031B8730
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F5D33CEA2;
-	Wed, 20 May 2026 18:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F4B3EFD34;
+	Wed, 20 May 2026 17:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCONYX/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iewilnFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6811B17A2FC;
-	Wed, 20 May 2026 18:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2603EBF35;
+	Wed, 20 May 2026 17:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301928; cv=none; b=CBHYnGp2zSIlWSAaWBic+Ks2gOoScO7eF/Zb91fMo1vYFSOswr6MrZ7NAyhVFO/o34cUCiUHTDdqwEvcIvnFtzTcXQAUlakQgAJGsk81dsTXrGH5ge0xrXjsbZSht/JIOR1ZeSDFom7in3M86kcNBkgy1bm81jXFN3Uuo1uj6qI=
+	t=1779296558; cv=none; b=li1PoHYnE7zRwChlCOVcfCR4KMVOkVuC3028L4eWRDWjpQvSCWnajXOXH+1B8TJVC9qSqxUXOF3eC+TpDkmCRyHah7IUtqyPnE/5oovqvvj4Vcv+4PrGPapm9GWIHjDV1tnXrnTv29SvOUijfK8dHTH4PAtRM3Wul0JTxdA6D/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301928; c=relaxed/simple;
-	bh=Tt2qX5stI9I7+f9mgvrJvkWnGoR02pV/266nJQ3Rzdo=;
+	s=arc-20240116; t=1779296558; c=relaxed/simple;
+	bh=3y4xIzIbkpeAoUum+1R1rp2arWj1/Zb523qezvhr33A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIMTPIOQxHwKVY/4UDWMuGvP66VYkeZUEKbsuETHAEDquDLbZvT6EoF7brzHdIvFq9U0jOtH7ZqhbXRwHu6v1Ip07+jtiQTrO/JyfM5nw+qQ/ktZFG0gKo4AJET4G6DaU9+AEiyMofmYqB1K9qIYwNQGUT4M6wUAPY4DMM3v62c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCONYX/f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCA71F000E9;
-	Wed, 20 May 2026 18:32:06 +0000 (UTC)
+	 MIME-Version; b=HJwA7WLls+H5EYFQ8vfYHNnr2ap7OFKADwZV6rGLgT3bVZEe3e8AuOA+9DNeyAj7CVryI15Pp9uEd1VzGGP5lUUOfel+Nn1x8sqWVPMD6/ogJ9eev5Wlu0S/NmWQAsAAbC3KngHvjs62FnNzdF3bwWXTrRp5nenOksNYJrgSUds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iewilnFH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CA01F00893;
+	Wed, 20 May 2026 17:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301927;
-	bh=mU0ur5DCRK2ADKLPqyVX/QrP9Uw6SwzDdVJ4+7sIurs=;
+	s=korg; t=1779296556;
+	bh=avHPGr5cK5pYkYLGVmceDcxt+OXxwu6Wqd44ZqjL2uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LCONYX/fWa0lkxxcHr27ZUw3IGhcW1shO6yFzQZc+HBzsI3hIMtYIYdXffqGXyZFI
-	 4bClslD5qkXQSJOsNLv74EiG8FxA/iGnyh4VX8nXJS8Vg0OaBG2Do90aDbZAC1lTFU
-	 LkclSDkF5lMI8XrUunqoZsCnW6p6ZyKhRKe8ACq8=
+	b=iewilnFHZV7V1RtZJkX0cRwbXyPvE9KZlULOSHDgnBdif0dLgRuslkT0yBip4pG/b
+	 eoX0kJAWiOZWVI9dfDz0+tdlPKuDaIcCMvH9jEztPoK+XxEB7zzkAzbpcwxWY+gz/X
+	 Mf/XNoL6eTgk2PfYCiN3MngvP3bG/vUCvJgflRxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/508] net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
+Subject: [PATCH 7.0 0844/1146] net: airoha: Move ndesc initialization at end of airoha_qdma_init_tx()
 Date: Wed, 20 May 2026 18:18:14 +0200
-Message-ID: <20260520162100.146128323@linuxfoundation.org>
+Message-ID: <20260520162207.336121276@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252917-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250884-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,fairphone.com:email]
-X-Rspamd-Queue-Id: EC924596E13
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 01760593E52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit de08f9585692813bd41ee654fca0487664c4de30 ]
+[ Upstream commit f329924bb49458c65297f1361f545816a5b90998 ]
 
-The 'val' variable gets overwritten multiple times, discarding previous
-values. Looking at the git log shows these should be combined with |=
-instead.
+If queue entry list allocation fails in airoha_qdma_init_tx_queue routine,
+airoha_qdma_cleanup_tx_queue() will trigger a NULL pointer dereference
+accessing the queue entry array. The issue is due to the early ndesc
+initialization in airoha_qdma_init_tx_queue(). Fix the issue moving ndesc
+initialization at end of airoha_qdma_init_tx routine.
 
-Fixes: 9265a4f0f0b4 ("net: ipa: define even more IPA register fields")
-Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=4
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3f47e67dff1f7 ("net: airoha: Add the capability to consume out-of-order DMA tx descriptors")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260417-airoha_qdma_cleanup_tx_queue-fix-net-v4-1-e04bcc2c9642@kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-index da853353a5c72..f5924142021d2 100644
---- a/drivers/net/ipa/ipa_main.c
-+++ b/drivers/net/ipa/ipa_main.c
-@@ -369,7 +369,7 @@ static void ipa_qtime_config(struct ipa *ipa)
- {
- 	const struct reg *reg;
- 	u32 offset;
--	u32 val;
-+	u32 val = 0;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 3deffc499bcb4..ab166c1d04d30 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -978,27 +978,27 @@ static int airoha_qdma_init_tx_queue(struct airoha_queue *q,
+ 	dma_addr_t dma_addr;
  
- 	/* Timer clock divider must be disabled when we change the rate */
- 	reg = ipa_reg(ipa, TIMERS_XO_CLK_DIV_CFG);
-@@ -380,8 +380,8 @@ static void ipa_qtime_config(struct ipa *ipa)
- 	val = reg_encode(reg, DPL_TIMESTAMP_LSB, DPL_TIMESTAMP_SHIFT);
- 	val |= reg_bit(reg, DPL_TIMESTAMP_SEL);
- 	/* Configure tag and NAT Qtime timestamp resolution as well */
--	val = reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
--	val = reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
+ 	spin_lock_init(&q->lock);
+-	q->ndesc = size;
+ 	q->qdma = qdma;
+ 	q->free_thr = 1 + MAX_SKB_FRAGS;
+ 	INIT_LIST_HEAD(&q->tx_list);
  
- 	iowrite32(val, ipa->reg_virt + reg_offset(reg));
+-	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
++	q->entry = devm_kzalloc(eth->dev, size * sizeof(*q->entry),
+ 				GFP_KERNEL);
+ 	if (!q->entry)
+ 		return -ENOMEM;
  
+-	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
++	q->desc = dmam_alloc_coherent(eth->dev, size * sizeof(*q->desc),
+ 				      &dma_addr, GFP_KERNEL);
+ 	if (!q->desc)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < q->ndesc; i++) {
++	for (i = 0; i < size; i++) {
+ 		u32 val = FIELD_PREP(QDMA_DESC_DONE_MASK, 1);
+ 
+ 		list_add_tail(&q->entry[i].list, &q->tx_list);
+ 		WRITE_ONCE(q->desc[i].ctrl, cpu_to_le32(val));
+ 	}
++	q->ndesc = size;
+ 
+ 	/* xmit ring drop default setting */
+ 	airoha_qdma_set(qdma, REG_TX_RING_BLOCKING(qid),
 -- 
 2.53.0
 
