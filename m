@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HjSLPIHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:54 +0200
+	id kD2JDeEXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13AB597FB6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1325997CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E9C03028333
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE02F319FBA5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3943FBEA2;
-	Wed, 20 May 2026 18:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61672231842;
+	Wed, 20 May 2026 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyP0DqDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJcW8w7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCC83FC5DE;
-	Wed, 20 May 2026 18:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DC370D54;
+	Wed, 20 May 2026 17:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301429; cv=none; b=RUdmT9O9f6EZAPuT/iM2l01g+ywa8gz8EIUPm9c3eoc9rIV3oLRy8nm0aOmYiM+de5n7dKec8qI8mvR68rSHMnYOLWX/MRsGkraYirvNaQKNGY1y/EFTBhzEf4aPbfVjk8aUBpuZuM8JtETb0IjqhW24UMnEJ9KhMZrgqYkzwf0=
+	t=1779297261; cv=none; b=bzwUN2mfpegncHTsQPonQEXkforK04RrkpqLGXQOtXbgIyRUdqoKDxO6P7a52u670MiRuL20Ycrbp4Zm4Uo1udHr6pArxczR8Six7yIGIyJXQKMNvUcdEizH7xTdt0wyp1KCjokrMhRCY9mcAhpjk0Dcgn2L3MjCfpPQDvFxNMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301429; c=relaxed/simple;
-	bh=iHA762wzn1TZvchoo8C4M1ISc5uQvfZuVWRFZEPbmMM=;
+	s=arc-20240116; t=1779297261; c=relaxed/simple;
+	bh=GwqluoPSY6+kax8nu38Us+ixxm5CGa5In/ka7vDgRNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BYOBQTQ5zDaqFqxYbwmRxZXQR1xjtC2YgET8aSGalO9wJ4eRfS04WUhfkvJkFmtiyyXNV8gGDKE8OipkE8HKUfxGNtcmdzyM06ZA4xQk0GU2WUTzdxzKmCo27MosZwYPJ5l1+ljTI8SBs2DoUQmNlHoIMYyMUwvkS+wXj8YdjJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyP0DqDF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2011F000E9;
-	Wed, 20 May 2026 18:23:47 +0000 (UTC)
+	 MIME-Version; b=fEeEqCFa/kksHbiVKyUf0Saj2731Rk9yucbk2EPuXU3D/AGdvKPJbipJxDJHiPDv9BcLkM52+piDZwIqWhPuaGthHl0D4MyqwZYZrQ81EaG4p+D77iGw60fMeAcJlruJy2u7srVYCTHfjhlgyHkodcdgRRTQ82ehx4hwp5O+nPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJcW8w7F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF6C1F000E9;
+	Wed, 20 May 2026 17:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301428;
-	bh=4iDeeN8pebZkSWxDxj1qZqYwesE7T121zxY0z34Mk+M=;
+	s=korg; t=1779297259;
+	bh=cjU9zTE66Sr/QzzdHAvjCsdyIaPxLQOQJP2+ZowXnqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jyP0DqDFs648MZt4rYDT/GAdfaF+Bb+ozz/5/iXeQm2OYwK+kbtddGS/XXOTq7iCB
-	 MC9PIuurtBee4lbmPz+M34SSSjk/Etjr5+HXjAEYASRGROOtbdOWdTC1OUCF1mE2H0
-	 tHfJ6xZ4FFAFL5RdDIfVKw18x6qq+uMxcdZcRi6I=
+	b=sJcW8w7FKc1EF67ic9448SBMpTWdpzxoNGYBNK3A0bSlLIAF61Z/BfJzW2ecRPmwT
+	 ARgI0V1KMTnCVGRFU/FNcYKnhB4HAXB7u7q6uvQa1HLRvji9NdIiD+Lu4uGMv4GceD
+	 3hVUmo4bME110xDYRIU9s1rMyaca1TS350NA/Tik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 550/666] netpoll: fix IPv6 local-address corruption
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 7.0 1111/1146] irqchip/gic-v5: Move LPI allocation into the LPI domain
 Date: Wed, 20 May 2026 18:22:41 +0200
-Message-ID: <20260520162123.189696282@linuxfoundation.org>
+Message-ID: <20260520162213.389108734@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +64,248 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252726-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251162-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C13AB597FB6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
+X-Rspamd-Queue-Id: 9D1325997CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-[ Upstream commit 3bc179bc7146c26c9dff75d2943d10528274e301 ]
+commit dec85d2fbd20de3711a71e65397dfdb40c3fa953 upstream.
 
-netpoll_setup() decides whether to auto-populate the local source
-address by testing np->local_ip.ip, which only inspects the first 4
-bytes of the union inet_addr storage.
+The IPI and ITS MSI domains currently allocate and release LPIs
+directly, then pass the selected LPI ID to the parent LPI domain. This
+leaks the LPI domain's allocation policy into its child domains and
+forces each child to duplicate part of the parent domain's teardown.
 
-For an IPv6 netpoll whose caller-supplied local address has a zero
-high-32 bits (::1, ::<suffix>, IPv4-mapped ::ffff:a.b.c.d, etc.), this
-misdetects the address as unset (which they are not, but the first
-4 bytes are empty), calls netpoll_take_ipv6() and overwrites it with
-whatever matching link-local/global address the device happens to expose
-first.
+Make the LPI domain allocate LPIs in its .alloc() callback and release
+them in a matching .free() callback. Child domains can then request a
+parent interrupt without passing an implementation-specific LPI ID,
+and the LPI lifetime is tied to the domain that owns the LPI
+namespace.
 
-Introduce a helper netpoll_local_ip_unset() that picks the correct
-family-aware test (ipv6_addr_any() for IPv6, !.ip for IPv4) and use it
-from netpoll_setup().
+Remove the gicv5_alloc_lpi() and gicv5_free_lpi() wrappers now that no
+external caller needs to manage LPIs directly.
 
-Reproducer is something like:
+This is a preparatory change for an actual leakage problem in the
+allocation code and therefore tagged with the same Fixes tag.
 
-  echo "::2" > local_ip
-  echo 1     > enabled
-  cat local_ip
-  # before this fix: 2001:db8::1   (caller-supplied ::2 was clobbered)
-  # after  this fix: ::2
-
-Fixes: b7394d2429c1 ("netpoll: prepare for ipv6")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260424-netpoll_fix-v1-1-3a55348c625f@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260506093634.382062-2-sascha.bischoff@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v5-its.c   |   14 +--------
+ drivers/irqchip/irq-gic-v5.c       |   53 ++++++++++++++++++-------------------
+ include/linux/irqchip/arm-gic-v5.h |    3 --
+ 3 files changed, 28 insertions(+), 42 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index b5305ff217a8b..b754341db50fe 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -750,6 +750,23 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
- 	return 0;
+--- a/drivers/irqchip/irq-gic-v5-its.c
++++ b/drivers/irqchip/irq-gic-v5-its.c
+@@ -929,8 +929,8 @@ static void gicv5_its_free_eventid(struc
+ static int gicv5_its_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 				      unsigned int nr_irqs, void *arg)
+ {
+-	u32 device_id, event_id_base, lpi;
+ 	struct gicv5_its_dev *its_dev;
++	u32 device_id, event_id_base;
+ 	msi_alloc_info_t *info = arg;
+ 	irq_hw_number_t hwirq;
+ 	struct irq_data *irqd;
+@@ -949,16 +949,8 @@ static int gicv5_its_irq_domain_alloc(st
+ 	device_id = its_dev->device_id;
+ 
+ 	for (i = 0; i < nr_irqs; i++) {
+-		ret = gicv5_alloc_lpi();
+-		if (ret < 0) {
+-			pr_debug("Failed to find free LPI!\n");
+-			goto out_free_irqs;
+-		}
+-		lpi = ret;
+-
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
++		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
+ 		if (ret) {
+-			gicv5_free_lpi(lpi);
+ 			goto out_free_irqs;
+ 		}
+ 
+@@ -983,7 +975,6 @@ static int gicv5_its_irq_domain_alloc(st
+ out_free_irqs:
+ 	while (--i >= 0) {
+ 		irqd = irq_domain_get_irq_data(domain, virq + i);
+-		gicv5_free_lpi(irqd->parent_data->hwirq);
+ 		irq_domain_reset_irq_data(irqd);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
+@@ -1013,7 +1004,6 @@ static void gicv5_its_irq_domain_free(st
+ 	for (i = 0; i < nr_irqs; i++) {
+ 		d = irq_domain_get_irq_data(domain, virq + i);
+ 
+-		gicv5_free_lpi(d->parent_data->hwirq);
+ 		irq_domain_reset_irq_data(d);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
+--- a/drivers/irqchip/irq-gic-v5.c
++++ b/drivers/irqchip/irq-gic-v5.c
+@@ -59,16 +59,6 @@ static void release_lpi(u32 lpi)
+ 	ida_free(&lpi_ida, lpi);
  }
  
-+/*
-+ * Test whether the caller left np->local_ip unset, so that
-+ * netpoll_setup() should auto-populate it from the egress device.
-+ *
-+ * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
-+ * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
-+ * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
-+ * doing so would misclassify a caller-supplied address as unset and
-+ * silently overwrite it with whatever address the device exposes.
-+ */
-+static bool netpoll_local_ip_unset(const struct netpoll *np)
+-int gicv5_alloc_lpi(void)
+-{
+-	return alloc_lpi();
+-}
+-
+-void gicv5_free_lpi(u32 lpi)
+-{
+-	release_lpi(lpi);
+-}
+-
+ static void gicv5_ppi_priority_init(void)
+ {
+ 	write_sysreg_s(REPEAT_BYTE(GICV5_IRQ_PRI_MI), SYS_ICC_PPI_PRIORITYR0_EL1);
+@@ -788,18 +778,36 @@ static void gicv5_lpi_config_reset(struc
+ 	gicv5_lpi_irq_write_pending_state(d, false);
+ }
+ 
++static void gicv5_irq_lpi_domain_free(struct irq_domain *domain, unsigned int virq,
++				      unsigned int nr_irqs)
 +{
-+	if (np->ipv6)
-+		return ipv6_addr_any(&np->local_ip.in6);
-+	return !np->local_ip.ip;
++	struct irq_data *d;
++
++	if (WARN_ON_ONCE(nr_irqs != 1))
++		return;
++
++	d = irq_domain_get_irq_data(domain, virq);
++
++	release_lpi(d->hwirq);
++
++	irq_set_handler(virq, NULL);
++	irq_domain_reset_irq_data(d);
 +}
 +
- int netpoll_setup(struct netpoll *np)
+ static int gicv5_irq_lpi_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 				      unsigned int nr_irqs, void *arg)
  {
- 	struct net *net = current->nsproxy->net_ns;
-@@ -793,7 +810,7 @@ int netpoll_setup(struct netpoll *np)
- 		rtnl_lock();
- 	}
+ 	irq_hw_number_t hwirq;
+ 	struct irq_data *irqd;
+-	u32 *lpi = arg;
+ 	int ret;
  
--	if (!np->local_ip.ip) {
-+	if (netpoll_local_ip_unset(np)) {
- 		if (!np->ipv6) {
- 			err = netpoll_take_ipv4(np, ndev);
- 			if (err)
--- 
-2.53.0
-
+ 	if (WARN_ON_ONCE(nr_irqs != 1))
+ 		return -EINVAL;
+ 
+-	hwirq = *lpi;
++	ret = alloc_lpi();
++	if (ret < 0)
++		return ret;
++	hwirq = ret;
+ 
+ 	irqd = irq_domain_get_irq_data(domain, virq);
+ 
+@@ -808,8 +816,10 @@ static int gicv5_irq_lpi_domain_alloc(st
+ 	irqd_set_single_target(irqd);
+ 
+ 	ret = gicv5_irs_iste_alloc(hwirq);
+-	if (ret < 0)
++	if (ret < 0) {
++		release_lpi(hwirq);
+ 		return ret;
++	}
+ 
+ 	gicv5_hwirq_init(hwirq, GICV5_IRQ_PRI_MI, GICV5_HWIRQ_TYPE_LPI);
+ 	gicv5_lpi_config_reset(irqd);
+@@ -819,7 +829,7 @@ static int gicv5_irq_lpi_domain_alloc(st
+ 
+ static const struct irq_domain_ops gicv5_irq_lpi_domain_ops = {
+ 	.alloc	= gicv5_irq_lpi_domain_alloc,
+-	.free	= gicv5_irq_domain_free,
++	.free	= gicv5_irq_lpi_domain_free,
+ };
+ 
+ void __init gicv5_init_lpi_domain(void)
+@@ -841,21 +851,12 @@ static int gicv5_irq_ipi_domain_alloc(st
+ {
+ 	struct irq_data *irqd;
+ 	int ret, i;
+-	u32 lpi;
+ 
+ 	for (i = 0; i < nr_irqs; i++) {
+-		ret = gicv5_alloc_lpi();
+-		if (ret < 0)
++		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
++		if (ret)
+ 			return ret;
+ 
+-		lpi = ret;
+-
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
+-		if (ret) {
+-			gicv5_free_lpi(lpi);
+-			return ret;
+-		}
+-
+ 		irqd = irq_domain_get_irq_data(domain, virq + i);
+ 
+ 		irq_domain_set_hwirq_and_chip(domain, virq + i, i,
+@@ -881,8 +882,6 @@ static void gicv5_irq_ipi_domain_free(st
+ 		if (!d)
+ 			return;
+ 
+-		gicv5_free_lpi(d->parent_data->hwirq);
+-
+ 		irq_set_handler(virq + i, NULL);
+ 		irq_domain_reset_irq_data(d);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
+--- a/include/linux/irqchip/arm-gic-v5.h
++++ b/include/linux/irqchip/arm-gic-v5.h
+@@ -398,9 +398,6 @@ struct gicv5_its_itt_cfg {
+ void gicv5_init_lpis(u32 max);
+ void gicv5_deinit_lpis(void);
+ 
+-int gicv5_alloc_lpi(void);
+-void gicv5_free_lpi(u32 lpi);
+-
+ void __init gicv5_its_of_probe(struct device_node *parent);
+ void __init gicv5_its_acpi_probe(void);
+ #endif
 
 
 
