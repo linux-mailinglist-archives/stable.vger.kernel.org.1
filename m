@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGPcFQfnDWqx4gUAu9opvQ
-	(envelope-from <stable+bounces-250328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:27 +0200
+	id 4OL3OsXyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E4B592965
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D90594650
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B59230067A1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 39B6F30A4FA0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08505369D75;
-	Wed, 20 May 2026 16:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFB5347512;
+	Wed, 20 May 2026 17:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F93B/Zw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2oYEaKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87C6369211;
-	Wed, 20 May 2026 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D27356748;
+	Wed, 20 May 2026 17:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295126; cv=none; b=OYbT/yS4Ky2wfVxMc9ghn1YC8yBvD5spT0XSrobxKfZ70AnOofivgdDsCoSyOG4F4w+PkN3NjU7zGUFIkzj2VZ6wlCB1tHeX4hcplzw1XElBDbd42F+Zyg7JMIWNqF33NBWdC7fG7/HF7cK4cKWoXkP45jzpG+pdyn+tkCevEf0=
+	t=1779297427; cv=none; b=tJaPg0eJcKrnz0/wjSGo2UPnMx/xvs371ytGCmUqN8NYK2qmxebj1g9H2FwOkD43WopRgFqbRWZGuysmRdkghHZDqmb/49hpvh7cfn8IjI0QlrTv1sA7eZYHEfTDTuuHrJNGwn+5MhzYMGZYwuHw0v7Dnloscu8fHrxnGItnwn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295126; c=relaxed/simple;
-	bh=uoEciZNhKAFB+x0cbEAhFs/oPBd3JhYkKdvJS8ns2Go=;
+	s=arc-20240116; t=1779297427; c=relaxed/simple;
+	bh=x/K9Asltdy5OXWdjK0siHLjSTWwVCtSam6eWJ2DyiLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJ0ygDp5QCnnPXk2DvAxO4auADHoeUuCJUyMKbNah4TqMKO0w39ieXeOWyrlr3QJEpbftIJeLWCNdIFtGushUHHhy7f1hMZA8DcRFhgG6XwbdmkHwDkasrFsCC+8VOrHUzGvVmP2RerDCWeXREfdnmbCf6XZ2mitgsXYLBOomnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F93B/Zw1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D591F000E9;
-	Wed, 20 May 2026 16:38:43 +0000 (UTC)
+	 MIME-Version; b=cDQ/5UaEZWzEZ5vtqm4ok5qPq/b336V2EZ85eKiBfP1qXzIU+cm2adLHg4O3sYI7jgWN5IF/giMhxEg1lfQoxmP9PD4vQGiHsS1JqW5v4VNohpC1tK/jo0OnbVDGV+1LHytbYSQ9c/EUt7qdLfhnogzYsAk5/QVdJioegP8vCvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2oYEaKi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D631F000E9;
+	Wed, 20 May 2026 17:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295124;
-	bh=/BhNq9pljqbIGr7VGAcKd6pJLjMxGizHy2wAWSHIgvU=;
+	s=korg; t=1779297425;
+	bh=2JWVqlacu+tiMAyZlPmlpvgb25V1i6WNWgMRbjxM0jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F93B/Zw1RZiyzWs9cRJM+P087bMxdPDTwrGbrfksbIh7IK3y4uhBS6Beq31jqih62
-	 5ppglHWHzKenSyiHkOYQFS+Z0HplCbdqJOkLVgduljtDBNvP/PqlxF4hPhZL8GaCfB
-	 Ba7dx9IqBD2cEkjCDqkdqMwEedh/+TnVonu0OqWE=
+	b=F2oYEaKiqkS45n5Dc3cpunwIw0TtxC7LW5mGTfHHvVNS08lgS5zHMnMQ05pf53SdI
+	 /H/PtdtgBol0nBX3tm+t5urzg6+5+V2mjY6zWQUwe0xWlbBrts2Dk0AmS7Wv075AL1
+	 pDxRDMV/mEG8D3+F8rXcyOOEcM302qRCvEIK7z8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Lang Yu <lang.yu@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0259/1146] drm/amdgpu: GFX12.1 scratch memory limit up to 57-bit
-Date: Wed, 20 May 2026 18:08:29 +0200
-Message-ID: <20260520162154.091665457@linuxfoundation.org>
+Subject: [PATCH 6.18 027/957] amd-pstate: Fix memory leak in amd_pstate_epp_cpu_init()
+Date: Wed, 20 May 2026 18:08:30 +0200
+Message-ID: <20260520162135.148766796@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,161 +73,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250328-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251225-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 00E4B592965
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 90D90594650
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit b2d13a41da94008fdd3786b396a6375c12454522 ]
+[ Upstream commit beda3b363546a423e4e29a7395e04c0ac4ff677e ]
 
-The scratch aperture or gmc private aperture in flat memory contains
-57 bits of data on gfx v12.1.0 compared to the 32 bits from previous.
+On failure to set the epp, the function amd_pstate_epp_cpu_init()
+returns with an error code without freeing the cpudata object that was
+allocated at the beginning of the function.
 
-Add new helper kfd_init_apertures_v12 for gfx version >= v12.1.0 which
-supports 57-bit VA space.
+Ensure that the cpudata object is freed before returning from the
+function.
 
-v2:
-  - update pdd->scratch_limit (Yu, Lang)
-  - update fixes tag (Felix Kuehling)
-  - add helper kfd_init_apertures_v12
+This memory leak was discovered by Claude Opus 4.6 with the aid of
+Chris Mason's AI review-prompts
+(https://github.com/masoncl/review-prompts/tree/main/kernel).
 
-Fixes: db1882b3ff0c ("drm/amdkfd: Update LDS, Scratch base for 57bit address")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Lang Yu <lang.yu@amd.com>
-Acked-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Assisted-by: Claude:claude-opus-4.6 review-prompts/linux
+Fixes: f9a378ff6443 ("cpufreq/amd-pstate: Set different default EPP policy for Epyc and Ryzen")
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c       |  2 +-
- drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c       | 10 ++++--
- drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c | 35 ++++++++++++++------
- 3 files changed, 34 insertions(+), 13 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
-index eb9725ae1607a..557d15b90ad27 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
-@@ -1405,7 +1405,7 @@ static void gfx_v12_1_xcc_init_compute_vmid(struct amdgpu_device *adev,
- 	/*
- 	 * Configure apertures:
- 	 * LDS:         0x20000000'00000000 - 0x20000001'00000000 (4GB)
--	 * Scratch:     0x10000000'00000000 - 0x10000001'00000000 (4GB)
-+	 * Scratch:     0x10000000'00000000 - 0x11ffffff'ffffffff (128PB 57-bit)
- 	 */
- 	sh_mem_bases = REG_SET_FIELD(0, SH_MEM_BASES, PRIVATE_BASE,
- 				     (adev->gmc.private_aperture_start >> 58));
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-index b9671fc39e2a8..da4a0cf4aad0c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-@@ -654,9 +654,15 @@ static int gmc_v12_0_early_init(struct amdgpu_ip_block *ip_block)
- 	adev->gmc.shared_aperture_start = 0x2000000000000000ULL;
- 	adev->gmc.shared_aperture_end =
- 		adev->gmc.shared_aperture_start + (4ULL << 30) - 1;
-+
- 	adev->gmc.private_aperture_start = 0x1000000000000000ULL;
--	adev->gmc.private_aperture_end =
--		adev->gmc.private_aperture_start + (4ULL << 30) - 1;
-+	if (amdgpu_ip_version(adev, GC_HWIP, 0) >= IP_VERSION(12, 1, 0))
-+		adev->gmc.private_aperture_end =
-+			adev->gmc.private_aperture_start + (1ULL << 57) - 1;
-+	else
-+		adev->gmc.private_aperture_end =
-+			adev->gmc.private_aperture_start + (4ULL << 30) - 1;
-+
- 	adev->gmc.noretry_flags = AMDGPU_VM_NORETRY_FLAGS_TF;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 602e4fa81d6c5..86d8762ac82c5 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1525,7 +1525,7 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
  
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-index e8da0b4527dc5..04c5e26f01ed9 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-@@ -342,20 +342,14 @@ static void kfd_init_apertures_vi(struct kfd_process_device *pdd, uint8_t id)
+ 	ret = amd_pstate_set_epp(policy, cpudata->epp_default);
+ 	if (ret)
+-		return ret;
++		goto free_cpudata1;
  
- static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
- {
--	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
--		pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
--	else
--		pdd->lds_base = MAKE_LDS_APP_BASE_V9();
-+	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
- 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
+ 	current_pstate_driver->adjust_perf = NULL;
  
- 	pdd->gpuvm_base = AMDGPU_VA_RESERVED_BOTTOM;
- 	pdd->gpuvm_limit =
- 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
- 
--	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
--		pdd->scratch_base = pdd->dev->adev->gmc.private_aperture_start;
--	else
--		pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
-+	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
- 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
- 
- 	/*
-@@ -365,6 +359,25 @@ static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
- 	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
- }
- 
-+static void kfd_init_apertures_v12(struct kfd_process_device *pdd, uint8_t id)
-+{
-+	pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
-+	pdd->lds_limit = pdd->dev->adev->gmc.shared_aperture_end;
-+
-+	pdd->gpuvm_base = AMDGPU_VA_RESERVED_BOTTOM;
-+	pdd->gpuvm_limit =
-+		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
-+
-+	pdd->scratch_base = pdd->dev->adev->gmc.private_aperture_start;
-+	pdd->scratch_limit = pdd->dev->adev->gmc.private_aperture_end;
-+
-+	/*
-+	 * Place TBA/TMA on opposite side of VM hole to prevent
-+	 * stray faults from triggering SVM on these pages.
-+	 */
-+	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
-+}
-+
- int kfd_init_apertures(struct kfd_process *process)
- {
- 	uint8_t id  = 0;
-@@ -412,9 +425,11 @@ int kfd_init_apertures(struct kfd_process *process)
- 				kfd_init_apertures_vi(pdd, id);
- 				break;
- 			default:
--				if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1))
-+				if (KFD_GC_VERSION(dev) >= IP_VERSION(12, 1, 0)) {
-+					kfd_init_apertures_v12(pdd, id);
-+				} else if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1)) {
- 					kfd_init_apertures_v9(pdd, id);
--				else {
-+				} else {
- 					WARN(1, "Unexpected ASIC family %u",
- 					     dev->adev->asic_type);
- 					return -EINVAL;
 -- 
 2.53.0
 
