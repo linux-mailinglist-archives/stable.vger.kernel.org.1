@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGFwIS32DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:05 +0200
+	id QD3KHNz2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8483594FE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F0F5951C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 296F533B942F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:55:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0728F30F08B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D698E34216C;
-	Wed, 20 May 2026 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9F929D26E;
+	Wed, 20 May 2026 17:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1CiKdcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea/Q64zu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647B73D3CE5;
-	Wed, 20 May 2026 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF42328DC4;
+	Wed, 20 May 2026 17:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296069; cv=none; b=KloLfDdnuF8biIIYEn65tRQUMrjl02gyiSERWAgO1xLh7Ak8VA9LKSoNI8Ko8aRkdM1De5DUWN9t4sc+GK5mBEe8F2Mw9TjxpJ8WZrxnVi98fv2Ms0tekJn1XyKJrersjGqyHUIubUBgTLl25P8LlRRT7OQhlrDYwl3oVvRxzbo=
+	t=1779298488; cv=none; b=LuFdX3nFonUhRA8qYV4WEpdrPTKOtIxhz/KmTticU15HIy+IyStzP+buo1V1Sr1Rg1hFKGjT7aoOVeVYE5GJolu4d+Ymc4xvLKShpmqQmyCOUfqJUkIJdLSFMT61duTqlvbYRxELPiG2+tV5w/PNZO3O9/8kEcBT5e62Anl5jeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296069; c=relaxed/simple;
-	bh=FYEBR+FBmrYvPGeYUNFHoFq5SC2JL+5Uw8bML0X2Jtk=;
+	s=arc-20240116; t=1779298488; c=relaxed/simple;
+	bh=nKDxqauD8K3Xp5HaS4K1AWDt+3RDYxljnprNHS8RG9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTEqYVIk0zrSb5baG03FiyqrD9GQdqzu83VCi6nJ7CXzNhlYLP/plo5CqmpcxFtMG6Y4uFFIbuTqlh3O+xzT+7l7RTtPVfrv9Wx4vGxnHswlE/J7/3v3X9M/m2L0Xn/pGS/L37BlMab4eITgZ+eQfGGa8JXE84aAfozVw2Jfol0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1CiKdcO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C770D1F000E9;
-	Wed, 20 May 2026 16:54:27 +0000 (UTC)
+	 MIME-Version; b=j9VsdKBBS0u++ip7TibruH4xoRKnhlOZ0WSnknPvVwK/hyDsZ/F5lK3y8r2cf+1iS3y1/Jy1lQN7lEUNGDiiZTf2W/CNnZyuf8kD1Rc8aFJ7t8xA0IUzHG71Gtq38XFbYoquMSFVMUOTbczxOo+3ZgYQAaMBc/eFjBuii+nQEMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea/Q64zu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E15D1F000E9;
+	Wed, 20 May 2026 17:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296068;
-	bh=AfnYNJEHxMed9qYtJvLO+K6/XkI4pn9YO8XxJVMPmsQ=;
+	s=korg; t=1779298486;
+	bh=qUv9aDFJ0Cpb3rcuF9+2wOKZJYn3ssgRT8eiVo/bIzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E1CiKdcOG0tIJJwHE+BJ0pijPKGFicc7Cb3rc6sxlJk85I6+FT7cTwRiAY+LckEQy
-	 KWoDNB5pWgFx8nVH9S6FfJYq/qzXLpZ/OLv+X2PjPV+m7fROci5fjT6rgO1i82OSNv
-	 /U031FSW18lAp0HHJ2i6pN0d0RtHu8+CS1PczN/s=
+	b=ea/Q64zuNEv5He9uWFkhrsDa0EG3ZBjQX8L0xznZ3hBwZzu2Fg4ctC+iuywmfTjXB
+	 tomX1UHDllLDegWwySAfscGEtPk3BKkDWZOQ7yIMYWPte4+Av+Q+ii1+kmpn1OpKqF
+	 CzTMXm5c3UzYMVQFzGLrgDBVnKZ4q29CoUdFuxsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jorge Marques <jorge.marques@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0660/1146] i3c: master: Fix error codes at send_ccc_cmd
-Date: Wed, 20 May 2026 18:15:10 +0200
-Message-ID: <20260520162203.122077007@linuxfoundation.org>
+Subject: [PATCH 6.18 428/957] soc/tegra: cbb: Fix incorrect ARRAY_SIZE in fabric lookup tables
+Date: Wed, 20 May 2026 18:15:11 +0200
+Message-ID: <20260520162143.804161203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,155 +68,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250693-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251632-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,bootlin.com:email]
-X-Rspamd-Queue-Id: E8483594FE6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 54F0F5951C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Marques <jorge.marques@analog.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
+[ Upstream commit 499f7e5ebbdd9ff0c4d532b1c432f8a61ff585b3 ]
 
-i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
-Mx codes) to the ret variable, cascading down multiple methods until
-reaching methods that explicitly stated they would return 0 on success
-or negative error code. For example, the call chain:
+Fix incorrect ARRAY_SIZE usage in fabric lookup tables which could
+cause out-of-bounds access during target timeout lookup.
 
-  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
-  master->ops.enable_ibi <- i3c_master_enec_locked <-
-  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
-
-Fix this by returning the ret value, callers can still read the cmd->err
-value if ret is negative.
-
-All corner cases where the Mx codes do need to be handled individually,
-are resolved in previous commits. Those corner cases are all scenarios
-when I3C_ERROR_M2 is expected and acceptable.
-The prerequisite patches for the fix are:
-
-  i3c: master: Move rstdaa error suppression
-  i3c: master: Move entdaa error suppression
-  i3c: master: Move bus_init error suppression
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 25de5c8fe0801 ("soc/tegra: cbb: Improve handling for per SoC fabric data")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 32 +++++++++++++-------------------
- 1 file changed, 13 insertions(+), 19 deletions(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 9e6be49bebb2c..930c4dad632fc 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -898,11 +898,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
- 	cmd->err = I3C_ERROR_UNKNOWN;
- }
- 
-+/**
-+ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
-+ * @master: master used to send frames on the bus
-+ * @cmd: command to send
-+ *
-+ * Return: 0 in case of success, or a negative error code otherwise.
-+ *         I3C Mx error codes are stored in cmd->err.
-+ */
- static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 					  struct i3c_ccc_cmd *cmd)
- {
--	int ret;
--
- 	if (!cmd || !master)
- 		return -EINVAL;
- 
-@@ -920,15 +926,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 	    !master->ops->supports_ccc_cmd(master, cmd))
- 		return -EOPNOTSUPP;
- 
--	ret = master->ops->send_ccc_cmd(master, cmd);
--	if (ret) {
--		if (cmd->err != I3C_ERROR_UNKNOWN)
--			return cmd->err;
--
--		return ret;
--	}
--
--	return 0;
-+	return master->ops->send_ccc_cmd(master, cmd);
- }
- 
- static struct i2c_dev_desc *
-@@ -1032,8 +1030,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_entdaa_locked(struct i3c_master_controller *master)
- {
-@@ -1085,8 +1082,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
- 			    u8 evts)
-@@ -1106,8 +1102,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
- 			   u8 evts)
-@@ -1132,8 +1127,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_defslvs_locked(struct i3c_master_controller *master)
- {
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index 518733a066588..626e0e820329b 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -881,7 +881,7 @@ static const struct tegra234_fabric_lookup tegra234_cbb_fab_list[] = {
+ 				 ARRAY_SIZE(tegra234_common_target_map) },
+ 	[T234_AON_FABRIC_ID] = { "aon-fabric", true,
+ 				 tegra234_aon_target_map,
+-				 ARRAY_SIZE(tegra234_bpmp_target_map) },
++				 ARRAY_SIZE(tegra234_aon_target_map) },
+ 	[T234_PSC_FABRIC_ID] = { "psc-fabric" },
+ 	[T234_BPMP_FABRIC_ID] = { "bpmp-fabric", true,
+ 				 tegra234_bpmp_target_map,
+@@ -1160,7 +1160,7 @@ static const struct tegra234_fabric_lookup tegra241_cbb_fab_list[] = {
+ 	[T234_CBB_FABRIC_ID]  = { "cbb-fabric", true,
+ 				  tegra241_cbb_target_map, ARRAY_SIZE(tegra241_cbb_target_map) },
+ 	[T234_BPMP_FABRIC_ID] = { "bpmp-fabric", true,
+-				  tegra241_bpmp_target_map, ARRAY_SIZE(tegra241_cbb_target_map) },
++				  tegra241_bpmp_target_map, ARRAY_SIZE(tegra241_bpmp_target_map) },
+ };
+ static const struct tegra234_cbb_fabric tegra241_cbb_fabric = {
+ 	.fab_id = T234_CBB_FABRIC_ID,
 -- 
 2.53.0
 
