@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-251572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGg1JCH8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:29 +0200
+	id iC0HDGrrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0066595FCC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80CE593106
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22930370DF8B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98D8330DDDE7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019BC29D26E;
-	Wed, 20 May 2026 17:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46353E0C70;
+	Wed, 20 May 2026 16:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHnjy3WI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXati9+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FC43A381D;
-	Wed, 20 May 2026 17:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B7F3D75CB;
+	Wed, 20 May 2026 16:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298329; cv=none; b=qaUIPUHnf4vFkiFEc8V1W8tupSKaJ3YpvarTRujMRMZzaseAhS+wuvmK+A08Sx6ihopf0zVywQLx5Z+xfhQuQKUd9jB1zAczwVnRuAtKP0B3ASJdZSmyymPH/h4BpHrIrzHmy+xcUrnhwhh1Gg6NWzGtASMU1vdydeML4SaB+wM=
+	t=1779296053; cv=none; b=c5SlJ7mHld9cQwYK8MAfG/GTR96q98o96hL1f6m2AOclmBdC/hZxsRpe07RdLcmHT7k6FeV0aiHu1uRFQBDBBXVlXWM/kXWYXd7zragrLEC3DLjtNjIi9kDzArQhzcFvz0fL2YwakZxuknNxyKNwqcdrlHifVdVNnUsP3ZbmxxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298329; c=relaxed/simple;
-	bh=yU0qyHJfigjbZ4cDjuYTeIDdSHmiA3o15R8lubKqlKw=;
+	s=arc-20240116; t=1779296053; c=relaxed/simple;
+	bh=lxKtf5Ar/6lK2dQCXGBOyBp+NP9ZE9qi/lPA4YiId6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbVAIOy4SanLT5ba0LFwYJMcBb+AChM/doamaiUoYKznkB7QDG7/vMWMQJ2VxQ5l0UrzQzmPruX1qdAwL+YXZXPTK9v16vAX9wU4rA55b1+qoUVR93S20Hqig5222QB9hKw05jCEAcoKBVemGsx0y7bmzzNMVtJ6e6WIUQ+iUZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHnjy3WI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4751F00893;
-	Wed, 20 May 2026 17:32:07 +0000 (UTC)
+	 MIME-Version; b=T1ZynEf/CNdFvQQkj5NIevOhzxr2azGd48tzvL6ldIuDmC2yiH0R++wCxDNhL2fv0p1UNoS3S+3jA8A2JY+lu0BfRkEkAPfP+mB/O3Sc4ubq6Bf31DbcfGn7qI9btbFJK1RGntw4r0VwcFL5Q6Y7M3P7yOXDEXwa6N9YXtm68yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXati9+F; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7ED51F000E9;
+	Wed, 20 May 2026 16:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298328;
-	bh=N6acFPxx69igUCNH1HL92ss6jQBowSLpwaZuFgdlfyk=;
+	s=korg; t=1779296052;
+	bh=VXMuArV/7JTV6ioeBjqrii2EADH2IaAiCroiMMtsCyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MHnjy3WIOA3kFiWEA0Veu/PaokhLqJG0rcpxn408qe/OziXrwjgJmtTYjKEShFs1o
-	 XobR4OdKkysB45MSctcM2aZWDOftlebmCfR/h8qaG/zfSBAGnRIn9VaVQQtrAvgTk1
-	 wiVYR21aJwY141cROpvmigzriTr9nsrR9yCDjNYQ=
+	b=gXati9+FsddIEKh6coR+yP0sKIav0v7xueYJJAmIkftpT5FhDkiEEsd3fpE90n9rf
+	 bvqS9mbM0qGmnRbbpKELa+O2FVRer0hV6bru+EmqpP7a05UKXVeN0L8Q3VynVG7SFF
+	 qu265eks1Z49dIcoukpRg1BGWYKsrE31/KXvLoWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 369/957] iommufd: vfio compatibility extension check for noiommu mode
+Subject: [PATCH 7.0 0602/1146] mtd: spinand: winbond: Clarify when to enable the HS bit
 Date: Wed, 20 May 2026 18:14:12 +0200
-Message-ID: <20260520162142.531049696@linuxfoundation.org>
+Message-ID: <20260520162201.802560067@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250687-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,50 +86,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F0066595FCC
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bootlin.com:email]
+X-Rspamd-Queue-Id: C80CE593106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 7147ec874ea08c322d779d8eba28946e294ed1f3 ]
+[ Upstream commit 25a915fad503c2678902075565d47ddc2aa45db9 ]
 
-VFIO_CHECK_EXTENSION should return false for TYPE1_IOMMU variants when
-in NO-IOMMU mode and IOMMUFD compat container is set. This change makes
-the behavior match VFIO_CONTAINER in noiommu mode. It also prevents
-userspace from incorrectly attempting to use TYPE1 IOMMU operations
-in a no-iommu context.
+Above 104MHz when in fast dual or quad I/O reads, the delay between
+address and data cycles is too short. It is possible to reach higher
+frequencies, up to 166MHz, by adding a few more dummy cycles through the
+setting of the HS bit. Improve the condition for enabling this bit, and
+also make sure we set it at soon as we go over 104MHz.
 
-Fixes: d624d6652a65 ("iommufd: vfio container FD ioctl compatibility")
-Link: https://patch.msgid.link/r/20260213183636.3340-1-jacob.pan@linux.microsoft.com
-Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: f1a91175faaa ("mtd: spinand: winbond: Enable high-speed modes on w25n0xjw")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/vfio_compat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/winbond.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/vfio_compat.c b/drivers/iommu/iommufd/vfio_compat.c
-index a258ee2f4579f..acb48cdd3b005 100644
---- a/drivers/iommu/iommufd/vfio_compat.c
-+++ b/drivers/iommu/iommufd/vfio_compat.c
-@@ -283,7 +283,7 @@ static int iommufd_vfio_check_extension(struct iommufd_ctx *ictx,
- 	case VFIO_TYPE1_IOMMU:
- 	case VFIO_TYPE1v2_IOMMU:
- 	case VFIO_UNMAP_ALL:
--		return 1;
-+		return !ictx->no_iommu_mode;
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 4f9f1854e0cfe..ad22774096e61 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -337,16 +337,19 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
+ 	if (iface != SSDR)
+ 		return -EOPNOTSUPP;
  
- 	case VFIO_NOIOMMU_IOMMU:
- 		return IS_ENABLED(CONFIG_VFIO_NOIOMMU);
++	/*
++	 * SDR dual and quad I/O operations over 104MHz require the HS bit to
++	 * enable a few more dummy cycles.
++	 */
+ 	op = spinand->op_templates->read_cache;
+ 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
+ 		hs = false;
+-	else if (op->cmd.buswidth == 1 && op->addr.buswidth == 1 &&
+-		 op->dummy.buswidth == 1 && op->data.buswidth == 1)
++	else if (op->cmd.buswidth != 1 || op->addr.buswidth == 1)
+ 		hs = false;
+-	else if (!op->max_freq)
+-		hs = true;
+-	else
++	else if (op->max_freq && op->max_freq <= 104 * HZ_PER_MHZ)
+ 		hs = false;
++	else
++		hs = true;
+ 
+ 	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
+ 	if (ret)
 -- 
 2.53.0
 
