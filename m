@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDtGOfT1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:08 +0200
+	id sPosDyn7DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A9B594F6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 012AC595CE4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8ED623117265
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC7E930E56C1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF3F3D75D3;
-	Wed, 20 May 2026 17:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AFB3E832A;
+	Wed, 20 May 2026 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwSBL7Y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CG+GLaZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D114312825;
-	Wed, 20 May 2026 17:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461E23ED3B8;
+	Wed, 20 May 2026 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298234; cv=none; b=Nobz/9dqk9Iw8p0PVEVTy6DBKFm8eSmDnOv8V7fUwNfvvC/VXr6A3X3N4sh2om99pcS+Ao/2d4YQwkgoqaeonax3JePu6FeflHjuvYIYmR6y1EoYYtK9eosmWVhwAfmkc09NuFEiCt8oatQ935tkSRWjay2VbIQipfH8rIMESDk=
+	t=1779300059; cv=none; b=k1Uj99EE6dBoOJyfHS2usQkmPi1aD6iTmiT637108QCLda4u6eizPIQ3Wa/9AlUM8q1MIYQkP92dYwNKmKZpdJQ6hkT/O9t+8Zu4IzDtwrLWz+6LRa5Df4+XB1bsJhkDeYdz3xZIacKXxrqG+2+xYdA5/c7S6E9Dd2s74jF/yxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298234; c=relaxed/simple;
-	bh=e0Zbu78AqucgIGvU6vghDhK6DXSkqRhDZPkwDnFJpwQ=;
+	s=arc-20240116; t=1779300059; c=relaxed/simple;
+	bh=4n9ATU97h79/4N4qS+CrWJDigEBMI2bkoCRms3AX1rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYpZtGVbGnGswWysujcmXYPiJfVTkLLqFPn39rnvNIn8HJDbKV5CM/0jCmDASb8CT0JU2GJjoB6F0U8srvsvrDoM3Zxo3/1pkAGAjcw63ZXx1q8T1wl5F3tPJExg3cNZejuV/9Q7zEpdCd26e7LweAVrC+eXPh7Trr5e12tGKXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwSBL7Y+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7671F000E9;
-	Wed, 20 May 2026 17:30:32 +0000 (UTC)
+	 MIME-Version; b=VMsH4XnHrR+ZNL8rp2KPvBxHqXmn9t0aNq3LJ6M1V8AUjabiBXAhW+f/vP0pdcrCorniPVFe2C268xTEZobznGUb+aZe3sxgxG9m7omxZuQxvrjlutPIRR0lk0x0igRzhgvV0E7kk4RxMVGsPgdUyG6IYhvAQCFa4da3mfOKcyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CG+GLaZ4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB241F000E9;
+	Wed, 20 May 2026 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298233;
-	bh=5AzUaVtUA0yuLjAnpACZRPY47vsoyyS4oGzlJPpFBfc=;
+	s=korg; t=1779300058;
+	bh=s4iGKR0+n223SsluzaL2aCSjC9r18boxoB0UhC+LzBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pwSBL7Y+7v0480MniI49QKNXextcAzSKypiOdjqxydY+vJMeycxVt3J50zTHnVx6w
-	 MypJm6ZOTe1zoSzeMid7o7ux0SQBUnhDlyR8RmZFD6+TG+NdLbI1oT7hwrmj67x7yU
-	 vJyAwIKB+2xHm8x2M0rgfM3BGBhzqwHP1MjPBB4s=
+	b=CG+GLaZ4VNAsqpeI+v4Q9f8x/sK14ICx4tc2QwTEzd7JVz+8HzNkMrMRTfvhwOHwp
+	 C7WI+maW0QmwEEtac5Awxh4bRjJ8Lgs4mdRvfkWDRvs/QHb2Z7XoqomQGjLMS2AmDQ
+	 47HYS9dWCd6IC59O9tqRRDKEgxdyLSOabbYFBR2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Xiao Ni <xni@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 333/957] spi: mtk-snfi: unregister ECC engine on probe failure and remove() callback
+Subject: [PATCH 6.12 005/666] md/raid1: fix the comparing region of interval tree
 Date: Wed, 20 May 2026 18:13:36 +0200
-Message-ID: <20260520162141.753265707@linuxfoundation.org>
+Message-ID: <20260520162111.348203440@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252202-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,66 +90,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,kylinos.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D1A9B594F6E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 012AC595CE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit ab00febad191d7a4400aa1c3468279fb508258d4 ]
+[ Upstream commit de3544d2e5ea99064498de3c21ba490155864657 ]
 
-mtk_snand_probe() registers the on-host NAND ECC engine, but teardown was
-missing from both probe unwind and remove-time cleanup. Add a devm cleanup
-action after successful registration so
-nand_ecc_unregister_on_host_hw_engine() runs automatically on probe
-failures and during device removal.
+Interval tree uses [start, end] as a region which stores in the tree.
+In raid1, it uses the wrong end value. For example:
+bio(A,B) is too big and needs to be split to bio1(A,C-1), bio2(C,B).
+The region of bio1 is [A,C] and the region of bio2 is [C,B]. So bio1 and
+bio2 overlap which is not right.
 
-Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/20263f885f1a9c9d559f95275298cd6de4b11ed5.1775546401.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this problem by using right end value of the region.
+
+Fixes: d0d2d8ba0494 ("md/raid1: introduce wait_for_serialization")
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Link: https://lore.kernel.org/linux-raid/20260305011839.5118-2-xni@redhat.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mtk-snfi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/md/raid1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
-index ae38c244e2581..a026b0e61994b 100644
---- a/drivers/spi/spi-mtk-snfi.c
-+++ b/drivers/spi/spi-mtk-snfi.c
-@@ -1303,6 +1303,13 @@ static const struct spi_controller_mem_caps mtk_snand_mem_caps = {
- 	.ecc = true,
- };
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 093b04e6be675..eb583df45ecbc 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -61,7 +61,7 @@ static int check_and_add_serial(struct md_rdev *rdev, struct r1bio *r1_bio,
+ 	unsigned long flags;
+ 	int ret = 0;
+ 	sector_t lo = r1_bio->sector;
+-	sector_t hi = lo + r1_bio->sectors;
++	sector_t hi = lo + r1_bio->sectors - 1;
+ 	struct serial_in_rdev *serial = &rdev->serial[idx];
  
-+static void mtk_unregister_ecc_engine(void *data)
-+{
-+	struct nand_ecc_engine *eng = data;
-+
-+	nand_ecc_unregister_on_host_hw_engine(eng);
-+}
-+
- static irqreturn_t mtk_snand_irq(int irq, void *id)
- {
- 	struct mtk_snand *snf = id;
-@@ -1443,6 +1450,13 @@ static int mtk_snand_probe(struct platform_device *pdev)
- 		goto release_ecc;
- 	}
+ 	spin_lock_irqsave(&serial->serial_lock, flags);
+@@ -453,7 +453,7 @@ static void raid1_end_write_request(struct bio *bio)
+ 	int mirror = find_bio_disk(r1_bio, bio);
+ 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
+ 	sector_t lo = r1_bio->sector;
+-	sector_t hi = r1_bio->sector + r1_bio->sectors;
++	sector_t hi = r1_bio->sector + r1_bio->sectors - 1;
+ 	bool ignore_error = !raid1_should_handle_error(bio) ||
+ 		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
  
-+	ret = devm_add_action_or_reset(&pdev->dev, mtk_unregister_ecc_engine,
-+				       &ms->ecc_eng);
-+	if (ret) {
-+		dev_err_probe(&pdev->dev, ret, "failed to add ECC unregister action\n");
-+		goto release_ecc;
-+	}
-+
- 	ctlr->num_chipselect = 1;
- 	ctlr->mem_ops = &mtk_snand_mem_ops;
- 	ctlr->mem_caps = &mtk_snand_mem_caps;
 -- 
 2.53.0
 
