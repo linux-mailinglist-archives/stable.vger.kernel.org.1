@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO7eN5MBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:43 +0200
+	id aH0sObAGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BF1597363
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E95597D27
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AD40308F9B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5863931CB679
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B428B36D9EA;
-	Wed, 20 May 2026 17:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF51A3FC5A6;
+	Wed, 20 May 2026 18:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tje42umW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A61wmlmi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E7D28DC4;
-	Wed, 20 May 2026 17:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C4D331220;
+	Wed, 20 May 2026 18:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298944; cv=none; b=bG5Q+YxFh9q2lPpmYucUiTvQ0kQmyROhLWGd3NzI6fRmYgld5Yo1Yd3WBJnbDLLW1ak5eFJc7Um5reSZpoqnTNFelgKV3XCP34fm8QE7yedxqqetfwZL031G1tHLb6RmgWV6PhbRrupM8upl4oqAdoAylvP6zkSpo6W+sBLTAYM=
+	t=1779300702; cv=none; b=nohCXKaAZIo1qnnSMyN5bwzHUCh2f9wztCouTOc+0GGxzZ2IUOnbQn6t2droxkRPdermJ7YISsOgo8g2M3IuWaA8vVzS2ytNdrBkWTmbdGIKDA0NyaqOtCkbSuCfcjYakq3q2rrT4NRjjqepanO4MfMYG1pIEXn2OZYjF6ZtePQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298944; c=relaxed/simple;
-	bh=aTRSL7337HFqREK1p3s0HnL/joKU0MNI0iW8amINwTk=;
+	s=arc-20240116; t=1779300702; c=relaxed/simple;
+	bh=H/1IwTH2hyzwPUhyAK9XfaX3B9/ZMjN73z06U/Y+AmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kL9vLRFD3oAxunSYVp5hlmnO69EIeZ+rXLeP0P9gDfy4lBYfEVUIzLnnJfcjmZmfPvSwREb7LS4B3MaF0kb0cSlTEFNSsLpSQ9oqjewbM9zgsbYRZf/FvJiiaHoopKDQHWI9f7bz0N682WKeOkE7WHP17vGSH0ex2cSfXnh6Uls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tje42umW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E807B1F000E9;
-	Wed, 20 May 2026 17:42:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cbjD5KbDMDmxm1ctzSUIivdjROZnAkahZPEkJKcLyAzbV1Jn5Ma9lmnzI3EHGUE0k6FVUYpx62j1I5a0xKIE1AY4PVlINgFENwe01QvxrbRcbksFbb4bKfrpRnGC5BQPoF7tMeQ2U1Ba79WrIYjJaOVziBGvHEoioPF6IgyCKwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A61wmlmi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56991F00893;
+	Wed, 20 May 2026 18:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298943;
-	bh=ZBAof2mAs5ogskCI1UF9YKpS7KVagzinEN5iLI1Ps8c=;
+	s=korg; t=1779300701;
+	bh=JUP2gOpqxmJ85f/9rcK3JBFt5ADV475w774PFnct7UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tje42umWR9FOKoEuXuCZ1vT9y+1W21PaHJ7qOEDTJ5vYLXz9ItFiXiCHGMluOjoI+
-	 QnfafFX+XLp+kJ0ShiGc1OmshwKV8LCe9TJeusRelF40K7f2enW59ocPjCAX+byjCa
-	 pPZzHcwLGFKw5zBFzWpZi6dN6Cg0nc3i0BBD1ocQ=
+	b=A61wmlmi4OqBr9jgmOzgv2gGqn0LO/wyYScm2MoKp32gF6HMLmY3EtTIylS8VK/aa
+	 epsoHLtTdZwPGGtofeh67jLscwerxUZN1SW6/Isie3tmDOi18sK3j0TPnmJuuCYxAY
+	 tDOJMxLk2suLD1dP3a9lEAU47EuYprzzvNawApbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 602/957] arm64: dts: imx8mp-aristainetos3a-som-v1: Correct PAD settings for PMIC_nINT
-Date: Wed, 20 May 2026 18:18:05 +0200
-Message-ID: <20260520162147.589273521@linuxfoundation.org>
+Subject: [PATCH 6.12 275/666] arm64: dts: qcom: msm8953-xiaomi-daisy: fix backlight
+Date: Wed, 20 May 2026 18:18:06 +0200
+Message-ID: <20260520162117.173492090@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252449-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251808-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E2BF1597363
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mainlining.org:email]
+X-Rspamd-Queue-Id: F3E95597D27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit e6d2d8e49ca34bb39126a69128794d08ffd7c83e ]
+[ Upstream commit 7131f6d909a6546329b71f2bacfdc60cb3e6020e ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+The backlight on this device is connected via 3 strings. Currently,
+the DT claims only two are present, which results in visible stripes
+on the display (since every third backlight string remains unconfigured).
 
-Fixes: eead8f3536d5c ("arm64: dts: imx8mp: add aristainetos3 board support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fix the number of strings to avoid that.
+
+Fixes: 38d779c26395 ("arm64: dts: qcom: msm8953: Add device tree for Xiaomi Mi A2 Lite")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260116-pmi8950-wled-v3-7-e6c93de84079@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-index f654d866e58c0..e7666e54310be 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-aristainetos3a-som-v1.dtsi
-@@ -903,7 +903,7 @@ MX8MP_IOMUXC_SAI1_MCLK__GPIO4_IO20	0x41
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts
+index 336b916729e47..4e59d7de99766 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts
+@@ -157,7 +157,7 @@ &pm8953_resin {
  
- 	pinctrl_pmic: aristainetos3-pmic-grp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x41
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x1c0
- 		>;
- 	};
+ &pmi8950_wled {
+ 	qcom,current-limit-microamp = <20000>;
+-	qcom,num-strings = <2>;
++	qcom,num-strings = <3>;
  
+ 	status = "okay";
+ };
 -- 
 2.53.0
 
