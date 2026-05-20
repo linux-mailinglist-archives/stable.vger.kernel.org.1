@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gElqMOzvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:24 +0200
+	id qMyKKBr1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D409E593DCF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD81594D6B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 539573083601
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62D8F30D2B60
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA94B3368B6;
-	Wed, 20 May 2026 16:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2841936A376;
+	Wed, 20 May 2026 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwONSuKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf9dsF4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41031BD9D0;
-	Wed, 20 May 2026 16:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11963D8137;
+	Wed, 20 May 2026 17:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295606; cv=none; b=MQ496XAooIRUwD9G9wBLUhrOpdDDLP555hH1+TaAExAE6vDFIyPamr+V6/odIMxyMzMAADuX5MjQDsDtc7gY1ygHE4OFh8Y2ksVq1ucm/rY8E7JQ372LJB+xF7qpYSVQMshJM2GrB+Uas41Sr+n9MTqxyCbzKVjhcS6a7pupTfI=
+	t=1779298024; cv=none; b=lRPey+T5TW8SavcBssiqV0H/0kTtPPHMQYEHkKqtQ5Un370xoJ1hkmD2YOY1c3mgyCWpsYvENIf7T/2SGiHEJlF0IotCwOcymYlUPpG+l/wIck84cCAoGoZJxtnRODi25rW1n+EkHX25z1JlSQ5FpDG1YBiD8AXgj+4QbIDIWuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295606; c=relaxed/simple;
-	bh=5aPgWBdx+41TFTrHl1LkTLCgqwsaigUleeIVrbnoGZ8=;
+	s=arc-20240116; t=1779298024; c=relaxed/simple;
+	bh=PqxpGXb109g7CFPLZgdx+T5UZ2jP8zORe+h8MNUWuzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTEB4pvhGfFgYWF45qw3fHzDCsZudS6QHUtor+ydWaBtI/t9aXh5zgI93c5GveKZgURkSPY8fpK7hKQ/B3k29yNanpQNeS9TPxO8rJv85dEU62UHwQKZ4PqUQu57YuqRi52eRwf/J0PeUcE7b3qiPFZeDBBUz3Fufa9dy0eymbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwONSuKD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245481F000E9;
-	Wed, 20 May 2026 16:46:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VrqTotr/G2zVid3WnTEBG69gecL9hHYWtB3MKubTNU4gB65qssdjIcvGLggj+IW/t2vJaJw9JipfgXg+adsqPFMpAE3fzRLihOLfVavDsjLZe/iumQfi1HZql1Xve7VsDTrAclOzZPlByD1QxepKJ1yYQVGcK5Ghe30XvKyLfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf9dsF4O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C3B1F000E9;
+	Wed, 20 May 2026 17:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295605;
-	bh=i9X2Ph0fq31vIWGt9rALEq0oCoJzOzB+H3q2Bs/CXQo=;
+	s=korg; t=1779298022;
+	bh=wFEC742dyig/NAAG6YkXpXrgJSfQe7o5/bOgBp7CO6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NwONSuKDE/FrPXqNnloFg+BViyj5dZOOPBhC2RzxFxqwP+RUNHmmA2EQ0IhrLKSvS
-	 WLQFLd0hFkLdI/fLnmo8EnHvABjnPrJqPbznJDc5YnKhPqBmEf0jio096+88hRcTS+
-	 XsYF7VbFU9E681qEp8PhqniQPl56NBoWPu9MrX5k=
+	b=Gf9dsF4OG5Uhu+eUG2zLuG7u40OJc6UE1n9kgMZH/v8E2irIc/7LforLPpxtgL9Ir
+	 Vr9roGfXloPseA4U0dT/WPkWFcVPwjNIF5NgEmlx5vOjs15K2lKLLtZTAxvhkW4j4K
+	 FE7HRTBf/JZp2xcC89gLjf4RlJPfAALoi3C9bHIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akari Tsuyukusa <akkun11.open@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0484/1146] arm64: dts: mediatek: mt6795: Fix gpio-ranges pin count
-Date: Wed, 20 May 2026 18:12:14 +0200
-Message-ID: <20260520162159.144838028@linuxfoundation.org>
+Subject: [PATCH 6.18 252/957] PCI: Use res_to_dev_res() in reassign_resources_sorted()
+Date: Wed, 20 May 2026 18:12:15 +0200
+Message-ID: <20260520162140.007935408@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250513-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251454-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,0.152.170.8:email]
-X-Rspamd-Queue-Id: D409E593DCF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6FD81594D6B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akari Tsuyukusa <akkun11.open@gmail.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit c4c4823c8a5baa10b8100b01f49d7c3f4a871689 ]
+[ Upstream commit 4bee4fc0f4ee1086e498f9d197352237a0232598 ]
 
-The gpio-ranges in the MT6795 pinctrl node were incorrectly defined,
-therefore, GPIO196 cannot be used.
-Correct the range count to match the driver.
+reassign_resources_sorted() contains a search loop for a particular
+resource in the head list. res_to_dev_res() already implements the same
+search so use it instead.
 
-Fixes: b888886a4536 ("arm64: dts: mediatek: mt6795: Add pinctrl controller node")
-Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Drop unused found_match and dev_res variables.
+
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251219174036.16738-9-ilpo.jarvinen@linux.intel.com
+Stable-dep-of: 1ee4716a5a28 ("PCI: Fix premature removal from realloc_head list during resource assignment")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6795.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/setup-bus.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-index ae2aaa51c9ad2..134cfa77e3b1f 100644
---- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-@@ -371,7 +371,7 @@ pio: pinctrl@10005000 {
- 				     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>;
- 			gpio-controller;
- 			#gpio-cells = <2>;
--			gpio-ranges = <&pio 0 0 196>;
-+			gpio-ranges = <&pio 0 0 197>;
- 			interrupt-controller;
- 			#interrupt-cells = <2>;
- 		};
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index c2d640164f697..3ea6f3e726a8c 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -417,7 +417,6 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
+ 				      struct list_head *head)
+ {
+ 	struct pci_dev_resource *add_res, *tmp;
+-	struct pci_dev_resource *dev_res;
+ 	struct pci_dev *dev;
+ 	struct resource *res;
+ 	const char *res_name;
+@@ -425,8 +424,6 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
+ 	int idx;
+ 
+ 	list_for_each_entry_safe(add_res, tmp, realloc_head, list) {
+-		bool found_match = false;
+-
+ 		res = add_res->res;
+ 		dev = add_res->dev;
+ 		idx = pci_resource_num(dev, res);
+@@ -440,13 +437,7 @@ static void reassign_resources_sorted(struct list_head *realloc_head,
+ 			goto out;
+ 
+ 		/* Skip this resource if not found in head list */
+-		list_for_each_entry(dev_res, head, list) {
+-			if (dev_res->res == res) {
+-				found_match = true;
+-				break;
+-			}
+-		}
+-		if (!found_match) /* Just skip */
++		if (!res_to_dev_res(head, res))
+ 			continue;
+ 
+ 		res_name = pci_resource_name(dev, idx);
 -- 
 2.53.0
 
