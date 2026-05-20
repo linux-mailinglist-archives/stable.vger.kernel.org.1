@@ -1,154 +1,198 @@
-Return-Path: <stable+bounces-249817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBK1D7aZDWoMzwUAu9opvQ
-	(envelope-from <stable+bounces-249817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:23:34 +0200
+	id oP8kHXCYDWrKzwUAu9opvQ
+	(envelope-from <stable+bounces-249818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:18:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDEE58C555
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:23:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E958C386
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E93813080FBD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:17:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD1BC303C79C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFA5374E74;
-	Wed, 20 May 2026 11:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6126332B99F;
+	Wed, 20 May 2026 11:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpgJP7uP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOwdn8k3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5612F32B99F;
-	Wed, 20 May 2026 11:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE90374E74
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 11:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779275849; cv=none; b=Sooq99wbWV9r8lPkGZZZD79Yvec81wpq2jjjNEL9q3rxeitA4CUI6uzsc4gBn03ClcZAcCODgjPIaL2bz2GTygEOTP4P6mDiLTEHOWimmRulo4j4MCGjxP2JWxxPw/66vPAKIHG9QdtqFnbyt9AOZqQ541ZqRfdqEv8s79VprmY=
+	t=1779275857; cv=none; b=rmeS7KDIy77sfonngYfE7g3sTxAI0nPMI9J0plixvuWZdRebSATCeR7tzCNUCsREv0f/pWrCHFp2KaHjX3R3F0mwHBB4B5+LUp8MSMPJwd3tRWRBy10UbRn/s1RwAKQrspmcT2M4NCDK/UZ7mcEI3R8fC0ehB/cC4Qbs3A9kkWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779275849; c=relaxed/simple;
-	bh=GwRkeQmZ/PkOZ28Rjo7aBtWBmAR7ItvcwcM9ypDM//g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p97xxMKorEHVB3EYFPiHnXiezzUNToxQjJrTlGS+0IHuFQtRn1zR9S6zUZSTxojO6C7wTpkdqltqQSSMD7zewvG5UOf8hGJ+fw3Q+EAC0hPgKxIFp9Hu7dJMNT1JyeaBOzGqTy2wldH6S1vS/XgmyYw5rWxfZ+cyXvj3uEvZqDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpgJP7uP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9021F0089D;
-	Wed, 20 May 2026 11:17:25 +0000 (UTC)
+	s=arc-20240116; t=1779275857; c=relaxed/simple;
+	bh=SwICcjUIVp4nK/nxe+bRDzRSjU89i9JwCrRw9RBwREk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o+xwzy6TzsgGp4cv7fzbDvyGumZQDCoWIdtT3uIl9hUlgpANdcfftbXIj3XXwv6mJPzjW8YVB4NKt9yZOxkTXOmkY8p+sRSKP9b4RkOV4hZFafHu0e1jjgCxnTT/hF1XXv0oc/iKi9bPIBfXkiiN6RlORT4iKVDLJoayBha+9hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOwdn8k3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167281F000E9;
+	Wed, 20 May 2026 11:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779275848;
-	bh=Bg8I3bFSXjHEDZhjETxbAKuUFzCkBXnkLamtthcmvm8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YpgJP7uPg61CYTC7PGhdgR6mGAYtrPCfwOrIWPU4O5pXs2lwB3pzz43tL+nAy/DYE
-	 5a96PeG6bNdq7+882mCpkaOx6jqFqtfHG5KFTLezbdYcZ+e9p+fhu6QJXJsZng1yOD
-	 Qj+46XUGWHlHXN9hc8hz4tGxV1qQihXDkcVYmyTjZfF3kzBHXL1pVQZlUZEligp9rZ
-	 GlZzAa7gg+7smS8Uir0XuR8wHfHM1Bg3WcwoNlN+oUZDII7GUWH9Xmoqs72pNcyCkn
-	 SZjtLbTbCSkQuaE7UV/jTLN5zWuKjZ1ZvgdUAHV5YVN2gH0oN8aVu0W13g/XGTfy8v
-	 V9Rr5txvYAWSQ==
-Date: Wed, 20 May 2026 12:17:20 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Li Xinyu <xinyuili@126.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Linus Walleij
- <linusw@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: gyro: mpu3050: use devm_iio_trigger_register
-Message-ID: <20260520121720.6f9374c5@jic23-huawei>
-In-Reply-To: <20260520032447.1683688-1-xinyuili@126.com>
-References: <20260520024153.1647951-1-xinyuili@126.com>
-	<20260520032447.1683688-1-xinyuili@126.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=k20260515; t=1779275855;
+	bh=KjS458LSYSa6vvqd02iPoZRNPsV/uZP7bKyI5eXQ3sE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EOwdn8k3kkwq2vrDWHWgmS28i1AY1SOCt3MsY4UnBPb2d4yedEgsrtSM/uvFbm3iA
+	 yQzAeMiCzhKiuaCXo83lXR3S1fTwlojftnJpkMb+FX59oz/NkH0iQQTXXdGXUDVZ+p
+	 gsynDCSgBnIDJfnqEQgPva59pZiNKso4NFMYz9httjkLnJnpxWngHyQCbGUuCDehC5
+	 v2V4gjMXNFm1wf4HFvt4JAvxd1V1aIyUFOx8hpmbwF06GFk7tqTfgO+tLJxooWVi47
+	 rfa0q9x22Pxll1uVOsflZDvkG/EVbmJ0yOkCa+cbb8gSsQHbMYwJBVsZmIu38EiPC0
+	 drGU3tmxU5KFA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chao Yu <chao@kernel.org>,
+	stable@kernel.org,
+	Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] f2fs: fix false alarm of lockdep on cp_global_sem lock
+Date: Wed, 20 May 2026 07:17:33 -0400
+Message-ID: <20260520111733.3419315-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051239-tightly-tadpole-2db4@gregkh>
+References: <2026051239-tightly-tadpole-2db4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[126.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249818-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249817-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9FDEE58C555
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6D3E958C386
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 20 May 2026 11:24:47 +0800
-Li Xinyu <xinyuili@126.com> wrote:
+From: Chao Yu <chao@kernel.org>
 
-> mpu3050_trigger_probe() allocates the DRDY trigger with
-> devm_iio_trigger_alloc() but registers it with plain
-> iio_trigger_register(). The remove callback calls free_irq()
-> on the trigger but never calls iio_trigger_unregister(), so on
-> module unload the trigger remains in the global trigger list
-> while its memory is freed by devm, leaving a dangling entry.
-> 
-> Switch to devm_iio_trigger_register() so the registration is
-> undone automatically in the same devm scope as the allocation.
-> 
-> Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Li Xinyu <xinyuili@126.com>
-Look at the more general use of devm in this driver.
+[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
 
-The rule of thumb for devm is that you can only use it from start of
-probe() to the point where you first make a call that doesn't use it.
-After that you must not use any devm calls.
+lockdep reported a potential deadlock:
 
-Sometimes it is easy to use it for all of probe() which obviously obeys
-that rule.
+a) TCMU device removal context:
+ - call del_gendisk() to get q->q_usage_counter
+ - call start_flush_work() to get work_completion of wb->dwork
+b) f2fs writeback context:
+ - in wb_workfn(), which holds work_completion of wb->dwork
+ - call f2fs_balance_fs() to get sbi->gc_lock
+c) f2fs vfs_write context:
+ - call f2fs_gc() to get sbi->gc_lock
+ - call f2fs_write_checkpoint() to get sbi->cp_global_sem
+d) f2fs mount context:
+ - call recover_fsync_data() to get sbi->cp_global_sem
+ - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
+   that goes down to blk_mq_alloc_request and get q->q_usage_counter
 
-Also when you do switch to devm in a driver, there is normally a
-reverse operation to remove in remove() and error paths().
+Original callstack is in Closes tag.
 
-There was a recent fix for a case similar to this but that was because
-that driver did everything else with devm and didn't call the unwind
-at all. It was a simple typo in the driver.
+However, I think this is a false alarm due to before mount returns
+successfully (context d), we can not access file therein via vfs_write
+(context c).
 
-Jonathan
+Let's introduce per-sb cp_global_sem_key, and assign the key for
+cp_global_sem, so that lockdep can recognize cp_global_sem from
+different super block correctly.
 
+A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
+the work.
 
-> ---
-> Changes in v2:
-> - Corrected the name format in Signed-off-by from "lixinyu" to proper
->   "Li Xinyu". Sorry for the mistake in v1. Thank you Maxime.
-> ---
->  drivers/iio/gyro/mpu3050-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
-> index d84e04e4b431..bcfa83a46737 100644
-> --- a/drivers/iio/gyro/mpu3050-core.c
-> +++ b/drivers/iio/gyro/mpu3050-core.c
-> @@ -1127,7 +1127,7 @@ static int mpu3050_trigger_probe(struct iio_dev *indio_dev, int irq)
->  	mpu3050->trig->ops = &mpu3050_trigger_ops;
->  	iio_trigger_set_drvdata(mpu3050->trig, indio_dev);
->  
-> -	ret = iio_trigger_register(mpu3050->trig);
-> +	ret = devm_iio_trigger_register(mpu3050->dev, mpu3050->trig);
->  	if (ret)
->  		goto err_iio_trigger;
->  
+Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
+Cc: stable@kernel.org
+Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ re-anchored lockdep_register_key after init_f2fs_rwsem and placed lockdep_unregister_key before kfree(sbi) in f2fs_put_super instead of kill_f2fs_super ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/f2fs.h  |  3 +++
+ fs/f2fs/super.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index fb35f78e60bb3..50847fd7e5504 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1824,6 +1824,9 @@ struct f2fs_sb_info {
+ 	spinlock_t iostat_lat_lock;
+ 	struct iostat_lat_info *iostat_io_lat;
+ #endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lock_class_key cp_global_sem_key;
++#endif
+ };
+ 
+ /* Definitions to access f2fs_sb_info */
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 7614d93bd67fb..c018d548e1634 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1694,6 +1694,9 @@ static void f2fs_put_super(struct super_block *sb)
+ 		kvfree(sbi->write_io[i]);
+ #if IS_ENABLED(CONFIG_UNICODE)
+ 	utf8_unload(sb->s_encoding);
++#endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
+ #endif
+ 	kfree(sbi);
+ }
+@@ -4380,6 +4383,11 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	init_f2fs_rwsem(&sbi->gc_lock);
+ 	mutex_init(&sbi->writepages);
+ 	init_f2fs_rwsem(&sbi->cp_global_sem);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_register_key(&sbi->cp_global_sem_key);
++	lockdep_set_class(&sbi->cp_global_sem.internal_rwsem,
++					&sbi->cp_global_sem_key);
++#endif
+ 	init_f2fs_rwsem(&sbi->node_write);
+ 	init_f2fs_rwsem(&sbi->node_change);
+ 	spin_lock_init(&sbi->stat_lock);
+@@ -4838,6 +4846,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ free_sbi:
+ 	if (sbi->s_chksum_driver)
+ 		crypto_free_shash(sbi->s_chksum_driver);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 	kfree(sbi);
+ 
+ 	/* give only one another chance */
+-- 
+2.53.0
 
 
