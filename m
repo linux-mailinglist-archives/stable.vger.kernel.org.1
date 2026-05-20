@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FD0B879DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:38 +0200
+	id QGp/CFUnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1765596648
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A37F59AE2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E767335A9488
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B53203448ED4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EB93F65E1;
-	Wed, 20 May 2026 17:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8191A3E123F;
+	Wed, 20 May 2026 18:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgaKWYwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr5LcaeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1E53F23C5;
-	Wed, 20 May 2026 17:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B3E36D9EA;
+	Wed, 20 May 2026 18:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299435; cv=none; b=hvg9YJ6kzyqG+CZ1tK6oOynJ9451TaM7rQejbvuahRENDyFFkg12rxKgw3WynMES/mh6lyrc43oSs2yWY+d9OxXVSYzy4n9BXwVzUqB4+39GabDfp+1rCcfE3ZDZD8gS6wHine9aDvKoeuI5yrd4DJBed8/pkUxI7wfeFUbMkEw=
+	t=1779301142; cv=none; b=jUR9PXRx2N7XoeqqZbd+2qmiTzJmMFbPcXULaUIE659GYXWCF6WJu90l7ywAnxHHOkfDYhc2RtZwqp63SRZOLvr6Xtu/MggoP/wqHvWxGtvb6Wka+91gatAKqYING9Af1e1OsRPk2QbSnBpzThsQF/Yj2Qijg3K5n0v7BGCTgzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299435; c=relaxed/simple;
-	bh=YB7LGaquYBhXlq7lcI38Hn2K4c88d1TI7fsXdISDDf0=;
+	s=arc-20240116; t=1779301142; c=relaxed/simple;
+	bh=f+Oj9vj3Zwg7sG6FLzskgdjASBgNEdogucl3mIttwUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+Dehk+mQbbbvz52Qz0PR3Ddr7Ftm0Vf2YgRAJQWxAlGO5yYswsxAJg9GVyn7FajvxBiMErFQgj1Ddm6QPQ+EEDFfI/4zXw5s4tjKp+7UIMdC7IDbIYlDDh5NSUFDGrklgLG6o7KPkUyRdR3dDVyLXFOc5ZyVxV84I05BBytvYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgaKWYwY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3822C1F000E9;
-	Wed, 20 May 2026 17:50:34 +0000 (UTC)
+	 MIME-Version; b=vDoYqxFl+VBV8vhCxuAuxxk3dUtVOoMi+YVjnDyP88AU919Ih/cbT4CZeZcRgyfMQZ580+7twZwZ4aVCAuMHl/N0uoJyCel8hegAZenZg2kgB8t6em4zd70OxKVlEPv2XpxGeqE+1OUBgFN+qorsPh63/9yaFaoITetylDCuMH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr5LcaeM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2F71F000E9;
+	Wed, 20 May 2026 18:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299434;
-	bh=E6RbrduHM2xFgkto4D3NsaDU2U4gXsTy280uiQLbRRo=;
+	s=korg; t=1779301141;
+	bh=QrmcneeExR1LWSTEFzyUzZ+BL/xcKxTSpo8Ik1mfEkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OgaKWYwYak/qGj9EF/+k/geLVR7jwU/W709W/hhqh7A8iW4cr8XHVHqhUD01oc5DK
-	 rzR8upoDFrvdJc3t2RXB4kBT0L2lYMJIuAk8+4dCL2vGTAG8sG4pGcjxmPZZf+mguH
-	 Cp9TnrY5owoOnlur6phmSitjErrFWFAyT5Hx1apA=
+	b=sr5LcaeMrFnN2FLRBUU+EyoWue9xH2wF1rC0+DiyR583it5vqI9M8aBY9bcodujZK
+	 DiDBl5CNaDXrkCcLqo6ccTyggZpafIsGCQa3VAm76aCTqIro7ppfhWtB0RmRbFOH0V
+	 4C4q9/zcRjoS7HvbyrJISGsyiJynjSvpbJpNxeY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 771/957] net: airoha: stop net_device TX queue before updating CPU index
+Subject: [PATCH 6.12 443/666] arm64: dts: marvell: armada-37xx: use usb2-phy in USB3 controllers phy-names
 Date: Wed, 20 May 2026 18:20:54 +0200
-Message-ID: <20260520162151.283799302@linuxfoundation.org>
+Message-ID: <20260520162120.874066383@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +66,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252616-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251982-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DBL_PROHIBIT(0.00)[0.0.226.144:email];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A1765596648
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
+X-Rspamd-Queue-Id: 5A37F59AE2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 3854de7b38be742cf7558476956d12414cb274f2 ]
+[ Upstream commit 0fef19844624f8bc07651b4d26088d8940affba3 ]
 
-Currently, airoha_eth driver updates the CPU index register prior of
-verifying whether the number of free descriptors has fallen below the
-threshold.
-Move net_device TX queue length check before updating the TX CPU index
-in order to update TX CPU index even if there are more packets to be
-transmitted but the net_device TX queue is going to be stopped
-accounting the inflight packets.
+Instead of the generic 'usb2-phy' name, the Armada 37xx device trees
+are using a custom 'usb2-utmi-otg-phy' name for the USB2 PHY in the USB3
+controller node. Since commit 53a2d95df836 ("usb: core: add phy notify
+connect and disconnect"), this triggers a bug [1] in the USB core which
+causes double use of the USB3 PHY.
 
-Fixes: 1d304174106c ("net: airoha: Implement BQL support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260421-airoha-xmit-stop-condition-v1-1-e670d6a48467@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change the PHY name to 'usb2-phy' in the SoC and in the uDPU specific
+dtsi files in order to avoid triggering the bug and also to keep the
+names in line with the ones used by other platforms.
+
+Link: https://lore.kernel.org/r/20260330-usb-avoid-usb3-phy-double-use-v1-1-d2113aecb535@gmail.com # [1]
+Fixes: 53a2d95df836 ("usb: core: add phy notify connect and disconnect")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi | 2 +-
+ arch/arm64/boot/dts/marvell/armada-37xx.dtsi      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 865b854bd4afc..fd612cc339e13 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2111,17 +2111,16 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+index cd856c0aba71e..12deacb741ccb 100644
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -161,7 +161,7 @@ &eth1 {
+ &usb3 {
+ 	status = "okay";
+ 	phys = <&usb2_utmi_otg_phy>;
+-	phy-names = "usb2-utmi-otg-phy";
++	phy-names = "usb2-phy";
+ };
  
- 	skb_tx_timestamp(skb);
- 	netdev_tx_sent_queue(txq, skb->len);
-+	if (q->ndesc - q->queued < q->free_thr) {
-+		netif_tx_stop_queue(txq);
-+		q->txq_stopped = true;
-+	}
+ &uart0 {
+diff --git a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
+index 9603223dd761f..16b2b70529506 100644
+--- a/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-37xx.dtsi
+@@ -375,7 +375,7 @@ usb3: usb@58000 {
+ 				interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&sb_periph_clk 12>;
+ 				phys = <&comphy0 0>, <&usb2_utmi_otg_phy>;
+-				phy-names = "usb3-phy", "usb2-utmi-otg-phy";
++				phy-names = "usb3-phy", "usb2-phy";
+ 				status = "disabled";
+ 			};
  
- 	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
- 		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
- 				TX_RING_CPU_IDX_MASK,
- 				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
- 
--	if (q->ndesc - q->queued < q->free_thr) {
--		netif_tx_stop_queue(txq);
--		q->txq_stopped = true;
--	}
--
- 	spin_unlock_bh(&q->lock);
- 
- 	return NETDEV_TX_OK;
 -- 
 2.53.0
 
