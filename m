@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDMrJCHuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:45 +0200
+	id IMAyMywBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0C059388F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776285972C1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C867309EE2C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCEED315A3BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4F53C6A5C;
-	Wed, 20 May 2026 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDC53FBEDF;
+	Wed, 20 May 2026 18:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfadswAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3kz3U2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1D13EBF35;
-	Wed, 20 May 2026 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00AF3FBB7D;
+	Wed, 20 May 2026 18:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296915; cv=none; b=m/YhBVKF9NGks0sdx8ckB2ezjv7mpfGGIl/Wk1M4VQavIg7Kzuk6Xcgc7KkpjN5/zXEIJ8amJIG9K4iU8z1BUjqNDqNXbtVwais8eFqhDGKrmXEq+dTJMAoQWafaV0/4rox9oO+JXzJJWajvapptGyNf4yuEhvRQFX7LqqHluKw=
+	t=1779302289; cv=none; b=sPe/oOkL/IYMz7fUxL+7irSNyYZEqT7CtrbTYH9pqpDC1oSQ647m3Y05N10/byjkqjibWq73jRh6tv3B7Y1eq+jYk4fXZfbE5mkABwghWMrEFAt9kytHLNbyYvyHbN9FOMCvwjQXVnVDWVW9R7vh2h0IVIQlyJKAfHqP4MbkONA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296915; c=relaxed/simple;
-	bh=hvgSa5zcV+hr205UfwoaQr/KWco8gMAuZ3DBjmdRBfk=;
+	s=arc-20240116; t=1779302289; c=relaxed/simple;
+	bh=pUH/usJPmvBcSTWEKfKX/8k1VaKeQgHH7bAEM2sxvhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ttnx2dn2x1+5W+sesq5Y5qoVMV8hVECb5L4KpQX1Y9xcQIeTgkEqLGEgAPGrKxUVw8ZBYyuk3ACdvXddar6JeO9oGpVKYsVSbIt29gac2l2RHXqg5VK+WmiCXmSXTc9l5c/J2GWdEVFaXn3Wv86r+9GRJYG0yx/Pe6hsx5GmknU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfadswAr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E73C1F000E9;
-	Wed, 20 May 2026 17:08:33 +0000 (UTC)
+	 MIME-Version; b=AcFyebI1HFIqgZd50vnKNm9wKWK4WgezzK8u1C+EiQ872nWz7B9deFVJvTRfO4LvckJyYHyFYJOi2Mz8ZVvD+2JPVZPaVphuqyuZfojdokAaIRmwdW9M/IBGgYg6uRmL+K+cDKmk68xl83Dpc9Eo+aPtAe1fRm6Ff3PZiJjebgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3kz3U2i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624451F000E9;
+	Wed, 20 May 2026 18:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296914;
-	bh=h4clyJjB2vJu6w3krgFXatOgQcLUJx/s4O2l3tYjCx8=;
+	s=korg; t=1779302287;
+	bh=R9GYn/45Bn6Buaz5wGcTuO4S/ghw32vjnlyefBs6mjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xfadswAr0AUwBVXGJTTI94+y2Z85YuV1DDDx7IaQ+OdYIOJ4eclvkzHio+RNNZdto
-	 kKQn5VB94L+ZK8HmWNwrwHs/cgsK1R2xTwSTfa6XrNHCNdQP76LF/o9Qlesy+3gE+g
-	 d8B8yyJ/2LV351L40yijstD1SJ2bC8rsKlx7/tSk=
+	b=y3kz3U2iQE6DwsK++i+XeCTmNqKhaijZVv2yKKFH1vr+SI5dYDDA2lBg1re6YTngi
+	 6AbItJbNs+tzqwPjbQvskHHKYgSEFIQiWhX1zs8U4ehGrXfieJnsiOFhuByz12bEVP
+	 aW5ASWoxsL+sol7I41oCD3Smsw/fV2lnVv/igVY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0980/1146] drm/amd/pm: Add fine grained flag to SMU v13.0.6
-Date: Wed, 20 May 2026 18:20:30 +0200
-Message-ID: <20260520162210.411229610@linuxfoundation.org>
+Subject: [PATCH 6.6 208/508] soc: qcom: aoss: compare against normalized cooling state
+Date: Wed, 20 May 2026 18:20:31 +0200
+Message-ID: <20260520162103.143447875@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251028-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253056-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2D0C059388F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 776285972C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 47a5dfc8add4e60ff1ddc312f79998e70cbb0c09 ]
+[ Upstream commit cd3c4670db3ffe997be9548c7a9db3952563cf14 ]
 
-Gfx clock is fine grained on SMU v13.0.6/12 SOCs. Add the flag to report
-clock frequencies correctly.
+qmp_cdev_set_cur_state() normalizes the requested state to a boolean
+(cdev_state = !!state). The existing early-return check compares
+qmp_cdev->state == state, which can be wrong if state is non-boolean
+(any non-zero value). Compare qmp_cdev->state against cdev_state instead,
+so the check matches the effective state and avoids redundant updates.
 
-Fixes: 7380228401c4 ("drm/amd/pm: Use generic dpm table for SMUv13 SOCs")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d4871d837bbf70173f63426a84fa80b39e408b9e)
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Fixes: 05589b30b21a ("soc: qcom: Extend AOSS QMP driver to support resources that are used to wake up the SoC.")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260329195333.1478090-1-alok.a.tiwari@oracle.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/qcom/qcom_aoss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-index 870bcc86fd794..c62b12d672d48 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
-@@ -1122,6 +1122,7 @@ static int smu_v13_0_6_set_default_dpm_table(struct smu_context *smu)
- 	/* gfxclk dpm table setup */
- 	dpm_table = &dpm_context->dpm_tables.gfx_table;
- 	dpm_table->clk_type = SMU_GFXCLK;
-+	dpm_table->flags = SMU_DPM_TABLE_FINE_GRAINED;
- 	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_DPM_GFXCLK_BIT)) {
- 		/* In the case of gfxclk, only fine-grained dpm is honored.
- 		 * Get min/max values from FW.
+diff --git a/drivers/soc/qcom/qcom_aoss.c b/drivers/soc/qcom/qcom_aoss.c
+index 77f0cf126629e..078561b9314ad 100644
+--- a/drivers/soc/qcom/qcom_aoss.c
++++ b/drivers/soc/qcom/qcom_aoss.c
+@@ -340,7 +340,7 @@ static int qmp_cdev_set_cur_state(struct thermal_cooling_device *cdev,
+ 	/* Normalize state */
+ 	cdev_state = !!state;
+ 
+-	if (qmp_cdev->state == state)
++	if (qmp_cdev->state == cdev_state)
+ 		return 0;
+ 
+ 	ret = qmp_send(qmp_cdev->qmp, "{class: volt_flr, event:zero_temp, res:%s, value:%s}",
 -- 
 2.53.0
 
