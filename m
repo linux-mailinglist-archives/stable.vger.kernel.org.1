@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCpZIpUODmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:13 +0200
+	id MBpYIRYZDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB1D5989F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA89599978
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 028BC321CE27
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCCEF30EA9E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DF335DA78;
-	Wed, 20 May 2026 16:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D610C3A4526;
+	Wed, 20 May 2026 17:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9vc0mgg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcdVrFgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4F250BEC;
-	Wed, 20 May 2026 16:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E7E3C6A5C;
+	Wed, 20 May 2026 17:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295041; cv=none; b=CfbleHxh7GeKGwEvZYNg31RgVyf1I9FY8TsSbmHUb+cV+taz+Wn23Oii5MG0UAEeSmwke1NM/uON6U6fjyek2GPkjuO6FUNvFdFp6q9SPS+Wovh95WXbNAJS291RPPRKDlr/MuPKyn8PGsaB806GB8Tqb12B0CD0afx4WaS5HpM=
+	t=1779297591; cv=none; b=T1UJEfLopFg5hpBaUEmuflSn5AGhO4bgwe2gzDhjbIAVdCjneoVDt8PqD/W1oG+s4qea1Zz3F/m5/P55Nb5vBONu7UA5bGiSWP0KUHnrjKXSucBcwGZ0baftJxAc4PC+hMCYAD+OSVNEsNouwNqqlqu1PciqLymY9BFH1mmvuYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295041; c=relaxed/simple;
-	bh=zlM02wBg/wafV+2kRI4UqYYjJn/f+qgLUhIuOEkAfqM=;
+	s=arc-20240116; t=1779297591; c=relaxed/simple;
+	bh=/IEf8oNfOVcf7DTPYy6WkI21zd4Wgdc+fPOT5+9w0/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktsOLjCXDaPdLceZbIjkJSpDsaP12Grw1/ponSzadbti5q/QoiczdAHFOpRfNxUcRFb+8dkZ+Eg6kkVTtV+hyRiwmUEN0jS011aiOPlKa/svcCKBVHSE1iQWuatgVUaaEoxG62cbzC/Zy4iQjKlbvCfEKOgKI7hufIjn9QN/eYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9vc0mgg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC3A1F000E9;
-	Wed, 20 May 2026 16:37:19 +0000 (UTC)
+	 MIME-Version; b=aYHJbseb7t/7ig1fBlNe7im0MpZ1x4P2wONOtqD98AssvfrG/+yLEvylITa2HM/P5T3AKpAbWRvYx57hCubn0p7H86QLmGVyMQsfdhFhAWS2At99WymNOxFG/Cdap4r7uiXVdiryQYty8yTHF1WtuAnCbn1UzSKw5Z2ptg+z8H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcdVrFgl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AA21F000E9;
+	Wed, 20 May 2026 17:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295040;
-	bh=6HfQh8cIzKiDzpQ8dJcc5UWYfp/XUNuak/UwP3dO+K4=;
+	s=korg; t=1779297590;
+	bh=p5sDra03FpqmH2lmcSzraBLnr7oQOs0NoHBa6he0Kpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g9vc0mggI5xta5ndlkNjrXyWr8XeXuVpDFJKgx1U7FofvUSoxyhMTG1Ny5dFaA89w
-	 e22GS7a/1q8X18P1MNNG4Naijl/pv/Y5cdpnMdyHfYTeEOyGGCnnSSgZwezcSUnU2t
-	 tld2wvmxegwU17EGvRgQWvDKI/diXzQx2vTCKKWg=
+	b=HcdVrFgly+1E1U9Cmj1HfD/WrTqryiaktwrVSWRX8JrgT2LCkwW0RJDW2+Tvy9/HE
+	 yh1O89rmf8It1HpgB0YJ6b9KsSD75xhYgp6uTxsxPRB2NDGsRDgaTM9yBLXkdTK2Jq
+	 bl2RU9QAyq3jC7UzB8h7h8S4MT14Twfd9od7tpvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0269/1146] dm log: fix out-of-bounds write due to region_count overflow
-Date: Wed, 20 May 2026 18:08:39 +0200
-Message-ID: <20260520162154.310805666@linuxfoundation.org>
+Subject: [PATCH 6.18 037/957] hrtimer: Reduce trace noise in hrtimer_start()
+Date: Wed, 20 May 2026 18:08:40 +0200
+Message-ID: <20260520162135.362413246@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +66,248 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250296-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251287-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email]
-X-Rspamd-Queue-Id: 1AB1D5989F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: DCA89599978
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
+[ Upstream commit f2e388a019e4cf83a15883a3d1f1384298e9a6aa ]
 
-The local variable region_count in create_log_context() is declared as
-unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
-When a device-mapper target has a sufficiently large ti->len with a small
-region_size, the division result can exceed UINT_MAX. The truncated
-value is then used to calculate bitset_size, causing clean_bits,
-sync_bits, and recovering_bits to be allocated far smaller than needed
-for the actual number of regions.
+hrtimer_start() when invoked with an already armed timer traces like:
 
-Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
-region indices derived from the full untruncated region space, causing
-out-of-bounds writes to kernel heap memory allocated by vmalloc.
+ <comm>-..   [032] d.h2. 5.002263: hrtimer_cancel: hrtimer= ....
+ <comm>-..   [032] d.h1. 5.002263: hrtimer_start: hrtimer= ....
 
-This can be reproduced by creating a mirror target whose region_count
-overflows 32 bits:
+Which is incorrect as the timer doesn't get canceled. Just the expiry time
+changes. The internal dequeue operation which is required for that is not
+really interesting for trace analysis. But it makes it tedious to keep real
+cancellations and the above case apart.
 
-  dmsetup create bigzero --table '0 8589934594 zero'
-  dmsetup create mymirror --table '0 8589934594 mirror \
-    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
-    /dev/mapper/bigzero 0'
+Remove the cancel tracing in hrtimer_start() and add a 'was_armed'
+indicator to the hrtimer start tracepoint, which clearly indicates what the
+state of the hrtimer is when hrtimer_start() is invoked:
 
-The status output confirms the truncation (sync_count=1 instead of
-4294967297, because 0x100000001 was truncated to 1):
+<comm>-..   [032] d.h1. 6.200103: hrtimer_start: hrtimer= .... was_armed=0
+ <comm>-..   [032] d.h1. 6.200558: hrtimer_start: hrtimer= .... was_armed=1
 
-  $ dmsetup status mymirror
-  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
-
-This leads to a kernel crash in core_in_sync:
-
-  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
-  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
-  CR2: 0000000000000008
-  Fixing recursive fault but reboot is needed!
-
-Fix by widening the local region_count to sector_t and adding an
-explicit overflow check before the value is assigned to lc->region_count.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260224163430.208491877@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-log.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/trace/events/timer.h | 11 +++++----
+ kernel/time/hrtimer.c        | 43 +++++++++++++++++-------------------
+ 2 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
-index 1aa6a4a7d2323..d316757a328be 100644
---- a/drivers/md/dm-log.c
-+++ b/drivers/md/dm-log.c
-@@ -373,7 +373,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index 1641ae3e6ca06..ab9a9386f7b65 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -218,12 +218,13 @@ TRACE_EVENT(hrtimer_setup,
+  * hrtimer_start - called when the hrtimer is started
+  * @hrtimer:	pointer to struct hrtimer
+  * @mode:	the hrtimers mode
++ * @was_armed:	Was armed when hrtimer_start*() was invoked
+  */
+ TRACE_EVENT(hrtimer_start,
  
- 	struct log_c *lc;
- 	uint32_t region_size;
--	unsigned int region_count;
-+	sector_t region_count;
- 	size_t bitset_size, buf_size;
- 	int r;
- 	char dummy;
-@@ -401,6 +401,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+-	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
++	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
+ 
+-	TP_ARGS(hrtimer, mode),
++	TP_ARGS(hrtimer, mode, was_armed),
+ 
+ 	TP_STRUCT__entry(
+ 		__field( void *,	hrtimer		)
+@@ -231,6 +232,7 @@ TRACE_EVENT(hrtimer_start,
+ 		__field( s64,		expires		)
+ 		__field( s64,		softexpires	)
+ 		__field( enum hrtimer_mode,	mode	)
++		__field( bool,		was_armed	)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -239,13 +241,14 @@ TRACE_EVENT(hrtimer_start,
+ 		__entry->expires	= hrtimer_get_expires(hrtimer);
+ 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
+ 		__entry->mode		= mode;
++		__entry->was_armed	= was_armed;
+ 	),
+ 
+ 	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
+-		  "mode=%s", __entry->hrtimer, __entry->function,
++		  "mode=%s was_armed=%d", __entry->hrtimer, __entry->function,
+ 		  (unsigned long long) __entry->expires,
+ 		  (unsigned long long) __entry->softexpires,
+-		  decode_hrtimer_mode(__entry->mode))
++		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
+ );
+ 
+ /**
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 2589cd1b2ec3a..1f602deeb09a4 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -471,17 +471,10 @@ static inline void debug_setup_on_stack(struct hrtimer *timer, clockid_t clockid
+ 	trace_hrtimer_setup(timer, clockid, mode);
+ }
+ 
+-static inline void debug_activate(struct hrtimer *timer,
+-				  enum hrtimer_mode mode)
++static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
+ {
+ 	debug_hrtimer_activate(timer, mode);
+-	trace_hrtimer_start(timer, mode);
+-}
+-
+-static inline void debug_deactivate(struct hrtimer *timer)
+-{
+-	debug_hrtimer_deactivate(timer);
+-	trace_hrtimer_cancel(timer);
++	trace_hrtimer_start(timer, mode, was_armed);
+ }
+ 
+ static struct hrtimer_clock_base *
+@@ -1076,9 +1069,9 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
+  * Returns true when the new timer is the leftmost timer in the tree.
+  */
+ static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+-			    enum hrtimer_mode mode)
++			    enum hrtimer_mode mode, bool was_armed)
+ {
+-	debug_activate(timer, mode);
++	debug_activate(timer, mode, was_armed);
+ 	WARN_ON_ONCE(!base->cpu_base->online);
+ 
+ 	base->cpu_base->active_bases |= 1 << base->index;
+@@ -1138,6 +1131,8 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 	if (state & HRTIMER_STATE_ENQUEUED) {
+ 		bool reprogram;
+ 
++		debug_hrtimer_deactivate(timer);
++
+ 		/*
+ 		 * Remove the timer and force reprogramming when high
+ 		 * resolution mode is active and the timer is on the current
+@@ -1146,7 +1141,6 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 		 * reprogramming happens in the interrupt handler. This is a
+ 		 * rare case and less expensive than a smp call.
+ 		 */
+-		debug_deactivate(timer);
+ 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
+ 
+ 		/*
+@@ -1213,15 +1207,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ {
+ 	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
+ 	struct hrtimer_clock_base *new_base;
+-	bool force_local, first;
++	bool force_local, first, was_armed;
+ 
+ 	/*
+ 	 * If the timer is on the local cpu base and is the first expiring
+ 	 * timer then this might end up reprogramming the hardware twice
+-	 * (on removal and on enqueue). To avoid that by prevent the
+-	 * reprogram on removal, keep the timer local to the current CPU
+-	 * and enforce reprogramming after it is queued no matter whether
+-	 * it is the new first expiring timer again or not.
++	 * (on removal and on enqueue). To avoid that prevent the reprogram
++	 * on removal, keep the timer local to the current CPU and enforce
++	 * reprogramming after it is queued no matter whether it is the new
++	 * first expiring timer again or not.
+ 	 */
+ 	force_local = base->cpu_base == this_cpu_base;
+ 	force_local &= base->cpu_base->next_timer == timer;
+@@ -1243,7 +1237,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	 * avoids programming the underlying clock event twice (once at
+ 	 * removal and once after enqueue).
+ 	 */
+-	remove_hrtimer(timer, base, true, force_local);
++	was_armed = remove_hrtimer(timer, base, true, force_local);
+ 
+ 	if (mode & HRTIMER_MODE_REL)
+ 		tim = ktime_add_safe(tim, __hrtimer_cb_get_time(base->clockid));
+@@ -1260,7 +1254,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 		new_base = base;
  	}
  
- 	region_count = dm_sector_div_up(ti->len, region_size);
-+	if (region_count > UINT_MAX) {
-+		DMWARN("region count exceeds limit of %u", UINT_MAX);
-+		return -EINVAL;
+-	first = enqueue_hrtimer(timer, new_base, mode);
++	first = enqueue_hrtimer(timer, new_base, mode, was_armed);
+ 
+ 	/*
+ 	 * If the hrtimer interrupt is running, then it will reevaluate the
+@@ -1362,8 +1356,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
+ 
+ 	base = lock_hrtimer_base(timer, &flags);
+ 
+-	if (!hrtimer_callback_running(timer))
++	if (!hrtimer_callback_running(timer)) {
+ 		ret = remove_hrtimer(timer, base, false, false);
++		if (ret)
++			trace_hrtimer_cancel(timer);
 +	}
  
- 	lc = kmalloc_obj(*lc);
- 	if (!lc) {
+ 	unlock_hrtimer_base(timer, &flags);
+ 
+@@ -1799,7 +1796,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 	 */
+ 	if (restart != HRTIMER_NORESTART &&
+ 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
+-		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
+ 
+ 	/*
+ 	 * Separate the ->running assignment from the ->state assignment.
+@@ -2278,7 +2275,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 	while ((node = timerqueue_getnext(&old_base->active))) {
+ 		timer = container_of(node, struct hrtimer, node);
+ 		BUG_ON(hrtimer_callback_running(timer));
+-		debug_deactivate(timer);
++		debug_hrtimer_deactivate(timer);
+ 
+ 		/*
+ 		 * Mark it as ENQUEUED not INACTIVE otherwise the
+@@ -2295,7 +2292,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 		 * sort out already expired timers and reprogram the
+ 		 * event device.
+ 		 */
+-		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
+ 	}
+ }
+ 
 -- 
 2.53.0
 
