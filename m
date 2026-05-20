@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-253228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJsxCQ8vDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:47 +0200
+	id IDKeHn72DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E39859B960
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1475950C7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5451287C25
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0979301983E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35AE3BA237;
-	Wed, 20 May 2026 18:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F5C3C4576;
+	Wed, 20 May 2026 17:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtLYl+EE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYkT9bHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEF13FDC00;
-	Wed, 20 May 2026 18:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE983F20FA;
+	Wed, 20 May 2026 17:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302731; cv=none; b=X1DzRgJBXwRLEmWcCyKTqvM3hGC5ve2DdpE4IfmR1TMCpZssqomMVWG8mewuWgPPbvzEqwZBZMKsGF7gq/2Uj76QOApcyFkiVbSG1m8w8Lw/Bpj/b8t/ZunU5EvvlnPAMxtqz/qZKtwKb1NrRR3A8Kbxd0hkL2PrbdbW9JN7SOc=
+	t=1779299875; cv=none; b=W/AXjHoxFimnSAgsLEdnBY6228paKDEH92+IgDIy52T87f9rNQ9LhpVygwFlI/TOFOT3tw5agGK1qIRUGQtLYDEwf5g9J5KHUgcnqo7z2dp6OMhSeS7FrzB3zP/iblECDikq9RdTlczJtPvB3T0DL3GL6EDO2nnqaGOFmKsBUDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302731; c=relaxed/simple;
-	bh=+9YcZJea2W+9Rbs4PYU9s6I/seQESznPIJdanjEUDiE=;
+	s=arc-20240116; t=1779299875; c=relaxed/simple;
+	bh=ZX1FSJoXJIJ2RCjWLqbD1lUgeh9PLn72b9bn/aEdu0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgC8rv2n5Mco8p0J4cuQX/AxfkE6+II72uIC9Hyud/t9l00tyg8QZALAS1QlN5pyRPIEb+/H3uZ1uXB87l1g7mLxXCHuJCGVaGexZT7tWn6LygeYCyUtFzUObSE5b3csYgh1PUWq4Y9vYMSPqLvNxh2fCXL1rsmmDBs9o8Drkgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtLYl+EE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7071F000E9;
-	Wed, 20 May 2026 18:45:29 +0000 (UTC)
+	 MIME-Version; b=I+WJPMEbOS2IBbckDP/ybw7dVSWERpAeGKTD0iD8pDW3PX1bcJr7M+LuH+OA1g6mNW9qKmh6C6X+5S6LVADmHvgXEAfitkRK436W1u/BzLB8AndohU7VfPvUz5QygOOy4QihcViFsKbGV536IbJBTz9m4/N15PKHnB1D0GWPOr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYkT9bHt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02011F000E9;
+	Wed, 20 May 2026 17:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302730;
-	bh=J0uronvOI1w9kxUHKGPBUI03epUmaGC/HO4MNXDgdjU=;
+	s=korg; t=1779299873;
+	bh=eE48CuN6dBGdz3PJEXMHwZxJfi56mkg3aw+waUdjjWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OtLYl+EEa/l17ERu0MX+70lzkqeDlQouwtCJyHlflsrNMtTmZYp0PAB2VctmotM59
-	 dzQIpqboaqFruZc6ULRwEeQRA3UGPxv/WsHd/HFGLRn6XOaztG8pJTMvxZt5TlMUfn
-	 BI9Mfdyzq2PRk9S35N19NRTOFM8l4Rqgt/TBIyI0=
+	b=pYkT9bHtzHTFq9YfzVgD/CA6SwaYuj8jj+Sba5vfaEg21wBoY+L7CAHwzc4JzXZc6
+	 8POaY/OlwYoAGYM9b+2UHNNGaYv6//t4vgjKcAh7iiuGB45sPs5Cbqcj9ERnzIBud1
+	 K7Ubhypw9tqnVyZG+I6YjvjH3tE0gfVxVsh+qxJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>,
-	Taegyu Kim <tmk5904@psu.edu>,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 377/508] drm/sysfb: ofdrm: fix PCI device reference leaks
-Date: Wed, 20 May 2026 18:23:20 +0200
-Message-ID: <20260520162106.791230846@linuxfoundation.org>
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 918/957] ceph: fix BUG_ON in __ceph_build_xattrs_blob() due to stale blob size
+Date: Wed, 20 May 2026 18:23:21 +0200
+Message-ID: <20260520162154.488990323@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +66,160 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253228-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,suse.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252132-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ibm.com,redhat.com,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,psu.edu:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8E39859B960
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1A1475950C7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 4aa8110000b0d215deef8eed283565dd0c1def88 ]
+commit 0c22d9511cbde746622f8e4c11aaa63fe76d45f9 upstream.
 
-display_get_pci_dev_of() gets a referenced PCI device via
-pci_get_device(). Drop that reference when pci_enable_device() fails and
-release it during the managed teardown path after pci_disable_device().
+The generic/642 test-case can reproduce the kernel crash:
 
-Without that, ofdrm leaks the pci_dev reference on both the error path
-and the normal cleanup path.
+[40243.605254] ------------[ cut here ]------------
+[40243.605956] kernel BUG at fs/ceph/xattr.c:918!
+[40243.607142] Oops: invalid opcode: 0000 [#1] SMP PTI
+[40243.608067] CPU: 7 UID: 0 PID: 498762 Comm: kworker/7:1 Not tainted 7.0.0-rc7+ #3 PREEMPT(full)
+[40243.609700] Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[40243.611820] Workqueue: ceph-msgr ceph_con_workfn
+[40243.612715] RIP: 0010:__ceph_build_xattrs_blob+0x1b8/0x1e0
+[40243.613731] Code: 0f 84 82 fe ff ff e9 cf 8e 56 ff 48 8d 65 e8 31 c0 5b 41 5c 41 5d 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 c3 cc cc cc cc <0f> 0b 4c 8b 62 08 41 8b 85 24 07 00 00 49 83 c4 04 41 89 44 24 fc
+[40243.616888] RSP: 0018:ffffcc80c4d4b688 EFLAGS: 00010287
+[40243.617773] RAX: 0000000000010026 RBX: 0000000000000001 RCX: 0000000000000000
+[40243.618928] RDX: ffff8a773798dee0 RSI: 0000000000000000 RDI: 0000000000000000
+[40243.620158] RBP: ffffcc80c4d4b6a0 R08: 0000000000000000 R09: 0000000000000000
+[40243.621573] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8a75f3b58000
+[40243.622907] R13: ffff8a75f3b58000 R14: 0000000000000080 R15: 000000000000bffd
+[40243.624054] FS:  0000000000000000(0000) GS:ffff8a787d1b4000(0000) knlGS:0000000000000000
+[40243.625331] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[40243.626269] CR2: 000072f390b623c0 CR3: 000000011c02a003 CR4: 0000000000372ef0
+[40243.627408] Call Trace:
+[40243.627839]  <TASK>
+[40243.628188]  __prep_cap+0x3fd/0x4a0
+[40243.628789]  ? do_raw_spin_unlock+0x4e/0xe0
+[40243.629474]  ceph_check_caps+0x46a/0xc80
+[40243.630094]  ? __lock_acquire+0x4a2/0x2650
+[40243.630773]  ? find_held_lock+0x31/0x90
+[40243.631347]  ? handle_cap_grant+0x79f/0x1060
+[40243.632068]  ? lock_release+0xd9/0x300
+[40243.632696]  ? __mutex_unlock_slowpath+0x3e/0x340
+[40243.633429]  ? lock_release+0xd9/0x300
+[40243.634052]  handle_cap_grant+0xcf6/0x1060
+[40243.634745]  ceph_handle_caps+0x122b/0x2110
+[40243.635415]  mds_dispatch+0x5bd/0x2160
+[40243.636034]  ? ceph_con_process_message+0x65/0x190
+[40243.636828]  ? lock_release+0xd9/0x300
+[40243.637431]  ceph_con_process_message+0x7a/0x190
+[40243.638184]  ? kfree+0x311/0x4f0
+[40243.638749]  ? kfree+0x311/0x4f0
+[40243.639268]  process_message+0x16/0x1a0
+[40243.639915]  ? sg_free_table+0x39/0x90
+[40243.640572]  ceph_con_v2_try_read+0xf58/0x2120
+[40243.641255]  ? lock_acquire+0xc8/0x300
+[40243.641863]  ceph_con_workfn+0x151/0x820
+[40243.642493]  process_one_work+0x22f/0x630
+[40243.643093]  ? process_one_work+0x254/0x630
+[40243.643770]  worker_thread+0x1e2/0x400
+[40243.644332]  ? __pfx_worker_thread+0x10/0x10
+[40243.645020]  kthread+0x109/0x140
+[40243.645560]  ? __pfx_kthread+0x10/0x10
+[40243.646125]  ret_from_fork+0x3f8/0x480
+[40243.646752]  ? __pfx_kthread+0x10/0x10
+[40243.647316]  ? __pfx_kthread+0x10/0x10
+[40243.647919]  ret_from_fork_asm+0x1a/0x30
+[40243.648556]  </TASK>
+[40243.648902] Modules linked in: overlay hctr2 libpolyval chacha libchacha adiantum libnh libpoly1305 essiv intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit kvm_intel kvm irqbypass joydev ghash_clmulni_intel aesni_intel rapl input_leds mac_hid psmouse vga16fb serio_raw vgastate floppy i2c_piix4 pata_acpi bochs qemu_fw_cfg i2c_smbus sch_fq_codel rbd dm_crypt msr parport_pc ppdev lp parport efi_pstore
+[40243.654766] ---[ end trace 0000000000000000 ]---
 
-Fixes: c8a17756c425 ("drm/ofdrm: Add ofdrm for Open Firmware framebuffers")
-Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260420002513.216-1-dbgh9129@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit d93231a6bc8a ("ceph: prevent a client from exceeding the MDS
+maximum xattr size") moved the required_blob_size computation to before
+the __build_xattrs() call, introducing a race.
+
+__build_xattrs() releases and reacquires i_ceph_lock during execution.
+In that window, handle_cap_grant() may update i_xattrs.blob with a
+newer MDS-provided blob and bump i_xattrs.version.  When
+__build_xattrs() detects that index_version < version, it destroys and
+rebuilds the entire xattr rb-tree from the new blob, potentially
+increasing count, names_size, and vals_size.
+
+The prealloc_blob size check that follows still uses the stale
+required_blob_size computed before the rebuild, so it passes even when
+prealloc_blob is too small for the now-larger tree. After __set_xattr()
+adds one more xattr on top, __ceph_build_xattrs_blob() is called from
+the cap flush path and hits:
+
+    BUG_ON(need > ci->i_xattrs.prealloc_blob->alloc_len);
+
+Fix this by recomputing required_blob_size after __build_xattrs()
+returns, using the current tree state. Also re-validate against
+m_max_xattr_size to fall back to the sync path if the rebuilt tree now
+exceeds the MDS limit.
+
+Cc: stable@vger.kernel.org
+Fixes: d93231a6bc8a ("ceph: prevent a client from exceeding the MDS maximum xattr size")
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/ofdrm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ceph/xattr.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
-index 2d999a0facdee..fe2d3b7c61258 100644
---- a/drivers/gpu/drm/tiny/ofdrm.c
-+++ b/drivers/gpu/drm/tiny/ofdrm.c
-@@ -351,6 +351,7 @@ static void ofdrm_pci_release(void *data)
- 	struct pci_dev *pcidev = data;
+--- a/fs/ceph/xattr.c
++++ b/fs/ceph/xattr.c
+@@ -1256,6 +1256,22 @@ retry:
+ 	      ceph_vinop(inode), name, ceph_cap_string(issued));
+ 	__build_xattrs(inode);
  
- 	pci_disable_device(pcidev);
-+	pci_dev_put(pcidev);
- }
- 
- static int ofdrm_device_init_pci(struct ofdrm_device *odev)
-@@ -376,6 +377,7 @@ static int ofdrm_device_init_pci(struct ofdrm_device *odev)
- 	if (ret) {
- 		drm_err(dev, "pci_enable_device(%s) failed: %d\n",
- 			dev_name(&pcidev->dev), ret);
-+		pci_dev_put(pcidev);
- 		return ret;
- 	}
- 	ret = devm_add_action_or_reset(&pdev->dev, ofdrm_pci_release, pcidev);
--- 
-2.53.0
-
++	/*
++	 * __build_xattrs() may have released and reacquired i_ceph_lock,
++	 * during which handle_cap_grant() could have replaced i_xattrs.blob
++	 * with a newer MDS-provided blob and bumped i_xattrs.version. If that
++	 * caused __build_xattrs() to rebuild the rb-tree from the new blob,
++	 * count/names_size/vals_size may now be larger than when
++	 * required_blob_size was computed above. Recompute it here so the
++	 * prealloc_blob size check below reflects the current tree state.
++	 */
++	required_blob_size = __get_required_blob_size(ci, name_len, val_len);
++	if (required_blob_size > mdsc->mdsmap->m_max_xattr_size) {
++		doutc(cl, "sync (size too large): %d > %llu\n",
++		      required_blob_size, mdsc->mdsmap->m_max_xattr_size);
++		goto do_sync;
++	}
++
+ 	if (!ci->i_xattrs.prealloc_blob ||
+ 	    required_blob_size > ci->i_xattrs.prealloc_blob->alloc_len) {
+ 		struct ceph_buffer *blob;
 
 
 
