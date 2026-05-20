@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIIyFsvtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:19 +0200
+	id UDsuCtP7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB1A59372C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9134595E8B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 239B9312CBBE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93C5A3123E1B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA043E314D;
-	Wed, 20 May 2026 17:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177F73368B6;
+	Wed, 20 May 2026 18:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAWov+Im"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6GazvgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3ED3E2AAD;
-	Wed, 20 May 2026 17:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6D934DB46;
+	Wed, 20 May 2026 18:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296784; cv=none; b=o6uSoY3bleTj+ScOEAaK3s8kWQhqkIGq6uKlHUiIsWeGsB2oI/OxSz1OsBmQDlEkGCGVF6VpJu3+GVt39GhVPHJS1SBytZhz0fyNTSRszfjjHt2LUxatPiACi0jR7qzkeIN0CnhYyNeRQ/fdNxGzmxt1r/5mKhsFY93EgI2NGEo=
+	t=1779300952; cv=none; b=dQwiWIAsivJ8SFfF7u976WMU6MgcU+EZoJHQkV6DkQuA+WvtdqGsmAiVSmK8DNQuXNXOaUyR+axDpZ8maRf7KD3+xKSbV0iRMl9mJWAiCXK/gd+6OySGUDbZA0QObRdMFkdSm+p4E3jvqO+SqoO0jy1IGFCHRW40foQxZ2zirrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296784; c=relaxed/simple;
-	bh=gC5SwnqJ2YydT9SSmgMdkGrLO44pYBTWMtVEoGMLQtE=;
+	s=arc-20240116; t=1779300952; c=relaxed/simple;
+	bh=L7T8mU9U3JlZ4uioISMBAAig2zFR6X/BqXVS4HvomBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmW2nHYZWNt4/4w7b/g1fPXtTDoTV1BeashK6fw2igYURpQ/SdyrRhrZ+MwvXM7twV6GtOIFh1hqYtp081PNsd34NPRj7rLqoWOcyRF2w1e2DYw9f2mdI83V7D+CgcV0TixVbnakjHp6fA0ag6KnlWURXcpWSC8s6h7Jmsa4Kt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAWov+Im; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600DC1F000E9;
-	Wed, 20 May 2026 17:06:22 +0000 (UTC)
+	 MIME-Version; b=jB5cuDl7lVC/7Ys3Th5nuUD91S9xV+7CUBO0TLtXVdT293lbiT7AdhMeEM+283EkaOcO7mgLwir1ej/FX40ontdUTOrzrqyUZNZR7iiA72NrhIcKbrlzqFKLpuWb218n2ZJRIn7FplBAQevw6M9nwvdCURdjOLmBRzAZve9AATg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6GazvgH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D501F000E9;
+	Wed, 20 May 2026 18:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296782;
-	bh=u3IO+PD8QT9XzG8cTu3gdMgRlS2Qr7pLKBcxVbOnd/A=;
+	s=korg; t=1779300951;
+	bh=mopMMH8Iq/51LHEokSY2hhOWbgTo2Acm3de9vcNOOtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KAWov+ImwqJC6aSnt1n9T0VfPP00jDngbTxZqZPMKHrbbyG9/wtZTNuDImeMeSjik
-	 IVtPTXjonnZyjpWERkwjLMDr2BrnDNiA511bgQSxIdNAz42Ocdi9sLVuR//k5PbE+o
-	 HnVm3lGwr3AVzBRRMmD/8uyvIyt6xoEDSlwACSTM=
+	b=J6GazvgHyL5Zshol1SJeI6KOtTpmH4kG0x9hliV2f8DqMcfKS8Jqa+wZBuPDJphhk
+	 305VqOL5H3OmgwNVElk++2osjkWIgaNbxRnpRs1oruGri7VH3kpXtVciNYlC+aIfFz
+	 UXIx3UCuZZDI564WcleYx2+I1ei2kh2d9IU4YgVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0930/1146] net/sched: netem: only reseed PRNG when seed is explicitly provided
-Date: Wed, 20 May 2026 18:19:40 +0200
-Message-ID: <20260520162209.283906621@linuxfoundation.org>
+Subject: [PATCH 6.12 370/666] perf expr: Return -EINVAL for syntax error in expr__find_ids()
+Date: Wed, 20 May 2026 18:19:41 +0200
+Message-ID: <20260520162119.261939086@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250978-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252544-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,72 +86,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DBB1A59372C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B9134595E8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 986afaf809940577224a99c3a08d97a15eb37e93 ]
+[ Upstream commit 3a61fd866ef9aaa1d3158b460f852b74a2df07f4 ]
 
-netem_change() unconditionally reseeds the PRNG on every tc change
-command. If TCA_NETEM_PRNG_SEED is not specified, a new random seed
-is generated, destroying reproducibility for users who set a
-deterministic seed on a previous change.
+expr__find_ids() propagates the parser return value directly.  For syntax
+errors, the parser can return a positive value, but callers treat it as
+success, e.g., for below case on Arm64 platform:
 
-Move the initial random seed generation to netem_init() and only
-reseed in netem_change() when TCA_NETEM_PRNG_SEED is explicitly
-provided by the user.
+  metric expr 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES) for backend_bound
+  parsing metric: 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES)
+  Failure to read '#slots' literal: #slots = nan
+  syntax error
 
-Fixes: 4072d97ddc44 ("netem: add prng attribute to netem_sched_data")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-4-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Convert positive parser returns in expr__find_ids() to -EINVAL, as a
+result, the error value will be respected by callers.
+
+Before:
+
+  perf stat -C 5
+  Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Segmentation fault
+
+After:
+
+  perf stat -C 5
+  Failure to read '#slots'Cannot find metric or group `Default'
+
+Fixes: ded80bda8bc9 ("perf expr: Migrate expr ids table to a hashmap")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ tools/perf/util/expr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index d400a730eadd1..556f9747f0e73 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -1112,11 +1112,10 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	/* capping jitter to the range acceptable by tabledist() */
- 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
+diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
+index 90c6ce2212e4f..7ceefed276b73 100644
+--- a/tools/perf/util/expr.c
++++ b/tools/perf/util/expr.c
+@@ -373,7 +373,8 @@ int expr__find_ids(const char *expr, const char *one,
+ 	if (one)
+ 		expr__del_id(ctx, one);
  
--	if (tb[TCA_NETEM_PRNG_SEED])
-+	if (tb[TCA_NETEM_PRNG_SEED]) {
- 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
--	else
--		q->prng.seed = get_random_u64();
--	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
-+		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
-+	}
+-	return ret;
++	/* A positive value means syntax error, convert to -EINVAL */
++	return ret > 0 ? -EINVAL : ret;
+ }
  
- unlock:
- 	sch_tree_unlock(sch);
-@@ -1139,6 +1138,9 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
- 		return -EINVAL;
- 
- 	q->loss_model = CLG_RANDOM;
-+	q->prng.seed = get_random_u64();
-+	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
-+
- 	ret = netem_change(sch, opt, extack);
- 	if (ret)
- 		pr_info("netem: change failed\n");
+ double expr_id_data__value(const struct expr_id_data *data)
 -- 
 2.53.0
 
