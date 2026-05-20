@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECrAFN8nDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:07 +0200
+	id ABJWBiIFDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-253123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE91859AEEE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C775979A2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 620D3348B3A8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91E753277E8B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2063E5ECF;
-	Wed, 20 May 2026 18:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A0C4028D8;
+	Wed, 20 May 2026 18:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8A5163Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+Ut/B6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537ED29B78D;
-	Wed, 20 May 2026 18:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824BA3D5647;
+	Wed, 20 May 2026 18:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301263; cv=none; b=lZassAbLIyjEHYykkBngRNB/G8oSvgausBwxIYFJspEQU7sv9Rrh7Fca4+uUvmpGRLKMoIejXjHqXv2LZXR/648u//YhL5ySvdUKKy9gu6c1/FrX3NURkyNq9/u0vxqRssBMUpAeoptn1ysrK7Oxo9IUHMhB2mS/RMT512e9Ie4=
+	t=1779302465; cv=none; b=Tj8I3qzorHvjlwR9tgqsUzqGfe7wViiWfIIqwkuSvQN8ml5PMBfxJN3yBr7NJ+DvMnIPEgRJt93Q4hncgkz4bMsXNTaXQV9AhtxplXws0oSRVzI2ifcKfWB/OSO+OZce4BlJIYUkEdSmT4BgI5wMC1uRE4JcTuruO5uq5YNKjCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301263; c=relaxed/simple;
-	bh=CKpOKvutdTC5FXNu7o0uVkOJsxhdC/fRNvDEI/N9xJA=;
+	s=arc-20240116; t=1779302465; c=relaxed/simple;
+	bh=HkAoOQWKrdmeqQ48xFdbn7J499NZ9zN2WnSGfd9W918=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfL9DBtWXIRSeAHUmzVd3ZKuOO6mLHLSY/EUm1irJTQPFFNJ7U1AbDPrPsV3A6KomJWQGi0ZYN6d/KK1fwOvbdZnHEtMz6fhDq8iGvsc0bF6aLH6EBcoi5SVkEHFTtZXGe6Q/01PITisFo+XN0Duzh/iMQczoED4RUoDeCrAZLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8A5163Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E228F1F00893;
-	Wed, 20 May 2026 18:21:01 +0000 (UTC)
+	 MIME-Version; b=ZS+5SkrGwKRoIVUHQ+4Jo/ygwB7XnEcn7u4kjZFse0Rd5SSmrJwCbshYCFnXvmoQh5LQ8uPKCHVuGx8EdxFpFkdpt0w6nZSbCN1jJvHYbSdryuAUrl3vGw4z4EuJKNoqZuw3aJuBV2LPETZ1knmsrJfB6GRWe8KSb5leePKV1lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+Ut/B6A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7711F000E9;
+	Wed, 20 May 2026 18:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301262;
-	bh=wJHYGFzVNdcsm/4uNIWz6EwI+Pfm68cQmIyt1FAtyxc=;
+	s=korg; t=1779302464;
+	bh=UHTq+CjTt+XjgfiSAj3iQN2qfWjTWmLHN+hWl/Xjm40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M8A5163QaRewJqUi8uLhfvrYuRw9HFR7N4qgEr/q7v5ssfgL9+phCz+8cr6H3MDqL
-	 TNadB+e0SxKgZdNrI6d3EdFHxjEon3FYmvmXZIGU+YUaZyw8pyq51zJezX4kYhULB7
-	 28c4rZb8QAFBoljx0w4PJaq8qF/3AIBeru6/q3Hg=
+	b=g+Ut/B6A4WDjVCTVRPkwAxjACIapwsk9ZynWbDr4RfAzGP8qMr0Tv/aShmcvarnCB
+	 nC50NaYT1HgONTR6QQjAypDMdo78Hnr6XDu83hYaoiX/6sOh7D7zRDRhr3iZnsWdvS
+	 3iNW7nL7Rb5aDvDdgPqn2U3ddTSwmw5VnJordJ2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 489/666] net/sched: sch_sfb: annotate data-races in sfb_dump_stats()
+Subject: [PATCH 6.6 277/508] scsi: target: core: Fix integer overflow in UNMAP bounds check
 Date: Wed, 20 May 2026 18:21:40 +0200
-Message-ID: <20260520162121.863250098@linuxfoundation.org>
+Message-ID: <20260520162104.649166950@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,201 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252662-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-253123-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,oracle.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: DE91859AEEE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email,outlook.com:email]
+X-Rspamd-Queue-Id: B1C775979A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 1ada03fdef82d3d7d2edb9dcd3acc91917675e48 ]
+[ Upstream commit 2bf2d65f76697820dbc4227d13866293576dd90a ]
 
-sfb_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+sbc_execute_unmap() checks LBA + range does not exceed the device capacity,
+but does not guard against LBA + range wrapping around on 64-bit overflow.
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+Add an overflow check matching the pattern already used for WRITE_SAME in
+the same file.
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
-
-tc_sfb_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260421141655.3953721-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 86d7182985d2 ("target: Add sbc_execute_unmap() helper")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881593C61AD52C69FBDB0BDAF7CA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfb.c | 54 +++++++++++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ drivers/target/target_core_sbc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
-index b717e15a3a17b..c36725f0870d4 100644
---- a/net/sched/sch_sfb.c
-+++ b/net/sched/sch_sfb.c
-@@ -130,7 +130,7 @@ static void increment_one_qlen(u32 sfbhash, u32 slot, struct sfb_sched_data *q)
- 
- 		sfbhash >>= SFB_BUCKET_SHIFT;
- 		if (b[hash].qlen < 0xFFFF)
--			b[hash].qlen++;
-+			WRITE_ONCE(b[hash].qlen, b[hash].qlen + 1);
- 		b += SFB_NUMBUCKETS; /* next level */
- 	}
- }
-@@ -159,7 +159,7 @@ static void decrement_one_qlen(u32 sfbhash, u32 slot,
- 
- 		sfbhash >>= SFB_BUCKET_SHIFT;
- 		if (b[hash].qlen > 0)
--			b[hash].qlen--;
-+			WRITE_ONCE(b[hash].qlen, b[hash].qlen - 1);
- 		b += SFB_NUMBUCKETS; /* next level */
- 	}
- }
-@@ -179,12 +179,12 @@ static void decrement_qlen(const struct sk_buff *skb, struct sfb_sched_data *q)
- 
- static void decrement_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
- {
--	b->p_mark = prob_minus(b->p_mark, q->decrement);
-+	WRITE_ONCE(b->p_mark, prob_minus(b->p_mark, q->decrement));
- }
- 
- static void increment_prob(struct sfb_bucket *b, struct sfb_sched_data *q)
- {
--	b->p_mark = prob_plus(b->p_mark, q->increment);
-+	WRITE_ONCE(b->p_mark, prob_plus(b->p_mark, q->increment));
- }
- 
- static void sfb_zero_all_buckets(struct sfb_sched_data *q)
-@@ -202,11 +202,14 @@ static u32 sfb_compute_qlen(u32 *prob_r, u32 *avgpm_r, const struct sfb_sched_da
- 	const struct sfb_bucket *b = &q->bins[q->slot].bins[0][0];
- 
- 	for (i = 0; i < SFB_LEVELS * SFB_NUMBUCKETS; i++) {
--		if (qlen < b->qlen)
--			qlen = b->qlen;
--		totalpm += b->p_mark;
--		if (prob < b->p_mark)
--			prob = b->p_mark;
-+		u32 b_qlen = READ_ONCE(b->qlen);
-+		u32 b_mark = READ_ONCE(b->p_mark);
-+
-+		if (qlen < b_qlen)
-+			qlen = b_qlen;
-+		totalpm += b_mark;
-+		if (prob < b_mark)
-+			prob = b_mark;
- 		b++;
- 	}
- 	*prob_r = prob;
-@@ -294,7 +297,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 	if (unlikely(sch->q.qlen >= q->limit)) {
- 		qdisc_qstats_overlimit(sch);
--		q->stats.queuedrop++;
-+		WRITE_ONCE(q->stats.queuedrop,
-+			   q->stats.queuedrop + 1);
- 		goto drop;
- 	}
- 
-@@ -347,7 +351,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 
- 	if (unlikely(minqlen >= q->max)) {
- 		qdisc_qstats_overlimit(sch);
--		q->stats.bucketdrop++;
-+		WRITE_ONCE(q->stats.bucketdrop,
-+			   q->stats.bucketdrop + 1);
- 		goto drop;
- 	}
- 
-@@ -373,7 +378,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+diff --git a/drivers/target/target_core_sbc.c b/drivers/target/target_core_sbc.c
+index 6a02561cc20ce..ad091a216b076 100644
+--- a/drivers/target/target_core_sbc.c
++++ b/drivers/target/target_core_sbc.c
+@@ -1136,7 +1136,8 @@ sbc_execute_unmap(struct se_cmd *cmd)
+ 			goto err;
  		}
- 		if (sfb_rate_limit(skb, q)) {
- 			qdisc_qstats_overlimit(sch);
--			q->stats.penaltydrop++;
-+			WRITE_ONCE(q->stats.penaltydrop,
-+				   q->stats.penaltydrop + 1);
- 			goto drop;
- 		}
- 		goto enqueue;
-@@ -388,14 +394,17 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			 * In either case, we want to start dropping packets.
- 			 */
- 			if (r < (p_min - SFB_MAX_PROB / 2) * 2) {
--				q->stats.earlydrop++;
-+				WRITE_ONCE(q->stats.earlydrop,
-+					   q->stats.earlydrop + 1);
- 				goto drop;
- 			}
- 		}
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.marked++;
-+			WRITE_ONCE(q->stats.marked,
-+				   q->stats.marked + 1);
- 		} else {
--			q->stats.earlydrop++;
-+			WRITE_ONCE(q->stats.earlydrop,
-+				   q->stats.earlydrop + 1);
- 			goto drop;
- 		}
- 	}
-@@ -408,7 +417,8 @@ static int sfb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->q.qlen++;
- 		increment_qlen(&cb, q);
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.childdrop++;
-+		WRITE_ONCE(q->stats.childdrop,
-+			   q->stats.childdrop + 1);
- 		qdisc_qstats_drop(sch);
- 	}
- 	return ret;
-@@ -597,12 +607,12 @@ static int sfb_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct sfb_sched_data *q = qdisc_priv(sch);
- 	struct tc_sfb_xstats st = {
--		.earlydrop = q->stats.earlydrop,
--		.penaltydrop = q->stats.penaltydrop,
--		.bucketdrop = q->stats.bucketdrop,
--		.queuedrop = q->stats.queuedrop,
--		.childdrop = q->stats.childdrop,
--		.marked = q->stats.marked,
-+		.earlydrop = READ_ONCE(q->stats.earlydrop),
-+		.penaltydrop = READ_ONCE(q->stats.penaltydrop),
-+		.bucketdrop = READ_ONCE(q->stats.bucketdrop),
-+		.queuedrop = READ_ONCE(q->stats.queuedrop),
-+		.childdrop = READ_ONCE(q->stats.childdrop),
-+		.marked = READ_ONCE(q->stats.marked),
- 	};
  
- 	st.maxqlen = sfb_compute_qlen(&st.maxprob, &st.avgprob, q);
+-		if (lba + range > dev->transport->get_blocks(dev) + 1) {
++		if (lba + range < lba ||
++		    lba + range > dev->transport->get_blocks(dev) + 1) {
+ 			ret = TCM_ADDRESS_OUT_OF_RANGE;
+ 			goto err;
+ 		}
 -- 
 2.53.0
 
