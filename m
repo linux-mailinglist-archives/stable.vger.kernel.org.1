@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-250611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEhpK7b0DWos5AUAu9opvQ
-	(envelope-from <stable+bounces-250611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:50 +0200
+	id ALhXHfz4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-251553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1775A594C28
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9257559570E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D55D337AD306
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5A44A30819DE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E954351C2F;
-	Wed, 20 May 2026 16:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D63429D26E;
+	Wed, 20 May 2026 17:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO+/J2TT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXsSi5Dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B74356762;
-	Wed, 20 May 2026 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876CE2628D;
+	Wed, 20 May 2026 17:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295864; cv=none; b=E+rpa7Ttqxv+tkQ7+tQzoAGV7HAox8Bm8akgK9iWNn5wXpnLGk85OzPUdd2U/wyASUIPqPSpMavGyQQMs1vJ0lwggsP42Y3w3sX/g/9UZl2ibHxCrfZ0T8/LCH7kWj6Va3CzQPTPpxUhgJ5kEkcCwUrR9XiniSdgw9ELRLAEgDc=
+	t=1779298280; cv=none; b=Ofy6wyIh1fzh3vlKFoidm7hoJHGZu8pdAlhA3HX1tpBzSrW1wpm7CeBGDD5VkroIApyDkqtu61NNAYNVmUFVNcBqHKqyQ+xlQoOn9ZxJLPAebtpZgeZQccUuhmTUEQb4psJgKJ5SFXW7WtNpmR4FHIC8BasSSgsSX/6REUs2sfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295864; c=relaxed/simple;
-	bh=qew5ukqw7gJZtA2gWGiIVXqaNq1SUATqdORn0z1bEzA=;
+	s=arc-20240116; t=1779298280; c=relaxed/simple;
+	bh=t7BFfffx49h0J7Dfi/YkOA1l2TCVZUXEe1reN6ozcWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTzBAW+ah3nxoAUsTjjMpHhumbbIWQuSJ4iqvheKj9ZxuGv1xGrjgcQhRs/3JAlrTMTbMaA5l+S7+stFclIHXXXu4serpdd9fspMXHNp6C+6XEVqON3O+axHzAhhvOAWUgaBntnP2u/ShiCVeSp7Z+B8OGqC/ISqkecPA0Ij2DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PO+/J2TT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864941F000E9;
-	Wed, 20 May 2026 16:51:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EaaM0RmWiO1YsMJAB614GU9SswYvgtm6/g/KBuTUIQB95Vg66k3nL5Q3QHnP6dPacCXEc6p5pj+5AbzUHAqXxzB0C8kOZ/F9bXJnOFYxkwRyysH4wavOHc8uzAz4oqmH9gp/NcgPqm3z97bFiaDxFRPYh0u1T/9DBZdn1jWhdjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXsSi5Dt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005A91F000E9;
+	Wed, 20 May 2026 17:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295863;
-	bh=6WUbhpvUL8jkoWJgFWyqCD2PoJygtU7NomLQcnUGt9E=;
+	s=korg; t=1779298278;
+	bh=OiR4AZYsTNauSGAUdHTICFaSFkfzMqW4TvVx+Yc4TF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PO+/J2TT8c1IYYava4EJwZAdBm/NW97pV0A/hE7JlTAr3oI8gzlxxuop2AD+r2UjU
-	 k4Z+qNCtDFIdfpntyDDBv6ejgPEq2JYzWID8rE2v6VwrLXF8/jUUhVYvZmj7Sqz/MU
-	 UnJlN3ILMkw0dW4ynalkyuYwFSSJRZCGCR9bAnsY=
+	b=uXsSi5Dt3SpQpSDI0Ns8aWqFvQ7UKjfRGB/BUIb3ItqjxFeFsU4ZZ7lcgcgIcXe5f
+	 +4wPIRInv45wkTQGrFQMCawSsQFIUX90JKPJNH3EK5lPFTgBh0EOcWZkgiW2SYM5bQ
+	 wZWmmGpll2akY+oJcmMTS6NYnvOZOuWjguMZvPX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Dipen Patel <dipenp@nvidia.com>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0581/1146] hte: tegra194: remove Kconfig dependency on Tegra194 SoC
+Subject: [PATCH 6.18 348/957] ktest: Avoid undef warning when WARNINGS_FILE is unset
 Date: Wed, 20 May 2026 18:13:51 +0200
-Message-ID: <20260520162201.329450587@linuxfoundation.org>
+Message-ID: <20260520162142.077271261@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +69,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250611-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251553-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,baylibre.com:email]
-X-Rspamd-Queue-Id: 1775A594C28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,suse.com:email,eaglescrag.net:email]
+X-Rspamd-Queue-Id: 9257559570E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 92dfd92f747698352b256cd9ddd7497bb7ebe9c8 ]
+[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
 
-This driver runs also on other Tegra SoCs (e.g. Tegra234).
-Replace Kconfig dependency on Tegra194 with more generic dependency on
-Tegra, and amend the Kconfig help text to reflect the fact that this
-driver works on SoCs other than Tegra194.
+check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
+not configured. Perl warns about the uninitialized value and adds noise to
+the test log, which can hide the output we actually care about.
 
-Fixes: b003fb5c9df8 ("hte: Add Tegra234 provider")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Dipen Patel <dipenp@nvidia.com>
-Signed-off-by: Dipen Patel <dipenp@nvidia.com>
+Check that WARNINGS_FILE is defined before testing whether the file exists.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
+Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hte/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hte/Kconfig b/drivers/hte/Kconfig
-index 641af722b555d..f57bad67deef0 100644
---- a/drivers/hte/Kconfig
-+++ b/drivers/hte/Kconfig
-@@ -16,13 +16,13 @@ if HTE
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 88de775097fef..28643812184bc 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2508,7 +2508,7 @@ sub check_buildlog {
+     my $save_no_reboot = $no_reboot;
+     $no_reboot = 1;
  
- config HTE_TEGRA194
- 	tristate "NVIDIA Tegra194 HTE Support"
--	depends on (ARCH_TEGRA_194_SOC || COMPILE_TEST)
-+	depends on (ARCH_TEGRA || COMPILE_TEST)
- 	depends on GPIOLIB
- 	help
- 	  Enable this option for integrated hardware timestamping engine also
- 	  known as generic timestamping engine (GTE) support on NVIDIA Tegra194
--	  systems-on-chip. The driver supports 352 LIC IRQs and 39 AON GPIOs
--	  lines for timestamping in realtime.
-+	  and later systems-on-chip. The driver supports 352 LIC IRQs and 39
-+	  AON GPIOs lines for timestamping in realtime.
+-    if (-f $warnings_file) {
++    if (defined($warnings_file) && -f $warnings_file) {
+ 	open(IN, $warnings_file) or
+ 	    dodie "Error opening $warnings_file";
  
- config HTE_TEGRA194_TEST
-         tristate "NVIDIA Tegra194 HTE Test"
 -- 
 2.53.0
 
