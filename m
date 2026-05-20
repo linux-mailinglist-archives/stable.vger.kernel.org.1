@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKJMCCokDmoo6gUAu9opvQ
-	(envelope-from <stable+bounces-252364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:18 +0200
+	id sL1vCU3vDWqa4wUAu9opvQ
+	(envelope-from <stable+bounces-250789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D35959A936
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4F593C89
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A53E035B5274
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C464F30FDE7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EA33D5647;
-	Wed, 20 May 2026 18:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B02F36A342;
+	Wed, 20 May 2026 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ioOl+0RW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5qjXpXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334CE3F9296;
-	Wed, 20 May 2026 18:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C632BF24;
+	Wed, 20 May 2026 16:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300482; cv=none; b=SPDEVmzaYu9VLCqTxbwq9Gqyuf72cLWilCHK1FvlQTLEKAZEo9fZ8EV4bpdjmLBrTMAF+OOi1QjdglrIyga9kYL/WAxR7S/5Lng/vaimsoeVc+iNKInWC/T+k8hq0JRFBdkTaI575oO9pdsFhpJqmNiNjogCBUepmTAygku2Yjw=
+	t=1779296317; cv=none; b=A9d6mtNjfd/AyGSeGsn1VWyFvdzMWV2elrBLxxiYeeDvcWUKevXxVoKLvoxHsYiDpQDhy6yzHBMNxst3kBxzOAghHqrdlDHo/a6Tw3yUYCBGGvd7lG5S/8un8S27cVc2ciW/Ktq8HJvEspA3PTxmDlKqWCUUtSGmShxg4r2wW6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300482; c=relaxed/simple;
-	bh=qDh9CAl0ehkmzIl3gFNv2XttPXEBjorovhEb/isg/2I=;
+	s=arc-20240116; t=1779296317; c=relaxed/simple;
+	bh=h5v7JJD+TMVSjiImGSC8txyRILZb+sTzsASe/Fr7E5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwqIarpj+BG7DgWQEjoLHyjf1YrGgwYELwYt0ULNnX15IX3NyuK+X94sXF5rH36QMyYq0FKWEb2Wjr0v+WyhKg8HJMsyo0Sxx7JYHRCBhhJ0CzvwdD0SE6Mbyldm5INDy7fTA9EaeJTm56mPd9KRO2E8AaxuzEk19SPd0iNqCQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ioOl+0RW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6FC1F00893;
-	Wed, 20 May 2026 18:07:59 +0000 (UTC)
+	 MIME-Version; b=gK/knNVnNGk/yX9gi2/mZIlasGwHKBnlGJ4B6h+z7k5wlG7npQW0QKndGxvjBr/SYI8VpA7OeLBMX8s39WaQHewr5yvzV36WPlRgESSB1dudkBq5tHK/Kqx+tMj1J+kYTfmmBtcFjDHFzGY7VoNztAgmhn6w+erGn79loz8TjAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5qjXpXI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9131F00896;
+	Wed, 20 May 2026 16:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300480;
-	bh=JoGLKXKysYntG2P64WORhZ7r//cJFwsINYa0gyjaG0Y=;
+	s=korg; t=1779296315;
+	bh=642JI0ZVqWDpQ0XNu+y+iW0cZ0vpnw027HOCCbng+G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ioOl+0RWdFxQOHq4i5MH3aXmayNav1KZdQzBmVaWWL5JXY8Bz3f8If1l8ST+HK3s7
-	 56cD6kFX1uFg3zA+uXwIKkw4I1tLBh8nXArXC7cGOMomyRbobqQ/zC3BEH/L106Ee9
-	 Nx/ME0p7sENyW1BLJXUSx7WqIfTzgl1oFtn/OhtY=
+	b=A5qjXpXImnZ+XMjjOvvjlDmSge8X4PDtjkyajYEpIOs2oeCJCBrIvjXWRcCJuAPBA
+	 s4ZLmtFkd1gWfcxl7ts/MyzkDW+RA5Xv8gyB7aieLUjbywFUdLEyMNZrtli5QyveyX
+	 DOGrlSbanUCdPBveZaYHYQ1hW9mKlW4XwO7EMBD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/666] drm/msm/a6xx: Fix HLSQ register dumping
-Date: Wed, 20 May 2026 18:16:42 +0200
-Message-ID: <20260520162115.340929641@linuxfoundation.org>
+Subject: [PATCH 7.0 0753/1146] arm64: dts: imx8mp-icore-mx8mp: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:16:43 +0200
+Message-ID: <20260520162205.253301709@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252364-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250789-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7D35959A936
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BBB4F593C89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
+[ Upstream commit ea8c90f5c7ceeb6657a8fe564aa7b190dce298a6 ]
 
-Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
-we are always reading TP state when we wanted SP or HLSQ state.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Suggested-by: Connor Abbott <cwabbott0@gmail.com>
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714236/
-Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
+Fixes: eefe06b295087 ("arm64: dts: imx8mp: Add Engicam i.Core MX8M Plus SoM")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 5d7d2f5a2a1f8..8f104f7fcaa29 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -996,7 +996,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
- 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
- 	int i, regcount = 0;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
+index a6319824ea2eb..69558ffefa9a6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
+@@ -132,7 +132,7 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001c3
  
--	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
-+	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
+ 	pinctrl_pmic: pmicgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	  0x41
++			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	0x1c0
+ 		>;
+ 	};
  
- 	for (i = 0; i < regs->count; i += 2) {
- 		u32 count = RANGE(regs->registers, i);
 -- 
 2.53.0
 
