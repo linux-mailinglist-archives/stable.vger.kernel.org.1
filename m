@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFHRHDX8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:49 +0200
+	id kLt0DeTyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A3D596021
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46505946BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB175315E1FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F67530523E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336F23F6C5F;
-	Wed, 20 May 2026 18:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D123ED3A4;
+	Wed, 20 May 2026 17:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LefGUzn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8G38Ic3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88973F8EC0;
-	Wed, 20 May 2026 18:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4F829D26E;
+	Wed, 20 May 2026 17:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300416; cv=none; b=soNB49g3FkqOv+hfj8RY051sLkCoUgFiNVb3r96bb87e+e1Hv3q/Ie3nhtE5J7Zi0ah1NDVwBdzTwct27jlcMd/pOOFsXoYjSsealiXssoAflNZct1tDPt5mu+vo9hM0OV8toLYT4oQGkIZBrv8HEFRra1KkRc724hTRpN7IX5c=
+	t=1779298552; cv=none; b=YagD+uIk2YPo7wSk9tPvbLYZU+crFEUdGoZcjh9KTl5V8YwQujG9LnF8223a+Q6B7R118sudKN07Ry51Pt4wwOe9Ri5JIU8WE3y23qn1rivi9BdSAYYe/SD+OM6tTgfU0IEWeH3h/wPQsEQaeXwOgKflLB+X8JCnbEd9JgGYxks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300416; c=relaxed/simple;
-	bh=5V7pSkC9Uamhic0P4AnIls4w9Zc4ie50/53KRvpkIjw=;
+	s=arc-20240116; t=1779298552; c=relaxed/simple;
+	bh=wiDSfII5W+JzbM1vQw1IMtbe0tB5WhVh2oPMPgLL/Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4dSGjU54WyKVB+I+MccnreIEiW3gzBADRgzKUZzyowYUaHp8XDiTbTi+IUPMkEP5UufoKUaC/5oqbxsyjhwlLdhme/P7YyhROHZQHkJtWuri9QNr3oVxepJ5njlc5CPHTV6StDLfU+96uG77VNQol68RWq/qM6FvVzoVGkFARY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LefGUzn2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A511F000E9;
-	Wed, 20 May 2026 18:06:53 +0000 (UTC)
+	 MIME-Version; b=GKigwO6t4QvrXf+Hk6RLtONxAXfpnLPFJLXt6cNvCcG/nvNxa6h9mbgGi6wbBZ8lwIa+fJY5jrLOTntmp2JGGgsZZ4Z0rXFKe/SqCh8qGGZBPVxDTeZXJVHH7HG2D/o6nmN+8yYpyWn5SpYict6tolmKlt/otF0B1eM3RTmB3eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8G38Ic3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4BF1F000E9;
+	Wed, 20 May 2026 17:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300414;
-	bh=zPh66RBQc91IsJkU7eSygsRySK8tlmdivruiLRA2Cm0=;
+	s=korg; t=1779298549;
+	bh=sJzSBO7fXUCkRRmPYGIETvHzIqEifgtpLLml7kKp8Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LefGUzn2ryjEwGIjW3GBsyUsq42O3N9IrUmqZ0Z+QYCJNUtvYBrIEZrCfpOMTCN1P
-	 AnazlUDtfs4E6IRy1L38GwYv2ZINIXPzWOR4a5sKAcGwBnfPLMDuzWOOB2c6T79Vup
-	 /ifP/f8Zf6Osd0o+K4fOeNo4LDDY8Ymg3XA6kgT0=
+	b=N8G38Ic3V20FMWRxkYcAFg0QiU1pSmmjeo9vJInOFzn/IhZXgkjaNpqOnBOPr2IKd
+	 jSRdtjwDjTu+nGBSlnF8w2UYCLafyWuTHDFOTo8zJITeiJZ9ZSLVNq7wt7QJZRHdSG
+	 9/qbteuH0zIhl+7KOylAfgMYLoBtMdR29EFc42Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 125/666] dm cache: fix null-deref with concurrent writes in passthrough mode
-Date: Wed, 20 May 2026 18:15:36 +0200
-Message-ID: <20260520162113.925778665@linuxfoundation.org>
+Subject: [PATCH 6.18 454/957] tracing: Rebuild full_name on each hist_field_name() call
+Date: Wed, 20 May 2026 18:15:37 +0200
+Message-ID: <20260520162144.367988606@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,115 +69,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251656-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252338-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 43A3D596021
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: A46505946BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
+[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
 
-In passthrough mode, when dm-cache starts to invalidate a cache
-entry and bio prison cell lock fails due to concurrent write to
-the same cached block, mg->cell remains NULL. The error path in
-invalidate_complete() attempts to unlock and free the cell
-unconditionally, causing a NULL pointer dereference:
+hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
+qualified variable-reference names, but it currently appends into that
+buffer with strcat() without rebuilding it first. As a result, repeated
+calls append a new "system.event.field" name onto the previous one,
+which can eventually run past the end of full_name.
 
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
-RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
-<snip>
-Call Trace:
- invalidate_complete+0xef/0x430
- map_bio+0x130f/0x1a10
- cache_map+0x320/0x6b0
- __map_bio+0x458/0x510
- dm_submit_bio+0x40e/0x16d0
- __submit_bio+0x419/0x870
-<snip>
+Build the name with snprintf() on each call and return NULL if the fully
+qualified name does not fit in MAX_FILTER_STR_VAL.
 
-Reproduce steps:
-
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
-Fix by checking if mg->cell is valid before attempting to unlock it.
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
+Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Tested-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_hist.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 6aa4095dc5876..c1e94ffc9b3d6 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1456,8 +1456,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 	struct cache *cache = mg->cache;
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 2a0726e1bc97f..cb9e067138683 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -1355,12 +1355,14 @@ static const char *hist_field_name(struct hist_field *field,
+ 		 field->flags & HIST_FIELD_FL_VAR_REF) {
+ 		if (field->system) {
+ 			static char full_name[MAX_FILTER_STR_VAL];
++			int len;
++
++			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
++				       field->system, field->event_name,
++				       field->name);
++			if (len >= sizeof(full_name))
++				return NULL;
  
- 	bio_list_init(&bios);
--	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
--		free_prison_cell(cache, mg->cell);
-+	if (mg->cell) {
-+		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
-+			free_prison_cell(cache, mg->cell);
-+	}
- 
- 	if (!success && mg->overwrite_bio)
- 		bio_io_error(mg->overwrite_bio);
+-			strcat(full_name, field->system);
+-			strcat(full_name, ".");
+-			strcat(full_name, field->event_name);
+-			strcat(full_name, ".");
+-			strcat(full_name, field->name);
+ 			field_name = full_name;
+ 		} else
+ 			field_name = field->name;
 -- 
 2.53.0
 
