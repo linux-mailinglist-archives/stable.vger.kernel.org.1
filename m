@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLOkGP0dDmoa6QUAu9opvQ
-	(envelope-from <stable+bounces-251789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:57 +0200
+	id 6ItMNagUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C528D59A1E3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6E85992C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3279D315F086
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA0BD327C8EE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DFE3EEAC6;
-	Wed, 20 May 2026 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03633EAC82;
+	Wed, 20 May 2026 18:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggwmfHn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBNmVcoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7629D3F2117;
-	Wed, 20 May 2026 17:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1843F7884;
+	Wed, 20 May 2026 18:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298894; cv=none; b=hXrPkKnVmzR1ldKidHttU4cu0EoEwMPVuYoKiz8WzNxJDomYypqBtZyy/IQtLzdHLKNN3+16j2bZgTicHnwif8/FSWbuCLbDzTXXuKdMSf9WKPmPiQ1SGp6EVooo4wUlYVtrk+NGmmrKhOvqTm39r9JY4zFJdvxyLSVbbdAG7c8=
+	t=1779300768; cv=none; b=XRdEJRdmSPpsJOlLKd14L6hlWpkq3ujqs8RuKGmWp6T9FbQLEFQSUJ+0ryzqoDXJ+RfECRaMAbJ1zrodmVUDRz4CnsZQAF42Jm9a0yCIJjCviCBoU8b9YrUxN170VrpZUOh0LTnAXyeYVW5OIcnv6pzY0aH26GVWKn0tdgxIKl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298894; c=relaxed/simple;
-	bh=SI2gTgXVv2joeoL4ZuRiPZzjl8kjNgaSJULqPFoB1Tg=;
+	s=arc-20240116; t=1779300768; c=relaxed/simple;
+	bh=aK11H8okw54+ggNdozE/pzwgeMMWt3eoFkvYqVO0TJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyontEnOCuHnREZPVFrL8dBNoslXHO5bCGatrzW/YWFiubRXWNdVnzcVdoz5JtNnkuSrEr9Qbz13No27TDq3zBYg9FoN4mAT1nCi9wLcaFyI/bDHtczKBvteFSyDW8Lk/vwkSWX8Dny611Xh1hktt7NjANbu+4tmkfBANwSZyyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggwmfHn3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB10F1F000E9;
-	Wed, 20 May 2026 17:41:32 +0000 (UTC)
+	 MIME-Version; b=mzCxqdZTWLTic/We1fzqYhAxkTSX65qxQsaYi92v8UF+VSHse6NEZLUUdvGcXW4HcX6n8g/o/+k4ontc+Tq6Btzsz3hFpzKxjQGxhQePDItVkvrO/I+EMmtsTY81QVufI4yzIPFdwrRf2VRfVrb8DozPNgIl0FcCaLfE8qzRFq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBNmVcoT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B761F00893;
+	Wed, 20 May 2026 18:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298893;
-	bh=WymQB7MelOeMHKJwYpGC5hpeiZQt0VTj1nvmQtPL69s=;
+	s=korg; t=1779300767;
+	bh=AT5HLT8cECoT2QbffyxrknUt96Ear87PtPKnEONpZws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ggwmfHn3KxNgmjGFMpwNlQBVBC2jJyV3lXzdCN4yH5t4X/RV6acDCBM5wIT9T8e1j
-	 9RBalk2SflUvPeOdG6/noUvA9vr1+oKxOIL8F6btuWdmlpJJkiVjF7XhkmslXlUbX2
-	 fGgJT5NPV2VdL3SZ6OjDL/ZgFJszsBpdHKqUifiE=
+	b=SBNmVcoTDTMx3bY1rJH0IzOokR3+Q9t/tbAjKQGVZYatNnSBgTsBZSqEfJBPVr4FE
+	 okluZmcdZhMjAGzbKI2x7dmDhAzllAFiLWirxSpw3dibmW4nBlmb/OApmc5ZkN7SdY
+	 dFPWjFAmp5gkw3cue1fWc7rNTAbJKyiUZveVssKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 585/957] f2fs: expand scalability of f2fs mount option
-Date: Wed, 20 May 2026 18:17:48 +0200
-Message-ID: <20260520162147.217197864@linuxfoundation.org>
+Subject: [PATCH 6.12 258/666] quota: Fix race of dquot_scan_active() with quota deactivation
+Date: Wed, 20 May 2026 18:17:49 +0200
+Message-ID: <20260520162116.807749592@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,265 +68,179 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251789-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252474-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C528D59A1E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EF6E85992C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 1627a303bca692edc6552630aa2f878c8a726a01 ]
+[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
 
-opt field in structure f2fs_mount_info and opt_mask field in structure
-f2fs_fs_context is 32-bits variable, now we're running out of available
-bits in them, let's expand them to 64-bits for better scalability.
+dquot_scan_active() can race with quota deactivation in
+quota_release_workfn() like:
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 01968164d947 ("f2fs: fix to preserve previous reserve_{blocks,node} value when remount")
+  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
+  ==============================      ==============================
+  spin_lock(&dq_list_lock);
+  list_replace_init(
+    &releasing_dquots, &rls_head);
+    /* dquot X on rls_head,
+       dq_count == 0,
+       DQ_ACTIVE_B still set */
+  spin_unlock(&dq_list_lock);
+  synchronize_srcu(&dquot_srcu);
+                                      spin_lock(&dq_list_lock);
+                                      list_for_each_entry(dquot,
+                                          &inuse_list, dq_inuse) {
+                                        /* finds dquot X */
+                                        dquot_active(X) -> true
+                                        atomic_inc(&X->dq_count);
+                                      }
+                                      spin_unlock(&dq_list_lock);
+  spin_lock(&dq_list_lock);
+  dquot = list_first_entry(&rls_head);
+  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
+
+The problem is not only a cosmetic one as under memory pressure the
+caller of dquot_scan_active() can end up working on freed dquot.
+
+Fix the problem by making sure the dquot is removed from releasing list
+when we acquire a reference to it.
+
+Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h  | 85 ++++++++++++++++++++++++++-----------------------
- fs/f2fs/super.c | 36 ++++++++++-----------
- 2 files changed, 63 insertions(+), 58 deletions(-)
+ fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
+ include/linux/quotaops.h |  9 +--------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index c0747dd2ce511..b3731ba46f571 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -96,47 +96,52 @@ extern const char *f2fs_fault_name[FAULT_MAX];
- /*
-  * For mount options
-  */
--#define F2FS_MOUNT_DISABLE_ROLL_FORWARD	0x00000001
--#define F2FS_MOUNT_DISCARD		0x00000002
--#define F2FS_MOUNT_NOHEAP		0x00000004
--#define F2FS_MOUNT_XATTR_USER		0x00000008
--#define F2FS_MOUNT_POSIX_ACL		0x00000010
--#define F2FS_MOUNT_DISABLE_EXT_IDENTIFY	0x00000020
--#define F2FS_MOUNT_INLINE_XATTR		0x00000040
--#define F2FS_MOUNT_INLINE_DATA		0x00000080
--#define F2FS_MOUNT_INLINE_DENTRY	0x00000100
--#define F2FS_MOUNT_FLUSH_MERGE		0x00000200
--#define F2FS_MOUNT_NOBARRIER		0x00000400
--#define F2FS_MOUNT_FASTBOOT		0x00000800
--#define F2FS_MOUNT_READ_EXTENT_CACHE	0x00001000
--#define F2FS_MOUNT_DATA_FLUSH		0x00002000
--#define F2FS_MOUNT_FAULT_INJECTION	0x00004000
--#define F2FS_MOUNT_USRQUOTA		0x00008000
--#define F2FS_MOUNT_GRPQUOTA		0x00010000
--#define F2FS_MOUNT_PRJQUOTA		0x00020000
--#define F2FS_MOUNT_QUOTA		0x00040000
--#define F2FS_MOUNT_INLINE_XATTR_SIZE	0x00080000
--#define F2FS_MOUNT_RESERVE_ROOT		0x00100000
--#define F2FS_MOUNT_DISABLE_CHECKPOINT	0x00200000
--#define F2FS_MOUNT_NORECOVERY		0x00400000
--#define F2FS_MOUNT_ATGC			0x00800000
--#define F2FS_MOUNT_MERGE_CHECKPOINT	0x01000000
--#define	F2FS_MOUNT_GC_MERGE		0x02000000
--#define F2FS_MOUNT_COMPRESS_CACHE	0x04000000
--#define F2FS_MOUNT_AGE_EXTENT_CACHE	0x08000000
--#define F2FS_MOUNT_NAT_BITS		0x10000000
--#define F2FS_MOUNT_INLINECRYPT		0x20000000
--/*
-- * Some f2fs environments expect to be able to pass the "lazytime" option
-- * string rather than using the MS_LAZYTIME flag, so this must remain.
-- */
--#define F2FS_MOUNT_LAZYTIME		0x40000000
--#define F2FS_MOUNT_RESERVE_NODE		0x80000000
-+enum f2fs_mount_opt {
-+	F2FS_MOUNT_DISABLE_ROLL_FORWARD,
-+	F2FS_MOUNT_DISCARD,
-+	F2FS_MOUNT_NOHEAP,
-+	F2FS_MOUNT_XATTR_USER,
-+	F2FS_MOUNT_POSIX_ACL,
-+	F2FS_MOUNT_DISABLE_EXT_IDENTIFY,
-+	F2FS_MOUNT_INLINE_XATTR,
-+	F2FS_MOUNT_INLINE_DATA,
-+	F2FS_MOUNT_INLINE_DENTRY,
-+	F2FS_MOUNT_FLUSH_MERGE,
-+	F2FS_MOUNT_NOBARRIER,
-+	F2FS_MOUNT_FASTBOOT,
-+	F2FS_MOUNT_READ_EXTENT_CACHE,
-+	F2FS_MOUNT_DATA_FLUSH,
-+	F2FS_MOUNT_FAULT_INJECTION,
-+	F2FS_MOUNT_USRQUOTA,
-+	F2FS_MOUNT_GRPQUOTA,
-+	F2FS_MOUNT_PRJQUOTA,
-+	F2FS_MOUNT_QUOTA,
-+	F2FS_MOUNT_INLINE_XATTR_SIZE,
-+	F2FS_MOUNT_RESERVE_ROOT,
-+	F2FS_MOUNT_DISABLE_CHECKPOINT,
-+	F2FS_MOUNT_NORECOVERY,
-+	F2FS_MOUNT_ATGC,
-+	F2FS_MOUNT_MERGE_CHECKPOINT,
-+	F2FS_MOUNT_GC_MERGE,
-+	F2FS_MOUNT_COMPRESS_CACHE,
-+	F2FS_MOUNT_AGE_EXTENT_CACHE,
-+	F2FS_MOUNT_NAT_BITS,
-+	F2FS_MOUNT_INLINECRYPT,
-+	/*
-+	 * Some f2fs environments expect to be able to pass the "lazytime" option
-+	 * string rather than using the MS_LAZYTIME flag, so this must remain.
-+	 */
-+	F2FS_MOUNT_LAZYTIME,
-+	F2FS_MOUNT_RESERVE_NODE,
-+};
- 
- #define F2FS_OPTION(sbi)	((sbi)->mount_opt)
--#define clear_opt(sbi, option)	(F2FS_OPTION(sbi).opt &= ~F2FS_MOUNT_##option)
--#define set_opt(sbi, option)	(F2FS_OPTION(sbi).opt |= F2FS_MOUNT_##option)
--#define test_opt(sbi, option)	(F2FS_OPTION(sbi).opt & F2FS_MOUNT_##option)
-+#define clear_opt(sbi, option)		\
-+	(F2FS_OPTION(sbi).opt &= ~BIT(F2FS_MOUNT_##option))
-+#define set_opt(sbi, option)		\
-+	(F2FS_OPTION(sbi).opt |= BIT(F2FS_MOUNT_##option))
-+#define test_opt(sbi, option)		\
-+	(F2FS_OPTION(sbi).opt & BIT(F2FS_MOUNT_##option))
- 
- #define ver_after(a, b)	(typecheck(unsigned long long, a) &&		\
- 		typecheck(unsigned long long, b) &&			\
-@@ -183,7 +188,7 @@ struct f2fs_rwsem {
- };
- 
- struct f2fs_mount_info {
--	unsigned int opt;
-+	unsigned long long opt;
- 	block_t root_reserved_blocks;	/* root reserved blocks */
- 	block_t root_reserved_nodes;	/* root reserved nodes */
- 	kuid_t s_resuid;		/* reserved blocks for uid */
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 96325bbc70386..8790d9d4348a1 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -352,7 +352,7 @@ static match_table_t f2fs_checkpoint_tokens = {
- 
- struct f2fs_fs_context {
- 	struct f2fs_mount_info info;
--	unsigned int	opt_mask;	/* Bits changed */
-+	unsigned long long opt_mask;	/* Bits changed */
- 	unsigned int	spec_mask;
- 	unsigned short	qname_mask;
- };
-@@ -360,23 +360,23 @@ struct f2fs_fs_context {
- #define F2FS_CTX_INFO(ctx)	((ctx)->info)
- 
- static inline void ctx_set_opt(struct f2fs_fs_context *ctx,
--			       unsigned int flag)
-+			       enum f2fs_mount_opt flag)
- {
--	ctx->info.opt |= flag;
--	ctx->opt_mask |= flag;
-+	ctx->info.opt |= BIT(flag);
-+	ctx->opt_mask |= BIT(flag);
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 94825180385ab..7c3095622872f 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -364,6 +364,31 @@ static inline int dquot_active(struct dquot *dquot)
+ 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
  }
  
- static inline void ctx_clear_opt(struct f2fs_fs_context *ctx,
--				 unsigned int flag)
-+				 enum f2fs_mount_opt flag)
++static struct dquot *__dqgrab(struct dquot *dquot)
++{
++	lockdep_assert_held(&dq_list_lock);
++	if (!atomic_read(&dquot->dq_count))
++		remove_free_dquot(dquot);
++	atomic_inc(&dquot->dq_count);
++	return dquot;
++}
++
++/*
++ * Get reference to dquot when we got pointer to it by some other means. The
++ * dquot has to be active and the caller has to make sure it cannot get
++ * deactivated under our hands.
++ */
++struct dquot *dqgrab(struct dquot *dquot)
++{
++	spin_lock(&dq_list_lock);
++	WARN_ON_ONCE(!dquot_active(dquot));
++	dquot = __dqgrab(dquot);
++	spin_unlock(&dq_list_lock);
++
++	return dquot;
++}
++EXPORT_SYMBOL_GPL(dqgrab);
++
+ static inline int dquot_dirty(struct dquot *dquot)
  {
--	ctx->info.opt &= ~flag;
--	ctx->opt_mask |= flag;
-+	ctx->info.opt &= ~BIT(flag);
-+	ctx->opt_mask |= BIT(flag);
- }
+ 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
+@@ -642,15 +667,14 @@ int dquot_scan_active(struct super_block *sb,
+ 			continue;
+ 		if (dquot->dq_sb != sb)
+ 			continue;
+-		/* Now we have active dquot so we can just increase use count */
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqput(old_dquot);
+ 		old_dquot = dquot;
+ 		/*
+ 		 * ->release_dquot() can be racing with us. Our reference
+-		 * protects us from new calls to it so just wait for any
+-		 * outstanding call and recheck the DQ_ACTIVE_B after that.
++		 * protects us from dquot_release() proceeding so just wait for
++		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
+ 		 */
+ 		wait_on_dquot(dquot);
+ 		if (dquot_active(dquot)) {
+@@ -718,7 +742,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+ 			 * use count */
+-			dqgrab(dquot);
++			__dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+ 			err = dquot_write_dquot(dquot);
+ 			if (err && !ret)
+@@ -964,9 +988,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_LOOKUPS);
+ 	} else {
+-		if (!atomic_read(&dquot->dq_count))
+-			remove_free_dquot(dquot);
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_CACHE_HITS);
+ 		dqstats_inc(DQST_LOOKUPS);
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index 06cc8888199e8..2334a02c30149 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
+ bool dquot_initialize_needed(struct inode *inode);
+ void dquot_drop(struct inode *inode);
+ struct dquot *dqget(struct super_block *sb, struct kqid qid);
+-static inline struct dquot *dqgrab(struct dquot *dquot)
+-{
+-	/* Make sure someone else has active reference to dquot */
+-	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
+-	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
+-	atomic_inc(&dquot->dq_count);
+-	return dquot;
+-}
++struct dquot *dqgrab(struct dquot *dquot);
  
- static inline bool ctx_test_opt(struct f2fs_fs_context *ctx,
--				unsigned int flag)
-+				enum f2fs_mount_opt flag)
+ static inline bool dquot_is_busy(struct dquot *dquot)
  {
--	return ctx->info.opt & flag;
-+	return ctx->info.opt & BIT(flag);
- }
- 
- void f2fs_printk(struct f2fs_sb_info *sbi, bool limit_rate,
-@@ -1371,7 +1371,7 @@ static int f2fs_check_compression(struct fs_context *fc,
- 			ctx_test_opt(ctx, F2FS_MOUNT_COMPRESS_CACHE))
- 			f2fs_info(sbi, "Image doesn't support compression");
- 		clear_compression_spec(ctx);
--		ctx->opt_mask &= ~F2FS_MOUNT_COMPRESS_CACHE;
-+		ctx->opt_mask &= ~BIT(F2FS_MOUNT_COMPRESS_CACHE);
- 		return 0;
- 	}
- 	if (ctx->spec_mask & F2FS_SPEC_compress_extension) {
-@@ -1439,42 +1439,42 @@ static int f2fs_check_opt_consistency(struct fs_context *fc,
- 		return -EINVAL;
- 
- 	if (f2fs_hw_should_discard(sbi) &&
--			(ctx->opt_mask & F2FS_MOUNT_DISCARD) &&
-+			(ctx->opt_mask & BIT(F2FS_MOUNT_DISCARD)) &&
- 			!ctx_test_opt(ctx, F2FS_MOUNT_DISCARD)) {
- 		f2fs_warn(sbi, "discard is required for zoned block devices");
- 		return -EINVAL;
- 	}
- 
- 	if (!f2fs_hw_support_discard(sbi) &&
--			(ctx->opt_mask & F2FS_MOUNT_DISCARD) &&
-+			(ctx->opt_mask & BIT(F2FS_MOUNT_DISCARD)) &&
- 			ctx_test_opt(ctx, F2FS_MOUNT_DISCARD)) {
- 		f2fs_warn(sbi, "device does not support discard");
- 		ctx_clear_opt(ctx, F2FS_MOUNT_DISCARD);
--		ctx->opt_mask &= ~F2FS_MOUNT_DISCARD;
-+		ctx->opt_mask &= ~BIT(F2FS_MOUNT_DISCARD);
- 	}
- 
- 	if (f2fs_sb_has_device_alias(sbi) &&
--			(ctx->opt_mask & F2FS_MOUNT_READ_EXTENT_CACHE) &&
-+			(ctx->opt_mask & BIT(F2FS_MOUNT_READ_EXTENT_CACHE)) &&
- 			!ctx_test_opt(ctx, F2FS_MOUNT_READ_EXTENT_CACHE)) {
- 		f2fs_err(sbi, "device aliasing requires extent cache");
- 		return -EINVAL;
- 	}
- 
- 	if (test_opt(sbi, RESERVE_ROOT) &&
--			(ctx->opt_mask & F2FS_MOUNT_RESERVE_ROOT) &&
-+			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_ROOT)) &&
- 			ctx_test_opt(ctx, F2FS_MOUNT_RESERVE_ROOT)) {
- 		f2fs_info(sbi, "Preserve previous reserve_root=%u",
- 			F2FS_OPTION(sbi).root_reserved_blocks);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_ROOT);
--		ctx->opt_mask &= ~F2FS_MOUNT_RESERVE_ROOT;
-+		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_ROOT);
- 	}
- 	if (test_opt(sbi, RESERVE_NODE) &&
--			(ctx->opt_mask & F2FS_MOUNT_RESERVE_NODE) &&
-+			(ctx->opt_mask & BIT(F2FS_MOUNT_RESERVE_NODE)) &&
- 			ctx_test_opt(ctx, F2FS_MOUNT_RESERVE_NODE)) {
- 		f2fs_info(sbi, "Preserve previous reserve_node=%u",
- 			F2FS_OPTION(sbi).root_reserved_nodes);
- 		ctx_clear_opt(ctx, F2FS_MOUNT_RESERVE_NODE);
--		ctx->opt_mask &= ~F2FS_MOUNT_RESERVE_NODE;
-+		ctx->opt_mask &= ~BIT(F2FS_MOUNT_RESERVE_NODE);
- 	}
- 
- 	err = f2fs_check_test_dummy_encryption(fc, sb);
 -- 
 2.53.0
 
