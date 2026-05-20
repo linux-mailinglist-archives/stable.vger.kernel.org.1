@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHBaBWHvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:05 +0200
+	id qIb6Ok0iDmru6QUAu9opvQ
+	(envelope-from <stable+bounces-252102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F7D593CB1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472B259A72A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DA7031C7E58
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C31537CB8CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAAF3F86FB;
-	Wed, 20 May 2026 17:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCCF29B8D0;
+	Wed, 20 May 2026 17:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVo0bNvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duyDNupN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4573A3833;
-	Wed, 20 May 2026 17:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B8C3BE64B;
+	Wed, 20 May 2026 17:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297184; cv=none; b=QEKjcNMVryFfjAUc1VwdJjxBMDt3vniKlm8egwXoMZ7JQCiNAQR2asc0dawD+Kzvjeosi25CkootZCv4yMikfVWKDvn0kf811LCPgbcMPpPqglBy/iTqnYXy5ki1fu+nhgDBZYMfk1pc48VZR0e19q/5Zytcyk/Lz1xARVVm5D0=
+	t=1779299795; cv=none; b=aL8R+EPHq3VqrLm4zH9BWiwuIZS7avFDubyctaWabZSPXNlWXqD5m4TcdKXLHcXIijdngN/IT8gX3Ktdwb89LviO9Ga0GRA8sz0gyhycHVeSpL7rk5Nj4Czqw0WBMtVGdNyVjWuJ+msLnD9p1zsp7hkJJXwlgjjSXSCOQfNyUMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297184; c=relaxed/simple;
-	bh=Hub45jRJn8IVhr5JfIIOOLEruIHziQ3949/9aU68WQI=;
+	s=arc-20240116; t=1779299795; c=relaxed/simple;
+	bh=ZT8qhOOu3YXO9eT+YrM7d7HQE4uzL1C77ddQc+kIrP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CWi+Vua9IpfwG47IdIJCfqVmLE0BIXCNIP2Wb+hLZhpxTfQU/v4M6gxGGqmD65mwRo37lnv6QFs/bCi3570WxudXUxt0GfDzMYkR2zz0TeWh4jz+YJzlvK/7nxgM9YKblcaJ9RaE7Y8YjlB9zTbeHSS1E764tH8NxHN99+IN8ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVo0bNvU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FE41F000E9;
-	Wed, 20 May 2026 17:13:02 +0000 (UTC)
+	 MIME-Version; b=AeptVJJwsy8LAgy5zkWN9ItvQ6OIv9tRxsRwUi7Rtl1XXQfyKeOFPv7V7BsjUKFMM9ToISDXuPP7uwuMjmdOFYiaMlDYd51l/Tok9YTpQkr0oxFgdJR59cuioLxfS5unTJn4DNHWm2QlONQwFH5hjNPhI6enBuBoHESyiAgWjoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duyDNupN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD11E1F000E9;
+	Wed, 20 May 2026 17:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297183;
-	bh=D4uDOO5TnlIrwI9yIBOuiUHuMf80QG8C67kxxAbJ3qI=;
+	s=korg; t=1779299794;
+	bh=NVMDEnf5GUYbiTytH8QY7tJJeDPacGVEv6rjRs96qs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pVo0bNvUucZlZ5YT+agoGarVWvh+fWXhl3Q3KStG8XoVaN01uPdUAoKvy0wJ+XHYB
-	 /lz+l05d9MdhHdKgSqsAbTlLA+KHYG1gI96kZEUN1sVGFqqHaxhZO/yW4BQ7J74PLi
-	 2bF48XZGwyVHTlFroYhDTFEl9ipAr5NUyH4NL6MQ=
+	b=duyDNupNaZq5XpDlmV7dsbBMHh9QSsJZv+2ga2ELBNwU6GLv1Ocn69rXmsd6FnGU+
+	 EdI1ic4ks8RPdbc+89YsIbMdLgVwE1shL9nSHMsuvk9bUhlNU392q1qK+fSfT524mo
+	 hRugyvmpANByD5Zian0OQRtGicPW6X9T4a+K36ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Rong Zhang <i@rong.moe>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 7.0 1081/1146] platform/x86: lenovo-wmi-other: Balance IDA id allocation and free
+	Petr Oros <poros@redhat.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 848/957] ice: fix SMA and U.FL pin state changes affecting paired pin
 Date: Wed, 20 May 2026 18:22:11 +0200
-Message-ID: <20260520162212.701510500@linuxfoundation.org>
+Message-ID: <20260520162152.954617397@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +66,178 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-251133-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252102-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,rong.moe:email,squebb.ca:email]
-X-Rspamd-Queue-Id: 75F7D593CB1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 472B259A72A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Petr Oros <poros@redhat.com>
 
-commit 55a279ae819adaea99a94c609f31970b70e0ec0c upstream.
+[ Upstream commit 6f9d8393c9f50fbc68b9c9e99f78ca5a7b43ff44 ]
 
-Currently, the IDA id is only freed on wmi-other device removal or
-failure to create firmware-attributes device, kset, or attributes. It
-leaks IDA ids if the wmi-other device is bound multiple times, as the
-unbind callback never frees the previously allocated IDA id.
-Additionally, if the wmi-other device has failed to create a
-firmware-attributes device before it gets removed, the wmi-device
-removal callback double frees the same IDA id.
+SMA and U.FL pins share physical signal paths in pairs (SMA1/U.FL1 and
+SMA2/U.FL2) controlled by the PCA9575 GPIO expander.  Each pair can
+only have one active pin at a time: SMA1 output and U.FL1 output share
+the same CGU output, SMA2 input and U.FL2 input share the same CGU
+input.  The PCA9575 register bits determine which connector in each
+pair owns the signal path.
 
-These bugs were found by sashiko.dev [1].
+The driver does not account for this pairing in two places:
 
-Fix them by moving ida_free() into lwmi_om_fw_attr_remove() so it is
-balanced with ida_alloc() in lwmi_om_fw_attr_add(). With them fixed,
-properly set and utilize the validity of priv->ida_id to balance
-firmware-attributes registration and removal, without relying on
-propagating the registration error to the component framework, which is
-more reliable and aligns with the hwmon device registration and removal
-sequences.
+ice_dpll_ufl_pin_state_set() modifies PCA9575 bits and disables the
+backing CGU pin without checking whether the U.FL pin is currently
+active.  Disconnecting an already inactive U.FL pin flips bits that
+the paired SMA pin relies on, breaking its connection.
 
-No functional change intended.
+ice_dpll_sma_direction_set() does not propagate direction changes to
+the paired U.FL pin.  For SMA2/U.FL2 the ICE_SMA2_UFL2_RX_DIS bit is
+never managed, so U.FL2 stays disconnected after SMA2 switches to
+output.  For both pairs the backing CGU pin of the U.FL side is never
+enabled when a direction change activates it, so userspace sees the
+pin as disconnected even though the routing is correct.
 
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
-Cc: stable@vger.kernel.org
-Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
-Signed-off-by: Rong Zhang <i@rong.moe>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-3-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by guarding the U.FL disconnect path against inactive pins and by
+updating the paired U.FL pin fully on SMA direction changes: manage
+ICE_SMA2_UFL2_RX_DIS for the SMA2/U.FL2 pair and enable the backing
+CGU pin whenever the peer becomes active.
+
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-8-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo/wmi-other.c |   36 ++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 50 ++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/lenovo/wmi-other.c
-+++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -956,17 +956,17 @@ static struct capdata01_attr_group cd01_
- /**
-  * lwmi_om_fw_attr_add() - Register all firmware_attributes_class members
-  * @priv: The Other Mode driver data.
-- *
-- * Return: Either 0, or an error code.
-  */
--static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
-+static void lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index c2ad39bfe177d..3254be7b0dca8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -1090,6 +1090,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 				      enum dpll_pin_direction direction,
+ 				      struct netlink_ext_ack *extack)
  {
- 	unsigned int i;
- 	int err;
++	struct ice_dplls *d = &p->pf->dplls;
++	struct ice_dpll_pin *peer;
+ 	u8 data;
+ 	int ret;
  
--	priv->ida_id = ida_alloc(&lwmi_om_ida, GFP_KERNEL);
--	if (priv->ida_id < 0)
--		return priv->ida_id;
-+	err = ida_alloc(&lwmi_om_ida, GFP_KERNEL);
-+	if (err < 0)
-+		goto err_no_ida;
+@@ -1108,8 +1110,9 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 	case ICE_DPLL_PIN_SW_2_IDX:
+ 		if (direction == DPLL_PIN_DIRECTION_INPUT) {
+ 			data &= ~ICE_SMA2_DIR_EN;
++			data |= ICE_SMA2_UFL2_RX_DIS;
+ 		} else {
+-			data &= ~ICE_SMA2_TX_EN;
++			data &= ~(ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS);
+ 			data |= ICE_SMA2_DIR_EN;
+ 		}
+ 		break;
+@@ -1121,6 +1124,34 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+ 		ret = ice_dpll_pin_state_update(p->pf, p,
+ 						ICE_DPLL_PIN_TYPE_SOFTWARE,
+ 						extack);
++	if (ret)
++		return ret;
 +
-+	priv->ida_id = err;
- 
- 	priv->fw_attr_dev = device_create(&firmware_attributes_class, NULL,
- 					  MKDEV(0, 0), NULL, "%s-%u",
-@@ -992,7 +992,7 @@ static int lwmi_om_fw_attr_add(struct lw
- 
- 		cd01_attr_groups[i].tunable_attr->dev = &priv->wdev->dev;
- 	}
--	return 0;
-+	return;
- 
- err_remove_groups:
- 	while (i--)
-@@ -1006,7 +1006,12 @@ err_destroy_classdev:
- 
- err_free_ida:
- 	ida_free(&lwmi_om_ida, priv->ida_id);
--	return err;
++	/* When a direction change activates the paired U.FL pin, enable
++	 * its backing CGU pin so the pin reports as connected. Without
++	 * this the U.FL routing is correct but the CGU pin stays disabled
++	 * and userspace sees the pin as disconnected.  Do not disable the
++	 * backing pin when U.FL becomes inactive because the SMA pin may
++	 * still be using it.
++	 */
++	peer = &d->ufl[p->idx];
++	if (peer->active) {
++		struct ice_dpll_pin *target;
++		enum ice_dpll_pin_type type;
 +
-+err_no_ida:
-+	priv->ida_id = -EIDRM;
-+
-+	dev_warn(&priv->wdev->dev,
-+		 "failed to register firmware-attributes device: %d\n", err);
++		if (peer->output) {
++			target = peer->output;
++			type = ICE_DPLL_PIN_TYPE_OUTPUT;
++		} else {
++			target = peer->input;
++			type = ICE_DPLL_PIN_TYPE_INPUT;
++		}
++		ret = ice_dpll_pin_enable(&p->pf->hw, target,
++					  d->eec.dpll_idx, type, extack);
++		if (!ret)
++			ret = ice_dpll_pin_state_update(p->pf, target,
++							type, extack);
++	}
+ 
+ 	return ret;
  }
- 
- /**
-@@ -1015,12 +1020,17 @@ err_free_ida:
-  */
- static void lwmi_om_fw_attr_remove(struct lwmi_om_priv *priv)
- {
-+	if (priv->ida_id < 0)
-+		return;
-+
- 	for (unsigned int i = 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++)
- 		sysfs_remove_group(&priv->fw_attr_kset->kobj,
- 				   cd01_attr_groups[i].attr_group);
- 
- 	kset_unregister(priv->fw_attr_kset);
- 	device_unregister(priv->fw_attr_dev);
-+	ida_free(&lwmi_om_ida, priv->ida_id);
-+	priv->ida_id = -EIDRM;
- }
- 
- /* ======== Self (master: lenovo-wmi-other) ======== */
-@@ -1062,7 +1072,9 @@ static int lwmi_om_master_bind(struct de
- 
- 	lwmi_om_fan_info_collect_cd00(priv);
- 
--	return lwmi_om_fw_attr_add(priv);
-+	lwmi_om_fw_attr_add(priv);
-+
-+	return 0;
- }
- 
- /**
-@@ -1114,13 +1126,7 @@ static int lwmi_other_probe(struct wmi_d
- 
- static void lwmi_other_remove(struct wmi_device *wdev)
- {
--	struct lwmi_om_priv *priv = dev_get_drvdata(&wdev->dev);
--
- 	component_master_del(&wdev->dev, &lwmi_om_master_ops);
--
--	/* No IDA to free if the driver is never bound to its components. */
--	if (priv->ida_id >= 0)
--		ida_free(&lwmi_om_ida, priv->ida_id);
- }
- 
- static const struct wmi_device_id lwmi_other_id_table[] = {
+@@ -1172,6 +1203,14 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			data &= ~ICE_SMA1_MASK;
+ 			enable = true;
+ 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			/* Skip if U.FL1 is not active, setting TX_EN
++			 * while DIR_EN is set would also deactivate
++			 * the paired SMA1 output.
++			 */
++			if (data & (ICE_SMA1_DIR_EN | ICE_SMA1_TX_EN)) {
++				ret = 0;
++				goto unlock;
++			}
+ 			data |= ICE_SMA1_TX_EN;
+ 			enable = false;
+ 		} else {
+@@ -1186,6 +1225,15 @@ ice_dpll_ufl_pin_state_set(const struct dpll_pin *pin, void *pin_priv,
+ 			data &= ~ICE_SMA2_UFL2_RX_DIS;
+ 			enable = true;
+ 		} else if (state == DPLL_PIN_STATE_DISCONNECTED) {
++			/* Skip if U.FL2 is not active, setting
++			 * UFL2_RX_DIS could also disable the paired
++			 * SMA2 input.
++			 */
++			if (!(data & ICE_SMA2_DIR_EN) ||
++			    (data & ICE_SMA2_UFL2_RX_DIS)) {
++				ret = 0;
++				goto unlock;
++			}
+ 			data |= ICE_SMA2_UFL2_RX_DIS;
+ 			enable = false;
+ 		} else {
+-- 
+2.53.0
+
 
 
 
