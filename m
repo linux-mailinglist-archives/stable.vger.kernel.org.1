@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-250333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DJCDOsODmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:39 +0200
+	id qPcKD8YYDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-251263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81073598A79
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A921B599903
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 673A930EB72F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F06E931C1525
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E104369224;
-	Wed, 20 May 2026 16:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FFC0369999;
+	Wed, 20 May 2026 17:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4DHJDAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1d3cvmM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D846933509B;
-	Wed, 20 May 2026 16:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5CF331220;
+	Wed, 20 May 2026 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295139; cv=none; b=YNR16pC0ZgBHQonRsoPVQbX0Rn7EP1x7xfEm1lJSIbzpD9DKppVl4Pe6xcBw18rtS1fkROYETLT4aF5puoNH00CiAtxIWPudWL09MdITxh0dPcJ0gWl07xWn5YymFD6VqFHuHa/+AvM3t2b3Q4LM2USnE3AO8fYFMvvaLIJTDRU=
+	t=1779297529; cv=none; b=qO61luPHZl+REoYFv8Depyemm6TytU8w3Ruhc1UC17fsgMMIA3PRvtCkTDJM0X/QcL560OWL0h/qowDEwT49OycqRi3fDv6C36zDkUEJgz898au8qNmxesIe6W32PFKZVuPUGKHzj4GTqPuSIHhuOGFWy7YPtQ4wpHMIEcKeR5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295139; c=relaxed/simple;
-	bh=jW9QsIIFyc9vMdtQts6bVSGGnS/mTBqDr1SROexj55w=;
+	s=arc-20240116; t=1779297529; c=relaxed/simple;
+	bh=nsBHbCdsvE3Dk1MYqGppT9iUaxRxLJ9D2w3KSerjTn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y2QMNd1fuhKdfhgXP6KNMcBxKUG0ExGwlFUwqIqhETS/HI7I8UOTQU0s42KFDmc7ztxAtzUBSeUIOi9Pfv8GOHpX+/OCgsc0OhGD+IWN4N+cQ7Hej9Q200tAJtO/NVlmXfJtPwFA5vJo36cWiuBtN36FfeBS6IaKq38WqdIQnC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4DHJDAO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131881F000E9;
-	Wed, 20 May 2026 16:38:56 +0000 (UTC)
+	 MIME-Version; b=BfpDT8TuaKdJhP3KT2X1+DlLxBpvRUaYlOXsiYxiAiJyJ+mMaRtvNUMbCZ0YyOT0QAWcDhn0psSeI2rOsouyy4HNnb3cnY9tKOFX8UvtGXyyqaRQjzah3QQHGa4PMyXlzXR8B+V5/1YrM0FcQzhdRPTwhvXY9llE5SwEnbH0Uys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1d3cvmM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979B91F00894;
+	Wed, 20 May 2026 17:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295137;
-	bh=Q7/QX1odxPPJxPTSPWz+LLPPBXm5hWnVQGpSiRZkhsc=;
+	s=korg; t=1779297527;
+	bh=gmXpJeTHOGs/DCm2bB+uJke9sxnMoWV8/sdg6y4YjAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s4DHJDAOqmEUxOznsn7j7XAYdRquil1VGcCz0IM4TmEm2Trxa6vowyjfKGekcQ7kj
-	 4fHvBxUm2T7TZNW+d6BtuoKvTRCs3+E0wNEq2ZBG3H5wSClVktDoP/7D9E7w0K9oSy
-	 RUnxIU5q83FaQ9ZYGVfrKaIWPK0Q1oM4+V/R9/z8=
+	b=Y1d3cvmMr26vkk2EyIkUwrlcewhy4dSEByJLk2npZLeQv5KOl6AgwBM0n+lBZCKwB
+	 /0bUm0rb+pevjEBWuVjb1qVHWVNzsAV0nLIktGbP6a8i1cTh7dFV1wmG0gir3VgYIm
+	 gAzwNgfLlPLRflfC7vZ3zZYxqZwU/C9qgKErHXsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiPeng Chai <YiPeng.Chai@amd.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0298/1146] drm/amd/ras: Fix NULL deref in ras_core_get_utc_second_timestamp()
+Subject: [PATCH 6.18 065/957] s390/bpf: Zero-extend bpf prog return values and kfunc arguments
 Date: Wed, 20 May 2026 18:09:08 +0200
-Message-ID: <20260520162154.955269517@linuxfoundation.org>
+Message-ID: <20260520162135.972925432@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +65,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250333-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251263-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,amd.com:email]
-X-Rspamd-Queue-Id: 81073598A79
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A921B599903
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 2b8101cc3b34d4d80d799360d2744829d5964479 ]
+[ Upstream commit 202e42e4aa890172366354b233c42c73107a3f59 ]
 
-ras_core_get_utc_second_timestamp() retrieves the current UTC timestamp
-(in seconds since the Unix epoch) through a platform-specific RAS system
-callback and is used for timestamping RAS error events.
+s390x ABI requires callers to zero-extend unsigned arguments and
+sign-extend signed arguments, and callees to zero-extend unsigned
+return values and sign-extend signed return values.
 
-The function checks ras_core in the conditional statement before calling
-the sys_fn callback. However, when the condition fails, the function
-prints an error message using ras_core->dev.
+s390 BPF JIT currently implements only sign extension. Fix this
+omission and implement zero extension too.
 
-If ras_core is NULL, this can lead to a potential NULL pointer
-dereference when accessing ras_core->dev.
-
-Add an early NULL check for ras_core at the beginning of the function
-and return 0 when the pointer is not valid. This prevents the
-dereference and makes the control flow clearer.
-
-Fixes: 13c91b5b4378 ("drm/amd/ras: Add rascore unified interface function")
-Cc: YiPeng Chai <YiPeng.Chai@amd.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
+Reported-by: Hari Bathini <hbathini@linux.ibm.com>
+Closes: https://lore.kernel.org/bpf/20260312080113.843408-1-hbathini@linux.ibm.com/
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Link: https://lore.kernel.org/r/20260313174807.581826-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/ras/rascore/ras_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 39 ++++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/ras/rascore/ras_core.c b/drivers/gpu/drm/amd/ras/rascore/ras_core.c
-index b81741a339b1b..1ad555eff5927 100644
---- a/drivers/gpu/drm/amd/ras/rascore/ras_core.c
-+++ b/drivers/gpu/drm/amd/ras/rascore/ras_core.c
-@@ -507,8 +507,11 @@ bool ras_core_is_enabled(struct ras_core_context *ras_core)
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index cf461d76e9da3..d7cdd907ac797 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -831,25 +831,34 @@ static int bpf_jit_probe_post(struct bpf_jit *jit, struct bpf_prog *fp,
+ }
  
- uint64_t ras_core_get_utc_second_timestamp(struct ras_core_context *ras_core)
+ /*
+- * Sign-extend the register if necessary
++ * Sign- or zero-extend the register if necessary
+  */
+-static int sign_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
++static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
  {
--	if (ras_core && ras_core->sys_fn &&
--		ras_core->sys_fn->get_utc_second_timestamp)
-+	if (!ras_core)
-+		return 0;
-+
-+	if (ras_core->sys_fn &&
-+	    ras_core->sys_fn->get_utc_second_timestamp)
- 		return ras_core->sys_fn->get_utc_second_timestamp(ras_core);
+-	if (!(flags & BTF_FMODEL_SIGNED_ARG))
+-		return 0;
+-
+ 	switch (size) {
+ 	case 1:
+-		/* lgbr %r,%r */
+-		EMIT4(0xb9060000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lgbr %r,%r */
++			EMIT4(0xb9060000, r, r);
++		else
++			/* llgcr %r,%r */
++			EMIT4(0xb9840000, r, r);
+ 		return 0;
+ 	case 2:
+-		/* lghr %r,%r */
+-		EMIT4(0xb9070000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lghr %r,%r */
++			EMIT4(0xb9070000, r, r);
++		else
++			/* llghr %r,%r */
++			EMIT4(0xb9850000, r, r);
+ 		return 0;
+ 	case 4:
+-		/* lgfr %r,%r */
+-		EMIT4(0xb9140000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lgfr %r,%r */
++			EMIT4(0xb9140000, r, r);
++		else
++			/* llgfr %r,%r */
++			EMIT4(0xb9160000, r, r);
+ 		return 0;
+ 	case 8:
+ 		return 0;
+@@ -1799,9 +1808,9 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 				return -1;
  
- 	RAS_DEV_ERR(ras_core->dev, "Failed to get system timestamp!\n");
+ 			for (j = 0; j < m->nr_args; j++) {
+-				if (sign_extend(jit, BPF_REG_1 + j,
+-						m->arg_size[j],
+-						m->arg_flags[j]))
++				if (sign_zero_extend(jit, BPF_REG_1 + j,
++						     m->arg_size[j],
++						     m->arg_flags[j]))
+ 					return -1;
+ 			}
+ 		}
+@@ -2555,7 +2564,7 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
+ 	EMIT6_PCREL_RILB_PTR(0xc0050000, REG_14, p->bpf_func);
+ 	/* stg %r2,retval_off(%r15) */
+ 	if (save_ret) {
+-		if (sign_extend(jit, REG_2, m->ret_size, m->ret_flags))
++		if (sign_zero_extend(jit, REG_2, m->ret_size, m->ret_flags))
+ 			return -1;
+ 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
 -- 
 2.53.0
 
