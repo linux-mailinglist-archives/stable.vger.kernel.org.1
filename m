@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gO4eBA39DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:25 +0200
+	id OBdjJXouDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823BF596331
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFD59B8A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3347307DCAB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C62793968412
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DC9372B31;
-	Wed, 20 May 2026 18:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5F934EEF7;
+	Wed, 20 May 2026 18:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAdquROP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btPf7cFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2752D7386;
-	Wed, 20 May 2026 18:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8363E2AAD;
+	Wed, 20 May 2026 18:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301321; cv=none; b=haU+MNd/X3xwooER7/TuImp/LldqTtcsCcxEobVveNSmXGQnTp0MC4cIqCJSTLaiMv3KM92VbHrwn7GpM7qLL3bFKP6NB+vrbsON9/Ie3qlFRVTqdBWPjpqOIq6fjVCmctN2F5esFHxXwDHPE/qsTQ6F3alsdlFu/Dd/BBNSZ8o=
+	t=1779302526; cv=none; b=mTzmKtzJuJbbE0OmNvvv8wLUzBOap4zhsuJ/oqucSOpob6G0f4JWPgA56TiT6GSp7tQAGvIAd4Z3diBuqZmt/1hRjSe8QoBZsxVcAWhzBAVWdta0/3anr+UkqipZzu+wvFWqjelb4Fo+yVlNJDuSFXtB5Vk8ILZhmQfxumoPFk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301321; c=relaxed/simple;
-	bh=/CpPy4ZbHC7DcYTGSFR7SGjQYraldxL3/KnfrF4bB3M=;
+	s=arc-20240116; t=1779302526; c=relaxed/simple;
+	bh=OjQvy2iIlVdOrFAqp06mTNPH2HpYI1lyG/M37Ouo9t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ornr5ZrSiK+oKc76foH/cSo4lB9Sj3nJsA31jGTjsvL2nDczI9SlUm3JnoCl0wavw/k33IAvnJdDjOXOYvrupOdtPnWh1YW477IwcaRJa5ipI6lmxUFKIBEStk++LsC7zxx78XyKOxvwLHNwYQdQ2xDLV8W7lnAiiFoCYv3DhC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAdquROP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F0A1F00894;
-	Wed, 20 May 2026 18:21:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i1UqjwPSOSybw9lhrAJUeYusmpgZr3eHJvYNynbTu15dIVwOBPmcfZxyAM5qs6Pq9uOXFdOtt+M6BlsQpkvMAtOYYUz3miJtXwuHDGNkcLnM5S/A2h2RmdqTMzN1W8PbmwQ1eF/ZX+2GYfVzex0k7ommN/eI3/cNFMWfzvX3240=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btPf7cFw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855B91F000E9;
+	Wed, 20 May 2026 18:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301320;
-	bh=KicpsnlTDs17Yik18vJqJGOkGwN7Ht3n9oEaz+Mfdds=;
+	s=korg; t=1779302525;
+	bh=Iz9BOoduRC9kAB8p5fGsywAHSakMOxD9rN/7941skmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hAdquROPSidPBeJfck0Wl3E3Hn9gOxj/7i9TS4rBlNjxgiIKitl49LGrW4gC6tN5Z
-	 TG+QXzh8OZw+jXk1J8+Pd9hk78VvZOnZfw5IGUlPTJhcOiMvfc+2HrATso3WEXhs4N
-	 b1zqXvzDBES+JK/1WENhWtZlym9AZTIEnHODrgW0=
+	b=btPf7cFwJB3aLJo3YJi0HHLZeOxTP1QccR9YaJABZF5tUPIVl5p8h862ogJbCGjeJ
+	 S+IYX1T1VEaeRD0RJr4dz6WLNH/Njv1wR8PUQv+liB53nb9MbpIqvVPEt1xQv3sJfO
+	 mkukpFrN4GW1wZ9dPW+Rt572Fm5+SbNJEBCwGcJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 509/666] mailbox: mailbox-test: initialize struct earlier
-Date: Wed, 20 May 2026 18:22:00 +0200
-Message-ID: <20260520162122.295700191@linuxfoundation.org>
+Subject: [PATCH 6.6 298/508] drm/i915: Loop over all active pipes in intel_mbus_dbox_update
+Date: Wed, 20 May 2026 18:22:01 +0200
+Message-ID: <20260520162105.100165862@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253146-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 823BF596331
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1EEFD59B8A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 
-[ Upstream commit bbcf9af68bfedb3d9cc3c7eae62f5c844d8b78b9 ]
+[ Upstream commit e8333ab22cd8c750b7c14d3da7c0eef3ba85527f ]
 
-The waitqueue must be initialized before the debugfs files are created
-because from that time, requests from userspace can already be made.
-Similarily, drvdata and spinlock needs to be initialized before we
-request the channel, otherwise dangling irqs might run into problems
-like a NULL pointer exception.
+We need to loop through all active pipes, not just the ones, that
+are in current state, because disabling and enabling even a particular
+pipe affects credits in another one.
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240402155016.13733-6-ville.syrjala@linux.intel.com
+Stable-dep-of: a97c88a176b6 ("drm/i915/wm: Verify the correct plane DDB entry")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/skl_watermark.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 30b0a230a3e28..9eeb0b61b887c 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -366,6 +366,12 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev)
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
+index 6c657ef8b45b4..9653ed8726935 100644
+--- a/drivers/gpu/drm/i915/display/skl_watermark.c
++++ b/drivers/gpu/drm/i915/display/skl_watermark.c
+@@ -3582,10 +3582,8 @@ void intel_mbus_dbox_update(struct intel_atomic_state *state)
+ {
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
+ 	const struct intel_dbuf_state *new_dbuf_state, *old_dbuf_state;
+-	const struct intel_crtc_state *new_crtc_state;
+ 	const struct intel_crtc *crtc;
+ 	u32 val = 0;
+-	int i;
  
-+	tdev->dev = &pdev->dev;
-+	spin_lock_init(&tdev->lock);
-+	mutex_init(&tdev->mutex);
-+	init_waitqueue_head(&tdev->waitq);
-+	platform_set_drvdata(pdev, tdev);
-+
- 	/* It's okay for MMIO to be NULL */
- 	tdev->tx_mmio = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (PTR_ERR(tdev->tx_mmio) == -EBUSY) {
-@@ -395,12 +401,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (!tdev->rx_channel && (tdev->rx_mmio != tdev->tx_mmio))
- 		tdev->rx_channel = tdev->tx_channel;
+ 	if (DISPLAY_VER(i915) < 11)
+ 		return;
+@@ -3629,12 +3627,9 @@ void intel_mbus_dbox_update(struct intel_atomic_state *state)
+ 		val |= MBUS_DBOX_B_CREDIT(8);
+ 	}
  
--	tdev->dev = &pdev->dev;
--	platform_set_drvdata(pdev, tdev);
+-	for_each_new_intel_crtc_in_state(state, crtc, new_crtc_state, i) {
++	for_each_intel_crtc_in_pipe_mask(&i915->drm, crtc, new_dbuf_state->active_pipes) {
+ 		u32 pipe_val = val;
+ 
+-		if (!new_crtc_state->hw.active)
+-			continue;
 -
--	spin_lock_init(&tdev->lock);
--	mutex_init(&tdev->mutex);
--
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
- 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
-@@ -414,7 +414,6 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_free_chans;
- 
--	init_waitqueue_head(&tdev->waitq);
- 	dev_info(&pdev->dev, "Successfully registered\n");
- 
- 	return 0;
+ 		if (DISPLAY_VER(i915) >= 14) {
+ 			if (xelpdp_is_only_pipe_per_dbuf_bank(crtc->pipe,
+ 							      new_dbuf_state->active_pipes))
 -- 
 2.53.0
 
