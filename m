@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLmeEmUZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:21 +0200
+	id cAgVMeQPDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD44C599A1A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE70598BEB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 982293590525
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 214EB322520E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA7F37754D;
-	Wed, 20 May 2026 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB6C369D4E;
+	Wed, 20 May 2026 16:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDF85ESP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtUSpDM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9C3366075;
-	Wed, 20 May 2026 17:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226C236A357;
+	Wed, 20 May 2026 16:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297678; cv=none; b=T6RfYVermKObhSM59Bd2l2GG8g0GYqHkqpTHmcYCxbEOl42+Dqs6qjYO/Auv92zbhQIJeZoW7vmCFq0P49VnDI3iGdgsmYGADZs+rnvYhuYDA/u9OWl6RNwGWxENXQNE3Rb+dLFepzT2mlFmq0SMjau1HuspUdLZoEa3yXMWqSU=
+	t=1779295268; cv=none; b=hLLEGI+/rGgzbuzxAM2IOzNVMBFNPWZFwwbIGBV4c5yGqSWu6n1SQxg+nW+s2pFXdjM+fr2rcWAwFdeD8m1nDQTgd5TaNd8kWAXEr9VWzOCLS9hKN8lptRT+myMRShEc8hI5wiGqbFP5KWcHAilC4aO/BA/8GvSMZ3aATIVE7ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297678; c=relaxed/simple;
-	bh=9lhbT+c4LSWe1bi1PToXwgW9cYYQLkIXb/0JMd65QAs=;
+	s=arc-20240116; t=1779295268; c=relaxed/simple;
+	bh=sdNLlUG0H/IDuuVpJPXTlbC9xApIY/pYdKsUkUm/Gng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNCqbB85EZSyESGJDfhsQYXSnnG76kNzwMla5e1Ux9hrU1TlWsGAI39i7cyYqZlHaABwY38pbBXTr5HQbvBBxBdFl3JeU9ujoITPPWlhk3G5z38iBFnfXSNWj0yFG05D0sCEYTHOeZGYl3Kl4HrfOLPnqx2/3mS+hICTEMmPR3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDF85ESP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98011F000E9;
-	Wed, 20 May 2026 17:21:16 +0000 (UTC)
+	 MIME-Version; b=gtczfxn5WBDrfq85ilcZ0hs7JmNddeXCo+4gyvFyzsyQoJ9H+aduhwSG/+iaE4HeveKcJQIN+XApYqVvidpMntUdIjfE5A+40NnF8ZPeFEUqFsmTfy+L8kVHOi0DgiXUBD7/RgHQ/aTOMJkOni8XXGoxS8LfQ0EUcOxoptHfUl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtUSpDM4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBD91F000E9;
+	Wed, 20 May 2026 16:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297677;
-	bh=IbxwSl9bGVWBxIRn4smkj2Sx17vDo1yHLgdcoWGCC2Q=;
+	s=korg; t=1779295266;
+	bh=2mMrGT2DStifiJSwPTQ8buFLAf3ILCLtZUUIC/8Ezew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WDF85ESPvsuanSesl1+HXYbkIA3EuKiWhpM5RoH0C7ZMA9yLYe1Zvq5HBrL0HfBaR
-	 eC/5bcv285sYJ0JWSTe0bMIFONSDLZuxbW+3GU8QB7N/W4ak/SqGlc+9eL7btxQfoW
-	 j9xhV2hkjLJlHalUf/zSCqRnLHPjm/Twq1R7eV9s=
+	b=xtUSpDM4m837ItKO1HMIrExhQrmELbha8jPlNBHd3SBVtQb1NXWTGRh51YHgLSbQj
+	 QAMUwqlnoi+CdNCX7dga/tRQw70sg5yc4+IHJ9bBBOipKMTJlDgt7WyhDv/8MBcIT+
+	 1G8YDjhWXEyt50gWu/VhX+Hxl9FKtAM7iFPCJAHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 121/957] bpf: fix end-of-list detection in cgroup_storage_get_next_key()
-Date: Wed, 20 May 2026 18:10:04 +0200
-Message-ID: <20260520162137.182960225@linuxfoundation.org>
+Subject: [PATCH 7.0 0355/1146] drm/msm/a6xx: Fix HLSQ register dumping
+Date: Wed, 20 May 2026 18:10:05 +0200
+Message-ID: <20260520162156.235287483@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251321-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250382-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,asu.edu:email]
-X-Rspamd-Queue-Id: DD44C599A1A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 2FE70598BEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 5828b9e5b272ecff7cf5d345128d3de7324117f7 ]
+[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
 
-list_next_entry() never returns NULL -- when the current element is the
-last entry it wraps to the list head via container_of(). The subsequent
-NULL check is therefore dead code and get_next_key() never returns
--ENOENT for the last element, instead reading storage->key from a bogus
-pointer that aliases internal map fields and copying the result to
-userspace.
+Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
+we are always reading TP state when we wanted SP or HLSQ state.
 
-Replace it with list_entry_is_head() so the function correctly returns
--ENOENT when there are no more entries.
-
-Fixes: de9cbbaadba5 ("bpf: introduce cgroup storage maps")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260403132951.43533-2-bestswngs@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Suggested-by: Connor Abbott <cwabbott0@gmail.com>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714236/
+Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/local_storage.c | 2 +-
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/local_storage.c b/kernel/bpf/local_storage.c
-index c93a756e035c0..b8db4fbd3bd2a 100644
---- a/kernel/bpf/local_storage.c
-+++ b/kernel/bpf/local_storage.c
-@@ -259,7 +259,7 @@ static int cgroup_storage_get_next_key(struct bpf_map *_map, void *key,
- 			goto enoent;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 2d56fe0a65b7e..72c4bb360acd5 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -1013,7 +1013,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
+ 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
+ 	int i, regcount = 0;
  
- 		storage = list_next_entry(storage, list_map);
--		if (!storage)
-+		if (list_entry_is_head(storage, &map->list, list_map))
- 			goto enoent;
- 	} else {
- 		storage = list_first_entry(&map->list,
+-	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
++	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
+ 
+ 	for (i = 0; i < regs->count; i += 2) {
+ 		u32 count = RANGE(regs->registers, i);
 -- 
 2.53.0
 
