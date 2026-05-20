@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNm4KOPtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:43 +0200
+	id GIj+M7D8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD68593784
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8AE5961C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 48B6030EA458
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F229A3001052
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C803A16B6;
-	Wed, 20 May 2026 16:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A5B3A6EE0;
+	Wed, 20 May 2026 17:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6Y4DgTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv7UIQz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31AF36B05E;
-	Wed, 20 May 2026 16:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404135AC18;
+	Wed, 20 May 2026 17:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295281; cv=none; b=cwhZWeyNjUv/aRPnLW0QOKrSYP9IgCN8Q39I9rKqcpJ6XwgB5djwBVoiMRYJSDvVr9HRzowffXWwwNyW8fBVI8Gqh3H50xojG8SSA3FsRtusyv/xb7S50YM/XbMHFtoUPVOhTA+tqRXhFnpPqY2lpH9xAKoI63KHqXW4zwXx8wQ=
+	t=1779297644; cv=none; b=PG5zOrUY5/8TwML/GqLdkHuJrmgfEVwxho4Hwm6CLUGTImp2YHEjuRtqYh1h1JBS94IOclEuywLPngRCu0cuGtCnskTm/RuEyDiGOFy1ccvT9FocjkV7k89GYwBEQBQ8jRlHJD3EKgcGWeymZJW8AZ53ID4eLF26P6i0gQQiczM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295281; c=relaxed/simple;
-	bh=r0vci2TfYZas9C0a5Gz08V8CGeCEA+v2Is58dr/XKb4=;
+	s=arc-20240116; t=1779297644; c=relaxed/simple;
+	bh=ygqdcyfh6+CsYY5rRaRBsgqFAm6uA+wbczBkFVhr+vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHBQ5QajWhP/Pg3ib9eppXSNhtloqexRfus9UWLMsmaCEMHwKhpCJ88qjCb5Pl/2O3cy+u9u7eSP3GcVzYHwESuAk4j6ox+zneq3v+RPtwQEHFqmRwRj8lTb5MPWEcyjPZQjCZTkgrLPisvErKeawcv/KYChosNmSTkG78YZgpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6Y4DgTI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644051F000E9;
-	Wed, 20 May 2026 16:41:19 +0000 (UTC)
+	 MIME-Version; b=CykZM4KN3ueHobT7H6T5qBAJy+j7t4QattsU0DO5sPgWajuSeDEOqWg9hY0zY4DmzLaOnWYjZeCTeFAeyrIWLbysswsQYe7/geQG5OwYZMQ/62wR36/H48mgzVI24eifLmO3+DVZkeXIJbuyXMQksbVdG9nABaRBZur0w81JHi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv7UIQz1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664571F000E9;
+	Wed, 20 May 2026 17:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295279;
-	bh=ghtvidYwyFhC9Q+M79aniIodkd4Owz3JSg+B2P7snTg=;
+	s=korg; t=1779297642;
+	bh=koLatfhmtlfhvz+VeYGCKYUcd/FIeh6molGpo+9Mg4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w6Y4DgTIn+bZ6RKIyCbqkovpLP+2qdQ3xwD10xFNP8zaaxG7xoUkrnsClD9MQvBwf
-	 MytDT6/GjHA/wKbFNgS6FjcLp4jfuJGzvSIA28qVB7v65Vsw2MM5Y3qKnky1LV2Uak
-	 q9Zk0SIUxM8V1/xP10sbSznYOZOWkFsLAQuqkQZY=
+	b=zv7UIQz1uBhfPVZkWvDBMdbUA7RkGqGcm/WriVnBE/27m13bFWWt3QQDR+VY57jRL
+	 UxfKFyFZJPM6DgwK4k31n0wW3BiMYP7x441v3ttthQzUEazpO3uaHn+BdICs5tWpVl
+	 s9/Ha3+alq/RO6FM/2Fomfqm1jYrUcvyp0FijZIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	David Carlier <devnexen@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0342/1146] drm/amd/pm/ci: Clear EnabledForActivity field for memory levels
+Subject: [PATCH 6.18 109/957] bpf: Use RCU-safe iteration in dev_map_redirect_multi() SKB path
 Date: Wed, 20 May 2026 18:09:52 +0200
-Message-ID: <20260520162155.940810894@linuxfoundation.org>
+Message-ID: <20260520162136.924472109@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250387-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251308-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 9DD68593784
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2D8AE5961C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 5facfd4c4c67e8500116ffec0d9da35d92b9c787 ]
+[ Upstream commit 8ed82f807bb09d2c8455aaa665f2c6cb17bc6a19 ]
 
-Follow what radeon did and what amdgpu does for other GPUs with SMU7.
+The DEVMAP_HASH branch in dev_map_redirect_multi() uses
+hlist_for_each_entry_safe() to iterate hash buckets, but this function
+runs under RCU protection (called from xdp_do_generic_redirect_map()
+in softirq context). Concurrent writers (__dev_map_hash_update_elem,
+dev_map_hash_delete_elem) modify the list using RCU primitives
+(hlist_add_head_rcu, hlist_del_rcu).
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+hlist_for_each_entry_safe() performs plain pointer dereferences without
+rcu_dereference(), missing the acquire barrier needed to pair with
+writers' rcu_assign_pointer(). On weakly-ordered architectures (ARM64,
+POWER), a reader can observe a partially-constructed node. It also
+defeats CONFIG_PROVE_RCU lockdep validation and KCSAN data-race
+detection.
+
+Replace with hlist_for_each_entry_rcu() using rcu_read_lock_bh_held()
+as the lockdep condition, consistent with the rcu_dereference_check()
+used in the DEVMAP (non-hash) branch of the same functions. Also fix
+the same incorrect lockdep_is_held(&dtab->index_lock) condition in
+dev_map_enqueue_multi(), where the lock is not held either.
+
+Fixes: e624d4ed4aa8 ("xdp: Extend xdp_redirect_map with broadcast support")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20260320072645.16731-1-devnexen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/devmap.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index b5f6a5da6549d..9898c846c78e2 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1217,7 +1217,7 @@ static int ci_populate_single_memory_level(
- 	}
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 3d619d01088e3..cc0a43ebab6b9 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -665,7 +665,7 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+ 			hlist_for_each_entry_rcu(dst, head, index_hlist,
+-						 lockdep_is_held(&dtab->index_lock)) {
++						rcu_read_lock_bh_held()) {
+ 				if (!is_valid_dst(dst, xdpf))
+ 					continue;
  
- 	memory_level->EnabledForThrottle = 1;
--	memory_level->EnabledForActivity = 1;
-+	memory_level->EnabledForActivity = 0;
- 	memory_level->UpH = data->current_profile_setting.mclk_up_hyst;
- 	memory_level->DownH = data->current_profile_setting.mclk_down_hyst;
- 	memory_level->VoltageDownH = 0;
+@@ -747,7 +747,6 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	struct bpf_dtab_netdev *dst, *last_dst = NULL;
+ 	int excluded_devices[1+MAX_NEST_DEV];
+ 	struct hlist_head *head;
+-	struct hlist_node *next;
+ 	int num_excluded = 0;
+ 	unsigned int i;
+ 	int err;
+@@ -787,7 +786,7 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	} else { /* BPF_MAP_TYPE_DEVMAP_HASH */
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			head = dev_map_index_hash(dtab, i);
+-			hlist_for_each_entry_safe(dst, next, head, index_hlist) {
++			hlist_for_each_entry_rcu(dst, head, index_hlist, rcu_read_lock_bh_held()) {
+ 				if (is_ifindex_excluded(excluded_devices, num_excluded,
+ 							dst->dev->ifindex))
+ 					continue;
 -- 
 2.53.0
 
