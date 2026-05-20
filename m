@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLf2Ly/9DWoo5QUAu9opvQ
-	(envelope-from <stable+bounces-252704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:59 +0200
+	id iJ7SKR/2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4641A596395
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBB1594FCE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB38730309B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 175CC3019478
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754872D7386;
-	Wed, 20 May 2026 18:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971D73E5ECF;
+	Wed, 20 May 2026 17:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GixwXoBZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzpQ1/Pc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FF371048;
-	Wed, 20 May 2026 18:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FD93A3E60;
+	Wed, 20 May 2026 17:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301371; cv=none; b=B7so2pBFeRTmrSQ0hDRy7pC2wbfscO0e2FxuSt1tmiahZzbhFJHEWTIzCL9NIWYjtig0R77GM3zYBGSkwFsnjQ1OZx4EHbIWkcKHqrBk9RddodAmhHGQBFUYSDsImwUZ9jNA5olngVZSoQJ+JBiViGkmSdWBDijLkt8aSlXyLn4=
+	t=1779299662; cv=none; b=EclBBQjarHecycBZodKPaUlwdSOWxxWziNqN77BawSkHOwRfbqcDRJN4qv2naXHY4HE9C/R1VHSluJiQUGeYGywOyHK+L7zpmlQxRDPkeiQGkhBIyw4E6HZ8GdJzUFfPlJJYq8Q3Ts3SwIslHyWZv9YXEfoZDP8hpurrqQbHWpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301371; c=relaxed/simple;
-	bh=6eJ1d44CI+QjP8zbouJh+Yq6cf7aNN7AL3fwNT98WO0=;
+	s=arc-20240116; t=1779299662; c=relaxed/simple;
+	bh=WgOr5vJYrrg8s1XZzahFdhFWqmUWMXf+58fRSf2A4fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2DJ48UamRJlM+sAiLHeE1/i9JlaXNyVLgMpvZmmnzGHVbaM0+62Z8qyrWknv+jM+EThxR77i6kWiq5QrnxrS2YGBFWg7oL3+rP06sXfvyNZr6Dw26AuTJL3m+V1PTIMP5SwqWjQ2+gyDerB/+Zp23hrh6lXKP0ZcslWl3Jgkc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GixwXoBZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003B1F000E9;
-	Wed, 20 May 2026 18:22:49 +0000 (UTC)
+	 MIME-Version; b=f4yzM9PJbnsB6Ezm3fLoRj176BK+Hx9qCf8gdbBxLqpG53LVNXdpXIfK+XzPxM4jqnwW4yZo/RE56Jq/SvmggG0awgfB+sbd4mQJGL+pPSXvmKUcL2AN+FsnGMeB+3Nh6GR0N1zGP0B4e9/Q8NZ1SbC1JdJb939MHNft/8QhC98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzpQ1/Pc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF731F00893;
+	Wed, 20 May 2026 17:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301370;
-	bh=c7+UDEdgKFIIyW/K4st0n+Tm6+2Esx1ldMJ2MIdcFE0=;
+	s=korg; t=1779299661;
+	bh=9WzY8VnSR+v5RK7Qkdv2suuRvxMDSQDlZiILxfnOoAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GixwXoBZ2JyzUcsNtC2pkvWl0pORapIIRNJ3qFzDamBVEOrThwQ3GVsJRnaHMAeTt
-	 zyvmO45Hypcd7W51Wx8XMEBjsNGWRqb9XD3bITg3KtxNLfAbA+DjyxzYJsoAjf7CIv
-	 GEztywZITOXW3o1jVqdzaZqdlAvE+x44H+KzCUPs=
+	b=AzpQ1/PcGSWGcnkiRDy6AoXZ6MYV/KkACZWaJ5MqNLwr8wc7Et06/4/tdnvpjeWWR
+	 wtahcS6/rbiyT4oWpZzGtpgJWkAMSMAW0aGn+ZRSvD16Hkc5tXLyfbFzfrj0Rs9gtG
+	 s4PWUe4FVW3b+SEvLxABw+/C2pTkJu+jPukVEkw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 530/666] netdevsim: zero initialize struct iphdr in dummy sk_buff
+Subject: [PATCH 6.18 858/957] arm64: Reserve an extra page for early kernel mapping
 Date: Wed, 20 May 2026 18:22:21 +0200
-Message-ID: <20260520162122.758847754@linuxfoundation.org>
+Message-ID: <20260520162153.172528731@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,73 +69,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252704-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252068-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4641A596395
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,unisoc.com:email]
+X-Rspamd-Queue-Id: 1FBB1594FCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
+[ Upstream commit 4d8e74ad4585672489da6145b3328d415f50db82 ]
 
-Syzbot reports a KMSAN uninit-value originating from
-nsim_dev_trap_skb_build, with the allocation also
-being performed in the same function.
+The final part of [data, end) segment may overflow into the next page of
+init_pg_end[1] which is the gap page before early_init_stack[2]:
 
-Fix this by calling skb_put_zero instead of skb_put to
-guarantee zero initialization of the whole IP header.
+[1]
+crash_arm64_v9.0.1> vtop ffffffed00601000
+VIRTUAL           PHYSICAL
+ffffffed00601000  83401000
 
-Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
-Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+PAGE DIRECTORY: ffffffecffd62000
+   PGD: ffffffecffd62da0 => 10000000833fb003
+   PMD: ffffff80033fb018 => 10000000833fe003
+   PTE: ffffff80033fe008 => 68000083401f03
+  PAGE: 83401000
+
+     PTE        PHYSICAL  FLAGS
+68000083401f03  83401000  (VALID|SHARED|AF|NG|PXN|UXN)
+
+      PAGE       PHYSICAL      MAPPING       INDEX CNT FLAGS
+fffffffec00d0040 83401000                0        0  1 4000 reserved
+
+[2]
+ffffffed002c8000 (r) __pi__data
+ffffffed0054e000 (d) __pi___bss_start
+ffffffed005f5000 (b) __pi_init_pg_dir
+ffffffed005fe000 (b) __pi_init_pg_end
+ffffffed005ff000 (B) early_init_stack
+ffffffed00608000 (b) __pi__end
+
+For 4K pages, the early kernel mapping may use 2MB block entries but the
+kernel segments are only 64KB aligned. Segment boundaries that fall
+within a 2MB block therefore require a PTE table so that different
+attributes can be applied on either side of the boundary.
+
+KERNEL_SEGMENT_COUNT still correctly counts the five permanent kernel
+VMAs registered by declare_kernel_vmas(). However, since commit
+5973a62efa34 ("arm64: map [_text, _stext) virtual address range
+non-executable+read-only"), the early mapper also maps [_text, _stext)
+separately from [_stext, _etext). This adds one more early-only split
+and can require one more page-table page than the existing
+EARLY_SEGMENT_EXTRA_PAGES allowance reserves.
+
+Increase the 4K-page early mapping allowance by one page to cover that
+additional split.
+
+Fixes: 5973a62efa34 ("arm64: map [_text, _stext) virtual address range non-executable+read-only")
+Assisted-by: TRAE:GLM-5.1
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+[catalin.marinas@arm.com: rewrote part of the commit log]
+[catalin.marinas@arm.com: expanded the code comment]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/kernel-pgtable.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 2614d6509954c..daec92570c2e3 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -758,7 +758,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
- 	skb->protocol = htons(ETH_P_IP);
+diff --git a/arch/arm64/include/asm/kernel-pgtable.h b/arch/arm64/include/asm/kernel-pgtable.h
+index 74a4f738c5f52..229ee7976f693 100644
+--- a/arch/arm64/include/asm/kernel-pgtable.h
++++ b/arch/arm64/include/asm/kernel-pgtable.h
+@@ -68,7 +68,12 @@
+ #define KERNEL_SEGMENT_COUNT	5
  
- 	skb_set_network_header(skb, skb->len);
--	iph = skb_put(skb, sizeof(struct iphdr));
-+	iph = skb_put_zero(skb, sizeof(struct iphdr));
- 	iph->protocol = IPPROTO_UDP;
- 	iph->saddr = in_aton("192.0.2.1");
- 	iph->daddr = in_aton("198.51.100.1");
+ #if SWAPPER_BLOCK_SIZE > SEGMENT_ALIGN
+-#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 1)
++/*
++ * KERNEL_SEGMENT_COUNT counts the permanent kernel VMAs. The early mapping
++ * has one additional split, [_text, _stext). Reserve one more page for the
++ * SWAPPER_BLOCK_SIZE-unaligned boundaries.
++ */
++#define EARLY_SEGMENT_EXTRA_PAGES (KERNEL_SEGMENT_COUNT + 2)
+ /*
+  * The initial ID map consists of the kernel image, mapped as two separate
+  * segments, and may appear misaligned wrt the swapper block size. This means
 -- 
 2.53.0
 
