@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBnjG7b5DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:10 +0200
+	id kCsBOU4FDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F82C595949
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639935979F9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB61630DC5F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB11231D62F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D04B3F39C9;
-	Wed, 20 May 2026 17:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3420403EA8;
+	Wed, 20 May 2026 18:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgNrXrOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YM7A6VR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5D3A3E60;
-	Wed, 20 May 2026 17:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991D3371CEA;
+	Wed, 20 May 2026 18:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299636; cv=none; b=tZEg81CeT+gzuyIz6hgZbX4QgmCmv88k73WOLscqE2VfCm53/rwItU4RBF0AvKdTOAkLcZtOjYOa81lTG/bHNjXGMghRCAakDYDJvg7wQrXPLkBVChWKmaCJzflh++vkyXHCGtreSzabqGToNUNZZm1VFR3pAtmLh369awxDgR4=
+	t=1779302544; cv=none; b=oUySvn50mijh4DqjtnpajwwsxFLIj+V1Kb9GZns6biQEKSfTHg4Fnw7oHcK0/EeDn7+yTs2z1DofuV8DQ3Q6x4+GUZE13RXthXm3BNQ6ztAbMKxDMrQrtB3HYnzmlME9uPATCbYeP4g2HI7gkjDadJriJLzDDTleZ57N6/bXJyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299636; c=relaxed/simple;
-	bh=Lqya5tDp41MXKy1bFIxUemLLTbJsNa2Hj1G/ZjOen3g=;
+	s=arc-20240116; t=1779302544; c=relaxed/simple;
+	bh=mMllXNOXXC+QClaZ97R6tNYFWnHf8VRj/WomKdnHTAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/KUeOsglyzOxE62z5CuzYzdboFBgp6KetFdnAbFb3NiEfLkCuUG3RQE9INTa3eGHscSPzGCEMridI2iQuWpwbAHLLOH7WQaFcYxxVx0pqEFYOGSUSd0RMk7W+7cW9/joEDSDy4U3zc1yuPUwB3PjG9iMfU+v4kWtr8GkuJpWGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgNrXrOz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629D21F000E9;
-	Wed, 20 May 2026 17:53:54 +0000 (UTC)
+	 MIME-Version; b=YDsCqyHZTcQrnf+j+KLUsddnsgTSdlRqti1eBbIhwSVcJA5IyfTy7dx2ZbpqByf6dNRBfKB35Z1nnE3tTJzLFUxnlC4fJD7OkAedQdAzivcuBPLr1Vjb8CavWFCyic8dEIUgHYlO+srlJO9IvZCfwrz6Yfcv2hlLEWo2K4jRs7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YM7A6VR4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F9D1F000E9;
+	Wed, 20 May 2026 18:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299634;
-	bh=eLy5D3CGN6UHoVXT+2BT7cjFRbEUP/n/gihTMQCtRJI=;
+	s=korg; t=1779302543;
+	bh=s0dzWOp02HcUdaNwo9FbtHeHApvC+JwsrrtMSil1Klk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zgNrXrOz0goPLMiZail/NsgUB/xPiBbfhFkxvLrzPwpnhRHrEbojz4d/MAiFSwkUO
-	 X7fFQBxPIi0GId3p6NW1MmyNH+SBKtOabSf+cuFc+mZKXD6y1xQzisuXXF6knj9+ZV
-	 KsfwGLGMLrezXAv1Cs9uzlpPRs27y3j8q2obDSiA=
+	b=YM7A6VR485QodV+h8WPNpXH8sv4JAmCHTY7TTTWs77DSd+H42WDj8FReUDJ7FxvjL
+	 Td/9o1xZH5G3ouYJZAfsSBGNROLTaHVRtT27LNMYBQPWzYD+Wwf6txkIAB7YYcUq3u
+	 SDkpy2h9xjlHaDB66ObSh6Uf30jJolGJGeCQqKiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hasan Basbunar <basbunarhasan@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	T Pratham <t-pratham@ti.com>,
+	Manorit Chawdhry <m-chawdhry@ti.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 840/957] page_pool: fix memory-provider leak in page_pool_create_percpu() error path
+Subject: [PATCH 6.6 300/508] crypto: sa2ul - Fix AEAD fallback algorithm names
 Date: Wed, 20 May 2026 18:22:03 +0200
-Message-ID: <20260520162152.779895729@linuxfoundation.org>
+Message-ID: <20260520162105.142973083@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,140 +67,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252058-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-253153-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 9F82C595949
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,ti.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,apana.org.au:email]
+X-Rspamd-Queue-Id: 639935979F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hasan Basbunar <basbunarhasan@gmail.com>
+From: T Pratham <t-pratham@ti.com>
 
-[ Upstream commit 5ef343614db766acdc01c56d66e780a1b43c6ac6 ]
+[ Upstream commit 8451ab6ad686ffdcdf9ddadaa446a79ab48e5590 ]
 
-When page_pool_create_percpu() fails on page_pool_list(), it falls
-through to its err_uninit: label, which calls page_pool_uninit().
-At that point page_pool_init() has already taken two references
-when the user requested PP_FLAG_ALLOW_UNREADABLE_NETMEM:
+For authenc AEAD algorithms, sa2ul is trying to register very specific
+-ce version as a fallback. This causes registration failure on SoCs
+which do not have ARMv8-CE enabled/available. Change the fallback
+algorithm from the specific driver name to generic algorithm name so
+that the kernel can allocate any available fallback.
 
-	pool->mp_ops->init(pool)
-	static_branch_inc(&page_pool_mem_providers);
-
-Neither is undone by page_pool_uninit(); both are only undone by
-__page_pool_destroy() (success-side teardown). The error path
-therefore leaks the per-provider reference taken by mp_ops->init
-(io_zcrx_ifq->refs in the io_uring zcrx provider, the dmabuf
-binding refcount in the devmem provider) plus one increment of
-the page_pool_mem_providers static branch on every failure of
-xa_alloc_cyclic() inside page_pool_list().
-
-The leaked io_zcrx_ifq->refs in turn pins everything
-io_zcrx_ifq_free() would release on cleanup: ifq->user (uid),
-ifq->mm_account (mmdrop), ifq->dev (device refcount),
-ifq->netdev_tracker (netdev refcount), and the rbuf region.
-The leaked static branch increment forces all subsequent
-page_pool_alloc_netmems() and page_pool_return_page() callers to
-take the slow mp_ops branch for the lifetime of the kernel.
-
-Reachable via the io_uring zcrx path:
-
-	io_uring_register(IORING_REGISTER_ZCRX_IFQ)  /* CAP_NET_ADMIN */
-	  -> __io_uring_register
-	  -> io_register_zcrx
-	  -> zcrx_register_netdev
-	  -> netif_mp_open_rxq
-	  -> driver ndo_queue_mem_alloc
-	  -> page_pool_create_percpu
-	    -> page_pool_init succeeds (mp_ops->init runs, branch++)
-	    -> page_pool_list fails (xa_alloc_cyclic -ENOMEM)
-	    -> goto err_uninit         <-- leak
-
-The same shape applies to the devmem dmabuf provider via
-mp_dmabuf_devmem_init()/mp_dmabuf_devmem_destroy().
-
-Restore the cleanup symmetry by moving the mp_ops->destroy() and
-static_branch_dec() calls out of __page_pool_destroy() and into
-page_pool_uninit(), so page_pool_uninit() is again the strict
-inverse of page_pool_init(). page_pool_uninit() has only two
-callers (the err_uninit: path and __page_pool_destroy()), so this
-preserves the single-call invariant on the success path while
-fixing the err path. The error path of page_pool_init() itself
-still skips the mp_ops cleanup correctly: mp_ops->init is the
-last action that takes a reference before page_pool_init() returns
-0, so when it returns an error neither the refcount nor the static
-branch has been touched.
-
-Triggering the bug requires xa_alloc_cyclic() to fail with -ENOMEM,
-which under normal GFP_KERNEL retry behaviour is rare. It is
-deterministic under CONFIG_FAULT_INJECTION with fail_page_alloc /
-xa fault injection, or under sustained memory pressure. The leak
-is silent: there is no warning, and the released kernel build
-continues running with a permanently-incremented static branch.
-
-Fixes: 0f9214046893 ("memory-provider: dmabuf devmem memory provider")
-Signed-off-by: Hasan Basbunar <basbunarhasan@gmail.com>
-Link: https://patch.msgid.link/20260428170739.34881-1-basbunarhasan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d2c8ac187fc92 ("crypto: sa2ul - Add AEAD algorithm support")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Reviewed-by: Manorit Chawdhry <m-chawdhry@ti.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/crypto/sa2ul.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 1a5edec485f14..b775b6305fb78 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -323,6 +323,11 @@ static void page_pool_uninit(struct page_pool *pool)
- 	if (!pool->system)
- 		free_percpu(pool->recycle_stats);
- #endif
-+
-+	if (pool->mp_ops) {
-+		pool->mp_ops->destroy(pool);
-+		static_branch_dec(&page_pool_mem_providers);
-+	}
+diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+index 94eb6f6afa257..af221d5d999f2 100644
+--- a/drivers/crypto/sa2ul.c
++++ b/drivers/crypto/sa2ul.c
+@@ -1775,13 +1775,13 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha1",
+-				"authenc(hmac(sha1-ce),cbc(aes-ce))");
++				"authenc(hmac(sha1),cbc(aes))");
  }
  
- /**
-@@ -1122,11 +1127,6 @@ static void __page_pool_destroy(struct page_pool *pool)
- 	page_pool_unlist(pool);
- 	page_pool_uninit(pool);
- 
--	if (pool->mp_ops) {
--		pool->mp_ops->destroy(pool);
--		static_branch_dec(&page_pool_mem_providers);
--	}
--
- 	kfree(pool);
+ static int sa_cra_init_aead_sha256(struct crypto_aead *tfm)
+ {
+ 	return sa_cra_init_aead(tfm, "sha256",
+-				"authenc(hmac(sha256-ce),cbc(aes-ce))");
++				"authenc(hmac(sha256),cbc(aes))");
  }
  
+ static void sa_exit_tfm_aead(struct crypto_aead *tfm)
 -- 
 2.53.0
 
