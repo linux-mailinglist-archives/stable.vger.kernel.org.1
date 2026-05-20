@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-250493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCCOLO3oDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:33 +0200
+	id wA61Jnv7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455ED592D33
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF8B595D91
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E5ED9316E109
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B39BA33538DE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774F0352016;
-	Wed, 20 May 2026 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12053A4526;
+	Wed, 20 May 2026 17:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RwklLG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZjIyDc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3E9285061;
-	Wed, 20 May 2026 16:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8454833BBAF;
+	Wed, 20 May 2026 17:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295554; cv=none; b=JHZ2DY+rg79Pf0kIp2028P4TR7Xx096t6nqKrdqDLJUO5qPBtux2nPHuhxQ11z+0BjNzi2Xs7nbrL0b8DYFP+igLW3ItQxwjiBSUY92IthLvGPEOO/o88C9ufBxusei3OtKYm9yaqax+d95uPGnqngLiLJLPCg73PagJP08kuQ0=
+	t=1779297960; cv=none; b=k/T3smh9I5JFBsmWClfPBiFSMfcMdxNdcSFV7wcEONJtrpBe8PZyDV8HVD/ZkhuwfQz2h2gbnyxf/EtOt6QkYeclcrNwSj15LDYQntF7lZqqx2hkpxcjd2S8vl12IYoACvHTX4UdTI0SD+XPT+oqmk44pKcijv2OsoxsQpGJr3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295554; c=relaxed/simple;
-	bh=ljNQMoK15rqBdBQZdlRTvKd8DNMqZROiU6eyrVRIuzE=;
+	s=arc-20240116; t=1779297960; c=relaxed/simple;
+	bh=Cq595iZ/PHibuFCWYAVKj5l18uNJVpRo0altn/CeCNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joag4za3uBunaANeYnu0nxa4jSBI9NZI6+OPxcOIx1RqWKU4rP+y40RKWVk8w9i/GTcumqygOrVECqbt2oGdQ7Y7W0Db8QDl2fD9TBDXOr6loyynkkMpq4Mm8wfL2adAkmI9n9Ry1U6tfxAXp0oZOxlo0fh2pIKc3qzX0WQ/ABU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RwklLG5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908221F000E9;
-	Wed, 20 May 2026 16:45:52 +0000 (UTC)
+	 MIME-Version; b=EbTyf6SaMD6z+08oJNdb65ZB0leF78DICo6z8AGaXHY2IiMpBN4VYHyxpDP67PITH38ZSr0D3tzF6dtyO/smvopYlBeKdXRnEzq9Oz6b1vEQoOaFw/oRsn8hFTteK6BXHrc/AXspMLxdwvpfnKY4I3nghDP7i0uIUQ//sgudors=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZjIyDc8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B371F000E9;
+	Wed, 20 May 2026 17:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295553;
-	bh=V6IT6l2/k6qG6qW9f9qN+gJwniX9ENj5C9UWsR72OKw=;
+	s=korg; t=1779297959;
+	bh=YwKPx8nrP1TExIKGKgN4xNu9bq/wZoEGAJHnHtU9Vks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1RwklLG5tkLlYsWn1dFtuVhcdSM/nlVA4fSUNb8TW84IlFnDshllNdt5iQsoWRVd0
-	 sidZeT3SOj6VmhJ0CbhucSzxBxFnh1JAlfJSkiVo73FdjIwpBEXlo+tQaSXFsGWvcs
-	 /fF0CmTKKazLvscm4fi7ld+T8SW9qpR/tAPJKX3E=
+	b=2ZjIyDc8Isp7Tt9559mwQrFgzH2qdlD3+AeBIKeaEf496QmpOAB2NC2AQGHxYQ9f2
+	 thfvoI73dCMbEmbKSl53MrCzZOA/ghIby/lkEnHtOSGbyC1wUMVELWGPMXVS7iNzJG
+	 F6E6SVuKhWZTVMiCUveKlZ/zNIiAbpLiCXgyR3b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0462/1146] gfs2: add some missing log locking
-Date: Wed, 20 May 2026 18:11:52 +0200
-Message-ID: <20260520162158.652869674@linuxfoundation.org>
+Subject: [PATCH 6.18 230/957] crypto: atmel - Use unregister_{aeads,ahashes,skciphers}
+Date: Wed, 20 May 2026 18:11:53 +0200
+Message-ID: <20260520162139.527830095@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251430-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,119 +87,215 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 455ED592D33
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,apana.org.au:email]
+X-Rspamd-Queue-Id: 0BF8B595D91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit fe2c8d051150b90b3ccb85f89e3b1d636cb88ec8 ]
+[ Upstream commit 2ffc1ef4e826f0c3274f9ff5eb42bc70a5571afd ]
 
-Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
-gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
-but these functions require exclusion against concurrent transactions.
+Replace multiple for loops with calls to crypto_unregister_aeads(),
+crypto_unregister_ahashes(), and crypto_unregister_skciphers().
 
-To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
-gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
-flushing functions and __gfs2_log_flush().
+Remove the definition of atmel_tdes_unregister_algs() because it is
+equivalent to calling crypto_unregister_skciphers() directly, and the
+function parameter 'struct atmel_tdes_dev *' is unused anyway.
 
-Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 57a13941c0bb ("crypto: atmel-aes - guard unregister on error in atmel_aes_register_algs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ drivers/crypto/atmel-aes.c  | 17 ++++++-----------
+ drivers/crypto/atmel-sha.c  | 27 ++++++++++-----------------
+ drivers/crypto/atmel-tdes.c | 25 ++++++-------------------
+ 3 files changed, 22 insertions(+), 47 deletions(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 347df29d610e6..41a70fbee82f4 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -1018,14 +1018,15 @@ static void trans_drain(struct gfs2_trans *tr)
- }
+diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
+index 5a6d64be81858..9b0cb97055dc5 100644
+--- a/drivers/crypto/atmel-aes.c
++++ b/drivers/crypto/atmel-aes.c
+@@ -2201,12 +2201,10 @@ static irqreturn_t atmel_aes_irq(int irq, void *dev_id)
  
- /**
-- * gfs2_log_flush - flush incore transaction(s)
-+ * __gfs2_log_flush - flush incore transaction(s)
-  * @sdp: The filesystem
-  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
-  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
-  *
-  */
- 
--void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
-+			     u32 flags)
+ static void atmel_aes_unregister_algs(struct atmel_aes_dev *dd)
  {
- 	struct gfs2_trans *tr = NULL;
- 	unsigned int reserved_blocks = 0, used_blocks = 0;
-@@ -1033,7 +1034,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	unsigned int first_log_head;
- 	unsigned int reserved_revokes = 0;
+-	int i;
+-
+ #if IS_ENABLED(CONFIG_CRYPTO_DEV_ATMEL_AUTHENC)
+ 	if (dd->caps.has_authenc)
+-		for (i = 0; i < ARRAY_SIZE(aes_authenc_algs); i++)
+-			crypto_unregister_aead(&aes_authenc_algs[i]);
++		crypto_unregister_aeads(aes_authenc_algs,
++					ARRAY_SIZE(aes_authenc_algs));
+ #endif
  
--	down_write(&sdp->sd_log_flush_lock);
- 	trace_gfs2_log_flush(sdp, 1, flags);
+ 	if (dd->caps.has_xts)
+@@ -2215,8 +2213,7 @@ static void atmel_aes_unregister_algs(struct atmel_aes_dev *dd)
+ 	if (dd->caps.has_gcm)
+ 		crypto_unregister_aead(&aes_gcm_alg);
  
- repeat:
-@@ -1145,7 +1145,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 		gfs2_assert_withdraw(sdp, used_blocks < reserved_blocks);
- 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
- 	}
--	up_write(&sdp->sd_log_flush_lock);
- 	gfs2_trans_free(sdp, tr);
- 	trace_gfs2_log_flush(sdp, 0, flags);
- 	return;
-@@ -1166,6 +1165,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
- 	goto out_end;
+-	for (i = 0; i < ARRAY_SIZE(aes_algs); i++)
+-		crypto_unregister_skcipher(&aes_algs[i]);
++	crypto_unregister_skciphers(aes_algs, ARRAY_SIZE(aes_algs));
  }
  
-+void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
-+{
-+	down_write(&sdp->sd_log_flush_lock);
-+	__gfs2_log_flush(sdp, gl, flags);
-+	up_write(&sdp->sd_log_flush_lock);
-+}
-+
- /**
-  * gfs2_merge_trans - Merge a new transaction into a cached transaction
-  * @sdp: the filesystem
-@@ -1297,19 +1303,25 @@ int gfs2_logd(void *data)
- 			break;
+ static void atmel_aes_crypto_alg_init(struct crypto_alg *alg)
+@@ -2229,7 +2226,7 @@ static void atmel_aes_crypto_alg_init(struct crypto_alg *alg)
  
- 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_JFLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_JFLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
+ static int atmel_aes_register_algs(struct atmel_aes_dev *dd)
+ {
+-	int err, i, j;
++	int err, i;
  
- 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
- 		    gfs2_ail_flush_reqd(sdp)) {
- 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
-+			down_write(&sdp->sd_log_flush_lock);
- 			gfs2_ail1_start(sdp);
- 			gfs2_ail1_wait(sdp);
- 			gfs2_ail1_empty(sdp, 0);
--			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
--						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			__gfs2_log_flush(sdp, NULL,
-+					 GFS2_LOG_HEAD_FLUSH_NORMAL |
-+					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
-+			up_write(&sdp->sd_log_flush_lock);
- 		}
+ 	for (i = 0; i < ARRAY_SIZE(aes_algs); i++) {
+ 		atmel_aes_crypto_alg_init(&aes_algs[i].base);
+@@ -2272,8 +2269,7 @@ static int atmel_aes_register_algs(struct atmel_aes_dev *dd)
+ #if IS_ENABLED(CONFIG_CRYPTO_DEV_ATMEL_AUTHENC)
+ 	/* i = ARRAY_SIZE(aes_authenc_algs); */
+ err_aes_authenc_alg:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_aead(&aes_authenc_algs[j]);
++	crypto_unregister_aeads(aes_authenc_algs, i);
+ 	crypto_unregister_skcipher(&aes_xts_alg);
+ #endif
+ err_aes_xts_alg:
+@@ -2281,8 +2277,7 @@ static int atmel_aes_register_algs(struct atmel_aes_dev *dd)
+ err_aes_gcm_alg:
+ 	i = ARRAY_SIZE(aes_algs);
+ err_aes_algs:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_skcipher(&aes_algs[j]);
++	crypto_unregister_skciphers(aes_algs, i);
  
- 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
+ 	return err;
+ }
+diff --git a/drivers/crypto/atmel-sha.c b/drivers/crypto/atmel-sha.c
+index 3d7573c7bd1ca..b02a71061708c 100644
+--- a/drivers/crypto/atmel-sha.c
++++ b/drivers/crypto/atmel-sha.c
+@@ -2418,27 +2418,23 @@ EXPORT_SYMBOL_GPL(atmel_sha_authenc_abort);
+ 
+ static void atmel_sha_unregister_algs(struct atmel_sha_dev *dd)
+ {
+-	int i;
+-
+ 	if (dd->caps.has_hmac)
+-		for (i = 0; i < ARRAY_SIZE(sha_hmac_algs); i++)
+-			crypto_unregister_ahash(&sha_hmac_algs[i]);
++		crypto_unregister_ahashes(sha_hmac_algs,
++					  ARRAY_SIZE(sha_hmac_algs));
+ 
+-	for (i = 0; i < ARRAY_SIZE(sha_1_256_algs); i++)
+-		crypto_unregister_ahash(&sha_1_256_algs[i]);
++	crypto_unregister_ahashes(sha_1_256_algs, ARRAY_SIZE(sha_1_256_algs));
+ 
+ 	if (dd->caps.has_sha224)
+ 		crypto_unregister_ahash(&sha_224_alg);
+ 
+-	if (dd->caps.has_sha_384_512) {
+-		for (i = 0; i < ARRAY_SIZE(sha_384_512_algs); i++)
+-			crypto_unregister_ahash(&sha_384_512_algs[i]);
+-	}
++	if (dd->caps.has_sha_384_512)
++		crypto_unregister_ahashes(sha_384_512_algs,
++					  ARRAY_SIZE(sha_384_512_algs));
+ }
+ 
+ static int atmel_sha_register_algs(struct atmel_sha_dev *dd)
+ {
+-	int err, i, j;
++	int err, i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(sha_1_256_algs); i++) {
+ 		atmel_sha_alg_init(&sha_1_256_algs[i]);
+@@ -2480,18 +2476,15 @@ static int atmel_sha_register_algs(struct atmel_sha_dev *dd)
+ 
+ 	/*i = ARRAY_SIZE(sha_hmac_algs);*/
+ err_sha_hmac_algs:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_ahash(&sha_hmac_algs[j]);
++	crypto_unregister_ahashes(sha_hmac_algs, i);
+ 	i = ARRAY_SIZE(sha_384_512_algs);
+ err_sha_384_512_algs:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_ahash(&sha_384_512_algs[j]);
++	crypto_unregister_ahashes(sha_384_512_algs, i);
+ 	crypto_unregister_ahash(&sha_224_alg);
+ err_sha_224_algs:
+ 	i = ARRAY_SIZE(sha_1_256_algs);
+ err_sha_1_256_algs:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_ahash(&sha_1_256_algs[j]);
++	crypto_unregister_ahashes(sha_1_256_algs, i);
+ 
+ 	return err;
+ }
+diff --git a/drivers/crypto/atmel-tdes.c b/drivers/crypto/atmel-tdes.c
+index d3bd8b72c2c95..643e507f9c020 100644
+--- a/drivers/crypto/atmel-tdes.c
++++ b/drivers/crypto/atmel-tdes.c
+@@ -897,38 +897,25 @@ static irqreturn_t atmel_tdes_irq(int irq, void *dev_id)
+ 	return IRQ_NONE;
+ }
+ 
+-static void atmel_tdes_unregister_algs(struct atmel_tdes_dev *dd)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(tdes_algs); i++)
+-		crypto_unregister_skcipher(&tdes_algs[i]);
+-}
+-
+ static int atmel_tdes_register_algs(struct atmel_tdes_dev *dd)
+ {
+-	int err, i, j;
++	int err, i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(tdes_algs); i++) {
+ 		atmel_tdes_skcipher_alg_init(&tdes_algs[i]);
+ 
+ 		err = crypto_register_skcipher(&tdes_algs[i]);
+-		if (err)
+-			goto err_tdes_algs;
++		if (err) {
++			crypto_unregister_skciphers(tdes_algs, i);
++			return err;
++		}
+ 	}
+ 
+ 	return 0;
+-
+-err_tdes_algs:
+-	for (j = 0; j < i; j++)
+-		crypto_unregister_skcipher(&tdes_algs[j]);
+-
+-	return err;
+ }
+ 
+ static void atmel_tdes_get_cap(struct atmel_tdes_dev *dd)
+ {
+-
+ 	dd->caps.has_dma = 0;
+ 
+ 	/* keep only major version number */
+@@ -1061,7 +1048,7 @@ static void atmel_tdes_remove(struct platform_device *pdev)
+ 	list_del(&tdes_dd->list);
+ 	spin_unlock(&atmel_tdes.lock);
+ 
+-	atmel_tdes_unregister_algs(tdes_dd);
++	crypto_unregister_skciphers(tdes_algs, ARRAY_SIZE(tdes_algs));
+ 
+ 	tasklet_kill(&tdes_dd->done_task);
+ 	tasklet_kill(&tdes_dd->queue_task);
 -- 
 2.53.0
 
