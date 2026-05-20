@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-252456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKM3KFMCDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:55 +0200
+	id YFQqEiX0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0877597467
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF256594A94
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54DB83979706
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83198307BDAA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4163F7884;
-	Wed, 20 May 2026 18:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AEB3F1ADA;
+	Wed, 20 May 2026 17:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iq9Bo6s5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4G19UG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CE23F8707;
-	Wed, 20 May 2026 18:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D182836D9EA;
+	Wed, 20 May 2026 17:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300721; cv=none; b=TV/S5HeGgKjRXuUmYim6K2t3e6NvjjJbThg0JwloXziDJgYFN5CQn+kyD0OvhyxHi5DTnBx/g1bcZ6qwcWSl/t22axhBJr0JY72kwXMaqwAzgy/gYUSz+sj3h+6dL+D7joZVEYjhejrlBrY/b92SUZHc/ZfTiT9MDOQUTe4Gc4s=
+	t=1779298891; cv=none; b=VxvYz7OFVKLlG0KiJYonasKePvJ3njOitED7vov95WdBcLXxn8Q8a6XVEcMXcy3vD+YlxG3ohhf2GzUkwXW+dsGvkowFrY4m1dJ9uSPTX55EMiYX2XEx/B8B23juW+YsT7IRUwvQEFkXioxlCl2PYtupHM/YCMbxM7N5bCHyBAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300721; c=relaxed/simple;
-	bh=OSHpTPLFvicpeMkHhA/vd23uPy6epF4FB9KhIm3SAPQ=;
+	s=arc-20240116; t=1779298891; c=relaxed/simple;
+	bh=aiqKhYGGRF2s7c7c8ZF4cCQIEqOOuATY1TIQ7+NZL8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R6cpcCqPpqoHT1Rgl01odU+ATDNMvJCsR/RnHB1oRyMurjQyKv89DKLTOlS+n5cQT776P/eQ/xR+ztLWYAZkzscHweshWr6y1FrEtl6smHKFzqT6QNTtknEBt/op6wi44AoC+QX48pHUbLldvqkOEVJHmW2keLvwtG5Azh6MxZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iq9Bo6s5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CC21F000E9;
-	Wed, 20 May 2026 18:11:59 +0000 (UTC)
+	 MIME-Version; b=EEwg7PoSJZZ91qwwVszLopDxY2R7ec1iNbWwW6wpdEUKZybDv5K6ElHIHaYfasVsJFzxKwGbVd5VYfAiBK+5OHX/0dzT67X3+qILtNrku/sUjBLkYVWdjirH0NJgYcZU7L0pqE93Y1Bfq4/8bGywwnbZMKZg0idzKqLeNMXMWAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4G19UG4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440B41F00894;
+	Wed, 20 May 2026 17:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300719;
-	bh=UEqvJnXY67gjs7Bfh+nROpMjHoD/C1zOf2XzBb3YlbM=;
+	s=korg; t=1779298890;
+	bh=c9LuNknuKkc2zC0Y+1u/p0J63Rqc//iEVx7yIfzeIf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Iq9Bo6s57KwYZLsqkmqFfeOCaA4qO0IGfeqIc34ySlS9iNoqFRxsZUIIAqR8nkv8v
-	 3ue+UwM15qcufDgDIfbIndqtL+B1cBda7XfWBuuuisAs++Xpele7kBSMQAcXYdPBEj
-	 m/s04sL+z70sV4rCyi2fLjMSqilTIs7v1uL0hqsY=
+	b=k4G19UG4gVAlO0IXTNyp1P/K0iZ/JUoXN58oZB9qZjAOjqljsP0ypZKmvkcGPHMBC
+	 ziZAziXo1He8RpDaa6HmXOm/DsmjtFaupWXHKZD69OqSp4Lzm9zGMYdR4UNKGcUrKY
+	 4mQINqHUbyjZiDAAu7Nq6DKQZ7EyGminPLegK1tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/666] ktest: Avoid undef warning when WARNINGS_FILE is unset
-Date: Wed, 20 May 2026 18:17:46 +0200
-Message-ID: <20260520162116.743459086@linuxfoundation.org>
+Subject: [PATCH 6.18 584/957] lib/hexdump: print_hex_dump_bytes() calls print_hex_dump_debug()
+Date: Wed, 20 May 2026 18:17:47 +0200
+Message-ID: <20260520162147.195337263@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251788-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252456-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,suse.com:email,nvidia.com:email,eaglescrag.net:email]
-X-Rspamd-Queue-Id: F0877597467
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email,msgid.link:url]
+X-Rspamd-Queue-Id: CF256594A94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 057854f8a595160656fe77ed7bf0d2403724b915 ]
+[ Upstream commit 36776b7f8a8955b4e75b5d490a75fee0c7a2a7ef ]
 
-check_buildlog() probes $warnings_file with -f even when WARNINGS_FILE is
-not configured. Perl warns about the uninitialized value and adds noise to
-the test log, which can hide the output we actually care about.
+print_hex_dump_bytes() claims to be a simple wrapper around
+print_hex_dump(), but it actally calls print_hex_dump_debug(), which
+means no output is printed if (dynamic) DEBUG is disabled.
 
-Check that WARNINGS_FILE is defined before testing whether the file exists.
+Update the documentation to match the implementation.
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-1-565d412f4925@suse.com
-Fixes: 4283b169abfb ("ktest: Add make_warnings_file and process full warnings")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 091cb0994edd20d6 ("lib/hexdump: make print_hex_dump_bytes() a nop on !DEBUG builds")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://patch.msgid.link/3d5c3069fd9102ecaf81d044b750cd613eb72a08.1774970392.git.geert+renesas@glider.be
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/printk.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 3242a216af9e7..b18ea351c8b16 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2483,7 +2483,7 @@ sub check_buildlog {
-     my $save_no_reboot = $no_reboot;
-     $no_reboot = 1;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 9a8eaed5f8778..a98d64b45bc93 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -816,7 +816,8 @@ static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
+ #endif
  
--    if (-f $warnings_file) {
-+    if (defined($warnings_file) && -f $warnings_file) {
- 	open(IN, $warnings_file) or
- 	    dodie "Error opening $warnings_file";
- 
+ /**
+- * print_hex_dump_bytes - shorthand form of print_hex_dump() with default params
++ * print_hex_dump_bytes - shorthand form of print_hex_dump_debug() with default
++ *                        params
+  * @prefix_str: string to prefix each line with;
+  *  caller supplies trailing spaces for alignment if desired
+  * @prefix_type: controls whether prefix of an offset, address, or none
+@@ -824,7 +825,7 @@ static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
+  * @buf: data blob to dump
+  * @len: number of bytes in the @buf
+  *
+- * Calls print_hex_dump(), with log level of KERN_DEBUG,
++ * Calls print_hex_dump_debug(), with log level of KERN_DEBUG,
+  * rowsize of 16, groupsize of 1, and ASCII output included.
+  */
+ #define print_hex_dump_bytes(prefix_str, prefix_type, buf, len)	\
 -- 
 2.53.0
 
