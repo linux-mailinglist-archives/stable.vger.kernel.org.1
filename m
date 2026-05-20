@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJCOCbDuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:08 +0200
+	id 6JBtHpANDmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE3A593A4D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72F2598839
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F6ED30EBEEB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2889C3117EE2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EDA3EBF35;
-	Wed, 20 May 2026 17:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9BF402422;
+	Wed, 20 May 2026 18:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRKnXyo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qop/pQPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1870F3D75DA;
-	Wed, 20 May 2026 17:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D8A3FE352;
+	Wed, 20 May 2026 18:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297071; cv=none; b=q0/yjdJ2IMoopIo9Sk/B3HiPSMH9awdFzxkQkB6Nly9X+mv9sngbhPz5v6BH2/7zZHoRsr6kY49R0peT7JUkrZg+z1oDg6ECLF+20sqLL8SoEFrnRNhVZz/JnS8ksZD0IQ/3PWBJuJYecZPjZIu8xUTesI7yBvdMLGtrwS/h4YM=
+	t=1779302431; cv=none; b=gGiSf6xPDmiLvMIZ3MVwmY+PEN8fXSOTwsQCXMZHUOsrqsSEyJhE4ypkDbDCbq48L4kv12cTMbmgyYIdRS3Fyy38gwK9fy/EURDLWb3WyLNcAHmaEZGgsswfZH8oKcb75k6TSsU9NSPZ7mXq8v8kA7zO+BnXAxEHnXx+541S9Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297071; c=relaxed/simple;
-	bh=NZR1UrUuayu89T00dFkRIblz1ORXbNUanTXUawG67CQ=;
+	s=arc-20240116; t=1779302431; c=relaxed/simple;
+	bh=looRX9ufzxudajCiSRlU7v3pAqsrpHFPWV9yD+rnwXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2aRimFrYOOqORsE8BvB5qqbCSe/8x30IgH6QDeVpg4gKnKqFgawNcU6XM4ptd/dT7bJLFImOXhVVD25WtIeXsJl4CFq/UJWXpvrqy33/RnKlaNwlwG9cGNiXpSn5gkWZ8E6YpuLoqUbG2tz4w5vh9mm5Qz6RNh7QJuDuT3oWJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRKnXyo1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4441F000E9;
-	Wed, 20 May 2026 17:11:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gXSKGnZdmPwxlQGtXHaNrOh0bN9CxGggZNZGzxrk8z9YeYuDf51pKWBoZlVWe22avQor//NHqckQNOepO43/C6GHvryNp2pB8LxPC0IgqaDpXRgAr6BvLKE+pPaGIFnWTE66Fmpr1himGEh2/SCRBXuaTCcwFKTa7/nfVTEG50Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qop/pQPA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DD1F000E9;
+	Wed, 20 May 2026 18:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297070;
-	bh=+vcMpsFcdOM7pndeDck1NvqfqZ/6+asdMP5v78I38ds=;
+	s=korg; t=1779302430;
+	bh=H1/FjnwBYEo/ZFjC27HkZgwLtFOpSEFnOMP2TUieAQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sRKnXyo13NrgPtj83jc4nAPUehQTiWhqMlIzDYwS5oROtzg21G6uhSS35l2+4ilBM
-	 zwiTHHXnucy13FOGnoGfzajfrH13/DcU0d6PnmhxSv6z52pax9CoslJYYQ6iiXZqh8
-	 CL1KMLSIQr73IN0fIEA0bXm2HKAbu9TCvZT0RI0U=
+	b=qop/pQPAiocYFuuhy89zLRFG/kAdJKPEm5bttAlt/QNQf7msDBtl7YMojmvYazDcG
+	 uh0+4sfxkPyatlCW73pG0oskkX+p8LApirbh8pyJFfCzIqFAVZw6xfaj/aOlhy0qPz
+	 VffVmLyHCpfkdrFXvX1tKhjEWFT8wn7ipRF2EMPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tejun Heo <tj@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1038/1146] workqueue: fix devm_alloc_workqueue() va_list misuse
+Subject: [PATCH 6.6 265/508] platform/x86: panasonic-laptop: Fix OPTD notifier registration and cleanup
 Date: Wed, 20 May 2026 18:21:28 +0200
-Message-ID: <20260520162211.723011897@linuxfoundation.org>
+Message-ID: <20260520162104.387515655@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251089-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253110-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8EE3A593A4D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A72F2598839
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0de4cb473aed57ee4ba7e0551ad27bddc19fc519 ]
+[ Upstream commit 8baeff2c1d33dad8572216c6ad3a7425852507d4 ]
 
-devm_alloc_workqueue() built a va_list and passed it as a single
-positional argument to the variadic alloc_workqueue() macro:
+An ACPI notify handler is leaked if device_create_file() returns an
+error in acpi_pcc_hotkey_add().
 
-	va_start(args, max_active);
-	wq = alloc_workqueue(fmt, flags, max_active, args);
-	va_end(args);
+Also, it is pointless to call pcc_unregister_optd_notifier() in
+acpi_pcc_hotkey_remove() if pcc->platform is NULL and it is better
+to arrange the cleanup code in that function in the same order as
+the rollback code in acpi_pcc_hotkey_add().
 
-C does not allow forwarding a va_list through a ... parameter.
-alloc_workqueue() expands to alloc_workqueue_noprof(), which runs
-its own va_start() over its ... params, so the inner
-vsnprintf(wq->name, sizeof(wq->name), fmt, args) in
-__alloc_workqueue() received the outer va_list object as the first
-variadic slot rather than the caller's actual format arguments.
+Address the above by placing the pcc_register_optd_notifier() call in
+acpi_pcc_hotkey_add() after the device_create_file() return value
+check and placing the pcc_unregister_optd_notifier() call in
+acpi_pcc_hotkey_remove() right before the device_remove_file() call.
 
-Add a new static helper alloc_workqueue_va() that wraps
-__alloc_workqueue() and runs wq_init_lockdep() on success, and
-fold both alloc_workqueue_noprof() and devm_alloc_workqueue_noprof()
-onto it as suggested by Tejun.
-
-The wq_init_lockdep() step is required on the devm path
-too, otherwise __flush_workqueue()'s on-stack
-COMPLETION_INITIALIZER_ONSTACK_MAP would NULL-deref wq->lockdep_map.
-
-No caller changes are required. devm_alloc_ordered_workqueue() is
-a macro forwarding to devm_alloc_workqueue() and inherits the fix.
-Two in-tree callers actively trigger the broken path on every probe:
-
-  drivers/power/supply/mt6370-charger.c:889
-  drivers/power/supply/max77705_charger.c:649
-
-both of which use devm_alloc_ordered_workqueue(dev, "%s", 0,
-dev_name(dev)).
-
-A standalone reproducer module is available at[1].
-
-Link: https://github.com/leitao/debug/blob/main/workqueue/valist/wq_va_test.c [1]
-Fixes: 1dfc9d60a69e ("workqueue: devres: Add device-managed allocate workqueue")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2411055.ElGaqSPkdT@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h |  6 ++++--
- kernel/workqueue.c        | 28 +++++++++++++++++++---------
- 2 files changed, 23 insertions(+), 11 deletions(-)
+ drivers/platform/x86/panasonic-laptop.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-index f8d235aef10dd..218557a8f7577 100644
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -529,8 +529,10 @@ alloc_workqueue_noprof(const char *fmt, unsigned int flags, int max_active, ...)
-  * Pointer to the allocated workqueue on success, %NULL on failure.
-  */
- __printf(2, 5) struct workqueue_struct *
--devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
--		     int max_active, ...);
-+devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
-+			    unsigned int flags, int max_active, ...);
-+#define devm_alloc_workqueue(...)	\
-+	alloc_hooks(devm_alloc_workqueue_noprof(__VA_ARGS__))
- 
- #ifdef CONFIG_LOCKDEP
- /**
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index e57040931d8b7..5d704df76a946 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5885,6 +5885,20 @@ static struct workqueue_struct *__alloc_workqueue(const char *fmt,
- 	return NULL;
- }
- 
-+static struct workqueue_struct *alloc_workqueue_va(const char *fmt,
-+						   unsigned int flags,
-+						   int max_active,
-+						   va_list args)
-+{
-+	struct workqueue_struct *wq;
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index ad907c558997a..f6dcf8d6a1dbb 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -1081,9 +1081,10 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
+ 		}
+ 		result = device_create_file(&pcc->platform->dev,
+ 			&dev_attr_cdpower);
+-		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		if (result)
+ 			goto out_platform;
 +
-+	wq = __alloc_workqueue(fmt, flags, max_active, args);
-+	if (wq)
-+		wq_init_lockdep(wq);
-+
-+	return wq;
-+}
-+
- __printf(1, 4)
- struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
- 						unsigned int flags,
-@@ -5894,12 +5908,8 @@ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
- 	va_list args;
++		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 	} else {
+ 		pcc->platform = NULL;
+ 	}
+@@ -1117,10 +1118,10 @@ static void acpi_pcc_hotkey_remove(struct acpi_device *device)
+ 	i8042_remove_filter(panasonic_i8042_filter);
  
- 	va_start(args, max_active);
--	wq = __alloc_workqueue(fmt, flags, max_active, args);
-+	wq = alloc_workqueue_va(fmt, flags, max_active, args);
- 	va_end(args);
--	if (!wq)
--		return NULL;
--
--	wq_init_lockdep(wq);
+ 	if (pcc->platform) {
++		pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		device_remove_file(&pcc->platform->dev, &dev_attr_cdpower);
+ 		platform_device_unregister(pcc->platform);
+ 	}
+-	pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
  
- 	return wq;
- }
-@@ -5911,15 +5921,15 @@ static void devm_workqueue_release(void *res)
- }
+ 	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
  
- __printf(2, 5) struct workqueue_struct *
--devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
--		     int max_active, ...)
-+devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
-+			    unsigned int flags, int max_active, ...)
- {
- 	struct workqueue_struct *wq;
- 	va_list args;
- 	int ret;
- 
- 	va_start(args, max_active);
--	wq = alloc_workqueue(fmt, flags, max_active, args);
-+	wq = alloc_workqueue_va(fmt, flags, max_active, args);
- 	va_end(args);
- 	if (!wq)
- 		return NULL;
-@@ -5930,7 +5940,7 @@ devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
- 
- 	return wq;
- }
--EXPORT_SYMBOL_GPL(devm_alloc_workqueue);
-+EXPORT_SYMBOL_GPL(devm_alloc_workqueue_noprof);
- 
- #ifdef CONFIG_LOCKDEP
- __printf(1, 5)
 -- 
 2.53.0
 
