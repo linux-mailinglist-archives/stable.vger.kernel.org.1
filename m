@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SED3L1b3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-251669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:02 +0200
+	id YNsXBx33DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656455952C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900E0595241
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E92A30B1899
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC33E35754A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA173C870E;
-	Wed, 20 May 2026 17:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769ED3F20E5;
+	Wed, 20 May 2026 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOICoF8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOV8wyat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FF029D26E;
-	Wed, 20 May 2026 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287583D8137;
+	Wed, 20 May 2026 16:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298584; cv=none; b=n1UgV8UoAVhGZvHTo20YeLIjhXuRKD4PwYHcrrKCRp393KNZTKOTVdKceMR3UAb24NA9fwpwgmi8IIkOpI31bVjEVpjJ3QhXt/RXUtLa6PTBuMIGAnwICUD0txR8zAJgR74i5BZtYlyPiBRrTCvyGYNq8Bw5qmKcM5Vcx0tN5mU=
+	t=1779296172; cv=none; b=aumZbm1HhKByPD+R+b4dnX+/22fpn19eilsrLcjBBxnP44U/qAyTwDe7DssxRO+mNi7trQkTr9EjkfEEpAEGh5ygQlyb+ELe/sfCD6BOMHhl530HZWgSWbHEhLdTtwOyUcg6QUYk7NZKB9zgdt/sWHutgoY+wT2EbF82b7bdaO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298584; c=relaxed/simple;
-	bh=sX7npLsVxXRGKWIp+JVM0DtoxCUGMzotxIQU7c76OoM=;
+	s=arc-20240116; t=1779296172; c=relaxed/simple;
+	bh=Lvk3TAwkyenN0/zLXPINqn6JO54DN6D//L+QqkAhCSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUjDXdCT3QNiuh8eygJYwOjvWtBobkymvEN+kpbF/bXf3KjKDaUOhQPwwbP6lDC0NydYBZYSoCV56i4Ted0ahAwT/9YyLNTZxuBB8bOkWKEjic4/zlqxxDGq+CLHDbfBhP+v6Cx1/lLbeo1M1uhWG5eYgO5QbqM/noIP9FCiZWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOICoF8b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0951F00898;
-	Wed, 20 May 2026 17:36:22 +0000 (UTC)
+	 MIME-Version; b=WoDsDDZTyKcXUHTreSKfcWoEQxRQBigPTFcQqm+nfu2ULyBUhhj4Hy6c3GJF6gbCzxASIOWZ98pzAFvQvVfZIFw7PlVOjqjBvceZMB1a+kCi3CX6Z+lDXyUKl4hbZHDhlmjfacdWvkq45JNf5qXU51QQyjh+lPkrJu5TCokvGAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOV8wyat; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841571F000E9;
+	Wed, 20 May 2026 16:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298583;
-	bh=z+vg3EUd0rtflOTkOeQDZ7ohdqAqjM/FmBIqCYJW4uw=;
+	s=korg; t=1779296171;
+	bh=RoOdOu7W2qqn53niUyfB1TbEbs5SXj9329tE17tGHxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qOICoF8bgCiajYXwOIAhBsBQeHbxTm1GQjciWDEUMKh8gvDfBvpPFhPPRxMQdhJqX
-	 cIvIdmZo4YpftyKAYZE+zn7Pla9IA5XXvwMl+f2wNdphGpkOUp+y0CzMAWfEqjiqWF
-	 4afKxT1Myr4357ZbTimdgJ8N0g4uhgp3SCPo/j7g=
+	b=LOV8wyatZ2Uit1gTJzaQZreUAcohSF3u65HhzFhkQmxF/jHfK+Onr7EijqG+SHjDt
+	 M6lG7LM8+ZLr5vn78+3zJffbuyw53ehav6VLv2YRIm+xUkinu+9iXzv1jz0wgi59UO
+	 rbZFdSWs7UOpa77eJ3jxjbJfrMbN7jbhy3KZC5jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.18 466/957] mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 0699/1146] clk: renesas: r9a09g057: Fix ordering of module clocks array
 Date: Wed, 20 May 2026 18:15:49 +0200
-Message-ID: <20260520162144.629487572@linuxfoundation.org>
+Message-ID: <20260520162204.010713460@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,120 +70,112 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250732-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251669-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email,infineon.com:email]
-X-Rspamd-Queue-Id: 656455952C9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 900E0595241
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-[ Upstream commit 653f6def567c81f37302f9591ffd54df3e2a11eb ]
+[ Upstream commit 79cac2b8dc1d9f63fbf6c6793e423052118cc51a ]
 
-SMPT contains config detection info that describes opcode, address, and
-dummy cycles to read sector map config. The dummy cycles parameter can
-be SMPT_CMD_READ_DUMMY_IS_VARIABLE and in that case nor->read_dummy
-(initialized as 0) is used. In Infineon flash chips, Read Any Register
-command with variable dummy cycle is defined in SMPT. S25Hx/S28Hx flash
-has 0 dummy cycle by default to read volatile regiters and
-nor->read_dummy can work. S25FS-S flash has 8 dummy cycles so we need a
-hook that can fix dummy cycles with actually used value.
+The r9a09g057_mod_clks array is sorted by CPG_CLKON register number and
+bit position.  Move the RTC and RSPI module clock entries to their
+correct position to restore the array sort order.
 
-Inroduce smpt_read_dummy() in struct spi_nor_fixups. It is called when
-the dummy cycle field in SMPT config detection is 'varialble'.
-
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+Fixes: 2efea3b35cc9 ("clk: renesas: r9a09g057: Add entries for RSCIs")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260125190314.26729-1-ovidiu.panait.rb@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 18 ++++++++++++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/clk/renesas/r9a09g057-cpg.c | 40 ++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index ceff412f7d65a..5ad46d95d09cc 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -409,6 +409,8 @@ struct spi_nor_flash_parameter {
-  *                flash parameters when information provided by the flash_info
-  *                table is incomplete or wrong.
-  * @post_bfpt: called after the BFPT table has been parsed
-+ * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-+ *                   number of dummy cycles in read register ops.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -426,6 +428,7 @@ struct spi_nor_fixups {
- 	int (*post_bfpt)(struct spi_nor *nor,
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
-+	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	int (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 21727f9a4ac69..9a47dcaca06ae 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -699,6 +699,17 @@ static u8 spi_nor_smpt_addr_nbytes(const struct spi_nor *nor, const u32 settings
- 	}
- }
- 
-+static void spi_nor_smpt_read_dummy_fixups(const struct spi_nor *nor,
-+					   u8 *read_dummy)
-+{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_read_dummy)
-+		nor->manufacturer->fixups->smpt_read_dummy(nor, read_dummy);
-+
-+	if (nor->info->fixups && nor->info->fixups->smpt_read_dummy)
-+		nor->info->fixups->smpt_read_dummy(nor, read_dummy);
-+}
-+
- /**
-  * spi_nor_smpt_read_dummy() - return the configuration detection command read
-  *			       latency, in clock cycles.
-@@ -711,8 +722,11 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- {
- 	u8 read_dummy = SMPT_CMD_READ_DUMMY(settings);
- 
--	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE)
--		return nor->read_dummy;
-+	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE) {
-+		read_dummy = nor->read_dummy;
-+		spi_nor_smpt_read_dummy_fixups(nor, &read_dummy);
-+	}
-+
- 	return read_dummy;
- }
- 
+diff --git a/drivers/clk/renesas/r9a09g057-cpg.c b/drivers/clk/renesas/r9a09g057-cpg.c
+index 6943cad318b5d..b0e43e5e50dde 100644
+--- a/drivers/clk/renesas/r9a09g057-cpg.c
++++ b/drivers/clk/renesas/r9a09g057-cpg.c
+@@ -296,6 +296,26 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
+ 						BUS_MSTOP(5, BIT(13))),
+ 	DEF_MOD("wdt_3_clk_loco",		CLK_QEXTAL, 5, 2, 2, 18,
+ 						BUS_MSTOP(5, BIT(13))),
++	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
++						BUS_MSTOP(3, BIT(11) | BIT(12))),
++	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
++						BUS_MSTOP(11, BIT(0))),
++	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
++						BUS_MSTOP(11, BIT(0))),
++	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
++						BUS_MSTOP(11, BIT(0))),
++	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
++						BUS_MSTOP(11, BIT(1))),
++	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
++						BUS_MSTOP(11, BIT(1))),
++	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
++						BUS_MSTOP(11, BIT(1))),
++	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
++						BUS_MSTOP(11, BIT(2))),
++	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
++						BUS_MSTOP(11, BIT(2))),
++	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
++						BUS_MSTOP(11, BIT(2))),
+ 	DEF_MOD("rsci0_pclk",			CLK_PLLCLN_DIV16, 5, 13, 2, 29,
+ 						BUS_MSTOP(11, BIT(3))),
+ 	DEF_MOD("rsci0_tclk",			CLK_PLLCLN_DIV16, 5, 14, 2, 30,
+@@ -396,26 +416,6 @@ static const struct rzv2h_mod_clk r9a09g057_mod_clks[] __initconst = {
+ 						BUS_MSTOP(11, BIT(12))),
+ 	DEF_MOD("rsci9_ps_ps1_n",		CLK_PLLCLN_DIV64, 8, 14, 4, 14,
+ 						BUS_MSTOP(11, BIT(12))),
+-	DEF_MOD("rtc_0_clk_rtc",		CLK_PLLCM33_DIV16, 5, 3, 2, 19,
+-						BUS_MSTOP(3, BIT(11) | BIT(12))),
+-	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
+-						BUS_MSTOP(11, BIT(0))),
+-	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
+-						BUS_MSTOP(11, BIT(0))),
+-	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
+-						BUS_MSTOP(11, BIT(0))),
+-	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
+-						BUS_MSTOP(11, BIT(1))),
+-	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
+-						BUS_MSTOP(11, BIT(1))),
+-	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
+-						BUS_MSTOP(11, BIT(1))),
+-	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
+-						BUS_MSTOP(11, BIT(2))),
+-	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
+-						BUS_MSTOP(11, BIT(2))),
+-	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
+-						BUS_MSTOP(11, BIT(2))),
+ 	DEF_MOD("scif_0_clk_pck",		CLK_PLLCM33_DIV16, 8, 15, 4, 15,
+ 						BUS_MSTOP(3, BIT(14))),
+ 	DEF_MOD("i3c_0_pclkrw",			CLK_PLLCLN_DIV16, 9, 0, 4, 16,
 -- 
 2.53.0
 
