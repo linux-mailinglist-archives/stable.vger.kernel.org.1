@@ -1,65 +1,67 @@
-Return-Path: <stable+bounces-249718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKU1BqUGDWpQsQUAu9opvQ
-	(envelope-from <stable+bounces-249718-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:56:05 +0200
+	id sP/VC7oGDWpQsQUAu9opvQ
+	(envelope-from <stable+bounces-249719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:56:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA54B5866B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:56:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4B25866BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 02:56:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBD9B3074C61
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:54:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F06630A74BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 00:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5812D0C89;
-	Wed, 20 May 2026 00:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03A82D3750;
+	Wed, 20 May 2026 00:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FteeT4dn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WfD9gp+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEB62C15AB;
-	Wed, 20 May 2026 00:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765B0270EDF;
+	Wed, 20 May 2026 00:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779238470; cv=none; b=MV7MHH/W59IRICVmgUa5V2BT68OSW8mCzIM4QylIetNE+/V3av7Z1SW9Co1ovZMhYC4lZPIRnqm76Ta3M2OJhj/kLItk5jxBlRU+lTqYI4Q/8b4Fv38rOBQGf89PmqSYEU0xJozLN2o7un3L37tUnsIh9sRwGOuy8bAc22vBe+M=
+	t=1779238472; cv=none; b=Ey00DPOijUpP9qY3Evt1gpSZVFPyILJAkvTh1/wyhuyNjsmpB0PItFHuG3po+UQmbqRwYhkpRnLmv9gw1ZBfq4tRBF4zuwPaaObivPABzeNhcpwISKu+7H4AWxhkwYgdPIeSdN98+DOvdl8BbSX1m+3R9tj240EwnmZrzZW5vds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779238470; c=relaxed/simple;
-	bh=FBqxazzWQqaalrtGYtYtsegcmYC6KYG1STstqiWM94Y=;
+	s=arc-20240116; t=1779238472; c=relaxed/simple;
+	bh=0Q/oc3eDtrEW3u+qBQkPCNQ1jJz13KMrsbo+vJ8/bqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6+pY5tHU+x/Y0/jreCejpEgTQ+B5UHgtiVZM/YJUyPcG14fP4kIwSpGNkoF4z/ycOgfBolStRMBsNjcKDNsVyzyywzdc19Cbfx2+HWemxlLLj1HJQhGkW+yzS2/Rbljs80rygCCwUT3xgaw+wLJjaGtfdK9fz3ke4ClVGh/kR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FteeT4dn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF71E1F00894;
-	Wed, 20 May 2026 00:54:28 +0000 (UTC)
+	 MIME-Version; b=T4Eu8HEjv4WJKJu4pXTefJCeMrLG/vYgSQ/DR3ENNSZKBsnf6xqMFv9aiZYjO9uyiUeIUmSZolRnB3n/UaaY2xCiTeWKd1ulbUxT3jHv32sGnORD44tWDsyh2f3UmN+8EWQ4Fa66/71LUtiQU5/LdiqxVCQq7ClpowIYPegRjMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WfD9gp+A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACFB1F000E9;
+	Wed, 20 May 2026 00:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779238469;
-	bh=FBqxazzWQqaalrtGYtYtsegcmYC6KYG1STstqiWM94Y=;
+	s=k20260515; t=1779238471;
+	bh=0Q/oc3eDtrEW3u+qBQkPCNQ1jJz13KMrsbo+vJ8/bqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FteeT4dnR50bM/aMOXObonsHu3ytruZVQtxv3p3SGdENkaUHmqp5kMsa1QB7iay0c
-	 ka0at6PEPOZsGJriHKjFPbqn4nzoBVbcGd2MecSiSRJHWi7/lvykxYVQY5pIw7znMJ
-	 8eM0scEaFzsILpQmjIvK2WxuLqK6oICGo2x6ALdUtLVUUdbnhJGr3DLbOaOL6CwBMq
-	 Oown+kN4ST895dNlTUE//Y7F+QqDfvYw5xzJcfjzPNp0RSdKewSd+AsOSNOo/nJM+u
-	 KoMDdp9YnW0tiWKi4ZxQzs/j6MqLl7hZrbGhKZw1HKnyaJyZolOShGX9Q8pI7JEIjH
-	 +AXJiqHwUaVEQ==
+	b=WfD9gp+APa3jFTp0cwNhJaQCeG/Wen6PhxrxqJ1YWzavg0mdcB/O66YUGmHS1Mphv
+	 /3+9/LBv0vZcYzUIlFn5NCTM7uhugidrKXmagphUBshr2s0zJYe0P/O71iNr9E2VTJ
+	 wzHDWFqb0HxyjUalGopBqU6s5y3Cpoff6a4lKu9Hf1snPTVSiAkIK0mXhmPZ8bROZo
+	 rUQia/BKYvCakYh3xoPzA6OLMTvKYFS5lhYkodzZ3XgmE8YLXQvHP0r+QLdIs9XnWE
+	 6D0NbMWSitgZnxl6UjyXLOESn8DkSL/5MVIHC2npRAaFRlL17wap/UH4NVoH2itQoy
+	 fmhAsVO9FDNmQ==
 From: Sasha Levin <sashal@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	ipylypiv@google.com,
-	dlemoal@kernel.org,
-	linux-ide@vger.kernel.org,
-	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Christoph Wiese <charon56@proton.me>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: stable backport request: [PATCH v2] ata: libata-scsi: fix requeue of deferred ATA PASS-THROUGH commands
-Date: Tue, 19 May 2026 20:54:18 -0400
-Message-ID: <20260519220508.reply-0004@kernel.org>
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mateusz Redzynia <mateuszx.redzynia@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: Re: [PATCH 6.6.y] ASoC: SOF: Intel: hda: Fix NULL pointer dereference
+Date: Tue, 19 May 2026 20:54:19 -0400
+Message-ID: <20260519220508.reply-0006@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <agyRrnU_Oyh79_d8@ryzen>
-References: <-LfISXRga4ryMCYwCMNrhBwgNW6mZ9xx8AWX-Y7B0WwEyZr_8BHlTEgNarxj36MY0Yu-79B93UH7ISr1OmMrRqAbO_LYmZjUgtkE0MoxB5M=@proton.me> <agyRrnU_Oyh79_d8@ryzen>
+In-Reply-To: <tencent_D2D615381730920DE9B46435691FBD92C708@qq.com>
+References: <tencent_D2D615381730920DE9B46435691FBD92C708@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,45 +73,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linux.intel.com,intel.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-249719-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249718-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AA54B5866B7
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9F4B25866BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 06:37:02PM +0200, Niklas Cassel wrote:
-> Dear stable maintainers,
+On Tue, May 19, 2026 at 06:44:10PM +0800, Alva Lan wrote:
+> From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 >
-> Could you please help with backporting commit 8ebf408e7d46 ("ata:
-> libata-scsi: fix requeue of deferred ATA PASS-THROUGH commands")
+> [ Upstream commit 16c589567a956d46a7c1363af3f64de3d420af20 ]
 >
-> to the relevant stable kernels?
->
-> It gets a conflict when cherry-picking, so I have attached a version
-> that can be applied without conflicts.
+> If there's a mismatch between the DAI links in the machine driver and
+> the topology, it is possible that the playback/capture widget is not
+> set, especially in the case of loopback capture for echo reference
+> where we use the dummy DAI link. Return the error when the widget is not
+> set to avoid a null pointer dereference like below when the topology is
+> broken.
+[...]
+> [ Minor context conflict resolved. ]
+> Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 
-Queued for 7.0, 6.18 and 6.12, thanks.
+Queued for 6.6, thanks.
 
 --
 Thanks,
