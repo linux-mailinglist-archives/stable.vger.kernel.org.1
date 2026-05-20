@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACdmIvD4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-251546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:52 +0200
+	id +Mb3EerpDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:05:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C595956F1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0916E592E70
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 032AB321A462
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BB6F3193C34
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B082BE7BA;
-	Wed, 20 May 2026 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08661370D7C;
+	Wed, 20 May 2026 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRpU4jWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/uXS91e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D0D2367DF;
-	Wed, 20 May 2026 17:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4111373BE0;
+	Wed, 20 May 2026 16:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298261; cv=none; b=O3Y5qJpYpJIcFfwy7SmA2GjJ3V76zMlIWKdMSGrBE0Zdhul00fLoL+dOGr/l/VPNDeCXLfqmimZFN1/bG9JrbV1IEtb8xxpSRORNc0vWDMo1W4j6kIYExch1XhvSdUy1ZUL2yGMXyZTm/qYEtJc8qGQ5PhxypO7m+WGbrhJYV1A=
+	t=1779295848; cv=none; b=jpCy7g8PHSbfFfWnhKBQogjBKfcBdKkwqU7QDAp9SoJ75VeK6qPcVCPWo2nsqCVdipapyxlRvH30mZ0A6M9DAZDw1UBJicyk2qVgJ0tOlY2pg/JvrQyhgtHEQaNolGpFiG6A34DDUcLLlRRgcAnamGZsNM95EQ+aVj3TlYRytnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298261; c=relaxed/simple;
-	bh=VVh99rP7EUeVS3ezDa5g/qJLq2Armc19U8YoF5hE5ls=;
+	s=arc-20240116; t=1779295848; c=relaxed/simple;
+	bh=5X6nasb6QvNqkuV3CojinDwuycKtoy9JwuZfyeZuFc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGuALPASzjfmXumVONqjCc4CAaUxvBSZQcZO4r7dwMhTGPAbP193NZ81WfkAH7EYVYcTp1uWTaNpyOv5z2TyiwqggNtsQZJRKhy42nhgXJpPp7SGWyumn7V3Dw2K/M1FUGlMcn1Jr0syQzCKWFHJM7iiu/JsM6Shm5AcEobsQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRpU4jWZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8366E1F000E9;
-	Wed, 20 May 2026 17:30:59 +0000 (UTC)
+	 MIME-Version; b=jP8Didp4byo3moWVqcwqdBZlkHg5l29ucaySf5tRCgEQFwX1aKVuHgqVHq3fO/bbqLNsznFTMwJcyL9QPtEz0/9lEw/ln4qf0+KIGWAPsOKCzFXPZ/q4A58ehDkcLQDJB6Ycxk1oH279iki0i21APNcaGrXkqkwutZMf3hS7cQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/uXS91e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15C91F000E9;
+	Wed, 20 May 2026 16:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298260;
-	bh=a0BSvlbuDUgSbUvecoQbZ9Lc/txIt7R+PxIapZ9EAJw=;
+	s=korg; t=1779295847;
+	bh=bzwHj2gGpT73hOdyIDlQ+B4aSZNPuQYY2Mrs785JPS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gRpU4jWZt7pQU3wGzvt7YoIn74EOgj2oUnp/74FwA7jTdki+0usSZ0YJiE6gwUzzV
-	 ayeB2E7KyIwM5OqwY7Yl6KTZBwaxdoNUXJKuLIN7vLKb1uzzs/Eyn43TmXjArzzioo
-	 P/zHZdJmu0CTySQ40sOMnjlKcOFRp7QorNDczF3s=
+	b=G/uXS91ecqaSUoT2BbiGVSUhDOHzYqAWKtIfart19jM+Nrh/HK4tytKt4xOjd1+SV
+	 4fX+z0CbbFBCMkiPoDajAzC8kSwWcAKj1u2fO4l+ART8IU9sqOyY7/u8RwvUI3f58j
+	 ztBft8XGtM8GujjqVal0T9YlImrsjYUy4LSY5JHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 342/957] fanotify: avoid/silence premature LSM capability checks
-Date: Wed, 20 May 2026 18:13:45 +0200
-Message-ID: <20260520162141.949004480@linuxfoundation.org>
+Subject: [PATCH 7.0 0576/1146] soundwire: Intel: test bus.bpt_stream before assigning it
+Date: Wed, 20 May 2026 18:13:46 +0200
+Message-ID: <20260520162201.218634337@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +70,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,paul-moore.com,gmail.com,suse.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251546-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250605-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[paul-moore.com:email,suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 81C595956F1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,cirrus.com:email]
+X-Rspamd-Queue-Id: 0916E592E70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 0d5ee3373426395478c355f3e93ba4b1118a04e9 ]
+[ Upstream commit b2c9f1d5a7eb50bcdda607afef1378e552bbb490 ]
 
-Make sure calling capable()/ns_capable() actually leads to access denied
-when false is returned, because these functions emit an audit record
-when a Linux Security Module denies the capability, which makes it
-difficult to avoid allowing/silencing unnecessary permissions in
-security policies (namely with SELinux).
+We only allow up to 1 bpt stream running on a SoundWire bus.
+bus.bpt_stream will be assigned when it is opened and will be set to
+NULL when it is closed. We do check bus->bpt_stream_refcount if the
+stream type is SDW_STREAM_BPT in sdw_master_rt_alloc(), but at that
+moment the bpt stream is allocated and set to bus.bpt_stream. It will
+lead to the original bus.bpt_stream be changed to the new and not used
+bpt stream. And it will be released and set to NULL when
+sdw_slave_bpt_stream_add() return error as it supposed to. Then the
+original stream will try to use the NULL bus.bpt_stream.
 
-Where the return value just used to set a flag, use the non-auditing
-ns_capable_noaudit() instead.
-
-Fixes: 7cea2a3c505e ("fanotify: support limited functionality for unprivileged users")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://patch.msgid.link/20260216150625.793013-2-omosnace@redhat.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: 4c1ce9f37d8a ("soundwire: intel_ace2x: add BPT send_async/wait callbacks")
+Reported-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20260126054045.2504103-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/soundwire/intel_ace2x.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 1dadda82cae51..1c05c11e3cb25 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1611,17 +1611,18 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
- 	pr_debug("%s: flags=%x event_f_flags=%x\n",
- 		 __func__, flags, event_f_flags);
+diff --git a/drivers/soundwire/intel_ace2x.c b/drivers/soundwire/intel_ace2x.c
+index 7f01e43ae978a..20422534baf19 100644
+--- a/drivers/soundwire/intel_ace2x.c
++++ b/drivers/soundwire/intel_ace2x.c
+@@ -82,6 +82,11 @@ static int intel_ace2x_bpt_open_stream(struct sdw_intel *sdw, struct sdw_slave *
+ 	int len;
+ 	int i;
  
--	if (!capable(CAP_SYS_ADMIN)) {
--		/*
--		 * An unprivileged user can setup an fanotify group with
--		 * limited functionality - an unprivileged group is limited to
--		 * notification events with file handles or mount ids and it
--		 * cannot use unlimited queue/marks.
--		 */
--		if ((flags & FANOTIFY_ADMIN_INIT_FLAGS) ||
--		    !(flags & (FANOTIFY_FID_BITS | FAN_REPORT_MNT)))
--			return -EPERM;
-+	/*
-+	 * An unprivileged user can setup an fanotify group with limited
-+	 * functionality - an unprivileged group is limited to notification
-+	 * events with file handles or mount ids and it cannot use unlimited
-+	 * queue/marks.
-+	 */
-+	if (((flags & FANOTIFY_ADMIN_INIT_FLAGS) ||
-+	     !(flags & (FANOTIFY_FID_BITS | FAN_REPORT_MNT))) &&
-+	    !capable(CAP_SYS_ADMIN))
-+		return -EPERM;
- 
-+	if (!ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
- 		/*
- 		 * Setting the internal flag FANOTIFY_UNPRIV on the group
- 		 * prevents setting mount/filesystem marks on this group and
-@@ -2006,8 +2007,8 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
- 	 * A user is allowed to setup sb/mount/mntns marks only if it is
- 	 * capable in the user ns where the group was created.
- 	 */
--	if (!ns_capable(group->user_ns, CAP_SYS_ADMIN) &&
--	    mark_type != FAN_MARK_INODE)
-+	if (mark_type != FAN_MARK_INODE &&
-+	    !ns_capable(group->user_ns, CAP_SYS_ADMIN))
- 		return -EPERM;
- 
- 	/*
++	if (cdns->bus.bpt_stream) {
++		dev_err(cdns->dev, "%s: BPT stream already exists\n", __func__);
++		return -EAGAIN;
++	}
++
+ 	stream = sdw_alloc_stream("BPT", SDW_STREAM_BPT);
+ 	if (!stream)
+ 		return -ENOMEM;
 -- 
 2.53.0
 
