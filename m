@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250808-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JXkGeokDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:30 +0200
+	id WKsQI+LsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250808-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039D159AAC1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B2459348D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE4603822E27
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8BF9431146B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A253E5ECF;
-	Wed, 20 May 2026 18:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646EF3F4DFE;
+	Wed, 20 May 2026 16:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnPmgxVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UbRyFlt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8641D36D4E1;
-	Wed, 20 May 2026 18:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CE63DC857;
+	Wed, 20 May 2026 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300526; cv=none; b=ZgIPVt2buXe2f2maD3aTW9m+l+8TkCIxPxm6GHDSVChtd+qR2FUkBmQ+giAu2HMr4yGPtQzUbagxD7B5+UGqIaAlumcS5lu8KH2UAYcqDzXbbRVRfny9Nk1A0ug4grmEO+Mc7RNW1ldky5QxTY1I9QTcuQRPGcu19C0rG076itY=
+	t=1779296360; cv=none; b=oD80/BVrgmTVEEt0GEGn+PvupJSqiAOpt+kcI2RJx2oTCzZns/RhUSpyydOZcUjHWXRUVa78XmLE+ZXiK32Ke497sXfpkqaSjv7qmzdoVrPqItzjW8zmAPiUnAttdD/fXQZuKc1iz11irGT677oWvxff0saLUdjeRWxOtIzxT4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300526; c=relaxed/simple;
-	bh=9PQtl2RqIK9cce/L9hBfaVVESbJ0PzfjWdr+Aj88oVU=;
+	s=arc-20240116; t=1779296360; c=relaxed/simple;
+	bh=04xnfeiJfNVUgLrwIGqosqP6P/nw2Ol+eWuw+/AWozo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKKufZn8hMNOgbwVbhGOFJEUdcTMyYS3hu4ZSsm+y8+DjLHwJZ97FFQ7dwA0v+MBcFGRRVxRtT8JQnhVuCP6i9FgXrSBkyDq+NFDX9WXCCBdIgJ4q25qp4RevM4qyPJU/sm9xMRtnPWnkxz/iAVWJqtSYS8mp9paaRVh6kEopkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnPmgxVU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D941F000E9;
-	Wed, 20 May 2026 18:08:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fcY+xpdIdgJEY2MYChm7wWommBw3uFRTDCt+VgrqHXdUpLRvR3KT/3wd83+Mj/8utDwg4s30pftS2HdoYDZu7hMYum6iUwf3ufwT6pkqnAGOSmBKJR9HL28GnMl9URxoxarCUTfydv8RYzmw+StWQWylpdW8+mZc3zxX7b91+gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UbRyFlt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3E41F000E9;
+	Wed, 20 May 2026 16:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300525;
-	bh=uG6GwTjx9QeL8rAT463lGM9qqAErgoeR/Ku/UhMAH5g=;
+	s=korg; t=1779296358;
+	bh=UEO8azDpClbOJp0pL9jVHpmJDCZ4oAWC8a2eLLlboVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hnPmgxVUS2g12aTuCXGmYIWyJ2QVuIQ8TEpUCf0F0ndI20r5rITiu6m6ZxtuPgWaN
-	 h0Sym0xbje3/e9xFjo+bf21QcO07ub63+ZS5708i6rEWzRkIP+fIu6sVb9m1RM2hc2
-	 V4Tpbw4K+PV8y7OXs0fSUw/g9ND4Msf9re/p7N0A=
+	b=0UbRyFltlW4jl4SJZXrZFiV1Kwdkm/hQ/29cAQA2q9W14PXzlzlUcBWYTtKIuXkwL
+	 O4mdaLk1Z87JbHL10Jk2IzmDYRkiazkBPAdjPgZ8J1Twga/iPG5uHQ9hfYBdVtwHKs
+	 4naCxK7uMaIS9KMUAoURyZWG3fPm3hk+oTlEwrc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dudu Lu <phx0fer@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/666] ASoC: fsl_easrc: Fix value type in fsl_easrc_iec958_get_bits()
-Date: Wed, 20 May 2026 18:16:57 +0200
-Message-ID: <20260520162115.671551759@linuxfoundation.org>
+Subject: [PATCH 7.0 0768/1146] net/sched: act_mirred: fix wrong device for mac_header_xmit check in tcf_blockcast_redir
+Date: Wed, 20 May 2026 18:16:58 +0200
+Message-ID: <20260520162205.595354278@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252381-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250808-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 039D159AAC1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 34B2459348D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit aa21fe4a81458cf469c2615b08cbde5997dde25a ]
+[ Upstream commit 4510d140524ca7d6e772db962e013f26f09a63b1 ]
 
-The value type of controls "Context 0 IEC958 Bits Per Sample" should be
-integer, not enumerated, the issue is found by the mixer-test.
+In tcf_blockcast_redir(), when iterating block ports to redirect
+packets to multiple devices, the mac_header_xmit flag is queried
+from the wrong device. The loop sends to dev_prev but queries
+dev_is_mac_header_xmit(dev) — which is the NEXT device in the
+iteration, not the one being sent to.
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-11-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This causes tcf_mirred_to_dev() to make incorrect decisions about
+whether to push or pull the MAC header. When the block contains
+mixed device types (e.g., an ethernet veth and a tunnel device),
+intermediate devices get the wrong mac_header_xmit flag, leading to
+skb header corruption. In the worst case, skb_push_rcsum with an
+incorrect mac_len can exhaust headroom and panic.
+
+The last device in the loop is handled correctly (line 365-366 uses
+dev_is_mac_header_xmit(dev_prev)), confirming this is a copy-paste
+oversight for the intermediate devices.
+
+Fix by using dev_prev instead of dev for the mac_header_xmit query,
+consistent with the device actually being sent to.
+
+Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260413084927.71353-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 2 +-
+ net/sched/act_mirred.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 0f8c5210e358e..1b47d2002fac6 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -73,7 +73,7 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 05e0b14b57731..2c5a7a321a943 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -354,7 +354,7 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
+ 			goto assign_prev;
  
--	ucontrol->value.enumerated.item[0] = easrc_priv->bps_iec958[mc->regbase];
-+	ucontrol->value.integer.value[0] = easrc_priv->bps_iec958[mc->regbase];
- 
- 	return 0;
- }
+ 		tcf_mirred_to_dev(skb, m, dev_prev,
+-				  dev_is_mac_header_xmit(dev),
++				  dev_is_mac_header_xmit(dev_prev),
+ 				  mirred_eaction, retval);
+ assign_prev:
+ 		dev_prev = dev;
 -- 
 2.53.0
 
