@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOiSBrr7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:46 +0200
+	id UPXBFgn1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3966595E6C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B86594D2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1C17312CED7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32972304ADDF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C753FA5EB;
-	Wed, 20 May 2026 18:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FA53F1AB8;
+	Wed, 20 May 2026 17:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJ8wUgky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtQ22dEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728343F6619;
-	Wed, 20 May 2026 18:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8CE3546C8;
+	Wed, 20 May 2026 17:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300960; cv=none; b=HmDBN+oLQYVx3bqaMUimOG0llHbZ30sFHFSLKWhaZ8NC43JIDNEIEN5cQtJeY0l7n4IKhNY0Le6Bijd6ta82PSfR4LGl112wvrYyEarkSQ2e0FmdW/9sYKd9eEMuw7TPK9bGsMILdDHhh1165WdTmgaJudMT9H1Y2LlHswRQX6g=
+	t=1779299202; cv=none; b=ZkUza6lgKY1pCaeeUvJCqdXXZJDl3DIg3dVoGPyDtfN1r1QeDGr6Yq1U3tr9KiiSi4o9cvbtQik+CzUpkkgFMOdT41HWcJ/LO4JuqxDl18iTj/o/xZhS/ip2sb1aa+iOZAUfe5RAxzhTBbRFei4UvT0BzmYDnEayr+wx3Yu5YZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300960; c=relaxed/simple;
-	bh=KzMFrMGP0O3/oitjDJWqJi/r9YjqLm14LmExdaul53I=;
+	s=arc-20240116; t=1779299202; c=relaxed/simple;
+	bh=flcPIiSnxS8FwPxUIYag+btjH8EbjRxbDOvzK70Y8ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfSUyWsDVvKhQKOr3id9MvGuhHyHF6dUvRK1n/Q9s0pYVAx/IGV2VLHB6nXwm6rVMadZkJSIXv/lhdcgRrGgHAYm3y/yGBLRcZz6aQ98Q6YnapdkHGMX+tKKlbb3iOX9HnT3PQmPHCLwrF/NSyKcR6W0gyucKgHqL1iYp7vtOFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJ8wUgky; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2F31F000E9;
-	Wed, 20 May 2026 18:15:58 +0000 (UTC)
+	 MIME-Version; b=jDsk02/KAwddyFPDyHfltXr2WVFe1l+icaTYwIm2nJ5Wy0Ccs/mddEV6V+AId28AyDAtoqk7JL3ZMy24ph8ZvCwqfj7KNNuylwGdJyIeNrwbkylbgU9zLBBCI6+NL5UPiLqGrcLupmyurEgc5x10AuxyNAfpbNgpiYajInPkrnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtQ22dEU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FE21F000E9;
+	Wed, 20 May 2026 17:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300959;
-	bh=uJ108eRS0cyiuO0R0JjBXrPD4EgX+u1oGqL3aVWH2KU=;
+	s=korg; t=1779299201;
+	bh=JKh6IS9gciuGLhwyrQKCwzbW77XOsi0izEJx7aTb5M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GJ8wUgkyd4zBPQHwHxSzChnqMDrnl1xBAw5Zt+osp2D8FEcbwCEhpFx7lUln5Vo6B
-	 2lsiooVVesds0t5sGOZaUIHjFWQ9XVtZlXKspSo2pPiRBO5GR9bSQHQor8a+4JSkFP
-	 jOU6Ul8b+kT6nIE+6WDQmpuyHKxlzrEBWiqLUSiA=
+	b=JtQ22dEULx7bwiOGglKHz74ghAH+AYrrc8Ndfv79azfSzlz8xWqNfDZZe+ZkZzDf5
+	 GsezXACJNtoYF84UaaeYeom2IswzKUSjUHKKugbipA4WHu4bav7i33UIJp5VW3xgeB
+	 vgNnJOqwbhC38uqKk9QHBwyPc+F1j/gpTynQfLvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 372/666] ipmi: ssif_bmc: fix message desynchronization after truncated response
+Subject: [PATCH 6.18 700/957] net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()
 Date: Wed, 20 May 2026 18:19:43 +0200
-Message-ID: <20260520162119.307083095@linuxfoundation.org>
+Message-ID: <20260520162149.720462630@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252547-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251908-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,94 +90,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,minyard.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A3966595E6C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 12B86594D2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 1d38e849adb6851ee280aa1a1d687b2181549a66 ]
+[ Upstream commit 4b91cb65789b794bfc8d50554b8994f8e0f16309 ]
 
-A truncated response, caused by host power-off, or other conditions,
-can lead to message desynchronization.
+If airoha_qdma_init routine fails before airoha_qdma_tx_irq_init() runs
+successfully for all TX NAPIs, airoha_qdma_cleanup() will
+unconditionally runs netif_napi_del() on TX NAPIs, triggering a NULL
+pointer dereference. Fix the issue relying on q_tx_irq size value to
+check if the TX NAPIs is properly initialized in airoha_qdma_cleanup().
+Moreover, run netif_napi_add_tx() just if irq_q queue is properly
+allocated.
 
-Raw trace data (STOP loss scenario, add state transition comment):
-
-1. T-1: Read response phase (SSIF_RES_SENDING)
-8271.955342  WR_RCV [03]                          <- Read polling cmd
-8271.955348  RD_REQ [04]  <== SSIF_RES_SENDING    <- start sending response
-8271.955436  RD_PRO [b4]
-8271.955527  RD_PRO [00]
-8271.955618  RD_PRO [c1]
-8271.955707  RD_PRO [00]
-8271.955814  RD_PRO [ad]  <== SSIF_RES_SENDING     <- last byte
-	<- !! STOP lost (truncated response)
-
-2. T: New Write request arrives, BMC still in SSIF_RES_SENDING
-8271.967973  WR_REQ []    <== SSIF_RES_SENDING >> SSIF_ABORTING  <- log: unexpected WR_REQ in RES_SENDING
-8271.968447  WR_RCV [02]  <== SSIF_ABORTING  <- do nothing
-8271.968452  WR_RCV [02]  <== SSIF_ABORTING  <- do nothing
-8271.968454  WR_RCV [18]  <== SSIF_ABORTING  <- do nothing
-8271.968456  WR_RCV [01]  <== SSIF_ABORTING  <- do nothing
-8271.968458  WR_RCV [66]  <== SSIF_ABORTING  <- do nothing
-8271.978714  STOP []      <== SSIF_ABORTING >> SSIF_READY  <- log: unexpected SLAVE STOP in state=SSIF_ABORTING
-
-3. T+1: Next Read polling, treated as a fresh transaction
-8271.979125  WR_REQ []    <== SSIF_READY >> SSIF_START
-8271.979326  WR_RCV [03]  <== SSIF_START >> SSIF_SMBUS_CMD        <- smbus_cmd=0x03
-8271.979331  RD_REQ [04]  <== SSIF_RES_SENDING      <- sending response
-8271.979427  RD_PRO [b4]                            <- !! this is T's stale response -> desynchronization
-
-When in SSIF_ABORTING state, a newly arrived command should still be
-handled to avoid dropping the request or causing message
-desynchronization.
-
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Message-ID: <20260403090603.3988423-3-zhangjian.3032@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260420-airoha_qdma_init_rx_queue-fix-v2-2-d99347e5c18d@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/airoha/airoha_eth.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index c2e59899f1c4c..d3a088d758fce 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -457,6 +457,15 @@ static bool supported_write_cmd(u8 cmd)
- 	return false;
- }
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 8416451f4786a..865b854bd4afc 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1051,8 +1051,6 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
+ 	struct airoha_eth *eth = qdma->eth;
+ 	dma_addr_t dma_addr;
  
-+static bool supported_write_start_cmd(u8 cmd)
-+{
-+	if (cmd == SSIF_IPMI_SINGLEPART_WRITE ||
-+	    cmd == SSIF_IPMI_MULTIPART_WRITE_START)
-+		return true;
+-	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
+-			  airoha_qdma_tx_napi_poll);
+ 	irq_q->q = dmam_alloc_coherent(eth->dev, size * sizeof(u32),
+ 				       &dma_addr, GFP_KERNEL);
+ 	if (!irq_q->q)
+@@ -1062,6 +1060,9 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
+ 	irq_q->size = size;
+ 	irq_q->qdma = qdma;
+ 
++	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
++			  airoha_qdma_tx_napi_poll);
 +
-+	return false;
-+}
-+
- /* Process the IPMI response that will be read by master */
- static void handle_read_processed(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- {
-@@ -708,6 +717,11 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 			ssif_bmc->state = SSIF_ABORTING;
- 		else
- 			ssif_bmc->state = SSIF_REQ_RECVING;
-+	} else if (ssif_bmc->state == SSIF_ABORTING) {
-+		if (supported_write_start_cmd(*val)) {
-+			ssif_bmc->state = SSIF_SMBUS_CMD;
-+			ssif_bmc->aborting = false;
-+		}
+ 	airoha_qdma_wr(qdma, REG_TX_IRQ_BASE(id), dma_addr);
+ 	airoha_qdma_rmw(qdma, REG_TX_IRQ_CFG(id), TX_IRQ_DEPTH_MASK,
+ 			FIELD_PREP(TX_IRQ_DEPTH_MASK, size));
+@@ -1481,8 +1482,12 @@ static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
+ 		}
  	}
  
- 	/* This is response sending state */
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++) {
++		if (!qdma->q_tx_irq[i].size)
++			continue;
++
+ 		netif_napi_del(&qdma->q_tx_irq[i].napi);
++	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+ 		if (!qdma->q_tx[i].ndesc)
 -- 
 2.53.0
 
