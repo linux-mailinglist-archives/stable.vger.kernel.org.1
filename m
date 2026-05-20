@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJkyG+0oDmqk6gUAu9opvQ
-	(envelope-from <stable+bounces-252748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:37 +0200
+	id oHKGG40dDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAE759B0A0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FC759A13F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D86E36D6F46
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2203133972B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893883F9280;
-	Wed, 20 May 2026 18:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F3340B6FC;
+	Wed, 20 May 2026 18:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQbx2cNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZ/uD57U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365193FA5EB;
-	Wed, 20 May 2026 18:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB6240B6F7;
+	Wed, 20 May 2026 18:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301487; cv=none; b=Li7anepdmfavvycyDyEVE/f9vUD+iufl5Dw9QmXbkatakimx2CioBeSsSJt/9nLcTr/lg8lhJ2b2aIpzYsBHm2QnN+eVvQDz2FdNCvwLjcoeC8qKTXRTZesR8y6V6Ez8pUHEYHA/TKY/Hri+HxIQntiABlSVek/eznazex/Sulc=
+	t=1779302691; cv=none; b=RnbvIeHuxT/pFMUoyzv1zfNA4/X/i4LUKHVsimXbqSAAR8DB/SUGjn+M3b0wnty8NN4DubgNYhizBXAnqpFW0NVaVLb6UUa2y6RHi28poMNoncOMZvSEsrt4C0TEvu/fOXf0vS2tVJwllONkU5rTuKSqo466o1On5CRR40dR0jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301487; c=relaxed/simple;
-	bh=JIICw/VBZeeKlySORs+0Y8ZNsoTxwBMnGOKUvRDYh5A=;
+	s=arc-20240116; t=1779302691; c=relaxed/simple;
+	bh=MnzA05ItToMyOoTkXdiLXtELJdEhEvD62pV0mbAwS3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bI+75rpWg8+vTAsR5lxjyeCIEjKlLKkZt8HO0SgrWvcChrIZZS9ukVRz94iuSXeKCaHuJPWzzLFuJ/vPuPP5hlapTdKkS4RNZwamT+kqt126qJfLxocUVWLdqQdqsPQqm7uDUaRIXOXm6UxbRMjm3RtQkNLvmnvLtPPsqHTaZs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQbx2cNi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9361F00894;
-	Wed, 20 May 2026 18:24:45 +0000 (UTC)
+	 MIME-Version; b=us7H01NMpaQ1kofPvgGu7XgGmU+VujdDQTJP1N34Urm83LQ58ToMuknfd4K1Yqd/9I6uHnkbeQS/hibIEMybNwOcjysr1jE5JFyhxgsUEJM57XJFlNsGbD4kaV2SV/DdRhd9/m6ci2KhwTtsEYOEPIr+foNYS5J0K4ZLe9Dgo9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZ/uD57U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA391F000E9;
+	Wed, 20 May 2026 18:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301486;
-	bh=hJNuT4FAkq0T2wOiyruJGyhiidDR8Mw24dACDV4huxE=;
+	s=korg; t=1779302690;
+	bh=n5KdEaNif8dugNSQML+OM25tLPG9toMvwPfuGfnt4x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bQbx2cNiE2rHGpuUgFGqrHjD/BBvOLBaK0UgbvgydYwVGhx7cBV35jHOhyWCjh2Oc
-	 QQOuAtxBQA/wP+dfBzWFBU42KIoiFU33LEJCS3kdx/kIyg7RqNeLfKoZgMiIIuncwe
-	 p+3DannVXjlIFWv1I+N5yso92csmMC1JkUW/k9OY=
+	b=HZ/uD57UG0tNlrdCaHFwgfrjesZlnPmHgVxR2zd6pVTurlrdeyzjRYypFhbd5KWrL
+	 NMBVm3JRuDfGOsH2oEvVOgMwqeMt5vooatav3IFTTWD81ZCRfsFM6mg9iEoKSWZK2P
+	 YHj3Wr9oOxznv6CCTQkymMUFb0ZJMkQ33cEHdD1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 574/666] ALSA: hda/conexant: Renaming the codec with device ID 0x1f86 and 0x1f87
-Date: Wed, 20 May 2026 18:23:05 +0200
-Message-ID: <20260520162123.708602270@linuxfoundation.org>
+Subject: [PATCH 6.6 363/508] mailbox: mailbox-test: initialize struct earlier
+Date: Wed, 20 May 2026 18:23:06 +0200
+Message-ID: <20260520162106.495298131@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +64,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252748-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253211-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email]
-X-Rspamd-Queue-Id: ABAE759B0A0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sang-engineering.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 70FC759A13F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 7f4c540e0859e2025675d2c5c5c6ab88eaf817e2 ]
+[ Upstream commit bbcf9af68bfedb3d9cc3c7eae62f5c844d8b78b9 ]
 
-Due to changes in the manufacturer's plan, all 0x14f11f86 will be
-named CX11880, and 0x14f11f87 will be named SN6140
+The waitqueue must be initialized before the debugfs files are created
+because from that time, requests from userspace can already be made.
+Similarily, drvdata and spinlock needs to be initialized before we
+request the channel, otherwise dangling irqs might run into problems
+like a NULL pointer exception.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20250616074331.581309-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b0e2333a2311 ("ALSA: hda/conexant: Fix missing error check for jack detection")
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/mailbox/mailbox-test.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index b7c9eba9236d8..00ac0e170619b 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -42,7 +42,7 @@ struct conexant_spec {
- 	unsigned int gpio_led;
- 	unsigned int gpio_mute_led_mask;
- 	unsigned int gpio_mic_led_mask;
--	bool is_cx8070_sn6140;
-+	bool is_cx11880_sn6140;
- };
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index c06d128c44764..2c98c300ba33b 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -366,6 +366,12 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (!tdev)
+ 		return -ENOMEM;
  
++	tdev->dev = &pdev->dev;
++	spin_lock_init(&tdev->lock);
++	mutex_init(&tdev->mutex);
++	init_waitqueue_head(&tdev->waitq);
++	platform_set_drvdata(pdev, tdev);
++
+ 	/* It's okay for MMIO to be NULL */
+ 	tdev->tx_mmio = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (PTR_ERR(tdev->tx_mmio) == -EBUSY) {
+@@ -395,12 +401,6 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (!tdev->rx_channel && (tdev->rx_mmio != tdev->tx_mmio))
+ 		tdev->rx_channel = tdev->tx_channel;
  
-@@ -195,7 +195,7 @@ static int cx_auto_init(struct hda_codec *codec)
- 	cxt_init_gpio_led(codec);
- 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
+-	tdev->dev = &pdev->dev;
+-	platform_set_drvdata(pdev, tdev);
+-
+-	spin_lock_init(&tdev->lock);
+-	mutex_init(&tdev->mutex);
+-
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+@@ -414,7 +414,6 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free_chans;
  
--	if (spec->is_cx8070_sn6140)
-+	if (spec->is_cx11880_sn6140)
- 		cx_fixup_headset_recog(codec);
+-	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
  
  	return 0;
-@@ -247,7 +247,7 @@ static void cx_update_headset_mic_vref(struct hda_codec *codec, struct hda_jack_
- {
- 	unsigned int mic_present;
- 
--	/* In cx8070 and sn6140, the node 16 can only be configured to headphone or disabled,
-+	/* In cx11880 and sn6140, the node 16 can only be configured to headphone or disabled,
- 	 * the node 19 can only be configured to microphone or disabled.
- 	 * Check hp&mic tag to process headset plugin & plugout.
- 	 */
-@@ -1193,11 +1193,11 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	codec->spec = spec;
- 	codec->patch_ops = cx_auto_patch_ops;
- 
--	/* init cx8070/sn6140 flag and reset headset_present_flag */
-+	/* init cx11880/sn6140 flag and reset headset_present_flag */
- 	switch (codec->core.vendor_id) {
- 	case 0x14f11f86:
- 	case 0x14f11f87:
--		spec->is_cx8070_sn6140 = true;
-+		spec->is_cx11880_sn6140 = true;
- 		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
- 		break;
- 	}
-@@ -1285,7 +1285,7 @@ static int patch_conexant_auto(struct hda_codec *codec)
-  */
- 
- static const struct hda_device_id snd_hda_id_conexant[] = {
--	HDA_CODEC_ENTRY(0x14f11f86, "CX8070", patch_conexant_auto),
-+	HDA_CODEC_ENTRY(0x14f11f86, "CX11880", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f11f87, "SN6140", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f12008, "CX8200", patch_conexant_auto),
- 	HDA_CODEC_ENTRY(0x14f120d0, "CX11970", patch_conexant_auto),
 -- 
 2.53.0
 
