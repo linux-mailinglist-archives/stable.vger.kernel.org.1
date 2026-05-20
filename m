@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEtmBYbsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:54 +0200
+	id oBloHyodDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A635933B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E71FB59A06E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7836A307D5CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6963B3727EB7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99373CAE61;
-	Wed, 20 May 2026 16:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4533D75D3;
+	Wed, 20 May 2026 17:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA9N09jR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ssto65q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6673539C00B;
-	Wed, 20 May 2026 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D8A29D26E;
+	Wed, 20 May 2026 17:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296227; cv=none; b=dGdayWM6HgawT2TOqMksJ9fYB0qtic5LI/u3rVkCzbAJDZ4VyGpBVoAjliIF4Pt9lI2idFVCNwLnaO8W0e3DDo7v144cGno+WmYufJHxexQnE9PsKrHY7Vd493cw8wIWXJFeXmPW9phaRhfvcBrwunJ0Pum434CawPU2gAMoO3A=
+	t=1779298565; cv=none; b=R8SzVApzN02upuX5tJXIIulCyUW/IKsRP65Fz1NG8vCYpizbuBjwaml3qfnjKsm3g6BnKw3/l6YmcEkjDK8KHSoX4tiQJuQN6VxMdh/l7MG68b4BRI/NMe/bhulK9rX87/Ngw2O1uFLMEl18WmMSpKd2wiWnhV3JhljPZbC5CEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296227; c=relaxed/simple;
-	bh=bxo+D5yr3QtRyJ3jRAJ5DnoTAv5OcJjLAXbqOUOur7M=;
+	s=arc-20240116; t=1779298565; c=relaxed/simple;
+	bh=79O3O51JKusMxIjw/DToT7cXsNDbbuzCBa5kL8q8r94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ssKcUnqT9QyFZEBXcNYIY8XAN0Km4B1oQH1exqtwVmXzqbRg6htR+LZkgI5wZajDEGO32jDpDMB2sdE/4Eo5CTKDmu0zyaIIIbuSHbr8ZQCUtRKPjdl30mDiifDRBNNMSWtf5Jrg5DW5P9ALQdctXwL5o5SMjkws8MUoyfs7Yik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA9N09jR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC72B1F000E9;
-	Wed, 20 May 2026 16:57:05 +0000 (UTC)
+	 MIME-Version; b=pDRTXgqPwWPrKd7VqpD25RswxBUFI7H0PtbcD0p6u0ynlpomygtz1CGdIJoU2sdF+JhBPYFWlDCB6qxGr2ol9N/EVTHDI1ImQTjFlTcNz1SynPQ4CKtKPEAkHSn5uIaBqMmBw5qrC+lz6pEhDaHw+M9ZBIkMDPbgyiLCv7U9qp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ssto65q8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA7F1F000E9;
+	Wed, 20 May 2026 17:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296226;
-	bh=EcBDjIJd1Bni1l4IR0Xf0wBgxw+oI36fSonpUNEMwCc=;
+	s=korg; t=1779298564;
+	bh=6vM/971iTzx8UiWqD5cp/8WRWZ95x5rCOV3WoIsPRIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oA9N09jRsKFDvDBuZFdYWx9FhlLeKENFRSNsELnwBGTZGmeGFijCjgVKid81+RUeT
-	 tJP08I2kbPXiobiYjYsPKZnMipZ4lfNErJq+xYdzA49jU7/y/74+IA0ms60029s6y4
-	 BwNq0FVzcUw0K4XOpei31OoyMbqJaQXxe8S4RAQc=
+	b=Ssto65q8WN3C2vPBn1PlCx84C6d1M/4DeoOGUo/SBnfOKfTMNIu7rE8SD3Aa6eKqx
+	 WnbZBnFxB83nnn47gzQMTQMF5Tb+peInbOhmQVseLQsscHCNnFiIGqOcPoh9MIVVcv
+	 ivvic0nXZxkdkP+CXoXTOW6ULKIjBSjlp700W6/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0692/1146] platform/x86: dell-wmi-sysman: bound enumeration string aggregation
+Subject: [PATCH 6.18 459/957] ima: check return value of crypto_shash_final() in boot aggregate
 Date: Wed, 20 May 2026 18:15:42 +0200
-Message-ID: <20260520162203.849171861@linuxfoundation.org>
+Message-ID: <20260520162144.477242020@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +64,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250753-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251662-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,iscas.ac.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: B4A635933B1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,meta.com:email]
+X-Rspamd-Queue-Id: E71FB59A06E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit 3c34471c26abc52a37f5ad90949e2e4b8027eb14 ]
+[ Upstream commit 870819434c8dfcc3158033b66e7851b81bb17e21 ]
 
-populate_enum_data() aggregates firmware-provided value-modifier
-and possible-value strings into fixed 512-byte struct members.
-The current code bounds each individual source string but then
-appends every string and separator with raw strcat() and no
-remaining-space check.
+The return value of crypto_shash_final() is not checked in
+ima_calc_boot_aggregate_tfm(). If the hash finalization fails, the
+function returns success and a corrupted boot aggregate digest could
+be used for IMA measurements.
 
-Switch the aggregation loops to a bounded append helper and
-reject enumeration packages whose combined strings do not fit
-in the destination buffers.
+Capture the return value and propagate any error to the caller.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260408084501.1-dell-wmi-sysman-v2-pengpeng@iscas.ac.cn
-[ij: add include]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 76bb28f6126f ("ima: use new crypto_shash API instead of old crypto_hash")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dell/dell-wmi-sysman/enum-attributes.c    | 34 +++++++++++++++----
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ security/integrity/ima/ima_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-index 09996fbdc7074..a85639d8a076f 100644
---- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
-@@ -6,10 +6,32 @@
-  *  Copyright (c) 2020 Dell Inc.
-  */
- 
-+#include <linux/bug.h>
-+
- #include "dell-wmi-sysman.h"
- 
- get_instance_id(enumeration);
- 
-+static int append_enum_string(char *dest, const char *src)
-+{
-+	size_t dest_len = strlen(dest);
-+	ssize_t copied;
-+
-+	if (WARN_ON_ONCE(dest_len >= MAX_BUFF))
-+		return -EINVAL;
-+
-+	copied = strscpy(dest + dest_len, src, MAX_BUFF - dest_len);
-+	if (copied < 0)
-+		return -EINVAL;
-+
-+	dest_len += copied;
-+	copied = strscpy(dest + dest_len, ";", MAX_BUFF - dest_len);
-+	if (copied < 0)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
- {
- 	int instance_id = get_enumeration_instance_id(kobj);
-@@ -176,9 +198,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
- 			return -EINVAL;
- 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
- 			return -EINVAL;
--		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
--			enumeration_obj[next_obj++].string.pointer);
--		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier, ";");
-+		if (append_enum_string(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
-+				       enumeration_obj[next_obj++].string.pointer))
-+			return -EINVAL;
+diff --git a/security/integrity/ima/ima_crypto.c b/security/integrity/ima/ima_crypto.c
+index 6f5696d999d0d..8ae7821a65c26 100644
+--- a/security/integrity/ima/ima_crypto.c
++++ b/security/integrity/ima/ima_crypto.c
+@@ -832,7 +832,7 @@ static int ima_calc_boot_aggregate_tfm(char *digest, u16 alg_id,
+ 		}
  	}
+ 	if (!rc)
+-		crypto_shash_final(shash, digest);
++		rc = crypto_shash_final(shash, digest);
+ 	return rc;
+ }
  
- 	if (next_obj >= enum_property_count)
-@@ -193,9 +215,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
- 			return -EINVAL;
- 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
- 			return -EINVAL;
--		strcat(wmi_priv.enumeration_data[instance_id].possible_values,
--			enumeration_obj[next_obj++].string.pointer);
--		strcat(wmi_priv.enumeration_data[instance_id].possible_values, ";");
-+		if (append_enum_string(wmi_priv.enumeration_data[instance_id].possible_values,
-+				       enumeration_obj[next_obj++].string.pointer))
-+			return -EINVAL;
- 	}
- 
- 	return sysfs_create_group(attr_name_kobj, &enumeration_attr_group);
 -- 
 2.53.0
 
