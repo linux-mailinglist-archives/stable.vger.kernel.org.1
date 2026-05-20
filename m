@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-251164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFyJEnPyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:11 +0200
+	id UHlxC7z5DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B577594586
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC521595967
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2509A3103902
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 64C3D3102B72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B583D5642;
-	Wed, 20 May 2026 17:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9A03A3E60;
+	Wed, 20 May 2026 17:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/YqwN+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWsuPPyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E7336A352;
-	Wed, 20 May 2026 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52237368941;
+	Wed, 20 May 2026 17:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297266; cv=none; b=XSRmylVWWDVmTVQJLYrsDtBhCd6ZXAj86AWQ8IPNAD6MUCaE7d0BsxArxLuifyUCSoqD+awFXkFLjNbYokSOuJVab7XR1D6SFshhwkksK9sPHhzNbvkxean93NYVpd6Nop4Re4NdtfCybMqE8Evf00IGZa/kKQt34D0sfdmIaTw=
+	t=1779299728; cv=none; b=JC4HgfKzj/fkaXTv+BOI7a3FC1EFwMbbO0AoBjQPFxB4rSEl/UY/Pxvj3l9CyDczkwPdnM9zY9haY5hTujXN9HVDvXlHDFQQVyI3pAuchsSSrxxSF1mjD1hGA6p3EDzJfg2t/jHOUfd/XRMYEqG6QyKOsdMQrd9yAhNCNhoLjfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297266; c=relaxed/simple;
-	bh=16NO9k0Lr0f8528lJed1diyq/ICnUj4loDyglr7RWa4=;
+	s=arc-20240116; t=1779299728; c=relaxed/simple;
+	bh=lBkMjENdpzHTgR6nUEpipIbFyvpDWW8KJivUI29lzdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HN2zpG95OBfq7dzlXskJGK+eWnP1FQLID3QSSKtqbHZsr+lCkEud7lbL7uEKnpJ9ao/90UxnrzmRwygotTzQ9Js/taIXowbFWKl863AR1o652bl15Eyrs9XQ9HKjEJP6M6ophoBaaWFKqb4SfMFx/hGKB6hFWMlMZ3cQnmSrMSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/YqwN+g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BB61F000E9;
-	Wed, 20 May 2026 17:14:24 +0000 (UTC)
+	 MIME-Version; b=rZ4ejbaVn3m/tcF2D/V4O2tT7IdTnhsnDy2laNAs/ZWP0fKBqEO739Pi9v0p2/XHyUXKobsQKJacRvs+3nM+ATUeW0+aq+lMBJrLpY3gCCdB38uvg8onA1ARBCWSmSyHMycdcuc8NzOXdXlGmLbuTmd1EPqmh+d/WOPipAY1OjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWsuPPyL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB01F000E9;
+	Wed, 20 May 2026 17:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297265;
-	bh=X+9Cc+r/0ZBYJZK//xgL/SBkakPR8P2dPzWIMTeR5Qk=;
+	s=korg; t=1779299726;
+	bh=Jy4/FaOlYoQ8kWkfLqDyGS7th04vm+a+N86MueKyoaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=o/YqwN+goXLwpUbPnUDo9vxM7bvlkSSYMVYanv00VG/oxe0eepmbFs0WEbEiSoK09
-	 YtPJfJR0KY3y+V9mYMJbUH1yPimArItajGrqE+O4uoZzdYAekQzEi47fc7+Oibrkc1
-	 UaGJLRH/5C3GwlPXeYo+ZaT0iWQ60FgadeyU1TiA=
+	b=kWsuPPyLYqOhUAK5MB+025kEgrCirxtnwjTT44LfG8E+d4JMq/CqBhLqljcL1Zfaw
+	 NWmW+co2B818vO1wcWcOoJmZGxSE+Ul3oy/zlJYPffw6nBcDSyYf0Nkr4/QjsJ7M+d
+	 OdNkUoJOz7q30x5WDwuiEuXovPWvT1gXwGbQe5WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Bischoff <sascha.bischoff@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH 7.0 1113/1146] irqchip/gic-v5: Allocate ITS parent LPIs as a range
+	Kohei Enju <kohei@enjuk.jp>,
+	Matt Vollrath <tactii@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 880/957] i40e: Cleanup PTP pins on probe failure
 Date: Wed, 20 May 2026 18:22:43 +0200
-Message-ID: <20260520162213.433306643@linuxfoundation.org>
+Message-ID: <20260520162153.650553419@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,126 +72,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,enjuk.jp,gmail.com,molgen.mpg.de,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252093-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251164-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0B577594586
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,enjuk.jp:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mpg.de:email,intel.com:email]
+X-Rspamd-Queue-Id: CC521595967
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Bischoff <Sascha.Bischoff@arm.com>
+From: Matt Vollrath <tactii@gmail.com>
 
-commit a7c7e42654b6a8676610ee09d22901432c4851af upstream.
+commit 678b713ece1e853f11e670a84cb887c35e1381b7 upstream.
 
-The ITS MSI domain no longer manages LPI allocation directly. LPIs are
-allocated and freed by the parent LPI domain, which can now handle a
-full range of interrupts and unwind partial allocations internally.
+PTP pin structs are allocated early in probe, but never cleaned up.
 
-Make the ITS domain request and release the parent IRQs as a single
-range instead of iterating over each interrupt. The ITS allocation
-path then only needs to reserve EventIDs, allocate the parent range,
-and fill in the ITS irq_data for each MSI. Since no operation in the
-per-MSI loop can fail, the partial parent-free unwind becomes
-unnecessary.
+Fix this by calling i40e_ptp_free_pins in the error path.
 
-On teardown, reset the ITS irq_data for the range and then release the
-parent range in one call, leaving LPI teardown to the LPI domain.
+To support this, i40e_ptp_free_pins is added to the header and
+pin_config is correctly nullified after being freed.
 
-Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
-Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+This has been an issue since i40e_ptp_alloc_pins was introduced.
+
+Fixes: 1050713026a08 ("i40e: add support for PTP external synchronization clock")
+Reported-by: Kohei Enju <kohei@enjuk.jp>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260506093634.382062-4-sascha.bischoff@arm.com
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Kohei Enju <kohei@enjuk.jp>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-2-a5ea4dc837a9@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v5-its.c |   22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h      |    1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c |    1 +
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c  |    3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-gic-v5-its.c
-+++ b/drivers/irqchip/irq-gic-v5-its.c
-@@ -937,6 +937,7 @@ static int gicv5_its_irq_domain_alloc(st
- 	int ret, i;
- 
- 	its_dev = info->scratchpad[0].ptr;
-+	device_id = its_dev->device_id;
- 
- 	ret = gicv5_its_alloc_eventid(its_dev, info, nr_irqs, &event_id_base);
- 	if (ret)
-@@ -946,14 +947,11 @@ static int gicv5_its_irq_domain_alloc(st
- 	if (ret)
- 		goto out_eventid;
- 
--	device_id = its_dev->device_id;
-+	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, NULL);
-+	if (ret)
-+		goto out_eventid;
- 
- 	for (i = 0; i < nr_irqs; i++) {
--		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
--		if (ret) {
--			goto out_free_irqs;
--		}
--
- 		/*
- 		 * Store eventid and deviceid into the hwirq for later use.
- 		 *
-@@ -972,12 +970,6 @@ static int gicv5_its_irq_domain_alloc(st
- 
- 	return 0;
- 
--out_free_irqs:
--	while (--i >= 0) {
--		irqd = irq_domain_get_irq_data(domain, virq + i);
--		irq_domain_reset_irq_data(irqd);
--		irq_domain_free_irqs_parent(domain, virq + i, 1);
--	}
- out_eventid:
- 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
- 	return ret;
-@@ -1000,14 +992,14 @@ static void gicv5_its_irq_domain_free(st
- 	bitmap_release_region(its_dev->event_map, event_id_base,
- 			      get_count_order(nr_irqs));
- 
--	/*  Hierarchically free irq data */
- 	for (i = 0; i < nr_irqs; i++) {
- 		d = irq_domain_get_irq_data(domain, virq + i);
--
- 		irq_domain_reset_irq_data(d);
--		irq_domain_free_irqs_parent(domain, virq + i, 1);
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -1314,6 +1314,7 @@ void i40e_ptp_restore_hw_time(struct i40
+ void i40e_ptp_init(struct i40e_pf *pf);
+ void i40e_ptp_stop(struct i40e_pf *pf);
+ int i40e_ptp_alloc_pins(struct i40e_pf *pf);
++void i40e_ptp_free_pins(struct i40e_pf *pf);
+ int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset);
+ int i40e_is_vsi_uplink_mode_veb(struct i40e_vsi *vsi);
+ int i40e_get_partition_bw_setting(struct i40e_pf *pf);
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -16114,6 +16114,7 @@ err_vsis:
+ 	i40e_clear_interrupt_scheme(pf);
+ 	kfree(pf->vsi);
+ err_switch_setup:
++	i40e_ptp_free_pins(pf);
+ 	i40e_reset_interrupt_capability(pf);
+ 	timer_shutdown_sync(&pf->service_timer);
+ err_mac_addr:
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -940,12 +940,13 @@ int i40e_ptp_hwtstamp_get(struct net_dev
+  *
+  * Release memory allocated for PTP pins.
+  **/
+-static void i40e_ptp_free_pins(struct i40e_pf *pf)
++void i40e_ptp_free_pins(struct i40e_pf *pf)
+ {
+ 	if (i40e_is_ptp_pin_dev(&pf->hw)) {
+ 		kfree(pf->ptp_pins);
+ 		kfree(pf->ptp_caps.pin_config);
+ 		pf->ptp_pins = NULL;
++		pf->ptp_caps.pin_config = NULL;
  	}
- 
-+	/*  Hierarchically free irq data */
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+
- 	gicv5_its_syncr(its, its_dev);
- 	gicv5_irs_syncr();
  }
+ 
 
 
 
