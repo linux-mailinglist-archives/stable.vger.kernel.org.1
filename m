@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ErCG3f+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:27 +0200
+	id wGKcE5kODmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144445968C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54688598A06
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BAF33189F81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DF673327FD4F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0013FA5D5;
-	Wed, 20 May 2026 18:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A34D400E10;
+	Wed, 20 May 2026 18:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEZeLiu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRkzA9lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF7C3F8706;
-	Wed, 20 May 2026 18:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225153148BB;
+	Wed, 20 May 2026 18:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301566; cv=none; b=XI7J3YZ0YOX4gXSImBwCVGDavvtTFmsyeb9WfRue169VPfVEqfvhaiT3oehqT6WYzRPBU5AII40EjU3bKNuOq5oAKJOJ9e8uN8syc4oci+TCVz8tc0LZSxgDkzDC/x84SMR/7/OR13a8WNnlXr/sdaWyHCcuLg285yLwr+Yv3UA=
+	t=1779302834; cv=none; b=eKFZW4ro3CZPtSZhhjJcoGSt3MjMEHBlRLuNVlsFHsnWr3Zaoo1NeIGZpKUI7XHRcTjVm6/sUXIFdOwnK1wwvq9NJE7nbvPJwVlOwhBdqBRfIc5Kn7WsmMpvlogL86noTp/ioYVud3/k95lC4eZVq84ysoofyu5LzES6bp1S6ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301566; c=relaxed/simple;
-	bh=3XQitr4h9EKiu3n3pW187cYzhfPbmJGG+H+v+dSgBLo=;
+	s=arc-20240116; t=1779302834; c=relaxed/simple;
+	bh=s9yODbOXksXWk096PKvKrybEnsF2yyKpk5OEr8g+F6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuEIzMC8JhBWnIcA11VFDGF8Cvvg3eLejFo115uhCGaCDb82YpsFjurKgyu6o5sJhkRmVSaBhI/jegWhf7aedJ1HBB8RDeHTBD24s3w7h1IwazsIhMM59SJ4PpZ0prK9rG1tlCJC052a10Whiud0tTqoiqD1C27OoSvLJVepvzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEZeLiu/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C961F000E9;
-	Wed, 20 May 2026 18:26:04 +0000 (UTC)
+	 MIME-Version; b=L8is7Nv/PcSH9kdHXiTWXhrMWbS55c2RiAybuo7VXiwkF38ZX5GZuHx8Ynkc6WSPVKDQ4EwvNZ5x5Vjq1w/8zmaP9GvotldguC8pE9Cm9SIvIPNlJgUkvfzhHRSxzlQev1h+I4vv10i1scC0VODZOfBapWGLCBFZKfiClyG0Jfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRkzA9lb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880EA1F000E9;
+	Wed, 20 May 2026 18:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301565;
-	bh=Vwge2Pq2W6PZol2+jPeyA0A+1jMdIQVMfTsojqBDTkw=;
+	s=korg; t=1779302833;
+	bh=nAtwtMYVBRJu3eFpSttFMbydUaoILjYCfuMjN1BiexY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JEZeLiu/kFiN82wEfxHWPrHuUjgJ6oYNAe/qxaZ2MYPBx0HQHBrPCS0yJuKuXaurm
-	 wSf8c8tUVb+CyCOYKgwr9BIkxc2Osyu8GKF8hBjVqEiT9ElTMGl4Mw1LBVGH7LOZIT
-	 XnFFnvdz/8Fmm7Owf7M0GJ9gR23lW3K4IsV1hahU=
+	b=eRkzA9lb+zXNHjnOMi5J4s75uYx994GSMNdK2Y0aha5rQ0OmKH4cpAECA3Rz/k8lt
+	 mbtNg5qU0yY3AXzqDS15JAvWtFwF/l0TGMPDvKZpXA9QMK+7RbApfYQbpsgmOnG1nI
+	 +Q6LIUGj6ddmWuRuZ/aRy6LD9nQTxBfT4NCZlREc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
+	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Zhan Jun <zhanjun@uniontech.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 602/666] net: bcmgenet: fix leaking free_bds
+Subject: [PATCH 6.6 390/508] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
 Date: Wed, 20 May 2026 18:23:33 +0200
-Message-ID: <20260520162124.315702814@linuxfoundation.org>
+Message-ID: <20260520162107.067053508@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +66,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252778-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253268-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,tipi-net.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 144445968C5
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 54688598A06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Zhan Jun <zhanjun@uniontech.com>
 
-[ Upstream commit 3f3168300efb839028328d720ab3962f91d6a0d0 ]
+[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
 
-While reclaiming the tx queue we fast forward the write pointer to
-drop any data in flight. These dropped frames are not added back
-to the pool of free bds. We also need to tell the netdev that we
-are dropping said data.
+syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
+when accessing skb->len for tx statistics after usb_submit_urb() has
+been called:
 
-Fixes: f1bacae8b655 ("net: bcmgenet: support reclaiming unsent Tx packets")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de>
-Link: https://patch.msgid.link/20260406175756.134567-3-justin.chen@broadcom.com
+  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
+    drivers/net/usb/rtl8150.c:712
+  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+
+The URB completion handler write_bulk_callback() frees the skb via
+dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
+in softirq context before usb_submit_urb() returns in the submitter,
+so by the time the submitter reads skb->len the skb has already been
+queued to the per-CPU completion_queue and freed by net_tx_action():
+
+  CPU A (xmit)                      CPU B (USB completion softirq)
+  ------------                      ------------------------------
+  dev->tx_skb = skb;
+  usb_submit_urb()      --+
+                          |-------> write_bulk_callback()
+                          |           dev_kfree_skb_irq(dev->tx_skb)
+                          |         net_tx_action()
+                          |           napi_skb_cache_put()   <-- free
+  netdev->stats.tx_bytes  |
+    += skb->len;          <-- UAF read
+
+Fix it by caching skb->len before submitting the URB and using the
+cached value when updating the tx_bytes counter.
+
+The pre-existing tx_bytes semantics are preserved: the counter tracks
+the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
+padded "count" value that is handed to the device.  Changing that
+would be a user-visible accounting change and is out of scope for
+this UAF fix.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
+Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/rtl8150.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 1cad32ba101bb..1263d00058736 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1933,6 +1933,7 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
- 		drop = (ring->prod_index - ring->c_index) & DMA_C_INDEX_MASK;
- 		released += drop;
- 		ring->prod_index = ring->c_index & DMA_C_INDEX_MASK;
-+		ring->free_bds += drop;
- 		while (drop--) {
- 			cb_ptr = bcmgenet_put_txcb(priv, ring);
- 			skb = cb_ptr->skb;
-@@ -1944,6 +1945,7 @@ static unsigned int bcmgenet_tx_reclaim(struct net_device *dev,
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index e40b0669d9f4b..8700ae392b10a 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,6 +685,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 					    struct net_device *netdev)
+ {
+ 	rtl8150_t *dev = netdev_priv(netdev);
++	unsigned int skb_len;
+ 	int count, res;
+ 
+ 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
+@@ -696,6 +697,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 		return NETDEV_TX_OK;
+ 	}
+ 
++	skb_len = skb->len;
++
+ 	netif_stop_queue(netdev);
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+@@ -711,7 +714,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
  		}
- 		if (skb)
- 			dev_consume_skb_any(skb);
-+		netdev_tx_reset_queue(netdev_get_tx_queue(dev, ring->index));
- 		bcmgenet_tdma_ring_writel(priv, ring->index,
- 					  ring->prod_index, TDMA_PROD_INDEX);
- 		wr_ptr = ring->write_ptr * WORDS_PER_BD(priv);
+ 	} else {
+ 		netdev->stats.tx_packets++;
+-		netdev->stats.tx_bytes += skb->len;
++		netdev->stats.tx_bytes += skb_len;
+ 		netif_trans_update(netdev);
+ 	}
+ 
 -- 
 2.53.0
 
