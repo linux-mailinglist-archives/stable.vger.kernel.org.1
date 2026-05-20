@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDaGHUH3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:41 +0200
+	id oJunA9D6DWrq5AUAu9opvQ
+	(envelope-from <stable+bounces-252324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D974D5952B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0696595BC4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA10F357D976
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5920E31AED49
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F93E7155;
-	Wed, 20 May 2026 16:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72353FB7E0;
+	Wed, 20 May 2026 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+4OmOSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGds4StA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9432533B969;
-	Wed, 20 May 2026 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9FF3A6B6D;
+	Wed, 20 May 2026 18:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296206; cv=none; b=KOqBXSRl7hzAOyLa1/dWMaT8u2PBGJSnwrTdqt4BDkMVlfLzEN/0NLMC2B+P6pNd+/9fyxruulqsyYIrYgKi7sLC5nzJmQKJ6Buo1h7vvLYv3R8lmSPPmOxflw6bUzud59U57c67017vd9Nu8InNXBKQPa5r3kOmHoC9mj7rVcI=
+	t=1779300378; cv=none; b=I6z/tSeVo+fRMT8S1UAxUKLw3P6SnYZMvn875sJfyxPHqY1vPv+VPPvn8PsPQzDG2MIQx1Gf4xuWgDqc17fPhDRZ37IR/aNCfpUfE3C9RygtL72fpAVJAmfILxt8ZI1RBxKk1hB40kL8ERqtUiMX8UCSTBxl8jlelNbJ1vp760M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296206; c=relaxed/simple;
-	bh=KEio4HCbtTPXvKtJr44eaik2Pk8QC7Ici/7kMMzWLYA=;
+	s=arc-20240116; t=1779300378; c=relaxed/simple;
+	bh=n+K0zeDeGAG3uf91c/pJ4839aedqWkBYIaCYOq/rCk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKua3Csx0WFRnvrDu8EYwJrBkv+5kd2g9bAWJEqFbSxvQflT9nrjD1S+c4WbcC1sqUhRkoJ8KxHWQGgn2DmSD33heHni/cREYF9Dnc/GP0Ag24yIEG7P4BLeugLMIDenhpkzgUyhsywfUamQbndV4T7mMg2CDbOFAD1NvasXZYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+4OmOSD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11E91F000E9;
-	Wed, 20 May 2026 16:56:44 +0000 (UTC)
+	 MIME-Version; b=DZp6sudRtQeyCZ0lfmKgv3scJ1K0dga0EKVua8ynff+zGch2Rxc6OP6jSmGYeQO8LKybO4pdVyc3MUPJiSspVt9VjWsJ5l0svEK7QLfAKakYafCG2rcYm1GHloDZQ7bDd1GBswgSV5cw+8RhwUL9NJvw/zwzZqyCyA2uMt5adhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGds4StA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029C91F000E9;
+	Wed, 20 May 2026 18:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296205;
-	bh=9KTyugGG58Ds75wF0qytm7tq2S2BzfD+bdqkBTATUJU=;
+	s=korg; t=1779300377;
+	bh=wS3yCGXUQ8TjF2yKvrdtUVcHcBgaftyGvt8zVuyJRTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n+4OmOSDWO2wwO5SZbArbQjdjPmV5EL9nTUqK+a5dhpH/L5U74z03OfnZOHYFjk4i
-	 oGSErWhF1slIK/uV3ivVsUAdSmQfgCPoj8t0JHFrmCFlmdvqGdq6GbrT8zR5Dqxhij
-	 N6c0VmvhLo0l0/CUGwAfrA8L+NtUwJ2yqp1cbD3s=
+	b=sGds4StAHRkgtuFP24WMR8kyn9CKSc2bw2DuThFvLW9iopdxMACYWrLphInWWBJt6
+	 ZnmaLwPJ4UMfmscTrIumcSwJwbbk3RkTZx/ak0e2Wb6oaVSBwgidBW4Hbs5dvFazJX
+	 9XtIFOPQ5AK6Z/WnnaHk+0526r3UCKW/lPvzhVAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Guillaume Gonnet <ggonnet.linux@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0711/1146] scsi: qla2xxx: Add support to report MPI FW state
-Date: Wed, 20 May 2026 18:16:01 +0200
-Message-ID: <20260520162204.278797203@linuxfoundation.org>
+Subject: [PATCH 6.12 151/666] dm init: ensure device probing has finished in dm-mod.waitfor=
+Date: Wed, 20 May 2026 18:16:02 +0200
+Message-ID: <20260520162114.481032426@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,197 +64,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250745-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252324-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: D974D5952B1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D0696595BC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Guillaume Gonnet <ggonnet.linux@gmail.com>
 
-[ Upstream commit 0e124af675ebabddacfeb0958abd443265dddf13 ]
+[ Upstream commit 99a2312f69805f4ba92d98a757625e0300a747ab ]
 
-MPI firmware state was returned as 0.  Get MPI FW state to proceed with
-flash image validation.
+The early_lookup_bdev() function returns successfully when the disk
+device is present but not necessarily its partitions. In this situation,
+dm_early_create() fails as the partition block device does not exist
+yet.
 
-A new sysfs node 'mpi_fw_state' is added to report MPI firmware state:
+In my case, this phenomenon occurs quite often because the device is
+an SD card with slow reading times, on which kernel takes time to
+enumerate available partitions.
 
-    /sys/class/scsi_host/hostXX/mpi_fw_state
+Fortunately, the underlying device is back to "probing" state while
+enumerating partitions. Waiting for all probing to end is enough to fix
+this issue.
 
-Fixes: d74181ca110e ("scsi: qla2xxx: Add bsg interface to support firmware img validation")
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://patch.msgid.link/20260305093337.2007205-1-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+That's also the reason why this problem never occurs with rootwait=
+parameter: the while loop inside wait_for_root() explicitly waits for
+probing to be done and then the function calls async_synchronize_full().
+These lines were omitted in 035641b, even though the commit says it's
+based on the rootwait logic...
+
+Anyway, calling wait_for_device_probe() after our while loop does the
+job (it both waits for probing and calls async_synchronize_full).
+
+Fixes: 035641b01e72 ("dm init: add dm-mod.waitfor to wait for asynchronously probed block devices")
+Signed-off-by: Guillaume Gonnet <ggonnet.linux@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c | 62 ++++++++++++++++++++++++++++++++-
- drivers/scsi/qla2xxx/qla_init.c |  2 +-
- drivers/scsi/qla2xxx/qla_mbx.c  |  9 +++++
- 3 files changed, 71 insertions(+), 2 deletions(-)
+ drivers/md/dm-init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
-index 2e584a8bf66b2..6a05ce195aa05 100644
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -1638,7 +1638,7 @@ qla2x00_fw_state_show(struct device *dev, struct device_attribute *attr,
- {
- 	scsi_qla_host_t *vha = shost_priv(class_to_shost(dev));
- 	int rval = QLA_FUNCTION_FAILED;
--	uint16_t state[6];
-+	uint16_t state[16];
- 	uint32_t pstate;
- 
- 	if (IS_QLAFX00(vha->hw)) {
-@@ -2402,6 +2402,63 @@ qla2x00_dport_diagnostics_show(struct device *dev,
- 	    vha->dport_data[0], vha->dport_data[1],
- 	    vha->dport_data[2], vha->dport_data[3]);
- }
-+
-+static ssize_t
-+qla2x00_mpi_fw_state_show(struct device *dev, struct device_attribute *attr,
-+			  char *buf)
-+{
-+	scsi_qla_host_t *vha = shost_priv(class_to_shost(dev));
-+	int rval = QLA_FUNCTION_FAILED;
-+	u16 state[16];
-+	u16 mpi_state;
-+	struct qla_hw_data *ha = vha->hw;
-+
-+	if (!(IS_QLA27XX(ha) || IS_QLA28XX(ha)))
-+		return scnprintf(buf, PAGE_SIZE,
-+				"MPI state reporting is not supported for this HBA.\n");
-+
-+	memset(state, 0, sizeof(state));
-+
-+	mutex_lock(&vha->hw->optrom_mutex);
-+	if (qla2x00_chip_is_down(vha)) {
-+		mutex_unlock(&vha->hw->optrom_mutex);
-+		ql_dbg(ql_dbg_user, vha, 0x70df,
-+		       "ISP reset is in progress, failing mpi_fw_state.\n");
-+		return -EBUSY;
-+	} else if (vha->hw->flags.eeh_busy) {
-+		mutex_unlock(&vha->hw->optrom_mutex);
-+		ql_dbg(ql_dbg_user, vha, 0x70ea,
-+		       "HBA in PCI error state, failing mpi_fw_state.\n");
-+		return -EBUSY;
-+	}
-+
-+	rval = qla2x00_get_firmware_state(vha, state);
-+	mutex_unlock(&vha->hw->optrom_mutex);
-+	if (rval != QLA_SUCCESS) {
-+		ql_dbg(ql_dbg_user, vha, 0x70eb,
-+		       "MB Command to retrieve MPI state failed (%d), failing mpi_fw_state.\n",
-+				rval);
-+		return -EIO;
-+	}
-+
-+	mpi_state = state[11];
-+
-+	if (!(mpi_state & BIT_15))
-+		return scnprintf(buf, PAGE_SIZE,
-+				 "MPI firmware state reporting is not supported by this firmware. (0x%02x)\n",
-+				mpi_state);
-+
-+	if (!(mpi_state & BIT_8))
-+		return scnprintf(buf, PAGE_SIZE,
-+				 "MPI firmware is disabled. (0x%02x)\n",
-+				mpi_state);
-+
-+	return scnprintf(buf, PAGE_SIZE,
-+			 "MPI firmware is enabled, state is %s. (0x%02x)\n",
-+			 mpi_state & BIT_9 ? "active" : "inactive",
-+			 mpi_state);
-+}
-+
- static DEVICE_ATTR(dport_diagnostics, 0444,
- 	   qla2x00_dport_diagnostics_show, NULL);
- 
-@@ -2469,6 +2526,8 @@ static DEVICE_ATTR(port_speed, 0644, qla2x00_port_speed_show,
-     qla2x00_port_speed_store);
- static DEVICE_ATTR(port_no, 0444, qla2x00_port_no_show, NULL);
- static DEVICE_ATTR(fw_attr, 0444, qla2x00_fw_attr_show, NULL);
-+static DEVICE_ATTR(mpi_fw_state, 0444, qla2x00_mpi_fw_state_show, NULL);
-+
- 
- static struct attribute *qla2x00_host_attrs[] = {
- 	&dev_attr_driver_version.attr.attr,
-@@ -2517,6 +2576,7 @@ static struct attribute *qla2x00_host_attrs[] = {
- 	&dev_attr_qlini_mode.attr,
- 	&dev_attr_ql2xiniexchg.attr,
- 	&dev_attr_ql2xexchoffld.attr,
-+	&dev_attr_mpi_fw_state.attr,
- 	NULL,
- };
- 
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 730c42b1a7b9d..e746c9274cded 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4914,7 +4914,7 @@ qla2x00_fw_ready(scsi_qla_host_t *vha)
- 	unsigned long	wtime, mtime, cs84xx_time;
- 	uint16_t	min_wait;	/* Minimum wait time if loop is down */
- 	uint16_t	wait_time;	/* Wait time if loop is coming ready */
--	uint16_t	state[6];
-+	uint16_t	state[16];
- 	struct qla_hw_data *ha = vha->hw;
- 
- 	if (IS_QLAFX00(vha->hw))
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 0d598be6f3eab..44e310f1a3708 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -2268,6 +2268,13 @@ qla2x00_get_firmware_state(scsi_qla_host_t *vha, uint16_t *states)
- 		mcp->in_mb = MBX_6|MBX_5|MBX_4|MBX_3|MBX_2|MBX_1|MBX_0;
- 	else
- 		mcp->in_mb = MBX_1|MBX_0;
-+
-+	if (IS_QLA27XX(ha) || IS_QLA28XX(ha)) {
-+		mcp->mb[12] = 0;
-+		mcp->out_mb |= MBX_12;
-+		mcp->in_mb |= MBX_12;
-+	}
-+
- 	mcp->tov = MBX_TOV_SECONDS;
- 	mcp->flags = 0;
- 	rval = qla2x00_mailbox_command(vha, mcp);
-@@ -2280,6 +2287,8 @@ qla2x00_get_firmware_state(scsi_qla_host_t *vha, uint16_t *states)
- 		states[3] = mcp->mb[4];
- 		states[4] = mcp->mb[5];
- 		states[5] = mcp->mb[6];  /* DPORT status */
-+		if (IS_QLA27XX(ha) || IS_QLA28XX(ha))
-+			states[11] = mcp->mb[12]; /* MPI state. */
+diff --git a/drivers/md/dm-init.c b/drivers/md/dm-init.c
+index b37bbe7625003..423269cbdd2bb 100644
+--- a/drivers/md/dm-init.c
++++ b/drivers/md/dm-init.c
+@@ -303,8 +303,10 @@ static int __init dm_init_init(void)
+ 		}
  	}
  
- 	if (rval != QLA_SUCCESS) {
+-	if (waitfor[0])
++	if (waitfor[0]) {
++		wait_for_device_probe();
+ 		DMINFO("all devices available");
++	}
+ 
+ 	list_for_each_entry(dev, &devices, list) {
+ 		if (dm_early_create(&dev->dmi, dev->table,
 -- 
 2.53.0
 
