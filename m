@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OD0hKGsaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:43 +0200
+	id +PkCLhTuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFDD599BFA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AD959385D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0061A30843B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ABB423179404
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D69369D7A;
-	Wed, 20 May 2026 18:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91823F5BD0;
+	Wed, 20 May 2026 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4rTwwTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTtRDsZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C9D272E56;
-	Wed, 20 May 2026 18:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751063C870E;
+	Wed, 20 May 2026 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302212; cv=none; b=bFsJfyec2oJmTH0EJBuajDrNIc58xXpPRtotZ2zu++v5y2/aG5hhDPQTA7kLK+eG/QzZ1kCeuOwCRlKrMGLKMa/A8uOHIYHxjaPQgE2zwzkyqYd1MoCAnE4vPrhJ00WWANLnvE5Vu9YwofZA3JOa5ZPSh45rcu+1CLXp3cQ+9dY=
+	t=1779296868; cv=none; b=Qwozjs+vK59rv5lh77QCllFJv8MUhfrpU2ihvUAHrKLEpDKPOeXiMWMAItr98yhroz46/Y49ZZFGp+1RQ5oPBXwoXzYkXRJqVJPZoMZVtIN6LviyZ6SdZP53Qs0xmRoUsDE66aK3fYHaVEjliTS6xtUNoNAu5JI4lPJxCu4Glnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302212; c=relaxed/simple;
-	bh=hsoZ5g5j8c5x9wdGL+dFJ3CJ259hoeYZ7izNkoDrZCc=;
+	s=arc-20240116; t=1779296868; c=relaxed/simple;
+	bh=yP58a/d1dab6ta4czpIJv85yLx8Oaol2wyoVyDP25Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3QWG4EHjt9yMWxyWuTlH5Jq7J6LI9PDAYfeuNfF3Hr8IslG+/CAeIaYZlVk/prJAnDRrXk2EAgFrqvBlY6wVaqqSJnRxbTiJo4QV2qrETktfasRr2FqfLC9iC2G//O+573KBF71AkvI9brR0tUjl0vw3BKCIlE6upL86h0QahQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4rTwwTq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466A01F00898;
-	Wed, 20 May 2026 18:36:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i6/gNoW9OnIUOLC16HKLfrXxwKQlt1ExYWBR28wWeIat7Lq9Cat4zzdw/I37qitmbr9D7ucVnGPCXF8aQIjGoex6wB3xGgX+YzQlgH//muRO9Cmf+gaEHLdaJiA2fbg6gySjiL2xo5mF/mAOc97EMyWvoObinKWhd8N2135Cw0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTtRDsZc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6A71F000E9;
+	Wed, 20 May 2026 17:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302211;
-	bh=Xp/YIvB2xiXVm32AkwN76glLxU2TN2bhZNbzoGuDMtg=;
+	s=korg; t=1779296867;
+	bh=Mg5uUUstgMiRGvgBd+Nqnq4deE68WdopRrIDaM9dzrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k4rTwwTqWfQPL0CCamEIKMnVG8ib9ii+JG14UxfOoTHONbtL2JtIl6F3P59gtvqEc
-	 hlv0W0mxhFXpt+W9W0KdWdr5zVPj6Z43hCHc+FCXwoGUQ3rUvRTve+jeLK84OqlEJq
-	 wrJMBb8fzty86ZkqhCPq6S5+WdXgHWDZlvhM29IY=
+	b=ZTtRDsZcgmSsXbkt/6t3nk/rpDdnF4lG1QCZJv4I8vw9CYnu2caK+XAN2Rrevikrh
+	 /UUE+3yxVKjpCuVQ1vRsYtt9dyIiyIusB+qIZg/b3YDM4psBzJmXTct/Ii/zZc4olF
+	 yQFk7oETzfSh5794BIRaKha9t5VMDYoDMytp9jb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	=?UTF-8?q?Tom=C3=A1=C5=A1=20Trnka?= <trnka@scm.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/508] memory: tegra124-emc: Fix dll_change check
+Subject: [PATCH 7.0 0955/1146] md/raid1,raid10: dont fail devices for invalid IO errors
 Date: Wed, 20 May 2026 18:20:05 +0200
-Message-ID: <20260520162102.580392891@linuxfoundation.org>
+Message-ID: <20260520162209.847325962@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251010-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253027-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: ACFDD599BFA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,scm.com:email]
+X-Rspamd-Queue-Id: 88AD959385D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 9597ab9a8296ab337e6820f8a717ff621078b632 ]
+[ Upstream commit f7b24c7b41f23b5f9caa8b913afe79cd4c397d39 ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+BLK_STS_INVAL indicates the IO request itself was invalid, not that the
+device has failed. When raid1 treats this as a device error, it retries
+on alternate mirrors which fail the same way, eventually exceeding the
+read error threshold and removing the device from the array.
 
-Fixes: 73a7f0a90641 ("memory: tegra: Add EMC (external memory controller) driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-1-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+This happens when stacking configurations bypass bio_split_to_limits()
+in the IO path: dm-raid calls md_handle_request() directly without going
+through md_submit_bio(), skipping the alignment validation that would
+otherwise reject invalid bios early. The invalid bio reaches the
+lower block layers, which fail the bio with  BLK_STS_INVAL, and raid1
+wrongly interprets this as a device failure.
+
+Add BLK_STS_INVAL to raid1_should_handle_error() so that invalid IO
+errors are propagated back to the caller rather than triggering device
+removal. This is consistent with the previous kernel behavior when
+alignment checks were done earlier in the direct-io path.
+
+Fixes: 5ff3f74e145adc7 ("block: simplify direct io validity check")
+
+Reported-by: Tomáš Trnka <trnka@scm.com>
+Closes: https://lore.kernel.org/linux-block/2982107.4sosBPzcNG@electra/
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Tomáš Trnka <trnka@scm.com>
+Link: https://lore.kernel.org/r/20260416140345.3872265-1-kbusch@meta.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra124-emc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid1-10.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/memory/tegra/tegra124-emc.c b/drivers/memory/tegra/tegra124-emc.c
-index 00ed2b6a0d1b2..ca2714b0a521a 100644
---- a/drivers/memory/tegra/tegra124-emc.c
-+++ b/drivers/memory/tegra/tegra124-emc.c
-@@ -608,7 +608,7 @@ static int tegra_emc_prepare_timing_change(struct tegra_emc *emc,
- 
- 	if ((last->emc_mode_1 & 0x1) == (timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
+diff --git a/drivers/md/raid1-10.c b/drivers/md/raid1-10.c
+index c33099925f230..56a56a4da4f83 100644
+--- a/drivers/md/raid1-10.c
++++ b/drivers/md/raid1-10.c
+@@ -293,8 +293,13 @@ static inline bool raid1_should_read_first(struct mddev *mddev,
+  * bio with REQ_RAHEAD or REQ_NOWAIT can fail at anytime, before such IO is
+  * submitted to the underlying disks, hence don't record badblocks or retry
+  * in this case.
++ *
++ * BLK_STS_INVAL means the bio was not valid for the underlying device. This
++ * is a user error, not a device failure, so retrying or recording bad blocks
++ * would be wrong.
+  */
+ static inline bool raid1_should_handle_error(struct bio *bio)
+ {
+-	return !(bio->bi_opf & (REQ_RAHEAD | REQ_NOWAIT));
++	return !(bio->bi_opf & (REQ_RAHEAD | REQ_NOWAIT)) &&
++		bio->bi_status != BLK_STS_INVAL;
+ }
 -- 
 2.53.0
 
