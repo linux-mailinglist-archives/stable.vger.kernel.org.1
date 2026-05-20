@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GxkFTQTDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:56 +0200
+	id 8I/uMTj3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABE4599097
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D34259529B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E19D32A4816
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64A373804022
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170A23F9F2A;
-	Wed, 20 May 2026 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78480348C7B;
+	Wed, 20 May 2026 16:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOBrIxPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHnb9HiD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C837D3D75C7;
-	Wed, 20 May 2026 18:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E813DA7D9;
+	Wed, 20 May 2026 16:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300362; cv=none; b=MQhO/pj1zz5oX4kp7p+IVdOzp4f1LV0dYIEHndwV5hxEbyjVIh3ZtgGyzrI5TZZE7nvEu/0MU7EdFNRBkuo6rnUV6yeJi/AW6rByhbY0Ja18rn8UoFia7EnAQZegFEfz13yqhzG8Mzx1hkVxKHi3tSamAdCF327vQHv0eh8lT0I=
+	t=1779296193; cv=none; b=UhP3lGhZ3T6+HkP80AebDpvpXGwhfnRlNnl27xfP+XMZGP2SEcGRckaeQf2So3KGIWRLCuqjUb9Vw/TgqnsbG1f0xFA7NLVINQzmUKMW3y7P+oNv41+5J66rn+28G2P3LEzHCtFW2QqWkXhhAgljXCNaK0E+Gs1QIasQrH1X+es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300362; c=relaxed/simple;
-	bh=hENAOVdnkYatGjpt9OQjrkM2+c3o6vl+emL1fZsq03o=;
+	s=arc-20240116; t=1779296193; c=relaxed/simple;
+	bh=MTDLNld6utW9ZH7Wy/AUs/1gQHIy+YRp6A5LNQ3k0SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHuPvJJVHV7ogr4q16xcEiX45FYkp901pbBLoYhO+qiBwmL2KPr0UPwdATtZs/LXRSBgZACa2HhABdY8S2qnhq4aaXoa+Uok6S63hoafrqoy21d8dO+n33d1yvQFMHzBHXioop9qh/I6LWb3TPGggMU1nxiF/cRzDfb9YeImavM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOBrIxPA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9B71F000E9;
-	Wed, 20 May 2026 18:06:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CxfVXlEBnc66xNP8Y3y4pJs6a5+dguk8PAPAW1snJYgtVbteF7N6FvJhcU43OPEED/ADQo6TdFhaC94PL2QthzU+Zyn/835XNHMc6KmgC6HUBrG1B9RBzz3ZIYFJ1EIrK5aX9OBtZqAIduiK9FhKd8f64jRFmdBLl4ud2UDcG2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHnb9HiD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981181F00893;
+	Wed, 20 May 2026 16:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300361;
-	bh=rRn445rCQNsSwHNhtYA2AlFdmJjWAHH8W1cYJ75PxPU=;
+	s=korg; t=1779296192;
+	bh=MpMQtpNSX8d1d5+LPrM+2DtXU9Rc9sCD6XQJXm4lOO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tOBrIxPArgZAMOKmt1mV9zr6dTK+WX41jDRhVR4+OPoFjrfPi+vYG9OLpL9Li5HFY
-	 3QyweyzKOCssK5W3fJcM2hwjnp4OQOfWbfjsdl1CLYCGSqyuQgaugaeQPb+xRmziRD
-	 ZtQuwUeaB+2Eb3cy8jUW/aAvxXK7NawewjlkxW2Q=
+	b=EHnb9HiDeGvul3xhY8chM7UiBF1vEBK8U72NXeC5AN5RhEkpMkAG5WujESd8Vcuy0
+	 7WFLdnngnK70vZUir8Lr645d8N0q84V9pHAbPMHEM3MpY44p02X+eA88TaqPa+yIz7
+	 Yy1ufBlqrHuPBsH+aKM1aD+cYii5yDljc2N73DjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/666] media: i2c: og01a1b: Fix V4L2 subdevice data initialization on probe
+Subject: [PATCH 7.0 0707/1146] clk: qcom: dispcc-milos: Fix DSI byte clock rate setting
 Date: Wed, 20 May 2026 18:15:57 +0200
-Message-ID: <20260520162114.371714797@linuxfoundation.org>
+Message-ID: <20260520162204.189398249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250740-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252318-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 5ABE4599097
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 1D34259529B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 535b7f106991c7d8f0e5b8e1769bfb8b1ce9d3d6 ]
+[ Upstream commit dd5b76257b4048151006620c9895e2f5f0d997eb ]
 
-It's necessary to finalize the camera sensor subdevice initialization on
-driver probe and clean V4L2 subdevice data up on error paths and driver
-removal.
+The clock tree for byte_clk_src is as follows:
 
-The change fixes a previously reported by v4l2-compliance issue of
-the failed VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT test:
+   ┌──────byte0_clk_src─────┐
+   │                        │
+byte0_clk            byte0_div_clk_src
+                            │
+                     byte0_intf_clk
 
-  fail: v4l2-test-controls.cpp(1104): subscribe event for control 'User Controls' failed
+If both of its direct children have CLK_SET_RATE_PARENT with different
+requests, byte0_clk_src (and its parent) will be reconfigured. In this
+case, byte0_intf should strictly follow the rate of byte0_clk (with
+some adjustments based on PHY mode).
 
-Fixes: 472377febf84 ("media: Add a driver for the og01a1b camera sensor")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Remove CLK_SET_RATE_PARENT from byte0_div_clk_src to avoid this issue.
+
+Fixes: f40b5217dce1 ("clk: qcom: Add Display Clock controller (DISPCC) driver for Milos")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260304-topic-dsi_byte_fixup-v1-3-b79b29f83176@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/og01a1b.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-milos.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
-index a9baf8095d4f3..68573122cd6ee 100644
---- a/drivers/media/i2c/og01a1b.c
-+++ b/drivers/media/i2c/og01a1b.c
-@@ -1058,6 +1058,7 @@ static void og01a1b_remove(struct i2c_client *client)
- 	struct og01a1b *og01a1b = to_og01a1b(sd);
- 
- 	v4l2_async_unregister_subdev(sd);
-+	v4l2_subdev_cleanup(&og01a1b->sd);
- 	media_entity_cleanup(&sd->entity);
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 	pm_runtime_disable(og01a1b->dev);
-@@ -1164,11 +1165,18 @@ static int og01a1b_probe(struct i2c_client *client)
- 		goto probe_error_v4l2_ctrl_handler_free;
- 	}
- 
-+	ret = v4l2_subdev_init_finalize(&og01a1b->sd);
-+	if (ret < 0) {
-+		dev_err_probe(og01a1b->dev, ret,
-+			      "failed to finalize subdevice init\n");
-+		goto probe_error_media_entity_cleanup;
-+	}
-+
- 	ret = v4l2_async_register_subdev_sensor(&og01a1b->sd);
- 	if (ret < 0) {
- 		dev_err(og01a1b->dev, "failed to register V4L2 subdev: %d",
- 			ret);
--		goto probe_error_media_entity_cleanup;
-+		goto probe_error_v4l2_subdev_cleanup;
- 	}
- 
- 	/* Enable runtime PM and turn off the device */
-@@ -1178,6 +1186,9 @@ static int og01a1b_probe(struct i2c_client *client)
- 
- 	return 0;
- 
-+probe_error_v4l2_subdev_cleanup:
-+	v4l2_subdev_cleanup(&og01a1b->sd);
-+
- probe_error_media_entity_cleanup:
- 	media_entity_cleanup(&og01a1b->sd.entity);
- 
+diff --git a/drivers/clk/qcom/dispcc-milos.c b/drivers/clk/qcom/dispcc-milos.c
+index 95b6dd89d9ae3..339cb1c63ba77 100644
+--- a/drivers/clk/qcom/dispcc-milos.c
++++ b/drivers/clk/qcom/dispcc-milos.c
+@@ -394,7 +394,6 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
+ 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
