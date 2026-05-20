@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253049-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOhZDVH9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:33 +0200
+	id IPINHCABDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253049-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A99596421
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3745972A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A012D35301B4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E09A316419D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A797F3F23B7;
-	Wed, 20 May 2026 17:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241A83E2AAD;
+	Wed, 20 May 2026 18:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg2WH32Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+csbheH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784B3F1AB8;
-	Wed, 20 May 2026 17:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8475DF59;
+	Wed, 20 May 2026 18:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299362; cv=none; b=tvu7s0R8/oJ89/+AKMOTOuq0MY1iMuiQB8W20Lwn765Ja1Gwlk7xDz2TqRu95jfK9lgJdRqQk4yFdROFmpXFAR2yYCNSKnyMxLKrCeGjE8RZWIcnrLs3ygv6krihy/SgxnWr0mNjITDijhubVv7GhCViFbJ0yYOrzWf7bNhEC/k=
+	t=1779302270; cv=none; b=OuM+lDdKaTIxpkZDKWXEfyoFg5Ck+VAuSOn1GJ6fVvldIvUMD2JzTNW/kHmGayoWZNt0qdWase6fE4dgB9ZUqur6k6+unwGvskl5Yg6/zCNqTYTY8NecdhJMQAP0iDlZmpf7c1doLzAHjfj5w4weSvUY1MlqpuKpRN7GNqwIfhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299362; c=relaxed/simple;
-	bh=QFQibX+VW2DskrmCHnIILuT8eOuEQ81rifW+k4dZV/4=;
+	s=arc-20240116; t=1779302270; c=relaxed/simple;
+	bh=HKHD8SoC8det60i41cx9PyvoUk5aPbd3vdkpJvT5JE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Afr81jIEUSwpatLb2Acz0j56ABkPyikBmgZLAyVcP5Df0F2SVJtXNdGn32BaOVzOrXvRiPn+V4bFymq7E7LiMIteGl3a8ab6MDUOdnU2KZ8uUy7gVyUrSDVGfstBLPHd+9AEyY1XfV0s8O2qFf5vYm+Y0wTK55QnNSwoLz1PVWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg2WH32Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA1B1F000E9;
-	Wed, 20 May 2026 17:49:20 +0000 (UTC)
+	 MIME-Version; b=Pthk0iPti47XyQBn1uv8VkbrZEamul5jwhHhext445KOEngpkhwfY+oAeBepfKmrIBgsgTgST1+WX2rqc7lxRzCW2iY2oVnG5aYQa4jrZf/aJ8u4ny+AuEhimg7hO2Vr5z+2gO4UHVVPBu4SxuFjv04zETzk5A+blupk6Qqr0Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+csbheH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8FC1F000E9;
+	Wed, 20 May 2026 18:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299361;
-	bh=OFUXq6YMdiQWR1QDwUyMiXRAe/9RvuSSnS8UZUNHr8g=;
+	s=korg; t=1779302269;
+	bh=u/EBVKGppiTMptyWgJHQD2rr298cllV+q7CZJySDM6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vg2WH32QUF18uR/7zlRNnv0h9MaEUXu7voyO72JsosTukIziTfjbhHn0kWXiV720I
-	 5OzqudxAFSsq8tZo3sc8I+aTR4kn7coF15d21k3N9GIaH9jT9ndo+DltMhNbzbRXZU
-	 1dEPgbgITck15NRBCQa72jT9PMVw+Whg4QbbMjBA=
+	b=g+csbheHPcxTEILcJjVAkmkQKsKr+rgEId3+nNPQab/wezE6oo4Vbgh024qRbDxUy
+	 sOKxExUKPX3A6wpgx4TytsQaForVOMNopqi5zzJ5elegV6JcNXOfc0WMfep8wxjdxl
+	 eClocQ078Vy9I2aPrQHVZSZggYDaIe96XKPaBuI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Malat <oss@malat.biz>,
-	Tejun Heo <tj@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 742/957] cgroup: Increment nr_dying_subsys_* from rmdir context
+Subject: [PATCH 6.6 202/508] arm64: dts: imx8qxp-mek: switch Type-C connector power-role to dual
 Date: Wed, 20 May 2026 18:20:25 +0200
-Message-ID: <20260520162150.651796650@linuxfoundation.org>
+Message-ID: <20260520162103.015096187@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +66,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253049-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251953-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,malat.biz:email]
-X-Rspamd-Queue-Id: A9A99596421
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0D3745972A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Malat <oss@malat.biz>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 13e786b64bd3fd81c7eb22aa32bf8305c32f2ccf ]
+[ Upstream commit 825b8c7e1d2918d89eb378b761530d1e51dba82e ]
 
-Incrementing nr_dying_subsys_* in offline_css(), which is executed by
-cgroup_offline_wq worker, leads to a race where user can see the value
-to be 0 if he reads cgroup.stat after calling rmdir and before the worker
-executes. This makes the user wrongly expect resources released by the
-removed cgroup to be available for a new assignment.
+When attach to PC Type-A port, the USB device controller does not function
+at all. Because it is configured as source-only and a Type-A port doesn't
+support PD capability, a data role swap is impossible.
 
-Increment nr_dying_subsys_* from kill_css(), which is called from the
-cgroup_rmdir() context.
+Actually, PTN5110THQ is configured for Source role only at POR, but after
+POR it can operate as a DRP (Dual-Role Power). By switching the power-role
+to dual, the port can operate as a sink and enter device mode when attach
+to Type-A port.
 
-Fixes: ab0312526867 ("cgroup: Show # of subsystem CSSes in cgroup.stat")
-Signed-off-by: Petr Malat <oss@malat.biz>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Since the board design uses EN_SRC to control the 5V VBUS path and EN_SNK
+to control the 12V VBUS output, to avoid outputting a higher VBUS when in
+sink role, we set the operation current limit to 0mA so that SW will not
+control EN_SNK at all.
+
+Fixes: 2faf4ebcee2e5 ("arm64: dts: freescale: imx8qxp-mek: enable cadence usb3")
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index b60fc0b2c6036..1239bff9a994c 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -5773,16 +5773,6 @@ static void offline_css(struct cgroup_subsys_state *css)
- 	RCU_INIT_POINTER(css->cgroup->subsys[ss->id], NULL);
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+index 7924b0969ad8f..3814568e4ee50 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+@@ -161,9 +161,17 @@ typec_dr_sw: endpoint {
+ 		usb_con1: connector {
+ 			compatible = "usb-c-connector";
+ 			label = "USB-C";
+-			power-role = "source";
++			power-role = "dual";
+ 			data-role = "dual";
++			try-power-role = "sink";
+ 			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++			/*
++			 * Set operational current to 0mA as we don't want EN_SNK
++			 * enable 12V VBUS switch when it work as a sink.
++			 */
++			sink-pdos = <PDO_FIXED(5000, 0, PDO_FIXED_USB_COMM)>;
++			op-sink-microwatt = <0>;
++			self-powered;
  
- 	wake_up_all(&css->cgroup->offline_waitq);
--
--	css->cgroup->nr_dying_subsys[ss->id]++;
--	/*
--	 * Parent css and cgroup cannot be freed until after the freeing
--	 * of child css, see css_free_rwork_fn().
--	 */
--	while ((css = css->parent)) {
--		css->nr_descendants--;
--		css->cgroup->nr_dying_subsys[ss->id]++;
--	}
- }
- 
- /**
-@@ -6094,6 +6084,8 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
-  */
- static void kill_css(struct cgroup_subsys_state *css)
- {
-+	struct cgroup_subsys *ss = css->ss;
-+
- 	lockdep_assert_held(&cgroup_mutex);
- 
- 	if (css->flags & CSS_DYING)
-@@ -6130,6 +6122,16 @@ static void kill_css(struct cgroup_subsys_state *css)
- 	 * css is confirmed to be seen as killed on all CPUs.
- 	 */
- 	percpu_ref_kill_and_confirm(&css->refcnt, css_killed_ref_fn);
-+
-+	css->cgroup->nr_dying_subsys[ss->id]++;
-+	/*
-+	 * Parent css and cgroup cannot be freed until after the freeing
-+	 * of child css, see css_free_rwork_fn().
-+	 */
-+	while ((css = css->parent)) {
-+		css->nr_descendants--;
-+		css->cgroup->nr_dying_subsys[ss->id]++;
-+	}
- }
- 
- /**
+ 			ports {
+ 				#address-cells = <1>;
 -- 
 2.53.0
 
