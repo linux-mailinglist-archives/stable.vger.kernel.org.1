@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGWsIIv9DWoo5QUAu9opvQ
-	(envelope-from <stable+bounces-252497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200
+	id yJgXIyT3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284DE59655A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4800B59526D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5A72307F2FE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31C4230C0B87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4953EAC82;
-	Wed, 20 May 2026 18:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11483F1661;
+	Wed, 20 May 2026 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlCDX37x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEO9mzgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337DB3A6B6D;
-	Wed, 20 May 2026 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7043336405A;
+	Wed, 20 May 2026 17:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300828; cv=none; b=dv/cMScXjOJ67UTaeXl3vP6oUFWlEMiexKwGwitFsfY3L3XJ2PYStLLoYY83RaKqf4wjmTiteTIvqMZIdiaFL96VRWY5daCWyYxLo7u83ecQJIywK4bkMc9ypfJVEVlC+oSHS/CzbcL6wiLfXzZWWyBfSYs9JoN28pu7o8WelZs=
+	t=1779299073; cv=none; b=PPHv58uh3oXp97m/a1ZcopZjbr7Ai1Oh7T8VaEKb3BJXFhWho1rQ2L4nvcmWyF/DiuIdMmXF0qijpPacQyVs/rOlXn4SIxX1+f6m36/H4HjiUF0maJRGf30HwtdeP4J1rJsrPjCHYy6W7U1EhCZlRNVoJ1uXImPIm2F8gw/dyLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300828; c=relaxed/simple;
-	bh=ObFvQ7hfIBJMzFdgBgjBeYjUonWTe+7BRaBaA5azUhc=;
+	s=arc-20240116; t=1779299073; c=relaxed/simple;
+	bh=070WdoEYGFCO39sUbalkvINGS05h59oyMlZtXeQBPZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugTZN5KGEoJlliMTHLb2r9r1UnqUGS8VLePc057n2QMgmsOzTVHDGv3VsFOKGaEp6AHCBwoA9JLf1vFdOlchtojU8UbDyWzE/kaWLUu3iKW3RkQUG4kJPQQIRfbNMcl9xIyFoI3EjDZZnPflnioLQ9uNd0hN3jxFMf68q5St7VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlCDX37x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A941F000E9;
-	Wed, 20 May 2026 18:13:46 +0000 (UTC)
+	 MIME-Version; b=Vyn1Vl+YLGBkGgM5xf+k+IOFI9/HDCr1UeM8SeL45bpC13PDNp72vwOt/N0Q4G+fgNZ2KIcAS0fdOq+g39KkbZ4zgUj17jda02LyY4GVoHb60CHV6gAmk6JEaLPvmfrCtzkvL7Q6P9U+tbstTRsNe+9ehML//pT8/77oaTYlm0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEO9mzgH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9441F000E9;
+	Wed, 20 May 2026 17:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300827;
-	bh=GYZiMvkqHVSe0vIZ9FYtBcPrUW4vcWksfCxJq5PRXfo=;
+	s=korg; t=1779299072;
+	bh=gkgnaemR8oMgtN0ougQSnfV+UA3mNTfoEkU5NPcKtMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RlCDX37x69VEjbGb2IgBwV1ymAlQUJaG6rX1zL3VpgdnQ0wCFmXwBQTtVC065ll/+
-	 /2rSrDU83uRBijvuHLuqcdXrs90jnIUQzwkCl5LnL4ZFa+ZJX11IDllDQmRgAdIN4y
-	 0BCFvl/PTpmROv6cOkInLT3gKXH+u59xUUQMitbs=
+	b=TEO9mzgHzabw9ZfqyTRu1XrEssi2ZolUCSg3F5Toq+9zROxDVmlyTs8cSrZXe80Ok
+	 GN8L9pJkjPjTH/NzOvkgFwNDcEeGKhc4MY1T/Ov5npEixqMSYPGEtIgwLgBQZPi5l+
+	 DP4Ba0mz3rZMiHGqz4SkmDKlIHtVesk1qs4UjknU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 323/666] tracing: Rebuild full_name on each hist_field_name() call
+Subject: [PATCH 6.18 651/957] i40e: dont advertise IFF_SUPP_NOFCS
 Date: Wed, 20 May 2026 18:18:54 +0200
-Message-ID: <20260520162118.225560111@linuxfoundation.org>
+Message-ID: <20260520162148.649797347@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252497-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251859-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,66 +90,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
-X-Rspamd-Queue-Id: 284DE59655A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4800B59526D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
+[ Upstream commit a24162f18825684ad04e3a5d0531f8a50d679347 ]
 
-hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
-qualified variable-reference names, but it currently appends into that
-buffer with strcat() without rebuilding it first. As a result, repeated
-calls append a new "system.event.field" name onto the previous one,
-which can eventually run past the end of full_name.
+i40e advertises IFF_SUPP_NOFCS, allowing users to use the SO_NOFCS
+socket option. However, this option is silently ignored, as the driver
+does not check skb->no_fcs, and always enables FCS insertion offload.
 
-Build the name with snprintf() on each call and return NULL if the fully
-qualified name does not fit in MAX_FILTER_STR_VAL.
+Fix this by removing the advertisement of IFF_SUPP_NOFCS.
 
-Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
-Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Tested-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+This behavior can be reproduced with a simple AF_PACKET socket:
+
+  import socket
+  s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW)
+  s.setsockopt(socket.SOL_SOCKET, 43, 1) # SO_NOFCS
+  s.bind(("eth0", 0))
+  s.send(b'\xff' * 64)
+
+Previously, send() succeeds but the driver ignores SO_NOFCS.
+With this change, send() fails with -EPROTONOSUPPORT, as expected.
+
+Fixes: 41c445ff0f48 ("i40e: main driver core")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-9-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 83de1a196a4af..2d085115afde3 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1342,12 +1342,14 @@ static const char *hist_field_name(struct hist_field *field,
- 		 field->flags & HIST_FIELD_FL_VAR_REF) {
- 		if (field->system) {
- 			static char full_name[MAX_FILTER_STR_VAL];
-+			int len;
-+
-+			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
-+				       field->system, field->event_name,
-+				       field->name);
-+			if (len >= sizeof(full_name))
-+				return NULL;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 598739220dfb9..9f19370f1c87a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -13784,7 +13784,6 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
+ 	netdev->neigh_priv_len = sizeof(u32) * 4;
  
--			strcat(full_name, field->system);
--			strcat(full_name, ".");
--			strcat(full_name, field->event_name);
--			strcat(full_name, ".");
--			strcat(full_name, field->name);
- 			field_name = full_name;
- 		} else
- 			field_name = field->name;
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+-	netdev->priv_flags |= IFF_SUPP_NOFCS;
+ 	/* Setup netdev TC information */
+ 	i40e_vsi_config_netdev_tc(vsi, vsi->tc_config.enabled_tc);
+ 
 -- 
 2.53.0
 
