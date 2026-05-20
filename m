@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFDrNYT2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:32 +0200
+	id CEhBLcj4DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6C05950E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA1B595677
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB7A1309DBC0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C0583144AC9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A0B369D67;
-	Wed, 20 May 2026 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A833F54D4;
+	Wed, 20 May 2026 18:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnTEScq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3WMkJHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCA6359A6F;
-	Wed, 20 May 2026 17:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3273E832A;
+	Wed, 20 May 2026 18:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298411; cv=none; b=fvABxfyTZJBr/Lkz8ufgJTMSoFK8U7FrGDW4mnOzQ95EYHjB+xLesVSdFF50KTjBah0+iprgjfkAOxuY8PBMKgH0CQYLQ5GgpBt+Rxp1VAI9JkUmHjL9BVqAVeX0xuTZt1MplSdKHfrC8XE3Sy5cs1SnvwS69i6RFqkAQg/3xG0=
+	t=1779300104; cv=none; b=lP/aOsIHm+7ulOiG9eaffwh2CqkOblm08wSIuHRB9pHm1ov+lHfoQVgMus9QYHfpO1gbeB9JpCqvbdPWVB974aABogMvFD99/1yPrF+I2/lGgpcFWVopYKF2oeTDaLdmCYq+rTgZ0fyJsOVy16ZglghEi+joQzK2PzoRVCWcXds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298411; c=relaxed/simple;
-	bh=ak03hTDOggPn6qgJ2MFvsQFMviijGN8sHjBToPH8jb4=;
+	s=arc-20240116; t=1779300104; c=relaxed/simple;
+	bh=WN7AILZe9iX22WCHJJtTFFruiImDVcJYZzj+HTPOwNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqSsTcR+kQ3z0ujveXsamwKCfecLx0eNcprFrJF1tdYdZi5GCooSo9x2+MJ5Dpc0MC8jFf0gX9ryODeZhVGHQYoj1XuLJaD/dpXVW44nUL4kS7tnz5786dKMEILh0K4HH7Vvft7H3R6ZuXkAE8HK+xUdjArOEK9pHc7hPMTui0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnTEScq5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FFB1F000E9;
-	Wed, 20 May 2026 17:33:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EXocW8ZC727Bbu5ncp/JidTNZwujG6jfeGPLtJqlhS7o0gF0G4ncO5Mve/nspeW1nhdmQ/43nkPjR9ItaUd7WSslCyYZuDH5Ah4OnQFwJzV3X8vZOO3PBBT8rDLFqvw8KuOA3JJeGYRzfxD+9etlpfJiD2/ebg5Dzqvy1Uj/CTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3WMkJHZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44611F000E9;
+	Wed, 20 May 2026 18:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298410;
-	bh=u2XvkxZD+zwiFTKNNd2Ib/NPFt3Lx0yy3EbPe+D0iLg=;
+	s=korg; t=1779300103;
+	bh=+/hYWDvTlmJZlU7Y+N9xD9a8TB1hULVTIMEFU74omSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AnTEScq5KKIBEnC4B/SIvWJbhFSLVOppqzVQW8Iir/wsZ3W3LnKbrviKcoGFcfSV5
-	 kU7MBAfvJBbTiSUIvc+67Xt6ocfx2Rr+1nNOqqv2gUQK5EaosLqvMf49kNHmg1vKf5
-	 iE3uRQHQaE37gWKixsgQNOXzNq5pLyrNx45TbFzo=
+	b=j3WMkJHZ7OUZIxUYivN+SjIyK/Nf0R95vz5PLFJbjwTADBUfc5o7t8UQs92N4IUkZ
+	 OHsU1AJts9IgD6GnulZdMT/pFZvnoa4kYGsb6ka5VHeya4U86SexDxDTjMY94daMmU
+	 cUwjX3xJgpoxnOrvSTtvu26Er9jhfSy8NYdYbhzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 358/957] gfs2: prevent NULL pointer dereference during unmount
-Date: Wed, 20 May 2026 18:14:01 +0200
-Message-ID: <20260520162142.293424244@linuxfoundation.org>
+Subject: [PATCH 6.12 031/666] sparc64: vdso: Link with -z noexecstack
+Date: Wed, 20 May 2026 18:14:02 +0200
+Message-ID: <20260520162111.909414566@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +65,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252219-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251603-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9E6C05950E0
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2DA1B595677
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 74b4dbb946060a3233604d91859a9abd3708141d ]
+[ Upstream commit acc4f131d5d57c2aa89db914aeb6f7bb0ab4eb4a ]
 
-When flushing out outstanding glock work during an unmount, gfs2_log_flush()
-can be called when sdp->sd_jdesc has already been deallocated and sdp->sd_jdesc
-is NULL.  Commit 35264909e9d1 ("gfs2: Fix NULL pointer dereference in
-gfs2_log_flush") added a check for that to gfs2_log_flush() itself, but it
-missed the sdp->sd_jdesc dereference in gfs2_log_release().  Fix that.
+The vDSO stack does not need to be executable. Prevent the linker from
+creating executable. For more background see commit ffcf9c5700e4 ("x86:
+link vdso and boot with -z noexecstack --no-warn-rwx-segments").
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202604071139.HNJiCaAi-lkp@intel.com/
-Fixes: 35264909e9d1 ("gfs2: Fix NULL pointer dereference in gfs2_log_flush")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Also prevent the following warning from the linker:
+sparc64-linux-ld: warning: arch/sparc/vdso/vdso-note.o: missing .note.GNU-stack section implies executable stack
+sparc64-linux-ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker
+
+Fixes: 9a08862a5d2e ("vDSO for sparc")
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Tested-by: Andreas Larsson <andreas@gaisler.com>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Link: https://lore.kernel.org/lkml/20250707144726.4008707-1-arnd@kernel.org/
+Link: https://patch.msgid.link/20260304-vdso-sparc64-generic-2-v6-4-d8eb3b0e1410@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/log.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/sparc/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
-index 592f69602e5aa..ecc5c59b87008 100644
---- a/fs/gfs2/log.c
-+++ b/fs/gfs2/log.c
-@@ -471,8 +471,9 @@ void gfs2_log_release(struct gfs2_sbd *sdp, unsigned int blks)
- {
- 	atomic_add(blks, &sdp->sd_log_blks_free);
- 	trace_gfs2_log_blocks(sdp, blks);
--	gfs2_assert_withdraw(sdp, atomic_read(&sdp->sd_log_blks_free) <=
--				  sdp->sd_jdesc->jd_blocks);
-+	gfs2_assert_withdraw(sdp, !sdp->sd_jdesc ||
-+			atomic_read(&sdp->sd_log_blks_free) <=
-+			sdp->sd_jdesc->jd_blocks);
- 	if (atomic_read(&sdp->sd_log_blks_needed))
- 		wake_up(&sdp->sd_log_waitq);
- }
+diff --git a/arch/sparc/vdso/Makefile b/arch/sparc/vdso/Makefile
+index c7697884975ea..fc3ada4269f1a 100644
+--- a/arch/sparc/vdso/Makefile
++++ b/arch/sparc/vdso/Makefile
+@@ -103,4 +103,4 @@ quiet_cmd_vdso = VDSO    $@
+ 		       $(VDSO_LDFLAGS) $(VDSO_LDFLAGS_$(filter %.lds,$(^F))) \
+ 		       -T $(filter %.lds,$^) $(filter %.o,$^)
+ 
+-VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined
++VDSO_LDFLAGS = -shared --hash-style=both --build-id=sha1 -Bsymbolic --no-undefined -z noexecstack
 -- 
 2.53.0
 
