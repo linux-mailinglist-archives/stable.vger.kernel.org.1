@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-252729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDIRLtgoDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:16 +0200
+	id wMpsJq8VDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-251165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6FE59B06E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0536B599439
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0831439CD16F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1AAF31AC36E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781923FD126;
-	Wed, 20 May 2026 18:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2258A3F4DCC;
+	Wed, 20 May 2026 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH394VsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofVJWMaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB2C3FCB1E;
-	Wed, 20 May 2026 18:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DA3F4DC0;
+	Wed, 20 May 2026 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301437; cv=none; b=kd3KkXSjB24nvV5gqc338iH+LrQjvKEo16LwvUuJ9iHMYTxrdvUtGS7wkVBxUJbrS28Ux+TtZyOJ98ZDcUrbI0+JD3JHRs5H0QWUawdjFnqZfIuMMurzOgK7yniiMT1EicgdCBx/d4Ck3iynIB7iP+mgeYr7k1wHfROi8DLM3Zs=
+	t=1779297268; cv=none; b=bFx2xtVXyUeAxJkoKhoyYkxP7JAgtIxJL6KEJhKMTXJSmosLdbreKke+beEbb095vzq4glYw4Js7HwGL2mkD/Xc/hRqkHiGsHmGkXa6fYFAmnJAAkkDDFdhu0E/rxchdZ2wmTd7pTS5xAax0F/ivuUMdfb28meA08xmEo36olas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301437; c=relaxed/simple;
-	bh=PBYycczVWqznAEGxdSYHULjhg46aW3s1ZtspX3Mrp7A=;
+	s=arc-20240116; t=1779297268; c=relaxed/simple;
+	bh=7HT3cBloBWIPaM6DuIJyPg2VCxO1hi+NDYTOJ5EalOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjhlGclcIDMsG4SWqvIwSinYUn2Bg26qx/T9wzCJGr7C3gcq+mhhUsUOQBQuM2U55zTw/dWs8N9oz5dbBRVr3KJfE1kVq43YzV0WFFpbnwmolE7t1nKoJRJAUnPnjgCyAP9LlAyi+QUSkFgbFbaP0a8Nx/QauekHQDP0+A5T2ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH394VsF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935B81F000E9;
-	Wed, 20 May 2026 18:23:55 +0000 (UTC)
+	 MIME-Version; b=Bk3krtr7qy69RRnDO+fT9CHCZl+zVXgM8B8oSMOF4JrrMjo5TiCiQ4Ddmuw7jLQ7fHRwrGpp8MapJMfZtO5U5MnZN7aMyfDYhlHF/ONfBcPPIrtyFt1oJ0V4qGy1W/vO79hpwzW1zPT7BcvHqUOVwLhP8aeq6FSdRGA5ZvApIsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofVJWMaC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305841F000E9;
+	Wed, 20 May 2026 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301436;
-	bh=eYLEc6hkGSDYCZz3AmfsHFCvOq77YFn/iMh+D1cUXyw=;
+	s=korg; t=1779297267;
+	bh=TSvgkmrNwBuRQPkgn5gD8eMMmLt5Cy/eXIb5cfJZGBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dH394VsFgRPfuPb8IQC2rLZf6sKqOdGmLCq4bzYOuQocpu8rLxS8sAUIIj0WtLpRz
-	 JFfttruymbef3YQikem3iir63mfV2gJap5QS0frQhBu1YK3I7+MvhVRjNifl5evBCI
-	 kuqtGH0hrM+WosatrKhNoR6JkI+WT4o40brFcIVc=
+	b=ofVJWMaC6XelnrcTNNpFPQhTPuzYBPsQt/QIyxfRvXWpbOWoGU5yp50pAF+t1UiQY
+	 oPBhnzSJybND4Pf8iamYTI+pS2P8TRQPdnh9h34Qsw5amEixXnySX5Nd0en0A4Qtxg
+	 YUdpGwe+oHgkjKb7eNsGnqITmCCDwWzBZ6buipx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"William A. Kennington III" <william@wkennington.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 553/666] net: mctp i2c: check length before marking flow active
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 1114/1146] libceph: Fix potential out-of-bounds access in osdmap_decode()
 Date: Wed, 20 May 2026 18:22:44 +0200
-Message-ID: <20260520162123.252575549@linuxfoundation.org>
+Message-ID: <20260520162213.456133766@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252729-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251165-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,codeconstruct.com.au:email,wkennington.com:email]
-X-Rspamd-Queue-Id: 1D6FE59B06E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 0536B599439
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 4ca07b9239bd0478ae586632a2ed72be37ed8407 ]
+commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
 
-Currently, mctp_i2c_get_tx_flow_state() is called before the packet length
-sanity check. This function marks a new flow as active in the MCTP core.
+When decoding osd_state and osd_weight from an incoming osdmap in
+osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
+times. The ceph_decode_need() check only accounts for
+sizeof(*map->osd_weight) once. This can potentially result in an
+out-of-bounds memory access if the incoming message is corrupted such
+that the max_osd value exceeds the actual content of the osdmap message.
 
-If the sanity check fails, mctp_i2c_xmit() returns early without calling
-mctp_i2c_lock_nest(). This results in a mismatched locking state: the
-flow is active, but the I2C bus lock was never acquired for it.
+This patch fixes the issue by changing the corresponding part in the
+ceph_decode_need() check to account for
+map->max_osd*sizeof(*map->osd_weight).
 
-When the flow is later released, mctp_i2c_release_flow() will see the
-active state and queue an unlock marker. The TX thread will then
-decrement midev->i2c_lock_count from 0, causing it to underflow to -1.
-
-This underflow permanently breaks the driver's locking logic, allowing
-future transmissions to occur without holding the I2C bus lock, leading
-to bus collisions and potential hardware hangs.
-
-Move the mctp_i2c_get_tx_flow_state() call to after the length sanity
-check to ensure we only transition the flow state if we are actually
-going to proceed with the transmission and locking.
-
-Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
-Signed-off-by: William A. Kennington III <william@wkennington.com>
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20260423074741.201460-1-william@wkennington.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-i2c.c | 4 ++--
- net/sched/cls_flower.c      | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/ceph/osdmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-index f8f83fe424e51..a939bc084fe8d 100644
---- a/drivers/net/mctp/mctp-i2c.c
-+++ b/drivers/net/mctp/mctp-i2c.c
-@@ -497,8 +497,6 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 	u8 *pecp;
- 	int rc;
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -1702,7 +1702,7 @@ static int osdmap_decode(void **p, void
+ 	ceph_decode_need(p, end, 3*sizeof(u32) +
+ 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
+ 						       sizeof(u8)) +
+-				       sizeof(*map->osd_weight), e_inval);
++			 map->max_osd*sizeof(*map->osd_weight), e_inval);
+ 	if (ceph_decode_32(p) != map->max_osd)
+ 		goto e_inval;
  
--	fs = mctp_i2c_get_tx_flow_state(midev, skb);
--
- 	hdr = (void *)skb_mac_header(skb);
- 	/* Sanity check that packet contents matches skb length,
- 	 * and can't exceed MCTP_I2C_BUFSZ
-@@ -510,6 +508,8 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
- 		return;
- 	}
- 
-+	fs = mctp_i2c_get_tx_flow_state(midev, skb);
-+
- 	if (skb_tailroom(skb) >= 1) {
- 		/* Linear case with space, we can just append the PEC */
- 		skb_put(skb, 1);
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 099ff6a3e1f51..f3af0ac892a86 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -560,6 +560,7 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct cls_fl_head *head = fl_head_dereference(tp);
-+	struct fl_flow_mask *mask;
- 
- 	*last = false;
- 
-@@ -576,11 +577,12 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
- 	list_del_rcu(&f->list);
- 	spin_unlock(&tp->lock);
- 
--	*last = fl_mask_put(head, f->mask);
-+	mask = f->mask;
- 	if (!tc_skip_hw(f->flags))
- 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
- 	tcf_unbind_filter(tp, &f->res);
- 	__fl_put(f);
-+	*last = fl_mask_put(head, mask);
- 
- 	return 0;
- }
--- 
-2.53.0
-
 
 
 
