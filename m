@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CnCOZIfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:42 +0200
+	id 8Fa5MQ0ADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7688B59A4C8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429AB596F60
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9A203793B1D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E26E307AD33
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D8369D67;
-	Wed, 20 May 2026 17:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73828370AEE;
+	Wed, 20 May 2026 18:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wqz3/pZU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xcuxkh45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A008C3F1AB8;
-	Wed, 20 May 2026 17:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F35318ED6;
+	Wed, 20 May 2026 18:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299128; cv=none; b=CZ29rrhPoa9wfN7Iks3t43Ie6qfHhZq2BDYj0lLEpDwrQLqs1G1vXmJrknu02XiU8tvcynkwYbGONXGxwTbxyBIFR2cXimGgMcHEPYhBJdf3nNXA+JyCPG5KQLEeQBfFngRplI3SFbTQDVbrgSyVEK2nSSX7+OsHrWGPgDs32pI=
+	t=1779302089; cv=none; b=lK+AxPxmI3SyklRw4NpSOUa2pmqotiAuXWATsAnDdYVHAdPmrZ9CP1n2I7P0+4pbFVNsQiLbn6x7mkEZuV1LBdbyOKaGLDPPGFrDs9hei+dVOkzZFN9kt59NStI0cz6t2IYEVuWvkOxgu3hchOu2ZdSITpIsZLz5d+VPtWBdX7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299128; c=relaxed/simple;
-	bh=UHDDRYk0nmnpJuE3LvDwB6Ep9bvcN3w0Vbll6FRYgzM=;
+	s=arc-20240116; t=1779302089; c=relaxed/simple;
+	bh=YbI2QISgC2S+je08dJKrP1AXcsWGlXXrq8V6j7eH56s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCrHBUr0A9PGUL0T1OyW1vQ5FkZh0faxAtCJVNW864ZZb6YaHMDc6IarsKb6jGYyJ0VeVn9TXVPLGJ5ZIdJ+5rebH2VHadkD8U6Y+ppzHZezxrwPVDDRXz5xJ0dYaSo8AG88DUiG+sVSTT7E8FXuAsxVLDoQ1lQp8Z+zWK9+Lwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wqz3/pZU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112501F000E9;
-	Wed, 20 May 2026 17:45:26 +0000 (UTC)
+	 MIME-Version; b=SizReEv3aUi6iyOduACOTCA0RtLppWNpK/DM8jhkQYLErwefJ/NfeVMjLZu5V9m39sy+dL7ga3TPfO65t1SzQJ2QKyBCl820PiPoABSsZrHN12iPv1Qixs7HiAlqrRv5HjEN487j4+smtgdbwIRK8HmAqbZl+AI03sr0fsCEM5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xcuxkh45; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5981F000E9;
+	Wed, 20 May 2026 18:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299127;
-	bh=Bc3Ixdcehf51fEq3PHBwgju+bRkaEoA08uSEwwe78BY=;
+	s=korg; t=1779302088;
+	bh=p54n8hzZBGOXW9BQNDzl0m6KiiJWf/VCL5Cx5eca/14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wqz3/pZUTnn+K7l2nYW/MM+3cF92/fCZOl2ARoP5d1e/n5AYPouKnfDvPUJw9Glor
-	 onblI3X5z6s9OSHQzuiQQ6MOhEDIfrAx0eMm+31WbbBkuRVABZOYOKgJCWF/SRY59M
-	 o/zVS1xIJpqTzhJmA+C2u/h2ZKzrGxUvEOwPXZ/k=
+	b=Xcuxkh45wwL26j3EkyCNNn5HF6H0aArp5X9/8G+AQvSYzkKuyw81D8G+CW1WudhzM
+	 Q4IVn+UuZ3XhqcuU70gci+ftw/4agjfKyjaH+yD2AM1ATD9V0ySI9Z0BzBUtDfCMel
+	 DqxYtU8qr3d1AwGazlP1hmbBbk6ski2DoSf++adw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 674/957] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
-Date: Wed, 20 May 2026 18:19:17 +0200
-Message-ID: <20260520162149.154584877@linuxfoundation.org>
+Subject: [PATCH 6.6 135/508] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
+Date: Wed, 20 May 2026 18:19:18 +0200
+Message-ID: <20260520162101.554410856@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +65,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251880-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252979-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7688B59A4C8
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,specs.np:url]
+X-Rspamd-Queue-Id: 429AB596F60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
+[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
 
-When per-session tree_conn_ida was converted from a dynamically
-allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
-removed from ksmbd_session_destroy() but no matching ida_destroy()
-was added.  The session is therefore freed with the IDA's backing
-xarray still intact.
+When calling of_parse_phandle_with_args(), the caller is responsible
+to call of_node_put() to release the reference of device node.
+In imx_sc_pd_get_console_rsrc(), it does not release the reference.
 
-The kernel IDA API expects ida_init() and ida_destroy() to be paired
-over an object's lifetime, so add the missing cleanup before the
-enclosing session is freed.
-
-Also move ida_init() to right after the session is allocated so that
-it is always paired with the destroy call even on the early error
-paths of __session_create() (ksmbd_init_file_table() or
-__init_smb2_session() failures), both of which jump to the error
-label and invoke ksmbd_session_destroy() on a partially initialised
-session.
-
-No leak has been observed in testing; this is a pairing fix to match
-the IDA lifetime rules, not a response to a reproduced regression.
-
-Fixes: d40012a83f87 ("cifsd: declare ida statically")
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pmdomain/imx/scu-pd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index ed343807660fa..afa0daa3f5d88 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -170,6 +170,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
- 	free_channel_list(sess);
- 	kfree(sess->Preauth_HashValue);
- 	ksmbd_release_id(&session_ida, sess->id);
-+	ida_destroy(&sess->tree_conn_ida);
- 	kfree(sess);
+diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+index 368918e562f55..606d6bdccf94a 100644
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
+ 		return;
+ 
+ 	imx_con_rsrc = specs.args[0];
++	of_node_put(specs.np);
  }
  
-@@ -444,6 +445,8 @@ static struct ksmbd_session *__session_create(int protocol)
- 	if (!sess)
- 		return NULL;
- 
-+	ida_init(&sess->tree_conn_ida);
-+
- 	if (ksmbd_init_file_table(&sess->file_table))
- 		goto error;
- 
-@@ -463,8 +466,6 @@ static struct ksmbd_session *__session_create(int protocol)
- 	if (ret)
- 		goto error;
- 
--	ida_init(&sess->tree_conn_ida);
--
- 	down_write(&sessions_table_lock);
- 	hash_add(sessions_table, &sess->hlist, sess->id);
- 	up_write(&sessions_table_lock);
+ static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
 -- 
 2.53.0
 
