@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB6QJacUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200
+	id iDw9Dd0ADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-251748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B015992B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF4C59717B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51AEB35C72B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 67CE431EA54F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7F83EC2D1;
-	Wed, 20 May 2026 17:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3863F2116;
+	Wed, 20 May 2026 17:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ujhlcgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDPEOIUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB423EAC82;
-	Wed, 20 May 2026 17:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38BF3EC2DB;
+	Wed, 20 May 2026 17:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296404; cv=none; b=fVZbkdjJlUtHCJCFYra0GU7rkZFneAlPbFqaBfhTiwJNA5/DOfXGnRlPC8vmT2PxX/X1lbtlv4fnl0KC5894j0yYjmdF997oPaaM2UtM4M8PWggmimy0E7c3S6XHrAKX+9I4GWcJB+kLClm7V7gElWL7w8D8hCkBaZVvk6ULUMc=
+	t=1779298791; cv=none; b=VjNRruHH5xi9kKRBIc/BuyhuXcJBj8pH41K4N6dUEYSw/yaJp11UiaNziOrSbwFJb4Pytbe7YfgXredLUyVGsek3nZscRI9absmrAgDUvb7jMr6QgnJeo89rN/vo8u74zeMbHrvsKF6FOcqpZB8wkbO5dBCHAr9k0TajE5lqJ8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296404; c=relaxed/simple;
-	bh=TINbdzr9lMUREPk76aCLX5BKU0XyWYFXYPba7aBGyiw=;
+	s=arc-20240116; t=1779298791; c=relaxed/simple;
+	bh=gRttYP/sMCsXi8WVFbX/Gvq8hC9ikc2B0D+NsnnUE2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiEd+l8r/btOK80VaO/XbTsHUVc0eKWiS00TWsBdbuj+N5d9ujLqqERzM3OgRHpD8sQ7vi9QZYNfianT598VUaW8TMenXCwXwGqtqSopfP11eaWCyMHPb99RkoqBNGiWQZbdh4mNuK1So/ZJp5TjP1PtW4w+/WkSwzEIP1mVpcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ujhlcgx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104931F000E9;
-	Wed, 20 May 2026 16:59:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KiNtD5WOv0dTLu/7Z06Gf6SiNj8MTm0k0j2/X2DSTNkyLDsQ7DwGhE4cTF4dhkkUZdWf6NfBjunTH6rybFmvRU6e1ULErT8JOQQqXURp4e+8HAGPIPbElnb7yoFeaiODd9TBe5qRhW59ofKWBh6JqfVJMMpb//aAiVTZW2ahi+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDPEOIUr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9321A1F000E9;
+	Wed, 20 May 2026 17:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296400;
-	bh=zMR2ziScSuoymNoLBZI7kOUTpIOAK0GUHLC4ZeJlDXU=;
+	s=korg; t=1779298788;
+	bh=XVN1yknRm0veP1Q0Nc0GKmCM4kJ1VlTd4UrcrFQEUJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2ujhlcgxDQptueaxqmaj8T217yXuOmm8gatuICubAze3G+FT8/PD9Hzoq1aStEd2M
-	 6tN/SjL588pcpgF46FC/+WDQCEmUKmKV0Yrbaoa3YkbJD11/rBEy4CDTQzCZARLsOD
-	 ul7oZxLZbqU2PIPc6NWLHLxMNffyFFUzA2CuJoLc=
+	b=xDPEOIUr3qK+rqp805zW1T9TI0hX7pVM5misOGB3hfTUTJQTWXo7UNgnzbfahX5BP
+	 nGA7CS22YGTWjV027mkcJUqQVmLYtNpsFSrj/8qcwfzeOcibpqSJIXSBhhaIDKsUOH
+	 nTQ6e12+9qnVevrUVkU7T9Xp8IVPYE2BE/IROdQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0778/1146] tcp: move tp->chrono_type next tp->chrono_stat[]
+Subject: [PATCH 6.18 545/957] platform/x86: dell-wmi-sysman: bound enumeration string aggregation
 Date: Wed, 20 May 2026 18:17:08 +0200
-Message-ID: <20260520162205.822857293@linuxfoundation.org>
+Message-ID: <20260520162146.351910737@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250824-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251748-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 05B015992B5
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2FF4C59717B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 4b78c9cbd8f1fbb9517aee48b372646f4cf05442 ]
+[ Upstream commit 3c34471c26abc52a37f5ad90949e2e4b8027eb14 ]
 
-chrono_type is currently in tcp_sock_read_txrx group, which
-is supposed to hold read-mostly fields.
+populate_enum_data() aggregates firmware-provided value-modifier
+and possible-value strings into fixed 512-byte struct members.
+The current code bounds each individual source string but then
+appends every string and separator with raw strcat() and no
+remaining-space check.
 
-But chrono_type is mostly written in tx path, it should
-be moved to tcp_sock_write_tx group, close to other
-chrono fields (chrono_stat[], chrono_start).
+Switch the aggregation loops to a bounded append helper and
+reject enumeration packages whose combined strings do not fit
+in the destination buffers.
 
-Note this adds holes, but data locality is far more important.
-
-Use a full u8 for the time being, compiler can generate
-more efficient code.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20260308122302.2895067-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 267bf3cf9a6f ("tcp: annotate data-races in tcp_get_info_chrono_stats()")
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260408084501.1-dell-wmi-sysman-v2-pengpeng@iscas.ac.cn
+[ij: add include]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/tcp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../dell/dell-wmi-sysman/enum-attributes.c    | 34 +++++++++++++++----
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-index f72eef31fa23c..c44cf9ae8d16f 100644
---- a/include/linux/tcp.h
-+++ b/include/linux/tcp.h
-@@ -228,8 +228,7 @@ struct tcp_sock {
- 	u32	sacked_out;	/* SACK'd packets			*/
- 	u16	tcp_header_len;	/* Bytes of tcp header to send		*/
- 	u8	scaling_ratio;	/* see tcp_win_from_space() */
--	u8	chrono_type : 2,	/* current chronograph type */
--		repair      : 1,
-+	u8	repair      : 1,
- 		tcp_usec_ts : 1, /* TSval values in usec */
- 		is_sack_reneg:1,    /* in recovery from loss with SACK reneg? */
- 		is_cwnd_limited:1,/* forward progress limited by snd_cwnd? */
-@@ -264,6 +263,7 @@ struct tcp_sock {
- 				 * total number of data bytes sent.
- 				 */
- 	u32	snd_sml;	/* Last byte of the most recently transmitted small packet */
-+	u8	chrono_type;	/* current chronograph type */
- 	u32	chrono_start;	/* Start time in jiffies of a TCP chrono */
- 	u32	chrono_stat[3];	/* Time in jiffies for chrono_stat stats */
- 	u32	write_seq;	/* Tail(+1) of data held in tcp send buffer */
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index fc2f58b4cbc6e..7e44ba3015627 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -6,10 +6,32 @@
+  *  Copyright (c) 2020 Dell Inc.
+  */
+ 
++#include <linux/bug.h>
++
+ #include "dell-wmi-sysman.h"
+ 
+ get_instance_id(enumeration);
+ 
++static int append_enum_string(char *dest, const char *src)
++{
++	size_t dest_len = strlen(dest);
++	ssize_t copied;
++
++	if (WARN_ON_ONCE(dest_len >= MAX_BUFF))
++		return -EINVAL;
++
++	copied = strscpy(dest + dest_len, src, MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	dest_len += copied;
++	copied = strscpy(dest + dest_len, ";", MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+ {
+ 	int instance_id = get_enumeration_instance_id(kobj);
+@@ -176,9 +198,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
+ 	}
+ 
+ 	if (next_obj >= enum_property_count)
+@@ -193,9 +215,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].possible_values,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
+ 	}
+ 
+ 	return sysfs_create_group(attr_name_kobj, &enumeration_attr_group);
 -- 
 2.53.0
 
