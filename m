@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKvTCcnmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:25 +0200
+	id QJrDJTkXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BD059290C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262EB5996E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7CD96312DC47
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0163B3597BED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACC1221F2F;
-	Wed, 20 May 2026 16:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA13A369999;
+	Wed, 20 May 2026 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBjgeHzd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUqrQsF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D627233933;
-	Wed, 20 May 2026 16:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D5936A357;
+	Wed, 20 May 2026 17:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295185; cv=none; b=auk9GZjahdXHMF0rXjB42foDHOfB500SWozJ0tlvNNGFyjbcOGKTrATDTfW/fOMZ6U+O3oiqRPGhDWc9dxJtbkK5zzdmXp1iGS5a8nkVzVRWE9q1EeCF0ALaeAhFKnxfROVe7qAYeLg9/H51VRULcC5pvFqAzRlnGMOTfd61gnE=
+	t=1779297702; cv=none; b=uo5DkMWdcndHyoKxHwwuwU2P/XBciSfUrk25SBxA74EJM7LAuokAaL3WR4ZWeK3eZwUYdVtsy+dDsJHCghvwZS2rlqB9BFGesCapgGkqfOjqTp5Du2QWSbYGdiKe5zZkPlzER4kVDg4oipOFc4jWWKZfoFDlRgAkuP2n2a4ZOcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295185; c=relaxed/simple;
-	bh=n+Yr8AZtceA25GTou57WQ1rlB0QdjV4bxMgvBGxBhFI=;
+	s=arc-20240116; t=1779297702; c=relaxed/simple;
+	bh=dVulpm4Hk3x0u9kedSki4L0Mo1/nkeXFYpjF9vUhHEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrSpEfCLNXi0yuVO4hX8znTh/71C0RBJZgLmbpcHXFw764J5neDRiRV2HnZeX4hMQYKssvFY9li6X7NFHMxFdgIsKMZpblV7jdDKE3dNT42yFr+8WjFtYpiFRcLzDS2LsxFS0lpmsFCPF3nRhxIW7Xc1TQIyo8oKujZO2kFr1Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBjgeHzd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7A61F00893;
-	Wed, 20 May 2026 16:39:41 +0000 (UTC)
+	 MIME-Version; b=V674Qs2WHww2LDUaULJUmFFLoofCI4k21V7ZUj2ZnQWarMH6hjIhollQLdmgWS0egSp+6OWOWeuAkA0rqTnRRwJnvM3XP1XTa6iebXFrZPYnC/lXxpxQ4rgtQ34NeTKRQLFpqc6REO1rddyHwxEeCxLrhFjswQFEBZJfLrdq1gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUqrQsF/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9251F000E9;
+	Wed, 20 May 2026 17:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295182;
-	bh=af0Z/FtizL7ovlOLeOc6+KgLs1BwOTslE+563TZ5JsI=;
+	s=korg; t=1779297701;
+	bh=7UJrmMcX1XodP0uBS6cW9CDIZj2CshZY+HtAifEJ1X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NBjgeHzdLRbOe5rJ0rncePiRE4OkPRh7EgYj4zCEqFhNkpsc3SWlQGYiRTNM/ndV1
-	 neLHi2EpE3uXbn8YFQNj3wv+kSLX9FkO1tNKIMV+a8EkANAnCcdHa3IfpnNVizf6HM
-	 UiSYhIJbntUjUjZp5qIJcH623kgKu9EvH+HTVuNY=
+	b=qUqrQsF/lzXmFsU1zWm4h7yX5fOjd2HsvsXVlvp/RB9esjpu8xKFBmYvbAoz7yoKz
+	 5xVThZsdw3dX12UkR41YiZbgA6pHPetzr1Lw5XAqbBeILwr2NdOX1FYVQcHTyS3DAH
+	 qe+s4GRJnxXyKA9NyZyMVXwqODSxJkDGjbLF3pT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Jack Kao <jack.kao@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0322/1146] drm/msm/dsi: fix bits_per_pclk
+Subject: [PATCH 6.18 089/957] wifi: mt76: mt7925: cqm rssi low/high event notify
 Date: Wed, 20 May 2026 18:09:32 +0200
-Message-ID: <20260520162155.487380772@linuxfoundation.org>
+Message-ID: <20260520162136.490665440@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +67,254 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250350-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251330-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D1BD059290C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email]
+X-Rspamd-Queue-Id: 262EB5996E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Jack Kao <jack.kao@mediatek.com>
 
-[ Upstream commit 2d51cfb77daa30b10bc68c403f8ace35783d2922 ]
+[ Upstream commit 2a035ae2062f38dc5183002d1c5a64ca682170c1 ]
 
-mipi_dsi_pixel_format_to_bpp return dst bpp not src bpp, dst bpp may
-not be the uncompressed data size. use src bpc * 3 to get src bpp,
-this aligns with pclk rate calculation.
+The implementation amounts to setting the driver flag
+IEEE80211_VIF_SUPPORTS_CQM_RSSI, and then providing
+mechanisms for continuously updating enough information
+to be able to provide notifications to userspace when
+RSSI drops below a certain threshold
 
-Fixes: ac47870fd795 ("drm/msm/dsi: fix hdisplay calculation when programming dsi registers")
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/709916/
-Link: https://lore.kernel.org/r/20260307111250.105772-1-mitltlatltl@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Jack Kao <jack.kao@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20251001012506.2168037-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: 59a1864509d0 ("wifi: mt76: mt7925: drop puncturing handling from BSS change path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  2 +
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  6 ++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 82 +++++++++++++++++++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  8 ++
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    |  7 ++
+ 5 files changed, 105 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 6cb634590e7a7..3efcc3f6c381c 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1048,7 +1048,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 		 */
- 		h_total -= hdisplay;
- 		if (wide_bus_enabled)
--			bits_per_pclk = mipi_dsi_pixel_format_to_bpp(msm_host->format);
-+			bits_per_pclk = dsc->bits_per_component * 3;
- 		else
- 			bits_per_pclk = 24;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 27daf419560a5..0b02f34c40a40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1062,6 +1062,7 @@ enum {
+ 	MCU_UNI_EVENT_ROC = 0x27,
+ 	MCU_UNI_EVENT_TX_DONE = 0x2d,
+ 	MCU_UNI_EVENT_THERMAL = 0x35,
++	MCU_UNI_EVENT_RSSI_MONITOR = 0x41,
+ 	MCU_UNI_EVENT_NIC_CAPAB = 0x43,
+ 	MCU_UNI_EVENT_WED_RRO = 0x57,
+ 	MCU_UNI_EVENT_PER_STA_INFO = 0x6d,
+@@ -1300,6 +1301,7 @@ enum {
+ 	MCU_UNI_CMD_THERMAL = 0x35,
+ 	MCU_UNI_CMD_VOW = 0x37,
+ 	MCU_UNI_CMD_FIXED_RATE_TABLE = 0x40,
++	MCU_UNI_CMD_RSSI_MONITOR = 0x41,
+ 	MCU_UNI_CMD_TESTMODE_CTRL = 0x46,
+ 	MCU_UNI_CMD_RRO = 0x57,
+ 	MCU_UNI_CMD_OFFCH_SCAN_CTRL = 0x58,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index d1f63c81ceb99..f503e861a7e63 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -430,6 +430,9 @@ mt7925_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 		goto out;
  
+ 	vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
++	if (phy->chip_cap & MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN)
++		vif->driver_flags |= IEEE80211_VIF_SUPPORTS_CQM_RSSI;
++
+ out:
+ 	mt792x_mutex_release(dev);
+ 
+@@ -1958,6 +1961,9 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
+ 		mt7925_mcu_set_eht_pp(mvif->phy->mt76, &mconf->mt76,
+ 				      link_conf, NULL);
+ 
++	if (changed & BSS_CHANGED_CQM)
++		mt7925_mcu_set_rssimonitor(dev, vif);
++
+ 	mt792x_mutex_release(dev);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 130f1742546bc..d887aa9a3dff7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -450,6 +450,56 @@ mt7925_mcu_tx_done_event(struct mt792x_dev *dev, struct sk_buff *skb)
+ 	}
+ }
+ 
++static void
++mt7925_mcu_rssi_monitor_iter(void *priv, u8 *mac,
++			     struct ieee80211_vif *vif)
++{
++	struct mt7925_uni_rssi_monitor_event *event = priv;
++	enum nl80211_cqm_rssi_threshold_event nl_event;
++	s32 rssi = le32_to_cpu(event->rssi);
++
++	if (vif->type != NL80211_IFTYPE_STATION)
++		return;
++
++	if (!(vif->driver_flags & IEEE80211_VIF_SUPPORTS_CQM_RSSI))
++		return;
++
++	if (rssi > vif->bss_conf.cqm_rssi_thold)
++		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH;
++	else
++		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW;
++
++	ieee80211_cqm_rssi_notify(vif, nl_event, rssi, GFP_KERNEL);
++}
++
++static void
++mt7925_mcu_rssi_monitor_event(struct mt792x_dev *dev, struct sk_buff *skb)
++{
++	struct tlv *tlv;
++	u32 tlv_len;
++	struct mt7925_uni_rssi_monitor_event *event;
++
++	skb_pull(skb, sizeof(struct mt7925_mcu_rxd) + 4);
++	tlv = (struct tlv *)skb->data;
++	tlv_len = skb->len;
++
++	while (tlv_len > 0 && le16_to_cpu(tlv->len) <= tlv_len) {
++		switch (le16_to_cpu(tlv->tag)) {
++		case UNI_EVENT_RSSI_MONITOR_INFO:
++			event = (struct mt7925_uni_rssi_monitor_event *)skb->data;
++			ieee80211_iterate_active_interfaces_atomic(dev->mt76.hw,
++								   IEEE80211_IFACE_ITER_RESUME_ALL,
++								   mt7925_mcu_rssi_monitor_iter,
++								   event);
++			break;
++		default:
++			break;
++		}
++		tlv_len -= le16_to_cpu(tlv->len);
++		tlv = (struct tlv *)((char *)(tlv) + le16_to_cpu(tlv->len));
++	}
++}
++
+ static void
+ mt7925_mcu_uni_debug_msg_event(struct mt792x_dev *dev, struct sk_buff *skb)
+ {
+@@ -546,6 +596,9 @@ mt7925_mcu_uni_rx_unsolicited_event(struct mt792x_dev *dev,
+ 	case MCU_UNI_EVENT_BSS_BEACON_LOSS:
+ 		mt7925_mcu_connection_loss_event(dev, skb);
+ 		break;
++	case MCU_UNI_EVENT_RSSI_MONITOR:
++		mt7925_mcu_rssi_monitor_event(dev, skb);
++		break;
+ 	case MCU_UNI_EVENT_COREDUMP:
+ 		dev->fw_assert = true;
+ 		mt76_connac_mcu_coredump_event(&dev->mt76, skb, &dev->coredump);
+@@ -3821,3 +3874,32 @@ int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
+ 	return mt76_mcu_send_msg(&phy->dev->mt76, MCU_UNI_CMD(BAND_CONFIG),
+ 				 &req, sizeof(req), true);
+ }
++
++int mt7925_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif)
++{
++	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(&vif->bss_conf);
++	struct {
++		struct {
++			u8 bss_idx;
++			u8 pad[3];
++		} __packed hdr;
++		__le16 tag;
++		__le16 len;
++		u8 enable;
++		s8 cqm_rssi_high;
++		s8 cqm_rssi_low;
++		u8 rsv;
++	} req = {
++		.hdr = {
++			.bss_idx = mconf->mt76.idx,
++		},
++		.tag = cpu_to_le16(UNI_CMD_RSSI_MONITOR_SET),
++		.len = cpu_to_le16(sizeof(req) - 4),
++		.enable = vif->cfg.assoc,
++		.cqm_rssi_high = (s8)(vif->bss_conf.cqm_rssi_thold + vif->bss_conf.cqm_rssi_hyst),
++		.cqm_rssi_low = (s8)(vif->bss_conf.cqm_rssi_thold - vif->bss_conf.cqm_rssi_hyst),
++	};
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(RSSI_MONITOR), &req,
++				 sizeof(req), false);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index a40764d89a1ff..148aa3c05c8c4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -152,6 +152,14 @@ enum {
+ 	UNI_EVENT_SCAN_DONE_NLO = 3,
+ };
+ 
++enum {
++	UNI_CMD_RSSI_MONITOR_SET = 0,
++};
++
++enum {
++	UNI_EVENT_RSSI_MONITOR_INFO = 0,
++};
++
+ enum connac3_mcu_cipher_type {
+ 	CONNAC3_CIPHER_NONE = 0,
+ 	CONNAC3_CIPHER_WEP40 = 1,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 1c5ab3ea247d8..7f67e0a978726 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -103,6 +103,12 @@ struct mt7925_uni_beacon_loss_event {
+ 	struct mt7925_beacon_loss_tlv beacon_loss;
+ } __packed;
+ 
++struct mt7925_uni_rssi_monitor_event {
++		__le16 tag;
++		__le16 len;
++		__le32 rssi;
++} __packed;
++
+ #define to_rssi(field, rxv)		((FIELD_GET(field, rxv) - 220) / 2)
+ #define to_rcpi(rssi)			(2 * (rssi) + 220)
+ 
+@@ -372,4 +378,5 @@ int mt7925_testmode_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ int mt7925_testmode_dump(struct ieee80211_hw *hw, struct sk_buff *msg,
+ 			 struct netlink_callback *cb, void *data, int len);
+ 
++int mt7925_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif);
+ #endif
 -- 
 2.53.0
 
