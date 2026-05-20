@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOGkIo3/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:05 +0200
+	id YOrPHLUlDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:20:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07646596D10
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E564159ABAC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA69F30F5E96
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8EA397923E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C546D30DEAC;
-	Wed, 20 May 2026 18:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70B3F8704;
+	Wed, 20 May 2026 18:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xa0h6a4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmxgEDtF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8D33CEA2;
-	Wed, 20 May 2026 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5650E3F7884;
+	Wed, 20 May 2026 18:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301920; cv=none; b=aUQq7We6asQH6V7zEracjb4EWJvWBUZA5/dA6mHyeluNPqgRHRZ7CBkdpX0sjrxY2XQ8p9QobD6tGl1n70e+R3pKdVcB58IVFGTep+be2804l0M8TlghBU62LoBZslbhhPJIl3WEO6EQ+AAJB5niTDd00LCQlVOxL3/O01NEJu8=
+	t=1779300718; cv=none; b=XNDwM8l87tezk5DHXsRWJp1LUdPmXSJE5y9H5xx9KfbkIUUN2qHxZ64RYp/CJP5CrY8bXNjVKN81QR2AIfYAk6nDD84uVXJKTKrd07NMWFDUX6fU/3QJs2AhOGLf2kANnbZOuqNk7PY5BgynSG9JkN1MPz+ELT7qgDiKTlFRKVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301920; c=relaxed/simple;
-	bh=h28VAqGpvvL8dCfZD/llXLL2K0/yqDyGfLZusNgfI9o=;
+	s=arc-20240116; t=1779300718; c=relaxed/simple;
+	bh=blefAHbzxWMQGWW5JtoVDpBED8qoUWr5xOH3Y8XM2co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruXKptQ+FUWbPbMcl45YfLF4X5m5eFMJsLD7tUp+neEVcZghwhaxqWhOimD+aDY0+ZcLpBeHUi2ty8BkP+rXWdBS6+73ngY2vEL5EdLXJFvxVEztOOWgHi+edFn3CeBeR1uybI7I8ngTgG0hQSdBQBFa75ye8eKH+Ev2dtY+bH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xa0h6a4e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D963A1F000E9;
-	Wed, 20 May 2026 18:31:58 +0000 (UTC)
+	 MIME-Version; b=pNBS76oZ6ahHETTgds+p4Z30aI2uZrgYe0ZkNTm0K7XysQL6NGl6JICaTXFRQmJ076Jio+LnS73IUr/7QEeeIkfqxyLnpQ+yti+ImbH16eERwPzwBXnB1PVklq5o4EtVtMo4L9eleJf6dmH9Xrz78nXaFBbLjGWDTBnBQTchv4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmxgEDtF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4911F000E9;
+	Wed, 20 May 2026 18:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301919;
-	bh=UL6rYaGuhcN6baKYFAzT8P88IKqAP+fB8I4Bw1dnxcs=;
+	s=korg; t=1779300717;
+	bh=D9yAgfvyUJQmGxPibCSzgqd9ffti4vy5eTinGleL+vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xa0h6a4eoZl/sTV5BH/CMvIe2OPPd0MzhQg8iahzyxAr2VILmRySfXM4cp1wlGtpa
-	 nxqKYFaZoZgwxdQ0fxj+fIpsUdoLJek5/PmZOLhDWmS+cs1IvIQeG0CnplbJuf+dq/
-	 +h0cpgylNKTb2F82cEr5Qe0rrXWmEYoA2qRMsl/U=
+	b=EmxgEDtFibn5OAqaB2xxX2fgJPQ42Fu6YJOMvPygHSls99TdFD2zngrLemmp3KmMy
+	 HN1MtwyEHQTRBCtfVZVLwuGBideDInan+RZtNAxNTSJP68kw9phkvhfbD9RpueIM/s
+	 nVJhR0LESG9DP6T1NHoNhe8On5CqgWJYAwxgJ9p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaiyan Mei <kaiyanm@hust.edu.cn>,
-	Lang Xu <xulang@uniontech.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/508] bpf: Fix OOB in pcpu_init_value
+Subject: [PATCH 6.12 281/666] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
 Date: Wed, 20 May 2026 18:18:12 +0200
-Message-ID: <20260520162100.101457804@linuxfoundation.org>
+Message-ID: <20260520162117.304745996@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252914-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252455-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email,hust.edu.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 07646596D10
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: E564159ABAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Xu <xulang@uniontech.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 576afddfee8d1108ee299bf10f581593540d1a36 ]
+[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
 
-An out-of-bounds read occurs when copying element from a
-BPF_MAP_TYPE_CGROUP_STORAGE map to another pcpu map with the
-same value_size that is not rounded up to 8 bytes.
+If OCMEM is declared in DT, it is expected that it is present and
+handled by the driver. The GPU driver will ignore -ENODEV error, which
+typically means that OCMEM isn't defined in DT. Let ocmem return
+-EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
 
-The issue happens when:
-1. A CGROUP_STORAGE map is created with value_size not aligned to
-   8 bytes (e.g., 4 bytes)
-2. A pcpu map is created with the same value_size (e.g., 4 bytes)
-3. Update element in 2 with data in 1
-
-pcpu_init_value assumes that all sources are rounded up to 8 bytes,
-and invokes copy_map_value_long to make a data copy, However, the
-assumption doesn't stand since there are some cases where the source
-may not be rounded up to 8 bytes, e.g., CGROUP_STORAGE, skb->data.
-the verifier verifies exactly the size that the source claims, not
-the size rounded up to 8 bytes by kernel, an OOB happens when the
-source has only 4 bytes while the copy size(4) is rounded up to 8.
-
-Fixes: d3bec0138bfb ("bpf: Zero-fill re-used per-cpu map element")
-Reported-by: Kaiyan Mei <kaiyanm@hust.edu.cn>
-Closes: https://lore.kernel.org/all/14e6c70c.6c121.19c0399d948.Coremail.kaiyanm@hust.edu.cn/
-Link: https://lore.kernel.org/r/420FEEDDC768A4BE+20260402074236.2187154-1-xulang@uniontech.com
-Signed-off-by: Lang Xu <xulang@uniontech.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
+[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/hashtab.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/ocmem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 8bac6ae1204dc..934fdc688d7c1 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -991,7 +991,7 @@ static void pcpu_init_value(struct bpf_htab *htab, void __percpu *pptr,
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index ed77fdc76c9b2..37ea6b86aebcb 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -203,10 +203,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
  
- 		for_each_possible_cpu(cpu) {
- 			if (cpu == current_cpu)
--				copy_map_value_long(&htab->map, per_cpu_ptr(pptr, cpu), value);
-+				copy_map_value(&htab->map, per_cpu_ptr(pptr, cpu), value);
- 			else /* Since elem is preallocated, we cannot touch special fields */
- 				zero_map_value(&htab->map, per_cpu_ptr(pptr, cpu));
- 		}
+ 	ocmem = platform_get_drvdata(pdev);
+ 	put_device(&pdev->dev);
+-	if (!ocmem) {
+-		dev_err(dev, "Cannot get ocmem\n");
+-		return ERR_PTR(-ENODEV);
+-	}
++	if (!ocmem)
++		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
++
+ 	return ocmem;
+ }
+ EXPORT_SYMBOL_GPL(of_get_ocmem);
 -- 
 2.53.0
 
