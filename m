@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-250212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPesAvPkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:35 +0200
+	id IJzVBHzkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92325925CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F48592484
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 678613163EE5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:35:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46DBC3047BD6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6FB36E460;
-	Wed, 20 May 2026 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E693F44FB;
+	Wed, 20 May 2026 16:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBMPa+sS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P846mU7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985513EF0A1;
-	Wed, 20 May 2026 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A113F39F3;
+	Wed, 20 May 2026 16:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294822; cv=none; b=sQnRbd4+Yru7UGvVbNJQ2KaBvYW4wAJZBnUrI8Uvm5V7PZOME4w+76pkNnFUJdJlX55vi7reWVQeDduyKiHbLVdK1Fo7/K3i6vB7L7zJ9wkhOPi/hc732/TWac0e/t96YA09Rgp+4V9JsNqKUxfFn8IZqtFIP7a/fGHE40beHTY=
+	t=1779294825; cv=none; b=ubvyofTknzhj2RbwjGC1qkQbze7EwhtZXI8ZG8syPMW3DhkYBr3QSjbUY7M/bvhzZjzxU0y0A4c/h0FxnWmn91OHHf4z9uekA5jrkFNAxVr4pKULXIE8WmAfLJ2l7uAikmlanh37DXMbNvlkk5p2IRjaxfBDb7D0wrX+PCuP4hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294822; c=relaxed/simple;
-	bh=CAITF7b+xCdJeaNUF7Y5tEG7VTsNCYqTSUP3/RGVFDo=;
+	s=arc-20240116; t=1779294825; c=relaxed/simple;
+	bh=Vt3eiNw89oP/QEbw/fgT3NLKyY6bwGHSKgqPit+jmls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7Qjwg8iyPk6/7SWqrdG2zUtYkkTUV4LWF3YEtccPOPnhDfcEHnYDZSIvC6nIvH+eEbStdIhl2PWh9QZKAZbfSzysgbjkwKszHnrUT6AmKFQoXwQVjYxL6kVm/leS6Td6Fj1DiatXdJ0BHG2GXTFNUZn0WjiJwSeM8mCFyJpSMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBMPa+sS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CDD1F00893;
-	Wed, 20 May 2026 16:33:40 +0000 (UTC)
+	 MIME-Version; b=dD4KMHaa8Vcoe7L+a8R8dlzkaQdnzJe10bLS6JnOjAz6RUmwmo3BAqxBdEortBQv2AuhcTkI+9LRFvgxz6Xts70upe7vyGIW4ACAYp4e4MqnFGEDrTkVU8vjeTdRgMGiN0K5UcebVw29pCfoIyu++pPSmAkjh1xwl4o0h7Rsgi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P846mU7/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFE1F00893;
+	Wed, 20 May 2026 16:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294821;
-	bh=CUTsPdZUDSPslwTk2X5QzjFYpXQ0l1b9uEmFhdOluZs=;
+	s=korg; t=1779294824;
+	bh=vQt6kkLZ7V+wViX4iphm/JBFBQHPlCscP1DUfkIDTus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PBMPa+sS0Pq5NJIzwn065QT9pnN8MijQaxcIPDo0/P3LwDcPUN9KDErwS8sUWP3gp
-	 m41o2uQ2ZTAaObpkH4xR+GVo51zupFzelyegGLVbq9UiAYyUMwTDt2MTRI5Zv7cgm2
-	 Dqxi/Swi1YMzTlC+x1SZJOQ+/1rEW3VgsjkNuJFw=
+	b=P846mU7/umgVAbn8qA+qqxwIw+XkdoJp89b/nDkS1DFiHQmn9z/D03KzyN8d8ty40
+	 DcjT5GOnhQHxUM9iF5ZszejYjOCiAffYEQ9KaybRZqeep5H7D38ZdNVh5s+y7ez1Vy
+	 DcsWACtCgBDDJLesDpu+0Sfa9RyHVZMfb6Q+rioc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuegang Lu <xuegang.lu@airoha.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	STAR Labs SG <info@starlabs.sg>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0185/1146] net: airoha: Fix FE_PSE_BUF_SET configuration if PPE2 is available
-Date: Wed, 20 May 2026 18:07:15 +0200
-Message-ID: <20260520162152.465542107@linuxfoundation.org>
+Subject: [PATCH 7.0 0186/1146] bpf: Enforce regsafe base id consistency for BPF_ADD_CONST scalars
+Date: Wed, 20 May 2026 18:07:16 +0200
+Message-ID: <20260520162152.487419253@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250212-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250213-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A92325925CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,starlabs.sg:email]
+X-Rspamd-Queue-Id: 89F48592484
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,52 +100,75 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 02f72964395911e7a09bb2ea2fe6f79eda4ea2c2 ]
+[ Upstream commit 2f2ec8e7730e21fc9bd49e0de9cdd58213ea24d0 ]
 
-airoha_fe_set routine is used to set specified bits to 1 in the selected
-register. In the FE_PSE_BUF_SET case this can due to a overestimation of
-the required buffers for I/O queues since we can miss to set some bits
-of PSE_ALLRSV_MASK subfield to 0. Fix the issue relying on airoha_fe_rmw
-routine instead.
+When regsafe() compares two scalar registers that both carry
+BPF_ADD_CONST, check_scalar_ids() maps their full compound id
+(aka base | BPF_ADD_CONST flag) as one idmap entry. However,
+it never verifies that the underlying base ids, that is, with
+the flag stripped are consistent with existing idmap mappings.
 
-Fixes: 8e38e08f2c560 ("net: airoha: fix PSE memory configuration in airoha_fe_pse_ports_init()")
-Tested-by: Xuegang Lu <xuegang.lu@airoha.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260408-airoha-reg_fe_pse_buf_set-v1-1-0c4fa8f4d1d9@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This allows construction of two verifier states where the old
+state has R3 = R2 + 10 (both sharing base id A) while the current
+state has R3 = R4 + 10 (base id C, unrelated to R2). The idmap
+creates two independent entries: A->B (for R2) and A|flag->C|flag
+(for R3), without catching that A->C conflicts with A->B. State
+pruning then incorrectly succeeds.
+
+Fix this by additionally verifying base ID mapping consistency
+whenever BPF_ADD_CONST is set: after mapping the compound ids,
+also invoke check_ids() on the base IDs (flag bits stripped).
+This ensures that if A was already mapped to B from comparing
+the source register, any ADD_CONST derivative must also derive
+from B, not an unrelated C.
+
+Fixes: 98d7ca374ba4 ("bpf: Track delta between "linked" registers.")
+Reported-by: STAR Labs SG <info@starlabs.sg>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260410232651.559778-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 9285a68f435fe..c14cdce588a7c 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -293,16 +293,18 @@ static void airoha_fe_pse_ports_init(struct airoha_eth *eth)
- 		[FE_PSE_PORT_GDM4] = 2,
- 		[FE_PSE_PORT_CDM5] = 2,
- 	};
--	u32 all_rsv;
- 	int q;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index bf5e146692e0a..5eaba53162d20 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -19674,6 +19674,13 @@ static bool check_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
+  * and r7.id=0 (both independent), without temp IDs both would map old_id=X
+  * to cur_id=0 and pass. With temp IDs: r6 maps X->temp1, r7 tries to map
+  * X->temp2, but X is already mapped to temp1, so the check fails correctly.
++ *
++ * When old_id has BPF_ADD_CONST set, the compound id (base | flag) and the
++ * base id (flag stripped) must both map consistently. Example: old has
++ * r2.id=A, r3.id=A|flag (r3 = r2 + delta), cur has r2.id=B, r3.id=C|flag
++ * (r3 derived from unrelated r4). Without the base check, idmap gets two
++ * independent entries A->B and A|flag->C|flag, missing that A->C conflicts
++ * with A->B. The base ID cross-check catches this.
+  */
+ static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
+ {
+@@ -19682,7 +19689,15 @@ static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
  
--	all_rsv = airoha_fe_get_pse_all_rsv(eth);
- 	if (airoha_ppe_is_enabled(eth, 1)) {
-+		u32 all_rsv;
-+
- 		/* hw misses PPE2 oq rsv */
-+		all_rsv = airoha_fe_get_pse_all_rsv(eth);
- 		all_rsv += PSE_RSV_PAGES *
- 			   pse_port_num_queues[FE_PSE_PORT_PPE2];
-+		airoha_fe_rmw(eth, REG_FE_PSE_BUF_SET, PSE_ALLRSV_MASK,
-+			      FIELD_PREP(PSE_ALLRSV_MASK, all_rsv));
- 	}
--	airoha_fe_set(eth, REG_FE_PSE_BUF_SET, all_rsv);
+ 	cur_id = cur_id ? cur_id : ++idmap->tmp_id_gen;
  
- 	/* CMD1 */
- 	for (q = 0; q < pse_port_num_queues[FE_PSE_PORT_CDM1]; q++)
+-	return check_ids(old_id, cur_id, idmap);
++	if (!check_ids(old_id, cur_id, idmap))
++		return false;
++	if (old_id & BPF_ADD_CONST) {
++		old_id &= ~BPF_ADD_CONST;
++		cur_id &= ~BPF_ADD_CONST;
++		if (!check_ids(old_id, cur_id, idmap))
++			return false;
++	}
++	return true;
+ }
+ 
+ static void clean_func_state(struct bpf_verifier_env *env,
 -- 
 2.53.0
 
