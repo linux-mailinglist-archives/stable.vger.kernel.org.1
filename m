@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IRiAmkfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:01 +0200
+	id sBxpCwgVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E2959A467
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41390599328
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30034378FDA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DF1932207FC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E18E3EF0DA;
-	Wed, 20 May 2026 17:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9E43F9296;
+	Wed, 20 May 2026 18:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzEXinQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIB+5Gyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133722F0C62;
-	Wed, 20 May 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AA52F363F;
+	Wed, 20 May 2026 18:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299092; cv=none; b=RVWwIaym+QWMSxv+w2pgRNLdVkCOwbOjyDbcdNuHDQGa0gumGH0v39/zMYBFDlDwWanv3un/UHYSMMl89tBcj6P/jPf0mbAeX6FOFHft/GQoVeUaKtrVofQ9B7Ii4SyIJo6de//3CRnvlQw7GTa5Ow6WwKRLOnpW2gUcNhXNof4=
+	t=1779300849; cv=none; b=Dog+YrZiQfxkF+/YZw4MEYuaZVvMTVSGHanV8pmzcVQ8Eb733epedsloc4ceQ4cUJcM8G3dwHx0+dgpw/RSSw+E/Gc+iUvKwlFdMFFQ1s2K4sVhdR0JoGItTDBPC4TVMd1NXAzdXIRgc+TOHU/T05J0s5rLz6j5TerMBun8Dx00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299092; c=relaxed/simple;
-	bh=y66fZv33uUSNqplkrZwl+umEEKMj2jat4eH+4cLCBPg=;
+	s=arc-20240116; t=1779300849; c=relaxed/simple;
+	bh=MlK+VbtkMGHHk9Md7q0q0yjecTY1YbWWwtFzaWhQiHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzS3376wPvUQlx6HLC5iUEADo1XS6WmXMeshWA8EhGUViG6NeXDyJSgiuegP6xm0qfx1MgukX5qi8cJUdkwcZElGHKXNIC46cB0A1lMCT7Akpwf8OdXDoRTYHIJlHUE0DEzp/G563iAXX64YfJlRt7Z61LpmP/5aVmaJ1ukISV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzEXinQX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F8F1F000E9;
-	Wed, 20 May 2026 17:44:50 +0000 (UTC)
+	 MIME-Version; b=mNkv6VtuJIQ8Ojj+3ztBLIETfu/udtDwLiN1CLpCIQyKkf1ivHqwxTyaVK1CRBxjiHxSTm30ZEKVv9XIBLqMb+40va2u4UYKcHYLW06sWMRQCX5LtLyaF1nSSrcrG/ybBiHlxENwuVSDBfJn7/tpPCH4eQ+ESqv/XOd0hR0YzCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIB+5Gyz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994AE1F00893;
+	Wed, 20 May 2026 18:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299090;
-	bh=z6KFDTbjVkcom1I8qkvEV85ucsDIC1iJPT+juekRH6I=;
+	s=korg; t=1779300848;
+	bh=6fJM+WokW1dgw5dIXVp5mqLajrU9GiQSwmdat0w0dkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rzEXinQX+ZazVVsvVrJs1zOOAEqmrdFiBCMKZvhi8H8pMsQOmzkjcRMfsxet6/2/J
-	 9ngCE+QSLoroUgqx6J9GGTNhcTXKgTLqnhga1UT7DAZ3tLSvJuvpOzu5O9eKlPW/A2
-	 QACseF7LUifxWq7vq5VRU3AOO3LjcW1nq0HEW1Ms=
+	b=CIB+5Gyzs1Yw53G6mRqerDmFoSqLcYNaMPpPsQ2NkpCFyHW2XS2iBBLhoUgg0v0h0
+	 ygJyZGo1hqoOvEJzX6GscLM5761zYJuch5PvLppmhagp3mvyaOSSrJGMrBfNDtPO4R
+	 9x3S1q9Q+EFJGWRUo81m784bE2QHIJoQJ6k7ZhJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 657/957] net/mlx5: Fix HCA caps leak on notifier init failure
-Date: Wed, 20 May 2026 18:19:00 +0200
-Message-ID: <20260520162148.780425222@linuxfoundation.org>
+Subject: [PATCH 6.12 330/666] ima_fs: dont bother with removal of files in directory well be removing
+Date: Wed, 20 May 2026 18:19:01 +0200
+Message-ID: <20260520162118.381657216@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +66,174 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251866-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252505-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 53E2959A467
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.org.uk:email]
+X-Rspamd-Queue-Id: 41390599328
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d03fc81a57956248383efec99967d0ae627390a8 ]
+[ Upstream commit 22260a99d791163f7697a240dfc48e4e5a91ecfe ]
 
-mlx5_mdev_init() allocates HCA caps via mlx5_hca_caps_alloc() before
-calling mlx5_notifiers_init(). If notifier initialization fails, the
-error path jumps to err_hca_caps and skips mlx5_hca_caps_free(), leaking
-allocated caps.
+removal of parent takes all children out
 
-Add a dedicated unwind label for notifier-init failure that frees HCA
-caps before continuing the existing cleanup sequence.
-
-Fixes: b6b03097f982 ("net/mlx5: Initialize events outside devlink lock")
-Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260415005022.34764-1-prathameshdeshpande7@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: d7bd8cf0b348 ("ima_fs: Correctly create securityfs files for unsupported hash algos")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ security/integrity/ima/ima_fs.c | 57 +++++++++++----------------------
+ 1 file changed, 18 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 5903a4af9173b..6e10a6de8ebcc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1878,7 +1878,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
+index e4a79a9b2d588..88421e8895c44 100644
+--- a/security/integrity/ima/ima_fs.c
++++ b/security/integrity/ima/ima_fs.c
+@@ -396,11 +396,6 @@ static ssize_t ima_write_policy(struct file *file, const char __user *buf,
  
- 	err = mlx5_notifiers_init(dev);
- 	if (err)
--		goto err_hca_caps;
-+		goto err_notifiers_init;
+ static struct dentry *ima_dir;
+ static struct dentry *ima_symlink;
+-static struct dentry *binary_runtime_measurements;
+-static struct dentry *ascii_runtime_measurements;
+-static struct dentry *runtime_measurements_count;
+-static struct dentry *violations;
+-static struct dentry *ima_policy;
  
- 	/* The conjunction of sw_vhca_id with sw_owner_id will be a global
- 	 * unique id per function which uses mlx5_core.
-@@ -1894,6 +1894,8 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
+ enum ima_fs_flags {
+ 	IMA_FS_BUSY,
+@@ -419,14 +414,7 @@ static const struct seq_operations ima_policy_seqops = {
+ 
+ static void __init remove_securityfs_measurement_lists(struct dentry **lists)
+ {
+-	int i;
+-
+-	if (lists) {
+-		for (i = 0; i < securityfs_measurement_list_count; i++)
+-			securityfs_remove(lists[i]);
+-
+-		kfree(lists);
+-	}
++	kfree(lists);
+ }
+ 
+ static int __init create_securityfs_measurement_lists(void)
+@@ -533,8 +521,7 @@ static int ima_release_policy(struct inode *inode, struct file *file)
+ 
+ 	ima_update_policy();
+ #if !defined(CONFIG_IMA_WRITE_POLICY) && !defined(CONFIG_IMA_READ_POLICY)
+-	securityfs_remove(ima_policy);
+-	ima_policy = NULL;
++	securityfs_remove(file->f_path.dentry);
+ #elif defined(CONFIG_IMA_WRITE_POLICY)
+ 	clear_bit(IMA_FS_BUSY, &ima_fs_flags);
+ #elif defined(CONFIG_IMA_READ_POLICY)
+@@ -553,6 +540,7 @@ static const struct file_operations ima_measure_policy_ops = {
+ 
+ int __init ima_fs_init(void)
+ {
++	struct dentry *dentry;
+ 	int ret;
+ 
+ 	ascii_securityfs_measurement_lists = NULL;
+@@ -573,54 +561,45 @@ int __init ima_fs_init(void)
+ 	if (ret != 0)
+ 		goto out;
+ 
+-	binary_runtime_measurements =
+-	    securityfs_create_symlink("binary_runtime_measurements", ima_dir,
++	dentry = securityfs_create_symlink("binary_runtime_measurements", ima_dir,
+ 				      "binary_runtime_measurements_sha1", NULL);
+-	if (IS_ERR(binary_runtime_measurements)) {
+-		ret = PTR_ERR(binary_runtime_measurements);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto out;
+ 	}
+ 
+-	ascii_runtime_measurements =
+-	    securityfs_create_symlink("ascii_runtime_measurements", ima_dir,
++	dentry = securityfs_create_symlink("ascii_runtime_measurements", ima_dir,
+ 				      "ascii_runtime_measurements_sha1", NULL);
+-	if (IS_ERR(ascii_runtime_measurements)) {
+-		ret = PTR_ERR(ascii_runtime_measurements);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto out;
+ 	}
+ 
+-	runtime_measurements_count =
+-	    securityfs_create_file("runtime_measurements_count",
++	dentry = securityfs_create_file("runtime_measurements_count",
+ 				   S_IRUSR | S_IRGRP, ima_dir, NULL,
+ 				   &ima_measurements_count_ops);
+-	if (IS_ERR(runtime_measurements_count)) {
+-		ret = PTR_ERR(runtime_measurements_count);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto out;
+ 	}
+ 
+-	violations =
+-	    securityfs_create_file("violations", S_IRUSR | S_IRGRP,
++	dentry = securityfs_create_file("violations", S_IRUSR | S_IRGRP,
+ 				   ima_dir, NULL, &ima_htable_violations_ops);
+-	if (IS_ERR(violations)) {
+-		ret = PTR_ERR(violations);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto out;
+ 	}
+ 
+-	ima_policy = securityfs_create_file("policy", POLICY_FILE_FLAGS,
++	dentry = securityfs_create_file("policy", POLICY_FILE_FLAGS,
+ 					    ima_dir, NULL,
+ 					    &ima_measure_policy_ops);
+-	if (IS_ERR(ima_policy)) {
+-		ret = PTR_ERR(ima_policy);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto out;
+ 	}
  
  	return 0;
- 
-+err_notifiers_init:
-+	mlx5_hca_caps_free(dev);
- err_hca_caps:
- 	mlx5_adev_cleanup(dev);
- err_adev_init:
+ out:
+-	securityfs_remove(ima_policy);
+-	securityfs_remove(violations);
+-	securityfs_remove(runtime_measurements_count);
+-	securityfs_remove(ascii_runtime_measurements);
+-	securityfs_remove(binary_runtime_measurements);
+ 	remove_securityfs_measurement_lists(ascii_securityfs_measurement_lists);
+ 	remove_securityfs_measurement_lists(binary_securityfs_measurement_lists);
+ 	securityfs_measurement_list_count = 0;
 -- 
 2.53.0
 
