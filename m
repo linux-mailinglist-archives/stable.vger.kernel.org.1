@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-250963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AD+8E9n5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:45 +0200
+	id wMnyKAkrDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701F059599A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C31C59B3BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4807B3133C93
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D12533581820
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9873F7ABC;
-	Wed, 20 May 2026 17:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31704331A41;
+	Wed, 20 May 2026 18:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6eCJoDj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPJs7ORO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B190367B76;
-	Wed, 20 May 2026 17:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E123030DEAC;
+	Wed, 20 May 2026 18:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296747; cv=none; b=RhiynEtC/c15bZLNUpuzNUc1RM+074oP1WsFzVpIf5xHM9f9RHlhtW3vtTagd+3EHEiv+KbWf/tuM5ooi7MCRzTdmI+vYI3wj9Ya5XqtLl/cilc0qgTbkft0carfGzj/PP43l5CyphmWdSs7g8p4pQn1Ws8dAXxq4579UGi8sKY=
+	t=1779302005; cv=none; b=Qt70HcNZ3jUueUXk2oK6bXyEYJMqnVYIXTP5bmPKGssiHdE4r/Pk01x3F+rE2mawDdiI/vM2JddYbA5mpnn1LBzY3vEDMBdRmHDlIQl9RMqe9Pnww0FDaqwSTsVIzxxakcjSDjOt6RNXrrmc4XDB2vvqf09ob3wY7alFJNqkmTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296747; c=relaxed/simple;
-	bh=mbSXlRc68uxQnzG9cn6CMjEwRg9UdgTSH1pKz0iUWmk=;
+	s=arc-20240116; t=1779302005; c=relaxed/simple;
+	bh=UaVeT6Y2AQ1xk4NENyoygRA+7BS9lnN9kaeUcTQzS/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw9UGvqgyjtG0TkxvS9wQIUyzAMdCIQAKXFMY2eBYrEox+l9iSMMYHmzV745ygZmR3LwlaK2mphKUEUxaeYuqJ9xY2tfoLZd/afHmtYW9/ietVEvuPouMCudNGIX3MVgaZt7SopIKHsz8zhmUXDGU4sncRDMt6TMLTxZj8jOH9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6eCJoDj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815831F000E9;
-	Wed, 20 May 2026 17:05:45 +0000 (UTC)
+	 MIME-Version; b=WXk88XPu0iMXV0bAbP6B1wZfgMWl0xRwkNS9rKm+6zxdaigQXeK60xPdI2un5i/D0RvoJXqUZbXDht327UvLXVWRBA6uvgypCZOqYSvMwRQcAitlYiLzHA+BDT9B/YfzUkDoj1632MRrPshHf/AXvQd+J/FIa4G7OsdPQLw3IGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPJs7ORO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE141F000E9;
+	Wed, 20 May 2026 18:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296746;
-	bh=JqaI8SsO3QV0gig/e/MefKjaJ+MIcwZGgucjJDcymYg=;
+	s=korg; t=1779302003;
+	bh=+hTM8ZLRqSKAAQaXuTCkgJLhX7L7BLp1v1GGDJ3VFZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u6eCJoDjL1f/pWnD6Arx1Ilq2GVsDmZw2Qt5K7aeCtsQi7ZnLtmocPXDCeZvvUHH6
-	 bofz72DZ8NVZ5KelabeTXguA/luabfavKn8Wgci6gNpCnv6mt8sAQG3tyBfisHit4v
-	 ms5GY8K5yOj/4RCHKu+QUzjYNrmeRd1mdhrLUdVg=
+	b=ZPJs7OROBnvi8IlrBK+Q0spr/c+bFXFpaIEUkm87lJ54A6Po8DDaiPvSgeKEr6rBT
+	 2ozxR8Aw3gFejxgx6mW+LJNmV2qtf9Rv4MvGWzamEose6lPp1X4mXGRmJvetpzSTgZ
+	 1pPLPnxxEXmDpNhAPCg/NlszKXHvNcY+HIx3L+C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0875/1146] tools/power turbostat: Fix --cpu-set 1 regression on HT systems
+Subject: [PATCH 6.6 102/508] drm/bridge: cadence: cdns-mhdp8546-core: Add mode_valid hook to drm_bridge_funcs
 Date: Wed, 20 May 2026 18:18:45 +0200
-Message-ID: <20260520162208.041731433@linuxfoundation.org>
+Message-ID: <20260520162100.828535803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,240 +70,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252947-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250963-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 701F059599A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ideasonboard.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: 1C31C59B3BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 08e11edd0e63b72651ed5eb9142430d1ca764923 ]
+[ Upstream commit 6dbff34016052b099558b76632e4983e2df13fed ]
 
-When the "--cpu-set" option limits turbostat to run on
-a higher numbered HT sibling, it exits upon dividing by zero.
+Add cdns_mhdp_bridge_mode_valid() to check if specific mode is valid for
+this bridge or not. In the legacy usecase with
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR we were using the hook from
+drm_connector_helper_funcs but with DRM_BRIDGE_ATTACH_NO_CONNECTOR
+we need to have mode_valid() in drm_bridge_funcs.
 
-This is because the HT support handles higher numbered siblings
-at the same time as lower numbered siblings.  But when that lower
-number sibling is dis-allowed, the higher numbered sibling is
-never processed.  The result is a time delta of 0, which results
-in a divide by 0 for any of the "per-second" metrics.
+Without this patch, when using DRM_BRIDGE_ATTACH_NO_CONNECTOR
+flag, the cdns_mhdp_bandwidth_ok() function would not be called
+during  mode validation, potentially allowing modes that exceed
+the bridge's bandwidth capabilities to be incorrectly marked as
+valid.
 
-Enhance the HT enumeration code to record all siblings (up to SMT4).
-Consult this complete HT sibling list to determine when
-to process an HT sibling, and when to skip it.
-
-Fixes: a2b4d0f8bf07 ("tools/power turbostat: Favor cpu# over core#")
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20251209120332.3559893-3-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 70 +++++++++++++++++++++------
- 1 file changed, 55 insertions(+), 15 deletions(-)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 7f61f07ceb314..e609272ed80b5 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -2449,6 +2449,22 @@ int cpu_is_not_allowed(int cpu)
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 8037a41f9afd2..34a3348375171 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2234,6 +2234,25 @@ static struct edid *cdns_mhdp_bridge_get_edid(struct drm_bridge *bridge,
+ 	return cdns_mhdp_get_edid(mhdp, connector);
+ }
  
- #define PER_THREAD_PARAMS  struct thread_data *t, struct core_data *c, struct pkg_data *p
- 
-+int has_allowed_lower_ht_sibling(int cpu)
++static enum drm_mode_status
++cdns_mhdp_bridge_mode_valid(struct drm_bridge *bridge,
++			    const struct drm_display_info *info,
++			    const struct drm_display_mode *mode)
 +{
-+	int i;
++	struct cdns_mhdp_device *mhdp = bridge_to_mhdp(bridge);
 +
-+	for (i = 0; i <= cpus[cpu].ht_id; ++i) {
-+		int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
++	mutex_lock(&mhdp->link_mutex);
 +
-+		if (sibling_cpu_id == cpu)
-+			return 0;
-+
-+		if (!cpu_is_not_allowed(sibling_cpu_id))
-+			return 1;
++	if (!cdns_mhdp_bandwidth_ok(mhdp, mode, mhdp->link.num_lanes,
++				    mhdp->link.rate)) {
++		mutex_unlock(&mhdp->link_mutex);
++		return MODE_CLOCK_HIGH;
 +	}
-+	return 0;
++
++	mutex_unlock(&mhdp->link_mutex);
++	return MODE_OK;
 +}
 +
- int for_all_cpus(int (func) (struct thread_data *, struct core_data *, struct pkg_data *),
- 		 struct thread_data *thread_base, struct core_data *core_base, struct pkg_data *pkg_base)
- {
-@@ -2466,7 +2482,7 @@ int for_all_cpus(int (func) (struct thread_data *, struct core_data *, struct pk
- 		if (cpu_is_not_allowed(cpu))
- 			continue;
+ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.atomic_enable = cdns_mhdp_atomic_enable,
+ 	.atomic_disable = cdns_mhdp_atomic_disable,
+@@ -2248,6 +2267,7 @@ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.get_edid = cdns_mhdp_bridge_get_edid,
+ 	.hpd_enable = cdns_mhdp_bridge_hpd_enable,
+ 	.hpd_disable = cdns_mhdp_bridge_hpd_disable,
++	.mode_valid = cdns_mhdp_bridge_mode_valid,
+ };
  
--		if (cpus[cpu].ht_id > 0)	/* skip HT sibling */
-+		if (has_allowed_lower_ht_sibling(cpu))	/* skip HT sibling */
- 			continue;
- 
- 		t = &thread_base[cpu];
-@@ -2475,12 +2491,18 @@ int for_all_cpus(int (func) (struct thread_data *, struct core_data *, struct pk
- 
- 		retval |= func(t, c, p);
- 
--		/* Handle HT sibling now */
-+		/* Handle other HT siblings now */
- 		int i;
- 
--		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
-+		for (i = 0; i <= MAX_HT_ID; ++i) {
- 			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
- 
-+			if (sibling_cpu_id < 0)
-+				break;
-+
-+			if (sibling_cpu_id == cpu)
-+				continue;
-+
- 			if (cpu_is_not_allowed(sibling_cpu_id))
- 				continue;
- 
-@@ -6178,11 +6200,11 @@ int set_thread_siblings(struct cpu_topology *thiscpu)
- 	int cpu = thiscpu->cpu_id;
- 	int offset = topo.max_cpu_num + 1;
- 	size_t size;
--	int thread_id = 0;
-+	int ht_id = 0;
- 
- 	thiscpu->put_ids = CPU_ALLOC((topo.max_cpu_num + 1));
- 	if (thiscpu->ht_id < 0)
--		thiscpu->ht_id = thread_id++;
-+		thiscpu->ht_id = 0;	/* first CPU in core */
- 	if (!thiscpu->put_ids)
- 		return -1;
- 
-@@ -6206,13 +6228,9 @@ int set_thread_siblings(struct cpu_topology *thiscpu)
- 				sib_core = get_core_id(so);
- 				if (sib_core == thiscpu->core_id) {
- 					CPU_SET_S(so, size, thiscpu->put_ids);
--					if ((so != cpu) && (cpus[so].ht_id < 0)) {
--						cpus[so].ht_id = thread_id;
--						cpus[cpu].ht_sibling_cpu_id[thread_id] = so;
--						if (debug)
--							fprintf(stderr, "%s: cpu%d.ht_sibling_cpu_id[%d] = %d\n", __func__, cpu, thread_id, so);
--						thread_id += 1;
--					}
-+					cpus[so].ht_id = ht_id;
-+					cpus[cpu].ht_sibling_cpu_id[ht_id] = so;
-+					ht_id += 1;
- 				}
- 			}
- 		}
-@@ -6245,7 +6263,7 @@ int for_all_cpus_2(int (func) (struct thread_data *, struct core_data *,
- 		if (cpu_is_not_allowed(cpu))
- 			continue;
- 
--		if (cpus[cpu].ht_id > 0)	/* skip HT sibling */
-+		if (has_allowed_lower_ht_sibling(cpu))	/* skip HT sibling */
- 			continue;
- 
- 		t = &thread_base[cpu];
-@@ -6260,9 +6278,15 @@ int for_all_cpus_2(int (func) (struct thread_data *, struct core_data *,
- 		/* Handle HT sibling now */
- 		int i;
- 
--		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
-+		for (i = 0; i <= MAX_HT_ID; ++i) {
- 			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
- 
-+			if (sibling_cpu_id < 0)
-+				break;
-+
-+			if (sibling_cpu_id == cpu)
-+				continue;
-+
- 			if (cpu_is_not_allowed(sibling_cpu_id))
- 				continue;
- 
-@@ -9517,6 +9541,8 @@ void topology_probe(bool startup)
- 	cpu_present_setsize = CPU_ALLOC_SIZE((topo.max_cpu_num + 1));
- 	CPU_ZERO_S(cpu_present_setsize, cpu_present_set);
- 	for_all_proc_cpus(mark_cpu_present);
-+	if (debug)
-+		print_cpu_set("present set", cpu_present_set);
- 
- 	/*
- 	 * Allocate and initialize cpu_possible_set
-@@ -9527,6 +9553,8 @@ void topology_probe(bool startup)
- 	cpu_possible_setsize = CPU_ALLOC_SIZE((topo.max_cpu_num + 1));
- 	CPU_ZERO_S(cpu_possible_setsize, cpu_possible_set);
- 	initialize_cpu_set_from_sysfs(cpu_possible_set, "/sys/devices/system/cpu", "possible");
-+	if (debug)
-+		print_cpu_set("possible set", cpu_possible_set);
- 
- 	/*
- 	 * Allocate and initialize cpu_effective_set
-@@ -9537,6 +9565,8 @@ void topology_probe(bool startup)
- 	cpu_effective_setsize = CPU_ALLOC_SIZE((topo.max_cpu_num + 1));
- 	CPU_ZERO_S(cpu_effective_setsize, cpu_effective_set);
- 	update_effective_set(startup);
-+	if (debug)
-+		print_cpu_set("effective set", cpu_effective_set);
- 
- 	/*
- 	 * Allocate and initialize cpu_allowed_set
-@@ -9580,6 +9610,8 @@ void topology_probe(bool startup)
- 
- 		CPU_SET_S(i, cpu_allowed_setsize, cpu_allowed_set);
- 	}
-+	if (debug)
-+		print_cpu_set("allowed set", cpu_allowed_set);
- 
- 	if (!CPU_COUNT_S(cpu_allowed_setsize, cpu_allowed_set))
- 		err(-ENODEV, "No valid cpus found");
-@@ -9683,12 +9715,18 @@ void topology_probe(bool startup)
- 		return;
- 
- 	for (i = 0; i <= topo.max_cpu_num; ++i) {
-+		int ht_id;
-+
- 		if (cpu_is_not_present(i))
- 			continue;
- 		fprintf(outf,
--			"cpu %d pkg %d die %d l3 %d node %d lnode %d core %d thread %d\n",
-+			"cpu %d pkg %d die %d l3 %d node %d lnode %d core %d ht_id %d",
- 			i, cpus[i].package_id, cpus[i].die_id, cpus[i].l3_id,
- 			cpus[i].physical_node_id, cpus[i].logical_node_id, cpus[i].core_id, cpus[i].ht_id);
-+		fprintf(outf, " siblings");
-+		for (ht_id = 0; ht_id <= MAX_HT_ID; ++ht_id)
-+			fprintf(outf, " %d", cpus[i].ht_sibling_cpu_id[ht_id]);
-+		fprintf(outf, "\n");
- 	}
- 
- }
-@@ -9829,6 +9867,8 @@ void topology_update(void)
- 	topo.allowed_cores = 0;
- 	topo.allowed_packages = 0;
- 	for_all_cpus(update_topo, ODD_COUNTERS);
-+	if (debug)
-+		fprintf(stderr, "allowed_cpus %d allowed_cores %d allowed_packages %d\n", topo.allowed_cpus, topo.allowed_cores, topo.allowed_packages);
- }
- 
- void setup_all_buffers(bool startup)
+ static bool cdns_mhdp_detect_hpd(struct cdns_mhdp_device *mhdp, bool *hpd_pulse)
 -- 
 2.53.0
 
