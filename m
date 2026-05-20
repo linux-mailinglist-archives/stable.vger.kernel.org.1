@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-250150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI1ZKkgNDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-250150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:36:40 +0200
+	id cIU7ATbsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B1E5987D0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:36:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267135932BC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 608103336EE4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:32:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C15EC31DCB44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D513C140F;
-	Wed, 20 May 2026 16:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFD23F5BDF;
+	Wed, 20 May 2026 16:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbAN/iLa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFeJ1O5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E183BB9EF;
-	Wed, 20 May 2026 16:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D1369D75;
+	Wed, 20 May 2026 16:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294675; cv=none; b=KIL31A+j15KJt8h06vLrSbNLmCun0Nnk6f3ymatzFuujJUft9Iran+MNxVspShUHgdtvKpeEHXkXyUtRgvJR3kQQ7WrnBPgrwGo1RMxuuWMpmsEqDapNvZvs1aObccxA3VQT6Xlkt8u3uMB01G8rS8MR205mmVgCNq7godVwQrE=
+	t=1779294565; cv=none; b=U7JF5vejmyqro9wF1dESRhC5Ze8gtUWyz7pF5HLxyTlueGXFJDLTviOgUMPZImiRbxst2QHWGTKOWHwLeyAzuC0Jr86/u409n7Nj9jNrn/40BzMdBwpDk+bGhXEIuKYuaxgMgVC//IWEm112YOn9/AYctR8LAJXZ27kM3Qdip+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294675; c=relaxed/simple;
-	bh=Ex+hEZwXGynXlTDQmnUpoC1xlMbieK5BNdezUXCG/Xs=;
+	s=arc-20240116; t=1779294565; c=relaxed/simple;
+	bh=8dv+fPHKEanIGB/jeuekh456UKLoJSlmIllgiwQatVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBxaO+6OxEY2Ie0W4wCuUJRLbOWoanDsh8jgsLo9VLzi59DODkCIgTSOfT+Tir174VtqpFo9wOJJyllYw7y7l3N34A6hal2Gqamnv4LeqlXmPytBOjVSMQUmGqMstibXZn7MIYq7kK6uvzoNOjaU4w03S6uY6giPa7P9IxAZMTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbAN/iLa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF631F000E9;
-	Wed, 20 May 2026 16:31:13 +0000 (UTC)
+	 MIME-Version; b=NLIgrlSS+YWW5Sfbba3Duv3b18jrU9Ly6pXmLAHY0I7g4KaL7L/XqoZjm8MY0kbKxh26yk/M8GTgQ4xdXJULHTilBzJ7JM/9fh+4drzmXSTqfx86NQ2l+d45YF4UwpiRCcAz9LojvQvpc6raMBIeHbiteZe/tCTjt4VH/hYJP9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFeJ1O5y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0A11F00893;
+	Wed, 20 May 2026 16:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294674;
-	bh=37ZmLhiQ6vo19jya6vJsFK1YdeRUMDJP/eRAYC53hI8=;
+	s=korg; t=1779294563;
+	bh=dVZS8q5Se7ZM2klkUdrzc9tGk1pguj+T5Sa/85bSIQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KbAN/iLav04AHAMLXxTem3W9yuel9BRtwhtq0pWaffYhg1mOA5vtgMMQ2QEvFqwmA
-	 VekZx1fwB4cqVorY+msbMv4zYiN4TI50KutXM6aMkUCdhnO53AP6O/HSDNpT+bcb8O
-	 ONgYG/6e1qZjB6Efb4bl+o5kLNkiumF4PWichm9s=
+	b=CFeJ1O5yiBCVcjsduN7gmWmgZAidWZ2sTTZGSZIyJyy048q2lMSXIfZu9i890pWqN
+	 lbSd/8Qxs+mg6Q11DhL4YUeunN+9cnEP6rQTw32EOx8kiqzkeUxUsucNQMOLyqCZtx
+	 vi0+Q2kcx/i1Dvdulas1x0c3xyoaNvVokiiuRTNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0079/1146] dpaa2: compile dpaa2 even CONFIG_FSL_DPAA2_ETH=n
-Date: Wed, 20 May 2026 18:05:29 +0200
-Message-ID: <20260520162150.142801982@linuxfoundation.org>
+Subject: [PATCH 7.0 0080/1146] s390/bpf: Zero-extend bpf prog return values and kfunc arguments
+Date: Wed, 20 May 2026 18:05:30 +0200
+Message-ID: <20260520162150.164723565@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,31 +70,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250150-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250108-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: E4B1E5987D0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 267135932BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,40 +101,101 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 97daf00745f7f9f261b0e91418de6e79d7826c36 ]
+[ Upstream commit 202e42e4aa890172366354b233c42c73107a3f59 ]
 
-CONFIG_FSL_DPAA2_ETH and CONFIG_FSL_DPAA2_SWITCH are not
-associated, but the compilation of FSL_DPAA2_SWITCH depends on
-the compilation of the dpaa2 folder. The files controlled by
-CONFIG_FSL_DPAA2_SWITCH in the dpaa2 folder are not controlled
-by CONFIG_FSL_DPAA2_ETH, except for the files controlled by
-CONFIG_FSL_DPAA2_SWITCH. Therefore, removing the restriction will
-not affect the compilation of the files in the directory.
+s390x ABI requires callers to zero-extend unsigned arguments and
+sign-extend signed arguments, and callees to zero-extend unsigned
+return values and sign-extend signed return values.
 
-Fixes: f48298d3fbfaa ("staging: dpaa2-switch: move the driver out of staging")
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Link: https://patch.msgid.link/20260312065907.476663-3-caixinchen1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+s390 BPF JIT currently implements only sign extension. Fix this
+omission and implement zero extension too.
+
+Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
+Reported-by: Hari Bathini <hbathini@linux.ibm.com>
+Closes: https://lore.kernel.org/bpf/20260312080113.843408-1-hbathini@linux.ibm.com/
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Link: https://lore.kernel.org/r/20260313174807.581826-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 39 ++++++++++++++++++++++--------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/Makefile b/drivers/net/ethernet/freescale/Makefile
-index de7b318422330..d0a259e47960f 100644
---- a/drivers/net/ethernet/freescale/Makefile
-+++ b/drivers/net/ethernet/freescale/Makefile
-@@ -22,6 +22,5 @@ ucc_geth_driver-objs := ucc_geth.o ucc_geth_ethtool.o
- obj-$(CONFIG_FSL_FMAN) += fman/
- obj-$(CONFIG_FSL_DPAA_ETH) += dpaa/
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index bf92964246eb1..10ab247e1994c 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -830,25 +830,34 @@ static int bpf_jit_probe_post(struct bpf_jit *jit, struct bpf_prog *fp,
+ }
  
--obj-$(CONFIG_FSL_DPAA2_ETH) += dpaa2/
+ /*
+- * Sign-extend the register if necessary
++ * Sign- or zero-extend the register if necessary
+  */
+-static int sign_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
++static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
+ {
+-	if (!(flags & BTF_FMODEL_SIGNED_ARG))
+-		return 0;
 -
-+obj-y += dpaa2/
- obj-y += enetc/
+ 	switch (size) {
+ 	case 1:
+-		/* lgbr %r,%r */
+-		EMIT4(0xb9060000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lgbr %r,%r */
++			EMIT4(0xb9060000, r, r);
++		else
++			/* llgcr %r,%r */
++			EMIT4(0xb9840000, r, r);
+ 		return 0;
+ 	case 2:
+-		/* lghr %r,%r */
+-		EMIT4(0xb9070000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lghr %r,%r */
++			EMIT4(0xb9070000, r, r);
++		else
++			/* llghr %r,%r */
++			EMIT4(0xb9850000, r, r);
+ 		return 0;
+ 	case 4:
+-		/* lgfr %r,%r */
+-		EMIT4(0xb9140000, r, r);
++		if (flags & BTF_FMODEL_SIGNED_ARG)
++			/* lgfr %r,%r */
++			EMIT4(0xb9140000, r, r);
++		else
++			/* llgfr %r,%r */
++			EMIT4(0xb9160000, r, r);
+ 		return 0;
+ 	case 8:
+ 		return 0;
+@@ -1798,9 +1807,9 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 				return -1;
+ 
+ 			for (j = 0; j < m->nr_args; j++) {
+-				if (sign_extend(jit, BPF_REG_1 + j,
+-						m->arg_size[j],
+-						m->arg_flags[j]))
++				if (sign_zero_extend(jit, BPF_REG_1 + j,
++						     m->arg_size[j],
++						     m->arg_flags[j]))
+ 					return -1;
+ 			}
+ 		}
+@@ -2555,7 +2564,7 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
+ 	EMIT6_PCREL_RILB_PTR(0xc0050000, REG_14, p->bpf_func);
+ 	/* stg %r2,retval_off(%r15) */
+ 	if (save_ret) {
+-		if (sign_extend(jit, REG_2, m->ret_size, m->ret_flags))
++		if (sign_zero_extend(jit, REG_2, m->ret_size, m->ret_flags))
+ 			return -1;
+ 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
+ 			      tjit->retval_off);
 -- 
 2.53.0
 
