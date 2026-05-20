@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEVlHKUcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:13 +0200
+	id cKYfJJb7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC856599F4D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3493B595DDA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 614C73216193
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C73603051AD2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD2312825;
-	Wed, 20 May 2026 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B283F4DC0;
+	Wed, 20 May 2026 18:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHKO2K6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpy9vvAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A2036405A;
-	Wed, 20 May 2026 17:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5923E95A4;
+	Wed, 20 May 2026 18:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298464; cv=none; b=bDJs62QUSyc0VzuZLh4lZvcYhRLHkcBccjTyJrNEQfav1ybm55eP6HE4s8241CAvd43lkZoOihY5Edak3b9FtcuBPSlf6wNrnOlk8K02pQvOoabrnR6sYqVLi2gS60RGcQygnpmm5WC6RtgC69lckgv5PSVE7YGM02mkvrb8S/Q=
+	t=1779300217; cv=none; b=Xr9zGP7KAEgzWPNDtQnyhlyCMz+nDTrhIe2WNA1GnwplAhWPGRngDeT9QbtYVx3pTYPrcspwtmOn/+QadFvhvtjyE6TPabCajOnC4P7BYNRI6cyW3fTIat+AtnZgAw/4hcOThEWb9PKBdzszuLKpoYveibVApCdk0eMK7ukMVcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298464; c=relaxed/simple;
-	bh=V2FQ/7SxywDFJY91/cIdFhH9DXMiDR10aF73zq5EwF4=;
+	s=arc-20240116; t=1779300217; c=relaxed/simple;
+	bh=i6cbsgP9ED9xxD+HrfMXY+A3gQOenJk7fmIgoLuT9DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5uPuKxU0HDtqbCLEvl7ZK7HydTgyAp9Wjbzp79x3yJ0EYHyhxKRrc12RhaWj5CEDokT1M0FbBOxN0KpWF6KsVncSGtSrl7Rz9ydF4rUzmIMmN1mYGC1oyCPpP5LDYHPi9gjhq8x+KyBi2EoVbXuyoSLL50Ne2vL+7ZNJjDw4mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHKO2K6h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC441F000E9;
-	Wed, 20 May 2026 17:34:22 +0000 (UTC)
+	 MIME-Version; b=O63JyPk/i+L/q/yFTzjpqC7H0/MOYnQJ1e+oELLsYqcOXwxIE72pOUgFFQqD/bBv6If1N68ILIIZly1ESY76cFAlbLrCiIO23qfIpGkfPZpRr4z3IWU06eVuJFyQPfs/bu/+PD0BoOILKEN9+g4vyQCHALz9kRf+yUBdJLYDZwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpy9vvAF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249BB1F000E9;
+	Wed, 20 May 2026 18:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298463;
-	bh=BDG05JBKKmQw/f4nKIxr+N/19zi0BbQx1bb3hrop3B4=;
+	s=korg; t=1779300216;
+	bh=msYA/8Y6P40jvZ3+BUXjGFvu1C/YBuIndcGc3o38pgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tHKO2K6hcxDlKXrEVSYXINgtxQInXJqyLDuA5rGkSMaA/p/sffNGgCWcTtwLAx2wg
-	 i7nxBJStNZ640+uFBHp66MqGBTE1TfQTQ4jjScpMg1Ua4wR+15JjjjE2UaIouMG4+T
-	 QH33vkJqsbRuMAiSTQ0XkUsHPkBa0kGatv83jcWQ=
+	b=mpy9vvAF/RoFSZXyDAW8seDSC3YEcwvFP6ty6cqws5WNZzDu/miYZwfOSL0RxqG6t
+	 ltWsxB0q60CWxlsbrPYu2BTH7sf66wPB8C8ymJj1JZMOsDjHtZQFyoLD5IUinPk75U
+	 sYKo4iQa+iCmq5mg3qeDFuLVHQCviwmnxW9cixh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 420/957] arm64: dts: lx2160a: remove duplicate pinmux nodes
+Subject: [PATCH 6.12 092/666] net: airoha: Implement BQL support
 Date: Wed, 20 May 2026 18:15:03 +0200
-Message-ID: <20260520162143.629966265@linuxfoundation.org>
+Message-ID: <20260520162113.219625243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251623-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252263-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[solid-run.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,0.31.149.240:email]
-X-Rspamd-Queue-Id: BC856599F4D
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3493B595DDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 325ca511ca3dda936207ce737e0afe837d45a674 ]
+[ Upstream commit 1d304174106c93ce05f6088813ad7203b3eb381a ]
 
-LX2160A pinmux is done in groups by various length bitfields within
-configuration registers.
+Introduce BQL support in the airoha_eth driver reporting to the kernel
+info about tx hw DMA queues in order to avoid bufferbloat and keep the
+latency small.
 
-The pinmux nodes i2c7-scl-pins and i2c7-scl-gpio-pins are duplicates of
-i2c6-scl-gpio and i2c6-scl-gpio-pins, writing to the same register and
-bits.
-
-These two i2c buses i2c6/i2c7 (IIC7/IIC8) are configured together in
-register RCWSR13 bits 3-0.
-
-Drop the duplicate node name and change references to the i2c6 node.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20241012-en7581-bql-v2-1-4deb4efdb60b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 656121b15503 ("net: airoha: Add missing RX_CPU_IDX() configuration in airoha_qdma_cleanup_rx_queue()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 79a22f53afc50..6d21982e057b3 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -862,8 +862,8 @@ i2c7: i2c@2070000 {
- 			clocks = <&clockgen QORIQ_CLK_PLATFORM_PLL
- 					    QORIQ_CLK_PLL_DIV(16)>;
- 			pinctrl-names = "default", "gpio";
--			pinctrl-0 = <&i2c7_scl>;
--			pinctrl-1 = <&i2c7_scl_gpio>;
-+			pinctrl-0 = <&i2c6_scl>;
-+			pinctrl-1 = <&i2c6_scl_gpio>;
- 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
-@@ -1781,14 +1781,6 @@ i2c6_scl_gpio: i2c6-scl-gpio-pins {
- 				pinctrl-single,bits = <0x4 0x1 0x7>;
- 			};
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 7a85550e5ecb3..268d3050c0178 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -1729,9 +1729,11 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
+ 			WRITE_ONCE(desc->msg1, 0);
  
--			i2c7_scl: i2c7-scl-pins {
--				pinctrl-single,bits = <0x4 0x2 0x7>;
--			};
--
--			i2c7_scl_gpio: i2c7-scl-gpio-pins {
--				pinctrl-single,bits = <0x4 0x1 0x7>;
--			};
--
- 			i2c0_scl: i2c0-scl-pins {
- 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
- 			};
+ 			if (skb) {
++				u16 queue = skb_get_queue_mapping(skb);
+ 				struct netdev_queue *txq;
+ 
+-				txq = netdev_get_tx_queue(skb->dev, qid);
++				txq = netdev_get_tx_queue(skb->dev, queue);
++				netdev_tx_completed_queue(txq, 1, skb->len);
+ 				if (netif_tx_queue_stopped(txq) &&
+ 				    q->ndesc - q->queued >= q->free_thr)
+ 					netif_tx_wake_queue(txq);
+@@ -2510,7 +2512,9 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	q->queued += i;
+ 
+ 	skb_tx_timestamp(skb);
+-	if (!netdev_xmit_more())
++	netdev_tx_sent_queue(txq, skb->len);
++
++	if (netif_xmit_stopped(txq) || !netdev_xmit_more())
+ 		airoha_qdma_rmw(qdma, REG_TX_CPU_IDX(qid),
+ 				TX_RING_CPU_IDX_MASK,
+ 				FIELD_PREP(TX_RING_CPU_IDX_MASK, q->head));
 -- 
 2.53.0
 
