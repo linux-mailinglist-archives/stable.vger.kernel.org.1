@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMHIMAH9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:13 +0200
+	id QHqUC3jqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E9559631C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D6B592F6C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C20603047AD8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11052307750A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5B13FBEA2;
-	Wed, 20 May 2026 18:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D9A28DC4;
+	Wed, 20 May 2026 17:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clD9Gz4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/e80+wH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1499E3FB7EE;
-	Wed, 20 May 2026 18:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5254D61FFE;
+	Wed, 20 May 2026 17:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300684; cv=none; b=CEfXFtR6xl0T+U27fPJm2DWvx4Ri53/Gp7/qSZIfLMmaIvZ1Euq2nk0nP32+61FBBHltqzBxI7IGXGLR8IP/KrHhFh6RZVXFsc87PEGvCKFU8MYf4GCrcpiAV5jnMfhbOS5hX+xlkkcJVjGKs2eD5tN/CCxltdVsSsOZ2ULj0PM=
+	t=1779296631; cv=none; b=TmodpxL3G3t3lVU8RiCNDRTUPntfdxQiog2XrCUGbOVyf9rGTPjoG42oZolDt32EcNHP0N8jzmZrgTq+MdGTUbZch05TnfEx3OHzGdilbTm09jhD1uZOi/wJ2HwFYUTnv1UFTWFq8cVQxSCGJ8lvBRbhjDfTfGCZaUyYYIspmUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300684; c=relaxed/simple;
-	bh=1C7QZZEs5Ocqa07oG0ky/DT5M6lapBC6eRVKR1343wU=;
+	s=arc-20240116; t=1779296631; c=relaxed/simple;
+	bh=EXtHMObZJq+XpifWR7Vlsg5cozde5yAdNMXd2+5Fd68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8yxUz7gmURktGvRBMNGKI1SW7XgHOckM46P9hW9CngiUe5opxfZ7wX56XZ6Kb4FPdjvueYFbqp+/+1m5lBMDY1D+7uk4yu/wcHLIEDYN4V/br8IbP27W52lOVUU8FcAWYSrnl5Sn2PQIeGRj1nSDJQ9YCcB4eP6fbDF9xc/VZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=clD9Gz4E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F9A1F000E9;
-	Wed, 20 May 2026 18:11:22 +0000 (UTC)
+	 MIME-Version; b=L8oNbVpsWA26uR+Og5ANElA8IPI4qf7+TdZMO5LAKfueMEUkYIhafZwLDrg3g7LDXqjKsYaeD+RHVZqvXy1TJNhnoVF3s1p/iPFydRrH+HVXeAn0b10vxmYqPms1vl2wIiT22JFgHElmczzA9vnTtcVLlH+gw3Qvu24xWcvqxCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/e80+wH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE211F000E9;
+	Wed, 20 May 2026 17:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300683;
-	bh=wfpGbgENj9fwGpB5B5eDyzYoucDV0xFEceL0EVPkLoM=;
+	s=korg; t=1779296630;
+	bh=mTl4n3O/cDFQxJefUyTJtOVBriVgdQ0CJJyWtxac4SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=clD9Gz4E+cU/omjz8hSH4vvUGJwGoD3GVDLGQfaWBgNngLQ2FMqDX2fIQGJaAIBNA
-	 lOuB7hC89Q/dnJHa7kDo2o7IxyEkaMuSxLYOJeIx4JwB2v4zOx3a98GtfxRB+A6glp
-	 uxWiYsK9MircLSbPE9B/jKWrc9GX2kdU2k7b++yU=
+	b=M/e80+wH9xMLrwOSczxl8WaAxFRbn5PbNUSS/yXs6pDrWv3prfslFGTscQh9Hx9Sa
+	 ozlrKkob8x6ckXPdmd8YbsyWY1cWi0ZVomFBIG+puRmxRQz+4+9JKgrRCEP7UZUB5b
+	 tsIPeLF+Scyrn67YLgqYUuVtBMPW8r324IFIywLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Simon Horman <horms@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/666] arm64: dts: imx8mp-evk: Enable pull select bit for PCIe regulator GPIO (M.2 W_DISABLE1)
+Subject: [PATCH 7.0 0830/1146] net: validate skb->napi_id in RX tracepoints
 Date: Wed, 20 May 2026 18:18:00 +0200
-Message-ID: <20260520162117.046982148@linuxfoundation.org>
+Message-ID: <20260520162207.015068275@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +70,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250912-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252442-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 70E9559631C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email]
+X-Rspamd-Queue-Id: A8D6B592F6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit d1e7eab6033f9885a02c4b4e8f09e34d8e9d21ab ]
+[ Upstream commit 3bfcf396081ace536733b454ff128d53116581e5 ]
 
-The current pin configuration for MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06
-sets the weak pull-up but does not enable the pull select field.
-Bit 8 in the IOMUX register must be set in order for the weak pull-up
-to actually take effect.
+Since commit 2bd82484bb4c ("xps: fix xps for stacked devices"),
+skb->napi_id shares storage with sender_cpu. RX tracepoints using
+net_dev_rx_verbose_template read skb->napi_id directly and can therefore
+report sender_cpu values as if they were NAPI IDs.
 
-Update the pinctrl setting from 0x40 to 0x140 to enable both the pull
-select and the weak pull-up, ensuring the line behaves as expected.
+For example, on the loopback path this can report 1 as napi_id, where 1
+comes from raw_smp_processor_id() + 1 in the XPS path:
 
-Fixes: d50650500064 ("arm64: dts: imx8mp-evk: Add PCIe support")
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+  # bpftrace -e 'tracepoint:net:netif_rx_entry{ print(args->napi_id); }'
+  # taskset -c 0 ping -c 1 ::1
+
+Report only valid NAPI IDs in these tracepoints and use 0 otherwise.
+
+Fixes: 2bd82484bb4c ("xps: fix xps for stacked devices")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260420105427.162816-1-kohei@enjuk.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-evk.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/events/net.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-index d26930f1a9e9d..2f1ef1b188bed 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-@@ -947,7 +947,7 @@ MX8MP_IOMUXC_SD1_DATA5__GPIO2_IO07	0x40
+diff --git a/include/trace/events/net.h b/include/trace/events/net.h
+index fdd9ad474ce3a..dbc2c5598e35a 100644
+--- a/include/trace/events/net.h
++++ b/include/trace/events/net.h
+@@ -10,6 +10,7 @@
+ #include <linux/if_vlan.h>
+ #include <linux/ip.h>
+ #include <linux/tracepoint.h>
++#include <net/busy_poll.h>
  
- 	pinctrl_pcie0_reg: pcie0reggrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x40
-+			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x140
- 		>;
- 	};
+ TRACE_EVENT(net_dev_start_xmit,
  
+@@ -208,7 +209,8 @@ DECLARE_EVENT_CLASS(net_dev_rx_verbose_template,
+ 	TP_fast_assign(
+ 		__assign_str(name);
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+-		__entry->napi_id = skb->napi_id;
++		__entry->napi_id = napi_id_valid(skb->napi_id) ?
++				   skb->napi_id : 0;
+ #else
+ 		__entry->napi_id = 0;
+ #endif
 -- 
 2.53.0
 
