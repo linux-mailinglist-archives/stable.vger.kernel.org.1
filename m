@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOP5NM79DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:38 +0200
+	id aObFJ7j8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9CD59665E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8065961EE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 101F831C1ED1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16DFA3603445
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A1A29B8D0;
-	Wed, 20 May 2026 18:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E101F3B0AD6;
+	Wed, 20 May 2026 17:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbwkGrWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v01C2PXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8574F3F9267;
-	Wed, 20 May 2026 18:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93883546C8;
+	Wed, 20 May 2026 17:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300932; cv=none; b=UzEowyY2CXeO7mA3CqnBXekRm5peyAuPbP6YadrZl6b5TVjEH3dC5VcLh9l4d0/kxR8l4Uo5rfLHNwVQIeJGsslhNmZrh8DGQgO5hwtUbnT1A9QbiFVfxcUFVPlWC64O4z1mFVULKolhSST6c49XSxDgt6BAypg5KXAi4pNMDgw=
+	t=1779299178; cv=none; b=tctcgKvj66Cm9Fyfzt4BM9/lnOsLrLo1etjAbPElTylIDiJ8dUoZfCqmDxjattNMmBDR0mUE84zLOfM0XFzz/lFTnpn0sAbEZjRXI3J/GEzBNx/o7rvleZ4VKi4PH6+cV7wdN3iZ83NRv3yiy2me4TmqufzVTO5UtG5361bBByA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300932; c=relaxed/simple;
-	bh=0EGPbw5Ppi+3ZnedbSBW+ilcQC91AwDsWWJNjVcMV00=;
+	s=arc-20240116; t=1779299178; c=relaxed/simple;
+	bh=zIawil63On3d5YS4qVpuyVnSFEHb2VGH//mjpB62ueU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDH8PqhYV4hpyBv5qswmMzUGqIC18ntqZE+7SmEG01iBYfjnP0sCG6LTwgz7NfZTuX4rYnszJIzwPHycQvbQHUmePs76BmkYSJLDAz0A93/El0CiE6R2L2QT7NDPBUIDjxplP7M2WR5YnIZAlt1yb0mwTHwSsnYfxCACP5vEv7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbwkGrWG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7221F00893;
-	Wed, 20 May 2026 18:15:29 +0000 (UTC)
+	 MIME-Version; b=BVoScN9gyCuCtgm37tUrrPk8q2rsndcCl+18EfCbJmtmnMETWCL9wnF9MeU2FshRP0zlzsxsUHMrsJooqXEFWgoFSrWvxca209EoySsXWdWAZu8srwD/gvu+MqgtenHq9dNIu6JstAxYcL88aA2cwGKS7Qhin5k5HxgLCU8oJx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v01C2PXc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2FF1F000E9;
+	Wed, 20 May 2026 17:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300930;
-	bh=AUW9FocTBwIoFGVq6i9zE+itWSxsR2Wr8wTxxsibWnM=;
+	s=korg; t=1779299177;
+	bh=0pVoIVrNZwfWn91wgMT0RHq2tEJd5ybfk+DKlYQSq7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbwkGrWGoL3bUUZmWPntYklg2JaqiptwHejyNHhXj7EN3YUDX+7EgP2YYWb7qakJA
-	 B7mQRrKvwCXfx/VpO0PGayeiDmo7AfXUhcRAr/5DpL1kSbtoAgNub+1RF8odgr+0a1
-	 Bp99Hl6HfiHXJdiinvU7ueA/LGNRiTFNMGDhhkko=
+	b=v01C2PXc/0fqk2wMGjfkzXiRm2V8IM42jfFCy41WqhYVneIXUR1FQ4V7P90FQ7YZ8
+	 UcK+D6rZvX3I6C3gSPPylFgNxMIk8enlZQTETb6vBKELIb3MgIflfJbSqPc49KtHtu
+	 AaEhvhFAdY0rSZOwVLIamzmiYamhpd907e4sRqLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 362/666] perf branch: Avoid incrementing NULL
-Date: Wed, 20 May 2026 18:19:33 +0200
-Message-ID: <20260520162119.083691955@linuxfoundation.org>
+Subject: [PATCH 6.18 691/957] net: airoha: ppe: Dynamically allocate foe_check_time array in airoha_ppe struct
+Date: Wed, 20 May 2026 18:19:34 +0200
+Message-ID: <20260520162149.524845619@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251899-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252536-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BF9CD59665E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 3D8065961EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit c969a9d7bbf46f983c4a48566b3b2f7340b02296 ]
+[ Upstream commit 6d5b601d52a27aafff555b480e538507901c672c ]
 
-If the entry is NULL the value is meaningless so early return NULL to
-avoid an increment of NULL. This was happening in calls from
-has_stitched_lbr when running the "perf record LBR tests". The return
-value isn't used in that case, so returning NULL as no effect.
+This is a preliminary patch to properly enable PPE support for AN7583
+SoC.
 
-Fixes: 42bbabed09ce ("perf tools: Add hw_idx in struct branch_stack")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-2-f28319666667@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3309965fe44c ("net: airoha: Add missing bits in airoha_qdma_cleanup_tx_queue()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/branch.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
+ drivers/net/ethernet/airoha/airoha_ppe.c | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/branch.h b/tools/perf/util/branch.h
-index b80c12c74bbbe..90f76910b23fb 100644
---- a/tools/perf/util/branch.h
-+++ b/tools/perf/util/branch.h
-@@ -65,6 +65,9 @@ static inline struct branch_entry *perf_sample__branch_entries(struct perf_sampl
- {
- 	u64 *entry = (u64 *)sample->branch_stack;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 054fe86d67bd1..9929c44d84702 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -548,7 +548,7 @@ struct airoha_ppe {
+ 	struct rhashtable l2_flows;
  
-+	if (entry == NULL)
-+		return NULL;
+ 	struct hlist_head *foe_flow;
+-	u16 foe_check_time[PPE_NUM_ENTRIES];
++	u16 *foe_check_time;
+ 
+ 	struct airoha_foe_stats *foe_stats;
+ 	dma_addr_t foe_stats_dma;
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index e9994c794c703..072cc2dd50dda 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1538,6 +1538,11 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 			return -ENOMEM;
+ 	}
+ 
++	ppe->foe_check_time = devm_kzalloc(eth->dev, PPE_NUM_ENTRIES,
++					   GFP_KERNEL);
++	if (!ppe->foe_check_time)
++		return -ENOMEM;
 +
- 	entry++;
- 	if (sample->no_hw_idx)
- 		return (struct branch_entry *)entry;
+ 	err = rhashtable_init(&eth->flow_table, &airoha_flow_table_params);
+ 	if (err)
+ 		return err;
 -- 
 2.53.0
 
