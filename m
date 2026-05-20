@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBJcN2znDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:08 +0200
+	id cLMhC3QbDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63781592A3A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 947E1599D63
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6FE16303E8F1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A46A632F64FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAD331A575;
-	Wed, 20 May 2026 16:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4B5369999;
+	Wed, 20 May 2026 17:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6ECWlSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRxsomrU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B6D33A9CF;
-	Wed, 20 May 2026 16:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CC33D8137;
+	Wed, 20 May 2026 17:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295646; cv=none; b=pnTpsoBZ881rDXJUklMUUDSb1gcAjfQedqCcERtS/WItXNuMP8s2MAyQn0XQxvKLCCa2hSZIRqgcmbsGD1nt5eYoL3GtUUinSLi+MveKhOVg8KrudBExUGEa7W3d4jy2hnNFoaUoyE2sU1cQ7iw/SPx1ly/OxvQFLbVfx1v5nbU=
+	t=1779298166; cv=none; b=D3HdBA3CsuN2exS0h322Qx/jP/p0SQ/dzwZX81f4MKSjxs6tbifervcKRzlagIEmCMJdbTM/xOKtWfvn9eGM+BLDZ9wqfalPy1GCdr3SzaDh221M1LJcNATRkTGzfPOuIfyuaKP3XvSNOC/UJBxg6h3I025diTjj2o0lFI0z8xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295646; c=relaxed/simple;
-	bh=B6XRtMW3guKzMkCbYQnBMMfuRKFckqenLuU3PpDhPfo=;
+	s=arc-20240116; t=1779298166; c=relaxed/simple;
+	bh=Sm7oZG751OzxnWdUTump7lfhwm+Q63eyTOOo+nL3bK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfRUQ3H1NWfVvRmcetAC38bnF2mzqShBV8efDlmp7Go7m97hwavv2Wa2ilynHQi6BNTkWrSu/ha39Xr1OCq/XLXLnPaPEbGRY91sFjQ32Ea00LwcBu0SYhjdFMp9KYZC2f3KK3mu1KAAKdwosBkzbf04oGeo7HywGDZjTj/ExsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6ECWlSx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAE71F000E9;
-	Wed, 20 May 2026 16:47:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eujM3X8TWL+b9bX/vynmcVBLnEZM5BmmxtkdUi91QbFMa0AHowIcNfJpjV/eDKuAQh2oTc6/RGMBEXOCgSSS6izIEQgY+9ef2dhcF4X8VQ/C6YSFDyl4Vc8BlwXIKGTXsN8L2L9EXWE0pS2WnxuJ0KqeDk6J3JU7fds89qskxjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRxsomrU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5EE1F000E9;
+	Wed, 20 May 2026 17:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295645;
-	bh=GYJTOPh/h3/LYdixn5Y9E844xPLT9W7JoMtNc3MZb8I=;
+	s=korg; t=1779298165;
+	bh=jv5JDZR+bEI4TRmwJgKiZTLiFl4nRct1hKVezLmEVYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M6ECWlSx70Mdwf9gcGwFaIwMBJgUHh8ObsMv7n43MrDrxYorDamJMA0Pnxb20MWgV
-	 7+xqBPWP4LWOWsMKmULw5kQ8eeeNrEkePsvHc3QU/Z2/OKwfSWSIRFJnAOjLEICfCO
-	 jaTv1gbXFrNfz2FT1ZcdKkLJ+3MnnlGpRB+bV8P8=
+	b=tRxsomrUoObp1Hcz5ExSJjH5jR/YQqi0qpysIIxh084O2jmja4fzgc4u3fW7eKf2k
+	 DU1SV7H4QuFkEHMGM9s/D5TEbEnKR2zskUpOQaFrI1m8FV0ivHjZ9aFRpQ3n2wlyBC
+	 3cQoZrT2f+VhN+QTGnomO/MSrOtmlftvctdUGmEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Wang <wangming5719@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0498/1146] arm64: dts: rockchip: Fix Bluetooth stability on LCKFB TaiShan Pi
+Subject: [PATCH 6.18 265/957] drm/amd/pm/ci: Fill DW8 fields from SMC
 Date: Wed, 20 May 2026 18:12:28 +0200
-Message-ID: <20260520162159.462815010@linuxfoundation.org>
+Message-ID: <20260520162140.291038681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250528-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sntech.de,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251509-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 63781592A3A
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 947E1599D63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Wang <wangming5719@gmail.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 861a9593e10bb6ab2a492b315c8a2a3aad70ac00 ]
+[ Upstream commit baf28ec5795c077406d6f52b8ad39e614153bce6 ]
 
-The AP6212 WiFi/BT module on the LCKFB TaiShan Pi (RK3566) is prone to
-communication timeouts and reset failures (error -110) when operating at
-3 Mbps.
+In ci_populate_dw8() we currently just read a value from the SMU
+and then throw it away. Instead of throwing away the value,
+we should use it to fill other fields in DW8 (like radeon).
 
-This patch stabilizes the Bluetooth interface by:
-1. Updating the compatible string to 'brcm,bcm43430a1-bt' to better reflect
-   the actual chip revision used in the AP6212 module.
-2. Lowering the maximum UART baud rate from 3,000,000 to 1,500,000 bps.
-   Tests show that 1.5 Mbps is the reliable upper limit for this board's
-   UART configuration, eliminating the initialization timeouts.
+Otherwise the value of the other fiels is just cleared when
+we copy this data to the SMU later.
 
-Fixes: 251e5ade9ba4 ("arm64: dts: rockchip: add dts for LCKFB Taishan Pi RK3566")
-Signed-off-by: Ming Wang <wangming5719@gmail.com>
-Link: https://patch.msgid.link/20260206090453.1041919-1-wming126@126.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-lckfb-tspi.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lckfb-tspi.dts b/arch/arm64/boot/dts/rockchip/rk3566-lckfb-tspi.dts
-index ed65d31204446..18a560a6e2a4a 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-lckfb-tspi.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-lckfb-tspi.dts
-@@ -635,10 +635,10 @@ &uart1 {
- 	status = "okay";
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index 1494143132eb5..aea3ad523cc03 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -543,12 +543,11 @@ static int ci_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
+ {
+ 	struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
+ 	const struct ci_pt_defaults *defaults = smu_data->power_tune_defaults;
+-	uint32_t temp;
  
- 	bluetooth: bluetooth {
--		compatible = "brcm,bcm43438-bt";
-+		compatible = "brcm,bcm43430a1-bt";
- 		clocks = <&rk809 1>;
- 		clock-names = "lpo";
--		max-speed = <3000000>;
-+		max-speed = <1500000>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&bt_host_wake_l &bt_wake_l &bt_enable_h>;
- 		shutdown-gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_HIGH>;
+ 	if (ci_read_smc_sram_dword(hwmgr,
+ 			fuse_table_offset +
+ 			offsetof(SMU7_Discrete_PmFuses, TdcWaterfallCtl),
+-			(uint32_t *)&temp, SMC_RAM_END))
++			(uint32_t *)&smu_data->power_tune_table.TdcWaterfallCtl, SMC_RAM_END))
+ 		PP_ASSERT_WITH_CODE(false,
+ 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
+ 				return -EINVAL);
 -- 
 2.53.0
 
