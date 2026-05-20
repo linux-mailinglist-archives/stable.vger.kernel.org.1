@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNe2AYr3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-250763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:54 +0200
+	id cPxwIvryDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1002259532D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F99E594729
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF50430416D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 197CC3109E9A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DF43D8103;
-	Wed, 20 May 2026 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FE63D75C7;
+	Wed, 20 May 2026 17:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQGXkmpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1jKtY7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35833D8129;
-	Wed, 20 May 2026 16:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0E515E8B;
+	Wed, 20 May 2026 17:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296254; cv=none; b=g40644JhvIndcRVt1ce4C8Nye9fEh/SxV0ix0Bvj/jNr1psuDq9CVwQAXcRwmo+OWYEvCuIK98Zg15tPSXIu4wrBAzFWMHG5gyDWq7PP1mGxjps7NrFtbXoWeZ7RNbW04RYv3Z0yC1y0E2KpDhXZ4sWyjpjOkFsVX0T/6OLzpMY=
+	t=1779298657; cv=none; b=b9WForIn6MRMaF2Z3a57VjhyxaP3gAsTR5elSbYSu0RG1e45+7N7VWacB6XQQAdZ6Jb9KpMxaqzbr2IDxZpa09qkFZDCTP8bIC0pu31fkHV9g7yGFFb3cxnK+n7JNKVCHD7tJLYRo9J2+axmgRlC01KCdcxXD9whQRfsqsiJHN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296254; c=relaxed/simple;
-	bh=Ys3GzXCMqwuOIFbibxoIf9qRU+NeUon/ZNxa2Xo9pfQ=;
+	s=arc-20240116; t=1779298657; c=relaxed/simple;
+	bh=4ZZU91mx0HFY55MMAd+rj38qapUduNYfgw1TW+AUwO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sB6SVtEPfg37tosyBewqmKPWuxvpGRRgItJCk/En+avVhXST+TXxlWEL468Edcw54+TlgVxPbqqSnyxjai3ybg05KmUZbaCveejDCbIhqXGoOf5v0zPKdmb6EFwKEf6vpdk+vo2AWEJLKuHs3QaLmg730tG481K+QFW8Ft0q2E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQGXkmpT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC4F1F000E9;
-	Wed, 20 May 2026 16:57:31 +0000 (UTC)
+	 MIME-Version; b=uw+L9U1UY4vaEuI2lEg88Bi2cNuh0POWYIz5aTMN62b/O8kWk+Ots/iPqRfZ4OhNW6uKa3lZMXYK98ttLd9yFrIy8E774qA57/LOwyJLAxJ/cJ/juFYjY4WMUFgJQEBC/cLId7v4vkK/VNV2WoIKPmuX8+hGx1gOcirL7hTwMUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1jKtY7J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62AB1F000E9;
+	Wed, 20 May 2026 17:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296252;
-	bh=YNgF2SXFFUmBy4Vtm1VVEmD4IUmXj0vke7iysudoFfg=;
+	s=korg; t=1779298656;
+	bh=mHqf1VDMp3r3m7tV69UMCzSDJH7qslYvG95flz3MHgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EQGXkmpTjnc7IqyMsg3UuRKbl7fyFB82eO2ZfsGDXAAP8KZ2/XqWwLpMds87iYSbi
-	 d+7qJY32j7y61umE8dS65R5bYGrW1yDoOceMgYxOZloXQ3AkT7v+cV8Z0BITkwj3k/
-	 YoqEFO6S/3bBaajPkmr0CmY6yXmHQ6ebPcDFKUjA=
+	b=t1jKtY7J387CD6QTtRlm3k/egEk4oyeClw8HA23yAhjMPKy8a97lASHifSXfonQHT
+	 LwXR09ZRAuqhBVdl8SAnyin8/mFjQ20sKPr84UoJZeYEgWHIyX/IvxyryWrFDirzdg
+	 8oLg3wxR5fwWQd/euvXJp8ROcv/cc1+64CXcKohk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianan Huang <huangjianan@xiaomi.com>,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0728/1146] f2fs: avoid reading already updated pages during GC
+Subject: [PATCH 6.18 495/957] bpf: Validate node_id in arena_alloc_pages()
 Date: Wed, 20 May 2026 18:16:18 +0200
-Message-ID: <20260520162204.682332112@linuxfoundation.org>
+Message-ID: <20260520162145.261025026@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250763-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251697-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,107 +86,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 1002259532D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email]
+X-Rspamd-Queue-Id: 1F99E594729
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianan Huang <huangjianan@xiaomi.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 570e2ccc7cb35fe720106964e65060602d3d2ac4 ]
+[ Upstream commit 2845989f2ebaf7848e4eccf9a779daf3156ea0a5 ]
 
-We found the following issue during fuzz testing:
+arena_alloc_pages() accepts a plain int node_id and forwards it through
+the entire allocation chain without any bounds checking.
 
-page: refcount:3 mapcount:0 mapping:00000000b6e89c65 index:0x18b2dc pfn:0x161ba9
-memcg:f8ffff800e269c00
-aops:f2fs_meta_aops ino:2
-flags: 0x52880000000080a9(locked|waiters|uptodate|lru|private|zone=1|kasantag=0x4a)
-raw: 52880000000080a9 fffffffec6e17588 fffffffec0ccc088 a7ffff8067063618
-raw: 000000000018b2dc 0000000000000009 00000003ffffffff f8ffff800e269c00
-page dumped because: VM_BUG_ON_FOLIO(folio_test_uptodate(folio))
-page_owner tracks the page as allocated
- post_alloc_hook+0x58c/0x5ec
- prep_new_page+0x34/0x284
- get_page_from_freelist+0x2dcc/0x2e8c
- __alloc_pages_noprof+0x280/0x76c
- __folio_alloc_noprof+0x18/0xac
- __filemap_get_folio+0x6bc/0xdc4
- pagecache_get_page+0x3c/0x104
- do_garbage_collect+0x5c78/0x77a4
- f2fs_gc+0xd74/0x25f0
- gc_thread_func+0xb28/0x2930
- kthread+0x464/0x5d8
- ret_from_fork+0x10/0x20
-------------[ cut here ]------------
-kernel BUG at mm/filemap.c:1563!
- folio_end_read+0x140/0x168
- f2fs_finish_read_bio+0x5c4/0xb80
- f2fs_read_end_io+0x64c/0x708
- bio_endio+0x85c/0x8c0
- blk_update_request+0x690/0x127c
- scsi_end_request+0x9c/0xb8c
- scsi_io_completion+0xf0/0x250
- scsi_finish_command+0x430/0x45c
- scsi_complete+0x178/0x6d4
- blk_mq_complete_request+0xcc/0x104
- scsi_done_internal+0x214/0x454
- scsi_done+0x24/0x34
+Validate node_id before passing it down the allocation chain in
+arena_alloc_pages().
 
-which is similar to the problem reported by syzbot:
-https://syzkaller.appspot.com/bug?extid=3686758660f980b402dc
-
-This case is consistent with the description in commit 9bf1a3f
-("f2fs: avoid GC causing encrypted file corrupted"):
-Page 1 is moved from blkaddr A to blkaddr B by move_data_block, and after
-being written it is marked as uptodate. Then, Page 1 is moved from blkaddr
-B to blkaddr C, VM_BUG_ON_FOLIO was triggered in the endio initiated by
-ra_data_block.
-
-There is no need to read Page 1 again from blkaddr B, since it has already
-been updated. Therefore, avoid initiating I/O in this case.
-
-Fixes: 6aa58d8ad20a ("f2fs: readahead encrypted block during GC")
-Signed-off-by: Jianan Huang <huangjianan@xiaomi.com>
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 317460317a02 ("bpf: Introduce bpf_arena.")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Link: https://lore.kernel.org/r/20260417152135.1383754-1-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/arena.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index f46b2673d31f5..ec0680187c0db 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1230,7 +1230,7 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- 		.encrypted_page = NULL,
- 		.in_list = 0,
- 	};
--	int err;
-+	int err = 0;
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index c67525847687f..dafa179da0c9c 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -446,6 +446,10 @@ static long arena_alloc_pages(struct bpf_arena *arena, long uaddr, long page_cnt
+ 	u32 uaddr32;
+ 	int ret, i;
  
- 	folio = f2fs_grab_cache_folio(mapping, index, true);
- 	if (IS_ERR(folio))
-@@ -1283,6 +1283,9 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- 
- 	fio.encrypted_page = &efolio->page;
- 
-+	if (folio_test_uptodate(efolio))
-+		goto put_encrypted_page;
++	if (node_id != NUMA_NO_NODE &&
++	    ((unsigned int)node_id >= nr_node_ids || !node_online(node_id)))
++		return 0;
 +
- 	err = f2fs_submit_page_bio(&fio);
- 	if (err)
- 		goto put_encrypted_page;
+ 	if (page_cnt > page_cnt_max)
+ 		return 0;
+ 
 -- 
 2.53.0
 
