@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJoPByUqDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:49 +0200
+	id EA2ZA/zzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8843059B2AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9159F594A2C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 496A039F9DAB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BC8330D29C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52019371048;
-	Wed, 20 May 2026 18:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046B7374178;
+	Wed, 20 May 2026 17:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNDESKm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xd/Yd+gR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4003563E1;
-	Wed, 20 May 2026 18:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3103A3E9C;
+	Wed, 20 May 2026 17:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301775; cv=none; b=jD+kdZKzjRIFDyM3zPx5LtxUflQdld7foGNF3svWduNBj7KgbZH2p3MQ8Wq0jFv8YPwryNtZmnMzAaM4MX2+Oxe5S3qq/N8Dr8GlG52RTVorzfC2hnYtKKnWclrzRQQjER0R3xCOzYDf4RkhHXHzdr5RoDveGp2vuimellcZ3GE=
+	t=1779298820; cv=none; b=n5ANIssTfBowhW14cOCxCsr3xCZ4nLrFlEPO0OF6AEW0t+TkG27xerdOEEOd21W6xFnTok3RrLTKKePNY3nGcZKV0BiB1Laa20LolncPCbI3HsRIce08AUnP9JAK9UX0lQhdaRgGctuvWLfPKzdJuSDx0okfzzLrvxwYyk5OhWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301775; c=relaxed/simple;
-	bh=8gY1jaHf1YLU6q1hnOah+OtOdPbtmP2iQQBPOxXVR2M=;
+	s=arc-20240116; t=1779298820; c=relaxed/simple;
+	bh=oLDP/WWQehSxb+ch3tajseDM8FlDkHTlu5vqpCOCy2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=by2oGGDpvMUViYVd36RuCyLzVquTfrzyxonwG9JPDqBxdVYzFT1P6X8I5NXT4we8Pi8xhO3podDifpN+uw1XuvMzfWJ8K+pMn7PhQrC4G5TIt8oAXgFUh95VG3C1Xzjw3w0mefLblIQMzQzETtQBWHrhXJTsLKrFwwLxIL0551Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNDESKm0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9AF1F00893;
-	Wed, 20 May 2026 18:29:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ymcn95AheQjJaglcRFXb3APXTpPgcmP+s8ePypMPQxCo12VdUS+6L22MXt+csjrDHB0U8NhLkcKm4VFmBgAEnxaLyIYEg6QovhMOLu7/ctcj/R42g/e91jl/INE0sgg95GOpunPc95L0MhsnTHqRUroXu48fJwKeHmhKxXarimU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xd/Yd+gR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311FF1F000E9;
+	Wed, 20 May 2026 17:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301773;
-	bh=TvmBKMtGldcr3p/bEMvVAmfh5EeBSSH5JekKH1Jepu4=;
+	s=korg; t=1779298819;
+	bh=GT81CopjW1m6GdgBSORHGc/l/3EyEVS9QQ7Y9JVRgBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mNDESKm0vrPnMvG11hybK5eVbt+/7UULAjPg03xR31t0a4RaJycigB4GbmeBL4diw
-	 y0QQwPEfnKY0EJVFsGR4QGM9GDgkKEludS5H9daRMukH77ckUusoX6BAlGd5gqLRLn
-	 jdZXZMe8TB5qNYdgiOsdqoI1rjMNBIXPqiLJW/Hc=
+	b=xd/Yd+gRVaaruxftlxB1+hq/54sToVrgrX97U7PQeqpRvKqSA0apMSOsCLGeoqlPb
+	 C1EM91qOVOO5LcqSuipg3cGreTnFtePlHEg1fIaXxq/l7BBM1RHxLXPPrnH784hYZN
+	 M9lGxkkp5BI0c6CE/a17wdd0NV2jBf4sa+Y7Jcq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/508] s390/cio: use generic driver_override infrastructure
+Subject: [PATCH 6.18 556/957] clk: qcom: dispcc-milos: Fix DSI byte clock rate setting
 Date: Wed, 20 May 2026 18:17:19 +0200
-Message-ID: <20260520162058.939084331@linuxfoundation.org>
+Message-ID: <20260520162146.590044293@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251760-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252859-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8843059B2AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 9159F594A2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit ac4d8bb6e2e13e8684a76ea48d13ebaaaf5c24c4 ]
+[ Upstream commit dd5b76257b4048151006620c9895e2f5f0d997eb ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+The clock tree for byte_clk_src is as follows:
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+   ┌──────byte0_clk_src─────┐
+   │                        │
+byte0_clk            byte0_div_clk_src
+                            │
+                     byte0_intf_clk
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+If both of its direct children have CLK_SET_RATE_PARENT with different
+requests, byte0_clk_src (and its parent) will be reconfigured. In this
+case, byte0_intf should strictly follow the rate of byte0_clk (with
+some adjustments based on PHY mode).
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: ebc3d1791503 ("s390/cio: introduce driver_override on the css bus")
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Link: https://patch.msgid.link/20260324005919.2408620-10-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Remove CLK_SET_RATE_PARENT from byte0_div_clk_src to avoid this issue.
+
+Fixes: f40b5217dce1 ("clk: qcom: Add Display Clock controller (DISPCC) driver for Milos")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260304-topic-dsi_byte_fixup-v1-3-b79b29f83176@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/cio.h |  5 -----
- drivers/s390/cio/css.c | 34 ++++------------------------------
- 2 files changed, 4 insertions(+), 35 deletions(-)
+ drivers/clk/qcom/dispcc-milos.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
-index a9057a5b670a6..23374604c6b01 100644
---- a/drivers/s390/cio/cio.h
-+++ b/drivers/s390/cio/cio.h
-@@ -103,11 +103,6 @@ struct subchannel {
- 	struct work_struct todo_work;
- 	struct schib_config config;
- 	u64 dma_mask;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- } __attribute__ ((aligned(8)));
- 
- DECLARE_PER_CPU_ALIGNED(struct irb, cio_irb);
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index 36c46c7f2fb80..97a2c23f4ce0f 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -160,7 +160,6 @@ static void css_subchannel_release(struct device *dev)
- 
- 	sch->config.intparm = 0;
- 	cio_commit_config(sch);
--	kfree(sch->driver_override);
- 	kfree(sch);
- }
- 
-@@ -324,37 +323,9 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- 
- static DEVICE_ATTR_RO(modalias);
- 
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct subchannel *sch = to_subchannel(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &sch->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct subchannel *sch = to_subchannel(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", sch->driver_override);
--	device_unlock(dev);
--	return len;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *subch_attrs[] = {
- 	&dev_attr_type.attr,
- 	&dev_attr_modalias.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
+diff --git a/drivers/clk/qcom/dispcc-milos.c b/drivers/clk/qcom/dispcc-milos.c
+index 95b6dd89d9ae3..339cb1c63ba77 100644
+--- a/drivers/clk/qcom/dispcc-milos.c
++++ b/drivers/clk/qcom/dispcc-milos.c
+@@ -394,7 +394,6 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
+ 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
  };
- 
-@@ -1352,9 +1323,11 @@ static int css_bus_match(struct device *dev, struct device_driver *drv)
- 	struct subchannel *sch = to_subchannel(dev);
- 	struct css_driver *driver = to_cssdriver(drv);
- 	struct css_device_id *id;
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (sch->driver_override && strcmp(sch->driver_override, drv->name))
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret == 0)
- 		return 0;
- 
- 	for (id = driver->subchannel_type; id->match_flags; id++) {
-@@ -1411,6 +1384,7 @@ static int css_uevent(const struct device *dev, struct kobj_uevent_env *env)
- 
- static struct bus_type css_bus_type = {
- 	.name     = "css",
-+	.driver_override = true,
- 	.match    = css_bus_match,
- 	.probe    = css_probe,
- 	.remove   = css_remove,
 -- 
 2.53.0
 
