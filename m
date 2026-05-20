@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBONEMgnDmp56gUAu9opvQ
-	(envelope-from <stable+bounces-252655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:44 +0200
+	id mKIeBqf4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-251977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A196D59AEBB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E881259561E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D81403601836
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DBD530682D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A34F348C55;
-	Wed, 20 May 2026 18:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AC13F20FA;
+	Wed, 20 May 2026 17:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLw/y1y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OouPom5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0386629B78D;
-	Wed, 20 May 2026 18:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA273D5647;
+	Wed, 20 May 2026 17:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301245; cv=none; b=k6KDD0/rqhB+pYVf3RC9iXBNZzpQvB3L8Rf1RJbBJzLFcOeic1s30shnty5Hbx8/OmDtautGdQMFsnbOc+m5MHEut6EOpbFpiz/i3GBl1BbLgTgN52CQkOBWBLg2eEeHXDvndYYidHpU8ZLSm9e1IVXy+k/yeIHlaB+RiRG1/Z8=
+	t=1779299424; cv=none; b=qfWiDceGo+ztKN4237H18mph7jE5pBzBXpQqMTw7sbITsEb4+YrOXL3Q/dIHn3HLROgN5GW/7kaFF7/ONe2uUSmmWmR/kmgqqM3stU9MGz8ImaiNWCpL5roC46BgmvWDpXGVRZk8R+8A3AcRTUy0CZA/UtWatotBMYLtt9IrDaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301245; c=relaxed/simple;
-	bh=1xQbUaSkzxPuUrKcRJ4ZiRbwkXXE/0hiRwNidaxn1wQ=;
+	s=arc-20240116; t=1779299424; c=relaxed/simple;
+	bh=JmBU1XV8TsTpsl0V4gYRDLEfO0wX08CCxgu7ieASsSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Scac+K4X2ZjizWKojOaaVCTnJxklWwqrvqvVtCWViVrdEOtOhlrGfiR23Gn1sS+uzQixT0ycmGk5VHtIaxuK1MvhDnAfqbHs47u7srSKK1KKDzNWysJCxx/xAgKDUgWOJDtn3U7E2afib+fJToZ4U3fBhg5LEwVouKTDeVfPFXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLw/y1y/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8AC1F000E9;
-	Wed, 20 May 2026 18:20:43 +0000 (UTC)
+	 MIME-Version; b=tCQPQIUkJ6sKyjEFNiNZQAsn+HB+yGsCt+vpe6KnxkDbA8teaZWlksyP9NwKN/g+OIC3f4O9itEKguv4WPe/yM8uohFm128y/5RKiuwxyXvg3PK7DV2DjdV5yf2+b5wcUFr0qXxFMiB9qf4GCiMHCekr91ZHOmzzB8iqT7LVD8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OouPom5M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2061F00893;
+	Wed, 20 May 2026 17:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301243;
-	bh=6gdho9Tv7El76Ygux19MAnpzOs48Z/as3NHmAwwmeHs=;
+	s=korg; t=1779299421;
+	bh=I2rdVHJVSTcg+sCMb+1IU4twRljXueDM3/ATq0DFZOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xLw/y1y/ydbj8kOJZ2QFmuGR/4JzoCVFedAp3v/TP7C4Ij4nOJHwPAqmmFKOQIDIn
-	 eIbwXeGfVzRsJoMkKiESLprt47sX1lhsn8JFQ/wTna1EBZg458wzR97UQByhO2CNjF
-	 L7mXKwfHdfU5PQRQjfRwZ4UB034vMsb4ri0Ewrks=
+	b=OouPom5MuxZvZKWv79qY0QeWcY8M8cFGE/Z+6rbmfWsiREeuI/ZU0payPhZRGQFj2
+	 yNZ/T6ganO3w4kpmqRliIB/7eDd5SzBtX4fhEn/E5i6FEX4a8sq4wXlp+bT/gxptyR
+	 B7UWfQB3tsJvCw7a7BGdYcGXmAvyFcmclVe3Lle8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 439/666] PCMCIA: Fix garbled log messages for KERN_CONT
+Subject: [PATCH 6.18 767/957] net/sched: netem: only reseed PRNG when seed is explicitly provided
 Date: Wed, 20 May 2026 18:20:50 +0200
-Message-ID: <20260520162120.787701153@linuxfoundation.org>
+Message-ID: <20260520162151.196788984@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252655-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251977-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,dominikbrodowski.net:email]
-X-Rspamd-Queue-Id: A196D59AEBB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,networkplumber.org:email]
+X-Rspamd-Queue-Id: E881259561E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit bfeaa6814bd3f9a1f6d525b3b35a03b9a0368961 ]
+[ Upstream commit 986afaf809940577224a99c3a08d97a15eb37e93 ]
 
-For years the PCMCIA info messages are messed up by superfluous
-newlines. While f2e6cf76751d ("pcmcia: Convert dev_printk to
-dev_<level>") converted the code to pr_cont(), dev_info enforces a \n
-via vprintk_store setting LOG_NEWLINE, breaking subsequent pr_cont.
+netem_change() unconditionally reseeds the PRNG on every tc change
+command. If TCA_NETEM_PRNG_SEED is not specified, a new random seed
+is generated, destroying reproducibility for users who set a
+deterministic seed on a previous change.
 
-Fix by logging the device name manually to allow pr_cont to work for
-more readable and not \n distorted logs.
+Move the initial random seed generation to netem_init() and only
+reseed in netem_change() when TCA_NETEM_PRNG_SEED is explicitly
+provided by the user.
 
-Fixes: f2e6cf76751d ("pcmcia: Convert dev_printk to dev_<level>")
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Fixes: 4072d97ddc44 ("netem: add prng attribute to netem_sched_data")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-4-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_nonstatic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_netem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index da494fe451baf..efc439c748862 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -188,7 +188,7 @@ static void do_io_probe(struct pcmcia_socket *s, unsigned int base,
- 	int any;
- 	u_char *b, hole, most;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index da8dcc9b61cc7..4bf65fcdaff02 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -1111,11 +1111,10 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* capping jitter to the range acceptable by tabledist() */
+ 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
  
--	dev_info(&s->dev, "cs: IO port probe %#x-%#x:", base, base+num-1);
-+	pr_info("%s: cs: IO port probe %#x-%#x:", dev_name(&s->dev), base, base+num-1);
+-	if (tb[TCA_NETEM_PRNG_SEED])
++	if (tb[TCA_NETEM_PRNG_SEED]) {
+ 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
+-	else
+-		q->prng.seed = get_random_u64();
+-	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++	}
  
- 	/* First, what does a floating port look like? */
- 	b = kzalloc(256, GFP_KERNEL);
-@@ -410,8 +410,8 @@ static int do_mem_probe(struct pcmcia_socket *s, u_long base, u_long num,
- 	struct socket_data *s_data = s->resource_data;
- 	u_long i, j, bad, fail, step;
+ unlock:
+ 	sch_tree_unlock(sch);
+@@ -1138,6 +1137,9 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ 		return -EINVAL;
  
--	dev_info(&s->dev, "cs: memory probe 0x%06lx-0x%06lx:",
--		 base, base+num-1);
-+	pr_info("%s: cs: memory probe 0x%06lx-0x%06lx:",
-+	       dev_name(&s->dev), base, base+num-1);
- 	bad = fail = 0;
- 	step = (num < 0x20000) ? 0x2000 : ((num>>4) & ~0x1fff);
- 	/* don't allow too large steps */
+ 	q->loss_model = CLG_RANDOM;
++	q->prng.seed = get_random_u64();
++	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++
+ 	ret = netem_change(sch, opt, extack);
+ 	if (ret)
+ 		pr_info("netem: change failed\n");
 -- 
 2.53.0
 
