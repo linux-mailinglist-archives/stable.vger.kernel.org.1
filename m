@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPpCOiD/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:16 +0200
+	id OEVVLZUBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B793596BB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B76459736A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1E9A312D30F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59FDB39530A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED623FC5AB;
-	Wed, 20 May 2026 18:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5A53F54D1;
+	Wed, 20 May 2026 18:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP4T09Pc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnjTEvfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17153D1CC6;
-	Wed, 20 May 2026 18:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACBE331220;
+	Wed, 20 May 2026 18:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301808; cv=none; b=AEg8Sctzk+s5JM+RPZ3xTdSqayKm7bs8O5ThtE9SStREJeh7h1Ggr49Zal8qeDcTCHyNryIAHAuwkFzETQFRe0E0Oav2fMfTwLzKFfygaM3mHSN8wgMhhmF8SxHL8fuVtygfqGon6tUxN0lQ7XEVNUlt0oFgS8bKhvMA+jDXT8U=
+	t=1779300610; cv=none; b=cHgQ0GkLSO43Xucs4cGmWNJGzQ3/J33AQO0GAAIMRE7qJoULs82OydB2Yk7C/gB0bNxlv6u1H/EPYUlcdT+H4LPGT38pv8Cax8gs5cmEuIUtFzwRqdpAb4sz6D9oC553bCEBAcNZYM8vHCYlAx8MSKZXByEqAsp02Jdgv/XkHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301808; c=relaxed/simple;
-	bh=GEVsloxNXueHkWkoxJw7qE/NvYsdPgcbk1J0KGfzekg=;
+	s=arc-20240116; t=1779300610; c=relaxed/simple;
+	bh=Vbje/nDibAb5xoAENDNZYRPo8CFhk0HkUnLHZpBMl5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=li3bdvOHzO2ZBblohRz2MrUB93rXU8ic6SGNk2VcNL44RlGtMbeqP9Ic9s29Sbz2EwTYYgdR0kv2lN8xEaD+uddUzj5r5XjIVupF3v3238O+G/ur4SgHDKEgKD6FfinNwQYFrRZ/MzDCQqQU6hK94uxRNCnMk/igFjgCbr6GnyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP4T09Pc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248F91F000E9;
-	Wed, 20 May 2026 18:30:04 +0000 (UTC)
+	 MIME-Version; b=N55deYNYRzN2AyDYSC6TgOCBI4l1XG7H8ZmYjpGo0mpb77WsppH9/+r8L6xP23214hfMOEKg5xoeOGuYbBQp6kDrLyN7V5dgtwtglXiq0aI79aW4nnmOPHO8DG336mSWjuEzz00m4YqCsMyWHhu+xfWyOyS9W2KsCeX5+wvfFkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnjTEvfn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEB11F000E9;
+	Wed, 20 May 2026 18:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301805;
-	bh=TX0StxXwg4i1uitL9RdxS75mRDr8+hbQUYnFw7jHXpI=;
+	s=korg; t=1779300609;
+	bh=O1XKcR3AuFe+5WAShhvvfRFWANGkMDmzTX/I+yE7Dcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xP4T09Pc8MyMoKCsikH2acZR0qQE+7jnGCaeJ+Qxes+NT91k3BzkW+NWFpdJfY1jF
-	 Ps79A0FXEiWcdMFfmFGAhLVlHdrkHzKjSZQ1R7xoN1yus5XQ1tUd84WM8LK+XcD6t9
-	 /W/+xK7a2Qhal4a/oizbV37PvnQkOmWrSfscIQs0=
+	b=fnjTEvfnlIDitVAIonzSd2k592eqkujCFR2EcATkRL3iz+SrLiW2ClncWaUGqkL2A
+	 RS8BMvN/WrdJLco9t5mWeLf8Qhv4+lVeoYNdrz7CHVQmaF0hLByNtWizHVOTBeTSE9
+	 w68vp5zzAconGPGxafOrPBrL60BTlJgWOrV3nKrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/508] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
+Subject: [PATCH 6.12 239/666] PCI: tegra194: Disable direct speed change for Endpoint mode
 Date: Wed, 20 May 2026 18:17:30 +0200
-Message-ID: <20260520162059.176748130@linuxfoundation.org>
+Message-ID: <20260520162116.395480339@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +71,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252871-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252413-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 6B793596BB0
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3B76459736A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
+[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
 
-Since the commit 84cba72956fd ("dpaa2-switch: integrate
-the MAC endpoint support") included dpaa2-mac.o in the driver,
-but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
-will lead to link error, such as
-undefined reference to `phylink_ethtool_ksettings_set'
-undefined reference to `lynx_pcs_create_fwnode'
+Pre-silicon simulation showed the controller operating in Endpoint mode
+initiating link speed change after completing Secondary Bus Reset. Ideally,
+the Root Port or the Switch Downstream Port should initiate the link speed
+change post SBR, not the Endpoint.
 
-And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
-XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
-option in order to have MDIO access to internal and external PHYs.
+So, as per the hardware team recommendation, disable direct speed change
+for the Endpoint mode to prevent it from initiating speed change after the
+physical layer link is up at Gen1, leaving speed change ownership with the
+host.
 
-Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
-&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
-
-FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
-FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
-
-Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
+ drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-index d029b69c3f183..36280e5d99e1f 100644
---- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
-+++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
- 	tristate "Freescale DPAA2 Ethernet Switch"
- 	depends on BRIDGE || BRIDGE=n
- 	depends on NET_SWITCHDEV
-+	depends on FSL_MC_BUS && FSL_MC_DPIO
-+	select PHYLINK
-+	select PCS_LYNX
-+	select FSL_XGMAC_MDIO
- 	help
- 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
- 	  switch objects discovered on the Freeescale MC bus.
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index fcc9f724147c4..42a8bbfee3f9a 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1830,6 +1830,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 
+ 	reset_control_deassert(pcie->core_rst);
+ 
++	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
++	val &= ~PORT_LOGIC_SPEED_CHANGE;
++	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
++
+ 	if (pcie->update_fc_fixup) {
+ 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
+ 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
 -- 
 2.53.0
 
