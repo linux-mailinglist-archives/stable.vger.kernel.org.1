@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIOeNtjyDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:52 +0200
+	id 0O3MJFLqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7251D59468B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DD8592F0B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AD03301E7E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6F4830DEF3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D55F29D26E;
-	Wed, 20 May 2026 17:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAAC3F23C2;
+	Wed, 20 May 2026 16:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZjZ+pEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBV/9WSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21563EBF35;
-	Wed, 20 May 2026 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8EE33B969;
+	Wed, 20 May 2026 16:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298611; cv=none; b=MkfD2vg7jj1WigDKdxAQ7REJcvAjAPjpogorfEF9g+l1sKhOYi95gS7mS9hGc9flxw7AC3w+SzneOkSHb0SOw6+Kmr1jIsVZv6GfIq+ojk73EB+KLIHI85KRplAteOawRaEgrwISzQOecXjCd8z9Eb6MCYKbe23kVlxjvUnRm0E=
+	t=1779296196; cv=none; b=E518BsWIuLzXb+C/QEbfcsVBeL4RpnwTnkJmThPO2/IjY9nsjTakJPix35rBzxBIcDUhUSDoanP5NzV6Q4Dko8TzAKz0iPLkk2/dwTdWPBH9OAY96DdAAuv/RxlGi2gw1M+x9z4Jl0gfXICi1R8DmVuCwnCBvvsWIWxbUHnGqhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298611; c=relaxed/simple;
-	bh=VVOifEw3Z2gKHCsj0QiPDAY/H95JAAy2Vq9pW9uGb0M=;
+	s=arc-20240116; t=1779296196; c=relaxed/simple;
+	bh=xSZbCkonMeK+sL1kDaAGYhhk182ZQDPgu1U/Omixs6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBWiJqS+P++uBhyWvsSQmJV92LnSlenatm6oxX6aLkX+yTa75f1M38wSpB7mJ7rCUwbKUkoRouFov8k9wblxhX30888GO6pIMssTBQ74oM3APpndoAYLOhW+8q2tS9HWUzIbFni2UrpXQaD8/rmpVLAkA9emAKzbTFGbFeiVznM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZjZ+pEq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FDB1F000E9;
-	Wed, 20 May 2026 17:36:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qRdhc2rDvwozzd63W1gRmhRKdO9mkTN/q4VGJAiTmw6CDkPs+hzyfdfSLQSG1GqUBND4xxmBLLuNmDjOmdzXKf1FYkCOjOIe4lPezl69bMLgET+ZvL6srlAmJ9L78YyL1+DJDRCLwctcw77GzHWGvUZJLC3xfL3G+mAIARqbME4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBV/9WSs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D61B1F000E9;
+	Wed, 20 May 2026 16:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298609;
-	bh=uGihaR7Dqm++pR+5NDi/P+WLby0LLJ4yZoAttKRuJXM=;
+	s=korg; t=1779296194;
+	bh=0bQ9FBrmI91wsmtZ8C4A09y7wO/yDDSe0kLxEGIArT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eZjZ+pEqUQyEdjMBy+EAXjtjAophlR2utGpMkDS6V3/+vdBEeh81f+5vtlRErQkRv
-	 vNg3J3EZAFbSn1XT8Lm0K0FmpJIYW0tN7DQjNYPQc6tODaJd5MWyhaXH2hfWQSQLS/
-	 dP4NIXwGSyqf/hL2DR9qKaFXJkLF5CW6QqqpXbSo=
+	b=rBV/9WSsHddCWf+RxxPwHKSh6cB9mmkbOPXJy+MyFohm8G56fOX2nn7d8NmBUbskl
+	 iPSwakViiqpLr9gNV1X+VDUvzlDAey9ZxX7i3KhoYl5XmkTxBUCNsmPXx+B/UJNpLk
+	 MKTJUkKwA9M+fKhwozTsqJYhqCj7XM2ze25cBF1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 475/957] mtd: spinand: Decouple write enable and write disable operations
+Subject: [PATCH 7.0 0708/1146] clk: qcom: dispcc-sm4450: Fix DSI byte clock rate setting
 Date: Wed, 20 May 2026 18:15:58 +0200
-Message-ID: <20260520162144.827869173@linuxfoundation.org>
+Message-ID: <20260520162204.211660283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250741-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251679-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 7251D59468B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 59DD8592F0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit c0ba929cf7a960c796cc9946b3f79d8405e9b805 ]
+[ Upstream commit 7bc48fcdf9e77bf68ef04af015d50df2a9acac00 ]
 
-In order to introduce templates for all operations and not only for page
-helpers (in order to introduce octal DDR support), decouple the WR_EN
-and WR_DIS operations into two separate macros.
+The clock tree for byte_clk_src is as follows:
 
-Adapt the callers accordingly.
+   ┌──────byte0_clk_src─────┐
+   │                        │
+byte0_clk            byte0_div_clk_src
+                            │
+                     byte0_intf_clk
 
-There is no functional change.
+If both of its direct children have CLK_SET_RATE_PARENT with different
+requests, byte0_clk_src (and its parent) will be reconfigured. In this
+case, byte0_intf should strictly follow the rate of byte0_clk (with
+some adjustments based on PHY mode).
 
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
+Remove CLK_SET_RATE_PARENT from byte0_div_clk_src to avoid this issue.
+
+Fixes: 76f05f1ec766 ("clk: qcom: Add DISPCC driver support for SM4450")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260304-topic-dsi_byte_fixup-v1-4-b79b29f83176@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c   |  2 +-
- drivers/mtd/nand/spi/esmt.c   |  2 +-
- drivers/mtd/nand/spi/micron.c |  2 +-
- include/linux/mtd/spinand.h   | 10 ++++++++--
- 4 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/dispcc-sm4450.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 33e6b76944ab8..d3029ce2fe9ae 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -362,7 +362,7 @@ static void spinand_ondie_ecc_save_status(struct nand_device *nand, u8 status)
- 
- int spinand_write_enable_op(struct spinand_device *spinand)
- {
--	struct spi_mem_op op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
-+	struct spi_mem_op op = SPINAND_WR_EN_1S_0_0_OP;
- 
- 	return spi_mem_exec_op(spinand->spimem, &op);
- }
-diff --git a/drivers/mtd/nand/spi/esmt.c b/drivers/mtd/nand/spi/esmt.c
-index 9a9325c0bc497..f880c3b15ceab 100644
---- a/drivers/mtd/nand/spi/esmt.c
-+++ b/drivers/mtd/nand/spi/esmt.c
-@@ -137,7 +137,7 @@ static int f50l1g41lb_user_otp_info(struct spinand_device *spinand, size_t len,
- static int f50l1g41lb_otp_lock(struct spinand_device *spinand, loff_t from,
- 			       size_t len)
- {
--	struct spi_mem_op write_op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
-+	struct spi_mem_op write_op = SPINAND_WR_EN_1S_0_0_OP;
- 	struct spi_mem_op exec_op = SPINAND_PROG_EXEC_1S_1S_0_OP(0);
- 	u8 status;
- 	int ret;
-diff --git a/drivers/mtd/nand/spi/micron.c b/drivers/mtd/nand/spi/micron.c
-index a49d7cb6a96da..b8130e04e8e79 100644
---- a/drivers/mtd/nand/spi/micron.c
-+++ b/drivers/mtd/nand/spi/micron.c
-@@ -251,7 +251,7 @@ static int mt29f2g01abagd_user_otp_info(struct spinand_device *spinand,
- static int mt29f2g01abagd_otp_lock(struct spinand_device *spinand, loff_t from,
- 				   size_t len)
- {
--	struct spi_mem_op write_op = SPINAND_WR_EN_DIS_1S_0_0_OP(true);
-+	struct spi_mem_op write_op = SPINAND_WR_EN_1S_0_0_OP;
- 	struct spi_mem_op exec_op = SPINAND_PROG_EXEC_1S_1S_0_OP(0);
- 	u8 status;
- 	int ret;
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 1c741145e4971..c74c9ba0cd0a4 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -26,8 +26,14 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_NO_DATA)
- 
--#define SPINAND_WR_EN_DIS_1S_0_0_OP(enable)					\
--	SPI_MEM_OP(SPI_MEM_OP_CMD((enable) ? 0x06 : 0x04, 1),		\
-+#define SPINAND_WR_EN_1S_0_0_OP						\
-+	SPI_MEM_OP(SPI_MEM_OP_CMD(0x06, 1),				\
-+		   SPI_MEM_OP_NO_ADDR,					\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
-+#define SPINAND_WR_DIS_1S_0_0_OP					\
-+	SPI_MEM_OP(SPI_MEM_OP_CMD(0x04, 1),				\
- 		   SPI_MEM_OP_NO_ADDR,					\
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_NO_DATA)
+diff --git a/drivers/clk/qcom/dispcc-sm4450.c b/drivers/clk/qcom/dispcc-sm4450.c
+index e8752d01c8e62..2fdacc26df698 100644
+--- a/drivers/clk/qcom/dispcc-sm4450.c
++++ b/drivers/clk/qcom/dispcc-sm4450.c
+@@ -335,7 +335,6 @@ static struct clk_regmap_div disp_cc_mdss_byte0_div_clk_src = {
+ 			&disp_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
