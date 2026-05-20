@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDwKOAn+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:37 +0200
+	id OHzrD4QiDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E5A596721
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09C359A782
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C64DC31802D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B50238B3EAD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753E63FE348;
-	Wed, 20 May 2026 18:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB1C3F39EE;
+	Wed, 20 May 2026 17:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXb29ZtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOZaLpGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8B03FC5B7;
-	Wed, 20 May 2026 18:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912B94F5E0;
+	Wed, 20 May 2026 17:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301503; cv=none; b=DPEo6HaqO/BtjAI0mr2+MmpMqx1nRB8gvQOJBU93uX5fH4SkDYUqbuEB4w/1s7w0W6N8zBEP9WfZqeWOI+QF67zLcxo8S1Olm+HxQGD0D2y2LbFQnTjDvhnok56UtnNedxARL9VMwCGOF82yHSKnsj0Xtt4bmjbY2YRq16GUTYE=
+	t=1779299845; cv=none; b=dm4j69fwu3fdAUAyakqC2/uQpXxlc/cv4N466jPMBJitqAUdtXdmeDZ7zSj69vqa+A5wjVGqWm4Qx/VB9SzeLWhwNhyhV92uY2wpzHkQ4pcq0xEFKbVqYKFG6SsuA79//xxCFdsy3DsG/Z9AAV+SvmuNcF+o65KhSiQ3NZrjQB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301503; c=relaxed/simple;
-	bh=9amsdpHr+P1B2iSdu1ywJIHaOyOLtbhcrDMC+xpvohw=;
+	s=arc-20240116; t=1779299845; c=relaxed/simple;
+	bh=XUrrg4dNtXIT5zVLSvqPi01H8RUzXo2in7si+JQ5umY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JK4BA6k5w8VgYCz/myCKpYD4IWiyyO+Ab4yMO4slGFb/x4AQ3kY8MIVfWkvtn1QIDBJ6Z9AUKHbxlR+N6u2d0/e43PwMoWOjm9uM4hjseqnXMHw8Nnlq5RbhvG1eke8D2YxrxmdcAmOtU6cBfqpEHRv2zgAXSIFqOiDocrvFjOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXb29ZtD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781731F000E9;
-	Wed, 20 May 2026 18:25:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EuO7Mj3ZfqXMyJYWOBgDy9+2SEhltcoemUdzz/yyFHqBnBDKL8/LxBxdVaBdvsa2FIvOFcojHIcJJhjxN2ajLsHlSAebnx1feK7W7l3ENx/ZBTGhachRwPLA0VtyDPxK7d+LUdlvltZRWVRl/WOifIZoIFK8mLLaPDkUuo2vJig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOZaLpGx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036B21F00893;
+	Wed, 20 May 2026 17:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301502;
-	bh=tiBkif7hUeOD6DLLpmdHjo33NA/ywX9/V85s5zZuATU=;
+	s=korg; t=1779299844;
+	bh=NPInIet4L4bywzix6ZYLZeTyKCwUcZDIL5E/3+tKtdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XXb29ZtD1AdjDodRGKBOY39BDN+CWyHGwpu2usah/91fvMdO+1dTUxJXlBESds1wL
-	 OZSxpR/CDbMSkTqIwUbifSeNqkLgIYL6OFsChffTrYoXoe51/kE1Dl+uCwU0Tvk7vd
-	 7BoZfUO5vW1Zu/0jV4sEpZCousift0Pc5OswUeY4=
+	b=oOZaLpGxD4RMgUtzxW9i8JKZeE/jOCsP8C2sGxxn0BcsOnomBaK53GVrK9zQpj2Ow
+	 7K/7j/lWUW9JvkIvU/x4IRJAaSRGmh2WodRD+2od7gtafjhDDqnjJy1xR5riyOl8mm
+	 TnriFYlcrtMWGDpZ5WrGnL4qL1kypn/uP8D4vE28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Summers <stuart.summers@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 580/666] drm/xe/debugfs: Correct printing of register whitelist ranges
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Rong Zhang <i@rong.moe>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 908/957] platform/x86: lenovo-wmi-helpers: Move gamezone enums to wmi-helpers
 Date: Wed, 20 May 2026 18:23:11 +0200
-Message-ID: <20260520162123.839779200@linuxfoundation.org>
+Message-ID: <20260520162154.267595990@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252754-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252121-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 96E5A596721
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,rong.moe:email,squebb.ca:email]
+X-Rspamd-Queue-Id: A09C359A782
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Derek J. Clark <derekjohn.clark@gmail.com>
 
-[ Upstream commit 03f2499c51dffce611b065b2894406beb9f2ebe0 ]
+commit 7e27896e16a1c450085c3fe020eeb1b223880f37 upstream.
 
-The register-save-restore debugfs prints whitelist entries as offset
-ranges.  E.g.,
+In a later patch in the series the thermal mode enum will be accessed
+across three separate drivers (wmi-capdata, wmi-gamezonem and wmi-other).
+An additional patch in the series will also add a function prototype that
+needs to reference this enum in wmi-helpers.h. To avoid having all these
+drivers begin to import each others headers, and to avoid declaring an
+opaque enum to hande the second case, move the thermal mode enum to
+helpers where it can be safely accessed by everything that needs it from
+a single import.
 
-        REG[0x39319c-0x39319f]: allow read access
+While at it, since the gamezone_events_type enum is the only remaining
+item in the header, move that as well and remove the gamezone header
+entirely.
 
-for a single dword-sized register.  However the GENMASK value used to
-set the lower bits to '1' for the upper bound of the whitelist range
-incorrectly included one more bit than it should have, causing the
-whitelist ranges to sometimes appear twice as large as they really were.
-For example,
-
-        REG[0x6210-0x6217]: allow rw access
-
-was also intended to be a single dword-sized register whitelist (with a
-range 0x6210-0x6213) but was printed incorrectly as a qword-sized range
-because one too many bits was flipped on.  Similar 'off by one' logic
-was applied when printing 4-dword register ranges and 64-dword register
-ranges as well.
-
-Correct the GENMASK logic to print these ranges in debugfs correctly.
-No impact outside of correcting the misleading debugfs output.
-
-Fixes: d855d2246ea6 ("drm/xe: Print whitelist while applying")
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://patch.msgid.link/20260408-regsr_wl_range-v1-1-e9a28c8b4264@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 1a2a722ff96749734a5585dfe7f0bea7719caa8b)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Link: https://patch.msgid.link/20260510042546.436874-8-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_reg_whitelist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/lenovo/wmi-events.c   |    2 +-
+ drivers/platform/x86/lenovo/wmi-gamezone.c |    1 -
+ drivers/platform/x86/lenovo/wmi-gamezone.h |   20 --------------------
+ drivers/platform/x86/lenovo/wmi-helpers.h  |   13 +++++++++++++
+ drivers/platform/x86/lenovo/wmi-other.c    |    1 -
+ 5 files changed, 14 insertions(+), 23 deletions(-)
+ delete mode 100644 drivers/platform/x86/lenovo/wmi-gamezone.h
 
-diff --git a/drivers/gpu/drm/xe/xe_reg_whitelist.c b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-index 3996934974fa0..3de0a867149da 100644
---- a/drivers/gpu/drm/xe/xe_reg_whitelist.c
-+++ b/drivers/gpu/drm/xe/xe_reg_whitelist.c
-@@ -137,7 +137,7 @@ void xe_reg_whitelist_print_entry(struct drm_printer *p, unsigned int indent,
- 	}
+--- a/drivers/platform/x86/lenovo/wmi-events.c
++++ b/drivers/platform/x86/lenovo/wmi-events.c
+@@ -17,7 +17,7 @@
+ #include <linux/wmi.h>
  
- 	range_start = reg & REG_GENMASK(25, range_bit);
--	range_end = range_start | REG_GENMASK(range_bit, 0);
-+	range_end = range_start | REG_GENMASK(range_bit - 1, 0);
+ #include "wmi-events.h"
+-#include "wmi-gamezone.h"
++#include "wmi-helpers.h"
  
- 	switch (val & RING_FORCE_TO_NONPRIV_ACCESS_MASK) {
- 	case RING_FORCE_TO_NONPRIV_ACCESS_RW:
--- 
-2.53.0
-
+ #define THERMAL_MODE_EVENT_GUID "D320289E-8FEA-41E0-86F9-911D83151B5F"
+ 
+--- a/drivers/platform/x86/lenovo/wmi-gamezone.c
++++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
+@@ -21,7 +21,6 @@
+ #include <linux/wmi.h>
+ 
+ #include "wmi-events.h"
+-#include "wmi-gamezone.h"
+ #include "wmi-helpers.h"
+ #include "wmi-other.h"
+ 
+--- a/drivers/platform/x86/lenovo/wmi-gamezone.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-
+-/* Copyright (C) 2025 Derek J. Clark <derekjohn.clark@gmail.com> */
+-
+-#ifndef _LENOVO_WMI_GAMEZONE_H_
+-#define _LENOVO_WMI_GAMEZONE_H_
+-
+-enum gamezone_events_type {
+-	LWMI_GZ_GET_THERMAL_MODE = 1,
+-};
+-
+-enum thermal_mode {
+-	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
+-	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
+-	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
+-	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
+-	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
+-};
+-
+-#endif /* !_LENOVO_WMI_GAMEZONE_H_ */
+--- a/drivers/platform/x86/lenovo/wmi-helpers.h
++++ b/drivers/platform/x86/lenovo/wmi-helpers.h
+@@ -14,6 +14,19 @@ struct wmi_method_args_32 {
+ 	u32 arg1;
+ };
+ 
++enum lwmi_event_type {
++	LWMI_GZ_GET_THERMAL_MODE = 0x01,
++};
++
++enum thermal_mode {
++	LWMI_GZ_THERMAL_MODE_NONE =	   0x00,
++	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
++	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
++	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
++	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
++	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
++};
++
+ int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
+ 			  unsigned char *buf, size_t size, u32 *retval);
+ 
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -36,7 +36,6 @@
+ 
+ #include "wmi-capdata01.h"
+ #include "wmi-events.h"
+-#include "wmi-gamezone.h"
+ #include "wmi-helpers.h"
+ #include "wmi-other.h"
+ #include "../firmware_attributes_class.h"
 
 
 
