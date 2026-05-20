@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-252774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOsjHBgpDmqk6gUAu9opvQ
-	(envelope-from <stable+bounces-252774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:20 +0200
+	id 4MiRKXX/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79A059B0EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D1E596CBF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81A3639E395D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2624C38C1C07
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26630371048;
-	Wed, 20 May 2026 18:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8801530675C;
+	Wed, 20 May 2026 17:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLbipEmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQJ80xmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5E3FA5D5;
-	Wed, 20 May 2026 18:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D673FBECB;
+	Wed, 20 May 2026 17:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301555; cv=none; b=UWT14+qRNDl0i4JQTPbPz9YmqQK4YcheSqU3wrnQGNYrEwxnMWClXZDK7F+93rQSk5OMRy/DLOhhbK5VRlUXEynhLjrO0vf9dd0YUvvWI/IZlktYq2VKG4Y38pux+ww4AqKJv0cVMb8XZ3CPi1ripZcbaV5oFBFn6G8VVZAlg1A=
+	t=1779299900; cv=none; b=cxkmDjBrFmBPoJppP8Ft8IVJyeMi0RtMba9zms7Kto5YfeMc1GUaajz8feepUEt6N0HFGXj1ro5cT2GDUoQxvQVJ8eCwBuTx9lacCsPYAJg2SkECHQJeDjgn5FDgpMv3aXgNN0yiclxzckX/XuMhoMNVMrwjBFrL6DMr75f9hMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301555; c=relaxed/simple;
-	bh=xd8euNb/V6ba7MqdZ9/GwzOR2nhNd8zDcLW98ncGK3M=;
+	s=arc-20240116; t=1779299900; c=relaxed/simple;
+	bh=/PpcnxqnRJTwqRDcCPli33+YHqBiiDqWw3NxDmO+Pgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVD36PQZPvHJ9aYEu26IXQu96ygoXi4RbucVG078oqjynBa9seH8/pvgALr9nLchh7BE6+/yhO5yIxVO4S8y+3xDqxdq6OFWQX5Af4JJyG7a54/00n5e4UxnwikmA/JwrgOSshGkK58xouyVDNNJBe7D/ZByw574r3FvR/blnJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLbipEmJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073561F000E9;
-	Wed, 20 May 2026 18:25:53 +0000 (UTC)
+	 MIME-Version; b=KY4KcK1oF1zOz1cdrTTxfebfDUEZh5Cpo+bt+mIUTTuuS7HbUL7rc5cR5uGRbw8pom4KiEZGFxw5neY7KL4jQc09Zv7Hb1My5BAkoTxk3j9NJuhkFnQjWYGQ4zhZ8rotOtn8TnFgZHO7jzjBgy7YpfAXZvGXehmzmeOzQC4AZqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQJ80xmY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBDA1F000E9;
+	Wed, 20 May 2026 17:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301554;
-	bh=Fiz9+7Z59Igv3fbsrZ/438rpccF6zUd8mlrVjJJ1Zgk=;
+	s=korg; t=1779299897;
+	bh=N0WNUy3qZbiVfbgcjTVMz2d51Jy/SEC/me0nD/4gHIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WLbipEmJfaf6yALANTE6B3I78QzYwQg3R1GAqOkv02E1riLRgTiAKk+UrZI5BL1zE
-	 za24yY8OX6XQ9SNKpZ7GMHPxEQM/lFyGhR5BBN9SX/JBKJOIdZHjFoeH6GaOsL17Nq
-	 U6cJBzr5SBBaEc8+MEGuc6beLRTwn3rckGjYQNPw=
+	b=vQJ80xmYuwRk5lOz7BM1Ql5D5K0qwsSI4qNW4ieaqfdUDG2GyIWIuKwrpDvBaV4kG
+	 xo1ZKoKwTQgRsjhA7/1E2WWRm27e9d542Yz2+uXFoK7B45ngJWY7SDChGdIXsC8j5M
+	 LOH/sE+oarPWBFLiuUFui40BhhFrbnfVtEoLcUQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 598/666] ntfs: ->d_compare() must not block
+	Xiaoli Feng <xifeng@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	netfs@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.18 926/957] netfs: fix error handling in netfs_extract_user_iter()
 Date: Wed, 20 May 2026 18:23:29 +0200
-Message-ID: <20260520162124.228427208@linuxfoundation.org>
+Message-ID: <20260520162154.666621720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,273 +70,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252774-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zeniv.linux.org.uk,139.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252141-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A79A059B0EF
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,manguebit.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: 09D1E596CBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit ca2a04e84af79596e5cd9cfe697d5122ec39c8ce ]
+commit 0aad5704c6b4d14007d4eab15883e8524e4310f4 upstream.
 
-... so don't use __getname() there.  Switch it (and ntfs_d_hash(), while
-we are at it) to kmalloc(PATH_MAX, GFP_NOWAIT).  Yes, ntfs_d_hash()
-almost certainly can do with smaller allocations, but let ntfs folks
-deal with that - keep the allocation size as-is for now.
+In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
+extract user pages, bail out on -ENOMEM, otherwise return the error
+code only if @npages == 0, allowing short DIO reads and writes to be
+issued.
 
-Stop abusing names_cachep in ntfs, period - various uses of that thing
-in there have nothing to do with pathnames; just use k[mz]alloc() and
-be done with that.  For now let's keep sizes as-in, but AFAICS none of
-the users actually want PATH_MAX.
+This fixes mmapstress02 from LTP tests against CIFS.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+Reported-by: Xiaoli Feng <xifeng@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-10-dhowells@redhat.com
+Cc: netfs@lists.linux.dev
+Cc: stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/dir.c    |  5 ++---
- fs/ntfs3/fsntfs.c |  4 ++--
- fs/ntfs3/inode.c  | 13 ++++++-------
- fs/ntfs3/namei.c  | 17 ++++++++---------
- fs/ntfs3/xattr.c  |  5 ++---
- 5 files changed, 20 insertions(+), 24 deletions(-)
+ fs/netfs/iterator.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 600e66035c1b7..522ebc14b1fbd 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -425,8 +425,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 	if (!dir_emit_dots(file, ctx))
- 		return 0;
- 
--	/* Allocate PATH_MAX bytes. */
--	name = __getname();
-+	name = kmalloc(PATH_MAX, GFP_KERNEL);
- 	if (!name)
- 		return -ENOMEM;
- 
-@@ -504,7 +503,7 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 
- out:
- 
--	__putname(name);
-+	kfree(name);
- 	put_indx_node(node);
- 
- 	if (err == 1) {
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 37c5d9a1f77b7..5972f160e566e 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -2670,7 +2670,7 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
- 	u32 uni_bytes;
- 	struct ntfs_inode *ni = sbi->volume.ni;
- 	/* Allocate PATH_MAX bytes. */
--	struct cpu_str *uni = __getname();
-+	struct cpu_str *uni = kmalloc(PATH_MAX, GFP_KERNEL);
- 
- 	if (!uni)
- 		return -ENOMEM;
-@@ -2714,6 +2714,6 @@ int ntfs_set_label(struct ntfs_sb_info *sbi, u8 *label, int len)
- 		err = _ni_write_inode(&ni->vfs_inode, 0);
- 
- out:
--	__putname(uni);
-+	kfree(uni);
- 	return err;
- }
-\ No newline at end of file
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 8113d47b0ceb9..b50c9dff327d2 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1301,7 +1301,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 		fa |= FILE_ATTRIBUTE_READONLY;
- 
- 	/* Allocate PATH_MAX bytes. */
--	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
-+	new_de = kzalloc(PATH_MAX, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1713,7 +1713,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 	ntfs_mark_rec_free(sbi, ino, false);
- 
- out2:
--	__putname(new_de);
-+	kfree(new_de);
- 	kfree(rp);
- 
- out1:
-@@ -1734,7 +1734,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct NTFS_DE *de;
- 
- 	/* Allocate PATH_MAX bytes. */
--	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
-+	de = kzalloc(PATH_MAX, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
-@@ -1748,7 +1748,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 
- 	err = ni_add_name(ntfs_i(d_inode(dentry->d_parent)), ni, de);
- out:
--	__putname(de);
-+	kfree(de);
- 	return err;
- }
- 
-@@ -1771,8 +1771,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 	if (ntfs_is_meta_file(sbi, ni->mi.rno))
- 		return -EINVAL;
- 
--	/* Allocate PATH_MAX bytes. */
--	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
-+	de = kzalloc(PATH_MAX, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
-@@ -1808,7 +1807,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 
- out:
- 	ni_unlock(ni);
--	__putname(de);
-+	kfree(de);
- 	return err;
- }
- 
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index 71a5a959a48cb..fa4f7d9f38454 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -68,7 +68,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 				  u32 flags)
- {
- 	struct ntfs_inode *ni = ntfs_i(dir);
--	struct cpu_str *uni = __getname();
-+	struct cpu_str *uni = kmalloc(PATH_MAX, GFP_KERNEL);
- 	struct inode *inode;
- 	int err;
- 
-@@ -85,7 +85,7 @@ static struct dentry *ntfs_lookup(struct inode *dir, struct dentry *dentry,
- 			inode = dir_search_u(dir, uni, NULL);
- 			ni_unlock(ni);
+--- a/fs/netfs/iterator.c
++++ b/fs/netfs/iterator.c
+@@ -22,7 +22,7 @@
+  *
+  * Extract the page fragments from the given amount of the source iterator and
+  * build up a second iterator that refers to all of those bits.  This allows
+- * the original iterator to disposed of.
++ * the original iterator to be disposed of.
+  *
+  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
+  * allowed on the pages extracted.
+@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct i
+ 		ret = iov_iter_extract_pages(orig, &pages, count,
+ 					     max_pages - npages, extraction_flags,
+ 					     &offset);
+-		if (ret < 0) {
+-			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
++		if (unlikely(ret <= 0)) {
++			ret = ret ?: -EIO;
+ 			break;
  		}
--		__putname(uni);
-+		kfree(uni);
+ 
+@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct i
+ 		npages += cur_npages;
  	}
  
- 	/*
-@@ -287,8 +287,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 			return err;
- 	}
- 
--	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmalloc(PATH_MAX, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
-@@ -333,7 +332,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 	ni_unlock(ni);
- 	ni_unlock(dir_ni);
- out:
--	__putname(de);
-+	kfree(de);
- 	return err;
++	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
++		for (i = 0; i < npages; i++)
++			unpin_user_page(bv[i].bv_page);
++		kvfree(bv);
++		return ret;
++	}
++
+ 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
+ 	return npages;
  }
- 
-@@ -391,7 +390,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
- 	/*
- 	 * Try slow way with current upcase table
- 	 */
--	uni = kmem_cache_alloc(names_cachep, GFP_NOWAIT);
-+	uni = kmalloc(PATH_MAX, GFP_NOWAIT);
- 	if (!uni)
- 		return -ENOMEM;
- 
-@@ -413,7 +412,7 @@ static int ntfs_d_hash(const struct dentry *dentry, struct qstr *name)
- 	err = 0;
- 
- out:
--	kmem_cache_free(names_cachep, uni);
-+	kfree(uni);
- 	return err;
- }
- 
-@@ -452,7 +451,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
- 	 * Try slow way with current upcase table
- 	 */
- 	sbi = dentry->d_sb->s_fs_info;
--	uni1 = __getname();
-+	uni1 = kmalloc(PATH_MAX, GFP_NOWAIT);
- 	if (!uni1)
- 		return -ENOMEM;
- 
-@@ -482,7 +481,7 @@ static int ntfs_d_compare(const struct dentry *dentry, unsigned int len1,
- 	ret = !ntfs_cmp_names_cpu(uni1, uni2, sbi->upcase, false) ? 0 : 1;
- 
- out:
--	__putname(uni1);
-+	kfree(uni1);
- 	return ret;
- }
- 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index e0055dcf8fe38..6861c09d66d77 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -552,8 +552,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
- 	int err;
- 	void *buf;
- 
--	/* Allocate PATH_MAX bytes. */
--	buf = __getname();
-+	buf = kmalloc(PATH_MAX, GFP_KERNEL);
- 	if (!buf)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -584,7 +583,7 @@ struct posix_acl *ntfs_get_acl(struct mnt_idmap *idmap, struct dentry *dentry,
- 	if (!IS_ERR(acl))
- 		set_cached_acl(inode, type, acl);
- 
--	__putname(buf);
-+	kfree(buf);
- 
- 	return acl;
- }
--- 
-2.53.0
-
 
 
 
