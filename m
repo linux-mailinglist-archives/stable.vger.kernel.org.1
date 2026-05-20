@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sL0oAAryDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:26 +0200
+	id SNzSHLrzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973F45943E4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C597559494C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1ACE030F2509
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48A4635214D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22370369999;
-	Wed, 20 May 2026 17:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B9D2F0C62;
+	Wed, 20 May 2026 16:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj1LwZAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANtz6yHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A553A3826;
-	Wed, 20 May 2026 17:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE3A3630BC;
+	Wed, 20 May 2026 16:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298142; cv=none; b=rmiPGuDzEamuvaay1v+QH0MC+GXT/Ezk1/E/73JFt/Q/ZhVyCOc8F4gZ1U1d0RRat8iydlCwjfTJfEhkqTLs3uLUy+LDwS286hXnqog9IqrrlySGPaq34RFz3IYN4LeSGSdFnEGx1mAujXYO8zVyhmLv2VpaWAR+OpJxGkxtkyw=
+	t=1779295727; cv=none; b=qhKCIPFBqs5Uyf0O7iODzsouNMvRJPnDPlPkDrqqgjoSbOXLzkRo8uW8jHM0BfVHOL67GzPx8eBI13hoFRFZj58a4k93BuB+TBk5jJ5KyczvQp/JGEWJ58vwL+vV+QZVYb0h2ANyrymnIl/yJbuco9/0btW3sC+g+3ZCIn7mWJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298142; c=relaxed/simple;
-	bh=gHKnIR4ZNDpjNtznWQMLOP0dtBY73VixJoTK/zIBYsk=;
+	s=arc-20240116; t=1779295727; c=relaxed/simple;
+	bh=uLlGZqoAUii0oP9w0pL5Yc4OPwQpXZW8pCsJU5dYgm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnrlBaHwWnfAeRX+tkrMBCHxiVoMKlpn7aXnyaXUfGFecx0t4iEgVNX1BEmQr0JRnYqP4cSLV5GMcNAVcRnOODazHStUOxWdSLFzc1YFv3CmG2o1EUHk94gxC/cizEhrCV7vfgRNYluQ/M0u7M8qf6HR+AfH3Sp9rB0kH28t8+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj1LwZAf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071211F000E9;
-	Wed, 20 May 2026 17:29:00 +0000 (UTC)
+	 MIME-Version; b=N68WdfHPWZuGJi13kGR3NwBW6vqbH/UG+pY8klYULOg2gFsu2v7kHvD17REwdb2w+8cwd/fQiCwXeAoy0du8mT1XgRO+Z5M7Qk9LPUvKemfysJU4kd73AuZwxFWeAZcPkbxD2Ded3SgS1sOOWCZbk8aCSW6Y+JFKedkVcFTtFJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANtz6yHX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F4E1F000E9;
+	Wed, 20 May 2026 16:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298141;
-	bh=+f/KsJ0AxUjKqHHw02/65W7tCUCI7c1hJzST+mVIu70=;
+	s=korg; t=1779295726;
+	bh=6e/GxjByOoW/thAvj8t1bA9zLOMLy4BVSw8f/YZFnmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gj1LwZAfKzFtJuoIyYY/sOIKUsC6TbAC/93EG4XsPavmPI9sO+o07HNGWM0QINGSF
-	 Ffpn+bTiSpTqdQOf4KyMAz420sE842sIyrS04UWTL8dnYjGbakWaamBBj2Znj+2GEi
-	 6qffAY0ya6jHi6wN22Qqx4KXRS7KFIEqY00W98VI=
+	b=ANtz6yHX7uylFFLjl4dQO0IJuu0ciSjSRavnauKY6fm3W668v5j0r/Pk4Kks917oN
+	 nBMKlufPtPggpxzHA0/bDTROgFt+qAHcSHfhoM8Ecp14RkemtivpJ8eVNKSWNoETo3
+	 enl2qUISSUzkLkdgjHDsQlGCw7uUWqSlAvoc3Rdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 297/957] PCI: dwc: Fix type mismatch for kstrtou32_from_user() return value
+Subject: [PATCH 7.0 0530/1146] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
 Date: Wed, 20 May 2026 18:13:00 +0200
-Message-ID: <20260520162140.975375398@linuxfoundation.org>
+Message-ID: <20260520162200.175870196@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,106 +67,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251500-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250559-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 973F45943E4
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C597559494C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit 445588a3b18bb0702d746cb61f7a443639027651 ]
+[ Upstream commit 3b0dd81eea6b7a239fce456ce4545af76f1a9715 ]
 
-kstrtou32_from_user() returns int, but the return value was stored in
-a u32 variable 'val', risking sign loss. Use a dedicated int variable
-to correctly handle the return code.
+The regulator must be on, since it provides the display subsystem and
+therefore the bootloader had turned it on before Linux booted.
 
-Fixes: 4fbfa17f9a07 ("PCI: dwc: Add debugfs based Silicon Debug support for DWC")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20260401023048.4182452-1-18255117159@163.com
+Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../controller/dwc/pcie-designware-debugfs.c  | 21 +++++++++++--------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-debugfs.c b/drivers/pci/controller/dwc/pcie-designware-debugfs.c
-index df98fee69892b..afcc08efe2531 100644
---- a/drivers/pci/controller/dwc/pcie-designware-debugfs.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-debugfs.c
-@@ -208,10 +208,11 @@ static ssize_t lane_detect_write(struct file *file, const char __user *buf,
- 	struct dw_pcie *pci = file->private_data;
- 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
- 	u32 lane, val;
-+	int ret;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 01b570d0880d6..1298485c42142 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -148,6 +148,7 @@ vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
  
--	val = kstrtou32_from_user(buf, count, 0, &lane);
--	if (val)
--		return val;
-+	ret = kstrtou32_from_user(buf, count, 0, &lane);
-+	if (ret)
-+		return ret;
- 
- 	val = dw_pcie_readl_dbi(pci, rinfo->ras_cap_offset + SD_STATUS_L1LANE_REG);
- 	val &= ~(LANE_SELECT);
-@@ -347,10 +348,11 @@ static ssize_t counter_enable_write(struct file *file, const char __user *buf,
- 	struct dw_pcie *pci = pdata->pci;
- 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
- 	u32 val, enable;
-+	int ret;
- 
--	val = kstrtou32_from_user(buf, count, 0, &enable);
--	if (val)
--		return val;
-+	ret = kstrtou32_from_user(buf, count, 0, &enable);
-+	if (ret)
-+		return ret;
- 
- 	mutex_lock(&rinfo->reg_event_lock);
- 	set_event_number(pdata, pci, rinfo);
-@@ -408,10 +410,11 @@ static ssize_t counter_lane_write(struct file *file, const char __user *buf,
- 	struct dw_pcie *pci = pdata->pci;
- 	struct dwc_pcie_rasdes_info *rinfo = pci->debugfs->rasdes_info;
- 	u32 val, lane;
-+	int ret;
- 
--	val = kstrtou32_from_user(buf, count, 0, &lane);
--	if (val)
--		return val;
-+	ret = kstrtou32_from_user(buf, count, 0, &lane);
-+	if (ret)
-+		return ret;
- 
- 	mutex_lock(&rinfo->reg_event_lock);
- 	set_event_number(pdata, pci, rinfo);
+ 		vreg_l5a_0p8: ldo5 {
 -- 
 2.53.0
 
