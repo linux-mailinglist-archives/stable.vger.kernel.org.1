@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDLmN076DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:42 +0200
+	id YI1OAOfyDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A2E595AA8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B4E5946D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EF953085E89
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D36F3242747
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92C43ED3A4;
-	Wed, 20 May 2026 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A1A373BEB;
+	Wed, 20 May 2026 16:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KohtR+o+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfBtwzdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18DD3BA246;
-	Wed, 20 May 2026 17:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21577370AE5;
+	Wed, 20 May 2026 16:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297773; cv=none; b=NdrJJluSpX+D/bRIBuLM7PziOnK7PmRZJ25g1sLdnneIvl9oWZDNAcQ1cibAQe5PUv4PUjlsD6zEsV8o+7BE7zLtNHCpa1+tPvmyarC+cWctUbvNBsGxpLDYrTwRh1MCuFsNfWBYXRhCkispqS4q/o0CUv9IRXv9w7/JtiWcE18=
+	t=1779295470; cv=none; b=NYbZVbeWLTIXItCgResQcWQ1rnA3IlOTtHHmnEOUX2Rnf8N6DOHFqQBGua31gSDAtOZcMpqe2eUXLJz76HCb+yjKOcfUlbnf/+sOx65rTG7MhVlZO18GdxEfFCdPp/wHkxkkKPMDz4TS5Bym1SCw9SELPhW3NWKqS9ix1yLzh+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297773; c=relaxed/simple;
-	bh=uyeLZoTaJui5BYJZEiBNSwZEbJeHKwkCX/gob62JSnE=;
+	s=arc-20240116; t=1779295470; c=relaxed/simple;
+	bh=OK3KRorpkksQ03t2Ahz0wQetQBy+A+vs+pdFJAnjPyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbhi52VErfmHHX8f060zVSADS3Bc7QKTqP0+LRZhL+1o0ptDBUbb5PEqXfLTT4WgKewWEs/hz2KzkyZ4JOoipN4vVu9MyOJFlmBcA9qUapQP4JTmAippwPTYk6JD1TDNHS3yvk9DHvOpQ9/+SsxUjEtGan+ZSzp7Zc8TfGGofYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KohtR+o+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146B21F000E9;
-	Wed, 20 May 2026 17:22:51 +0000 (UTC)
+	 MIME-Version; b=nMmOsUjRq+iEZdy0pWZcgXmP+CnuaVPvynwDhWYOhnLH39+5C6ZdQPPJkWx9u1FLzdvdLH7TeizLyZDpC8jQAx+CxfwbZMBZzOj1LoguvozA4Z+WdMdUVhDJeytJJER0fverYCLYegAbuXb3rOfuBx1R2xCuOEs8/1LYUMsMYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfBtwzdq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F081F000E9;
+	Wed, 20 May 2026 16:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297772;
-	bh=jmfGMXBj4Mz46NJhfUPYY6iA6KIOt1ktKNldVdxxgQ8=;
+	s=korg; t=1779295469;
+	bh=q7vGZ3xK6AEr0GDEFMdP3LoTOGMcVs7R3c0aN5/b0RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KohtR+o+/hhDSYbHknG7+hpZvsE2LK+dvKu3jfH0pKYS24vjJRG7KtH6i2HBKl6nT
-	 3zWR2strM9H0BZpMeUMCq7WP469tmjrTgURwTWFzc8nDJe6842deFPC4DqVEWQl5+8
-	 /rwVmGOhtMMO2TyzHFRuY1kjVZkvL/6CgIBO1hJI=
+	b=sfBtwzdq69cr5icJfplgKK1JqtXvkQXus8odiy3Bv1d1uYPR/lvot/tTr3jvfUfMg
+	 PoQ3Uyi8CVXb+qSsRkUeIVSx+WzYfsWCo++ypZq1pPi5oYcavgVYnnlVRKzhMA6ZLp
+	 z1juQRkHW1wFRULiW1qfx4pnjMDgjigxmoNSwOgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Rastyogin <gerben@altlinux.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 157/957] net: mana: Use pci_name() for debugfs directory naming
-Date: Wed, 20 May 2026 18:10:40 +0200
-Message-ID: <20260520162137.955167431@linuxfoundation.org>
+Subject: [PATCH 7.0 0391/1146] ASoC: rsnd: Fix potential out-of-bounds access of component_dais[]
+Date: Wed, 20 May 2026 18:10:41 +0200
+Message-ID: <20260520162157.048169368@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251359-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250460-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,62 +91,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 68A2E595AA8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxtesting.org:url,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 57B4E5946D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Denis Rastyogin <gerben@altlinux.org>
 
-[ Upstream commit c116f07ab9d22bb6f355f3cf9e44c1e6a47fe559 ]
+[ Upstream commit f9e437cddf6cf9e603bdaefe148c1f4792aaf39c ]
 
-Use pci_name(pdev) for the per-device debugfs directory instead of
-hardcoded "0" for PFs and pci_slot_name(pdev->slot) for VFs. The
-previous approach had two issues:
+component_dais[RSND_MAX_COMPONENT] is initially zero-initialized
+and later populated in rsnd_dai_of_node(). However, the existing boundary check:
+  if (i >= RSND_MAX_COMPONENT)
 
-1. pci_slot_name() dereferences pdev->slot, which can be NULL for VFs
-   in environments like generic VFIO passthrough or nested KVM,
-   causing a NULL pointer dereference.
+does not guarantee that the last valid element remains zero. As a result,
+the loop can rely on component_dais[RSND_MAX_COMPONENT] being zero,
+which may lead to an out-of-bounds access.
 
-2. Multiple PFs would all use "0", and VFs across different PCI
-   domains or buses could share the same slot name, leading to
-   -EEXIST errors from debugfs_create_dir().
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-pci_name(pdev) returns the unique BDF address, is always valid, and is
-unique across the system.
-
-Fixes: 6607c17c6c5e ("net: mana: Enable debugfs files for MANA device")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260408081224.302308-2-ernis@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20260327103311.459239-1-gerben@altlinux.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ sound/soc/renesas/rcar/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 962fdd29d6063..c0de20b2183a2 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1927,11 +1927,8 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	gc->dev = &pdev->dev;
- 	xa_init(&gc->irq_contexts);
+diff --git a/sound/soc/renesas/rcar/core.c b/sound/soc/renesas/rcar/core.c
+index 69fb19964a71d..2dc078358612d 100644
+--- a/sound/soc/renesas/rcar/core.c
++++ b/sound/soc/renesas/rcar/core.c
+@@ -1974,7 +1974,7 @@ static int rsnd_probe(struct platform_device *pdev)
+ 	 *	asoc register
+ 	 */
+ 	ci = 0;
+-	for (i = 0; priv->component_dais[i] > 0; i++) {
++	for (i = 0; i < RSND_MAX_COMPONENT && priv->component_dais[i] > 0; i++) {
+ 		int nr = priv->component_dais[i];
  
--	if (gc->is_pf)
--		gc->mana_pci_debugfs = debugfs_create_dir("0", mana_debugfs_root);
--	else
--		gc->mana_pci_debugfs = debugfs_create_dir(pci_slot_name(pdev->slot),
--							  mana_debugfs_root);
-+	gc->mana_pci_debugfs = debugfs_create_dir(pci_name(pdev),
-+						  mana_debugfs_root);
- 
- 	err = mana_gd_setup(pdev);
- 	if (err)
+ 		ret = devm_snd_soc_register_component(dev, &rsnd_soc_component,
 -- 
 2.53.0
 
