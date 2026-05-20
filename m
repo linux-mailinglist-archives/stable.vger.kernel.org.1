@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-251038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MV2BVf6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:51 +0200
+	id +BGKAkUuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7F1595AD4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD2959B854
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C393D314AB66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A70C6395D8C8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1CA3F1AD6;
-	Wed, 20 May 2026 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DB247DD4E;
+	Wed, 20 May 2026 18:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2Z+N9UR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8bm3KCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809103F1ACA;
-	Wed, 20 May 2026 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE818401A0B;
+	Wed, 20 May 2026 18:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296939; cv=none; b=smxysj+gJgP67CFs7UPLX8H+R6ZZhThbU0nT0K3wgQH6K7BPgpzc/GLItCZ7Ehv+QtxWBqRD5rBWmmZ2IPA7iI9mbmxwp+v7F5XMMLu75p1PzwuLQDXW45oEtsH0qBvoS7nx/wdz9naf/inRExqd+dZnEunGrSQ3sh8g0+r/5Fo=
+	t=1779302413; cv=none; b=DW+SFEIE/158Gmj3/N2g2+WLbWyoirK0pzqkrJIO52v7tkHgUHydR5KltCUySvOhF1z+fgHp2M6F4a2l9p1B+h/AggOYyEkMc9oc+YKusEe7MqTc7Hpl56yJwLK++Dp/+uYsj83zGCnWMzvQcIpn8ANJBXZljPUS/Wm3jfUcXCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296939; c=relaxed/simple;
-	bh=hL0j+/6jbw6hgMUSlBpSGBAm5Ofo06RrYrsUgd5wQpM=;
+	s=arc-20240116; t=1779302413; c=relaxed/simple;
+	bh=kmjYNpCUlhnhC6y6XT+I1YIy3KG8ZNg+eBnY3rCyLoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4To4Y/e9wRjr3NHberP7mDtnZoM77l8lM04H+fhL8T8TDHiCFsr88Nz62nw1BZlmvdk9t5xt7u2aoqdbGvt30T4Ot5807Bx5ZxUtvw2oSBqdWWVxS/VOpoS0Yjny5mPY2KyHwfRrkWPBfi2XElD50BMtIO8Z7NeJbifxLNJckI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2Z+N9UR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31001F000E9;
-	Wed, 20 May 2026 17:08:57 +0000 (UTC)
+	 MIME-Version; b=IoAScyxP7WQ5M04cr0WKYwFAL5RW7M6Y0JDXoJ1A6eXOo8kkx61HZHRNwti/Z5WLqN1cT5IqzJ4OePE2t1PgeC/Zu/OUjXzWhb2+dpp68Gsm1HDN2xZhGoIs9CWfgUN4tWUPePhPUEwPKEdKbrneHLCn5OxpTkY6UgF6L83EwPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8bm3KCI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0441F000E9;
+	Wed, 20 May 2026 18:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296938;
-	bh=N1QlBnZEC2hcuH5AUVNlFk6cDDozJ0nN4v63SeBTKDs=;
+	s=korg; t=1779302411;
+	bh=b2hZTTQtu798jXBbXMI/8Veca0HZwC3bVNUXldvgPjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P2Z+N9URiRs/Zno0s/dzgIg2IdNml6NVFVIqx+R7E5w6AhCRyjvKL2y1DYkgBKh0e
-	 AI1Ar4HzJcHb4GCBCA6px8RcdG4YJP8whv52Wmml0/RtvX8tf16XnXVVovG2iAX/M8
-	 KMrgW8YNaU+f1JSIM+RJ4dGC7yhuPAsW8ro+e6SM=
+	b=S8bm3KCIpnCHhgzS2AKq31QjMCVk+8OY+9YZuHGshxUyiuYMzhQgeu/MxivLSengr
+	 yUAp/6whpn7ZLAzhKIKuRxD5Q0obp9aereGVo/O1ys0jiycPJudqanFioNf5oQcQHa
+	 +NkuW6UpSR0gom/CrP909yaSCX5kR71NgcQ58cpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0988/1146] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
+Subject: [PATCH 6.6 215/508] ocfs2: validate group add input before caching
 Date: Wed, 20 May 2026 18:20:38 +0200
-Message-ID: <20260520162210.592297246@linuxfoundation.org>
+Message-ID: <20260520162103.297800140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +73,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251038-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-253103-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 1D7F1595AD4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fasheh.com:email,live.cn:email]
+X-Rspamd-Queue-Id: 5CD2959B854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
+[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
 
-bareudp_fill_metadata_dst() passes bareudp->sock to
-udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
-The socket is only created in bareudp_open() and NULLed in
-bareudp_stop(), so calling this function while the device is down
-triggers a NULL dereference via sock->sk.
+[BUG]
+OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
+ocfs2_set_new_buffer_uptodate():
 
- BUG: kernel NULL pointer dereference, address: 0000000000000018
- RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
- Call Trace:
-  <TASK>
-  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
-  do_execute_actions (net/openvswitch/actions.c:901)
-  ovs_execute_actions (net/openvswitch/actions.c:1589)
-  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
-  genl_rcv_msg (net/netlink/genetlink.c:1209)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+kernel BUG at fs/ocfs2/uptodate.c:509!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
+Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
+Call Trace:
+ ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
+ ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7bbfb55a966d
 
-Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
-in the same driver.
+[CAUSE]
+ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
+user-controlled group block before ocfs2_verify_group_and_input()
+validates that block number. That helper is only valid for newly
+allocated metadata and asserts that the block is not already present in
+the chosen metadata cache. The code also uses INODE_CACHE(inode) even
+though the group descriptor belongs to main_bm_inode and later journal
+accesses use that cache context instead.
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[FIX]
+Validate the on-disk group descriptor before caching it, then add it to
+the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
+validation failure path separate from the later cleanup path so we only
+remove the buffer from that cache after it has actually been inserted.
+This keeps the group buffer lifetime consistent across validation,
+journaling, and cleanup.
+
+Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ocfs2/resize.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 0df3208783ad9..da5866ba06999 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -529,6 +529,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
- 		struct in6_addr saddr;
- 		struct socket *sock = rcu_dereference(bareudp->sock);
+diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
+index 42c0d314f95e8..acf2769f4c8c7 100644
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -500,14 +500,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 		goto out_unlock;
+ 	}
  
-+		if (!sock)
-+			return -ESHUTDOWN;
+-	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
+-
+ 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
+ 	if (ret) {
+ 		mlog_errno(ret);
+ 		goto out_free_group_bh;
+ 	}
+ 
++	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
 +
- 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
- 					     0, &saddr, &info->key,
- 					     sport, bareudp->port, info->key.tos,
+ 	trace_ocfs2_group_add((unsigned long long)input->group,
+ 			       input->chain, input->clusters, input->frees);
+ 
+@@ -515,7 +515,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ 	if (IS_ERR(handle)) {
+ 		mlog_errno(PTR_ERR(handle));
+ 		ret = -EINVAL;
+-		goto out_free_group_bh;
++		goto out_remove_cache;
+ 	}
+ 
+ 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
+@@ -569,9 +569,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
+ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
+ 
+-out_free_group_bh:
++out_remove_cache:
+ 	if (ret < 0)
+-		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
++		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
++
++out_free_group_bh:
+ 	brelse(group_bh);
+ 
+ out_unlock:
 -- 
 2.53.0
 
