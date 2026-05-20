@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-250566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGIhJtrzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:10 +0200
+	id cDBFGtvzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04ACF594997
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF05459499D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91BEC3255525
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28190325943B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE06A3630AF;
-	Wed, 20 May 2026 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0A2371D13;
+	Wed, 20 May 2026 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06UYSOoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8A2cckH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F61356762;
-	Wed, 20 May 2026 16:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339F234216C;
+	Wed, 20 May 2026 16:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295746; cv=none; b=FX5XWkWiLUZnIYfdqL76XB1l7uXIzmQ7k1Lj7Ni8TNrwMjctyZVVBxgVUDsUDcOEUFVILYeKAn6X3Hgorw/0g53qsU6mTKoB4PXcOUk3kM6MPlvPnGMVw97daQu3Plwj3dB8RCfHTX6gtdUHdoy4frzYX0EpoExyuHQZGcqt1E8=
+	t=1779295749; cv=none; b=U0Zwor32E4IopaLzxtm2hgMvsc8IM5frw7kzuniMBv2P9LB+6LLKZGeazf/W16mXE7wo0bZssorGPfI+dnxF463MS+6IV5yt3lMWBaRqUl/xQeHqimUQX/bAie/zWGCWkU/oj8tjfQQYcZkyoo/tn6t68g5yV2cAj3pPWwFWa+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295746; c=relaxed/simple;
-	bh=DXV9cqYB5uEGYyDY0PUbq5MLWVZRHuxqhg8yDpRE86I=;
+	s=arc-20240116; t=1779295749; c=relaxed/simple;
+	bh=b8+ZOmMtE5lSzJ/UWWO/RPh+4vnkYQcj42vtPkdruTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zgo4G0xBR23uv1/MuLWkXOMe33Bn5nB15lOIBM9W/ywN6rSIO+6F9WtJcJHwPIbznKRcN5Jn29ng7Len01PllP6kp0dwmH1W36kZ2qhH6qV8w5ttFXAGq1kSCamBjnzy1vh9gwQLrAeGRGX1cvvbwGcLNC4qlpqYmzKxwEFLLm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06UYSOoT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01CF11F000E9;
-	Wed, 20 May 2026 16:49:04 +0000 (UTC)
+	 MIME-Version; b=df+MSrWfT3wEn+AvGdV2LEeHjFPRB161L0wbYJfD3wmXtFtG70TjMG/mmHhqWyQcKyvJnMBWKQ8tJM4/IMSvM2pm5cSK5xFlzmAmypViRTsZ5FwuBq4NqkYqTF2a7HInifhVbdIPOsvH63lT9P89WYW19Nm9NoJi6J6Gj+sX5G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8A2cckH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1AE1F00893;
+	Wed, 20 May 2026 16:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295745;
-	bh=yjze884ogqeEJNlrgd4p1AMFzYd3URBrHY331Bg2LS0=;
+	s=korg; t=1779295748;
+	bh=xoEJhxzlA9SK5+65PbWV6ArmnsgDAekuY4nOOqpamt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=06UYSOoTWYXwgRvzrcjoO0zhevKz3i2czjKUHSrC3xqtZEAz17zSRZ+EYfN8/Kea4
-	 CUJyeFBylpss/6HzSBUFN9i8GxfNTfNkbsSlNBd5ARsI8iq+L6uuSak3rR5EYXgDRS
-	 H27Y//Nmr8KkL9hwHuyW43we7Dus4iV1pqAnJh5c=
+	b=k8A2cckH+LffGI8cQ5gmdJXmu9T+lfsovGYBSTpcajdF23eaVmezS92k1h+zl5iyB
+	 niAzDTvDPf+mSwHKYFPwr5lcRNR2sbrxBkgTY5kdHPnWcYJZhrF9Q48kvwS+rrnILF
+	 yPfLiHkKVTnhn30OYTHRfDdbbrgsacopVWpy17O4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nora Schiffer <nora.schiffer@ew.tq-group.com>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0536/1146] arm64: dts: freescale: imx8mp-tqma8mpql-mba8mp-ras314: fix UART1 RTS/CTS muxing
-Date: Wed, 20 May 2026 18:13:06 +0200
-Message-ID: <20260520162200.311768854@linuxfoundation.org>
+Subject: [PATCH 7.0 0537/1146] arm64: dts: imx91: Remove TMUs superfluous sensor ID
+Date: Wed, 20 May 2026 18:13:07 +0200
+Message-ID: <20260520162200.334794696@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,30 +68,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250567-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250566-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_PROHIBIT(0.00)[2.166.189.208:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,tq-group.com:email]
-X-Rspamd-Queue-Id: 04ACF594997
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tq-group.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: BF05459499D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,42 +100,36 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Nora Schiffer <nora.schiffer@ew.tq-group.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit b8d785a9f360abcd6a6f8f10a2adf222f8494d66 ]
+[ Upstream commit 53a0485304f11f5371fddf9fb06b95268154bf82 ]
 
-UART1 operates in DCE mode, but the RTS/CTS pins were incorrectly
-configured using the DTE pinmux setting.
+Currently a sensor ID is added to the reference, but
+thermal-sensor@44482000 has #thermal-sensor-cells = <0>, so parsing fails.
+This also has the effect that other hwmon sensors (jc42) fail to probe.
+Fix this by removing the superfluous sensor ID.
 
-Correct the pinmux to match DCE mode. Switching the RTS and CTS signals
-is fine for this board, as UART1 is routed to a pin header. Existing
-functionality is unaffected, as RTS/CTS could never have worked with
-the incorrect pinmux.
-
-Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
-Signed-off-by: Nora Schiffer <nora.schiffer@ew.tq-group.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: f0ed0e844452 ("arm64: dts: imx91: Add thermal-sensor and thermal-zone support")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx91.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-index b7f69c92b7748..1665a5030b993 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-@@ -848,8 +848,8 @@ pinctrl_tlv320aic3x04: tlv320aic3x04grp {
- 	pinctrl_uart1: uart1grp {
- 		fsl,pins = <MX8MP_IOMUXC_SAI2_RXFS__UART1_DCE_TX	0x14>,
- 			   <MX8MP_IOMUXC_SAI2_RXC__UART1_DCE_RX		0x14>,
--			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DTE_CTS	0x14>,
--			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DTE_RTS	0x14>;
-+			   <MX8MP_IOMUXC_SAI2_RXD0__UART1_DCE_RTS	0x14>,
-+			   <MX8MP_IOMUXC_SAI2_TXFS__UART1_DCE_CTS	0x14>;
- 	};
+diff --git a/arch/arm64/boot/dts/freescale/imx91.dtsi b/arch/arm64/boot/dts/freescale/imx91.dtsi
+index f075592bfc01f..d63569b39bbc5 100644
+--- a/arch/arm64/boot/dts/freescale/imx91.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91.dtsi
+@@ -11,7 +11,7 @@ thermal-zones {
+ 		cpu-thermal {
+ 			polling-delay-passive = <250>;
+ 			polling-delay = <2000>;
+-			thermal-sensors = <&tmu 0>;
++			thermal-sensors = <&tmu>;
  
- 	pinctrl_uart1_gpio: uart1gpiogrp {
+ 			trips {
+ 				cpu_alert: cpu-alert {
 -- 
 2.53.0
 
