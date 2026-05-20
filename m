@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ai3Gq3oDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:29 +0200
+	id CHJlEVH6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-251361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8F4592C8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2555595AB7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E608319763B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7C1F333AE96
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE58372691;
-	Wed, 20 May 2026 16:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CE43DC4DA;
+	Wed, 20 May 2026 17:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TImDcy78"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCkkv2oj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1418F342CBA;
-	Wed, 20 May 2026 16:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04153A4526;
+	Wed, 20 May 2026 17:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295473; cv=none; b=MKfy3ac6XHJl1VtFx/eDI22hgRgKZFXYdcMAenPTtPgi6QlBpj9+9OdrS773VvqWrQq+5CEjmBh2hTgk0rJmv1gTMUeq1TTDbOpVCuMbpjWsI4lI2ptth+QYYks1KASPb+m3QXbwJAmcYNW52aY77ZZ8wjzM8+Weu515eNgGE00=
+	t=1779297778; cv=none; b=QTAOFXR36fAomSFDTxWEOFUS3GNzhn6giuT0i5AzZIPkDy3DgBaHYQFX7dUeXCQkcNufMXrxVdDUOjI27LhXX/B8Nsa90O9h/oTPEf7egUAXDpnXeS5MusHys9KYkJF7/uqh328CoCWt0C1FVWb0v0QjMP42Rsjx29K5Tr8ODSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295473; c=relaxed/simple;
-	bh=sDvozFjZVIZVxSg59+F9nf3yigcrNcofKpVaeqmyzfM=;
+	s=arc-20240116; t=1779297778; c=relaxed/simple;
+	bh=af78msRUnOj3Gm7baFO69QMjDuPUBb/l/kCwrJaIncw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgY+IZg1Oh8EbeUyRLsDEhjb2h2ChR1zpMyUO2pEanRvIUOPi4RjBbrg96H8OcSbshcNGQdxiRGO9JAzKVAbzyX8ajq5oz45zzH+RxI21rtDNHZcHyMLWcV0HvEkQiYqoasPUvdrVoVVy/DkVL01ArMA0JkwB05kRUAWJ0nYgrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TImDcy78; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E7F1F000E9;
-	Wed, 20 May 2026 16:44:31 +0000 (UTC)
+	 MIME-Version; b=FvYcmgDVFBICFqVQk5fsDUqHUvsFUC2nv+7kn1zx9mdZp/705UA8BqevDhBDEhkR7V1ko73sgmNzkVpWyBSi81HMcHa/GFqlKTZf4MSkCevy5Cd6i/vfwoIV0lRgzZvfnadhCpwrLxGFZqJM+xlkQBiyWnFQyMJXhYu5ThOP0Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCkkv2oj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523181F000E9;
+	Wed, 20 May 2026 17:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295471;
-	bh=gI0FFHGN5KDi2E6HKAAdlx6Y9X3guR8/jMrI860JHJE=;
+	s=korg; t=1779297777;
+	bh=Q14yXiqkRor6tdBKWT/czMv3D1w2IMLiVtfoHdc9iMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TImDcy78QwYmleV6KnomOI7XbDfGfelZmqdbsLdfZj1XMiEmoddKTNda0zs3esJxo
-	 zLyzprqcna5dOg2GPdRkNYMNAjx9su6+unQgxKtrT6Sra4xAVn/2ln9DaHvvKtU1hn
-	 +dEACz238SiwITsHRvL6vIdWbjuI8vHhKMOtZ6zU=
+	b=RCkkv2ojVmX62Vwei+15LlCz/8OmrRRLFXt+9SpytE65phy2GLjCnWMEK8nYEa2JU
+	 ludsZ6lB/8U9+9XJxj5eq1RfJSmFmCLb1ZZza3jnJLAngqLiA0NtVsUYz4jB+aidBv
+	 Y7LnBpDO/JzsBXkaNtfrPMXvAqDukPcwH8SGygLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Schmidt <alexs@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0392/1146] PCI: Enable AtomicOps only if Root Port supports them
+Subject: [PATCH 6.18 159/957] net: mana: Move current_speed debugfs file to mana_init_port()
 Date: Wed, 20 May 2026 18:10:42 +0200
-Message-ID: <20260520162157.070823802@linuxfoundation.org>
+Message-ID: <20260520162137.998302034@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250461-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251361-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,122 +86,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1B8F4592C8C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C2555595AB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 1ae8c4ce157037e266184064a182af9ef9af278b ]
+[ Upstream commit 3b7c7fc97aea7b4048001d12f45777201c74a17f ]
 
-When inspecting the config space of a Connect-X physical function in an
-s390 system after it was initialized by the mlx5_core device driver, we
-found the function to be enabled to request AtomicOps despite the Root Port
-lacking support for completing them:
+Move the current_speed debugfs file creation from mana_probe_port() to
+mana_init_port(). The file was previously created only during initial
+probe, but mana_cleanup_port_context() removes the entire vPort debugfs
+directory during detach/attach cycles. Since mana_init_port() recreates
+the directory on re-attach, moving current_speed here ensures it survives
+these cycles.
 
-  00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
-          Subsystem: Mellanox Technologies Device 0002
-          DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-                   AtomicOpsCtl: ReqEn+
-
-On s390 and many virtualized guests, the Endpoint is visible but the Root
-Port is not.  In this case, pci_enable_atomic_ops_to_root() previously
-enabled AtomicOps in the Endpoint even though it can't tell whether the
-Root Port supports them as a completer.
-
-Change pci_enable_atomic_ops_to_root() to fail if there's no Root Port or
-the Root Port doesn't support AtomicOps.
-
-Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-[bhelgaas: commit log, check RP first to simplify flow]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260330-fix_pciatops-v7-2-f601818417e8@linux.ibm.com
+Fixes: 75cabb46935b ("net: mana: Add support for net_shaper_ops")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260408081224.302308-3-ernis@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 41 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 8e3e4e24c9096..9298a461bd302 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3674,8 +3674,7 @@ void pci_acs_init(struct pci_dev *dev)
-  */
- int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
- {
--	struct pci_bus *bus = dev->bus;
--	struct pci_dev *bridge;
-+	struct pci_dev *root, *bridge;
- 	u32 cap, ctl2;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 8277a1ac0ad74..c770fb86fd2d3 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3038,6 +3038,8 @@ static int mana_init_port(struct net_device *ndev)
+ 	eth_hw_addr_set(ndev, apc->mac_addr);
+ 	sprintf(vport, "vport%d", port_idx);
+ 	apc->mana_port_debugfs = debugfs_create_dir(vport, gc->mana_pci_debugfs);
++	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs,
++			   &apc->speed);
+ 	return 0;
  
- 	/*
-@@ -3705,35 +3704,35 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
- 		return -EINVAL;
- 	}
+ reset_apc:
+@@ -3310,8 +3312,6 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
  
--	while (bus->parent) {
--		bridge = bus->self;
-+	root = pcie_find_root_port(dev);
-+	if (!root)
-+		return -EINVAL;
+ 	netif_carrier_on(ndev);
  
--		pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2, &cap);
-+	pcie_capability_read_dword(root, PCI_EXP_DEVCAP2, &cap);
-+	if ((cap & cap_mask) != cap_mask)
-+		return -EINVAL;
- 
-+	bridge = pci_upstream_bridge(dev);
-+	while (bridge != root) {
- 		switch (pci_pcie_type(bridge)) {
--		/* Ensure switch ports support AtomicOp routing */
- 		case PCI_EXP_TYPE_UPSTREAM:
--		case PCI_EXP_TYPE_DOWNSTREAM:
--			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
--				return -EINVAL;
--			break;
+-	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs, &apc->speed);
 -
--		/* Ensure root port supports all the sizes we care about */
--		case PCI_EXP_TYPE_ROOT_PORT:
--			if ((cap & cap_mask) != cap_mask)
--				return -EINVAL;
--			break;
--		}
--
--		/* Ensure upstream ports don't block AtomicOps on egress */
--		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-+			/* Upstream ports must not block AtomicOps on egress */
- 			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
- 						   &ctl2);
- 			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
- 				return -EINVAL;
-+			fallthrough;
-+
-+		/* All switch ports need to route AtomicOps */
-+		case PCI_EXP_TYPE_DOWNSTREAM:
-+			pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2,
-+						   &cap);
-+			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-+				return -EINVAL;
-+			break;
- 		}
+ 	return 0;
  
--		bus = bus->parent;
-+		bridge = pci_upstream_bridge(bridge);
- 	}
- 
- 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
+ free_indir:
 -- 
 2.53.0
 
