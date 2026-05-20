@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDSmGvrlDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:58 +0200
+	id wAqAKC0WDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137F25927EC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362C8599534
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7ACF9307FBDA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8FDC3292E1D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1011139B969;
-	Wed, 20 May 2026 16:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F493BED26;
+	Wed, 20 May 2026 17:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STvS4uV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9FIrchc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B35B36A369;
-	Wed, 20 May 2026 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B61F35F619;
+	Wed, 20 May 2026 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294996; cv=none; b=tIRzqPNDEHVa1ihStou1tmcPIT2gwHgu/VQcX9r8KkPB6cWAx6I+Y1LRaJSsdN0h8PJiXayYXaGrthBH4pl5Ow0D2n0vnRS1+TaxoGWx0yIkNep54QJlFAfljEgzM/0wAkvQvnQN8XzjzhBKKojS/VmLbT4+DVafGI/n1RA+pDk=
+	t=1779297395; cv=none; b=T36UCvgRuDTHEQGvnixgiYrC4gtmWhUNT7+kxFJBzajSlp2XBtUk3qN3VpI+rV9LQ7BSPDJWMSdp0kiPTHt8Q5PPn+LFR2LNnW0JMwoP4LO9k8qpkDBJL6vklWhdLO1a/OFbi8A4El9GcFnroAratkA2cvKWS99I0QGcpjHFKRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294996; c=relaxed/simple;
-	bh=w1+tWIYOk45jY37YHcerxLV7MWBqeMEdVUsiOAy9z04=;
+	s=arc-20240116; t=1779297395; c=relaxed/simple;
+	bh=495Upsqj3cMyHLl7HIdeJIKAj6mDYP+gPr9KaIo17fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzJcU1I36g51u8Edn9RBWODd55QOeXO2HD2AmWC9gsorM2g75Q1o6y8BMF8sW8i0Clb1V6qxVuNhlqaLgWBwNZnib1Gvb2XYqqs4lbznHBcWefxnSwr/AN8zCphJlUqJdqf2Baoqb4EMQta3lmKK2Duxc9P8EXfj/9vpEMXR2+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STvS4uV0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C8C1F000E9;
-	Wed, 20 May 2026 16:36:34 +0000 (UTC)
+	 MIME-Version; b=evi+68T+ATMiwr8dL5bv9pRK/Tm/Bdc2t2z73xkGfaq0YrVryFgbc+dqiX2EZHL/J+6DxHCnI1pXVkvZ3FYvTMxLBa24SVJUIdRDa47l3MDR6Db0c9rtqVI/Jemc9cPlPAiYwTQpsULh29L96hncDUJUvG928Gl9SAPZ8KoOWLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9FIrchc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9009C1F000E9;
+	Wed, 20 May 2026 17:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294995;
-	bh=m41WLRwNKkvdgMqjfgAum6Pf2Ey65rhWbUxOzs4oauU=;
+	s=korg; t=1779297394;
+	bh=JWFp45+OMYazbssMIY7PtIkpkeMiROLv82RFyKe4eLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=STvS4uV0zlXmmP21iE+kOkj/JZq9i8LM/F2oCqoNKNMsrenAn6GLt+Rxj2/jyZZZx
-	 3NLaX9266Z6GVKoaxEdFUb2O17RdD7k8CSm8UgBZ7CqNVmJ/sfAJbeGGabwF5yrKuG
-	 ehxCmmmzr+tbopZnp7U4wcuF+JtzSLjSOmf2/AbY=
+	b=S9FIrchceoWP4ndguYVFKW+tiTmfQUOPjS9O80fEXYoMzuexeEc97oUq0rQsXeyWr
+	 ypuNdEXk0zez6vXN/2soilykrk5oNBfcXeMx7KBtzlMI5ML2jWrRWTezN6crw0jUlK
+	 ilv9QCJHHal/2XmWkNpeovZ2R4ts9AkhKJ/UJb9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sander Vanheule <sander@svanheule.net>,
-	Mark Brown <broonie@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0249/1146] ASoC: sti: use managed regmap_field allocations
+Subject: [PATCH 6.18 016/957] md: wake raid456 reshape waiters before suspend
 Date: Wed, 20 May 2026 18:08:19 +0200
-Message-ID: <20260520162153.871083094@linuxfoundation.org>
+Message-ID: <20260520162134.912379773@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +65,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251213-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250279-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,svanheule.net:email]
-X-Rspamd-Queue-Id: 137F25927EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email]
+X-Rspamd-Queue-Id: 362C8599534
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sander Vanheule <sander@svanheule.net>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 1696fad8b259a2d46e51cd6e17e4bcdbe02279fa ]
+[ Upstream commit cf86bb53b9c92354904a328e947a05ffbfdd1840 ]
 
-The regmap_field objects allocated at player init are never freed and
-may leak resources if the driver is removed.
+During raid456 reshape, direct IO across the reshape position can sleep
+in raid5_make_request() waiting for reshape progress while still
+holding an active_io reference. If userspace then freezes reshape and
+writes md/suspend_lo or md/suspend_hi, mddev_suspend() kills active_io
+and waits for all in-flight IO to drain.
 
-Switch to devm_regmap_field_alloc() to automatically limit the lifetime
-of the allocations the lifetime of the device.
+This can deadlock: the IO needs reshape progress to continue, but the
+reshape thread is already frozen, so the active_io reference is never
+dropped and suspend never completes.
 
-Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
-Signed-off-by: Sander Vanheule <sander@svanheule.net>
-Link: https://patch.msgid.link/20260220152634.480766-3-sander@svanheule.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+raid5_prepare_suspend() already wakes wait_for_reshape for dm-raid. Do
+the same for normal md suspend when reshape is already interrupted, so
+waiting raid456 IO can abort, drop its reference, and let suspend
+finish.
+
+The mdadm test tests/25raid456-reshape-deadlock reproduces the hang.
+
+Fixes: 714d20150ed8 ("md: add new helpers to suspend/resume array")
+Link: https://lore.kernel.org/linux-raid/20260327140729.2030564-1-yukuai@fnnas.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sti/uniperif_player.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/md.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
-index f1b7e76f97b58..45d35b887e4eb 100644
---- a/sound/soc/sti/uniperif_player.c
-+++ b/sound/soc/sti/uniperif_player.c
-@@ -1028,11 +1028,11 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
- 		return PTR_ERR(regmap);
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 0a3152f21d488..b91ac1b7d7a15 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -486,6 +486,17 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
  	}
  
--	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
-+	player->clk_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[0]);
- 	if (IS_ERR(player->clk_sel))
- 		return PTR_ERR(player->clk_sel);
- 
--	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
-+	player->valid_sel = devm_regmap_field_alloc(&pdev->dev, regmap, regfield[1]);
- 	if (IS_ERR(player->valid_sel))
- 		return PTR_ERR(player->valid_sel);
- 
+ 	percpu_ref_kill(&mddev->active_io);
++
++	/*
++	 * RAID456 IO can sleep in wait_for_reshape while still holding an
++	 * active_io reference. If reshape is already interrupted or frozen,
++	 * wake those waiters so they can abort and drop the reference instead
++	 * of deadlocking suspend.
++	 */
++	if (mddev->pers && mddev->pers->prepare_suspend &&
++	    reshape_interrupted(mddev))
++		mddev->pers->prepare_suspend(mddev);
++
+ 	if (interruptible)
+ 		err = wait_event_interruptible(mddev->sb_wait,
+ 				percpu_ref_is_zero(&mddev->active_io));
 -- 
 2.53.0
 
