@@ -1,219 +1,198 @@
-Return-Path: <stable+bounces-249907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJN0M8auDWr21QUAu9opvQ
-	(envelope-from <stable+bounces-249907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:53:26 +0200
+	id YM3dF1avDWrW1QUAu9opvQ
+	(envelope-from <stable+bounces-249908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:55:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A9758E43C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:53:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A0B58E4E4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2858D30845B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:47:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6C0463006B4B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B918F3E0C4D;
-	Wed, 20 May 2026 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0BD3E274F;
+	Wed, 20 May 2026 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi7IKK24"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/3+0Mlh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99D3DDDB6;
-	Wed, 20 May 2026 12:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB72F3E0C56
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 12:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779281221; cv=none; b=WW/aJpq6MebsREUN+xY9o1wkWiBEqonoUAdErPi33yY8TVn8q0r0QAKJd9vK0G6M3fx74PJ3W2yKOS1Mj+UBeCCqJHmlAC9huQGQYta2DBsfJIJEKWPdMYE/10l/fB61YSn25feEDkK8Y7bPcByi2Auy+pUHu0Ks7z4gRnQXaqA=
+	t=1779281746; cv=none; b=LL0CuDaptM01QScV7gig4she/IpXry+YLoQd3VnGF7oMXwr7vnQgUKOy2nD7dSm4QosfRVNUAVjBnlJcz5ByFNrRd4ss1fIOVGdbSheigz7/z2XHbgQtEqLiR1gzH33WY+zu7mOJTVWjXm8ZZ8y0u8SKTRIpttm5YkI5gKaHLwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779281221; c=relaxed/simple;
-	bh=3/Un1eOoGYRy096NF5teMY/O3oMt370yJJNe4tNDORE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eODvKvGivwgdMCEklWk1gunwTlhaN7gcwfUrf6xh8UICw2zy8JvVHzQW60+LBCgnXBZxhHt26v6Uk5JXjRwYdU53QbiXnWWsWeiqfuALEAUWC2TZ/aSri+59E9s2hCP2u4jysTdu9Iup6RokwqqQvidBFJoU/zqp8pfhqXk0F7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi7IKK24; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630991F000E9;
-	Wed, 20 May 2026 12:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779281219;
-	bh=8BtRnQV9ve1mRwTxt1keynXJeLz4QoTeDa0cQ9uPH5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=pi7IKK24E+1k8wRaaR2f/X9TDdtTLnfP2kXkrZ3uGFKw3myHS3arznZZMxizR1ZCN
-	 vCUigAxoM6uVGskN+bYHz9IZtlwOHe9bNmEznSkZ1DB5dTkPLBgtL/nC3vrsrwvwfN
-	 EFbQSC3yHnBih6e1G7Hh6eiJ2ioajZKEFgXLxORA=
-Date: Wed, 20 May 2026 14:47:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: August Wikerfors <git@augustwikerfors.se>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-Message-ID: <2026052026-barber-espresso-1d9a@gregkh>
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
- <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
- <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh>
- <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
- <2026051942-uproar-drainpipe-6370@gregkh>
- <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
- <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+	s=arc-20240116; t=1779281746; c=relaxed/simple;
+	bh=kQqoICgWYcF9EhTVCWjl6d8enjOFRr1mVruuG2WSTHA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WC//L2H/KxxUKkIS7jvO5y0GzaY9Q/OITehETUwW1/XfHXlQfe+7V5XXF3sFuyysUiS3bbhqEVmdhU3PjYacxJm1dddiXV8lRUfDh2QQZW8ZQ7CwT6hhkbIe3v0ew6u0gJtw7rgvAzRoLLaToKSd2N+82Yni8sB7BtWXIqcUHOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/3+0Mlh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73101F000E9;
+	Wed, 20 May 2026 12:55:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779281743;
+	bh=OvxVqXtAKOcNYGY0rlDdwQd524hoVyUF8qJ0kJeDltw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=I/3+0Mlh2lmGctdporDyLiRbotMpJSOhDn0xoK6c7cgDBYWlH2YGzaF1E16yyBYM3
+	 l9DB5Z0Ebgac4f+ZgVXklSQIUu+YBqqWlPBc0GM6p5SSerwRdLE3wfKOmQ5vtNSZEN
+	 mXK2ibgj82b1t9jseRzy2LGceivwCuvuNMr3i8vCr9alN4SfbAPXhK2PUC1tJhjcZ5
+	 MbB0qLL7T72aah1Xc0M7CgqzhF/QXnqgE6TwX/MPQTnZetnC7qNZ2Ev2w5cYb0D8XS
+	 XuTU4VIlbLfv4aw0VwYFU/aWCaR+JI9nGj3/C7IathFYvRbfZejDAQBBM3sd3bMjU8
+	 GB1qbs33PvgOQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0.y 1/2] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
+Date: Wed, 20 May 2026 08:55:40 -0400
+Message-ID: <20260520125541.3536279-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051546-gestation-vessel-153b@gregkh>
+References: <2026051546-gestation-vessel-153b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249907-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,leemhuis.info,vger.kernel.org,kernel.org,davemloft.net,lists.linux.dev,linux-foundation.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249908-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 50A9758E43C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
+X-Rspamd-Queue-Id: 04A0B58E4E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
-> On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
-> > Hi Greg,
-> > 
-> > On Tue, May 19, 2026 at 11:19 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > 
-> > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
-> > > > Hi Greg,
-> > > > 
-> > > > On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > 
-> > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
-> > > > > > On 5/19/26 12:30, Greg KH wrote:
-> > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
-> > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > > > > > > > 
-> > > > > > > > > > The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
-> > > > > > > > > >    net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
-> > > > > > > > > > 
-> > > > > > > > > > are available in the Git repository at:
-> > > > > > > > > > 
-> > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
-> > > > > > > > > > 
-> > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
-> > > > > > > > > > 
-> > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
-> > > > > > > > > 
-> > > > > > > > > It seems this PR sadly came too late for this week's net PR to mainline
-> > > > > > > > > that was merged yesterday.
-> > > > > > > > > 
-> > > > > > > > > TWIMC, from my point of view, it would be great if we somehow could
-> > > > > > > > > still get the changes from this PR or at least the btmtk fix it
-> > > > > > > > > contains[1] to mainline this week before -rc4, as it is fixing a
-> > > > > > > > > regression known since 2026-04-24 that at least five people encountered
-> > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
-> > > > > > > > > validate WMT event SKB length before struct access") [006b9943b982 in
-> > > > > > > > > -next].
-> > > > > > > > 
-> > > > > > > > Greg, Sasha, that [1] fix I was talking about now reached -next as
-> > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
-> > > > > > > > events") and will likely hit mainline on Thursday or so with the weekly
-> > > > > > > > -net PR to -mainline. If that's good enough for you, I'd say it would be
-> > > > > > > > good to pick this up for the next round of stable kernels.
-> > > > > > > 
-> > > > > > > That "Fixes:" tag is referring to something that is also not in any
-> > > > > > > tree, but that commit does have a cc: stable in it.  So do we need both
-> > > > > > > of these:
-> > > > > > 
-> > > > > > Valid question, as yes, there is a slight mixup here:
-> > > > > > 
-> > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-> > > > > > 
-> > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
-> > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-> > > > > > btmtk: validate WMT event SKB length before struct access") -- the one
-> > > > > > that is causing the regression that I want to get fixed. So we now only
-> > > > > > need:
-> > > > > > 
-> > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
-> > > > > 
-> > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
-> > > > > nightmare to track over time, ugh.
-> > > > 
-> > > > Hmm, did we get the wrong hash or something? Usually, that would show
-> > > > up in the verify-fixes.sh, but perhaps it didn't capture it this time
-> > > > for some reason, perhaps I'm running an outdated version or something
-> > > > similar.
-> > > 
-> > > Something went wrong if we ended up with a patch in the stable trees,
-> > > yet this fix is referring to it as a different git sha.  Don't know
-> > > where the disconnect happend :(
-> > 
-> > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
-> > struct access")
-> > 
-> > I don't have that in any of our tree either, this is actually
-> > 634a4408c061 on all trees in the chain:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=634a4408c061
-> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=634a4408c061
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=634a4408c061
-> > 
-> > Or actually that was the hash before it got rebased on bluetooth-next tree:
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/commit/?id=041e88fb0c08
-> > 
-> > But I didn't send the PR from that three so perhaps somebody else sent
-> > it to stable with the wrong fixes tag?
-> I believe the confusion comes from "Bluetooth: btmtk: accept too short WMT
-> FUNC_CTRL events" itself currently having different commit hashes in
-> bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former
-> correctly refers to "Bluetooth: btmtk: validate WMT event SKB length before
-> struct access" as 634a4408c061 in the Fixes tag and was merged into net
-> yesterday heading for 7.1-rc5. The latter still refers to it as
-> 041e88fb0c08. Both are now in next-20260519 but only the latter was in
-> next-20260518 which was the latest at the time of Thorsten's message.
-> 
-> Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should result
-> in a valid Fixes tag.
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-Ok, now done.  Be careful of duplicate commits in different branches
-that are marked for backporting with different ids.  It can cause
-massive confusion (i.e. don't be like the drm tree...)
+[ Upstream commit 140039c23aca067b9ff0242e3c0ce96276bb95f3 ]
 
-thanks,
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for the bus clock. This reduces boilerplate code
+and error handling, as the managed API automatically disables the clock
+when the device is removed or if probe fails.
 
-greg k-h
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust the error handling to use the
+existing put_host label.
+
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/73d0d8ecb4e1af5a558d6a7866c0f886d94fe3d1.1773885292.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0f25236694a2 ("spi: sifive: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-sifive.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 6c7aba8befa07..54adbc057af62 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
+ 	}
+ 
+-	spi->clk = devm_clk_get(&pdev->dev, NULL);
++	/* Spin up the bus clock before hitting registers */
++	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(spi->clk)) {
+ 		dev_err(&pdev->dev, "Unable to find bus clock\n");
+ 		ret = PTR_ERR(spi->clk);
+@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
+ 	}
+ 
+-	/* Spin up the bus clock before hitting registers */
+-	ret = clk_prepare_enable(spi->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable bus clock\n");
+-		goto put_host;
+-	}
+-
+ 	/* probe the number of CS lines */
+ 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
+@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	/* Define our host */
+@@ -392,7 +386,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -401,13 +395,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	return 0;
+ 
+-disable_clk:
+-	clk_disable_unprepare(spi->clk);
+ put_host:
+ 	spi_controller_put(host);
+ 
+@@ -421,7 +413,6 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+-	clk_disable_unprepare(spi->clk);
+ }
+ 
+ static int sifive_spi_suspend(struct device *dev)
+-- 
+2.53.0
+
 
