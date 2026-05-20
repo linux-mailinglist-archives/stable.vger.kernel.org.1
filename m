@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCMjOOvzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:27 +0200
+	id 8BHZOLcbDmrP6AUAu9opvQ
+	(envelope-from <stable+bounces-251527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365C35949CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 085BE599DCE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1139031D0AF2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F87C332475E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C723BE64B;
-	Wed, 20 May 2026 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9881936F421;
+	Wed, 20 May 2026 17:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrlptJql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcMoN4pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89193A3E90;
-	Wed, 20 May 2026 16:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC862D879E;
+	Wed, 20 May 2026 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295756; cv=none; b=osem9D0AWABUgftyWzl/0QzxR8XPdVJnoZtpf7QG6qdnj4pNLRT22DXIoPOve7W0Fiz9tNnyYq2ikj9/1QSPybv1lj1Zla3I3rLVpQTDN7HTw2l1L1RB5Y2nkcPXcU3fELyGvinRx0k906q66YUzeCGMeEEikhJF0JaKseWeSUc=
+	t=1779298211; cv=none; b=gijNMJo5AggiTzQSJPxlfDY756QYPm0KjwjZ2EQn3+DYMXuNvKBLMHWcldLKJTucppm/BouOL9xw32WvJ51XE+CD35CKfD3QQsdTXv8tO3XSW4FU8n6iST7y+tg0c6G/36gQRTPujUbQ4Sxsi0TAqOQfaG0WGi6j0b+wEWBPlFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295756; c=relaxed/simple;
-	bh=koxleYiYkV+jgvAuoqbabCaCiQb1wnJirJKH1i58r3E=;
+	s=arc-20240116; t=1779298211; c=relaxed/simple;
+	bh=2HwFGmUYtlAppahqwONl3RLernQGhfRUBL34gqGOjMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAN6vd46TyMyUjywGbYxPpiYo0jAhRHRUZhxKZcDfAX2LoOnjFEHnotnAXGLMBmlEr3QUdciOo2SQRL9Fqc7n9sziNvf0vdOS0iNMCHhf/WcEMpEHgIfIl5Ln6khJfJqHt8TBcsgHpStzUQ7pw2Fcc5GpccakS6Vl+RYtJNfV8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrlptJql; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D763F1F00893;
-	Wed, 20 May 2026 16:49:12 +0000 (UTC)
+	 MIME-Version; b=oJL+hlh2EjAsKLbAtywgtSPVrCctF+Cr0Vg46JjLAMPP2B8GRO8aS3zZ3OvBFUA9caBBbdX53ZNpov6O2zjtYapjjcyr2hdeNb3f+Ewjoetzp2vFCuiXpW+X6b6ktQTEiyfsk/OY1WMU+Ugj8qf1eqq/JI4nuOQOMsrYDLimm84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcMoN4pe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8075E1F00893;
+	Wed, 20 May 2026 17:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295753;
-	bh=rjWZuHSCYSEhf+jMEb0zRUAGgwIggotaEpy6WUgFlVk=;
+	s=korg; t=1779298210;
+	bh=turHpInxqSIaQAteiIeDhwT420IWqzZI86Wpe5iOiQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LrlptJqlMm5Duo6T96lkown1K/NOnFmoOVLNA4KgUQimgo7wDij0RZauKj5aOz41s
-	 Lv1zO38ew79vWdKbed9EGXIov1fZxJrYBEpdrC4OwEsdd+2o9J2GpLQVK+/YP/Hq0/
-	 +EzNbjhmNtW/liEG6P1OOJM+H0qAeVZj939Btn9g=
+	b=kcMoN4peDvyYdALvfFjlvy7xGXyDgQeRDNBi4C4D0erz0qIv8bVePXBWtmdeJ9oNx
+	 qlmaEZKakQp8VM4UCueKNty3pxPGyiCH3KJdtKTfAXpsXdwk1pxZlnbgBLz/ckvFiz
+	 /AzuclBpNw7mGRJD5IE68NO9O9EION1HfGN+icGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Edwin Peer <epeer@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0539/1146] arm64: dts: imx8dxl-evk: Use audio-graph-card2 for wm8960-2 and wm8960-3
-Date: Wed, 20 May 2026 18:13:09 +0200
-Message-ID: <20260520162200.378521798@linuxfoundation.org>
+Subject: [PATCH 6.18 307/957] gpu: nova-core: register: use field type for Into implementation
+Date: Wed, 20 May 2026 18:13:10 +0200
+Message-ID: <20260520162141.188935268@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,212 +74,245 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251527-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250569-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,0.0.0.2:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,1a:email,0.0.0.1:email]
-X-Rspamd-Queue-Id: 365C35949CA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 085BE599DCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Alexandre Courbot <acourbot@nvidia.com>
 
-[ Upstream commit e8341b0245736619f8d6a2cc311c9e8ad8e82390 ]
+[ Upstream commit 3f674dc4ef1b3783f9d8dae33b46bf50eaac7c79 ]
 
-The sound card wm8960-2 and wm8960-3 only support capture mode for the
-reason of connection on the EVK board. But fsl-asoc-card don't support
-capture_only setting, the sound card creation will fail.
+The getter method of a field works with the field type, but its setter
+expects the type of the register. This leads to an asymmetry in the
+From/Into implementations required for a field with a dedicated type.
+For instance, a field declared as
 
-fsl-sai 59060000.sai: Missing dma channel for stream: 0
-fsl-sai 59060000.sai: ASoC error (-22): at snd_soc_pcm_component_new() on 59060000.sai
-fsl-sai 59070000.sai: Missing dma channel for stream: 0
-fsl-sai 59070000.sai: ASoC error (-22): at snd_soc_pcm_component_new() on 59070000.sai
+    pub struct ControlReg(u32) {
+        3:0 mode as u8 ?=> Mode;
+        ...
+    }
 
-so switch to use audio-graph-card2 which supports 'capture_only'
-property for wm8960-2 and wm8960-3 cards.
+currently requires the following implementations:
 
-Fixes: b41c45eb990a ("arm64: dts: imx8dxl-evk: add audio nodes")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+    impl TryFrom<u8> for Mode {
+      ...
+    }
+
+    impl From<Mode> for u32 {
+      ...
+    }
+
+Change this so the `From<Mode>` now needs to be implemented for `u8`,
+i.e. the primitive type of the field. This is more consistent, and will
+become a requirement once we start using the TryFrom/Into derive macros
+to implement these automatically.
+
+Reported-by: Edwin Peer <epeer@nvidia.com>
+Closes: https://lore.kernel.org/rust-for-linux/F3853912-2C1C-4F9B-89B0-3168689F35B3@nvidia.com/
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Message-ID: <20251016151323.1201196-2-joelagnelf@nvidia.com>
+Stable-dep-of: de0aca13509b ("gpu: nova-core: bitfield: fix broken Default implementation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 114 ++++++++++++++----
- 1 file changed, 90 insertions(+), 24 deletions(-)
+ drivers/gpu/nova-core/falcon.rs      | 38 ++++++++++++++++++++--------
+ drivers/gpu/nova-core/regs/macros.rs | 10 ++++----
+ 2 files changed, 32 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-index 5c68d33e19f22..bc62ae5ca812d 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-@@ -259,33 +259,37 @@ sound-wm8960-1 {
- 	};
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 37e6298195e49..3f505b8706011 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -22,11 +22,11 @@ mod hal;
+ pub(crate) mod sec2;
  
- 	sound-wm8960-2 {
--		compatible = "fsl,imx-audio-wm8960";
--		model = "wm8960-audio-2";
--		audio-cpu = <&sai2>;
--		audio-codec = <&wm8960_2>;
--		audio-routing = "Headphone Jack", "HP_L",
--				"Headphone Jack", "HP_R",
--				"Ext Spk", "SPK_LP",
--				"Ext Spk", "SPK_LN",
--				"Ext Spk", "SPK_RP",
--				"Ext Spk", "SPK_RN",
--				"LINPUT1", "Mic Jack",
--				"Mic Jack", "MICB";
-+		compatible = "audio-graph-card2";
-+		label = "wm8960-audio-2";
-+		links = <&sai2_port2>;
-+		routing = "Headphones", "HP_L",
-+			"Headphones", "HP_R",
-+			"Ext Spk", "SPK_LP",
-+			"Ext Spk", "SPK_LN",
-+			"Ext Spk", "SPK_RP",
-+			"Ext Spk", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+		widgets = "Headphone", "Headphones",
-+			"Speaker", "Ext Spk",
-+			"Microphone", "Mic Jack";
- 	};
+ // TODO[FPRI]: Replace with `ToPrimitive`.
+-macro_rules! impl_from_enum_to_u32 {
++macro_rules! impl_from_enum_to_u8 {
+     ($enum_type:ty) => {
+-        impl From<$enum_type> for u32 {
++        impl From<$enum_type> for u8 {
+             fn from(value: $enum_type) -> Self {
+-                value as u32
++                value as u8
+             }
+         }
+     };
+@@ -46,7 +46,7 @@ pub(crate) enum FalconCoreRev {
+     Rev6 = 6,
+     Rev7 = 7,
+ }
+-impl_from_enum_to_u32!(FalconCoreRev);
++impl_from_enum_to_u8!(FalconCoreRev);
  
- 	sound-wm8960-3 {
--		compatible = "fsl,imx-audio-wm8960";
--		model = "wm8960-audio-3";
--		audio-cpu = <&sai3>;
--		audio-codec = <&wm8960_3>;
--		audio-routing = "Headphone Jack", "HP_L",
--				"Headphone Jack", "HP_R",
--				"Ext Spk", "SPK_LP",
--				"Ext Spk", "SPK_LN",
--				"Ext Spk", "SPK_RP",
--				"Ext Spk", "SPK_RN",
--				"LINPUT1", "Mic Jack",
--				"Mic Jack", "MICB";
-+		compatible = "audio-graph-card2";
-+		label = "wm8960-audio-3";
-+		links = <&sai3_port2>;
-+		routing = "Headphones", "HP_L",
-+			"Headphones", "HP_R",
-+			"Ext Spk", "SPK_LP",
-+			"Ext Spk", "SPK_LN",
-+			"Ext Spk", "SPK_RP",
-+			"Ext Spk", "SPK_RN",
-+			"LINPUT1", "Mic Jack",
-+			"Mic Jack", "MICB";
-+		widgets = "Headphone", "Headphones",
-+			"Speaker", "Ext Spk",
-+			"Microphone", "Mic Jack";
- 	};
- };
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for FalconCoreRev {
+@@ -81,7 +81,7 @@ pub(crate) enum FalconCoreRevSubversion {
+     Subversion2 = 2,
+     Subversion3 = 3,
+ }
+-impl_from_enum_to_u32!(FalconCoreRevSubversion);
++impl_from_enum_to_u8!(FalconCoreRevSubversion);
  
-@@ -481,6 +485,16 @@ wm8960_2: audio-codec@1a {
- 				DCVDD-supply = <&reg_audio_1v8>;
- 				SPKVDD1-supply = <&reg_audio_5v>;
- 				SPKVDD2-supply = <&reg_audio_5v>;
-+
-+				port {
-+					capture-only;
-+
-+					wm8960_2_ep: endpoint {
-+						bitclock-master;
-+						frame-master;
-+						remote-endpoint = <&sai2_endpoint2>;
-+					};
-+				};
- 			};
- 		};
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for FalconCoreRevSubversion {
+@@ -125,7 +125,7 @@ pub(crate) enum FalconSecurityModel {
+     /// Also known as High-Secure, Privilege Level 3 or PL3.
+     Heavy = 3,
+ }
+-impl_from_enum_to_u32!(FalconSecurityModel);
++impl_from_enum_to_u8!(FalconSecurityModel);
  
-@@ -510,6 +524,16 @@ wm8960_3: audio-codec@1a {
- 				DCVDD-supply = <&reg_audio_1v8>;
- 				SPKVDD1-supply = <&reg_audio_5v>;
- 				SPKVDD2-supply = <&reg_audio_5v>;
-+
-+				port {
-+					capture-only;
-+
-+					wm8960_3_ep: endpoint {
-+						bitclock-master;
-+						frame-master;
-+						remote-endpoint = <&sai3_endpoint2>;
-+					};
-+				};
- 			};
- 		};
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for FalconSecurityModel {
+@@ -157,7 +157,7 @@ pub(crate) enum FalconModSelAlgo {
+     #[default]
+     Rsa3k = 1,
+ }
+-impl_from_enum_to_u32!(FalconModSelAlgo);
++impl_from_enum_to_u8!(FalconModSelAlgo);
  
-@@ -700,6 +724,27 @@ &sai2 {
- 	pinctrl-0 = <&pinctrl_sai2>;
- 	fsl,sai-asynchronous;
- 	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		sai2_port1: port@1 {
-+			reg = <1>;
-+			endpoint { /* not used */ };
-+		};
-+
-+		sai2_port2: port@2 {
-+			reg = <2>;
-+			capture-only;
-+
-+			sai2_endpoint2: endpoint {
-+				dai-format = "i2s";
-+				remote-endpoint = <&wm8960_2_ep>;
-+				system-clock-direction-out;
-+			};
-+		};
-+	};
- };
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for FalconModSelAlgo {
+@@ -179,7 +179,7 @@ pub(crate) enum DmaTrfCmdSize {
+     #[default]
+     Size256B = 0x6,
+ }
+-impl_from_enum_to_u32!(DmaTrfCmdSize);
++impl_from_enum_to_u8!(DmaTrfCmdSize);
  
- &sai3 {
-@@ -712,6 +757,27 @@ &sai3 {
- 	pinctrl-0 = <&pinctrl_sai3>;
- 	fsl,sai-asynchronous;
- 	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		sai3_port1: port@1 {
-+			reg = <1>;
-+			endpoint { /* not used */ };
-+		};
-+
-+		sai3_port2: port@2 {
-+			reg = <2>;
-+			capture-only;
-+
-+			sai3_endpoint2: endpoint {
-+				dai-format = "i2s";
-+				remote-endpoint = <&wm8960_3_ep>;
-+				system-clock-direction-out;
-+			};
-+		};
-+	};
- };
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for DmaTrfCmdSize {
+@@ -202,7 +202,6 @@ pub(crate) enum PeregrineCoreSelect {
+     /// RISC-V core is active.
+     Riscv = 1,
+ }
+-impl_from_enum_to_u32!(PeregrineCoreSelect);
  
- &thermal_zones {
+ impl From<bool> for PeregrineCoreSelect {
+     fn from(value: bool) -> Self {
+@@ -213,6 +212,15 @@ impl From<bool> for PeregrineCoreSelect {
+     }
+ }
+ 
++impl From<PeregrineCoreSelect> for bool {
++    fn from(value: PeregrineCoreSelect) -> Self {
++        match value {
++            PeregrineCoreSelect::Falcon => false,
++            PeregrineCoreSelect::Riscv => true,
++        }
++    }
++}
++
+ /// Different types of memory present in a falcon core.
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub(crate) enum FalconMem {
+@@ -236,7 +244,7 @@ pub(crate) enum FalconFbifTarget {
+     /// Non-coherent system memory (System DRAM).
+     NoncoherentSysmem = 2,
+ }
+-impl_from_enum_to_u32!(FalconFbifTarget);
++impl_from_enum_to_u8!(FalconFbifTarget);
+ 
+ // TODO[FPRI]: replace with `FromPrimitive`.
+ impl TryFrom<u8> for FalconFbifTarget {
+@@ -263,7 +271,6 @@ pub(crate) enum FalconFbifMemType {
+     /// Physical memory addresses.
+     Physical = 1,
+ }
+-impl_from_enum_to_u32!(FalconFbifMemType);
+ 
+ /// Conversion from a single-bit register field.
+ impl From<bool> for FalconFbifMemType {
+@@ -275,6 +282,15 @@ impl From<bool> for FalconFbifMemType {
+     }
+ }
+ 
++impl From<FalconFbifMemType> for bool {
++    fn from(value: FalconFbifMemType) -> Self {
++        match value {
++            FalconFbifMemType::Virtual => false,
++            FalconFbifMemType::Physical => true,
++        }
++    }
++}
++
+ /// Type used to represent the `PFALCON` registers address base for a given falcon engine.
+ pub(crate) struct PFalconBase(());
+ 
+diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+index 8058e1696df97..1c54a4533822e 100644
+--- a/drivers/gpu/nova-core/regs/macros.rs
++++ b/drivers/gpu/nova-core/regs/macros.rs
+@@ -482,7 +482,7 @@ macro_rules! register {
+         register!(
+             @leaf_accessor $name $hi:$lo $field
+             { |f| <$into_type>::from(if f != 0 { true } else { false }) }
+-            $into_type => $into_type $(, $comment)?;
++            bool $into_type => $into_type $(, $comment)?;
+         );
+     };
+ 
+@@ -499,7 +499,7 @@ macro_rules! register {
+             $(, $comment:literal)?;
+     ) => {
+         register!(@leaf_accessor $name $hi:$lo $field
+-            { |f| <$try_into_type>::try_from(f as $type) } $try_into_type =>
++            { |f| <$try_into_type>::try_from(f as $type) } $type $try_into_type =>
+             ::core::result::Result<
+                 $try_into_type,
+                 <$try_into_type as ::core::convert::TryFrom<$type>>::Error
+@@ -513,7 +513,7 @@ macro_rules! register {
+             $(, $comment:literal)?;
+     ) => {
+         register!(@leaf_accessor $name $hi:$lo $field
+-            { |f| <$into_type>::from(f as $type) } $into_type => $into_type $(, $comment)?;);
++            { |f| <$into_type>::from(f as $type) } $type $into_type => $into_type $(, $comment)?;);
+     };
+ 
+     // Shortcut for non-boolean fields defined without the `=>` or `?=>` syntax.
+@@ -527,7 +527,7 @@ macro_rules! register {
+     // Generates the accessor methods for a single field.
+     (
+         @leaf_accessor $name:ident $hi:tt:$lo:tt $field:ident
+-            { $process:expr } $to_type:ty => $res_type:ty $(, $comment:literal)?;
++            { $process:expr } $prim_type:tt $to_type:ty => $res_type:ty $(, $comment:literal)?;
+     ) => {
+         ::kernel::macros::paste!(
+         const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
+@@ -559,7 +559,7 @@ macro_rules! register {
+         pub(crate) fn [<set_ $field>](mut self, value: $to_type) -> Self {
+             const MASK: u32 = $name::[<$field:upper _MASK>];
+             const SHIFT: u32 = $name::[<$field:upper _SHIFT>];
+-            let value = (u32::from(value) << SHIFT) & MASK;
++            let value = (u32::from($prim_type::from(value)) << SHIFT) & MASK;
+             self.0 = (self.0 & !MASK) | value;
+ 
+             self
 -- 
 2.53.0
 
