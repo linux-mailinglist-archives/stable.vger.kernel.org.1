@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDtZKvYnDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:30 +0200
+	id 8J4UDDz7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022FC59AEFE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C77D595D03
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7F6C34A5659
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A23E5319E0E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC01C3F8896;
-	Wed, 20 May 2026 18:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425503F1AC4;
+	Wed, 20 May 2026 17:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rin6Blvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUyDBBv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD09348C55;
-	Wed, 20 May 2026 18:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66243F166E;
+	Wed, 20 May 2026 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301284; cv=none; b=PEyvkTLzU25Rg31Yaeq1VL4iOCrK+PjNvunUlH5ex8rT10MzL49Ly8O+Q3utJoH47jaUtmvD7pTnG9toF8aOeLCV5zMPkuJSJ8xPOb1BNIj9UvKyyhNPzreZyECLFn1A0tbFe0nuQkR83Sz7Xj9FsEHxEzM27RYimx92b7lt1j8=
+	t=1779297116; cv=none; b=rwkpgIOagCi06mx2yegBVB93LCdvffNC60Ezgr4kkhashDW+FG10SH600FP3pUDV3iz6mUEOfmIkE+HV2wuvMuk/85Nq/G/QUgLy7O6OHYm1KHJ6+6G1QoQ81VJoQ2EgJtNCmNUqH3dDH2WxQazwl0Ugd4sPgnfwzp6lXAn5QvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301284; c=relaxed/simple;
-	bh=l2lnxLzoXMyV/ePa3u+Goo7SB0rN6XCnlVnMzzqmrxk=;
+	s=arc-20240116; t=1779297116; c=relaxed/simple;
+	bh=YMdWdGkSAcaFj9yXfnqEZ3DV1xrQ7K1qlGaxJhSm5is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzcmCxizY7JKlg82HER+z8+nGOCDg1CFwjDPppzdB+nZ9mcfl2yALJaaw5FIGb8T5tfQab8NtFXVW5JeyAHHQtcXIyVFBZBlefuY4gnOXWV3/Ws54+DLPALzYxj0TYP+ub4NRioc0vbj8iXkzT55mLYWQ47UZJhtI6VAGIlxcaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rin6Blvq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13431F000E9;
-	Wed, 20 May 2026 18:21:22 +0000 (UTC)
+	 MIME-Version; b=pUzNTwYerLCo2IOwt06wIWeQcZKbKSpIUTi5JoOfvMlPQ3kZyaiJ1eQWTUTLBNFd1LL8gSSBA44StlbfSQ19tXkJCYVvTxnyhVZbGPpeII4r6n1GvDUONNPp+rseBoEqp02pHP6SisKWnjjoA5Ce02movXIa4eYpBi8HgI6231E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUyDBBv5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571CF1F000E9;
+	Wed, 20 May 2026 17:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301283;
-	bh=fgsUCEg5THUqvkhEw7odli5jtBZS1lZ5Aqs6538CAKM=;
+	s=korg; t=1779297114;
+	bh=AZ1MvCsjOwL0gcVRFfYrZUdnn2MTKlb5/cZ5YU9KsZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rin6Blvq6nFkyW+qz6yQ+UgI6MCwYnZjCfVKHPAXkqmyHJ+5wjnmFnXr7ffMQo3bZ
-	 e1GvFCiqcQxBIuQkMMgriUOT1GufCnnAPeikhdCMEJ55afzXTigcVp5uCNNi5x4H73
-	 vD5sQs/I52DppSGQAqjZa5t13KRWf8xXmf4LF1NM=
+	b=QUyDBBv5r3Zt+1UCGcZmx6z6ovSlrG+iTKs4PIoL7wKZ/GE1RCxt11Wfv2n57uBP1
+	 LhGPHuOWU73flTZkdXEalbAGSznySrJAbz9HRKzVY8bIVSzkie1LbXjAGkSA6NglaH
+	 S7GZOTcDyySVNhuiWDB7d0xeDeb8l+ora3fJY9aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 496/666] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
+	Josh Eads <josheads@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 7.0 1057/1146] KVM: x86: Swap the dst and src operand for MOVNTDQA
 Date: Wed, 20 May 2026 18:21:47 +0200
-Message-ID: <20260520162122.011809496@linuxfoundation.org>
+Message-ID: <20260520162212.154664663@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,142 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252671-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251107-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bell-sw.com:email]
-X-Rspamd-Queue-Id: 022FC59AEFE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4C77D595D03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
+commit 3098c076c83ea2913245cb915cdcba98eb24214c upstream.
 
-There is a mismatch between the passed arguments and the actual
-nfp_encode_basic_qdr() function parameter names:
+Swap the MOVNTDQA operands, as MOVNTDQA does NOT in fact have "the same
+characteristics as 0F E7 (MOVNTDQ)"; MOVNTDQA loads from memory and stores
+to registers, while MOVNTDQ loads from registers and stores to memory.
 
-  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
-                                  int mode, bool addr40, int isld1,
-                                  int isld0)
-  {
-      ...
+Per the SDM:
 
-But "dest_island" and "cpp_tgt" are swapped at every call-site.
-For example:
+ MOVNTDQ - Move packed integer values in xmm1 to m128 using non-temporal
+           hint.
 
-  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-                              mode, addr40, isld1, isld0);
+ MOVNTDQA - Move double quadword from m128 to xmm1 using non-temporal hint
+            if WC memory type.
 
-As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
-type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
-as the destination island ID, which can accidentally match or be outside
-the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
-
-Since code already worked for years, also add extra pr_warn() to error
-paths in nfp_encode_basic_qdr() to help identify any potential address
-verification failures.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Josh Eads <josheads@google.com>
+Fixes: c57d9bafbd0b ("KVM: x86: Add support for emulating MOVNTDQA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260506213514.2781948-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/x86/kvm/emulate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-index 79470f198a62a..9cf19446657c6 100644
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
- 
- 	/* Full Island ID and channel bits overlap? */
- 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
--	if (ret)
-+	if (ret) {
-+		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
- 		return ret;
-+	}
- 
- 	/* The current address won't go where expected? */
--	if (dest_island != -1 && dest_island != v)
-+	if (dest_island != -1 && dest_island != v) {
-+		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
-+			__func__, dest_island, v);
- 		return -EINVAL;
-+	}
- 
- 	/* If dest_island was -1, we don't care where it goes. */
- 	return 0;
-@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * the address but we can verify if the existing
- 			 * contents will point to a valid island.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		iid_lsb = addr40 ? 34 : 26;
-@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 		return 0;
- 	case 1:
- 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		idx_lsb = addr40 ? 39 : 31;
-@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * be set before hand and with them select an island.
- 			 * So we need to confirm that it's at least plausible.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		/* Make sure we compare against isldN values
-@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * iid<1> = addr<30> = channel<0>
- 			 * channel<1> = addr<31> = Index
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		isld[0] &= ~3;
--- 
-2.53.0
-
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -4469,7 +4469,7 @@ static const struct opcode opcode_map_0f
+ 	X16(N), X16(N),
+ 	/* 0x20 - 0x2f */
+ 	X8(N),
+-	X2(N), GP(SrcReg | DstMem | ModRM | Mov | Aligned, &pfx_0f_e7_0f_38_2a), N, N, N, N, N,
++	X2(N), GP(SrcMem | DstReg | ModRM | Mov | Aligned, &pfx_0f_e7_0f_38_2a), N, N, N, N, N,
+ 	/* 0x30 - 0x7f */
+ 	X16(N), X16(N), X16(N), X16(N), X16(N),
+ 	/* 0x80 - 0xef */
 
 
 
