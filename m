@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-251036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OI2GDi7uDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:58 +0200
+	id KCjKNRUhDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-252002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30BC5938BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4119B59A621
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E166930A8B71
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81F4B37AC289
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A793B36A352;
-	Wed, 20 May 2026 17:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DF63F23CC;
+	Wed, 20 May 2026 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtQFEI98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bX2BEuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630163D8104;
-	Wed, 20 May 2026 17:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835CF3E5ECF;
+	Wed, 20 May 2026 17:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296934; cv=none; b=QzDE/dCIdf6oEORj1On4vCFzjMkK4tmTdyW9qIhzVYHAabM4izNZrKITWLCS2Jzemx2J0IYv+DJE0jn1t2zhsA1Z9vbZT3FFFvrl8g6Hb7moV5OhlNU/NWWEL6F1KuzV2fY/HoocCH7o57u0C/4/Lj/aS5MA8xT0jf/JOFMykcg=
+	t=1779299488; cv=none; b=EwQFtmRo6iHVP/poCkrAKu6ZaR21rlseHTEwlBcZIwLZ80Axzlhj/bp0BgtQt2449k5L9XD3hp1rqOEBpOolWgRdM1chFmZpClCWJb/0hLwrawWDbor8iKv0syXFbyLGRy8OQHMRMhJ3/7UxtVi9cxVICcraNF4ntIMeSnjMj5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296934; c=relaxed/simple;
-	bh=o/gKK2hkygOIqsn1qqfWLECzuF+Gfj9/zHx9oncXPzQ=;
+	s=arc-20240116; t=1779299488; c=relaxed/simple;
+	bh=jPkIfmZkmMX6D/q5a8RYtlZmJjM3qfmSu5qlop++J+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mh/gGWPOdak8nsQ00cXVCXdWLqOC+35rtnWiJsfd4M2t/+7etVD37Xf42DtvDQ3H7gbqwD8o3VtrjnfO43ioTCyvhsP3C7U1cDfe5/YEkYz2pdziHFzDbjsseCcHbB3aYUNWcpZA4jzKXa5fb3L/6izT1xXh5d8caqZkFedl76s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtQFEI98; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898791F000E9;
-	Wed, 20 May 2026 17:08:52 +0000 (UTC)
+	 MIME-Version; b=oWgtpJRjqouBQoLOIx9Mqq1iiZR1lofGVE4x5CzOVsep8MnE1eayZH3bHeVBNu4NBeIy6wWi/32T24/gITxANCYsyc//p4dgyVsYJc6ktvD/laKS+NpRnVkUxpvBElDvHiJ6hh2k69ISvKeRD7ahaq+mgN+cnIPFhfw50XNn7Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bX2BEuw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BB71F000E9;
+	Wed, 20 May 2026 17:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296933;
-	bh=4ty0h9R3RfVg43Vdn48PjF7wCKiEchceLYvTE/6Yu98=;
+	s=korg; t=1779299487;
+	bh=tlb8Cm45hTAPUEtcgussz15t0SMP9uPJqq2+DSiY6VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EtQFEI98o0aGkpX4jqT9FGjh4cOBAhlY8kfCIf37744CfuE2aG9EsloVnXvhxTb8z
-	 GijFfRSC4jZWcAusBG9UwpfywOpEXSm13KaZTnTiVNRbzjOaXTeza1/vckyiKTCSMe
-	 9AzJsNAzTL6/8WeXCA/vedrKEcm1KUFBQZOCEK9s=
+	b=1bX2BEuwps3rxEe/rJrDMShgRP5mjOyB2NWATpB9N4gXnsIwdGGBDqyjEKeBCSnwz
+	 fG3nRAUPLvusOGv4i41qkDQw7iBb73xCSGUU5Zepb70EGdb3Wvrcix/Qk5PgvyZUCp
+	 Rl1Q+GhJLSzSYRZruFVLEdiF2OJh2ZxULJnBSwIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Robert Beckett <bob.beckett@collabora.com>,
+	Umang Jain <uajain@igalia.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0986/1146] netfilter: skip recording stale or retransmitted INIT
-Date: Wed, 20 May 2026 18:20:36 +0200
-Message-ID: <20260520162210.547047378@linuxfoundation.org>
+Subject: [PATCH 6.18 754/957] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
+Date: Wed, 20 May 2026 18:20:37 +0200
+Message-ID: <20260520162150.917544875@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +69,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251036-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252002-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email]
-X-Rspamd-Queue-Id: D30BC5938BC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email]
+X-Rspamd-Queue-Id: 4119B59A621
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit 576a5d2bad4814c881a829576b1261b9b8159d2b ]
+[ Upstream commit b0f6f4ac7d5d04fe2adcdd63ed1cd1ad505b8958 ]
 
-An INIT whose init_tag matches the peer's vtag does not provide new state
-information. It indicates either:
+Commit 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
+introduced a change that "broke" Steam Deck's audio probe, in the OLED
+model, as observed in the following dmesg snippet:
 
-- a stale INIT (after INIT-ACK has already been seen on the same side), or
-- a retransmitted INIT (after INIT has already been recorded on the same
-  side).
+[...]
+snd_sof_amd_vangogh 0000:04:00.5: Topology: ABI 3:26:0 Kernel ABI 3:23:1
+sof_mach nau8821-max: ASoC: physical link acp-bt-codec (id 2) not exist
+sof_mach nau8821-max: ASoC: topology: could not load header: -22
+snd_sof_amd_vangogh 0000:04:00.5: tplg amd/sof-tplg/sof-vangogh-nau8821-max.tplg component load failed -22
+snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP topology -22
+snd_sof_amd_vangogh 0000:04:00.5: ASoC error (-22): at snd_soc_component_probe() on 0000:04:00.5
+sof_mach nau8821-max: ASoC: failed to instantiate card -22
+sof_mach nau8821-max: error -EINVAL: Failed to register card(sof-nau8821-max)
+sof_mach nau8821-max: probe with driver sof_mach failed with error -22
+[...]
 
-In both cases, the INIT must not update ct->proto.sctp.init[] state, since
-it does not advance the handshake tracking and may otherwise corrupt
-INIT/INIT-ACK validation logic.
+Notice the quotes in "broke": it's not really a bug in such commit,
+but instead a problem with a topology file from Steam Deck OLED. This
+was discussed to great extent in [1], and Cristian proposed a pretty
+simple and functional change that resolved the issue for the Deck's
+issue. That change, though, would break other devices, so it wasn't
+accepted upstream. And the proper suggested solution (fix the topology)
+was never implemented, so Valve's kernel (and anyone that wants to boot
+the mainline on Steam Deck OLED) is carrying that fix downstream.
 
-Allow INIT processing only when the conntrack entry is newly created
-(SCTP_CONNTRACK_NONE), or when the init_tag differs from the stored peer
-vtag.
+So, we propose hereby a different approach: a DMI quirk, as many already
+present in the sound drivers, to address this issue solely on Steam Deck
+OLED, not breaking other devices and as a bonus, allowing simple patch
+up in case eventually the topology file gets fixed (we'd just need to
+check against any DMI info reflecting that or the topology/FW versions).
 
-Note it skips the check for the ct with old_state SCTP_CONNTRACK_NONE in
-nf_conntrack_sctp_packet(), as it is just created in sctp_new() where it
-set ct->proto.sctp.vtag[IP_CT_DIR_REPLY] = ih->init_tag.
+The motivation of such upstream quirk is related to users that want
+to test latest kernel trees on their devices and get no only non-working
+sound device, but seems some games (like Ori and the Blind Forest)
+can't properly work without a proper functional audio device.
+Example of such report can be seen at [2].
 
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/ee56c3e416452b2a40589a2a85245ac2ad5e9f4b.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Robert Beckett <bob.beckett@collabora.com>
+Cc: Umang Jain <uajain@igalia.com>
+Fixes: 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
+Link: https://lore.kernel.org/r/20231209205351.880797-11-cristian.ciocaltea@collabora.com/ [1]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218677 [2]
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Tested-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Link: https://patch.msgid.link/20260423183505.116445-1-gpiccoli@igalia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ sound/soc/amd/acp/acp-legacy-mach.c |  2 +-
+ sound/soc/amd/acp/acp-mach-common.c | 22 +++++++++++++++++++---
+ sound/soc/amd/acp/acp-mach.h        |  4 ++++
+ sound/soc/amd/acp/acp-sof-mach.c    |  2 +-
+ 4 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 645d2c43ebf7a..7e10fa65cbdd3 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -466,9 +466,13 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
- 			if (!ih)
- 				goto out_unlock;
+diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
+index a7a551366a409..235d6cc83fa98 100644
+--- a/sound/soc/amd/acp/acp-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-legacy-mach.c
+@@ -174,7 +174,7 @@ static int acp_asoc_probe(struct platform_device *pdev)
+ 		acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
  
--			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
--				ct->proto.sctp.init[!dir] = 0;
--			ct->proto.sctp.init[dir] = 1;
-+			/* Do not record INIT matching peer vtag (stale or retransmitted INIT). */
-+			if (old_state == SCTP_CONNTRACK_NONE ||
-+			    ct->proto.sctp.vtag[!dir] != ih->init_tag) {
-+				if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
-+					ct->proto.sctp.init[!dir] = 0;
-+				ct->proto.sctp.init[dir] = 1;
-+			}
+ 	dmi_id = dmi_first_match(acp_quirk_table);
+-	if (dmi_id && dmi_id->driver_data)
++	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
+ 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
  
- 			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
- 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
+ 	ret = acp_legacy_dai_links_create(card);
+diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
+index c4bc8e849284c..a2031e7f61424 100644
+--- a/sound/soc/amd/acp/acp-mach-common.c
++++ b/sound/soc/amd/acp/acp-mach-common.c
+@@ -20,6 +20,7 @@
+ #include <sound/soc.h>
+ #include <linux/input.h>
+ #include <linux/module.h>
++#include <linux/dmi.h>
+ 
+ #include "../../codecs/rt5682.h"
+ #include "../../codecs/rt1019.h"
+@@ -37,15 +38,21 @@
+ #define NAU8821_FREQ_OUT	12288000
+ #define MAX98388_CODEC_DAI	"max98388-aif1"
+ 
+-#define TDM_MODE_ENABLE 1
+-
+ const struct dmi_system_id acp_quirk_table[] = {
+ 	{
+ 		/* Google skyrim proto-0 */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Google_Skyrim"),
+ 		},
+-		.driver_data = (void *)TDM_MODE_ENABLE,
++		.driver_data = (void *)QUIRK_TDM_MODE_ENABLE,
++	},
++	{
++		/* Valve Steam Deck OLED */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
++		},
++		.driver_data = (void *)QUIRK_REMAP_DMIC_BT,
+ 	},
+ 	{}
+ };
+@@ -1385,6 +1392,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 	struct snd_soc_dai_link *links;
+ 	struct device *dev = card->dev;
+ 	struct acp_card_drvdata *drv_data = card->drvdata;
++	const struct dmi_system_id *dmi_id = dmi_first_match(acp_quirk_table);
+ 	int i = 0, num_links = 0;
+ 
+ 	if (drv_data->hs_cpu_id)
+@@ -1556,6 +1564,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 			links[i].codecs = &snd_soc_dummy_dlc;
+ 			links[i].num_codecs = 1;
+ 		}
++
++		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT)
++			links[i].id = DMIC_BE_ID;
+ 		i++;
+ 	}
+ 
+@@ -1571,6 +1582,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
+ 		links[i].capture_only = 1;
+ 		links[i].nonatomic = true;
+ 		links[i].no_pcm = 1;
++
++		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT) {
++			links[i].id = BT_BE_ID;
++			dev_dbg(dev, "quirk REMAP_DMIC_BT enabled\n");
++		}
+ 	}
+ 
+ 	card->dai_link = links;
+diff --git a/sound/soc/amd/acp/acp-mach.h b/sound/soc/amd/acp/acp-mach.h
+index f94c30c20f20b..7177d3fd96192 100644
+--- a/sound/soc/amd/acp/acp-mach.h
++++ b/sound/soc/amd/acp/acp-mach.h
+@@ -26,6 +26,10 @@
+ 
+ #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
+ 
++/* List of DMI quirks - check acp-mach-common.c for usage. */
++#define QUIRK_TDM_MODE_ENABLE 1
++#define QUIRK_REMAP_DMIC_BT 2
++
+ enum be_id {
+ 	HEADSET_BE_ID = 0,
+ 	AMP_BE_ID,
+diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
+index 6215e31eceddf..36ecef7013b9c 100644
+--- a/sound/soc/amd/acp/acp-sof-mach.c
++++ b/sound/soc/amd/acp/acp-sof-mach.c
+@@ -110,7 +110,7 @@ static int acp_sof_probe(struct platform_device *pdev)
+ 
+ 	acp_card_drvdata = card->drvdata;
+ 	dmi_id = dmi_first_match(acp_quirk_table);
+-	if (dmi_id && dmi_id->driver_data)
++	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
+ 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
+ 
+ 	acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
 -- 
 2.53.0
 
