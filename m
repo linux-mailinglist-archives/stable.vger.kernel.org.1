@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIyKIdn6DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:01 +0200
+	id yMpKJ2rvDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0151B595BE1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36A8593CDE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8ACF23402348
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40F5E3101430
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D3A3F1AD5;
-	Wed, 20 May 2026 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CCE3CAE61;
+	Wed, 20 May 2026 16:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIgF5xRi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0OIMSBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAD23F1661;
-	Wed, 20 May 2026 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051A23CB2F8;
+	Wed, 20 May 2026 16:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297839; cv=none; b=nAI4SXaifq8dtAGZOJMkyjyWvtOwr1Hox/8SiItXfLwk9AB0bYtoimQmT9RmaapUVScqYm9rKkQmjyIxbSQYy7z/lSlvy3vWjSMowpdHhayqKgF9eBfcogpbZWIiNZ5KLXsUcDfb+tqJHPhVkg0jbW4cBPSy0ankv/wvefJ81Aw=
+	t=1779295436; cv=none; b=fZNKRbNpdeu1v8eiExHRHur7AsX0GSxu/54n2/uLZOa76cT9yBdtpMQLoowjbsEwsbowxZ/OBoeYAn9JGcciORolNFRbPTvnBbOHcIHS2u7nV8NTJACl8u+I0pRAY9K0Zxu95pJ+qzrFPTWgGi27Mh6YXJNearJe6wopLy+ELhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297839; c=relaxed/simple;
-	bh=KOj2s3mtaI6pUhoFD7BAjB5XvVY0EUkK18bLpha9gwY=;
+	s=arc-20240116; t=1779295436; c=relaxed/simple;
+	bh=JePStAMh0eseW3qNRdftE5x987lULBnuj4psNPn6Dpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6cVXipZJTHAtUrTDsPc86/V+ynZYgfVPF2qDaoAbvhlpWuKIGEK7LNtB8uhq1ylQI9iwFJhzrMMuxIIyPnMVkHQGwO3qN1xOfYHaENjm0FPTARoP77mUWr8mblAmp/UNAe5Rf6IG4mYzqhRYdY//wX70pBVzhAyhAqzqcKRAu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIgF5xRi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067E11F000E9;
-	Wed, 20 May 2026 17:23:57 +0000 (UTC)
+	 MIME-Version; b=t0t2S5R3j1chAKPSLWl9cq8MZeE/mmP52/VRqMR5gGzpXNvbohf82/c2t5MQOz5ZEAUth0LnjZwdpnnqZnUx6jvUlCyNK+KFuXvxVlYZwdEGONGbyQmBWpNh3MNrT2AkVQP1U32fDOYYQfwVOfNNxqjUvUiGJbgnj4qieXEcFJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0OIMSBI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722601F000E9;
+	Wed, 20 May 2026 16:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297838;
-	bh=hE2eMpbsYpeoPiED3wGMpfV4QZ/As49QP9+5PqdwK2Y=;
+	s=korg; t=1779295434;
+	bh=c9/u4HHMjRAjxwR2nfNg4qLtSS9y6PchlwMPOZsi1GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VIgF5xRiD7Kif3/o66PtgxdmmmASCH3qnA2EWZq6Wnp+Qy8RdQm6qfC8PZh+ghxz/
-	 jCrsGtuHiFGL/L2ik97863SeqhrJxOfxpgTgjLZl3ixQQl/tOCFm7u1aVxSwSuspSn
-	 rD/lu6YRRp5dfN4B4ULISEslwxV4Gs65KHy4jps0=
+	b=r0OIMSBIkLFdWGNAEF2gOoiQp/h+sS0L53W+QnHIqpnDkaOAXLzW8J4T8ssMplVha
+	 lyngNqqkcg2/fk+oEqxv4LwvUMhku+zTBwqUFnR99NEo+rFH5tWUYgxZOn4iuspNqS
+	 Tlj4gN3ZXPYs1veKroNYqyTcw1FFcWB3Cfb57ALg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 184/957] net: airoha: Add missing PPE configurations in airoha_ppe_hw_init()
+Subject: [PATCH 7.0 0417/1146] PCI: tegra194: Disable LTSSM after transition to Detect on surprise link down
 Date: Wed, 20 May 2026 18:11:07 +0200
-Message-ID: <20260520162138.542861098@linuxfoundation.org>
+Message-ID: <20260520162157.633780248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251384-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250447-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,83 +88,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 0151B595BE1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A36A8593CDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit b9d8b856689d2b968495d79fe653d87fcb8ad98c ]
+[ Upstream commit 9fa0c242f8d7acf1b124d4462d18f4023573ac1c ]
 
-Add the following PPE configuration in airoha_ppe_hw_init routine:
-- 6RD hw offloading is currently not supported by Netfilter flowtable.
-  Disable explicitly PPE 6RD offloading in order to prevent PPE to learn
-  6RD flows and eventually interrupt the traffic.
-- Add missing PPE bind rate configuration for L3 and L2 traffic.
-  PPE bind rate configuration specifies the pps threshold to move a PPE
-  entry state from UNBIND to BIND. Without this configuration this value
-  is random.
-- Set ageing thresholds to the values used in the vendor SDK in order to
-  improve connection stability under load and avoid packet loss caused by
-  fast aging.
+After the link reaches a Detect-related LTSSM state, disable LTSSM so it
+does not keep toggling between Polling and Detect. Do this by polling for
+the Detect state first, then clearing APPL_CTRL_LTSSM_EN in both
+tegra_pcie_dw_pme_turnoff() and pex_ep_event_pex_rst_assert().
 
-Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260412-airoha_ppe_hw_init-missing-bits-v1-1-06ac670819e3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-4-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 29 ++++++++++++----------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 4ed244557065d..81a7056e3510a 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -83,13 +83,13 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
- 		airoha_fe_rmw(eth, REG_PPE_BND_AGE0(i),
- 			      PPE_BIND_AGE0_DELTA_NON_L4 |
- 			      PPE_BIND_AGE0_DELTA_UDP,
--			      FIELD_PREP(PPE_BIND_AGE0_DELTA_NON_L4, 1) |
--			      FIELD_PREP(PPE_BIND_AGE0_DELTA_UDP, 12));
-+			      FIELD_PREP(PPE_BIND_AGE0_DELTA_NON_L4, 60) |
-+			      FIELD_PREP(PPE_BIND_AGE0_DELTA_UDP, 60));
- 		airoha_fe_rmw(eth, REG_PPE_BND_AGE1(i),
- 			      PPE_BIND_AGE1_DELTA_TCP_FIN |
- 			      PPE_BIND_AGE1_DELTA_TCP,
- 			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP_FIN, 1) |
--			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP, 7));
-+			      FIELD_PREP(PPE_BIND_AGE1_DELTA_TCP, 60));
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 94113b2e33080..b38dbd02214b9 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1594,14 +1594,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+ 		data &= ~APPL_PINMUX_PEX_RST;
+ 		appl_writel(pcie, data, APPL_PINMUX);
  
- 		airoha_fe_rmw(eth, REG_PPE_TB_HASH_CFG(i),
- 			      PPE_SRAM_TABLE_EN_MASK |
-@@ -111,7 +111,15 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
- 			      FIELD_PREP(PPE_TB_CFG_SEARCH_MISS_MASK, 3) |
- 			      FIELD_PREP(PPE_TB_ENTRY_SIZE_MASK, 0));
- 
-+		airoha_fe_rmw(eth, REG_PPE_BIND_RATE(i),
-+			      PPE_BIND_RATE_L2B_BIND_MASK |
-+			      PPE_BIND_RATE_BIND_MASK,
-+			      FIELD_PREP(PPE_BIND_RATE_L2B_BIND_MASK, 0x1e) |
-+			      FIELD_PREP(PPE_BIND_RATE_BIND_MASK, 0x1e));
+-		/*
+-		 * Some cards do not go to detect state even after de-asserting
+-		 * PERST#. So, de-assert LTSSM to bring link to detect state.
+-		 */
+-		data = readl(pcie->appl_base + APPL_CTRL);
+-		data &= ~APPL_CTRL_LTSSM_EN;
+-		writel(data, pcie->appl_base + APPL_CTRL);
+-
+ 		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
+ 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
+ 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
+@@ -1610,6 +1602,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+ 			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
+ 		if (err)
+ 			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
 +
- 		airoha_fe_wr(eth, REG_PPE_HASH_SEED(i), PPE_HASH_SEED);
-+		airoha_fe_clear(eth, REG_PPE_PPE_FLOW_CFG(i),
-+				PPE_FLOW_CFG_IP6_6RD_MASK);
++		/*
++		 * Deassert LTSSM state to stop the state toggling between
++		 * Polling and Detect.
++		 */
++		data = readl(pcie->appl_base + APPL_CTRL);
++		data &= ~APPL_CTRL_LTSSM_EN;
++		writel(data, pcie->appl_base + APPL_CTRL);
+ 	}
+ 	/*
+ 	 * DBI registers may not be accessible after this as PLL-E would be
+@@ -1683,11 +1683,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (pcie->ep_state == EP_STATE_DISABLED)
+ 		return;
  
- 		for (p = 0; p < ARRAY_SIZE(eth->ports); p++)
- 			airoha_fe_rmw(eth, REG_PPE_MTU(i, p),
+-	/* Disable LTSSM */
+-	val = appl_readl(pcie, APPL_CTRL);
+-	val &= ~APPL_CTRL_LTSSM_EN;
+-	appl_writel(pcie, val, APPL_CTRL);
+-
+ 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
+ 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
+ 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
+@@ -1698,6 +1693,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (ret)
+ 		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
+ 
++	/*
++	 * Deassert LTSSM state to stop the state toggling between
++	 * Polling and Detect.
++	 */
++	val = appl_readl(pcie, APPL_CTRL);
++	val &= ~APPL_CTRL_LTSSM_EN;
++	appl_writel(pcie, val, APPL_CTRL);
++
+ 	reset_control_assert(pcie->core_rst);
+ 
+ 	tegra_pcie_disable_phy(pcie);
 -- 
 2.53.0
 
