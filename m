@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-252895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD/TEbH/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:41 +0200
+	id mHlWJKYeDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:50:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6A3596D97
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E8559A2F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 24B2630B1E8B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0295C3764DB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFF0331A41;
-	Wed, 20 May 2026 18:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9083ED3A4;
+	Wed, 20 May 2026 17:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4jcSP4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neMv8xWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA85343880;
-	Wed, 20 May 2026 18:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848E36D9EA;
+	Wed, 20 May 2026 17:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301870; cv=none; b=MdCcm6c0n5lerHyJys8Yh3H4xWhG7hPaqxhZ0m+foEXPamQE819oE0386mkm4VG9EGQS+Rud4zvTI+zZBpNhuBG6mbVUZbJqYg/odzDH/4Vq/m8KrfJXwLVPl3JZEMqo6wZiDFhiRX+qClVGp2BTCmvnBmYnBEhyHqFzYZoCVkw=
+	t=1779298915; cv=none; b=TDC2TwzqwYl6eq24OCru2gl9AXZlpCXPMhe4CWekm+3on+goGnqLWr266jw7XPM0070Cau9iz/OE8/O7Y5xAVUM1diz3y6U165XWDVJKa9IgCv0fAlZvgcXBzGTkQYyPKnjrNgQt7rdFa5NxKeNjnxEIcjAuW4uoRYB4vuW5ZDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301870; c=relaxed/simple;
-	bh=9L42QXqvSmkWqiSMMp7Z/4Yz9cdn7t+1wIDB0tI9B58=;
+	s=arc-20240116; t=1779298915; c=relaxed/simple;
+	bh=zDj+QGL2L1bsoWuF3bo/rW+59LImxsDb84d94NNSXZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktbUXV4nYF+8RJbukNSk0TL+lfCIqfU60X3NO7vP9qoOpxKv5w+kIld5dKOJkJrfNCChawTzJv/f/kT8IzvdJUrJ2y1fCeIME9lLBlMI2gWAj6INb92xRASI+G+CrUl4mMBkT2vKZpLidmH//9Pi9NOvXN0qTa+Ls3gXYr7Uq2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4jcSP4j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE311F000E9;
-	Wed, 20 May 2026 18:31:08 +0000 (UTC)
+	 MIME-Version; b=DloNnlQ7xWlI+3gc2qXtavD1uVflNLVAV6VMEcLcuxSiBJiPAxWq1PQoWHnc45ICNfYeEnZ7SjeqUgVnBQw9Kp4ZSEpwMXjRXRok7D7nDTrcD/kDZl14T6IZGnRbNpR86lK7J1zi+5yQq6UnTuhj4Z79Y4Fhjc2n0YaJKMmytmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neMv8xWl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0166F1F000E9;
+	Wed, 20 May 2026 17:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301869;
-	bh=2i5ij8Tl7cnmwOihSKyAdjVttYmAPCMNsB+3G/aERe8=;
+	s=korg; t=1779298914;
+	bh=gQ7BEp9TkisrUWuL/625XE/47YUd/BxkXw0OWg0HUHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w4jcSP4jYEHCsFwSNwXT2FuoSt5X58hnqN73lcgrmYu6nQlyLScv7WR8ckDkmab1+
-	 5UgZL3UqdgfJoBvHFWeCxnpk8c3cCHgPFM5tsB65ffI3xfmejqLmHHH55z8BQyLd8J
-	 wh+AXoPGPYRZiGmSpwbcR2xBhP8MrMyjRvZQCujY=
+	b=neMv8xWlnPkS3C3ImGu2mSVfwng883kyNYYnMigYOBptzDiruZh+7BSLZVfzCYTAQ
+	 xmwOHpuSNX/mx3S0VNXnFhrhhsYpyAJH7XxScLEY5lt3EZYljF6QLEMZyJGv60Tbrj
+	 37etkXFXng8HaDAfj9HDaZhzV0O2hFVqvggoY+w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Sami Mujawar <sami.mujawar@arm.com>,
+	Jagdish Gediya <Jagdish.Gediya@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/508] bpf: reject negative CO-RE accessor indices in bpf_core_parse_spec()
-Date: Wed, 20 May 2026 18:17:54 +0200
-Message-ID: <20260520162059.701172023@linuxfoundation.org>
+Subject: [PATCH 6.18 592/957] virt: arm-cca-guest: fix error check for RSI_INCOMPLETE
+Date: Wed, 20 May 2026 18:17:55 +0200
+Message-ID: <20260520162147.368417446@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +69,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252895-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,etsalapatis.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251797-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,asu.edu:email]
-X-Rspamd-Queue-Id: DE6A3596D97
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E7E8559A2F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Sami Mujawar <sami.mujawar@arm.com>
 
-[ Upstream commit 1c22483a2c4bbf747787f328392ca3e68619c4dc ]
+[ Upstream commit e534e9d13d0b7bdbb2cccdace7b96b769a10540e ]
 
-CO-RE accessor strings are colon-separated indices that describe a path
-from a root BTF type to a target field, e.g. "0:1:2" walks through
-nested struct members. bpf_core_parse_spec() parses each component with
-sscanf("%d"), so negative values like -1 are silently accepted.  The
-subsequent bounds checks (access_idx >= btf_vlen(t)) only guard the
-upper bound and always pass for negative values because C integer
-promotion converts the __u16 btf_vlen result to int, making the
-comparison (int)(-1) >= (int)(N) false for any positive N.
+The RSI interface can return RSI_INCOMPLETE when a report spans
+multiple granules. This is an expected condition and should not be
+treated as a fatal error.
 
-When -1 reaches btf_member_bit_offset() it gets cast to u32 0xffffffff,
-producing an out-of-bounds read far past the members array.  A crafted
-BPF program with a negative CO-RE accessor on any struct that exists in
-vmlinux BTF (e.g. task_struct) crashes the kernel deterministically
-during BPF_PROG_LOAD on any system with CONFIG_DEBUG_INFO_BTF=y
-(default on major distributions).  The bug is reachable with CAP_BPF:
+Currently, arm_cca_report_new() checks for `info.result != RSI_SUCCESS`
+and bails out, which incorrectly flags RSI_INCOMPLETE as a failure.
+Fix the check to only break out on results other than RSI_SUCCESS or
+RSI_INCOMPLETE.
 
- BUG: unable to handle page fault for address: ffffed11818b6626
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- Oops: Oops: 0000 [#1] SMP KASAN NOPTI
- CPU: 0 UID: 0 PID: 85 Comm: poc Not tainted 7.0.0-rc6 #18 PREEMPT(full)
- RIP: 0010:bpf_core_parse_spec (tools/lib/bpf/relo_core.c:354)
- RAX: 00000000ffffffff
- Call Trace:
-  <TASK>
-  bpf_core_calc_relo_insn (tools/lib/bpf/relo_core.c:1321)
-  bpf_core_apply (kernel/bpf/btf.c:9507)
-  check_core_relo (kernel/bpf/verifier.c:19475)
-  bpf_check (kernel/bpf/verifier.c:26031)
-  bpf_prog_load (kernel/bpf/syscall.c:3089)
-  __sys_bpf (kernel/bpf/syscall.c:6228)
-  </TASK>
+This ensures partial reports are handled correctly and avoids spurious
+-ENXIO errors when generating attestation reports.
 
-CO-RE accessor indices are inherently non-negative (struct member index,
-array element index, or enumerator index), so reject them immediately
-after parsing.
-
-Fixes: ddc7c3042614 ("libbpf: implement BPF CO-RE offset relocation algorithm")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260404161221.961828-2-bestswngs@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 7999edc484ca ("virt: arm-cca-guest: TSM_REPORT support for realms")
+Signed-off-by: Sami Mujawar <sami.mujawar@arm.com>
+Reported-by: Jagdish Gediya <Jagdish.Gediya@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/relo_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/virt/coco/arm-cca-guest/arm-cca-guest.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
-index 63a4d5ad12d1a..04c8febfc0aa7 100644
---- a/tools/lib/bpf/relo_core.c
-+++ b/tools/lib/bpf/relo_core.c
-@@ -293,6 +293,8 @@ int bpf_core_parse_spec(const char *prog_name, const struct btf *btf,
- 			++spec_str;
- 		if (sscanf(spec_str, "%d%n", &access_idx, &parsed_len) != 1)
- 			return -EINVAL;
-+		if (access_idx < 0)
-+			return -EINVAL;
- 		if (spec->raw_len == BPF_CORE_SPEC_MAX_LEN)
- 			return -E2BIG;
- 		spec_str += parsed_len;
+diff --git a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+index 0c9ea24a200c9..66d00b6ceb789 100644
+--- a/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
++++ b/drivers/virt/coco/arm-cca-guest/arm-cca-guest.c
+@@ -157,7 +157,8 @@ static int arm_cca_report_new(struct tsm_report *report, void *data)
+ 		} while (info.result == RSI_INCOMPLETE &&
+ 			 info.offset < RSI_GRANULE_SIZE);
+ 
+-		if (info.result != RSI_SUCCESS) {
++		/* Break out in case of failure */
++		if (info.result != RSI_SUCCESS && info.result != RSI_INCOMPLETE) {
+ 			ret = -ENXIO;
+ 			token_size = 0;
+ 			goto exit_free_granule_page;
 -- 
 2.53.0
 
