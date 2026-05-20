@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IM7SEUAkDmoo6gUAu9opvQ
-	(envelope-from <stable+bounces-252371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:40 +0200
+	id +AGqC70ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12E759A95C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DA2597106
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D99C331BC10
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C87613199F64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DE53F8704;
-	Wed, 20 May 2026 18:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72003E123F;
+	Wed, 20 May 2026 17:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmC7mgl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM3PZzfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F22F3F7A9F;
-	Wed, 20 May 2026 18:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664883EFD3D;
+	Wed, 20 May 2026 17:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300500; cv=none; b=FHjeSH0xVsZRh2rhZWshYXSeZ3xvLACnB6lQlPgVp+0WQHzzq94ggFrMuX/jBHyzujfXfMMmk2hkEDvk5z9qk0Me3kPJlfLYKHp1J5MAWaB3BGxeKSuFj/EKsD40VwXPDDxboKcrwcyGNaz0r+4uGZphqpT50vxNgVvBjRIsa7k=
+	t=1779298744; cv=none; b=B3qTmXFtxHIfJnNjpxmZP+LZeEUpYhz2V0N7/NrZlRd75q9Kn/tiiB/g6FvQc/mOFHZRjnYRiehwjOSbM7CYeAJDD0SjlYqoCaxOWDeKRlu/0epk2g6B+WEbjaFMJ4DubtGAQa7C3rWjO/lHWk2Iovt9Uvvsu6nu3g381sH1tLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300500; c=relaxed/simple;
-	bh=lr2wBM4IyBRTQQMdau93eMQMuTMFCMKdQMMQpBX8yFg=;
+	s=arc-20240116; t=1779298744; c=relaxed/simple;
+	bh=JmbxJAdyi35ytRNidajJ+OB8xE6QV+6beZiI55CEOqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6DFMenowdiv6Wfr0iqYDHDi5lWhqhp/WZLS2O+TNYqAHqaHag0zTuu5CwmO2vQBHI7ILO+Iqts6runYPLXO9ATqgy4Uk5D+IDNjg3jFdNcAXmUVIYsAtOLhJjD4dlXbU4aaetg4dDigShAj+wmUSFEModEkU4O5ZNgr7NUlfF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmC7mgl1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C051F000E9;
-	Wed, 20 May 2026 18:08:18 +0000 (UTC)
+	 MIME-Version; b=nzm6sSUrFd+P721+3402DAZ0AyE4umeHIjVVfLjU7g19EkaUQY4SG6a1a+PcHTSGVQVZZ6MUyXXhSKFxMoTxGAa1XD9F4vWWsIrJQrBTxTQBRZGZFKcaBZuHZvglp4CtzWoMseRsDyUnHUOwWzFjhi71chiP7Nz08zriayJLYjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM3PZzfT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5CC1F000E9;
+	Wed, 20 May 2026 17:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300499;
-	bh=7AoXyAu4io22gId/1xLxFKLVUPvVfZXAGqfmgQR6Io8=;
+	s=korg; t=1779298743;
+	bh=3hz0EsOurOHVW0yP/L7hGmfwP37TuEGPrqlLWIrkSJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vmC7mgl1FurOQPEI5I0VhKb4EFcLzt6KP7g0ieqyzfEaVQhrpSjkhMdnNPVWtjzt/
-	 PQ8diIlhV7ITQg6S0f1+yw3bIMw9GKRckzZwRVG0SgE9t7BWApGWNd7u9nayZ+3tKr
-	 5PW7MYKkiHJvzYJt3C5GaOwI2LD3e4kLLGSkdRgA=
+	b=CM3PZzfTgUDw6tynRdMTyTdsNPVZPByjY+yumJAuRHD46WQuajl8ifF1O2njlcnH4
+	 thvWNWhtf8b+CgEkdF1oz9Iuk6ogKI03f8fZmKGPvdxlVGyXcFceubmreF/amHTjVg
+	 7X6h+lsAJRJaQODoqQVVvUZPkmWTWA2cVqFb3OMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 197/666] PM: domains: De-constify fields in struct dev_pm_domain_attach_data
+Subject: [PATCH 6.18 525/957] i3c: dw: Fix memory leak in dw_i3c_master_i3c_xfers()
 Date: Wed, 20 May 2026 18:16:48 +0200
-Message-ID: <20260520162115.471915243@linuxfoundation.org>
+Message-ID: <20260520162145.919518972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +65,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252371-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251731-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C12E759A95C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email]
+X-Rspamd-Queue-Id: 35DA2597106
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 1877d3f258cbb57d64e275754fb9b18b089ce72d ]
+[ Upstream commit 256cc1f1305a8e5dcadf8ca208d04a3acadd26f1 ]
 
-It doesn't really make sense to keep u32 fields to be marked as const.
-Having the const fields prevents their modification in the driver. Instead
-the whole struct can be defined as const, if it is constant.
+The dw_i3c_master_i3c_xfers() function allocates memory for the xfer
+structure using dw_i3c_master_alloc_xfer(). If pm_runtime_resume_and_get()
+fails, the function returns without freeing the allocated xfer, resulting
+in a memory leak.
 
-Fixes: 161e16a5e50a ("PM: domains: Add helper functions to attach/detach multiple PM domains")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Since dw_i3c_master_free_xfer() is a thin wrapper around kfree(), use
+the __free(kfree) cleanup attribute to handle the free automatically on
+all exit paths.
+
+Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260404-dw-i3c-2-v3-1-8f7d146549c1@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm_domain.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index c6716f474ba45..908e20bbfcaef 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -36,8 +36,8 @@
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index c6cfcacb18106..585f320119741 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -6,6 +6,7 @@
+  */
  
- struct dev_pm_domain_attach_data {
- 	const char * const *pd_names;
--	const u32 num_pd_names;
--	const u32 pd_flags;
-+	u32 num_pd_names;
-+	u32 pd_flags;
- };
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/err.h>
+@@ -905,7 +906,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+ 	struct dw_i3c_master *master = to_dw_i3c_master(m);
+ 	unsigned int nrxwords = 0, ntxwords = 0;
+-	struct dw_i3c_xfer *xfer;
+ 	int i, ret = 0;
  
- struct dev_pm_domain_list {
+ 	if (!i3c_nxfers)
+@@ -925,7 +925,7 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	    nrxwords > master->caps.datafifodepth)
+ 		return -EOPNOTSUPP;
+ 
+-	xfer = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
++	struct dw_i3c_xfer *xfer __free(kfree) = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
+ 	if (!xfer)
+ 		return -ENOMEM;
+ 
+@@ -976,7 +976,6 @@ static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 	}
+ 
+ 	ret = xfer->ret;
+-	dw_i3c_master_free_xfer(xfer);
+ 
+ 	pm_runtime_put_autosuspend(master->dev);
+ 	return ret;
 -- 
 2.53.0
 
