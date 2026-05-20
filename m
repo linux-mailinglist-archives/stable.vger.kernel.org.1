@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252797-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEobIx/4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:23 +0200
+	id UCF0BlQEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252797-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3495F5954B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9F45977E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 926873114B8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBFE239EAC54
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8E93FC5B7;
-	Wed, 20 May 2026 17:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30105340A57;
+	Wed, 20 May 2026 18:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bbzct2vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxctQuhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259093FC5A9;
-	Wed, 20 May 2026 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB722332EBD;
+	Wed, 20 May 2026 18:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299958; cv=none; b=VbYRFWp83jpfHV1n2DDWi/ogZvqTtIB53WRP9NaJunyNSnBRoeMRtGzVFq+EVXiNe8O2Ea2W4h9U4Ld5kRxhPqH9Xm3qPQdaYq0NsRtoFGuN8nXX7m3GIfu9wQDlYRB2CTYty6rqsYllNYJfD49nQjIhocJBAXmTQEZzp+Ujs08=
+	t=1779301614; cv=none; b=TY2MFv3Gis+GTiJcBZQI4wiZFTZYMgDhIhN+gxMLezdDkkQAeq5PCM3+xOneNvkShgf87t4DHWB6Itdd/tF88X+mVjVjTqvz35CjVcqbm9fei9wNepWB/1eXQ7x9KJVQ8m3ZuUQMwR5GqpggofOAlb268XnCyAxLRHK95Fy/bxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299958; c=relaxed/simple;
-	bh=BO1xSwcu2kC5T1QmtCDS2HLE16Brt4SFZd+UUysr/qQ=;
+	s=arc-20240116; t=1779301614; c=relaxed/simple;
+	bh=nqBk7KMo66Aj6NIB4IBv6bzfFARsLvu3pdmifhU9ths=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8U/FAAcUlCkGGVOD7udqUZBT5984n/dS0VhzL8ShjaEqN69rOEdPuqeMmtAOCWF2B23qOB294Qr3Qss+8NeXN9w7TpfOLUnfXOs6vzrqWF15I6F0BqdeT9XE/tBFjEQzYYTk+mfamB8bTiNT1d9KSjPX6WJP4MFscybPXLuxbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bbzct2vm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921C61F00893;
-	Wed, 20 May 2026 17:59:14 +0000 (UTC)
+	 MIME-Version; b=Bjl5fG58IN1gGlbzvGE+uVfoCMAZ2KYQUGx6TgjyJL6p8G4t7NZeQzrhF9ULUwj1sELPXcrqHoAanKCZdLzw+16TbS+xdpqrO3cntXVb0O68v8YugrZPgggXj/W/UKAew73/k38Z5i4np5bDQRH4+9q4zixMugYkByGQm5r/YLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxctQuhe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204BB1F00896;
+	Wed, 20 May 2026 18:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299955;
-	bh=41QJrCRmAdw8v6U4FAtq0bbtWUD8S8UXGbBUcDdQW7k=;
+	s=korg; t=1779301612;
+	bh=f8o7QBO1fhB8oBAplIbUyN2E68apeRsyqjo2WR3Bqlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bbzct2vmCYxOIP1/X9TVjiQdEEwZnLwHc6wNceNjBuRfNviiy40f7ES6KwPOgONsm
-	 p4tjmMzPXXo3hVkZsO6jvi/RS59z0KvX2nsK4qh7PHoR7aGKUIzBbkYBKxUTsqpsRx
-	 vfmhiVozd3T2LCsoMXv0KehE3OiPTOZif1oDfnUw=
+	b=ZxctQuheoyFB8zxrvT0C47ZP/jUCwrB1z5dr3dTU5lV6cRqLYOGc2ZDQTMtYN59M0
+	 yj7cpEU4jeXu2bydQovRFXZFYcARV5qi2PJon2on+jLu1tXGCFNt7hop+ZQd1Ufakk
+	 CgNWjmF8Jt76VCYZZK91y7Kwr6EESCVyeO7VwCSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Piyush Sachdeva <psachdeva@microsoft.com>,
-	Piyush Sachdeva <s.piyush1024@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	Inseo An <y0un9sa@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 950/957] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Subject: [PATCH 6.12 622/666] netfilter: nf_tables: unconditionally bump set->nelems before insertion
 Date: Wed, 20 May 2026 18:23:53 +0200
-Message-ID: <20260520162155.203948976@linuxfoundation.org>
+Message-ID: <20260520162124.753709190@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,188 +66,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252163-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252797-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,139.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3495F5954B0
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,139.com:email]
+X-Rspamd-Queue-Id: 6A9F45977E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piyush Sachdeva <s.piyush1024@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
+[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
 
-When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
-or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
-using the full session key (Session.FullSessionKey) rather than just the
-first 16 bytes (Session.SessionKey).
+In case that the set is full, a new element gets published then removed
+without waiting for the RCU grace period, while RCU reader can be
+walking over it already.
 
-Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
-Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
-must be set to the full cryptographic key from the GSS authentication
-context. The encryption and decryption key derivation (SMBC2SCipherKey,
-SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
-signing key derivation continues to use Session.SessionKey (first 16
-bytes) in all cases.
+To address this issue, add the element transaction even if set is full,
+but toggle the set_full flag to report -ENFILE so the abort path safely
+unwinds the set to its previous state.
 
-Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
-HMAC-SHA256 key input length for all derivations. When Kerberos with
-AES-256 provides a 32-byte session key, the KDF for encryption/decryption
-was using only the first 16 bytes, producing keys that did not match the
-server's, causing mount failures with sec=krb5 and require_gcm_256=1.
+As for element updates, decrement set->nelems to restore it.
 
-Add a full_key_size parameter to generate_key() and pass the appropriate
-size from generate_smb3signingkey():
- - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
- - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
+A simpler fix is to call synchronize_rcu() in the error path.
+However, with a large batch adding elements to already maxed-out set,
+this could cause noticeable slowdown of such batches.
 
-Also fix cifs_dump_full_key() to report the actual session key length for
-AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
-like Wireshark receive the correct key for decryption.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
-Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
+Reported-by: Inseo An <y0un9sa@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/ioctl.c         |    2 +-
- fs/smb/client/smb2transport.c |   32 +++++++++++++++++++++++++-------
- 2 files changed, 26 insertions(+), 8 deletions(-)
+ net/netfilter/nf_tables_api.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -297,7 +297,7 @@ search_end:
- 		break;
- 	case SMB2_ENCRYPTION_AES256_CCM:
- 	case SMB2_ENCRYPTION_AES256_GCM:
--		out.session_key_length = CIFS_SESS_KEY_SIZE;
-+		out.session_key_length = ses->auth_key.len;
- 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
- 		break;
- 	default:
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -259,7 +259,8 @@ smb2_calc_signature(struct smb_rqst *rqs
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e373afdf0f072..838c9f49e4e01 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6981,6 +6981,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	enum nft_registers dreg;
+ 	struct nft_trans *trans;
+ 	u8 update_flags;
++	bool set_full = false;
+ 	u64 expiration;
+ 	u64 timeout;
+ 	int err, i;
+@@ -7267,10 +7268,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	if (err < 0)
+ 		goto err_elem_free;
  
- static int generate_key(struct cifs_ses *ses, struct kvec label,
--			struct kvec context, __u8 *key, unsigned int key_size)
-+			struct kvec context, __u8 *key, unsigned int key_size,
-+			unsigned int full_key_size)
- {
- 	unsigned char zero = 0x0;
- 	__u8 i[4] = {0, 0, 0, 1};
-@@ -280,7 +281,7 @@ static int generate_key(struct cifs_ses
++	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
++		unsigned int max = nft_set_maxsize(set), nelems;
++
++		nelems = atomic_inc_return(&set->nelems);
++		if (nelems > max)
++			set_full = true;
++	}
++
+ 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
+ 	if (trans == NULL) {
+ 		err = -ENOMEM;
+-		goto err_elem_free;
++		goto err_set_size;
  	}
  
- 	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
--				     SMB2_NTLMV2_SESSKEY_SIZE);
-+				     full_key_size);
- 	hmac_sha256_update(&hmac_ctx, i, 4);
- 	hmac_sha256_update(&hmac_ctx, label.iov_base, label.iov_len);
- 	hmac_sha256_update(&hmac_ctx, &zero, 1);
-@@ -314,6 +315,7 @@ generate_smb3signingkey(struct cifs_ses
- 			struct TCP_Server_Info *server,
- 			const struct derivation_triplet *ptriplet)
- {
-+	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
- 	int rc;
- 	bool is_binding = false;
- 	int chan_index = 0;
-@@ -348,17 +350,31 @@ generate_smb3signingkey(struct cifs_ses
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->chans[chan_index].signkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 	} else {
- 		rc = generate_key(ses, ptriplet->signing.label,
- 				  ptriplet->signing.context,
- 				  ses->smb3signingkey,
--				  SMB3_SIGN_KEY_SIZE);
-+				  SMB3_SIGN_KEY_SIZE,
-+				  SMB2_NTLMV2_SESSKEY_SIZE);
- 		if (rc)
- 			return rc;
- 
-+		/*
-+		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
-+		 * (first 16 bytes). Encryption/decryption keys use
-+		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
-+		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
-+		 */
-+
-+		if (server->dialect == SMB311_PROT_ID &&
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			full_key_size = ses->auth_key.len;
-+
- 		/* safe to access primary channel, since it will never go away */
- 		spin_lock(&ses->chan_lock);
- 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
-@@ -368,13 +384,15 @@ generate_smb3signingkey(struct cifs_ses
- 		rc = generate_key(ses, ptriplet->encryption.label,
- 				  ptriplet->encryption.context,
- 				  ses->smb3encryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
- 		rc = generate_key(ses, ptriplet->decryption.label,
- 				  ptriplet->decryption.context,
- 				  ses->smb3decryptionkey,
--				  SMB3_ENC_DEC_KEY_SIZE);
-+				  SMB3_ENC_DEC_KEY_SIZE,
-+				  full_key_size);
- 		if (rc)
- 			return rc;
+ 	ext->genmask = nft_genmask_cur(ctx->net);
+@@ -7312,7 +7321,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 						nft_trans_elem_priv(trans) = elem_priv;
+ 						nft_trans_elem_update_flags(trans) = update_flags;
+ 						nft_trans_commit_list_add_tail(ctx->net, trans);
+-						goto err_elem_free;
++						goto err_set_size;
+ 					}
+ 				}
+ 			}
+@@ -7330,23 +7339,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 		goto err_element_clash;
  	}
-@@ -389,7 +407,7 @@ generate_smb3signingkey(struct cifs_ses
- 			&ses->Suid);
- 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
- 	cifs_dbg(VFS, "Session Key   %*ph\n",
--		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
-+		 (int)ses->auth_key.len, ses->auth_key.response);
- 	cifs_dbg(VFS, "Signing Key   %*ph\n",
- 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
+ 
+-	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
+-		unsigned int max = nft_set_maxsize(set);
+-
+-		if (!atomic_add_unless(&set->nelems, 1, max)) {
+-			err = -ENFILE;
+-			goto err_set_full;
+-		}
+-	}
+-
+ 	nft_trans_elem_priv(trans) = elem.priv;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
+-	return 0;
+ 
+-err_set_full:
+-	nft_setelem_remove(ctx->net, set, elem.priv);
++	return set_full ? -ENFILE : 0;
++
+ err_element_clash:
+ 	kfree(trans);
++err_set_size:
++	if (!(flags & NFT_SET_ELEM_CATCHALL))
++		atomic_dec(&set->nelems);
+ err_elem_free:
+ 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
+ err_parse_data:
+-- 
+2.53.0
+
 
 
 
