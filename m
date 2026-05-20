@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCUfMqUmDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:53 +0200
+	id GOB+OBABDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C43959ACF4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB759725C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A0F5304D45A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D3013077554
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB327368968;
-	Wed, 20 May 2026 18:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F76F3D5647;
+	Wed, 20 May 2026 18:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2ncL5R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKznPkif"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19C83BE64B;
-	Wed, 20 May 2026 18:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C307337DE8A;
+	Wed, 20 May 2026 18:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300982; cv=none; b=mHcvjeafojUSJOwIqo0bzXS2RlpbfFfylhNNGVBV1v98htn84rceOsrh3cZZ2KwJ7DtgNR74oDN/sNGOVOKOno0v7ddl/uBbX9oqEFtK2ZT1bHziwjRFWu69yx2lwqspte8P1Su0UTpKQN1G7fUQgoMuwTnUkiobmIxDMcR7L5E=
+	t=1779302250; cv=none; b=CYQA9sYp9oWUssYwJYh2ysTWQp+DSa/mNPsQprQVmqHg+cuTLmsb0f6eybYmOzL+BkQX7bVDvGIrSZaasdjIsFmTivRULNarnp9LoZjbbfeBo7bGl35AaTy9iUrgYQ3Xhtpa5Z7PpZDtv87ySm9xSL4csFLJu4xmCoFu3Wa0kLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300982; c=relaxed/simple;
-	bh=JjiCv1hYdeytC/goh2XotcNwM8u2LK01PSLMt9jYueM=;
+	s=arc-20240116; t=1779302250; c=relaxed/simple;
+	bh=bGukGoIVn2UDERW9fvcupUBgZt55pSE8chutUJlyX+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UEBg0Fzjk1f7eymRynYbJaM+W1vUzjZ7Bev8dobA2VnMRl27TIsqHXCypVN6tDILwHPwfIyfube6CgkV+M2qLkCld8E7p30+vL3Kz/rmzMFEmT+3TKcO74jArR/Z2TnTKWI/hC1WvJjV9JtA6NPpcmGLu6Afq8XnlZVSYbbocP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2ncL5R3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE711F000E9;
-	Wed, 20 May 2026 18:16:19 +0000 (UTC)
+	 MIME-Version; b=G613TckB7OxQ/v4JS96WxXhQLw6Q4nbyYNufB8nMEBlIpgWnDH57U1IiuxDt9hRN4ypRCdVJ2GftMPDHs8FIzpMZ7SKC2+O4zny592a9FxE3FeEPvdEjVlW0oQJajKfWlLovCiUaiwLdDewVnZ896Re62AJSYovQ4zyHHiuZNiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKznPkif; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DF41F000E9;
+	Wed, 20 May 2026 18:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300980;
-	bh=4QN332iznPxUD9cwraLBedKNdbOFIs8iHfDGS0G2tpc=;
+	s=korg; t=1779302248;
+	bh=IGO/TNBnuwDLM3gGItfGn3buGjtZU7Azeo2B78e7+wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w2ncL5R3LKxQZKQdqFSxry+0PlLTPT2SI1vzViv4GLq8xwJbG0si+D6TWVfOfPYMu
-	 4RTqQPaz0EDsBAe+90sB4IXGktJOmOnRNfRHuO5KRJ+xP9+Y5T9QLlFNSrExRNgIOH
-	 QEaR4efbBOxweaOwDIp/6qjJhzD82BXN5DFRybBI=
+	b=RKznPkifMA0T2AwxsetkAWwjcMYnEpp9zeriBd0xqkindM1vNdLnjFOfm6dRGwitb
+	 xbsDrJnE5dBfMjG9gac2DE4c+mbEGAk53GVurGGvUEPvkhrnFF4WOPl7oncAq4ei0i
+	 nTjL8sPRkdKFPxw/F1BS3wosnPFxpCHw9lV6/ThQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 380/666] reset: replace boolean parameters with flags parameter
+Subject: [PATCH 6.6 168/508] ALSA: sc6000: Use standard print API
 Date: Wed, 20 May 2026 18:19:51 +0200
-Message-ID: <20260520162119.487672613@linuxfoundation.org>
+Message-ID: <20260520162102.278072526@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,783 +63,488 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253041-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252555-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email]
-X-Rspamd-Queue-Id: 4C43959ACF4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,perex.cz:email]
+X-Rspamd-Queue-Id: 60EB759725C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit dad35f7d2fc14e446669d4cab100597a6798eae5 ]
+[ Upstream commit e7c475b92043c02c3e6cd0c20e308fbb6f03ebde ]
 
-Introduce enum reset_control_flags and replace the list of boolean
-parameters to the internal reset_control_get functions with a single
-flags parameter, before adding more boolean options.
+Use the standard print API with dev_*() instead of the old house-baked
+one.  It gives better information and allows dynamically control of
+debug prints.
 
-The separate boolean parameters have been shown to be error prone in
-the past. See for example commit a57f68ddc886 ("reset: Fix devm bulk
-optional exclusive control getter").
+Some functions are changed to receive a device pointer to be passed to
+dev_*() calls.
 
-Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20240925-reset-get-deasserted-v2-1-b3601bbd0458@pengutronix.de
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Stable-dep-of: bef1eef66718 ("i3c: master: dw-i3c: Fix missing reset assertion in remove() callback")
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240807133452.9424-34-tiwai@suse.de
+Stable-dep-of: fb79bf127ac2 ("ALSA: sc6000: Keep the programmed board state in card-private data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/core.c  |  71 +++++++++++--------
- include/linux/reset.h | 161 ++++++++++++++++++++++++++----------------
- 2 files changed, 139 insertions(+), 93 deletions(-)
+ sound/isa/sc6000.c | 177 +++++++++++++++++++++++----------------------
+ 1 file changed, 90 insertions(+), 87 deletions(-)
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 4d509d41456ad..682d61812852b 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -773,12 +773,19 @@ EXPORT_SYMBOL_GPL(reset_control_bulk_release);
+diff --git a/sound/isa/sc6000.c b/sound/isa/sc6000.c
+index 60398fced046b..3115c32b4061b 100644
+--- a/sound/isa/sc6000.c
++++ b/sound/isa/sc6000.c
+@@ -204,7 +204,7 @@ static int sc6000_read(char __iomem *vport)
  
- static struct reset_control *
- __reset_control_get_internal(struct reset_controller_dev *rcdev,
--			     unsigned int index, bool shared, bool acquired)
-+			     unsigned int index, enum reset_control_flags flags)
+ }
+ 
+-static int sc6000_write(char __iomem *vport, int cmd)
++static int sc6000_write(struct device *devptr, char __iomem *vport, int cmd)
  {
-+	bool shared = flags & RESET_CONTROL_FLAGS_BIT_SHARED;
-+	bool acquired = flags & RESET_CONTROL_FLAGS_BIT_ACQUIRED;
- 	struct reset_control *rstc;
+ 	unsigned char val;
+ 	int loop = 500000;
+@@ -221,18 +221,19 @@ static int sc6000_write(char __iomem *vport, int cmd)
+ 		cpu_relax();
+ 	} while (loop--);
  
- 	lockdep_assert_held(&reset_list_mutex);
+-	snd_printk(KERN_ERR "DSP Command (0x%x) timeout.\n", cmd);
++	dev_err(devptr, "DSP Command (0x%x) timeout.\n", cmd);
  
-+	/* Expect callers to filter out OPTIONAL and DEASSERTED bits */
-+	if (WARN_ON(flags & ~(RESET_CONTROL_FLAGS_BIT_SHARED |
-+			      RESET_CONTROL_FLAGS_BIT_ACQUIRED)))
-+		return ERR_PTR(-EINVAL);
-+
- 	list_for_each_entry(rstc, &rcdev->reset_control_head, list) {
- 		if (rstc->id == index) {
- 			/*
-@@ -994,8 +1001,9 @@ static struct reset_controller_dev *__reset_find_rcdev(const struct of_phandle_a
+ 	return -EIO;
+ }
  
- struct reset_control *
- __of_reset_control_get(struct device_node *node, const char *id, int index,
--		       bool shared, bool optional, bool acquired)
-+		       enum reset_control_flags flags)
+-static int sc6000_dsp_get_answer(char __iomem *vport, int command,
++static int sc6000_dsp_get_answer(struct device *devptr,
++				 char __iomem *vport, int command,
+ 				 char *data, int data_len)
  {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
- 	bool gpio_fallback = false;
- 	struct reset_control *rstc;
- 	struct reset_controller_dev *rcdev;
-@@ -1059,8 +1067,10 @@ __of_reset_control_get(struct device_node *node, const char *id, int index,
- 		goto out_unlock;
+ 	int len = 0;
+ 
+-	if (sc6000_write(vport, command)) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", command);
++	if (sc6000_write(devptr, vport, command)) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", command);
+ 		return -EIO;
  	}
  
-+	flags &= ~RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	/* reset_list_mutex also protects the rcdev's reset_control list */
--	rstc = __reset_control_get_internal(rcdev, rstc_id, shared, acquired);
-+	rstc = __reset_control_get_internal(rcdev, rstc_id, flags);
+@@ -265,82 +266,86 @@ static int sc6000_dsp_reset(char __iomem *vport)
+ }
  
- out_unlock:
- 	mutex_unlock(&reset_list_mutex);
-@@ -1091,8 +1101,9 @@ __reset_controller_by_name(const char *name)
- 
- static struct reset_control *
- __reset_control_get_from_lookup(struct device *dev, const char *con_id,
--				bool shared, bool optional, bool acquired)
-+				enum reset_control_flags flags)
+ /* detection and initialization */
+-static int sc6000_hw_cfg_write(char __iomem *vport, const int *cfg)
++static int sc6000_hw_cfg_write(struct device *devptr,
++			       char __iomem *vport, const int *cfg)
  {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
- 	const struct reset_control_lookup *lookup;
- 	struct reset_controller_dev *rcdev;
- 	const char *dev_id = dev_name(dev);
-@@ -1116,9 +1127,11 @@ __reset_control_get_from_lookup(struct device *dev, const char *con_id,
- 				return ERR_PTR(-EPROBE_DEFER);
- 			}
+-	if (sc6000_write(vport, COMMAND_6C) < 0) {
+-		snd_printk(KERN_WARNING "CMD 0x%x: failed!\n", COMMAND_6C);
++	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
++		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, COMMAND_5C) < 0) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", COMMAND_5C);
++	if (sc6000_write(devptr, vport, COMMAND_5C) < 0) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", COMMAND_5C);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, cfg[0]) < 0) {
+-		snd_printk(KERN_ERR "DATA 0x%x: failed!\n", cfg[0]);
++	if (sc6000_write(devptr, vport, cfg[0]) < 0) {
++		dev_err(devptr, "DATA 0x%x: failed!\n", cfg[0]);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, cfg[1]) < 0) {
+-		snd_printk(KERN_ERR "DATA 0x%x: failed!\n", cfg[1]);
++	if (sc6000_write(devptr, vport, cfg[1]) < 0) {
++		dev_err(devptr, "DATA 0x%x: failed!\n", cfg[1]);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, COMMAND_C5) < 0) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", COMMAND_C5);
++	if (sc6000_write(devptr, vport, COMMAND_C5) < 0) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", COMMAND_C5);
+ 		return -EIO;
+ 	}
  
-+			flags &= ~RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 			rstc = __reset_control_get_internal(rcdev,
- 							    lookup->index,
--							    shared, acquired);
-+							    flags);
- 			mutex_unlock(&reset_list_mutex);
- 			break;
+ 	return 0;
+ }
+ 
+-static int sc6000_cfg_write(char __iomem *vport, unsigned char softcfg)
++static int sc6000_cfg_write(struct device *devptr,
++			    char __iomem *vport, unsigned char softcfg)
+ {
+ 
+-	if (sc6000_write(vport, WRITE_MDIRQ_CFG)) {
+-		snd_printk(KERN_ERR "CMD 0x%x: failed!\n", WRITE_MDIRQ_CFG);
++	if (sc6000_write(devptr, vport, WRITE_MDIRQ_CFG)) {
++		dev_err(devptr, "CMD 0x%x: failed!\n", WRITE_MDIRQ_CFG);
+ 		return -EIO;
+ 	}
+-	if (sc6000_write(vport, softcfg)) {
+-		snd_printk(KERN_ERR "sc6000_cfg_write: failed!\n");
++	if (sc6000_write(devptr, vport, softcfg)) {
++		dev_err(devptr, "%s: failed!\n", __func__);
+ 		return -EIO;
+ 	}
+ 	return 0;
+ }
+ 
+-static int sc6000_setup_board(char __iomem *vport, int config)
++static int sc6000_setup_board(struct device *devptr,
++			      char __iomem *vport, int config)
+ {
+ 	int loop = 10;
+ 
+ 	do {
+-		if (sc6000_write(vport, COMMAND_88)) {
+-			snd_printk(KERN_ERR "CMD 0x%x: failed!\n",
+-				   COMMAND_88);
++		if (sc6000_write(devptr, vport, COMMAND_88)) {
++			dev_err(devptr, "CMD 0x%x: failed!\n",
++				COMMAND_88);
+ 			return -EIO;
  		}
-@@ -1133,30 +1146,29 @@ __reset_control_get_from_lookup(struct device *dev, const char *con_id,
- }
+ 	} while ((sc6000_wait_data(vport) < 0) && loop--);
  
- struct reset_control *__reset_control_get(struct device *dev, const char *id,
--					  int index, bool shared, bool optional,
--					  bool acquired)
-+					  int index, enum reset_control_flags flags)
- {
-+	bool shared = flags & RESET_CONTROL_FLAGS_BIT_SHARED;
-+	bool acquired = flags & RESET_CONTROL_FLAGS_BIT_ACQUIRED;
-+
- 	if (WARN_ON(shared && acquired))
- 		return ERR_PTR(-EINVAL);
- 
- 	if (dev->of_node)
--		return __of_reset_control_get(dev->of_node, id, index, shared,
--					      optional, acquired);
-+		return __of_reset_control_get(dev->of_node, id, index, flags);
- 
--	return __reset_control_get_from_lookup(dev, id, shared, optional,
--					       acquired);
-+	return __reset_control_get_from_lookup(dev, id, flags);
- }
- EXPORT_SYMBOL_GPL(__reset_control_get);
- 
- int __reset_control_bulk_get(struct device *dev, int num_rstcs,
- 			     struct reset_control_bulk_data *rstcs,
--			     bool shared, bool optional, bool acquired)
-+			     enum reset_control_flags flags)
- {
- 	int ret, i;
- 
- 	for (i = 0; i < num_rstcs; i++) {
--		rstcs[i].rstc = __reset_control_get(dev, rstcs[i].id, 0,
--						    shared, optional, acquired);
-+		rstcs[i].rstc = __reset_control_get(dev, rstcs[i].id, 0, flags);
- 		if (IS_ERR(rstcs[i].rstc)) {
- 			ret = PTR_ERR(rstcs[i].rstc);
- 			goto err;
-@@ -1226,7 +1238,7 @@ static void devm_reset_control_release(struct device *dev, void *res)
- 
- struct reset_control *
- __devm_reset_control_get(struct device *dev, const char *id, int index,
--			 bool shared, bool optional, bool acquired)
-+			 enum reset_control_flags flags)
- {
- 	struct reset_control **ptr, *rstc;
- 
-@@ -1235,7 +1247,7 @@ __devm_reset_control_get(struct device *dev, const char *id, int index,
- 	if (!ptr)
- 		return ERR_PTR(-ENOMEM);
- 
--	rstc = __reset_control_get(dev, id, index, shared, optional, acquired);
-+	rstc = __reset_control_get(dev, id, index, flags);
- 	if (IS_ERR_OR_NULL(rstc)) {
- 		devres_free(ptr);
- 		return rstc;
-@@ -1262,7 +1274,7 @@ static void devm_reset_control_bulk_release(struct device *dev, void *res)
- 
- int __devm_reset_control_bulk_get(struct device *dev, int num_rstcs,
- 				  struct reset_control_bulk_data *rstcs,
--				  bool shared, bool optional, bool acquired)
-+				  enum reset_control_flags flags)
- {
- 	struct reset_control_bulk_devres *ptr;
- 	int ret;
-@@ -1272,7 +1284,7 @@ int __devm_reset_control_bulk_get(struct device *dev, int num_rstcs,
- 	if (!ptr)
- 		return -ENOMEM;
- 
--	ret = __reset_control_bulk_get(dev, num_rstcs, rstcs, shared, optional, acquired);
-+	ret = __reset_control_bulk_get(dev, num_rstcs, rstcs, flags);
- 	if (ret < 0) {
- 		devres_free(ptr);
- 		return ret;
-@@ -1298,6 +1310,7 @@ EXPORT_SYMBOL_GPL(__devm_reset_control_bulk_get);
-  */
- int __device_reset(struct device *dev, bool optional)
- {
-+	enum reset_control_flags flags;
- 	struct reset_control *rstc;
- 	int ret;
- 
-@@ -1313,7 +1326,8 @@ int __device_reset(struct device *dev, bool optional)
+ 	if (sc6000_read(vport) < 0) {
+-		snd_printk(KERN_ERR "sc6000_read after CMD 0x%x: failed\n",
+-			   COMMAND_88);
++		dev_err(devptr, "sc6000_read after CMD 0x%x: failed\n",
++			COMMAND_88);
+ 		return -EIO;
  	}
- #endif
  
--	rstc = __reset_control_get(dev, NULL, 0, 0, optional, true);
-+	flags = optional ? RESET_CONTROL_OPTIONAL_EXCLUSIVE : RESET_CONTROL_EXCLUSIVE;
-+	rstc = __reset_control_get(dev, NULL, 0, flags);
- 	if (IS_ERR(rstc))
- 		return PTR_ERR(rstc);
+-	if (sc6000_cfg_write(vport, config))
++	if (sc6000_cfg_write(devptr, vport, config))
+ 		return -ENODEV;
  
-@@ -1356,17 +1370,14 @@ static int of_reset_control_get_count(struct device_node *node)
-  *				device node.
-  *
-  * @np: device node for the device that requests the reset controls array
-- * @shared: whether reset controls are shared or not
-- * @optional: whether it is optional to get the reset controls
-- * @acquired: only one reset control may be acquired for a given controller
-- *            and ID
-+ * @flags: whether reset controls are shared, optional, acquired
-  *
-  * Returns pointer to allocated reset_control on success or error on failure
-  */
- struct reset_control *
--of_reset_control_array_get(struct device_node *np, bool shared, bool optional,
--			   bool acquired)
-+of_reset_control_array_get(struct device_node *np, enum reset_control_flags flags)
- {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
- 	struct reset_control_array *resets;
- 	struct reset_control *rstc;
- 	int num, i;
-@@ -1381,8 +1392,7 @@ of_reset_control_array_get(struct device_node *np, bool shared, bool optional,
- 	resets->num_rstcs = num;
- 
- 	for (i = 0; i < num; i++) {
--		rstc = __of_reset_control_get(np, NULL, i, shared, optional,
--					      acquired);
-+		rstc = __of_reset_control_get(np, NULL, i, flags);
- 		if (IS_ERR(rstc))
- 			goto err_rst;
- 		resets->rstc[i] = rstc;
-@@ -1407,8 +1417,7 @@ EXPORT_SYMBOL_GPL(of_reset_control_array_get);
-  * devm_reset_control_array_get - Resource managed reset control array get
-  *
-  * @dev: device that requests the list of reset controls
-- * @shared: whether reset controls are shared or not
-- * @optional: whether it is optional to get the reset controls
-+ * @flags: whether reset controls are shared, optional, acquired
-  *
-  * The reset control array APIs are intended for a list of resets
-  * that just have to be asserted or deasserted, without any
-@@ -1417,7 +1426,7 @@ EXPORT_SYMBOL_GPL(of_reset_control_array_get);
-  * Returns pointer to allocated reset_control on success or error on failure
-  */
- struct reset_control *
--devm_reset_control_array_get(struct device *dev, bool shared, bool optional)
-+devm_reset_control_array_get(struct device *dev, enum reset_control_flags flags)
- {
- 	struct reset_control **ptr, *rstc;
- 
-@@ -1426,7 +1435,7 @@ devm_reset_control_array_get(struct device *dev, bool shared, bool optional)
- 	if (!ptr)
- 		return ERR_PTR(-ENOMEM);
- 
--	rstc = of_reset_control_array_get(dev->of_node, shared, optional, true);
-+	rstc = of_reset_control_array_get(dev->of_node, flags);
- 	if (IS_ERR_OR_NULL(rstc)) {
- 		devres_free(ptr);
- 		return rstc;
-diff --git a/include/linux/reset.h b/include/linux/reset.h
-index 4b31d683776eb..30edaea2c8fb8 100644
---- a/include/linux/reset.h
-+++ b/include/linux/reset.h
-@@ -26,6 +26,33 @@ struct reset_control_bulk_data {
- 	struct reset_control		*rstc;
- };
- 
-+#define RESET_CONTROL_FLAGS_BIT_SHARED		BIT(0)	/* not exclusive */
-+#define RESET_CONTROL_FLAGS_BIT_OPTIONAL	BIT(1)
-+#define RESET_CONTROL_FLAGS_BIT_ACQUIRED	BIT(2)	/* iff exclusive, not released */
-+
-+/**
-+ * enum reset_control_flags - Flags that can be passed to the reset_control_get functions
-+ *                    to determine the type of reset control.
-+ *                    These values cannot be OR'd.
-+ *
-+ * @RESET_CONTROL_EXCLUSIVE:				exclusive, acquired,
-+ * @RESET_CONTROL_EXCLUSIVE_RELEASED:			exclusive, released,
-+ * @RESET_CONTROL_SHARED:				shared
-+ * @RESET_CONTROL_OPTIONAL_EXCLUSIVE:			optional, exclusive, acquired
-+ * @RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED:		optional, exclusive, released
-+ * @RESET_CONTROL_OPTIONAL_SHARED:			optional, shared
-+ */
-+enum reset_control_flags {
-+	RESET_CONTROL_EXCLUSIVE				= RESET_CONTROL_FLAGS_BIT_ACQUIRED,
-+	RESET_CONTROL_EXCLUSIVE_RELEASED		= 0,
-+	RESET_CONTROL_SHARED				= RESET_CONTROL_FLAGS_BIT_SHARED,
-+	RESET_CONTROL_OPTIONAL_EXCLUSIVE		= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
-+							  RESET_CONTROL_FLAGS_BIT_ACQUIRED,
-+	RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED	= RESET_CONTROL_FLAGS_BIT_OPTIONAL,
-+	RESET_CONTROL_OPTIONAL_SHARED			= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
-+							  RESET_CONTROL_FLAGS_BIT_SHARED,
-+};
-+
- #ifdef CONFIG_RESET_CONTROLLER
- 
- int reset_control_reset(struct reset_control *rstc);
-@@ -43,30 +70,25 @@ int reset_control_bulk_acquire(int num_rstcs, struct reset_control_bulk_data *rs
- void reset_control_bulk_release(int num_rstcs, struct reset_control_bulk_data *rstcs);
- 
- struct reset_control *__of_reset_control_get(struct device_node *node,
--				     const char *id, int index, bool shared,
--				     bool optional, bool acquired);
-+				     const char *id, int index, enum reset_control_flags flags);
- struct reset_control *__reset_control_get(struct device *dev, const char *id,
--					  int index, bool shared,
--					  bool optional, bool acquired);
-+					  int index, enum reset_control_flags flags);
- void reset_control_put(struct reset_control *rstc);
- int __reset_control_bulk_get(struct device *dev, int num_rstcs,
- 			     struct reset_control_bulk_data *rstcs,
--			     bool shared, bool optional, bool acquired);
-+			     enum reset_control_flags flags);
- void reset_control_bulk_put(int num_rstcs, struct reset_control_bulk_data *rstcs);
- 
- int __device_reset(struct device *dev, bool optional);
- struct reset_control *__devm_reset_control_get(struct device *dev,
--				     const char *id, int index, bool shared,
--				     bool optional, bool acquired);
-+				     const char *id, int index, enum reset_control_flags flags);
- int __devm_reset_control_bulk_get(struct device *dev, int num_rstcs,
- 				  struct reset_control_bulk_data *rstcs,
--				  bool shared, bool optional, bool acquired);
-+				  enum reset_control_flags flags);
- 
- struct reset_control *devm_reset_control_array_get(struct device *dev,
--						   bool shared, bool optional);
--struct reset_control *of_reset_control_array_get(struct device_node *np,
--						 bool shared, bool optional,
--						 bool acquired);
-+						   enum reset_control_flags flags);
-+struct reset_control *of_reset_control_array_get(struct device_node *np, enum reset_control_flags);
- 
- int reset_control_get_count(struct device *dev);
- 
-@@ -117,17 +139,19 @@ static inline int __device_reset(struct device *dev, bool optional)
- 
- static inline struct reset_control *__of_reset_control_get(
- 					struct device_node *node,
--					const char *id, int index, bool shared,
--					bool optional, bool acquired)
-+					const char *id, int index, enum reset_control_flags flags)
- {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? NULL : ERR_PTR(-ENOTSUPP);
+ 	return 0;
  }
  
- static inline struct reset_control *__reset_control_get(
- 					struct device *dev, const char *id,
--					int index, bool shared, bool optional,
--					bool acquired)
-+					int index, enum reset_control_flags flags)
+-static int sc6000_init_mss(char __iomem *vport, int config,
++static int sc6000_init_mss(struct device *devptr,
++			   char __iomem *vport, int config,
+ 			   char __iomem *vmss_port, int mss_config)
  {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? NULL : ERR_PTR(-ENOTSUPP);
+-	if (sc6000_write(vport, DSP_INIT_MSS)) {
+-		snd_printk(KERN_ERR "sc6000_init_mss [0x%x]: failed!\n",
+-			   DSP_INIT_MSS);
++	if (sc6000_write(devptr, vport, DSP_INIT_MSS)) {
++		dev_err(devptr, "%s [0x%x]: failed!\n", __func__,
++			DSP_INIT_MSS);
+ 		return -EIO;
+ 	}
+ 
+ 	msleep(10);
+ 
+-	if (sc6000_cfg_write(vport, config))
++	if (sc6000_cfg_write(devptr, vport, config))
+ 		return -EIO;
+ 
+ 	iowrite8(mss_config, vmss_port);
+@@ -348,7 +353,8 @@ static int sc6000_init_mss(char __iomem *vport, int config,
+ 	return 0;
  }
  
-@@ -163,8 +187,10 @@ reset_control_bulk_release(int num_rstcs, struct reset_control_bulk_data *rstcs)
- static inline int
- __reset_control_bulk_get(struct device *dev, int num_rstcs,
- 			 struct reset_control_bulk_data *rstcs,
--			 bool shared, bool optional, bool acquired)
-+			 enum reset_control_flags flags)
+-static void sc6000_hw_cfg_encode(char __iomem *vport, int *cfg,
++static void sc6000_hw_cfg_encode(struct device *devptr,
++				 char __iomem *vport, int *cfg,
+ 				 long xport, long xmpu,
+ 				 long xmss_port, int joystick)
  {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? 0 : -EOPNOTSUPP;
+@@ -367,10 +373,11 @@ static void sc6000_hw_cfg_encode(char __iomem *vport, int *cfg,
+ 		cfg[0] |= 0x02;
+ 	cfg[1] |= 0x80;		/* enable WSS system */
+ 	cfg[1] &= ~0x40;	/* disable IDE */
+-	snd_printd("hw cfg %x, %x\n", cfg[0], cfg[1]);
++	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
  }
  
-@@ -175,30 +201,36 @@ reset_control_bulk_put(int num_rstcs, struct reset_control_bulk_data *rstcs)
- 
- static inline struct reset_control *__devm_reset_control_get(
- 					struct device *dev, const char *id,
--					int index, bool shared, bool optional,
--					bool acquired)
-+					int index, enum reset_control_flags flags)
+-static int sc6000_init_board(char __iomem *vport,
++static int sc6000_init_board(struct device *devptr,
++			     char __iomem *vport,
+ 			     char __iomem *vmss_port, int dev)
  {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? NULL : ERR_PTR(-ENOTSUPP);
+ 	char answer[15];
+@@ -384,14 +391,14 @@ static int sc6000_init_board(char __iomem *vport,
+ 
+ 	err = sc6000_dsp_reset(vport);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_dsp_reset: failed!\n");
++		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
+ 		return err;
+ 	}
+ 
+ 	memset(answer, 0, sizeof(answer));
+-	err = sc6000_dsp_get_answer(vport, GET_DSP_COPYRIGHT, answer, 15);
++	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
+ 	if (err <= 0) {
+-		snd_printk(KERN_ERR "sc6000_dsp_copyright: failed!\n");
++		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 	/*
+@@ -399,52 +406,52 @@ static int sc6000_init_board(char __iomem *vport,
+ 	 * if we have something different, we have to be warned.
+ 	 */
+ 	if (strncmp("SC-6000", answer, 7))
+-		snd_printk(KERN_WARNING "Warning: non SC-6000 audio card!\n");
++		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
+ 
+-	if (sc6000_dsp_get_answer(vport, GET_DSP_VERSION, version, 2) < 2) {
+-		snd_printk(KERN_ERR "sc6000_dsp_version: failed!\n");
++	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
++		dev_err(devptr, "sc6000_dsp_version: failed!\n");
+ 		return -ENODEV;
+ 	}
+-	printk(KERN_INFO PFX "Detected model: %s, DSP version %d.%d\n",
++	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
+ 		answer, version[0], version[1]);
+ 
+ 	/* set configuration */
+-	sc6000_write(vport, COMMAND_5C);
++	sc6000_write(devptr, vport, COMMAND_5C);
+ 	if (sc6000_read(vport) < 0)
+ 		old = 1;
+ 
+ 	if (!old) {
+ 		int cfg[2];
+-		sc6000_hw_cfg_encode(vport, &cfg[0], port[dev], mpu_port[dev],
++		sc6000_hw_cfg_encode(devptr,
++				     vport, &cfg[0], port[dev], mpu_port[dev],
+ 				     mss_port[dev], joystick[dev]);
+-		if (sc6000_hw_cfg_write(vport, cfg) < 0) {
+-			snd_printk(KERN_ERR "sc6000_hw_cfg_write: failed!\n");
++		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
++			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
+ 			return -EIO;
+ 		}
+ 	}
+-	err = sc6000_setup_board(vport, config);
++	err = sc6000_setup_board(devptr, vport, config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_setup_board: failed!\n");
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 
+ 	sc6000_dsp_reset(vport);
+ 
+ 	if (!old) {
+-		sc6000_write(vport, COMMAND_60);
+-		sc6000_write(vport, 0x02);
++		sc6000_write(devptr, vport, COMMAND_60);
++		sc6000_write(devptr, vport, 0x02);
+ 		sc6000_dsp_reset(vport);
+ 	}
+ 
+-	err = sc6000_setup_board(vport, config);
++	err = sc6000_setup_board(devptr, vport, config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "sc6000_setup_board: failed!\n");
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
+ 		return -ENODEV;
+ 	}
+-	err = sc6000_init_mss(vport, config, vmss_port, mss_config);
++	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "Cannot initialize "
+-			   "Microsoft Sound System mode.\n");
++		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -491,39 +498,39 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
+ 	if (!enable[dev])
+ 		return 0;
+ 	if (port[dev] == SNDRV_AUTO_PORT) {
+-		printk(KERN_ERR PFX "specify IO port\n");
++		dev_err(devptr, "specify IO port\n");
+ 		return 0;
+ 	}
+ 	if (mss_port[dev] == SNDRV_AUTO_PORT) {
+-		printk(KERN_ERR PFX "specify MSS port\n");
++		dev_err(devptr, "specify MSS port\n");
+ 		return 0;
+ 	}
+ 	if (port[dev] != 0x220 && port[dev] != 0x240) {
+-		printk(KERN_ERR PFX "Port must be 0x220 or 0x240\n");
++		dev_err(devptr, "Port must be 0x220 or 0x240\n");
+ 		return 0;
+ 	}
+ 	if (mss_port[dev] != 0x530 && mss_port[dev] != 0xe80) {
+-		printk(KERN_ERR PFX "MSS port must be 0x530 or 0xe80\n");
++		dev_err(devptr, "MSS port must be 0x530 or 0xe80\n");
+ 		return 0;
+ 	}
+ 	if (irq[dev] != SNDRV_AUTO_IRQ && !sc6000_irq_to_softcfg(irq[dev])) {
+-		printk(KERN_ERR PFX "invalid IRQ %d\n", irq[dev]);
++		dev_err(devptr, "invalid IRQ %d\n", irq[dev]);
+ 		return 0;
+ 	}
+ 	if (dma[dev] != SNDRV_AUTO_DMA && !sc6000_dma_to_softcfg(dma[dev])) {
+-		printk(KERN_ERR PFX "invalid DMA %d\n", dma[dev]);
++		dev_err(devptr, "invalid DMA %d\n", dma[dev]);
+ 		return 0;
+ 	}
+ 	if (mpu_port[dev] != SNDRV_AUTO_PORT &&
+ 	    (mpu_port[dev] & ~0x30L) != 0x300) {
+-		printk(KERN_ERR PFX "invalid MPU-401 port %lx\n",
++		dev_err(devptr, "invalid MPU-401 port %lx\n",
+ 			mpu_port[dev]);
+ 		return 0;
+ 	}
+ 	if (mpu_port[dev] != SNDRV_AUTO_PORT &&
+ 	    mpu_irq[dev] != SNDRV_AUTO_IRQ && mpu_irq[dev] != 0 &&
+ 	    !sc6000_mpu_irq_to_softcfg(mpu_irq[dev])) {
+-		printk(KERN_ERR PFX "invalid MPU-401 IRQ %d\n", mpu_irq[dev]);
++		dev_err(devptr, "invalid MPU-401 IRQ %d\n", mpu_irq[dev]);
+ 		return 0;
+ 	}
+ 	return 1;
+@@ -534,7 +541,7 @@ static void snd_sc6000_free(struct snd_card *card)
+ 	char __iomem *vport = (char __force __iomem *)card->private_data;
+ 
+ 	if (vport)
+-		sc6000_setup_board(vport, 0);
++		sc6000_setup_board(card->dev, vport, 0);
  }
  
- static inline int
- __devm_reset_control_bulk_get(struct device *dev, int num_rstcs,
- 			      struct reset_control_bulk_data *rstcs,
--			      bool shared, bool optional, bool acquired)
-+			      enum reset_control_flags flags)
- {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? 0 : -EOPNOTSUPP;
- }
+ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+@@ -558,7 +565,7 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	if (xirq == SNDRV_AUTO_IRQ) {
+ 		xirq = snd_legacy_find_free_irq(possible_irqs);
+ 		if (xirq < 0) {
+-			snd_printk(KERN_ERR PFX "unable to find a free IRQ\n");
++			dev_err(devptr, "unable to find a free IRQ\n");
+ 			return -EBUSY;
+ 		}
+ 	}
+@@ -566,42 +573,39 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	if (xdma == SNDRV_AUTO_DMA) {
+ 		xdma = snd_legacy_find_free_dma(possible_dmas);
+ 		if (xdma < 0) {
+-			snd_printk(KERN_ERR PFX "unable to find a free DMA\n");
++			dev_err(devptr, "unable to find a free DMA\n");
+ 			return -EBUSY;
+ 		}
+ 	}
  
- static inline struct reset_control *
--devm_reset_control_array_get(struct device *dev, bool shared, bool optional)
-+devm_reset_control_array_get(struct device *dev, enum reset_control_flags flags)
- {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? NULL : ERR_PTR(-ENOTSUPP);
- }
+ 	if (!devm_request_region(devptr, port[dev], 0x10, DRV_NAME)) {
+-		snd_printk(KERN_ERR PFX
+-			   "I/O port region is already in use.\n");
++		dev_err(devptr, "I/O port region is already in use.\n");
+ 		return -EBUSY;
+ 	}
+ 	vport = devm_ioport_map(devptr, port[dev], 0x10);
+ 	if (!vport) {
+-		snd_printk(KERN_ERR PFX
+-			   "I/O port cannot be iomapped.\n");
++		dev_err(devptr, "I/O port cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
+ 	card->private_data = (void __force *)vport;
  
- static inline struct reset_control *
--of_reset_control_array_get(struct device_node *np, bool shared, bool optional,
--			   bool acquired)
-+of_reset_control_array_get(struct device_node *np, enum reset_control_flags flags)
- {
-+	bool optional = flags & RESET_CONTROL_FLAGS_BIT_OPTIONAL;
-+
- 	return optional ? NULL : ERR_PTR(-ENOTSUPP);
- }
+ 	/* to make it marked as used */
+ 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
+-		snd_printk(KERN_ERR PFX
+-			   "SC-6000 port I/O port region is already in use.\n");
++		dev_err(devptr,
++			"SC-6000 port I/O port region is already in use.\n");
+ 		return -EBUSY;
+ 	}
+ 	vmss_port = devm_ioport_map(devptr, mss_port[dev], 4);
+ 	if (!vmss_port) {
+-		snd_printk(KERN_ERR PFX
+-			   "MSS port I/O cannot be iomapped.\n");
++		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
  
-@@ -237,7 +269,7 @@ static inline int device_reset_optional(struct device *dev)
- static inline struct reset_control *
- __must_check reset_control_get_exclusive(struct device *dev, const char *id)
- {
--	return __reset_control_get(dev, id, 0, false, false, true);
-+	return __reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE);
- }
+-	snd_printd("Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
+-		   port[dev], xirq, xdma,
+-		   mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
++	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
++		port[dev], xirq, xdma,
++		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
  
- /**
-@@ -254,7 +286,7 @@ static inline int __must_check
- reset_control_bulk_get_exclusive(struct device *dev, int num_rstcs,
- 				 struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, false, false, true);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_EXCLUSIVE);
- }
+-	err = sc6000_init_board(vport, vmss_port, dev);
++	err = sc6000_init_board(devptr, vport, vmss_port, dev);
+ 	if (err < 0)
+ 		return err;
+ 	card->private_free = snd_sc6000_free;
+@@ -613,25 +617,24 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
  
- /**
-@@ -275,7 +307,7 @@ static inline struct reset_control *
- __must_check reset_control_get_exclusive_released(struct device *dev,
- 						  const char *id)
- {
--	return __reset_control_get(dev, id, 0, false, false, false);
-+	return __reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE_RELEASED);
- }
+ 	err = snd_wss_pcm(chip, 0);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX
+-			   "error creating new WSS PCM device\n");
++		dev_err(devptr, "error creating new WSS PCM device\n");
+ 		return err;
+ 	}
+ 	err = snd_wss_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX "error creating new WSS mixer\n");
++		dev_err(devptr, "error creating new WSS mixer\n");
+ 		return err;
+ 	}
+ 	err = snd_sc6000_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR PFX "the mixer rewrite failed\n");
++		dev_err(devptr, "the mixer rewrite failed\n");
+ 		return err;
+ 	}
+ 	if (snd_opl3_create(card,
+ 			    0x388, 0x388 + 2,
+ 			    OPL3_HW_AUTO, 0, &opl3) < 0) {
+-		snd_printk(KERN_ERR PFX "no OPL device at 0x%x-0x%x ?\n",
+-			   0x388, 0x388 + 2);
++		dev_err(devptr, "no OPL device at 0x%x-0x%x ?\n",
++			0x388, 0x388 + 2);
+ 	} else {
+ 		err = snd_opl3_hwdep_new(opl3, 0, 1, NULL);
+ 		if (err < 0)
+@@ -645,8 +648,8 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 					MPU401_HW_MPU401,
+ 					mpu_port[dev], 0,
+ 					mpu_irq[dev], NULL) < 0)
+-			snd_printk(KERN_ERR "no MPU-401 device at 0x%lx ?\n",
+-					mpu_port[dev]);
++			dev_err(devptr, "no MPU-401 device at 0x%lx ?\n",
++				mpu_port[dev]);
+ 	}
  
- /**
-@@ -296,7 +328,7 @@ static inline int __must_check
- reset_control_bulk_get_exclusive_released(struct device *dev, int num_rstcs,
- 					  struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, false, false, false);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -317,7 +349,8 @@ static inline int __must_check
- reset_control_bulk_get_optional_exclusive_released(struct device *dev, int num_rstcs,
- 						   struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, false, true, false);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs,
-+					RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -345,7 +378,7 @@ reset_control_bulk_get_optional_exclusive_released(struct device *dev, int num_r
- static inline struct reset_control *reset_control_get_shared(
- 					struct device *dev, const char *id)
- {
--	return __reset_control_get(dev, id, 0, true, false, false);
-+	return __reset_control_get(dev, id, 0, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -362,7 +395,7 @@ static inline int __must_check
- reset_control_bulk_get_shared(struct device *dev, int num_rstcs,
- 			      struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, true, false, false);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -379,7 +412,7 @@ reset_control_bulk_get_shared(struct device *dev, int num_rstcs,
- static inline struct reset_control *reset_control_get_optional_exclusive(
- 					struct device *dev, const char *id)
- {
--	return __reset_control_get(dev, id, 0, false, true, true);
-+	return __reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- /**
-@@ -399,7 +432,7 @@ static inline int __must_check
- reset_control_bulk_get_optional_exclusive(struct device *dev, int num_rstcs,
- 					  struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, false, true, true);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- /**
-@@ -416,7 +449,7 @@ reset_control_bulk_get_optional_exclusive(struct device *dev, int num_rstcs,
- static inline struct reset_control *reset_control_get_optional_shared(
- 					struct device *dev, const char *id)
- {
--	return __reset_control_get(dev, id, 0, true, true, false);
-+	return __reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_SHARED);
- }
- 
- /**
-@@ -436,7 +469,7 @@ static inline int __must_check
- reset_control_bulk_get_optional_shared(struct device *dev, int num_rstcs,
- 				       struct reset_control_bulk_data *rstcs)
- {
--	return __reset_control_bulk_get(dev, num_rstcs, rstcs, true, true, false);
-+	return __reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_OPTIONAL_SHARED);
- }
- 
- /**
-@@ -452,7 +485,7 @@ reset_control_bulk_get_optional_shared(struct device *dev, int num_rstcs,
- static inline struct reset_control *of_reset_control_get_exclusive(
- 				struct device_node *node, const char *id)
- {
--	return __of_reset_control_get(node, id, 0, false, false, true);
-+	return __of_reset_control_get(node, id, 0, RESET_CONTROL_EXCLUSIVE);
- }
- 
- /**
-@@ -472,7 +505,7 @@ static inline struct reset_control *of_reset_control_get_exclusive(
- static inline struct reset_control *of_reset_control_get_optional_exclusive(
- 				struct device_node *node, const char *id)
- {
--	return __of_reset_control_get(node, id, 0, false, true, true);
-+	return __of_reset_control_get(node, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- /**
-@@ -497,7 +530,7 @@ static inline struct reset_control *of_reset_control_get_optional_exclusive(
- static inline struct reset_control *of_reset_control_get_shared(
- 				struct device_node *node, const char *id)
- {
--	return __of_reset_control_get(node, id, 0, true, false, false);
-+	return __of_reset_control_get(node, id, 0, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -514,7 +547,7 @@ static inline struct reset_control *of_reset_control_get_shared(
- static inline struct reset_control *of_reset_control_get_exclusive_by_index(
- 					struct device_node *node, int index)
- {
--	return __of_reset_control_get(node, NULL, index, false, false, true);
-+	return __of_reset_control_get(node, NULL, index, RESET_CONTROL_EXCLUSIVE);
- }
- 
- /**
-@@ -542,7 +575,7 @@ static inline struct reset_control *of_reset_control_get_exclusive_by_index(
- static inline struct reset_control *of_reset_control_get_shared_by_index(
- 					struct device_node *node, int index)
- {
--	return __of_reset_control_get(node, NULL, index, true, false, false);
-+	return __of_reset_control_get(node, NULL, index, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -561,7 +594,7 @@ static inline struct reset_control *
- __must_check devm_reset_control_get_exclusive(struct device *dev,
- 					      const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, false, false, true);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE);
- }
- 
- /**
-@@ -581,7 +614,8 @@ static inline int __must_check
- devm_reset_control_bulk_get_exclusive(struct device *dev, int num_rstcs,
- 				      struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, false, false, true);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs,
-+					     RESET_CONTROL_EXCLUSIVE);
- }
- 
- /**
-@@ -600,7 +634,7 @@ static inline struct reset_control *
- __must_check devm_reset_control_get_exclusive_released(struct device *dev,
- 						       const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, false, false, false);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -620,7 +654,8 @@ static inline int __must_check
- devm_reset_control_bulk_get_exclusive_released(struct device *dev, int num_rstcs,
- 					       struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, false, false, false);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs,
-+					     RESET_CONTROL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -639,7 +674,7 @@ static inline struct reset_control *
- __must_check devm_reset_control_get_optional_exclusive_released(struct device *dev,
- 								const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, false, true, false);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -659,7 +694,8 @@ static inline int __must_check
- devm_reset_control_bulk_get_optional_exclusive_released(struct device *dev, int num_rstcs,
- 							struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, false, true, false);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs,
-+					     RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED);
- }
- 
- /**
-@@ -674,7 +710,7 @@ devm_reset_control_bulk_get_optional_exclusive_released(struct device *dev, int
- static inline struct reset_control *devm_reset_control_get_shared(
- 					struct device *dev, const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, true, false, false);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -694,7 +730,7 @@ static inline int __must_check
- devm_reset_control_bulk_get_shared(struct device *dev, int num_rstcs,
- 				   struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, true, false, false);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_SHARED);
- }
- 
- /**
-@@ -712,7 +748,7 @@ devm_reset_control_bulk_get_shared(struct device *dev, int num_rstcs,
- static inline struct reset_control *devm_reset_control_get_optional_exclusive(
- 					struct device *dev, const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, false, true, true);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- /**
-@@ -732,7 +768,8 @@ static inline int __must_check
- devm_reset_control_bulk_get_optional_exclusive(struct device *dev, int num_rstcs,
- 					       struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, false, true, true);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs,
-+					     RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- /**
-@@ -750,7 +787,7 @@ devm_reset_control_bulk_get_optional_exclusive(struct device *dev, int num_rstcs
- static inline struct reset_control *devm_reset_control_get_optional_shared(
- 					struct device *dev, const char *id)
- {
--	return __devm_reset_control_get(dev, id, 0, true, true, false);
-+	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_SHARED);
- }
- 
- /**
-@@ -770,7 +807,7 @@ static inline int __must_check
- devm_reset_control_bulk_get_optional_shared(struct device *dev, int num_rstcs,
- 					    struct reset_control_bulk_data *rstcs)
- {
--	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, true, true, false);
-+	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_OPTIONAL_SHARED);
- }
- 
- /**
-@@ -788,7 +825,7 @@ devm_reset_control_bulk_get_optional_shared(struct device *dev, int num_rstcs,
- static inline struct reset_control *
- devm_reset_control_get_exclusive_by_index(struct device *dev, int index)
- {
--	return __devm_reset_control_get(dev, NULL, index, false, false, true);
-+	return __devm_reset_control_get(dev, NULL, index, RESET_CONTROL_EXCLUSIVE);
- }
- 
- /**
-@@ -804,7 +841,7 @@ devm_reset_control_get_exclusive_by_index(struct device *dev, int index)
- static inline struct reset_control *
- devm_reset_control_get_shared_by_index(struct device *dev, int index)
- {
--	return __devm_reset_control_get(dev, NULL, index, true, false, false);
-+	return __devm_reset_control_get(dev, NULL, index, RESET_CONTROL_SHARED);
- }
- 
- /*
-@@ -852,54 +889,54 @@ static inline struct reset_control *devm_reset_control_get_by_index(
- static inline struct reset_control *
- devm_reset_control_array_get_exclusive(struct device *dev)
- {
--	return devm_reset_control_array_get(dev, false, false);
-+	return devm_reset_control_array_get(dev, RESET_CONTROL_EXCLUSIVE);
- }
- 
- static inline struct reset_control *
- devm_reset_control_array_get_shared(struct device *dev)
- {
--	return devm_reset_control_array_get(dev, true, false);
-+	return devm_reset_control_array_get(dev, RESET_CONTROL_SHARED);
- }
- 
- static inline struct reset_control *
- devm_reset_control_array_get_optional_exclusive(struct device *dev)
- {
--	return devm_reset_control_array_get(dev, false, true);
-+	return devm_reset_control_array_get(dev, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- static inline struct reset_control *
- devm_reset_control_array_get_optional_shared(struct device *dev)
- {
--	return devm_reset_control_array_get(dev, true, true);
-+	return devm_reset_control_array_get(dev, RESET_CONTROL_OPTIONAL_SHARED);
- }
- 
- static inline struct reset_control *
- of_reset_control_array_get_exclusive(struct device_node *node)
- {
--	return of_reset_control_array_get(node, false, false, true);
-+	return of_reset_control_array_get(node, RESET_CONTROL_EXCLUSIVE);
- }
- 
- static inline struct reset_control *
- of_reset_control_array_get_exclusive_released(struct device_node *node)
- {
--	return of_reset_control_array_get(node, false, false, false);
-+	return of_reset_control_array_get(node, RESET_CONTROL_EXCLUSIVE_RELEASED);
- }
- 
- static inline struct reset_control *
- of_reset_control_array_get_shared(struct device_node *node)
- {
--	return of_reset_control_array_get(node, true, false, true);
-+	return of_reset_control_array_get(node, RESET_CONTROL_SHARED);
- }
- 
- static inline struct reset_control *
- of_reset_control_array_get_optional_exclusive(struct device_node *node)
- {
--	return of_reset_control_array_get(node, false, true, true);
-+	return of_reset_control_array_get(node, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
- }
- 
- static inline struct reset_control *
- of_reset_control_array_get_optional_shared(struct device_node *node)
- {
--	return of_reset_control_array_get(node, true, true, true);
-+	return of_reset_control_array_get(node, RESET_CONTROL_OPTIONAL_SHARED);
- }
- #endif
+ 	strcpy(card->driver, DRV_NAME);
 -- 
 2.53.0
 
