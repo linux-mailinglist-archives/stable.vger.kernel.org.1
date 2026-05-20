@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIuhLs3rDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250943-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:49 +0200
+	id QOY/K4z0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC255931DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458D2594BDE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B989431091F1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F34A33039C7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC913D88FC;
-	Wed, 20 May 2026 17:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F13D75D3;
+	Wed, 20 May 2026 17:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y59XmVa4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnxFhU4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B1F2609FD;
-	Wed, 20 May 2026 17:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEEC36405A;
+	Wed, 20 May 2026 17:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296695; cv=none; b=XU5plfsF7x73u1herGQOeoXYiNeNFNDz6j6yz6sL1wz2TTKyKorFTh1K8uxcGcr0GxbFGXHSawTqfXJ4HZ4bLK++kFGS3r4BMYpiftYyVdOqI345WGkR87XPAAY8jYQsysxgk+zCix6Oa1XFzD9d1TzvrzubdXSRKrC52bXBMaw=
+	t=1779299031; cv=none; b=LHr18qOhPP38LGRHdcWl7EF+l1DGFmWDz+7tc5jSDGFMiziqJIX2z3Hi7umrRQdeFNA0AZBFviB+K9dDq4fJNAjbychxgWcJTZmjv8M1fRV/VNGCHV597ta8VjmN8tRKJy8y0w2V4JLXRkQLsM3J8/qY4JsuDER9RrTckcWOYjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296695; c=relaxed/simple;
-	bh=LaYyPsYR7Jwvw6OpN6pyDOfPJKTph74jcB2Qh0J1ju0=;
+	s=arc-20240116; t=1779299031; c=relaxed/simple;
+	bh=2gO06vcAnlkapVWG3+wlDus7AC+LrBevt4Y5SHTh1m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmoiBjbj0jzjfhdeuscBUK85SgFI5Fgyvtnvtz2AhD6d0M9U7ZbAot4Y01sN+ptj9MGpLRj7WUp8Fs8v2CU9TQifFrHGT5kPRkwLAVXm89c2sOue9iXWyvlvO3emwkic/dpccmahf0DRV5ITXPvp+74xdcildtZeUhHE8dyvakc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y59XmVa4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69E71F000E9;
-	Wed, 20 May 2026 17:04:52 +0000 (UTC)
+	 MIME-Version; b=W7sTPOfI2vy5x1s3I46z4Q+U+l5cc3LBH7RU9vF63kwwUcl6KAXhDeGltLiOHLuzmBOGj4cp0hWMswHKoPyTaJFLIUZKDm89D33TcfOhvwOm8RuZL8DnToj/0q4OdNm5fmlP1Nje4JNpYUqWr4K1yicJGmBDJJHbr6UQzq7E7xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnxFhU4J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24171F000E9;
+	Wed, 20 May 2026 17:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296693;
-	bh=ZDalqIcT3ZFUuL2d1i+D+9f/Ks4dXp/zNoG/2kuo3NA=;
+	s=korg; t=1779299030;
+	bh=l96v1ft4dYDOMOD/gBmUiKqdoTCuHe7ddu0TdjL+Jz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y59XmVa41mkERbOOTr/pMv8BC861ICV3AWjmJNiluZE7A/yiluEf0AjX6PFdc83WY
-	 uwlS0hE3pJ6tyBnmzjwGB2ofUFUx8P/WoQnib4hiJc2g0EdsmA48Dq+/oFog9adhBk
-	 hjzVdVncT1bWFjyHusMV7YS9S6KAyo1Z5n02cctw=
+	b=EnxFhU4J7+j+iFDdxQUvlK6FnzO7u57L+ZspJo8sU4RBdEOFasi1m+qicsrrxyYgN
+	 73ZZV3mK5m/AIK056344BhL0np/0eCNKX6Cn0fVtw/4yaJqF0uiOWwSPy8/qHvINfK
+	 kInLNvJ6ewqtwKjKlG5d9S2u/TI/OOAyvRkuHKfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0869/1146] rtc: abx80x: Disable alarm feature if no interrupt attached
+Subject: [PATCH 6.18 636/957] tcp: add data-race annotations for TCP_NLA_SNDQ_SIZE
 Date: Wed, 20 May 2026 18:18:39 +0200
-Message-ID: <20260520162207.904722356@linuxfoundation.org>
+Message-ID: <20260520162148.321380891@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250943-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251842-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,59 +89,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,nokia.com:email]
-X-Rspamd-Queue-Id: 3EC255931DF
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 458D2594BDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0fedce7244e4b85c049ce579c87e298a1b0b811d ]
+[ Upstream commit 124199444de467767175a9004e1574dc42523e62 ]
 
-Commit 795cda8338ea ("rtc: interface: Fix long-standing race when setting
-alarm") exposed an issue where the rtc-abx80x driver does not clear the
-alarm feature bit, but instead relies on the set_alarm operation to return
-invalid.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-For example, when a RTC_UIE_ON ioctl is handled, it should abort at the
-feature validation. Instead, it proceeds to the rtc_timer_enqueue(),
-which used to return an error from the set_alarm call. However,
-following the race condition handling, which likely should not be
-discarding predecing errors, a success condition is returned to the
-ioctl() caller. This results in (for example):
-    hwclock: select() to /dev/rtc0 to wait for clock tick timed out
-
-Notwithstanding the validity of the race condition handling, if an interrupt
-wasn't specified, or could not be attached, the driver should clear the
-alarm feature bit.
-
-Fixes: 718a820a303c ("rtc: abx80x: add alarm support")
-Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
-Link: https://patch.msgid.link/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 87ecc95d81d9 ("tcp: add send queue size stat in SCM_TIMESTAMPING_OPT_STATS")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-7-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-abx80x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp.c        | 4 +++-
+ net/ipv4/tcp_input.c  | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 3fee27914ba80..5f3a3e60a19d0 100644
---- a/drivers/rtc/rtc-abx80x.c
-+++ b/drivers/rtc/rtc-abx80x.c
-@@ -933,6 +933,8 @@ static int abx80x_probe(struct i2c_client *client)
- 			client->irq = 0;
- 		}
- 	}
-+	if (client->irq <= 0)
-+		clear_bit(RTC_FEATURE_ALARM, priv->rtc->features);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 515313ef0c642..0d6e991155c95 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4408,7 +4408,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
+ 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
  
- 	err = rtc_add_group(priv->rtc, &rtc_calib_attr_group);
- 	if (err) {
+-	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
++	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE,
++		    max_t(int, 0,
++			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index b5a3c7ca2605d..3e29134a54b19 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3694,7 +3694,7 @@ static void tcp_snd_una_update(struct tcp_sock *tp, u32 ack)
+ 	sock_owned_by_me((struct sock *)tp);
+ 	tp->bytes_acked += delta;
+ 	tcp_snd_sne_update(tp, ack);
+-	tp->snd_una = ack;
++	WRITE_ONCE(tp->snd_una, ack);
+ }
+ 
+ static void tcp_rcv_sne_update(struct tcp_sock *tp, u32 seq)
+@@ -7035,7 +7035,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (sk->sk_socket)
+ 			sk_wake_async(sk, SOCK_WAKE_IO, POLL_OUT);
+ 
+-		tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
++		WRITE_ONCE(tp->snd_una, TCP_SKB_CB(skb)->ack_seq);
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
+ 
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 3c25292ae72d8..e6aa54d2335c0 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -4089,7 +4089,7 @@ static void tcp_connect_init(struct sock *sk)
+ 	tp->snd_wnd = 0;
+ 	tcp_init_wl(tp, 0);
+ 	tcp_write_queue_purge(sk);
+-	tp->snd_una = tp->write_seq;
++	WRITE_ONCE(tp->snd_una, tp->write_seq);
+ 	tp->snd_sml = tp->write_seq;
+ 	tp->snd_up = tp->write_seq;
+ 	WRITE_ONCE(tp->snd_nxt, tp->write_seq);
 -- 
 2.53.0
 
