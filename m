@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAIWMd0nDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:05 +0200
+	id kEqiBTj5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2970559AEE1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61065957C6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62C7B3489301
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55B1F315E1DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3522F3D88FC;
-	Wed, 20 May 2026 18:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E9F3F39EE;
+	Wed, 20 May 2026 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib8ew1jl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeIeraVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C323D1CC6;
-	Wed, 20 May 2026 18:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3439368941;
+	Wed, 20 May 2026 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301261; cv=none; b=nJ5AVbevaV0/ux9F6Sp+L6ePJ/poO69fpypmdzBL6tmKL1d0AFMJVtEemgUl2411yWLqWLxI2Y79SiVmXejFtU31ag1oM0kQg1LG5EjOjb5PRMXWIhNEKpy+QWhlFeJj2yFljbmC0i/8j314OxFWRHcC+tr3Fhq/aiKclVoq/A0=
+	t=1779299556; cv=none; b=qkr6zsbufZF0z6P+lXLy3X70fxq66gWjW+z+kJQEs6/kQ2pxPXwSvdNDtwWC3rJ1wYVfsnsdCh5Z8qkIpc1qpx06bf7L/mv2WHt1U2dUtb5mhZHuPxfafFtZWrLs5+UJdJtElHrSqw05xxJF7uTo4DucKjmgj4bNlajcxMcgg3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301261; c=relaxed/simple;
-	bh=0O3ONwXL85GyxMaaHfjtWkI7gOjSTq/XRcwjYUwcj2I=;
+	s=arc-20240116; t=1779299556; c=relaxed/simple;
+	bh=4KjObqbU2D/O1gkNHdPw0DeiyZ9uaYR73c4aPNOcKvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOSqiRxTmdWKG9XL0PhZNh2FEBhcbC6kIjyPf7wdQZhBbIovVl15TCTblhWyS07fkJ8E2MAL9a99vG/H1OC3nLQNmkAcdjLe2dGYzobyWOeocYOFT0ShhUIMjWOKErhPZvfOBaknoL0Ib24QncDcJn2qm1652LFIpHnfeiAbG/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib8ew1jl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413271F000E9;
-	Wed, 20 May 2026 18:20:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BJXt2U3g3U1fswDJNtbdI6rOBrn5GgsKd20d0Mt+lOfKxQk1S3TFLAqfBRwrYG/57U5ELRZ94rhzJKIWnIAzD6Kv9WeunhUImaPkoDOg6GqIkYMPNr85vMWlChZa1DEsgF1F/JFc2xReF74qjcGY6sTok2Y78UXFkcOH+oNOnuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeIeraVs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4377D1F000E9;
+	Wed, 20 May 2026 17:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301259;
-	bh=kk61hGIQ1wantT+XneC0N5T9R/xHx0F1IzkpWWTf2M8=;
+	s=korg; t=1779299555;
+	bh=W+4RzHWJRZc91ZLeYpQu/DdffkaSZp3OiqO0sxAFVxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ib8ew1jlW7POaJQou1hZk9HewvpH7m2Bhh4bNcHiAO3SWxnkKx7FWnVFztKl4eeE2
-	 yZOaAY29OOyh/OCT4RezYXcozyE8MMnR9tpBeDVdSTIPjZ7TTGN1jwnQNIkKdpKfDn
-	 4eXtkMtP9Uj7fKGNbP8uLjmMDgAkLQL5EZ2vwqhw=
+	b=WeIeraVsChW3AD0y37Syf4CsNnwkz0lSgd74kjOv/TkCSfUF74038a5El5VZTLFy6
+	 xO47mlOereuQkTgyzsYmCNOPxNHo/j7+FG5vRjMTaqAu1tDBICWX44MWAvdpP7iIk8
+	 s3ZdiImYrYn1n0DgkkPQdEdTALOvH42js+xyju2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Christian A. Ehrhardt" <christian.ehrhardt@codasip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20 ?= <u.kleine-koenig@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 488/666] net/sched: sch_red: annotate data-races in red_dump_stats()
-Date: Wed, 20 May 2026 18:21:39 +0200
-Message-ID: <20260520162121.841631310@linuxfoundation.org>
+Subject: [PATCH 6.18 817/957] ASoC: codecs: ab8500: Fix casting of private data
+Date: Wed, 20 May 2026 18:21:40 +0200
+Message-ID: <20260520162152.285325388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252028-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252661-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2970559AEE1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email,msgid.link:url,codasip.com:email]
+X-Rspamd-Queue-Id: D61065957C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
 
-[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
+[ Upstream commit a201aef1a88b675e9eb8487e27d14e2eef3cef80 ]
 
-red_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+ab8500_filter_controls[i].private_value is initialized using
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+	.private_value = (unsigned long)&(struct filter_control)
+		{.count = xcount, .min = xmin, .max = xmax}
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
+thus it's a pointer to a struct filter_control casted to unsigned long.
 
-tc_red_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
+So to get back that pointer .private_data must be cast back, not its
+address.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 679d7abdc754 ("ASoC: codecs: Add AB8500 codec-driver")
+Signed-off-by: Christian A. Ehrhardt <christian.ehrhardt@codasip.com>
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/20260428192255.2294705-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ sound/soc/codecs/ab8500-codec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index a745d429a8141..6f53a0dbd0572 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -89,17 +89,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_PROB_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (!red_use_ecn(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
- 
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.prob_mark++;
-+			WRITE_ONCE(q->stats.prob_mark,
-+				   q->stats.prob_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -109,17 +112,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_HARD_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.forced_mark++;
-+			WRITE_ONCE(q->stats.forced_mark,
-+				   q->stats.forced_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -133,7 +139,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->qstats.backlog += len;
- 		sch->q.qlen++;
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.pdrop++;
-+		WRITE_ONCE(q->stats.pdrop,
-+			   q->stats.pdrop + 1);
- 		qdisc_qstats_drop(sch);
+diff --git a/sound/soc/codecs/ab8500-codec.c b/sound/soc/codecs/ab8500-codec.c
+index 04b5e1d5a6530..32d9cdbc8c310 100644
+--- a/sound/soc/codecs/ab8500-codec.c
++++ b/sound/soc/codecs/ab8500-codec.c
+@@ -2496,13 +2496,13 @@ static int ab8500_codec_probe(struct snd_soc_component *component)
+ 		return status;
  	}
- 	return ret;
-@@ -461,9 +468,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
- 					      &hw_stats_request);
- 	}
--	st.early = q->stats.prob_drop + q->stats.forced_drop;
--	st.pdrop = q->stats.pdrop;
--	st.marked = q->stats.prob_mark + q->stats.forced_mark;
-+	st.early = READ_ONCE(q->stats.prob_drop) +
-+		   READ_ONCE(q->stats.forced_drop);
-+
-+	st.pdrop = READ_ONCE(q->stats.pdrop);
-+
-+	st.marked = READ_ONCE(q->stats.prob_mark) +
-+		    READ_ONCE(q->stats.forced_mark);
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_FIR].private_value;
+ 	drvdata->anc_fir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_ANC_IIR].private_value;
+ 	drvdata->anc_iir_values = (long *)fc->value;
+ 	fc = (struct filter_control *)
+-		&ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
++		ab8500_filter_controls[AB8500_FILTER_SID_FIR].private_value;
+ 	drvdata->sid_fir_values = (long *)fc->value;
  
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
- }
+ 	snd_soc_dapm_disable_pin(dapm, "ANC Configure Input");
 -- 
 2.53.0
 
