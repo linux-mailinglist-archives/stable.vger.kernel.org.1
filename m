@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHeILJQGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:04 +0200
+	id EFrzH9L5DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-250871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A90597D01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DE0595984
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8F8B30F27CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD0833861262
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388EB3F9296;
-	Wed, 20 May 2026 18:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1C63F4DD6;
+	Wed, 20 May 2026 17:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipkLiWt/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0P5hal6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057BC3DC4DA;
-	Wed, 20 May 2026 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024DD3F4124;
+	Wed, 20 May 2026 17:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300687; cv=none; b=j7OUcb9OHy3HnKk6pblZETS8LGrjJGzAmv0lhdHhgfc0jm2k3fnO8SS2WB5OKHy62LV2pJIn/QBdpbotbDFtQjD4FmRHdE3pFojYzpyZFfOu1+a2yhLYrqDISKnUzlENYHCZn9k7Z2nPWRIPmS8xqfHnA63CtB3IUGdxR723eUI=
+	t=1779296523; cv=none; b=oJULeElRdX7YNEqKp3T2II7bfrAWZTO9XFs2u9wNCgmIKByvvnAkFG5Zr/67Y/RTXv/cGcVHcLl5jGob9dsvQNeFJvZ/Z3zsqQb6FI6PP7VL4/kxl8BpeFLbcrbMfoprBfdebqh686BCvZ91y+styLKI0daujSgE4cYh8IpakIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300687; c=relaxed/simple;
-	bh=EB3+C2h1YTy/6jLjgLEOPZSzaRuDsVGq8gSzFTMcD5E=;
+	s=arc-20240116; t=1779296523; c=relaxed/simple;
+	bh=AwrL6bvxrLFFzKYxzhqs31/JtA0CigNHDVle0cjK5R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaBWZdkBp0SPqCvlEb0RLcMjmBkV8ufBrlkmDnIgEEpNa26m97ZadNLWbUqlsf7y0fgxDBDjKWX7NxaVxeuYQsJcGK9e2XjqH/CJZaF2y5HlZDcM5mJXoISxsRe3Fhv6NUN8WaqUPFREs13gasni0YN2ODztkICIK6ZjjBIIxU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipkLiWt/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254561F000E9;
-	Wed, 20 May 2026 18:11:24 +0000 (UTC)
+	 MIME-Version; b=cYDnVdSBaLo1mU9nU6U4GHvxCcorvr1AYr9gtn0Vm1UFZUl6KT4Om+xxzp59xsyN760r+sWVGu7NeK84bY80dQ0LZS6F9Tu9Mb4ddAblnOOHL0GqWx6x9454amUYm4aKdbSFZPDo2gwVJYD7C9sQfy+Wb/9m5uGkngqQFkHEpuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0P5hal6B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FA31F000E9;
+	Wed, 20 May 2026 17:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300685;
-	bh=uZJtwm62O8hym5IRgma4Z9ocZfCI1/bj85S9JhOx/qU=;
+	s=korg; t=1779296521;
+	bh=SUpeozGCAvAeXKNgk5VRAsD4+zoof6BENE2oHJqcz5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ipkLiWt/1hI+lW0gDFUvKL+KOgGAAkjMZGnVBTWVucpcHR3unVgFj/kXu0+8nHfBv
-	 O9kVxdzZJ88fvW0ima84RH1DxWrcJTSMsriA53zkDngEsqnMtlvntreB/GHStOwBgc
-	 HJ9wEI6hzjR6g9BbogzPmwuFmsV9U+Lf8c1tUqrA=
+	b=0P5hal6B3MViOtbTzO680jaXiiTpGKrKmczLURUFyaVoODSR0/TH6iWSv6wpbmALl
+	 GYA1rJmNBVR3qSEjN/GvzGhvulLD25RvtAMSeJOMp0asB+ehehIEHeGW8MGC7qSoyN
+	 SLE+eSpXzEsIxVoIgiwbkxD7GHjh0de00Mr1jY/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Dharmender Garg <dharmender.garg@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/666] iommufd: vfio compatibility extension check for noiommu mode
-Date: Wed, 20 May 2026 18:18:01 +0200
-Message-ID: <20260520162117.068824822@linuxfoundation.org>
+Subject: [PATCH 7.0 0832/1146] bnge: remove unsupported backing store type
+Date: Wed, 20 May 2026 18:18:02 +0200
+Message-ID: <20260520162207.059064681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252443-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250871-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C1A90597D01
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: D7DE0595984
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
+From: Vikas Gupta <vikas.gupta@broadcom.com>
 
-[ Upstream commit 7147ec874ea08c322d779d8eba28946e294ed1f3 ]
+[ Upstream commit c6b34add67a5402f53359580956b5c318965a893 ]
 
-VFIO_CHECK_EXTENSION should return false for TYPE1_IOMMU variants when
-in NO-IOMMU mode and IOMMUFD compat container is set. This change makes
-the behavior match VFIO_CONTAINER in noiommu mode. It also prevents
-userspace from incorrectly attempting to use TYPE1 IOMMU operations
-in a no-iommu context.
+The backing store type, BNGE_CTX_MRAV, is not applicable in Thor Ultra
+devices. Remove it from the backing store configuration, as the firmware
+will not populate entities in this backing store type, due to which the
+driver load fails.
 
-Fixes: d624d6652a65 ("iommufd: vfio container FD ioctl compatibility")
-Link: https://patch.msgid.link/r/20260213183636.3340-1-jacob.pan@linux.microsoft.com
-Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 29c5b358f385 ("bng_en: Add backing store support")
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Link: https://patch.msgid.link/20260418023438.1597876-3-vikas.gupta@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/vfio_compat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnge/bnge_rmem.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/vfio_compat.c b/drivers/iommu/iommufd/vfio_compat.c
-index a3ad5f0b6c59d..80a2f7faee9bb 100644
---- a/drivers/iommu/iommufd/vfio_compat.c
-+++ b/drivers/iommu/iommufd/vfio_compat.c
-@@ -283,7 +283,7 @@ static int iommufd_vfio_check_extension(struct iommufd_ctx *ictx,
- 	case VFIO_TYPE1_IOMMU:
- 	case VFIO_TYPE1v2_IOMMU:
- 	case VFIO_UNMAP_ALL:
--		return 1;
-+		return !ictx->no_iommu_mode;
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
+index 94f15e08a88c1..b066ee887a099 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_rmem.c
+@@ -324,7 +324,6 @@ int bnge_alloc_ctx_mem(struct bnge_dev *bd)
+ 	u32 l2_qps, qp1_qps, max_qps;
+ 	u32 ena, entries_sp, entries;
+ 	u32 srqs, max_srqs, min;
+-	u32 num_mr, num_ah;
+ 	u32 extra_srqs = 0;
+ 	u32 extra_qps = 0;
+ 	u32 fast_qpmd_qps;
+@@ -390,21 +389,6 @@ int bnge_alloc_ctx_mem(struct bnge_dev *bd)
+ 	if (!bnge_is_roce_en(bd))
+ 		goto skip_rdma;
  
- 	case VFIO_NOIOMMU_IOMMU:
- 		return IS_ENABLED(CONFIG_VFIO_NOIOMMU);
+-	ctxm = &ctx->ctx_arr[BNGE_CTX_MRAV];
+-	/* 128K extra is needed to accommodate static AH context
+-	 * allocation by f/w.
+-	 */
+-	num_mr = min_t(u32, ctxm->max_entries / 2, 1024 * 256);
+-	num_ah = min_t(u32, num_mr, 1024 * 128);
+-	ctxm->split_entry_cnt = BNGE_CTX_MRAV_AV_SPLIT_ENTRY + 1;
+-	if (!ctxm->mrav_av_entries || ctxm->mrav_av_entries > num_ah)
+-		ctxm->mrav_av_entries = num_ah;
+-
+-	rc = bnge_setup_ctxm_pg_tbls(bd, ctxm, num_mr + num_ah, 2);
+-	if (rc)
+-		return rc;
+-	ena |= FUNC_BACKING_STORE_CFG_REQ_ENABLES_MRAV;
+-
+ 	ctxm = &ctx->ctx_arr[BNGE_CTX_TIM];
+ 	rc = bnge_setup_ctxm_pg_tbls(bd, ctxm, l2_qps + qp1_qps + extra_qps, 1);
+ 	if (rc)
 -- 
 2.53.0
 
