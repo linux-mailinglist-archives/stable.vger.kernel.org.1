@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJMZG6cZDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-251349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:27 +0200
+	id qP47GC3yDWrj4wUAu9opvQ
+	(envelope-from <stable+bounces-250411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC95599A88
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECB4594460
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCC2731F5B25
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A403232870E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E936A376;
-	Wed, 20 May 2026 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CFF1CDFCA;
+	Wed, 20 May 2026 16:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxTBWHVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEGmbf8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8975F3BED26;
-	Wed, 20 May 2026 17:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BEA3DA5B6;
+	Wed, 20 May 2026 16:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297747; cv=none; b=Z4Uc0ymEb4sxu0EmzPQxOYd8zE5bAL5aH7sHpf4WMZjB1vLUPWXOzCGA6PGumlJh67cjERdNCoUfGTsasxNHB8b7ogdGESGDc7D0u+ZDtAN2W9LcEVZHqQdpijvE7aaAX7pc3Hv8f11zmfHDRinF49R3Sr/P3+Mv7ne7VlgE+Fg=
+	t=1779295345; cv=none; b=M5xxroRfVwTNXd81DN1dcv4w6bK66jyc4DP+BefHF2HBKSePZrvyowmHJreqYM0PLJxUO0OeQakyDU0j9b35glxEe933Xfq+SxqrmwI+ACFB+ttvHPKsON5INDPyK52ENtY8j0Mww8mRK+tVl5OsQR1fuaCtDT/7RMSrD2Zs4QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297747; c=relaxed/simple;
-	bh=hvklo49y+K+3cyO0Z0qn/drdYbwS9A1QHNnOiBn0MoA=;
+	s=arc-20240116; t=1779295345; c=relaxed/simple;
+	bh=vsNzI81PXxjz8XM6KsawAA5QoNMrD0nckv+Gj+K8Ddk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/sRuX00I277VE1DhhlmhVK9CeFengmFqHUs/7fsNynR0FXT3yUsGmVWfyvSUZmO4KnkbUsy+PRi0wz7rSr1tdObA0ynjGOzJxKdXbv7T4ILiPvuvbm08JZc5i5spX56USzr5tzVJVD70Xn3j6qMJ7bJFSOQmwhrl7NZuqbl7t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxTBWHVp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80821F000E9;
-	Wed, 20 May 2026 17:22:25 +0000 (UTC)
+	 MIME-Version; b=qMIgFxT0NvjVpS6vL3L2e8KvtdFu7pZKE0budmzmMs2ZB0c2snHqpLumHH6PL5PuZl+ONKNz0dltzQTvcSsKpeTkipEwcqBBrwZEboCk52ya8kgufprbhdc/r28DgpQIjmie2Yr+Nqq511ahVpdJgcC+xu6O5mJCV4JeiKvwnso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEGmbf8w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D0F1F00893;
+	Wed, 20 May 2026 16:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297746;
-	bh=dtjb4JtRlwI6F+LjfrFKyBlSP9G2TZ0c4lM6kIkUAXg=;
+	s=korg; t=1779295343;
+	bh=VHgMQ47FLjAkVdnu/4gvhmpM4HogHS65f0YBpWmLVaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TxTBWHVpnWfuCMoewyJRYcHlUA6Yer+R7vqRnir0AfKyXPGt+v0n8IL8UgZUfrSlq
-	 aeWPR13DP8sQmt3Jb1pP8H6rHMQUVwFDBq0wCBQDQpOBakNGkN3zfJalhZNIKF0vIS
-	 rMdE6wJg68/xQ4LZCcBAHCCFE14RqobUTS650qTg=
+	b=SEGmbf8wvEzKZLctICSmgaYRGjt5jRErXc8tCfUSCVl5fi0aXBI7m2xK7GBh0wXnc
+	 wczAZw4GJjbVX6mpo0g9LkiobB9+CZdSBykddf7UWKn7Q28RR8cxnDIoKWuOF99n8d
+	 xg70EtYjTXSa4MmMJMr6FtVzWXCLXGJGLylSGMWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 148/957] net: airoha: Add airoha_ppe_get_num_stats_entries() and airoha_ppe_get_num_total_stats_entries()
+Subject: [PATCH 7.0 0381/1146] iommu/riscv: Remove overflows on the invalidation path
 Date: Wed, 20 May 2026 18:10:31 +0200
-Message-ID: <20260520162137.764018429@linuxfoundation.org>
+Message-ID: <20260520162156.821287136@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,281 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251349-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250411-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BFC95599A88
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CECB4594460
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 15f357cd4581ce6e02e5e97719320600783140ec ]
+[ Upstream commit 40a13b49957937427bc23e78eb50679df4396a47 ]
 
-Introduce airoha_ppe_get_num_stats_entries and
-airoha_ppe_get_num_total_stats_entries routines in order to make the
-code more readable controlling if CONFIG_NET_AIROHA_FLOW_STATS is
-enabled or disabled.
-Modify airoha_ppe_foe_get_flow_stats_index routine signature relying on
-airoha_ppe_get_num_total_stats_entries().
+Since RISC-V supports a sign extended page table it should support
+a gather->end of ULONG_MAX, but if this happens it will infinite loop
+because of the overflow.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-3-f28319666667@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 02f729643959 ("net: airoha: Fix FE_PSE_BUF_SET configuration if PPE2 is available")
+Also avoid overflow computing the length by moving the +1 to the other
+side of the <
+
+Fixes: 488ffbf18171 ("iommu/riscv: Paging domain support")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.h |  10 +--
- drivers/net/ethernet/airoha/airoha_ppe.c | 101 ++++++++++++++++++-----
- 2 files changed, 81 insertions(+), 30 deletions(-)
+ drivers/iommu/riscv/iommu.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index cd13c1c1224f6..3e43f01e9a652 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -50,15 +50,9 @@
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 6ac7e3edef8aa..3ec99c979d473 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -931,8 +931,6 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
+ 	struct riscv_iommu_bond *bond;
+ 	struct riscv_iommu_device *iommu, *prev;
+ 	struct riscv_iommu_command cmd;
+-	unsigned long len = end - start + 1;
+-	unsigned long iova;
  
- #define PPE_NUM				2
- #define PPE1_SRAM_NUM_ENTRIES		(8 * 1024)
--#define PPE_SRAM_NUM_ENTRIES		(2 * PPE1_SRAM_NUM_ENTRIES)
--#ifdef CONFIG_NET_AIROHA_FLOW_STATS
-+#define PPE_SRAM_NUM_ENTRIES		(PPE_NUM * PPE1_SRAM_NUM_ENTRIES)
- #define PPE1_STATS_NUM_ENTRIES		(4 * 1024)
--#else
--#define PPE1_STATS_NUM_ENTRIES		0
--#endif /* CONFIG_NET_AIROHA_FLOW_STATS */
--#define PPE_STATS_NUM_ENTRIES		(2 * PPE1_STATS_NUM_ENTRIES)
--#define PPE1_SRAM_NUM_DATA_ENTRIES	(PPE1_SRAM_NUM_ENTRIES - PPE1_STATS_NUM_ENTRIES)
--#define PPE_SRAM_NUM_DATA_ENTRIES	(2 * PPE1_SRAM_NUM_DATA_ENTRIES)
-+#define PPE_STATS_NUM_ENTRIES		(PPE_NUM * PPE1_STATS_NUM_ENTRIES)
- #define PPE_DRAM_NUM_ENTRIES		(16 * 1024)
- #define PPE_NUM_ENTRIES			(PPE_SRAM_NUM_ENTRIES + PPE_DRAM_NUM_ENTRIES)
- #define PPE_HASH_MASK			(PPE_NUM_ENTRIES - 1)
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index b3632f964a580..117dfc21d6a81 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -32,6 +32,24 @@ static const struct rhashtable_params airoha_l2_flow_table_params = {
- 	.automatic_shrinking = true,
- };
+ 	/*
+ 	 * For each IOMMU linked with this protection domain (via bonds->dev),
+@@ -975,11 +973,14 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
  
-+static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
-+{
-+	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
-+		return -EOPNOTSUPP;
+ 		riscv_iommu_cmd_inval_vma(&cmd);
+ 		riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
+-		if (len && len < RISCV_IOMMU_IOTLB_INVAL_LIMIT) {
+-			for (iova = start; iova < end; iova += PAGE_SIZE) {
++		if (end - start < RISCV_IOMMU_IOTLB_INVAL_LIMIT - 1) {
++			unsigned long iova = start;
 +
-+	return PPE1_STATS_NUM_ENTRIES;
-+}
-+
-+static int airoha_ppe_get_total_num_stats_entries(struct airoha_ppe *ppe)
-+{
-+	int num_stats = airoha_ppe_get_num_stats_entries(ppe);
-+
-+	if (num_stats > 0)
-+		num_stats = num_stats * PPE_NUM;
-+
-+	return num_stats;
-+}
-+
- static bool airoha_ppe2_is_enabled(struct airoha_eth *eth)
- {
- 	return airoha_fe_rr(eth, REG_PPE_GLO_CFG(1)) & PPE_GLO_CFG_EN_MASK;
-@@ -48,7 +66,7 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
- {
- 	u32 sram_tb_size, sram_num_entries, dram_num_entries;
- 	struct airoha_eth *eth = ppe->eth;
--	int i;
-+	int i, sram_num_stats_entries;
- 
- 	sram_tb_size = PPE_SRAM_NUM_ENTRIES * sizeof(struct airoha_foe_entry);
- 	dram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(PPE_DRAM_NUM_ENTRIES);
-@@ -103,8 +121,13 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
- 	}
- 
- 	if (airoha_ppe2_is_enabled(eth)) {
--		sram_num_entries =
--			PPE_RAM_NUM_ENTRIES_SHIFT(PPE1_SRAM_NUM_DATA_ENTRIES);
-+		sram_num_entries = PPE1_SRAM_NUM_ENTRIES;
-+		sram_num_stats_entries =
-+			airoha_ppe_get_num_stats_entries(ppe);
-+		if (sram_num_stats_entries > 0)
-+			sram_num_entries -= sram_num_stats_entries;
-+		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
-+
- 		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
- 			      PPE_SRAM_TB_NUM_ENTRY_MASK |
- 			      PPE_DRAM_TB_NUM_ENTRY_MASK,
-@@ -120,8 +143,13 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
- 			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
- 					 dram_num_entries));
- 	} else {
--		sram_num_entries =
--			PPE_RAM_NUM_ENTRIES_SHIFT(PPE_SRAM_NUM_DATA_ENTRIES);
-+		sram_num_entries = PPE_SRAM_NUM_ENTRIES;
-+		sram_num_stats_entries =
-+			airoha_ppe_get_total_num_stats_entries(ppe);
-+		if (sram_num_stats_entries > 0)
-+			sram_num_entries -= sram_num_stats_entries;
-+		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
-+
- 		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
- 			      PPE_SRAM_TB_NUM_ENTRY_MASK |
- 			      PPE_DRAM_TB_NUM_ENTRY_MASK,
-@@ -482,13 +510,21 @@ static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
- 	return hash;
- }
- 
--static u32 airoha_ppe_foe_get_flow_stats_index(struct airoha_ppe *ppe, u32 hash)
-+static int airoha_ppe_foe_get_flow_stats_index(struct airoha_ppe *ppe,
-+					       u32 hash, u32 *index)
- {
--	if (!airoha_ppe2_is_enabled(ppe->eth))
--		return hash;
-+	int ppe_num_stats_entries;
-+
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries < 0)
-+		return ppe_num_stats_entries;
- 
--	return hash >= PPE_STATS_NUM_ENTRIES ? hash - PPE1_STATS_NUM_ENTRIES
--					     : hash;
-+	*index = hash;
-+	if (airoha_ppe2_is_enabled(ppe->eth) &&
-+	    hash >= ppe_num_stats_entries)
-+		*index = *index - PPE_STATS_NUM_ENTRIES;
-+
-+	return 0;
- }
- 
- static void airoha_ppe_foe_flow_stat_entry_reset(struct airoha_ppe *ppe,
-@@ -502,9 +538,13 @@ static void airoha_ppe_foe_flow_stat_entry_reset(struct airoha_ppe *ppe,
- static void airoha_ppe_foe_flow_stats_reset(struct airoha_ppe *ppe,
- 					    struct airoha_npu *npu)
- {
--	int i;
-+	int i, ppe_num_stats_entries;
-+
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries < 0)
-+		return;
- 
--	for (i = 0; i < PPE_STATS_NUM_ENTRIES; i++)
-+	for (i = 0; i < ppe_num_stats_entries; i++)
- 		airoha_ppe_foe_flow_stat_entry_reset(ppe, npu, i);
- }
- 
-@@ -515,10 +555,17 @@ static void airoha_ppe_foe_flow_stats_update(struct airoha_ppe *ppe,
- {
- 	int type = FIELD_GET(AIROHA_FOE_IB1_BIND_PACKET_TYPE, hwe->ib1);
- 	u32 index, pse_port, val, *data, *ib2, *meter;
-+	int ppe_num_stats_entries;
- 	u8 nbq;
- 
--	index = airoha_ppe_foe_get_flow_stats_index(ppe, hash);
--	if (index >= PPE_STATS_NUM_ENTRIES)
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries < 0)
-+		return;
-+
-+	if (airoha_ppe_foe_get_flow_stats_index(ppe, hash, &index))
-+		return;
-+
-+	if (index >= ppe_num_stats_entries)
- 		return;
- 
- 	if (type == PPE_PKT_TYPE_BRIDGE) {
-@@ -1160,11 +1207,19 @@ static int airoha_ppe_flow_offload_destroy(struct airoha_eth *eth,
- void airoha_ppe_foe_entry_get_stats(struct airoha_ppe *ppe, u32 hash,
- 				    struct airoha_foe_stats64 *stats)
- {
--	u32 index = airoha_ppe_foe_get_flow_stats_index(ppe, hash);
- 	struct airoha_eth *eth = ppe->eth;
-+	int ppe_num_stats_entries;
- 	struct airoha_npu *npu;
-+	u32 index;
-+
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries < 0)
-+		return;
- 
--	if (index >= PPE_STATS_NUM_ENTRIES)
-+	if (airoha_ppe_foe_get_flow_stats_index(ppe, hash, &index))
-+		return;
-+
-+	if (index >= ppe_num_stats_entries)
- 		return;
- 
- 	rcu_read_lock();
-@@ -1259,7 +1314,7 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
- {
- 	struct airoha_npu *npu = airoha_ppe_npu_get(eth);
- 	struct airoha_ppe *ppe = eth->ppe;
--	int err;
-+	int err, ppe_num_stats_entries;
- 
- 	if (IS_ERR(npu))
- 		return PTR_ERR(npu);
-@@ -1268,9 +1323,10 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
- 	if (err)
- 		goto error_npu_put;
- 
--	if (PPE_STATS_NUM_ENTRIES) {
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries > 0) {
- 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
--					      PPE_STATS_NUM_ENTRIES);
-+					      ppe_num_stats_entries);
- 		if (err)
- 			goto error_npu_put;
- 	}
-@@ -1407,8 +1463,8 @@ EXPORT_SYMBOL_GPL(airoha_ppe_put_dev);
- 
- int airoha_ppe_init(struct airoha_eth *eth)
- {
-+	int foe_size, err, ppe_num_stats_entries;
- 	struct airoha_ppe *ppe;
--	int foe_size, err;
- 
- 	ppe = devm_kzalloc(eth->dev, sizeof(*ppe), GFP_KERNEL);
- 	if (!ppe)
-@@ -1433,8 +1489,9 @@ int airoha_ppe_init(struct airoha_eth *eth)
- 	if (!ppe->foe_flow)
- 		return -ENOMEM;
- 
--	foe_size = PPE_STATS_NUM_ENTRIES * sizeof(*ppe->foe_stats);
--	if (foe_size) {
-+	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
-+	if (ppe_num_stats_entries > 0) {
-+		foe_size = ppe_num_stats_entries * sizeof(*ppe->foe_stats);
- 		ppe->foe_stats = dmam_alloc_coherent(eth->dev, foe_size,
- 						     &ppe->foe_stats_dma,
- 						     GFP_KERNEL);
++			do {
+ 				riscv_iommu_cmd_inval_set_addr(&cmd, iova);
+ 				riscv_iommu_cmd_send(iommu, &cmd);
+-			}
++			} while (!check_add_overflow(iova, PAGE_SIZE, &iova) &&
++				 iova < end);
+ 		} else {
+ 			riscv_iommu_cmd_send(iommu, &cmd);
+ 		}
 -- 
 2.53.0
 
