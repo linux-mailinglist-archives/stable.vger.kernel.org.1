@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCiRKVTyDWrj4wUAu9opvQ
-	(envelope-from <stable+bounces-250854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:40 +0200
+	id 6FIdNDL0DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C4A59450C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7C594ADD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D7D50327A74B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF1553023E22
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF383E9C3D;
-	Wed, 20 May 2026 17:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158293ED3A4;
+	Wed, 20 May 2026 17:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbQi9HeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue656zcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AFB3D75C7;
-	Wed, 20 May 2026 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E86136D9EA;
+	Wed, 20 May 2026 17:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296481; cv=none; b=dW2/FGSP8gU+fizFmbId4MyXCL5l12ulLNJBzui+YReWhfi6WRW6ST+3sOatnyYVN4GjRg4UhvoeFonvr3c+QmCVg6+lMDhqSVejcbtpWXOBNz8e2hPlx8HRa2A777VL1vZNaldTQMcyOef+e47sM8xy+4zu82kX9Uf1yQ4TC7c=
+	t=1779298886; cv=none; b=g3BmmJGPGbENx4JpKoK/b+mh5XrUa06Td/WihnK1PRLiPuIy8IwHjqwShRKTjrKK1qkRwWW3RpZsmgNXfDR6RjQ5s4jMqRC15K5LVVxX8AY1n+jLxSFHDSjwqkUsD0MVNxTmtTKmnDj4O6ExoOVdrIm9lkk/7CczfyGDoG/FOMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296481; c=relaxed/simple;
-	bh=wzsZvaxkTXGjYqQmwbiS2LreeA4caYaGwopMLCeSn1U=;
+	s=arc-20240116; t=1779298886; c=relaxed/simple;
+	bh=0hE2ThKPmysHhnzzSGtaOrXCWtiU0QqJw5LGUrkA4JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QckUAVhGwf7p44qVAISR0nu/5MHFROVGvXQ7Ug48Qa8Hp8Wad3PX2rcrxVWaDPm3EnnpTu/i40FD3KR6lCNSeiH64ZLBEfb5gDqrvEuZpEL1bQUI55r2Tjbsc0ZMFDGUHKNN2vhyVhvES1p0T66Kh+DYL8cBmjJt1vPHjYTkMgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbQi9HeZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9301F000E9;
-	Wed, 20 May 2026 17:01:19 +0000 (UTC)
+	 MIME-Version; b=bbcdveP0oLoSYVH/GUZ8EekmilOWOSwgOjdIOXS8yR6DaErjNdIwlRvveAuCew75ZWvhxTOPcIX0CRBKbeMCZJ45Xipqb7tu4/PT4kde8U8auQhkKpVUMPAOIreTq+s1B72Rv4ySgpQW31Wp9UyHtJzwgQ1WS9GLkwciNUJpNeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue656zcW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CE41F00893;
+	Wed, 20 May 2026 17:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296479;
-	bh=xBCF4SgTTMf5Kl+bOS5j2ZsAmoN+xbcbO93nXLBmZtU=;
+	s=korg; t=1779298885;
+	bh=dNNVo1aIPYOfltmSFV1CZH2rJf/7kGYUxkJQN3ZqAfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UbQi9HeZfGkYQbtYzhg/xltCODXAc7h3AJx2wjpVe2FGp5MYtKgR9XXY45p3qqUhg
-	 dIASsAHWdibuBs3E32YHUSgvUk5Lu/N8ZeNhxafTzJEtZcBYninA55BptsIEr2dVPU
-	 hOwb+Rg3ryQspINNwqSKpIFcO+HSdJS5DBHCXr30=
+	b=ue656zcWl7f+XRBpM/k04QEEcAb91ocu8LxgyE+kKC4UhZbtpOqW68NmpCASG6iy6
+	 HFvuBdKixK700k0dDUrJkYstkVjf4DFGD50wCWl9IlGo17ohDvXjCPwWkDoq1u4mTk
+	 shkU+zBDZhPhiyZHkpem7SLM1E8jZajJUAQGZe4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jianan Huang <huangjianan@xiaomi.com>,
+	Sheng Yong <shengyong1@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0814/1146] netfilter: xtables: restrict several matches to inet family
-Date: Wed, 20 May 2026 18:17:44 +0200
-Message-ID: <20260520162206.647370411@linuxfoundation.org>
+Subject: [PATCH 6.18 582/957] f2fs: avoid reading already updated pages during GC
+Date: Wed, 20 May 2026 18:17:45 +0200
+Message-ID: <20260520162147.152290612@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,240 +68,126 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250854-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251785-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C2C4A59450C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
+X-Rspamd-Queue-Id: 4AD7C594ADD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jianan Huang <huangjianan@xiaomi.com>
 
-[ Upstream commit b6fe26f86a1649f84e057f3f15605b08eda15497 ]
+[ Upstream commit 570e2ccc7cb35fe720106964e65060602d3d2ac4 ]
 
-This is a partial revert of:
+We found the following issue during fuzz testing:
 
-  commit ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+page: refcount:3 mapcount:0 mapping:00000000b6e89c65 index:0x18b2dc pfn:0x161ba9
+memcg:f8ffff800e269c00
+aops:f2fs_meta_aops ino:2
+flags: 0x52880000000080a9(locked|waiters|uptodate|lru|private|zone=1|kasantag=0x4a)
+raw: 52880000000080a9 fffffffec6e17588 fffffffec0ccc088 a7ffff8067063618
+raw: 000000000018b2dc 0000000000000009 00000003ffffffff f8ffff800e269c00
+page dumped because: VM_BUG_ON_FOLIO(folio_test_uptodate(folio))
+page_owner tracks the page as allocated
+ post_alloc_hook+0x58c/0x5ec
+ prep_new_page+0x34/0x284
+ get_page_from_freelist+0x2dcc/0x2e8c
+ __alloc_pages_noprof+0x280/0x76c
+ __folio_alloc_noprof+0x18/0xac
+ __filemap_get_folio+0x6bc/0xdc4
+ pagecache_get_page+0x3c/0x104
+ do_garbage_collect+0x5c78/0x77a4
+ f2fs_gc+0xd74/0x25f0
+ gc_thread_func+0xb28/0x2930
+ kthread+0x464/0x5d8
+ ret_from_fork+0x10/0x20
+------------[ cut here ]------------
+kernel BUG at mm/filemap.c:1563!
+ folio_end_read+0x140/0x168
+ f2fs_finish_read_bio+0x5c4/0xb80
+ f2fs_read_end_io+0x64c/0x708
+ bio_endio+0x85c/0x8c0
+ blk_update_request+0x690/0x127c
+ scsi_end_request+0x9c/0xb8c
+ scsi_io_completion+0xf0/0x250
+ scsi_finish_command+0x430/0x45c
+ scsi_complete+0x178/0x6d4
+ blk_mq_complete_request+0xcc/0x104
+ scsi_done_internal+0x214/0x454
+ scsi_done+0x24/0x34
 
-to allow ipv4 and ipv6 only.
+which is similar to the problem reported by syzbot:
+https://syzkaller.appspot.com/bug?extid=3686758660f980b402dc
 
-- xt_mac
-- xt_owner
-- xt_physdev
+This case is consistent with the description in commit 9bf1a3f
+("f2fs: avoid GC causing encrypted file corrupted"):
+Page 1 is moved from blkaddr A to blkaddr B by move_data_block, and after
+being written it is marked as uptodate. Then, Page 1 is moved from blkaddr
+B to blkaddr C, VM_BUG_ON_FOLIO was triggered in the endio initiated by
+ra_data_block.
 
-These extensions are not used by ebtables in userspace.
+There is no need to read Page 1 again from blkaddr B, since it has already
+been updated. Therefore, avoid initiating I/O in this case.
 
-Moreover, xt_realm is only for ipv4, since dst->tclassid is ipv4
-specific.
-
-Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
-Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6aa58d8ad20a ("f2fs: readahead encrypted block during GC")
+Signed-off-by: Jianan Huang <huangjianan@xiaomi.com>
+Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_mac.c     | 34 +++++++++++++++++++++++-----------
- net/netfilter/xt_owner.c   | 37 +++++++++++++++++++++++++------------
- net/netfilter/xt_physdev.c | 29 +++++++++++++++++++----------
- net/netfilter/xt_realm.c   |  2 +-
- 4 files changed, 68 insertions(+), 34 deletions(-)
+ fs/f2fs/gc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_mac.c b/net/netfilter/xt_mac.c
-index 81649da57ba5d..bd2354760895d 100644
---- a/net/netfilter/xt_mac.c
-+++ b/net/netfilter/xt_mac.c
-@@ -38,25 +38,37 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return ret;
- }
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 5647e76c6bdb0..3d9f326ae840a 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1222,7 +1222,7 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
+ 		.encrypted_page = NULL,
+ 		.in_list = 0,
+ 	};
+-	int err;
++	int err = 0;
  
--static struct xt_match mac_mt_reg __read_mostly = {
--	.name      = "mac",
--	.revision  = 0,
--	.family    = NFPROTO_UNSPEC,
--	.match     = mac_mt,
--	.matchsize = sizeof(struct xt_mac_info),
--	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
--	             (1 << NF_INET_FORWARD),
--	.me        = THIS_MODULE,
-+static struct xt_match mac_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV4,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV6,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
- };
+ 	folio = f2fs_grab_cache_folio(mapping, index, true);
+ 	if (IS_ERR(folio))
+@@ -1275,6 +1275,9 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
  
- static int __init mac_mt_init(void)
- {
--	return xt_register_match(&mac_mt_reg);
-+	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
- }
+ 	fio.encrypted_page = &efolio->page;
  
- static void __exit mac_mt_exit(void)
- {
--	xt_unregister_match(&mac_mt_reg);
-+	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
- }
- 
- module_init(mac_mt_init);
-diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
-index 50332888c8d23..7be2fe22b067e 100644
---- a/net/netfilter/xt_owner.c
-+++ b/net/netfilter/xt_owner.c
-@@ -127,26 +127,39 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return true;
- }
- 
--static struct xt_match owner_mt_reg __read_mostly = {
--	.name       = "owner",
--	.revision   = 1,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = owner_check,
--	.match      = owner_mt,
--	.matchsize  = sizeof(struct xt_owner_match_info),
--	.hooks      = (1 << NF_INET_LOCAL_OUT) |
--	              (1 << NF_INET_POST_ROUTING),
--	.me         = THIS_MODULE,
-+static struct xt_match owner_mt_reg[] __read_mostly = {
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV4,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	},
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV6,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	}
- };
- 
- static int __init owner_mt_init(void)
- {
--	return xt_register_match(&owner_mt_reg);
-+	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- static void __exit owner_mt_exit(void)
- {
--	xt_unregister_match(&owner_mt_reg);
-+	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- module_init(owner_mt_init);
-diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
-index 343e65f377d44..130842c35c6fa 100644
---- a/net/netfilter/xt_physdev.c
-+++ b/net/netfilter/xt_physdev.c
-@@ -115,24 +115,33 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
- 	return 0;
- }
- 
--static struct xt_match physdev_mt_reg __read_mostly = {
--	.name       = "physdev",
--	.revision   = 0,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = physdev_mt_check,
--	.match      = physdev_mt,
--	.matchsize  = sizeof(struct xt_physdev_info),
--	.me         = THIS_MODULE,
-+static struct xt_match physdev_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV4,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV6,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
- };
- 
- static int __init physdev_mt_init(void)
- {
--	return xt_register_match(&physdev_mt_reg);
-+	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- static void __exit physdev_mt_exit(void)
- {
--	xt_unregister_match(&physdev_mt_reg);
-+	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- module_init(physdev_mt_init);
-diff --git a/net/netfilter/xt_realm.c b/net/netfilter/xt_realm.c
-index 6df485f4403d0..61b2f1e58d150 100644
---- a/net/netfilter/xt_realm.c
-+++ b/net/netfilter/xt_realm.c
-@@ -33,7 +33,7 @@ static struct xt_match realm_mt_reg __read_mostly = {
- 	.matchsize	= sizeof(struct xt_realm_info),
- 	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
- 			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
--	.family		= NFPROTO_UNSPEC,
-+	.family		= NFPROTO_IPV4,
- 	.me		= THIS_MODULE
- };
- 
++	if (folio_test_uptodate(efolio))
++		goto put_encrypted_page;
++
+ 	err = f2fs_submit_page_bio(&fio);
+ 	if (err)
+ 		goto put_encrypted_page;
 -- 
 2.53.0
 
