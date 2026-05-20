@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-251791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDSfJwEeDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:01 +0200
+	id 4OeEEnXtDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1607359A1F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5B559365D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 459063502C5B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D9D6B30D99AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE333D7D66;
-	Wed, 20 May 2026 17:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524993A6EE0;
+	Wed, 20 May 2026 17:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5dZAf3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdPckLsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32DE36405A;
-	Wed, 20 May 2026 17:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E093E33A6F2;
+	Wed, 20 May 2026 17:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298899; cv=none; b=fzHYZRwP9rIG1vMKdZCMipiBjt131tkOfWSIPONIaApJp2pxDz3qUXEWxd1XnS+TG70i1gyFusHpsSOn8iQJ2DybWs5t92cw+uj/3/0oSHRNiG9N+FDD6A5WWS8qxVOWQVRHjWK0zVE8W25AVU6+ylTE5BtcFFzpt/5VENstbSw=
+	t=1779296634; cv=none; b=NEifaog9GvscEhBMXp+XBXjB9gxGEdl6VESagC1mo87mzEamTJdqnhEhW5R/rHwBDy4JQdA6ohoDLOvCRwbUyry+KiQCJM9ZG1I8NN+riY2HX5IuN+yxBzd/mm1TjmuJX96kMccHkMwylscDmACMz0ZYQ8lNBHm1m0550OAXXno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298899; c=relaxed/simple;
-	bh=UHg61s3S6YvFPeF2ppPb93jmgiXuXwTtiqrpvj7EuHM=;
+	s=arc-20240116; t=1779296634; c=relaxed/simple;
+	bh=r+DBm+J5sqAOhe/weI30WRQY26hmZndLbtcuLjOKN7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJ4iuvjxxPLHEW7Oug9Owl2Q1Vgu0CDOa32cI2MGALbOly/znylMy/bN4Qkjjqj1DsJ6XqV60G4+Y1W+sYbZln9vIyKdZ16noylchElzIWbl+EmeIOY723mADOINdbUl43Tmi0XGrjFfO2h5n5mgbCbQCYgIrPPipOjyxE797WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5dZAf3w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9EF1F000E9;
-	Wed, 20 May 2026 17:41:38 +0000 (UTC)
+	 MIME-Version; b=OHMIY/e/rW4KTU6htTbAQGGNlCdFPnI1fs+31ZPa2FeGBL20iRgnEyRFHlW40YfQqw+xQKrvgKoYHQZ4ZrqS36Ka++XGxEWgqnoK4k0N7tGKKB5H7pxoEXG+IKNHZJNUeUH1UCdokA49PvohOoJjE8Tk8hUbRlYQtVLHTMD1OiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdPckLsF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D0B1F000E9;
+	Wed, 20 May 2026 17:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298898;
-	bh=zRB8Alxi/pbVwLu4xcbpNqfSHiF6K0RflpJBeOKfXCk=;
+	s=korg; t=1779296632;
+	bh=TkBwuxZcpveCGjf47fj7pJ6B+JzqFklTv0DDe6sk67s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S5dZAf3wE7qLDOUhJCBERFFOyFDXMuBqjXMBSmR03K5LLOwBODLxpND12stWYyqMf
-	 MVYa8id3BenIZFNP3xKY/WzX6BzDeEC0GDKx0sdyiAhixkF08+CSKj5D8IRo11TpPB
-	 U5Psx5QyLDFkvDSHGmUKAeHmha3oATQ1PJR19alg=
+	b=NdPckLsFgT+wvfInxTnGZU3SNF3Z5V0lbN+Ucsq2NKH6FnEvts1ntVYPg2A8iqWPX
+	 ugfpoeF05nWpXq+2Ug5b1V2xzFYPloTWP0jrsTCykEk8zawYA5db6r4wQRyn7mFpjL
+	 04p+/PsMjDH6I4WnEq+u1ZPDj/kBZ/5Nh5IOGWus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 587/957] clk: qcom: gcc-x1e80100: Keep GCC USB QTB clock always ON
-Date: Wed, 20 May 2026 18:17:50 +0200
-Message-ID: <20260520162147.261670967@linuxfoundation.org>
+Subject: [PATCH 7.0 0821/1146] net/sched: sch_dualpi2: drain both C-queue and L-queue in dualpi2_change()
+Date: Wed, 20 May 2026 18:17:51 +0200
+Message-ID: <20260520162206.811573957@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,74 +69,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251791-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nokia-bell-labs.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250913-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1607359A1F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: DD5B559365D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-[ Upstream commit 05566ebcc0cd170bd4f50c907ee3ed8e106251e3 ]
+[ Upstream commit 478ed6b7d2577439c610f91fa8759a4c878a4264 ]
 
-In Hamoa, SMMU invalidation requires the GCC_AGGRE_USB_NOC_AXI_CLK
-to be on for the USB QTB to be functional. This is currently
-explicitly enabled by the DWC3 glue driver, so an invalidation
-happening while the USB controller is suspended will fault.
+Fix dualpi2_change() to correctly enforce updated limit and memlimit
+values after a configuration change of the dualpi2 qdisc.
 
-Solve this by voting for the GCC MMU USB QTB clock.
+Before this patch, dualpi2_change() always attempted to dequeue packets
+via the root qdisc (C-queue) when reducing backlog or memory usage, and
+unconditionally assumed that a valid skb will be returned. When traffic
+classification results in packets being queued in the L-queue while the
+C-queue is empty, this leads to a NULL skb dereference during limit or
+memlimit enforcement.
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260327-hamoa-usb-qtb-clk-always-on-v2-1-7d8a406e650f@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This is fixed by first dequeuing from the C-queue path if it is
+non-empty. Once the C-queue is empty, packets are dequeued directly from
+the L-queue. Return values from qdisc_dequeue_internal() are checked for
+both queues. When dequeuing from the L-queue, the parent qdisc qlen and
+backlog counters are updated explicitly to keep overall qdisc statistics
+consistent.
+
+Fixes: 320d031ad6e4 ("sched: Struct definition and parsing of dualpi2 qdisc")
+Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260413075740.2234828-1-hxzene@gmail.com/
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Link: https://patch.msgid.link/20260417152551.71648-1-chia-yu.chang@nokia-bell-labs.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_dualpi2.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index ef8d2df188d3b..104b1bf6a5010 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -6751,6 +6751,7 @@ static int gcc_x1e80100_probe(struct platform_device *pdev)
- 	qcom_branch_set_clk_en(regmap, 0x32004); /* GCC_VIDEO_AHB_CLK */
- 	qcom_branch_set_clk_en(regmap, 0x32030); /* GCC_VIDEO_XO_CLK */
- 	qcom_branch_set_clk_en(regmap, 0x71004); /* GCC_GPU_CFG_AHB_CLK */
-+	qcom_branch_set_clk_en(regmap, 0x7d01c); /* GCC_HLOS1_VOTE_AGGRE_NOC_MMU_USB_QTB_CLK */
+diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+index 6d7e6389758dc..d200c08ce50a1 100644
+--- a/net/sched/sch_dualpi2.c
++++ b/net/sched/sch_dualpi2.c
+@@ -872,11 +872,35 @@ static int dualpi2_change(struct Qdisc *sch, struct nlattr *opt,
+ 	old_backlog = sch->qstats.backlog;
+ 	while (qdisc_qlen(sch) > sch->limit ||
+ 	       q->memory_used > q->memory_limit) {
+-		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
++		struct sk_buff *skb = NULL;
  
- 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
- 	regmap_write(regmap, 0x52224, 0x0);
+-		q->memory_used -= skb->truesize;
+-		qdisc_qstats_backlog_dec(sch, skb);
+-		rtnl_qdisc_drop(skb, sch);
++		if (qdisc_qlen(sch) > qdisc_qlen(q->l_queue)) {
++			skb = qdisc_dequeue_internal(sch, true);
++			if (unlikely(!skb)) {
++				WARN_ON_ONCE(1);
++				break;
++			}
++			q->memory_used -= skb->truesize;
++			rtnl_qdisc_drop(skb, sch);
++		} else if (qdisc_qlen(q->l_queue)) {
++			skb = qdisc_dequeue_internal(q->l_queue, true);
++			if (unlikely(!skb)) {
++				WARN_ON_ONCE(1);
++				break;
++			}
++			/* L-queue packets are counted in both sch and
++			 * l_queue on enqueue; qdisc_dequeue_internal()
++			 * handled l_queue, so we further account for sch.
++			 */
++			--sch->q.qlen;
++			qdisc_qstats_backlog_dec(sch, skb);
++			q->memory_used -= skb->truesize;
++			rtnl_qdisc_drop(skb, q->l_queue);
++			qdisc_qstats_drop(sch);
++		} else {
++			WARN_ON_ONCE(1);
++			break;
++		}
+ 	}
+ 	qdisc_tree_reduce_backlog(sch, old_qlen - qdisc_qlen(sch),
+ 				  old_backlog - sch->qstats.backlog);
 -- 
 2.53.0
 
