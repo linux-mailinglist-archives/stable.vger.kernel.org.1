@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-253310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFdNMFMHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:15 +0200
+	id f6c3DVkGDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C9D597E42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29E9597C69
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F4A230791EA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A74CE305E050
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86980402BB5;
-	Wed, 20 May 2026 18:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D2C403E8F;
+	Wed, 20 May 2026 18:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmM76Gbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v72ewBO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BC5402BB7;
-	Wed, 20 May 2026 18:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113BF403E8D;
+	Wed, 20 May 2026 18:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302946; cv=none; b=Cr7/dC9ilQEv0PxLXM4QxayfKXJNjNIMO9/6ytqZQy1CeWUYuch2NfX03BsajhkdpJajTxUP8RRLD3fOaBE86wDz6q5wEhuVFmQ4kEe4gQdQx8KNDgpBz+B/SQe4GTve2o7//VqRpSvTpz7l5Xi5LAt1eyS+1odKz/fFW3vx0Jc=
+	t=1779302948; cv=none; b=WcsXHHsKv1+ExULg6zhS9Pt8VhXFrCjavJt+vP/hoxfdD6tXYPSB5tjmhsEktBCruc3aviy7r4vtGAI/cm1zW4xUsEpXzIA27kQmlimZpwD4foMEgDm2oHQUf5SqAI1Hf/oBuinuTTIZcRZTw5W21pR6B6xbA1OuHVAwdpioDso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302946; c=relaxed/simple;
-	bh=Db+A8ACh6AX8SAxDJk41WLoDcJ/9NS9hyj6FyYqF/Tg=;
+	s=arc-20240116; t=1779302948; c=relaxed/simple;
+	bh=FMgADcuitNzM4kuHBRL7SDFYFONRf0HCrxQqvkIkFtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbAjidqW/SsNlB1TDSXXJEiWw3DPprImogHZiqGTEbUr0VtyTEvQVbr1ZpMkbW+yVcKV84rX5jkjIyOjtQGTEDOsJj/P4XAl2GdwqXRs2DHsthfNwq4SvCC0/HSkL1njbz4Wor+bsNcu4gOn6mbCDpnW9pNcy/fVHbAXvLDZh9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmM76Gbc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DE71F00894;
-	Wed, 20 May 2026 18:49:02 +0000 (UTC)
+	 MIME-Version; b=cIjAhf3C3FCwLKOuXn7cXhoawxtDI4EyOunikauHjk/YaOwRiVA/tp4u9Z88MDnSLCwBPrv1yYTXG3uonOwE9a+rxbr+yNvmzG4P+hRXQ7AFnTXQcdj9fv6WYwDFeQfPcT+nPoQk8CoiIfd3gHCkucCapwzutL2+yWRSLhS3GV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v72ewBO9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF6F1F000E9;
+	Wed, 20 May 2026 18:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302943;
-	bh=LnHKuQTE9++MkEGUYywXcjBTC5SRZb52oREJlqN3rYk=;
+	s=korg; t=1779302945;
+	bh=D6Bq0yXvSVWB+spxQHI3BpzEbEAYEr/BaBvdtD3f91o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hmM76Gbcb2n4rxpUWmatLFyPqPEdf0YxZsBxcYzoCjF45FTFkfMYsjgXWbKy3wPvH
-	 Un9lp4Pu2YlAZZbhP8IKvs/vPsLRYngSl+IJ3mpiELdfUOHY03SbhziCPipu3t5UNg
-	 yP1CtmIwNvZBvmqJn+cSf/Ca+J0DJH5okctoFp/c=
+	b=v72ewBO9dEhYSNC57QXVJd0QiFEeWhollM/alfDz9GsdA0bkXhlCyg6xncLm+RfqY
+	 sOiru3TY19hWt83orCfqCjxMyd5g7PgXo/Mu9cTv6Jfnm9O/D4kxAnZrsjulb/OEmm
+	 IEdw37n2xaG5brAmBccQnVz+7ARruW7UcqlWpbFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Sacks <contact@xchglabs.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 459/508] KVM: Reject wrapped offset in kvm_reset_dirty_gfn()
-Date: Wed, 20 May 2026 18:24:42 +0200
-Message-ID: <20260520162108.539703773@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: [PATCH 6.6 460/508] KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
+Date: Wed, 20 May 2026 18:24:43 +0200
+Message-ID: <20260520162108.565213784@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -65,33 +67,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253310-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-253311-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xchglabs.com:email]
-X-Rspamd-Queue-Id: 45C9D597E42
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A29E9597C69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,76 +102,71 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Aaron Sacks <contact@xchglabs.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 577a8d3bae0531f0e5ccfac919cd8192f920a804 upstream.
+commit 16d990a15491cf76cd6eef0846e1b4100e63261a upstream.
 
-kvm_reset_dirty_gfn() guards the gfn range with
+kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+aen_host_forward() index the GAIT by manually multiplying the index
+with sizeof(struct zpci_gaite).
 
-	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
-		return;
+Since aift->gait is already a struct zpci_gaite pointer, this
+double-scales the offset, accessing element aisb*16 instead of aisb.
 
-but offset is u64 and the addition is unchecked.  The check can be
-silently bypassed by a u64 wrap.
+This causes out-of-bounds accesses when aisb >= 32 (with
+ZPCI_NR_DEVICES=512)
 
-The dirty ring backing those entries is MAP_SHARED at
-KVM_DIRTY_LOG_PAGE_OFFSET of the vcpu fd, so the VMM can rewrite the
-slot and offset fields of any entry between when the kernel pushes
-them and when KVM_RESET_DIRTY_RINGS consumes them.  On reset,
-kvm_dirty_ring_reset() re-reads the values via READ_ONCE() and feeds
-them straight back into this check; only the flags handshake is
-treated as the handover, the slot/offset payload is taken on trust.
+Fix by removing the erroneous sizeof multiplication.
 
-Crafting two entries
-
-	entry[i].offset   = 0xffffffffffffffc1
-	entry[i+1].offset = 0
-
-makes the coalescing loop in kvm_dirty_ring_reset() compute
-
-	delta = (s64)(0 - 0xffffffffffffffc1) = 63
-
-which falls in [0, BITS_PER_LONG), so it folds entry[i+1] into the
-existing mask by setting bit 63.  The trailing kvm_reset_dirty_gfn()
-call then sees offset = 0xffffffffffffffc1 and __fls(mask) = 63;
-the sum is 0 in u64 and the bounds check passes.
-
-That offset propagates into kvm_arch_mmu_enable_log_dirty_pt_masked()
-unchanged.  On the legacy MMU path -- kvm_memslots_have_rmaps() ==
-true, i.e. shadow paging, any VM that has allocated shadow roots, or
-a write-tracked slot -- it reaches gfn_to_rmap(), which indexes
-slot->arch.rmap[0][] with a near-U64_MAX gfn.  That is an
-out-of-bounds load of a kvm_rmap_head, followed by a conditional
-clear of PT_WRITABLE_MASK in whatever the loaded pointer points at.
-The path is reachable from any process holding /dev/kvm.
-
-Range-check offset on its own first, so the addition cannot wrap.
-memslot->npages is bounded well below U64_MAX, so once offset <
-npages holds, offset + __fls(mask) (with __fls(mask) < BITS_PER_LONG)
-stays in range.
-
-Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Sacks <contact@xchglabs.com>
-Link: https://patch.msgid.link/20260512060742.1628959-1-contact@xchglabs.com/
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/dirty_ring.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/kvm/interrupt.c |    3 +--
+ arch/s390/kvm/pci.c       |    6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/virt/kvm/dirty_ring.c
-+++ b/virt/kvm/dirty_ring.c
-@@ -63,7 +63,8 @@ static void kvm_reset_dirty_gfn(struct k
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3329,8 +3329,7 @@ static void aen_host_forward(unsigned lo
+ 	struct zpci_gaite *gaite;
+ 	struct kvm *kvm;
  
- 	memslot = id_to_memslot(__kvm_memslots(kvm, as_id), id);
- 
--	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
-+	if (!memslot || offset >= memslot->npages ||
-+	    offset + __fls(mask) >= memslot->npages)
+-	gaite = (struct zpci_gaite *)aift->gait +
+-		(si * sizeof(struct zpci_gaite));
++	gaite = aift->gait + si;
+ 	if (gaite->count == 0)
  		return;
+ 	if (gaite->aisb != 0)
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -292,8 +292,7 @@ static int kvm_s390_pci_aif_enable(struc
+ 				    phys_to_virt(fib->fmt0.aibv));
  
- 	KVM_MMU_LOCK(kvm);
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 
+ 	/* If assist not requested, host will get all alerts */
+ 	if (assist)
+@@ -359,8 +358,7 @@ static int kvm_s390_pci_aif_disable(stru
+ 	if (zdev->kzdev->fib.fmt0.aibv == 0)
+ 		goto out;
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 	isc = gaite->gisc;
+ 	gaite->count--;
+ 	if (gaite->count == 0) {
 
 
 
