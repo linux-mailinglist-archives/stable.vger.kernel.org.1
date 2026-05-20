@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EbZFdLqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:38 +0200
+	id QHjsLe3xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED54E59301A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:09:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24559594396
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A1E130A011F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83EF63058980
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93DF374178;
-	Wed, 20 May 2026 16:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB736A376;
+	Wed, 20 May 2026 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKnoAf7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GosX7l4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72A036B059;
-	Wed, 20 May 2026 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44C43D75C7;
+	Wed, 20 May 2026 17:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295822; cv=none; b=SR5tSXlkiF86vWHg3vKiuJKHqJ79wquTcdifPnRKAN7ZKINTY2WlEZp2xAHmkiX8FLIxLtVwobnQNRTpSb5m+I2wYPG7yXsPSWOWtU3UCsJ6hcq54RjdFG9haCVGZRWRLnGls6VWP988U2muXQ4Fw0sOxjWqioxowgKimJJXRPY=
+	t=1779298126; cv=none; b=Ilh2LUeC+vWKv14iKTlr2N5HqbVN8aCk0OYsqCFUhPeB8FFM++VZAAilKPb5/J8MNfQU7qxX41qOxVvIbLurmeERCZlSqAxT5Dbdq7jZpfe6dPo7iUSA9XIB1xdRv8TwRoq45VLhGfaeoWfCrPXatflIjdeMx/IDE4DsMaevthU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295822; c=relaxed/simple;
-	bh=CxWg0lj7NBcjdRjIm1tTU7zVqiYf3pR+lYsF35TifvM=;
+	s=arc-20240116; t=1779298126; c=relaxed/simple;
+	bh=18Aly05Ar5HRrP6hRNrbNFf8tsWfm3NZ33nKA4mvYqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltQYTd8tBYQ6PWZw6XQ0FGJ5Alkg9oG7cR98lUzQ+SxOE2PnA2+ULYtj0jVZazQCjwtrrj9UMkRRffIQY57dp+779x0+qYVWg/n1Yj4nfhp/tFOOOTktjCTd428jGwoYSGfopt6MhacWApMqkdIiF/slNq2SnVUkDUfIH0eOqj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKnoAf7a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1958E1F000E9;
-	Wed, 20 May 2026 16:50:20 +0000 (UTC)
+	 MIME-Version; b=jwtLcykvnRuC1ZLtQo3rP7TIYTESEZYRttJpXcaQexPm7ABwsV2CRmvOW/hJC5VcbWgpzkfL2i7KlgD08pA3VjRLovIC6j0LB1ihHHgYZfnK04BKaee5BTd/iP0fEA+niqy7ilPVSzgMUOmtqSxGR+x4YyGyx3VrUJ11SFLetpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GosX7l4f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF171F000E9;
+	Wed, 20 May 2026 17:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295821;
-	bh=Fi+B3ljpbstvwNCiQS6tCRvbZXKV4FegnmF3/Q8X+lM=;
+	s=korg; t=1779298125;
+	bh=VPqZhgBWuMTcO/5VdeXk3977iNCRarEcaJgdUqbFotU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sKnoAf7aOxM5EbXtrBT0dO6mqiOC5tlZzLLnCqZQQAe316ERmsUyukKAjFGsKmmJC
-	 IML25oszFAISYzjqVvy0sP79lM7fF+SbsstM9jqqGOh6UN3fEe4TNqtSbp2nyoPeeM
-	 VJY3by/JaY4RkjZyug17e0c+B+RxmIvDuYeWNyvU=
+	b=GosX7l4fWD4A4cW5zxPYv+tvMPRWYFCaGKPDBv7urEr4Y4zOjjiIE5ecXPRPtRPZq
+	 TtCXfLhBohANG5VxJsp5mREuTld02+HFEYoFgXpkQlUX2JvIkkThjctOwJFXq7t9C8
+	 3s88fkt0QJMz1NchDupDQdPRs6byhzgifn9jih+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0524/1146] arm64: dts: qcom: sm8650: Fix xo clock supply of SD host controller
+Subject: [PATCH 6.18 291/957] ASoC: fsl_easrc: Check the variable range in fsl_easrc_iec958_put_bits()
 Date: Wed, 20 May 2026 18:12:54 +0200
-Message-ID: <20260520162200.040970797@linuxfoundation.org>
+Message-ID: <20260520162140.847491172@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250595-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251494-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,0.134.86.160:email]
-X-Rspamd-Queue-Id: ED54E59301A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 24559594396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 390903efaa057c44fd80e7d9839419c50092018e ]
+[ Upstream commit 00541b86fb578d4949cfdd6aff1f82d43fcf07af ]
 
-The expected frequency of SD host controller core supply clock is 19.2MHz,
-while RPMH_CXO_CLK clock frequency on SM8650 platform is 38.4MHz.
+Add check of input value's range in fsl_easrc_iec958_put_bits(),
+otherwise the wrong value may be written from user space.
 
-Apparently the overclocked supply clock could be good enough on some
-boards and even with the most of SD cards, however some low-end UHS-I
-SD cards in SDR104 mode of the host controller produce I/O errors in
-runtime, fortunately this problem is gone, if the "xo" clock frequency
-matches the expected 19.2MHz clock rate.
-
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-3-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-10-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/fsl/fsl_easrc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index 070e8f706c239..75de839f7a2df 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -4957,7 +4957,7 @@ sdhc_2: mmc@8804000 {
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 8e52e43a8ba85..8647df027c3fd 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -54,6 +54,9 @@ static int fsl_easrc_iec958_put_bits(struct snd_kcontrol *kcontrol,
+ 	unsigned int regval = ucontrol->value.integer.value[0];
+ 	int ret;
  
- 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
- 				 <&gcc GCC_SDCC2_APPS_CLK>,
--				 <&rpmhcc RPMH_CXO_CLK>;
-+				 <&bi_tcxo_div2>;
- 			clock-names = "iface",
- 				      "core",
- 				      "xo";
++	if (regval < EASRC_WIDTH_16_BIT || regval > EASRC_WIDTH_24_BIT)
++		return -EINVAL;
++
+ 	ret = (easrc_priv->bps_iec958[mc->regbase] != regval);
+ 
+ 	easrc_priv->bps_iec958[mc->regbase] = regval;
 -- 
 2.53.0
 
