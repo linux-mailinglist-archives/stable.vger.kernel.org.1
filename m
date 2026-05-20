@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEbiN+vyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:11 +0200
+	id OEe1FtoPDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD785946F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0F2598BCB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 05F42315E757
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74E9C37525E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20A35AC18;
-	Wed, 20 May 2026 17:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159DE369224;
+	Wed, 20 May 2026 16:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r17M9rO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/XsTZF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC573A3E9C;
-	Wed, 20 May 2026 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F82F3F7884;
+	Wed, 20 May 2026 16:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297523; cv=none; b=rcUzPdxoSFvAhuRja+lc7pp4KYcZhgtKhFk5OZPHempG/90COf0DgnoKUlJzjpfOEP0zZJSJ/Pqjt6cBUuVsrjz5hvNFtYyK86HtOOQSZ/zOttQwWjP2FjZI6Z5OlIZwtLh8/sbA+wYMJ7Xsh12NJRKjkar9/AfIbe+xsldh5O8=
+	t=1779295250; cv=none; b=R8jZM+re+W28T3MpaRxsK+p2K4hqgsIvqygbiFagzSqaOgVylFf99MVkGKAXcBKY0vP5c/o6fT/JS/rO4MfSjhXv6BMIrBXGVfdCi0mWh/YKkELU7GP8XsxlMCPb2qO6x694GWZfIfcodtIILS2h2BSaYoUPGu4ofXm7ne+4rNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297523; c=relaxed/simple;
-	bh=i94UWcJ1zPYTkxIKhEE/pKw2KIRPFJoruMbF9TIQn1w=;
+	s=arc-20240116; t=1779295250; c=relaxed/simple;
+	bh=UhjtGArI0vnLgqKMDzmpV0cum73ynWraGi5ndqEVqHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkOMfiv5mfwtRKILOw2QkWGbOVzk3pcdv04XPejRRRVe3UOgTESxAdyLFMCHKlFhJa7B2trCNOo/wS9XGHA+kJaBrx14gpTg4V789f18zshGi9lPmLhZfeerHsMau6KvkCKu7vlNPGVHLSkl70TPPFfBRbi3hEV92dDtTRqBLKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r17M9rO9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502B11F000E9;
-	Wed, 20 May 2026 17:18:41 +0000 (UTC)
+	 MIME-Version; b=Kd6+jrF3jpeDcatr/XO9a5GiBj4pMVRr4nh1N/Kyrz8d8zKHyJlPG/2IjVH5NifVVJVy7iiBhk6eoMq/MFlPtuAA5Y2YOKWlfpReu9Phv0xqqIuRbeOatKw9xhbOEJePb5+0c0n4RV0FYCKAZBjQZrZ/e9PZaQiE8BW7Z5k8eCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/XsTZF8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A458D1F00893;
+	Wed, 20 May 2026 16:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297521;
-	bh=sdqLt8oEU3TAxDruzuUSj2WYsE4AI0wyNVc/AQnanZk=;
+	s=korg; t=1779295248;
+	bh=o16cjMQgYyuZiREbMJTmDhpaYdH1q5XmaBtSFabe4Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r17M9rO9vpb9930mhJjvjYHZf2iMy7Mp9nyq+cYAPK2DUFUJJHfVctSd9MkdPA7c3
-	 lhZkHGKt7DAjM5gumDGWFueU2G5hDqFLc5knKSXuo9UGTCJJTGCL115Jx1wIuNHhmk
-	 vVC9DUGVkFV9cfFm0/DSDzUoYa0Oc7IF5ZF2yKtw=
+	b=u/XsTZF8ytdYFVcETF0AOf7+xT47/e8hnUOSl6vgkEYLv1yYIZ/xbcQjqjapHkSBc
+	 FNweDBukSLs14bz1i5EcHIOMLoAnzxMGS5AxfxhCX37zy7Qpc14+Pm1unXE76Ws9fz
+	 HQ6Smjb2y4FXArOAP0JU1s2+3TA3fKlI85tpW+Fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Cai Xinchen <caixinchen1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Robby Cai <robby.cai@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/957] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
-Date: Wed, 20 May 2026 18:09:06 +0200
-Message-ID: <20260520162135.930073153@linuxfoundation.org>
+Subject: [PATCH 7.0 0297/1146] regulator: fp9931: Fix handling of mandatory "vin" supply
+Date: Wed, 20 May 2026 18:09:07 +0200
+Message-ID: <20260520162154.933815696@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250375-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251261-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: AAD785946F5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: BA0F2598BCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cai Xinchen <caixinchen1@huawei.com>
+From: Robby Cai <robby.cai@nxp.com>
 
-[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
+[ Upstream commit 58068932402c7f5bf26489e01ae8e8bb89802d1e ]
 
-Since the commit 84cba72956fd ("dpaa2-switch: integrate
-the MAC endpoint support") included dpaa2-mac.o in the driver,
-but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
-will lead to link error, such as
-undefined reference to `phylink_ethtool_ksettings_set'
-undefined reference to `lynx_pcs_create_fwnode'
+The FP9931 requires a mandatory "vin" power supply to operate.
+Replace devm_regulator_get_optional() with devm_regulator_get() to
+enforce this mandatory dependency.
 
-And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
-XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
-option in order to have MDIO access to internal and external PHYs.
-
-Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
-&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
-
-FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
-FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
-
-Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
-Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
-Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 12d821bd13d42 ("regulator: Add FP9931/JD9930 driver")
+Signed-off-by: Robby Cai <robby.cai@nxp.com>
+Link: https://patch.msgid.link/20260313133102.2749890-3-robby.cai@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/regulator/fp9931.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-index d029b69c3f183..36280e5d99e1f 100644
---- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
-+++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
-@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
- 	tristate "Freescale DPAA2 Ethernet Switch"
- 	depends on BRIDGE || BRIDGE=n
- 	depends on NET_SWITCHDEV
-+	depends on FSL_MC_BUS && FSL_MC_DPIO
-+	select PHYLINK
-+	select PCS_LYNX
-+	select FSL_XGMAC_MDIO
- 	help
- 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
- 	  switch objects discovered on the Freeescale MC bus.
+diff --git a/drivers/regulator/fp9931.c b/drivers/regulator/fp9931.c
+index abea3b69d8a08..002b41f53eff8 100644
+--- a/drivers/regulator/fp9931.c
++++ b/drivers/regulator/fp9931.c
+@@ -446,7 +446,7 @@ static int fp9931_probe(struct i2c_client *client)
+ 		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
+ 				     "failed to allocate regmap!\n");
+ 
+-	data->vin_reg = devm_regulator_get_optional(&client->dev, "vin");
++	data->vin_reg = devm_regulator_get(&client->dev, "vin");
+ 	if (IS_ERR(data->vin_reg))
+ 		return dev_err_probe(&client->dev, PTR_ERR(data->vin_reg),
+ 				     "failed to get vin regulator\n");
 -- 
 2.53.0
 
