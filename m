@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCUzJe/7DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:39 +0200
+	id iB0PGXPrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549BA595ED1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279E759311D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7307B3140A72
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD2B53068ADA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A043FC5DC;
-	Wed, 20 May 2026 18:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C22F0C62;
+	Wed, 20 May 2026 16:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQ3S5q7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNESgLlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C63F9267;
-	Wed, 20 May 2026 18:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6702701C4;
+	Wed, 20 May 2026 16:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300297; cv=none; b=cZbQULMNIPl2azfv/yzB47vriQrpGas3PLvyka0lAHAHoh0ysjcvYlZPtkJN0xgAvdESfgc52AqB/WbDaMqCuNsTBIH3909NCUFbYLjb/uEMZc9YTN/iBOs3RC4uA70sqVjUH6d2yHE7RmHPovTzfpfSa93loYkTCGM48TGqoAM=
+	t=1779296024; cv=none; b=F8eUIn9HuT75nLyE8b4jP9C3LYg1v44jJizyR3BkULddcYgxAnXOGqI8FWW2YhmYPhWMF/695J7ZLzx3bq5x091i2MOYlKbNg+5/feZlZawW41JnmYt2rjtHQK683ijqnKof9gPTp4Gl4p2X+OAx1sf99rQUj5wH/iDZg/ezz0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300297; c=relaxed/simple;
-	bh=5bBb5gzAni5mw3KY3e9lUfXbZWagC6Pl3ItyygPu/w0=;
+	s=arc-20240116; t=1779296024; c=relaxed/simple;
+	bh=4MccKmamZYvlABKVFj6YCe5MAn6H45bQzxi1IhUHbUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkIkdIy6y0LLL7OvMs8bHGFo+ENixEZQ38O2WSXpKhv5ngsHcUxuqCLHUrbYx6MaXkPEP/ZGjRFBVjmmV7VHzLcTYWg2d3wiZxuR0+EDfVCS+c092WO1Qrx6Z1WSpWFSsLBwNdIe8FMTHuZPfUPHCIiL3wm7jJ8/uouc9GZBowo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQ3S5q7k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443EF1F000E9;
-	Wed, 20 May 2026 18:04:55 +0000 (UTC)
+	 MIME-Version; b=n/h2mX148Qxrpmc27Y6m6f7P5nIAjiu9auDQ4p+xtWwy903xXwNoOsAe0mOaU0VEHBPvs5Z1Lv4WkgkZk07EeILK/alPsO5Ld7FiKiM4wlJiMsSsnJo7Cdx8BvKGO6bmq95o69khgN7hEw20cCRJ2XHkXMM+xYiUKew2deZpe7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNESgLlE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155EB1F000E9;
+	Wed, 20 May 2026 16:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300295;
-	bh=GncQEhOPI7jE3cPY0nj+DOqKWiDYbxMzmvyttg0MZuE=;
+	s=korg; t=1779296023;
+	bh=VJfXwYoPU1S6nwYcQLauak7mJaCrC7EYG5rR51ePVto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vQ3S5q7kdzAZC4XwrXsYubfZTzlXdFEG/Zk03xNKzkfDyJe7v7CMvkUQKQfNpvk+w
-	 IG/cp8gzJcHm8Z8eCdhX5zHbt4KSVDZrnI9BqH3+yZElljW3dyRGCnIJRp1PWlqTUF
-	 rJJsmqFJpKxT9X4O8IPNXgXmHH2GZmqECpXMOnD0=
+	b=KNESgLlELh8h7R1KNi/K1dtHzofV6DfxhU16PdaOInJ+TLagJnX11PQwHStmqZfuQ
+	 MgVNbf/2bny7/CrjkK4WXTEbMHa9QYzRwUMA6MR/CoiR/x0mVv9Ry/Z8n/YTMdTyIt
+	 7S+JtVhx6EXjPm5OL8xaPkVHWLqKEdEYScWDQurk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohsin Bashir <hmohsin@meta.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Yaroshevskiy <dyaroshev@meta.com>,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	Ian Rogers <irogers@google.com>,
+	Breno Leitao <leitao@debian.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/666] eth: fbnic: Use wake instead of start
-Date: Wed, 20 May 2026 18:14:50 +0200
-Message-ID: <20260520162112.944473939@linuxfoundation.org>
+Subject: [PATCH 7.0 0641/1146] perf stat: Fix crash on arm64
+Date: Wed, 20 May 2026 18:14:51 +0200
+Message-ID: <20260520162202.686130484@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,68 +76,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250676-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252293-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 549BA595ED1
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,meta.com:email,ilvokhin.com:email]
+X-Rspamd-Queue-Id: 279E759311D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohsin Bashir <hmohsin@meta.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 12ff2a4aee6c86746623d5aed24389dbf6dffded ]
+[ Upstream commit b5708a308a5602d4a3caf0720dce452082d443ec ]
 
-fbnic_up() calls netif_tx_start_all_queues(), which only clears
-__QUEUE_STATE_DRV_XOFF.  If qdisc backlog has accumulated on any TX
-queue before the reconfiguration (e.g. ring resize via ethtool -G),
-start does not call __netif_schedule() to kick the qdisc, so the
-pending backlog is never drained and the queue stalls.
+Perf stat is crashing on arm64 hosts with the following issue:
 
-Switch to netif_tx_wake_all_queues(), which clears DRV_XOFF and also
-calls __netif_schedule() on every queue, ensuring any backlog that
-built up before the down/up cycle is promptly dequeued.
+  # make -C tools/perf DEBUG=1
+  # perf stat sleep 1
+  perf: util/evsel.c:2034: get_group_fd: Assertion `!(!leader->core.fd)' failed.
+  [1]    1220794 IOT instruction (core dumped)  ./perf stat
 
-Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
-Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
-Link: https://patch.msgid.link/20260408002415.2963915-1-mohsin.bashr@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The sorting function introduced by commit a745c0831c15c ("perf stat:
+Sort default events/metrics") compares events based on their individual
+properties. This can cause events from different groups to be
+interleaved, resulting in group members appearing before their leaders
+in the sorted evlist.
+
+When the iterator opens events in list order, a group member may be
+processed before its leader has been opened.
+
+For example, CPU_CYCLES (idx=32) with leader STALL_SLOT_BACKEND (idx=37)
+could be sorted before its leader, causing the crash when CPU_CYCLES
+tries to get its group fd from the not-yet-opened leader.
+
+Fix this by comparing events based on their leader's attributes instead
+of their own attributes when the events are in different groups. This
+ensures all members of a group share the same sort key as their leader,
+keeping groups together and guaranteeing leaders are opened before their
+members.
+
+Fixes: a745c0831c15c ("perf stat: Sort default events/metrics")
+Reported-by: Denis Yaroshevskiy <dyaroshev@meta.com>
+Tested-by: Dmitry Ilvokhin <d@ilvokhin.com>
+Tested-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-stat.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-index 72bdc6c76c0c5..53bb1d691cc0c 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-@@ -137,7 +137,7 @@ void fbnic_up(struct fbnic_net *fbn)
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 2eb76d7476b7f..6a12c1068d8a0 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -1917,25 +1917,33 @@ static int default_evlist_evsel_cmp(void *priv __maybe_unused,
+ 	const struct evsel *lhs = container_of(lhs_core, struct evsel, core);
+ 	const struct perf_evsel *rhs_core = container_of(r, struct perf_evsel, node);
+ 	const struct evsel *rhs = container_of(rhs_core, struct evsel, core);
++	const struct evsel *lhs_leader = evsel__leader(lhs);
++	const struct evsel *rhs_leader = evsel__leader(rhs);
  
- 	/* Enable Tx/Rx processing */
- 	fbnic_napi_enable(fbn);
--	netif_tx_start_all_queues(fbn->netdev);
-+	netif_tx_wake_all_queues(fbn->netdev);
+-	if (evsel__leader(lhs) == evsel__leader(rhs)) {
++	if (lhs_leader == rhs_leader) {
+ 		/* Within the same group, respect the original order. */
+ 		return lhs_core->idx - rhs_core->idx;
+ 	}
  
- 	fbnic_service_task_start(fbn);
++	/*
++	 * Compare using leader's attributes so that all members of a group
++	 * stay together. This ensures leaders are opened before their members.
++	 */
++
+ 	/* Sort default metrics evsels first, and default show events before those. */
+-	if (lhs->default_metricgroup != rhs->default_metricgroup)
+-		return lhs->default_metricgroup ? -1 : 1;
++	if (lhs_leader->default_metricgroup != rhs_leader->default_metricgroup)
++		return lhs_leader->default_metricgroup ? -1 : 1;
+ 
+-	if (lhs->default_show_events != rhs->default_show_events)
+-		return lhs->default_show_events ? -1 : 1;
++	if (lhs_leader->default_show_events != rhs_leader->default_show_events)
++		return lhs_leader->default_show_events ? -1 : 1;
+ 
+ 	/* Sort by PMU type (prefers legacy types first). */
+-	if (lhs->pmu != rhs->pmu)
+-		return lhs->pmu->type - rhs->pmu->type;
++	if (lhs_leader->pmu != rhs_leader->pmu)
++		return lhs_leader->pmu->type - rhs_leader->pmu->type;
+ 
+-	/* Sort by name. */
+-	return strcmp(evsel__name((struct evsel *)lhs), evsel__name((struct evsel *)rhs));
++	/* Sort by leader's name. */
++	return strcmp(evsel__name((struct evsel *)lhs_leader),
++		      evsel__name((struct evsel *)rhs_leader));
  }
+ 
+ /*
 -- 
 2.53.0
 
