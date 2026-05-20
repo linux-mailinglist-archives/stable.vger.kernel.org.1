@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCUqBF0YDmp96AUAu9opvQ
-	(envelope-from <stable+bounces-251230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:57 +0200
+	id 0C4MMePlDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A5259987B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEB25927B9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D945B32C42B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C17C430E08A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FB7372B58;
-	Wed, 20 May 2026 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1E93A783F;
+	Wed, 20 May 2026 16:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlU5jdA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUpTdymb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B80E33D4E9;
-	Wed, 20 May 2026 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8580366542;
+	Wed, 20 May 2026 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297440; cv=none; b=FydMkGxnAemWhfbbnEDSjfVdzTl+Rd3t4CwtcBru3W4xfiAW9FmajotclLklm1vriRCrz0eNpTXg3OxoD+r1XFXrWn6I4BBP6SjdM3ghMB9pqP+TH0cO2cdC159Ji8mKERHM5vO42ifZx3mJhwOlw6eLakhKbMsY9nBM3dF0lDk=
+	t=1779295029; cv=none; b=ejWSeYprYybR0snurqOXHiqdS2zH7zFXdTV2jroI8c2LuIQa6+Bsw5MoYT7vpfRtO1mR/voG1DExAETDTgFQ/pmNtu9ESstUgJd/ehQgKRZw3vym5qbgxQvzadUgy/mLiiCLXhkME+pQRvxY6Snu9fCTzRxKSboFszCT96DpK3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297440; c=relaxed/simple;
-	bh=dFKZDYioTUdcMqumyxhhrQd/VwVRsyBZO9Hqsa/3I4k=;
+	s=arc-20240116; t=1779295029; c=relaxed/simple;
+	bh=alWhcQGWm8mkbY+Tq1rPlC05AUDPYhD+IO0THG0C/u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n6n9nQ+oDYm+b1i6Es6bEFhE3Vdc+l6L4p/LOwvQ0HxSEE1fHX5uXwMKVtfzIiiDpAXGWUR/WstmbsxC/89dMMbYc6aGZvj56MILfQu7CJFt33GmfeliwF8rkqIViDMeUy4CT/Iyq4s5EOktW8kZDWJf3X3qTtDHtFqLAt2GmEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlU5jdA+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689011F00893;
-	Wed, 20 May 2026 17:17:18 +0000 (UTC)
+	 MIME-Version; b=c8cCOg08pG27y7z7bkBz4/DRxPS9ea5AGynQWNI+oqa+Qc1944e6AC7hxvhPfvcYm2w8TJeTjZt3fs4gieykN1woeBKmlzKVpwHwiDF23AhRqrb249T7sAU45HyVbH7vflntOUq3G3VfkGKFr1xEenUJXzDUUrDCexbDLWCADho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUpTdymb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C75A1F000E9;
+	Wed, 20 May 2026 16:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297438;
-	bh=Tcg2dkYHEM/xLoqYeVSLNY4T8Nb+aQQzwNW6+L4/jwo=;
+	s=korg; t=1779295026;
+	bh=z5ScwjJrMtFM5mcshSn256OEcFI/Dw4vsWtu8RgJMzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UlU5jdA+P5O2f8DnUG/1BZ9YKAB7a3gubGmE37eE0YU+8D+m0eBZXhe3g3Ny6mxBM
-	 X5rCnYFQFVm69UYJF6Swh23w4NM2t2N9zWGSxcl8PpmshmYIjZ45rm7gD2My3T0a/k
-	 3FXfQX+zsv7wT7nxBCIA4UKNQ6HaWxjgKbNbtARY=
+	b=KUpTdymbqEJIdVmLv2hhA3vXWP3iCMqukFJO82+1KHo2820qDMS+f+qbeJxxOuoBu
+	 0zjlgP2Pa9feeDr6XuVxMOHFSpoe4V3PgWAMiuL/HIXOgT2cvU4mh+TkSSnjOQn56r
+	 nGSoJNdNd1N4vVWp1iPCkfI+J7T1uJuwksluc1jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 031/957] platform/wmi: use generic driver_override infrastructure
+Subject: [PATCH 7.0 0264/1146] gpu: nova-core: firmware: fix and explain v2 header offsets computations
 Date: Wed, 20 May 2026 18:08:34 +0200
-Message-ID: <20260520162135.234488860@linuxfoundation.org>
+Message-ID: <20260520162154.200862516@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251230-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de,linux.intel.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250291-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,gmx.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 66A5259987B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5EEB25927B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Alexandre Courbot <acourbot@nvidia.com>
 
-[ Upstream commit 8a700b1fc94df4d847a04f14ebc7f8532592b367 ]
+[ Upstream commit 17d7c97f73c7a0bd90bd22cd7441269a6f8a1d72 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+There are no offsets in `FalconUCodeDescV2` to give the non-secure and
+secure IMEM sections start offsets relative to the beginning of the
+firmware object.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+The start offsets for both sections were set to `0`, but that is
+obviously incorrect since two different sections cannot start at the
+same offset. Since these offsets were not used by the bootloader, this
+doesn't prevent proper function but is incorrect nonetheless.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+Fix this by computing the start of the secure IMEM section relatively to
+the start of the firmware object and setting it properly. Also add and
+improve comments to explain how the values are obtained.
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 12046f8c77e0 ("platform/x86: wmi: Add driver_override support")
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260324005919.2408620-7-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: dbfb5aa41f16 ("gpu: nova-core: add FalconUCodeDescV2 support")
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Link: https://patch.msgid.link/20260306-turing_prep-v11-9-8f0042c5d026@nvidia.com
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 36 +++++-------------------------------
- include/linux/wmi.h        |  4 ----
- 2 files changed, 5 insertions(+), 35 deletions(-)
+ drivers/gpu/nova-core/firmware.rs | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 4e86a422f05f1..6f8e96476fd07 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -702,39 +702,11 @@ static ssize_t expensive_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(expensive);
+diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
+index 186f166564651..6a58118648652 100644
+--- a/drivers/gpu/nova-core/firmware.rs
++++ b/drivers/gpu/nova-core/firmware.rs
+@@ -63,7 +63,8 @@ pub(crate) struct FalconUCodeDescV2 {
+     pub(crate) interface_offset: u32,
+     /// Base address at which to load the code segment into 'IMEM'.
+     pub(crate) imem_phys_base: u32,
+-    /// Size in bytes of the code to copy into 'IMEM'.
++    /// Size in bytes of the code to copy into 'IMEM' (includes both secure and non-secure
++    /// segments).
+     pub(crate) imem_load_size: u32,
+     /// Virtual 'IMEM' address (i.e. 'tag') at which the code should start.
+     pub(crate) imem_virt_base: u32,
+@@ -205,18 +206,25 @@ impl FalconUCodeDescriptor for FalconUCodeDescV2 {
+     }
  
--static ssize_t driver_override_show(struct device *dev, struct device_attribute *attr,
--				    char *buf)
--{
--	struct wmi_device *wdev = to_wmi_device(dev);
--	ssize_t ret;
--
--	device_lock(dev);
--	ret = sysfs_emit(buf, "%s\n", wdev->driver_override);
--	device_unlock(dev);
--
--	return ret;
--}
--
--static ssize_t driver_override_store(struct device *dev, struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct wmi_device *wdev = to_wmi_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &wdev->driver_override, buf, count);
--	if (ret < 0)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *wmi_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_guid.attr,
- 	&dev_attr_instance_count.attr,
- 	&dev_attr_expensive.attr,
--	&dev_attr_driver_override.attr,
- 	NULL
- };
- ATTRIBUTE_GROUPS(wmi);
-@@ -803,7 +775,6 @@ static void wmi_dev_release(struct device *dev)
- {
- 	struct wmi_block *wblock = dev_to_wblock(dev);
+     fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
++        // `imem_sec_base` is the *virtual* start address of the secure IMEM segment, so subtract
++        // `imem_virt_base` to get its physical offset.
++        let imem_sec_start = self.imem_sec_base.saturating_sub(self.imem_virt_base);
++
+         FalconDmaLoadTarget {
+-            src_start: 0,
+-            dst_start: self.imem_sec_base,
++            src_start: imem_sec_start,
++            dst_start: self.imem_phys_base.saturating_add(imem_sec_start),
+             len: self.imem_sec_size,
+         }
+     }
  
--	kfree(wblock->dev.driver_override);
- 	kfree(wblock);
- }
+     fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
+         Some(FalconDmaLoadTarget {
++            // Non-secure code always starts at offset 0.
+             src_start: 0,
+             dst_start: self.imem_phys_base,
+-            len: self.imem_load_size.checked_sub(self.imem_sec_size)?,
++            // `imem_load_size` includes the size of the secure segment, so subtract it to
++            // get the correct amount of data to copy.
++            len: self.imem_load_size.saturating_sub(self.imem_sec_size),
+         })
+     }
  
-@@ -812,10 +783,12 @@ static int wmi_dev_match(struct device *dev, const struct device_driver *driver)
- 	const struct wmi_driver *wmi_driver = to_wmi_driver(driver);
- 	struct wmi_block *wblock = dev_to_wblock(dev);
- 	const struct wmi_device_id *id = wmi_driver->id_table;
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (wblock->dev.driver_override)
--		return !strcmp(wblock->dev.driver_override, driver->name);
-+	ret = device_match_driver_override(dev, driver);
-+	if (ret >= 0)
-+		return ret;
- 
- 	if (id == NULL)
- 		return 0;
-@@ -936,6 +909,7 @@ static struct class wmi_bus_class = {
- static const struct bus_type wmi_bus_type = {
- 	.name = "wmi",
- 	.dev_groups = wmi_groups,
-+	.driver_override = true,
- 	.match = wmi_dev_match,
- 	.uevent = wmi_dev_uevent,
- 	.probe = wmi_dev_probe,
-diff --git a/include/linux/wmi.h b/include/linux/wmi.h
-index 10751c8e5e6a0..c20bb22133381 100644
---- a/include/linux/wmi.h
-+++ b/include/linux/wmi.h
-@@ -16,16 +16,12 @@
-  * struct wmi_device - WMI device structure
-  * @dev: Device associated with this WMI device
-  * @setable: True for devices implementing the Set Control Method
-- * @driver_override: Driver name to force a match; do not set directly,
-- *		     because core frees it; use driver_set_override() to
-- *		     set or clear it.
-  *
-  * This represents WMI devices discovered by the WMI driver core.
-  */
- struct wmi_device {
- 	struct device dev;
- 	bool setable;
--	const char *driver_override;
- };
- 
- /**
 -- 
 2.53.0
 
