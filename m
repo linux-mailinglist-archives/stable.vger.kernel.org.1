@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFmiGHwuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253148-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:20 +0200
+	id WPe8ILP8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B8859B8AD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FCA5961D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A395317EBCD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2115530F9E6D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDB1403E93;
-	Wed, 20 May 2026 18:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39A93D1CC6;
+	Wed, 20 May 2026 18:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuRwdWU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V66eEk0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F4C403E98;
-	Wed, 20 May 2026 18:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2AC3F88B8;
+	Wed, 20 May 2026 18:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302531; cv=none; b=j4ihk0bwb8+HeCoE+yJMJHlXv6A+5BPoVLK4yENVSDe3z9rl6XocGhs6Rd+CP7bdqjheqB1vZ1IezgQpe9zhFhh2zwzLgpc9/q7TqAGl2DEDuoVZ6LctojGGMbNINhBTRMKYFzgaUKFaUoZsb8WX9KRfFUHDr9LUc94+nOX639Q=
+	t=1779301226; cv=none; b=QGZVZH0yYvTySAmedX9lpB/GJmFtVTOhJ2AWfxe2laH+drmc7J5zebpboy0NNZzKNNhZsAuWUSp94A5RaAprgnqsrCzohyTt4BEkIgSNQyFU3bPksdfTqQW7h18LkzL4sesH2xK8M5gLJqMw6qpu/oNFdv79S6nlMguUUd7SgTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302531; c=relaxed/simple;
-	bh=mEM5kq3J2UWIKxYvbZkaU9Oba105qBRIXjWsR5nYkeQ=;
+	s=arc-20240116; t=1779301226; c=relaxed/simple;
+	bh=9Bop+ig0fa+30rPTz84DvHznCgkJpDrDAwo32f1m8n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBogVI3Xp0Dio6mKTCJ0GuZGMSmlkazv2sziNWUF3cYlHWME8D4GPBBMwkW1cZf1Qnw35xaypMsyh0s7ccPZcUWAUFITzgh8f6PFgZ1SjT3N29JZHUBRckexBKQZhJYlMwSGKY7yA/K4jmbLD1EIDW7TT4JGzVbskhdOZQhkob8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuRwdWU3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98F21F000E9;
-	Wed, 20 May 2026 18:42:09 +0000 (UTC)
+	 MIME-Version; b=NDFUze9LMiZq+JadhvCvSzNpYyZoIUbUY56u0Pn+UEjokW4EyvgoCqAFSrrZj0AURmD/NIEJ6p8dY2mMyvE+DePOB3z3q1EY3GRjDC/Hc7+7/pg258z8+cJ8LcxtfEmgXuNukFlYTMMuQKvbSeU/aO+Sj1FHXs5MJjeYHKWj3Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V66eEk0H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBF51F000E9;
+	Wed, 20 May 2026 18:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302530;
-	bh=E/xMauHoY74qThbtbss7RmP5nZBeJbas4h0I2W9Doe0=;
+	s=korg; t=1779301225;
+	bh=pbAIDkYDDqT1GSFA6GucUaRz8pAIx26Ak9PnvSvtpWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JuRwdWU3nvu/0GzLs9l4g+kRhQRdcDuz8KPHF2JY7ow5JpnBAdwLYkJjX53aD9T7z
-	 veIP3ZZfEiUBq4WtpO3mAZ8UAx3gMlH3AQ/q/0oUDU8EXeC9gIqPFRrWYmaoFCth+E
-	 0SFneRnDpW7KK2CWLjqc4+goIm9IQ+KDDv/BIy/k=
+	b=V66eEk0H7AjKvCgGY6PX7eRYkBBmmMNpF6Hxwo/Th4n8l6PXCdYDzxhqJxNG4kBJr
+	 4LBAlD/oXNiVINDFoB5dL6cY8J1U990zmz3z9praEx/+dle3xGBIfnoLEKVpTpFn4F
+	 K+yBQry73OalMoGVsduxml/aVT2qnzgbCTlVpaPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 260/508] dev_printk: add new dev_err_probe() helpers
+Subject: [PATCH 6.12 472/666] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
 Date: Wed, 20 May 2026 18:21:23 +0200
-Message-ID: <20260520162104.279433370@linuxfoundation.org>
+Message-ID: <20260520162121.500221024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,131 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253148-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252648-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email]
-X-Rspamd-Queue-Id: D6B8859B8AD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 27FCA5961D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit dbbe7eaf0e4795bf003ac06872aaf52b6b6b1310 ]
+[ Upstream commit f5ca450087c3baf3651055e7a6de92600f827af3 ]
 
-This is similar to dev_err_probe() but for cases where an ERR_PTR() or
-ERR_CAST() is to be returned simplifying patterns like:
+In nf_osf_match(), the nf_osf_hdr_ctx structure is initialized once
+and passed by reference to nf_osf_match_one() for each fingerprint
+checked. During TCP option parsing, nf_osf_match_one() advances the
+shared ctx->optp pointer.
 
-	dev_err_probe(dev, ret, ...);
-	return ERR_PTR(ret)
-or
-	dev_err_probe(dev, PTR_ERR(ptr), ...);
-	return ERR_CAST(ptr)
+If a fingerprint perfectly matches, the function returns early without
+restoring ctx->optp to its initial state. If the user has configured
+NF_OSF_LOGLEVEL_ALL, the loop continues to the next fingerprint.
+However, because ctx->optp was not restored, the next call to
+nf_osf_match_one() starts parsing from the end of the options buffer.
+This causes subsequent matches to read garbage data and fail
+immediately, making it impossible to log more than one match or logging
+incorrect matches.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240606-dev-add_dev_errp_probe-v3-1-51bb229edd79@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 797cc011ae02 ("backlight: sky81452-backlight: Check return value of devm_gpiod_get_optional() in sky81452_bl_parse_dt()")
+Instead of using a shared ctx->optp pointer, pass the context as a
+constant pointer and use a local pointer (optp) for TCP option
+traversal. This makes nf_osf_match_one() strictly stateless from the
+caller's perspective, ensuring every fingerprint check starts at the
+correct option offset.
+
+Fixes: 1a6a0951fc00 ("netfilter: nfnetlink_osf: add missing fmatch check")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dev_printk.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/nfnetlink_osf.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/dev_printk.h b/include/linux/dev_printk.h
-index ae80a303c216b..ca32b5bb28eb5 100644
---- a/include/linux/dev_printk.h
-+++ b/include/linux/dev_printk.h
-@@ -277,4 +277,12 @@ do {									\
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 2305c7d9761eb..832a973c41777 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -64,9 +64,9 @@ struct nf_osf_hdr_ctx {
+ static bool nf_osf_match_one(const struct sk_buff *skb,
+ 			     const struct nf_osf_user_finger *f,
+ 			     int ttl_check,
+-			     struct nf_osf_hdr_ctx *ctx)
++			     const struct nf_osf_hdr_ctx *ctx)
+ {
+-	const __u8 *optpinit = ctx->optp;
++	const __u8 *optp = ctx->optp;
+ 	unsigned int check_WSS = 0;
+ 	int fmatch = FMATCH_WRONG;
+ 	int foptsize, optnum;
+@@ -95,17 +95,17 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
+ 	check_WSS = f->wss.wc;
  
- __printf(3, 4) int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+ 	for (optnum = 0; optnum < f->opt_num; ++optnum) {
+-		if (f->opt[optnum].kind == *ctx->optp) {
++		if (f->opt[optnum].kind == *optp) {
+ 			__u32 len = f->opt[optnum].length;
+-			const __u8 *optend = ctx->optp + len;
++			const __u8 *optend = optp + len;
  
-+/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
-+#define dev_err_ptr_probe(dev, ___err, fmt, ...) \
-+	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__))
-+
-+/* Simple helper for dev_err_probe() when ERR_CAST() is to be returned. */
-+#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...) \
-+	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__))
-+
- #endif /* _DEVICE_PRINTK_H_ */
+ 			fmatch = FMATCH_OK;
+ 
+-			switch (*ctx->optp) {
++			switch (*optp) {
+ 			case OSFOPT_MSS:
+-				mss = ctx->optp[3];
++				mss = optp[3];
+ 				mss <<= 8;
+-				mss |= ctx->optp[2];
++				mss |= optp[2];
+ 
+ 				mss = ntohs((__force __be16)mss);
+ 				break;
+@@ -113,7 +113,7 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
+ 				break;
+ 			}
+ 
+-			ctx->optp = optend;
++			optp = optend;
+ 		} else
+ 			fmatch = FMATCH_OPT_WRONG;
+ 
+@@ -156,9 +156,6 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	if (fmatch != FMATCH_OK)
+-		ctx->optp = optpinit;
+-
+ 	return fmatch == FMATCH_OK;
+ }
+ 
 -- 
 2.53.0
 
