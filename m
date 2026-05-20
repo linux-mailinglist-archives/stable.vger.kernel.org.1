@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-252072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCKJCMshDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:11 +0200
+	id MK0qL0L9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9474E59A6AE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C8B5963DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60DE3389E97C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9566A3124132
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222453F20F9;
-	Wed, 20 May 2026 17:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72839371048;
+	Wed, 20 May 2026 18:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCooq1ha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVR/I679"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70B129B8D0;
-	Wed, 20 May 2026 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287A3372B31;
+	Wed, 20 May 2026 18:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299672; cv=none; b=LilWa0c3oh6v68sSP39oRSWPu2Zt4ndftnvU5+Lko7j2ZPn8Hl2M6b0MRqvqlTZB7bQqF6QW65RZZgctdAZPwEJuxWgotomKyKo5mSjM7NMbSP7GWScEsHB+lpGgKE3eHiyrvXw9aRksjhUHhb03GJ4SHn7n/nXDsAYch1sOCSM=
+	t=1779301379; cv=none; b=RAiAtasxSDe4o9z/m9EfNCZxQpnm9GCemKSTqlK4LSBPqIFuSdFaF6madoBApxD8FFakmad8WRBp9DNx3C1VSgzs014btpVd6oZJWzGPZebO1oJxmWVmsVrEPfJx5PL2Ja/GAM5zJhFx1Fe0QMy+ufY4QeDYVlJ58mRu8c/QWmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299672; c=relaxed/simple;
-	bh=uekfo9rqdrr752cZCkEzOKzN6vGcq5lJNshTKYfksDo=;
+	s=arc-20240116; t=1779301379; c=relaxed/simple;
+	bh=8E5yeNLIoFZJ8wen7BYeOwVWMlqOg4Pf8+aoIk3YSzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WysSmvJQwYjEweDy2SjzdX4mL3JnjJkgcSEFdQPxuAlwp1/z6KDVIt9Nrz4qvcWDKYxCN3DUeXAkeXDJC5Lnhz/Yjokf3BxUYL00wUxZD2FmfsxIIcEzEGLWN3qelTB4Z/JbSdTtpBaejPbIAgstefoce9T8O3ahiXZHZAv9qNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCooq1ha; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4E51F000E9;
-	Wed, 20 May 2026 17:54:31 +0000 (UTC)
+	 MIME-Version; b=KZdx+ItdwhtlBGQ5BWx2ffAsOQuOTHHNee6fIcC9WS0hdXunOl+6+xuJGCCPq1IgBhY+FKxUeBf6rdULbk2ByDh/gxGXSPGU+Mmn/+Ed8aG66i1LooftYElfTbbUsR/wo/s2iKrPpadkB7b7If2oynqrCXK9aUpYTCpRIaMXJIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVR/I679; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDD61F000E9;
+	Wed, 20 May 2026 18:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299671;
-	bh=zgDRGJd+Y6SnLt8wM1T7QO8jD51TA92KUgcsgVH8Dgc=;
+	s=korg; t=1779301378;
+	bh=SPSQIIZs3mYPcYdAB5XkhO5BCB1MlD7YrcjTN1qtT48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OCooq1haG/4wA2a6QxVHf+pi0PWfoLmuSAEkSeLppZdszXxpYhE/4/96JFVAMT5be
-	 aqzyn3ydheWHuQ3ktr2YzVZJ7f1X4u2ItBlQHa5dVuL5I+jS/UQDxJfpKNthM74xmj
-	 CLPjzZgV7Ed59XEc7h529H9ExzbmdNiq9EvsvSkM=
+	b=TVR/I679gm6KqG0/2ZVahzzyNieaMhzGpGE2P0pgi/6e0XHz+/QDoL0JCxUqmATu8
+	 hSalHzWu6OO6mQ13ZeAywq0WqXuenWKJP8vUoqYB/a1M4i6lkTmT6FQc+F36Fm8XwL
+	 lY9w7tIlZop6x74ergG0LN2M2wuQyiWn8JWtMqsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 861/957] Revert "papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()"
+Subject: [PATCH 6.12 533/666] net/sched: netem: only reseed PRNG when seed is explicitly provided
 Date: Wed, 20 May 2026 18:22:24 +0200
-Message-ID: <20260520162153.237639959@linuxfoundation.org>
+Message-ID: <20260520162122.824848017@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252072-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252707-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9474E59A6AE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,networkplumber.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 37C8B5963DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 09c15bbbed533903e600660ea09098b3b0524f48.
+From: Stephen Hemminger <stephen@networkplumber.org>
 
+[ Upstream commit 986afaf809940577224a99c3a08d97a15eb37e93 ]
+
+netem_change() unconditionally reseeds the PRNG on every tc change
+command. If TCA_NETEM_PRNG_SEED is not specified, a new random seed
+is generated, destroying reproducibility for users who set a
+deterministic seed on a previous change.
+
+Move the initial random seed generation to netem_init() and only
+reseed in netem_change() when TCA_NETEM_PRNG_SEED is explicitly
+provided by the user.
+
+Fixes: 4072d97ddc44 ("netem: add prng attribute to netem_sched_data")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-4-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/papr-hvpipe.c | 39 +++++++++++++++-----
- 1 file changed, 30 insertions(+), 9 deletions(-)
+ net/sched/sch_netem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index 3d8672642c251..431f6a3da4c5a 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -484,7 +484,10 @@ static const struct file_operations papr_hvpipe_handle_ops = {
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 542ab3f7e3d07..67f3b06373dcf 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -1110,11 +1110,10 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* capping jitter to the range acceptable by tabledist() */
+ 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
  
- static int papr_hvpipe_dev_create_handle(u32 srcID)
- {
--	struct hvpipe_source_info *src_info __free(kfree) = NULL;
-+	struct hvpipe_source_info *src_info;
-+	struct file *file;
-+	long err;
-+	int fd;
- 
- 	spin_lock(&hvpipe_src_list_lock);
- 	/*
-@@ -508,13 +511,20 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
- 	src_info->tsk = current;
- 	init_waitqueue_head(&src_info->recv_wqh);
- 
--	FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
--		   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
--				      (void *)src_info, O_RDWR));
--	if (fdf.err)
--		return fdf.err;
-+	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
-+	if (fd < 0) {
-+		err = fd;
-+		goto free_buf;
-+	}
-+
-+	file = anon_inode_getfile("[papr-hvpipe]",
-+			&papr_hvpipe_handle_ops, (void *)src_info,
-+			O_RDWR);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto free_fd;
+-	if (tb[TCA_NETEM_PRNG_SEED])
++	if (tb[TCA_NETEM_PRNG_SEED]) {
+ 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
+-	else
+-		q->prng.seed = get_random_u64();
+-	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
 +	}
  
--	retain_and_null_ptr(src_info);
- 	spin_lock(&hvpipe_src_list_lock);
- 	/*
- 	 * If two processes are executing ioctl() for the same
-@@ -523,11 +533,22 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
- 	 */
- 	if (hvpipe_find_source(srcID)) {
- 		spin_unlock(&hvpipe_src_list_lock);
--		return -EALREADY;
-+		err = -EALREADY;
-+		goto free_file;
- 	}
- 	list_add(&src_info->list, &hvpipe_src_list);
- 	spin_unlock(&hvpipe_src_list_lock);
--	return fd_publish(fdf);
-+
-+	fd_install(fd, file);
-+	return fd;
-+
-+free_file:
-+	fput(file);
-+free_fd:
-+	put_unused_fd(fd);
-+free_buf:
-+	kfree(src_info);
-+	return err;
- }
+ unlock:
+ 	sch_tree_unlock(sch);
+@@ -1137,6 +1136,9 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ 		return -EINVAL;
  
- /*
+ 	q->loss_model = CLG_RANDOM;
++	q->prng.seed = get_random_u64();
++	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++
+ 	ret = netem_change(sch, opt, extack);
+ 	if (ret)
+ 		pr_info("netem: change failed\n");
 -- 
 2.53.0
 
