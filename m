@@ -1,341 +1,275 @@
-Return-Path: <stable+bounces-249929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAofO//ADWr32wUAu9opvQ
-	(envelope-from <stable+bounces-249929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:11:11 +0200
+	id YHHTNx69DWrH2wUAu9opvQ
+	(envelope-from <stable+bounces-249930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:54:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F3358F5B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:11:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F14E58F203
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 431CD3152C6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:53:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A5303007505
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2222BE03B;
-	Wed, 20 May 2026 13:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012AE3DC4CD;
+	Wed, 20 May 2026 13:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+WMwZvW"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="ciBt23um"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7F736B055
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779285224; cv=pass; b=bQhcZsYYz/SjQ320VbLyd9bmt9OPYgPzzoHdGo1KNWhJkDKZOcVQR8RJHeswSdL/sav+5jlUiVq5k3r6kM7sMX47EUlCmnsVN96XDUvnwU/3BH4cU4tc3MNxNBoYhS5FUo6iDxp3SUqFQ2EUGUU+zH2LvgM1SC/Hu5BZ5yKK8Ts=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779285224; c=relaxed/simple;
-	bh=ghMB5I3ZznM6B+uIBYnjRUhxHcZcmdpqsz9B+Q/n7tI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GU9qa7D6zyO2/hZNJUZuJLc1GLEDEgBiMZfS3Wtqfjy4NRMZUKWyysgMyr6RIccf6Ojz+liBNDj1nefbWYlA+vqTZEZNDtCDD+wjyFT1wTsgCWznSDsmcYA7i300eA1XlT9US83NTbZzkYUn33Gup0Nhdc/Mv1aHkNrvizCrCTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G+WMwZvW; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6530287803cso4977075d50.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:53:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779285222; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FdRbEnLieiRP2zjRuMALd6VBAn58CzRlx+j6NTP1Jd0gYq9W4uMN54CbESVPkw6C0W
-         Q45rN+2v2t8xIaeFR4ZM/5+tIC/NmAzSOeguyEWmFqwRLAQhY+4Njaex7YDPKF1Bh6aR
-         TAnZU7c+e2J6Z7elWEqWTbCqOaEMULCoChI1uVYRFxYlCyHp171/E8KCQgVTL7vTsep4
-         OOn3vj3nKSj/rEssRMX3Xr/dJN+93yL2BFat1tcqgLA6M6PWoqu/ifUY8JIHfaCa35iA
-         bm1TSfHvdkXT8P8kxTH+R214KVtbk0A6nqwNlcZPR/cIBL/SZAm3gkjjtQG1s0ogWJxL
-         RDDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FdYtmXr5yw5qje/D1jtPFpQx5oQHNPSqQ+7yc0yfv8E=;
-        fh=psHY2p/PYJOwauwgpef+ou9k8NYgQjroXGmdl5Sadck=;
-        b=IVPf3bVn7MeaYWqkb/2RhJWdWtGCfCLNWpJMOnPeM68/5luPd/7NqRr5YQznf1ezSx
-         WB4zCkdfPRZagGDUun154sJBa+DcgIDws6+C6qdEs8GPIsDRHAgdp06lgwj86L1lDrKI
-         NK070xcH83b6BrVv47vZ7mTIsTx9fQ5bXsjrFrdI0D9aGQpNvJfSqak6iUroRick4AjN
-         6RCQMGXDeXvV/TtJDYWHrtpZUJ6c/6AkIdCLOkOOuUuwOJMre38g94/t9/3xmUNjvTIz
-         pO8ooMMPdUJEigSkrPieNWcn5R4BwrOdSxanCnsMjg6MojtYbgP2CAH5Gee/gXCcUBv5
-         KmuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3627D39BFF4
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779285264; cv=none; b=NtikBP6NlO4SDuQ6Q4SdfdtQuiOozQtzxSWY3NLUWyuTzZ+99cFpr+lmu0xsR2nO5Vfb26sLbNU9aWInS/hz7D3frdCjLCU2ex7sdxDw8bFQ6cGENNH1++2Z5iJju+VJBC3ySf+PRfGoJsO7NUjLM37oEuSZeEuPcKtybOJJ49E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779285264; c=relaxed/simple;
+	bh=ZGHvqE8L/Q1fMf/MBC3tcVavJJOuOsPEetD3I3j6tyY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QgsTgMFnXMoC8WZBdJ+czcjZIyy900Ru1uAtZi/5lXuUTaOE426WDP1yU/0QHtIVASqtAPKkW+gMH4w8KFN1jH0CVhELjEW8EoSbiVy40p5E9tmY3BA11aex8+ZqvpGTVdGB8QTbNqrnZcO8aPxg4+Sy3c13WdD322Cb4tJ2qR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=ciBt23um; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8b8e98fd885so63973216d6.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:54:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779285222; x=1779890022; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FdYtmXr5yw5qje/D1jtPFpQx5oQHNPSqQ+7yc0yfv8E=;
-        b=G+WMwZvWwOAZjnjJinSzsWiknyErZJ0rmDpkLx2DfwUs0luhGtNBAFFk+5BCKOmBK0
-         ofWrDt1W06hqHQPmpmok+qh4AsoP+7nG0s0OoHqOL+nciQWEuBRU/A0rjBsZkTiHIHIx
-         8Z8tRQKieYPg9zwIn+0Tg9zHsNXmycGpPBj4WnGNyb/+fbSEFS+0+dndAvm1x7aE7grH
-         jkZOniV01U7K8/6BLE5wlSB1YlIDXTj4TjoUoLA7jFv4FR1EC7QciKijYeCMGCPzJXc5
-         MpzDPAFpHuSRgmBJfyjIay6ZSP9sNPoxEi28626XphFdQKJ+uJHZVks09mToBpXKQa6h
-         Vjaw==
+        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1779285262; x=1779890062; darn=vger.kernel.org;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=hq5fEQOH+rWn5qAZ1QCeqnZS/zieBLWV7YFbGZF1rVs=;
+        b=ciBt23umUcRgY9fIvPqb5z5RklszoTnKHYmnJz+/tmnUjWvFI7U3QjZQUNbeIOnvcp
+         2iyQ5aLL21sNKD8zwB7Vq+R93d8SRZclHKk53QqIsRDwr0r0bnAH0wQRONSzLwQqGFg2
+         EuRK16ayEMypxn0oMcEhzQi0i4eN1w/vM+engVi8h64gz+4IDn2pWMDChfTOdz+gm2WY
+         42tzwP0emUU13d8vrLFSpUjTZEFW6srcn8+Wxt9iYUhz7bVbc90PkG8bpc/4UiLfafvV
+         kcgjGP5p0HmxE/z0I4KO5M85wKoG2rGr7YUyNsEenz222Cn2/AAqTL49AfsDh2S9a5ge
+         S43Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779285222; x=1779890022;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FdYtmXr5yw5qje/D1jtPFpQx5oQHNPSqQ+7yc0yfv8E=;
-        b=YqNig2Fynoo6+UBC2sBitq5EJySvTbl8EKNPWc7eRwq5cD6gXLYgLomEiDWo8PQtVM
-         o3eHx8DSKutfBHzo1BcOJmAgB/Hnyh8UO4PmxsH1FrxbEse/PTlfDYU0Hasd9jRmZLuN
-         sr7sGO9LtlmbCP6strEFHNVsK+Tcj7qrsUkwPGAueZ5QB/CDOPH29cdkwaj3+FYr1Gaf
-         1PNamEb4Fp2bip6XOCDS2PsbY4+gfV87Qy/19kaHR0DpM8mmQ4Nt5008KXDInUR+f9EE
-         alVXh/gT1CBPppiU1TuRNdaND0dly9QxwAmDDGI7WEWXRqUnaEwDMXy/QSdtXKA48OdD
-         qmMw==
-X-Forwarded-Encrypted: i=1; AFNElJ/fmfVDvAcsq3E5dHFayBXa+4rcZ5q19UB4SR3AC4WPcIpjpUWE3SPdWmIq2N6TBJPZ41px0YI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcm0df7byLG50jn/2MRZ6PguIRCXcdbZHLuRIR+QqCAgefC/q9
-	NY1FDypjlOUtLQDz538buzQTfkX2e4nfjP1GZcazEUXaVWDkPshhPiqh0P4ijWASLE1E5h5+Wp4
-	IfUVuQYQir8jIbaaqq6imyuXDGuKLUkA=
-X-Gm-Gg: Acq92OG3p2WaWXPEASl22OtKssnCQX2K2nzpFnYVLrnzOwZt5w/ymqpggrVEpASFfWo
-	JJYnpKRuoQUmQ/onXXBw/7FVU2S0d7sOBlednOpOWOnfvHiNlPKGZlBtC5QW7ai/dE2zOaSCwhW
-	lxbNEKVna3a+Txnx96p2AyWzp1SYksAMfM9vxm0xhsBy61e+kH6RhkTzb/zcf77TbjkOGw0Bb54
-	zAlh1W5w8j6Qo07mbUqR9tEzi7NX3n/oqtru4vsIx+MS8hgOFPsUEFxWzxK49c8KsYdgkJbQAH7
-	6ecreqdSRhnJixPWRwkMCAIYRMPlcoP5uiMzFuTt9eirZBl7R+GIP/U8mJvwV47FIRuLVeurV72
-	vP791
-X-Received: by 2002:a05:690e:4290:10b0:65c:2208:8c6a with SMTP id
- 956f58d0204a3-65e227dfa70mr19056657d50.42.1779285221725; Wed, 20 May 2026
- 06:53:41 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779285262; x=1779890062;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hq5fEQOH+rWn5qAZ1QCeqnZS/zieBLWV7YFbGZF1rVs=;
+        b=JEilRrIguMpCnXqufVG3+XuJG3ibbzAlmtUpno0NoMpkvwjW3LSgMPCKV/aHD+qpy9
+         ZDCYiud3Xb6nXZStRuBmn1gJ6gHOjAjnPEwZMt9jQqkC17T0UGuBYHqV4TJob5lBVezV
+         kI7qcp/HFZ+LEQGM8/1MiTeZcNlFeJ63xyvMbT61Z4HL1VYHrsS5YpktNW9dCPK+8iOC
+         7ymVhSbfm2slg1geZWXjUfBFi3qHzbhz/TXe+/mUW1pAeRDlp63A23KQVtf52fnz1TAc
+         6jQ7vmevWF8kM6HX854s/UgFY+TNnaQdUznBjXWEbqmM1UT8HjMkeDiIQo/RTHn+XHlc
+         XGJQ==
+X-Gm-Message-State: AOJu0YywVgznlUDmbpRXVc+YM2dzcH5u85oP1TrCWqY/b+oBg85tOkn5
+	6sGawhqYAH/1UKcHzQ11sNPPLIktTyAGI13UrNojLjvtth+wEjZeSVQdwecFX1AXtcc=
+X-Gm-Gg: Acq92OGCXnR41mGwYRPnpXEQgVesiapyuIDsoNJoFO3FDglzbwSjEr612J0keygWh1e
+	MtEKGLKh0SV+rP7tBGlVuYCpbpktA1CZF3s06H3tpN6UkWr+1YIAAfQj5YG3dRyU1jWUH9qSScO
+	mqVj9MEJwa9Jk6BD0saG1fbucqqHvsxQQLWUG2vugUwRhVDcDdftEAtr7LvQH/2htb13HBO2Nw6
+	h0RjsLinpiEMLbqKL84L9TlDROXikndaOq7ShhRwSvI/GYlT26Bxzl/qTIiAtmPXOcpt0OSNJ8p
+	0AxZKk+NJRiALF8OfBgQ2EO+AsjNEU82+WGtiIrC44ji/FFvdsyqvNeTMy9xcb28DRogMoPl2o3
+	IGpkGcrv4s+CooIBT6/4pzbNZBeA5KaYJedMEEfGwYkZCSCUprsxeF0dFE19qNuz0faut/fYUgG
+	8pSWAfX0FmS+sSqy4T4N/H2wh7OPSSo8Ij/GGOaxZX20FcHkEXyJ4lKBuQjFep/cy6SzWs
+X-Received: by 2002:a0c:f08f:0:b0:8ac:a5bc:a6b4 with SMTP id 6a1803df08f44-8ca0f6f9a59mr308717706d6.36.1779285262109;
+        Wed, 20 May 2026 06:54:22 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0? ([2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cbf144a6a1sm24074376d6.49.2026.05.20.06.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 06:54:21 -0700 (PDT)
+Message-ID: <77a8740793ef72b672142000d2be8f6cc87b66f4.camel@ndufresne.ca>
+Subject: Re: [PATCHv2 1/2] media: vivid: add vivid_update_reduced_fps()
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Hans Verkuil <hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org
+Date: Wed, 20 May 2026 09:54:20 -0400
+In-Reply-To: <f641f5393c2d9bc7893dd224a646d34c4e042660.1779266182.git.hverkuil+cisco@kernel.org>
+References: <cover.1779266182.git.hverkuil+cisco@kernel.org>
+	 <f641f5393c2d9bc7893dd224a646d34c4e042660.1779266182.git.hverkuil+cisco@kernel.org>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-MFHXNgnVoBlBK5lLkYu9"
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh> <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh> <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
- <2026051942-uproar-drainpipe-6370@gregkh> <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
- <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se> <2026052026-barber-espresso-1d9a@gregkh>
- <CABBYNZJ4woc+unpYN6_dzMLtxhFVUd5+ccv2+EQbDMkYuXQ12A@mail.gmail.com> <2026052047-silica-grub-0bb2@gregkh>
-In-Reply-To: <2026052047-silica-grub-0bb2@gregkh>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Wed, 20 May 2026 09:53:30 -0400
-X-Gm-Features: AVHnY4Kvielev57YNURsHMJ5Vco21acsoY0xKleOB6jrUgrO8TFy7dJIbwvPLM0
-Message-ID: <CABBYNZKnrqHyASMOah795i9eteY7S5AfN3tCWssSRgqBXZwRMw@mail.gmail.com>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: August Wikerfors <git@augustwikerfors.se>, Thorsten Leemhuis <regressions@leemhuis.info>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, Linux kernel regressions list <regressions@lists.linux.dev>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249929-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 60F3358F5B7
+	TAGGED_FROM(0.00)[bounces-249930-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,collabora.com:email,ndufresne-ca.20251104.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 7F14E58F203
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
 
-On Wed, May 20, 2026 at 9:14=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, May 20, 2026 at 09:11:42AM -0400, Luiz Augusto von Dentz wrote:
-> > Hi Greg,
-> >
-> > On Wed, May 20, 2026 at 8:47=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > >
-> > > On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
-> > > > On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
-> > > > > Hi Greg,
-> > > > >
-> > > > > On Tue, May 19, 2026 at 11:19=E2=80=AFAM Greg KH <gregkh@linuxfou=
-ndation.org> wrote:
-> > > > > >
-> > > > > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dent=
-z wrote:
-> > > > > > > Hi Greg,
-> > > > > > >
-> > > > > > > On Tue, May 19, 2026 at 8:07=E2=80=AFAM Greg KH <gregkh@linux=
-foundation.org> wrote:
-> > > > > > > >
-> > > > > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis=
- wrote:
-> > > > > > > > > On 5/19/26 12:30, Greg KH wrote:
-> > > > > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leem=
-huis wrote:
-> > > > > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > > > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > > The following changes since commit c78bdba7b96660=
-20c0832150a4fc4c0aebc7c6ac:
-> > > > > > > > > > > > >    net: phy: DP83TC811: add reading of abilities =
-(2026-05-14 15:17:12 +0200)
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > are available in the Git repository at:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/=
-bluetooth/bluetooth.git tags/for-net-2026-05-14
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a=
-8c7547d088fb6275c00282:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffi=
-es to ms (2026-05-14 09:58:08 -0400)
-> > > > > > > > > > > >
-> > > > > > > > > > > > It seems this PR sadly came too late for this week'=
-s net PR to mainline
-> > > > > > > > > > > > that was merged yesterday.
-> > > > > > > > > > > >
-> > > > > > > > > > > > TWIMC, from my point of view, it would be great if =
-we somehow could
-> > > > > > > > > > > > still get the changes from this PR or at least the =
-btmtk fix it
-> > > > > > > > > > > > contains[1] to mainline this week before -rc4, as i=
-t is fixing a
-> > > > > > > > > > > > regression known since 2026-04-24 that at least fiv=
-e people encountered
-> > > > > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Bl=
-uetooth: btmtk:
-> > > > > > > > > > > > validate WMT event SKB length before struct access"=
-) [006b9943b982 in
-> > > > > > > > > > > > -next].
-> > > > > > > > > > >
-> > > > > > > > > > > Greg, Sasha, that [1] fix I was talking about now rea=
-ched -next as
-> > > > > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short W=
-MT FUNC_CTRL
-> > > > > > > > > > > events") and will likely hit mainline on Thursday or =
-so with the weekly
-> > > > > > > > > > > -net PR to -mainline. If that's good enough for you, =
-I'd say it would be
-> > > > > > > > > > > good to pick this up for the next round of stable ker=
-nels.
-> > > > > > > > > >
-> > > > > > > > > > That "Fixes:" tag is referring to something that is als=
-o not in any
-> > > > > > > > > > tree, but that commit does have a cc: stable in it.  So=
- do we need both
-> > > > > > > > > > of these:
-> > > > > > > > >
-> > > > > > > > > Valid question, as yes, there is a slight mixup here:
-> > > > > > > > >
-> > > > > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB=
- length before struct access")
-> > > > > > > > >
-> > > > > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88f=
-b0c08 is the
-> > > > > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("B=
-luetooth:
-> > > > > > > > > btmtk: validate WMT event SKB length before struct access=
-") -- the one
-> > > > > > > > > that is causing the regression that I want to get fixed. =
-So we now only
-> > > > > > > > > need:
-> > > > > > > > >
-> > > > > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT F=
-UNC_CTRL events")
-> > > > > > > >
-> > > > > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is =
-going to be a
-> > > > > > > > nightmare to track over time, ugh.
-> > > > > > >
-> > > > > > > Hmm, did we get the wrong hash or something? Usually, that wo=
-uld show
-> > > > > > > up in the verify-fixes.sh, but perhaps it didn't capture it t=
-his time
-> > > > > > > for some reason, perhaps I'm running an outdated version or s=
-omething
-> > > > > > > similar.
-> > > > > >
-> > > > > > Something went wrong if we ended up with a patch in the stable =
-trees,
-> > > > > > yet this fix is referring to it as a different git sha.  Don't =
-know
-> > > > > > where the disconnect happend :(
-> > > > >
-> > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length be=
-fore
-> > > > > struct access")
-> > > > >
-> > > > > I don't have that in any of our tree either, this is actually
-> > > > > 634a4408c061 on all trees in the chain:
-> > > > >
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetoo=
-th.git/commit/?id=3D634a4408c061
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/co=
-mmit/?id=3D634a4408c061
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t/commit/?id=3D634a4408c061
-> > > > >
-> > > > > Or actually that was the hash before it got rebased on bluetooth-=
-next tree:
-> > > > >
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetoo=
-th-next.git/commit/?id=3D041e88fb0c08
-> > > > >
-> > > > > But I didn't send the PR from that three so perhaps somebody else=
- sent
-> > > > > it to stable with the wrong fixes tag?
-> > > > I believe the confusion comes from "Bluetooth: btmtk: accept too sh=
-ort WMT
-> > > > FUNC_CTRL events" itself currently having different commit hashes i=
-n
-> > > > bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The for=
-mer
-> > > > correctly refers to "Bluetooth: btmtk: validate WMT event SKB lengt=
-h before
-> > > > struct access" as 634a4408c061 in the Fixes tag and was merged into=
- net
-> > > > yesterday heading for 7.1-rc5. The latter still refers to it as
-> > > > 041e88fb0c08. Both are now in next-20260519 but only the latter was=
- in
-> > > > next-20260518 which was the latest at the time of Thorsten's messag=
-e.
-> > > >
-> > > > Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 shoul=
-d result
-> > > > in a valid Fixes tag.
-> > >
-> > > Ok, now done.  Be careful of duplicate commits in different branches
-> > > that are marked for backporting with different ids.  It can cause
-> > > massive confusion (i.e. don't be like the drm tree...)
-> >
-> > Noted. I guess I need to dig into how other trees do to avoid that.
-> > The problem seem related to using 2 trees: bluetooth->net (fixes only,
-> > rebased on each RC) versus bluetooth-next->net-next (development,
-> > rebased once per release).
->
-> Just never rebase any public tree please.
+--=-MFHXNgnVoBlBK5lLkYu9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I guess the alternative is to do merges, right? While I understand
-this will not be changing the sha-ids I don't think it changes the
-fact that fixes applied on the bluetooth-next cannot be merged into
-bluetooth. Is there a way to retain the IDs across trees? The
-alternative, I guess, would be to apply fixes to bluetooth tree and
-then merge them back to bluetooth-next to preserve the IDs. This would
-make the CI job slightly harder, as it would need to detect if a Fixes
-tag exists; if so, it would probably need to go through the Bluetooth
-tree first.
+Le mercredi 20 mai 2026 =C3=A0 10:36 +0200, Hans Verkuil a =C3=A9crit=C2=A0=
+:
+> Don't call vivid_update_format_cap() when switching to/from reduced fps
+> for HDMI inputs: that will also reset the format, which is overkill for
+> this.
+>=20
+> Make a new vivid_update_reduced_fps() function that just updates the
+> dev->timeperframe_vid_cap.
+>=20
+> Fixes: c79aa6aeadb0 ("[media] vivid-capture: add control for reduced fram=
+e rate")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
---=20
-Luiz Augusto von Dentz
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
+> ---
+> =C2=A0.../media/test-drivers/vivid/vivid-ctrls.c=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 3 +-
+> =C2=A0.../media/test-drivers/vivid/vivid-vid-cap.c=C2=A0 | 32 +++++++++++=
+--------
+> =C2=A0.../media/test-drivers/vivid/vivid-vid-cap.h=C2=A0 |=C2=A0 1 +
+> =C2=A03 files changed, 22 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c b/drivers/med=
+ia/test-drivers/vivid/vivid-ctrls.c
+> index f94c15ff84f7..1077445f5772 100644
+> --- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
+> +++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
+> @@ -609,7 +609,8 @@ static int vivid_vid_cap_s_ctrl(struct v4l2_ctrl *ctr=
+l)
+> =C2=A0		break;
+> =C2=A0	case VIVID_CID_REDUCED_FPS:
+> =C2=A0		dev->reduced_fps =3D ctrl->val;
+> -		vivid_update_format_cap(dev, true);
+> +		if (dev->input_type[dev->input] =3D=3D HDMI)
+> +			vivid_update_reduced_fps(dev);
+> =C2=A0		break;
+> =C2=A0	case VIVID_CID_HAS_CROP_CAP:
+> =C2=A0		dev->has_crop_cap =3D ctrl->val;
+> diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/m=
+edia/test-drivers/vivid/vivid-vid-cap.c
+> index b95f06a9b5ae..76e0b161c049 100644
+> --- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+> +++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+> @@ -364,6 +364,24 @@ static enum tpg_pixel_aspect vivid_get_pixel_aspect(=
+const struct vivid_dev *dev)
+> =C2=A0	return TPG_PIXEL_ASPECT_SQUARE;
+> =C2=A0}
+> =C2=A0
+> +void vivid_update_reduced_fps(struct vivid_dev *dev)
+> +{
+> +	struct v4l2_bt_timings *bt =3D &dev->dv_timings_cap[dev->input].bt;
+> +	unsigned int size =3D V4L2_DV_BT_FRAME_WIDTH(bt) * V4L2_DV_BT_FRAME_HEI=
+GHT(bt);
+> +	u64 pixelclock;
+> +
+> +	if (dev->reduced_fps && can_reduce_fps(bt)) {
+> +		pixelclock =3D div_u64(bt->pixelclock * 1000, 1001);
+> +		bt->flags |=3D V4L2_DV_FL_REDUCED_FPS;
+> +	} else {
+> +		pixelclock =3D bt->pixelclock;
+> +		bt->flags &=3D ~V4L2_DV_FL_REDUCED_FPS;
+> +	}
+> +	dev->timeperframe_vid_cap =3D (struct v4l2_fract) {
+> +		size / 100, (u32)pixelclock / 100
+> +	};
+> +}
+> +
+> =C2=A0/*
+> =C2=A0 * Called whenever the format has to be reset which can occur when
+> =C2=A0 * changing inputs, standard, timings, etc.
+> @@ -372,8 +390,6 @@ void vivid_update_format_cap(struct vivid_dev *dev, b=
+ool keep_controls)
+> =C2=A0{
+> =C2=A0	struct v4l2_bt_timings *bt =3D &dev->dv_timings_cap[dev->input].bt=
+;
+> =C2=A0	u32 dims[V4L2_CTRL_MAX_DIMS] =3D {};
+> -	unsigned size;
+> -	u64 pixelclock;
+> =C2=A0
+> =C2=A0	switch (dev->input_type[dev->input]) {
+> =C2=A0	case WEBCAM:
+> @@ -402,17 +418,7 @@ void vivid_update_format_cap(struct vivid_dev *dev, =
+bool keep_controls)
+> =C2=A0	case HDMI:
+> =C2=A0		dev->src_rect.width =3D bt->width;
+> =C2=A0		dev->src_rect.height =3D bt->height;
+> -		size =3D V4L2_DV_BT_FRAME_WIDTH(bt) * V4L2_DV_BT_FRAME_HEIGHT(bt);
+> -		if (dev->reduced_fps && can_reduce_fps(bt)) {
+> -			pixelclock =3D div_u64(bt->pixelclock * 1000, 1001);
+> -			bt->flags |=3D V4L2_DV_FL_REDUCED_FPS;
+> -		} else {
+> -			pixelclock =3D bt->pixelclock;
+> -			bt->flags &=3D ~V4L2_DV_FL_REDUCED_FPS;
+> -		}
+> -		dev->timeperframe_vid_cap =3D (struct v4l2_fract) {
+> -			size / 100, (u32)pixelclock / 100
+> -		};
+> +		vivid_update_reduced_fps(dev);
+> =C2=A0		if (bt->interlaced)
+> =C2=A0			dev->field_cap =3D V4L2_FIELD_ALTERNATE;
+> =C2=A0		else
+> diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.h b/drivers/m=
+edia/test-drivers/vivid/vivid-vid-cap.h
+> index 38a99f7e038e..d08a85927510 100644
+> --- a/drivers/media/test-drivers/vivid/vivid-vid-cap.h
+> +++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.h
+> @@ -9,6 +9,7 @@
+> =C2=A0#define _VIVID_VID_CAP_H_
+> =C2=A0
+> =C2=A0void vivid_update_quality(struct vivid_dev *dev);
+> +void vivid_update_reduced_fps(struct vivid_dev *dev);
+> =C2=A0void vivid_update_format_cap(struct vivid_dev *dev, bool keep_contr=
+ols);
+> =C2=A0void vivid_update_outputs(struct vivid_dev *dev);
+> =C2=A0void vivid_update_connected_outputs(struct vivid_dev *dev);
+
+--=-MFHXNgnVoBlBK5lLkYu9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCag29DAAKCRDZQZRRKWBy
+9KUlAP4xQh9YF4/ZLi6iBB7tnLlpMphrE75nnFTFprTGzCtnUAD/biRzXxKeLixV
+vza8zuP129i9xJJp8Yliz2kXqFGkrAc=
+=++18
+-----END PGP SIGNATURE-----
+
+--=-MFHXNgnVoBlBK5lLkYu9--
 
