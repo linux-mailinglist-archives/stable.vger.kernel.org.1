@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-253004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LEBCX0ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:05 +0200
+	id qIIyFsvtDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC89159705E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB1A59372C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2518312CED1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 239B9312CBBE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FCF3FBB5B;
-	Wed, 20 May 2026 18:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA043E314D;
+	Wed, 20 May 2026 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEqiDJh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAWov+Im"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB30331A41;
-	Wed, 20 May 2026 18:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3ED3E2AAD;
+	Wed, 20 May 2026 17:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302152; cv=none; b=Hyn3kkzO8dEaLcP6FqyafKmbtKFdqJmqXPJ/v9MGKgQK03cIevY/u61uoC7zVYbKqlVSeEHDMRL61ZwXYCs8uxDJdOi9OL+nJQc6ryhceBCDk6d+h/oXNrIJX7wQNU3k8r8942J0mq2QYAkx2bHrb3NdO+I2zF+Dj3J/FvAuh90=
+	t=1779296784; cv=none; b=o6uSoY3bleTj+ScOEAaK3s8kWQhqkIGq6uKlHUiIsWeGsB2oI/OxSz1OsBmQDlEkGCGVF6VpJu3+GVt39GhVPHJS1SBytZhz0fyNTSRszfjjHt2LUxatPiACi0jR7qzkeIN0CnhYyNeRQ/fdNxGzmxt1r/5mKhsFY93EgI2NGEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302152; c=relaxed/simple;
-	bh=yvJ51EZ6VZxruXDbxMX/KUd8NlppYJMFdDDbrwARo+8=;
+	s=arc-20240116; t=1779296784; c=relaxed/simple;
+	bh=gC5SwnqJ2YydT9SSmgMdkGrLO44pYBTWMtVEoGMLQtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QodgSo0wFHYfNqEOnQgsbLoyHdlKEkwZw3oxLLgH27kHtFPYgWjA/5nvecCPH45qBtGGHYdtRGKARo0Uea5F15ln+mPoyF1cnIx9WkXsO6Ecch4dEaiPwvsmMoLrnQ+koUPo/HIavO4eHYkrGaZaLuKCRSDYR0z1+0RGDjYoSdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEqiDJh3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71611F000E9;
-	Wed, 20 May 2026 18:35:50 +0000 (UTC)
+	 MIME-Version; b=jmW2nHYZWNt4/4w7b/g1fPXtTDoTV1BeashK6fw2igYURpQ/SdyrRhrZ+MwvXM7twV6GtOIFh1hqYtp081PNsd34NPRj7rLqoWOcyRF2w1e2DYw9f2mdI83V7D+CgcV0TixVbnakjHp6fA0ag6KnlWURXcpWSC8s6h7Jmsa4Kt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAWov+Im; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600DC1F000E9;
+	Wed, 20 May 2026 17:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302151;
-	bh=MOAWjSvTwe1j5aICk5rATl01QRNKNwRmB81MjTEQ5wQ=;
+	s=korg; t=1779296782;
+	bh=u3IO+PD8QT9XzG8cTu3gdMgRlS2Qr7pLKBcxVbOnd/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iEqiDJh3cyBOJMhetnbl9J1yBgSSHHES/p+LY8wt1JEp1w4r1RLU++wexUxKbZz/n
-	 KeyWC2v8mey96DRa5Oo0njqIrjpE26iupm+vPO8zNPyDSS/rIlzJt28VIYUaJExjwe
-	 93GRVY7VbjIRKJkhMkKY47SJsHYUHgqqNtyMsoQM=
+	b=KAWov+ImwqJC6aSnt1n9T0VfPP00jDngbTxZqZPMKHrbbyG9/wtZTNuDImeMeSjik
+	 IVtPTXjonnZyjpWERkwjLMDr2BrnDNiA511bgQSxIdNAz42Ocdi9sLVuR//k5PbE+o
+	 HnVm3lGwr3AVzBRRMmD/8uyvIyt6xoEDSlwACSTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/508] PCI: tegra194: Increase LTSSM poll time on surprise link down
+Subject: [PATCH 7.0 0930/1146] net/sched: netem: only reseed PRNG when seed is explicitly provided
 Date: Wed, 20 May 2026 18:19:40 +0200
-Message-ID: <20260520162102.040240193@linuxfoundation.org>
+Message-ID: <20260520162209.283906621@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,136 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253004-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250978-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: BC89159705E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DBB1A59372C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 74dd8efe4d6cead433162147333af989a568aac7 ]
+[ Upstream commit 986afaf809940577224a99c3a08d97a15eb37e93 ]
 
-On surprise link down, LTSSM state transits from L0 -> Recovery.RcvrLock ->
-Recovery.RcvrSpeed -> Gen1 Recovery.RcvrLock -> Detect. Recovery.RcvrLock
-and Recovery.RcvrSpeed transit times are 24 ms and 48 ms respectively, so
-the total time from L0 to Detect is ~96 ms. Increase the poll timeout to
-120 ms to account for this.
+netem_change() unconditionally reseeds the PRNG on every tc change
+command. If TCA_NETEM_PRNG_SEED is not specified, a new random seed
+is generated, destroying reproducibility for users who set a
+deterministic seed on a previous change.
 
-While at it, add LTSSM state defines for Detect-related states and use them
-in the poll condition. Use readl_poll_timeout() instead of
-readl_poll_timeout_atomic() in tegra_pcie_dw_pme_turnoff() since that path
-runs in non-atomic context.
+Move the initial random seed generation to netem_init() and only
+reseed in netem_change() when TCA_NETEM_PRNG_SEED is explicitly
+provided by the user.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-3-mmaddireddy@nvidia.com
+Fixes: 4072d97ddc44 ("netem: add prng attribute to netem_sched_data")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-4-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 36 +++++++++++++---------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ net/sched/sch_netem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 6a4e0dc0d1dce..db5af8d32d18a 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -139,7 +139,11 @@
- #define APPL_DEBUG_PM_LINKST_IN_L0		0x11
- #define APPL_DEBUG_LTSSM_STATE_MASK		GENMASK(8, 3)
- #define APPL_DEBUG_LTSSM_STATE_SHIFT		3
--#define LTSSM_STATE_PRE_DETECT			5
-+#define LTSSM_STATE_DETECT_QUIET		0x00
-+#define LTSSM_STATE_DETECT_ACT			0x08
-+#define LTSSM_STATE_PRE_DETECT_QUIET		0x28
-+#define LTSSM_STATE_DETECT_WAIT			0x30
-+#define LTSSM_STATE_L2_IDLE			0xa8
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index d400a730eadd1..556f9747f0e73 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -1112,11 +1112,10 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* capping jitter to the range acceptable by tabledist() */
+ 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
  
- #define APPL_RADM_STATUS			0xE4
- #define APPL_PM_XMT_TURNOFF_STATE		BIT(0)
-@@ -205,7 +209,8 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
+-	if (tb[TCA_NETEM_PRNG_SEED])
++	if (tb[TCA_NETEM_PRNG_SEED]) {
+ 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
+-	else
+-		q->prng.seed = get_random_u64();
+-	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++	}
  
--#define LTSSM_TIMEOUT 50000	/* 50ms */
-+#define LTSSM_DELAY_US		10000	/* 10 ms */
-+#define LTSSM_TIMEOUT_US	120000	/* 120 ms */
+ unlock:
+ 	sch_tree_unlock(sch);
+@@ -1139,6 +1138,9 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
+ 		return -EINVAL;
  
- #define GEN3_GEN4_EQ_PRESET_INIT	5
- 
-@@ -1627,15 +1632,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 		data &= ~APPL_CTRL_LTSSM_EN;
- 		writel(data, pcie->appl_base + APPL_CTRL);
- 
--		err = readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG,
--						data,
--						((data &
--						APPL_DEBUG_LTSSM_STATE_MASK) >>
--						APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--						LTSSM_STATE_PRE_DETECT,
--						1, LTSSM_TIMEOUT);
-+		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT),
-+			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 		if (err)
--			dev_info(pcie->dev, "Link didn't go to detect state\n");
-+			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
- 	}
- 	/*
- 	 * DBI registers may not be accessible after this as PLL-E would be
-@@ -1723,12 +1727,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	appl_writel(pcie, val, APPL_CTRL);
- 
- 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
--				 ((val & APPL_DEBUG_LTSSM_STATE_MASK) >>
--				 APPL_DEBUG_LTSSM_STATE_SHIFT) ==
--				 LTSSM_STATE_PRE_DETECT,
--				 1, LTSSM_TIMEOUT);
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT) ||
-+		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_L2_IDLE),
-+		LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
+ 	q->loss_model = CLG_RANDOM;
++	q->prng.seed = get_random_u64();
++	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++
+ 	ret = netem_change(sch, opt, extack);
  	if (ret)
--		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
-+		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
- 
- 	reset_control_assert(pcie->core_rst);
- 
+ 		pr_info("netem: change failed\n");
 -- 
 2.53.0
 
