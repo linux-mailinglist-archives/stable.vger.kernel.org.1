@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLSYKxUmDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:29 +0200
+	id aKecOtP9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FDF59AC32
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F881596666
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9C21347873C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1281935AFA3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E01737DE8A;
-	Wed, 20 May 2026 18:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5997B3F44C9;
+	Wed, 20 May 2026 17:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hG5jT7oZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11GtN+5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E267E347515;
-	Wed, 20 May 2026 18:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104453F23CC;
+	Wed, 20 May 2026 17:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301148; cv=none; b=nG3dmFhH+/bzzqW5qEwoxA4bX25JLVnnYLcuXGi3ZVfpI9G2LJbmq8HRAmoPUcxMqOaDMe4+HdRPxIT/5XdbXBiqgz7OW0PDgti9DnJKzBbvZOPt1wIFojUfq1HMuR6nEl/tGx61PFpMKcg/5Vdt69mUQeZc6z70n3lagMXKru0=
+	t=1779299441; cv=none; b=onpvt7c+zsaDlQCzpF/jil/V0dHYT4QbFdvwBd4dqgF5OzVNLGF2ZnwApz1TegJtK2ttV9C5YN3+yMWzz45x8DYG138VEx66wCplaKTgS2TqoqMBljN0eRbbuLPRfY5RREvfM88vX3PxywqAewX089uB/QB20CcwdZ1/hjQJ0Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301148; c=relaxed/simple;
-	bh=w/d3Le4xsE9S9jJyOnxcYWFRHgVH14aSJu8Q2FvhkAg=;
+	s=arc-20240116; t=1779299441; c=relaxed/simple;
+	bh=eJR4pG3vQBGrcZBUk5nV9QyE5J/9HNo339xQaFGSRX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xob2IIP6Hxxhv6CkgsaLrA90Cr6TzN5VB1Xk6kLF4FvHkx/YBhQdLDyM/9wjJEiS78s/AnO5fbqzWq/jQQqMrrehwvJO3je0imxU2A92OyLSfjXYnk+ox+UXfFpcAI09XpLNfazXBv6b2q/mPhMUWluwVAwHraOI/sW15//sEP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hG5jT7oZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023FE1F000E9;
-	Wed, 20 May 2026 18:19:05 +0000 (UTC)
+	 MIME-Version; b=JuLDXC3AraFBcx4QIBhTIQywM7iByBsWGRYjh58py68y+4YDNC8EJv8hQEdlYgsqnH54Q45lFkwVIg8cCpdXwpE2B2NOacC9LTLDWQTjCXz6ezd4tXNo8/GVfq1imJMUm6qG06EYMjdN0nN7QFQIsMffGrd/xzRwyEgKCQQOCy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11GtN+5W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751B21F000E9;
+	Wed, 20 May 2026 17:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301146;
-	bh=8JYREuzL1OuzzIo+vSAyaWr+OyXXEH3Pt4kOC3guJ90=;
+	s=korg; t=1779299440;
+	bh=oPwj3EicaAZDDOokecdaoTQQvlG4Vm4DOtUujVW1ucM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hG5jT7oZKmfQTW7C/CtoPV7uyHVeCVXoxkpSNzO8VUB42KMpanJiDJub/+zO64kU7
-	 jndtGnapQekb1/Tg90h62e6Jc90AT1EOVFjiaRVnugM1jSMrAtZnO4llaX3JpLm6Dr
-	 R1vtE0/5bWpSWY23zmUHV+pfra+2kmbzaVoZVGXU=
+	b=11GtN+5WNbulQ55xlJnAt+5n526bZOuSgpfXrZgGu81mEGvv+Tt1+m5WHV2X1peQi
+	 A7xzJcCgA1d4oUuf7rBXcvv7445x1rfGfH3YwvEkCVCd7k6jN2FKQgpdPX/Kz5PXPG
+	 3w6LXVlwSSAHylxNwRN+8GmuZY48CY3ba6b2gG+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 445/666] macvlan: fix macvlan_get_size() not reserving space for IFLA_MACVLAN_BC_CUTOFF
+Subject: [PATCH 6.18 773/957] net: airoha: Do not wake all netdev TX queues in airoha_qdma_wake_netdev_txqs()
 Date: Wed, 20 May 2026 18:20:56 +0200
-Message-ID: <20260520162120.915519891@linuxfoundation.org>
+Message-ID: <20260520162151.325337538@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,81 +73,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252618-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251984-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,msgid.link:url]
-X-Rspamd-Queue-Id: 40FDF59AC32
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7F881596666
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit fa92a77b0ed4d5f11a71665a232ac5a54a4b055d ]
+[ Upstream commit e070aac63b42bf81f4dc565f9f841ff47e6c992f ]
 
-macvlan_get_size() does not account for IFLA_MACVLAN_BC_CUTOFF, but
-macvlan_fill_info() conditionally includes it when port->bc_cutoff != 1.
-This causes nla_put_s32() to fail with -EMSGSIZE when the netlink skb
-runs out of space, triggering a WARN_ON in rtnetlink and preventing the
-interface from being dumped.
+Do not wake every netdev TX queue across all ports sharing the QDMA
+running netif_tx_wake_all_queues routine in airoha_qdma_wake_netdev_txqs()
+but only the ones that are mapped the specific QDMA stopped hw TX queue.
+This patch can potentially avoid waking already stopped netdev TX queues
+that are mapped to a different QDMA hw TX queue.
+Introduce airoha_qdma_get_txq utility routine.
 
-The bug can be reproduced with:
-
-  ip link add macvlan0 link eth0 type macvlan mode bridge
-  ip link set macvlan0 type macvlan bc_cutoff 0
-  ip -d link show macvlan0   # fails with -EMSGSIZE
-
-The bc_cutoff feature was added in commit 954d1fa1ac93 ("macvlan: Add
-netlink attribute for broadcast cutoff"), which added the nla_put_s32()
-call in macvlan_fill_info() but missed adding the corresponding
-nla_total_size(4) in macvlan_get_size(). A follow-up commit
-55cef78c244d ("macvlan: add forgotten nla_policy for
-IFLA_MACVLAN_BC_CUTOFF") fixed the missing nla_policy entry but still
-did not fix the size calculation.
-
-Fixes: 954d1fa1ac93 ("macvlan: Add netlink attribute for broadcast cutoff")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260413085349.73977-1-phx0fer@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b94769eb2f30 ("net: airoha: Fix possible TX queue stall in airoha_qdma_tx_napi_poll()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260421-airoha-wake_netdev_txqs-optmization-v1-1-e0be95115d53@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/airoha/airoha_eth.c | 19 +++++++++++++++----
+ drivers/net/ethernet/airoha/airoha_eth.h |  5 +++++
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index b43a1221a5908..e778367c1d296 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1678,6 +1678,7 @@ static size_t macvlan_get_size(const struct net_device *dev)
- 		+ macvlan_get_size_mac(vlan) /* IFLA_MACVLAN_MACADDR */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN */
- 		+ nla_total_size(4) /* IFLA_MACVLAN_BC_QUEUE_LEN_USED */
-+		+ nla_total_size(4) /* IFLA_MACVLAN_BC_CUTOFF */
- 		);
- }
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 9691b4134285f..7d7f2bf6172a3 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -878,13 +878,24 @@ static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
+ {
+ 	struct airoha_qdma *qdma = q->qdma;
+ 	struct airoha_eth *eth = qdma->eth;
+-	int i;
++	int i, qid = q - &qdma->q_tx[0];
  
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
++		int j;
++
++		if (!port)
++			continue;
+ 
+-		if (port && port->qdma == qdma)
+-			netif_tx_wake_all_queues(port->dev);
++		if (port->qdma != qdma)
++			continue;
++
++		for (j = 0; j < port->dev->num_tx_queues; j++) {
++			if (airoha_qdma_get_txq(qdma, j) != qid)
++				continue;
++
++			netif_wake_subqueue(port->dev, j);
++		}
+ 	}
+ 	q->txq_stopped = false;
+ }
+@@ -2018,7 +2029,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	u16 index;
+ 	u8 fport;
+ 
+-	qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx);
++	qid = airoha_qdma_get_txq(qdma, skb_get_queue_mapping(skb));
+ 	tag = airoha_get_dsa_tag(skb, dev);
+ 
+ 	msg0 = FIELD_PREP(QDMA_ETH_TXMSG_CHAN_MASK,
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index abd996492cb7f..33277cc577990 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -627,6 +627,11 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 mask, u32 val);
+ #define airoha_qdma_clear(qdma, offset, val)			\
+ 	airoha_rmw((qdma)->regs, (offset), (val), 0)
+ 
++static inline u16 airoha_qdma_get_txq(struct airoha_qdma *qdma, u16 qid)
++{
++	return qid % ARRAY_SIZE(qdma->q_tx);
++}
++
+ static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
+ {
+ 	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
 -- 
 2.53.0
 
