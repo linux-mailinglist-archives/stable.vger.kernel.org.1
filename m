@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPdSDXbwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:42 +0200
+	id KG7kDDr7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C1D593F45
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB43595CFC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 659193070CF0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 61DCF30CB872
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFF736A366;
-	Wed, 20 May 2026 16:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9524C3F6619;
+	Wed, 20 May 2026 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ej35Iua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9mSQjzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9895A375ACB;
-	Wed, 20 May 2026 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143C83E95A4;
+	Wed, 20 May 2026 18:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295969; cv=none; b=DxcvP5tQl3IJRQMhWL5Om97qZZi6S2TgXeMSzifflQgqbHQNWCRZWy4o7c/WjMdqM6N0cjn7hHo/Y0InemiIWznhqbCBF9lRUonz4moCqsThmNuCAvynCGtJqRxxTSJjGSAqi9POUp4w+QZH7V7Gv4aAj5ln8tMB/2Hk1ikaX4g=
+	t=1779300090; cv=none; b=R6BW6u/vkzrWW9OsxvELKzRsljFZtN3ZEuzawuQnCoOdef0rKC+Qkq8DIegMLkLZFub+ixcaHowrLTHPKZMLhtBgeBOKwPmWz8UpByjHJnZ/uyUy0PXcxWkD5yvGiOM6Ybj9ANQyweCySFAtqr78WY33fFmOhq1qZzXFCh4s6Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295969; c=relaxed/simple;
-	bh=OxMaLyYF9XlM0xbgJl3CPGMvTWd84Fz09a0bTbc+RJE=;
+	s=arc-20240116; t=1779300090; c=relaxed/simple;
+	bh=QJfb90qmd4TR5evsvZm6BjdU523Y+9kIiVq+f16o4HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FG956FVMTmRHKtZBeyqKDiKqXsGgMBkdHhMQ4ZV1dhzBfec8lLGjODxOjTW5gin8OoH4iRFhDgOj9j978zfpPMks8axQC8LCWBjyhgMe0pkQ3bY9u/jPEKiP8PMj+2WWjN2TcBu7XabUItd2hVnseOFMoBwt9zfRhEyO/KCw4UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ej35Iua; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E831F00893;
-	Wed, 20 May 2026 16:52:47 +0000 (UTC)
+	 MIME-Version; b=Uxr8NDStFx3gkGqBohpNvbiqL5nm7hIbg6nU/0NjaPAMn0IP1RPvusBTxuVSQrG8/gAdcVpP5nbhB0ASOZBVM60aExEsrIFdlz/AssnmRzPL2ZgtiZ0ewbFM3ev/aN1Pa6sNiaJYV0P06ege+EhaGFSx/zpkADUZZxqkjpPFOsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9mSQjzD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273A71F000E9;
+	Wed, 20 May 2026 18:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295968;
-	bh=B4WTfLDTBEA9MPDiMFG/ololhJymYIkxM6ro5UbMFv8=;
+	s=korg; t=1779300087;
+	bh=Iv/lFLNbm+jhGpP1j81wnghSxTPfXoikBpPdrlfIQPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1Ej35IuavPra00iKMHZG2SORh7mfSgPkvQK6gyqjVsuuLn7c7jrU/cGHV5MYCsBdD
-	 xo+53GpBH4/DfepStzVYeq4RZ1bUoyn8rNbaYayrIMKNQ53CtMrl5GHxETp8UC8SES
-	 s/mGRtMx0VMqlzwEReQVgqHcMWK8XEGQoYpVO+KE=
+	b=a9mSQjzDgZtzE3usc24vHf+lVvXmH4gGX82Twtsd1unrCY3ZMS9lmi9aV8lPiXLzy
+	 BBi4mIvhwj+ymx4Nc3FuQasQ76vtR9IOWEHuGefBenCtmV73FrRcPACPqlZhRS6hhZ
+	 JdpLQaFNGotONO4Q8RuuEnRGuVqNR32IDGWaCcH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Leon Yen <leon.yen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0604/1146] ext4: fix miss unlock sb->s_umount in extents_kunit_init()
+Subject: [PATCH 6.12 043/666] wifi: mt76: mt7925: Fix incorrect MLO mode in firmware control
 Date: Wed, 20 May 2026 18:14:14 +0200
-Message-ID: <20260520162201.848335554@linuxfoundation.org>
+Message-ID: <20260520162112.173206885@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +64,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250653-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,linux.ibm.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252213-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 32C1D593F45
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mediatek.com:email,nbd.name:email]
+X-Rspamd-Queue-Id: BFB43595CFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit 5941a072d48841255005e3a5b5a620692d81d1a7 ]
+[ Upstream commit 1695f662329faa07c860c73453c097823852df28 ]
 
-There's warning as follows when do ext4 kunit test:
-WARNING: kunit_try_catch/15923 still has locks held!
-7.0.0-rc3-next-20260309-00028-g73f965a1bbb1-dirty #281 Tainted: G            E    N
-1 lock held by kunit_try_catch/15923:
- #0: ffff888139f860e0 (&type->s_umount_key#70/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x172/0xa90
-Call Trace:
- <TASK>
- dump_stack_lvl+0x180/0x1b0
- debug_check_no_locks_held+0xc8/0xd0
- do_exit+0x1502/0x2b20
- kthread+0x3a9/0x540
- ret_from_fork+0xa76/0xdf0
- ret_from_fork_asm+0x1a/0x30
+The selection of MLO mode should depend on the capabilities of the STA
+rather than those of the peer AP to avoid compatibility issues with
+certain APs, such as Xiaomi BE5000 WiFi7 router.
 
-As sget() will return 'sb' which holds 's->s_umount' lock. However,
-"extents-test" miss unlock this lock.
-So unlock 's->s_umount' in the end of extents_kunit_init().
-
-Fixes: cb1e0c1d1fad ("ext4: kunit tests for extent splitting and conversion")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20260330133035.287842-2-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 69acd6d910b0c ("wifi: mt76: mt7925: add mt7925_change_vif_links")
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Link: https://patch.msgid.link/20251211123836.4169436-1-leon.yen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c   | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c    | 9 ++++++---
+ drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h | 4 ++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/extents-test.c b/fs/ext4/extents-test.c
-index 5496b2c8e2cd3..82c59291e0458 100644
---- a/fs/ext4/extents-test.c
-+++ b/fs/ext4/extents-test.c
-@@ -309,6 +309,8 @@ static int extents_kunit_init(struct kunit *test)
- 	kunit_activate_static_stub(test, ext4_ext_zeroout, ext4_ext_zeroout_stub);
- 	kunit_activate_static_stub(test, ext4_issue_zeroout,
- 				   ext4_issue_zeroout_stub);
-+	up_write(&sb->s_umount);
-+
- 	return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 59d4357819eda..5fc95c8623647 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -535,7 +535,7 @@ static int mt7925_set_mlo_roc(struct mt792x_phy *phy,
+ 
+ 	phy->roc_grant = false;
+ 
+-	err = mt7925_mcu_set_mlo_roc(mconf, sel_links, 5, ++phy->roc_token_id);
++	err = mt7925_mcu_set_mlo_roc(phy, mconf, sel_links, 5, ++phy->roc_token_id);
+ 	if (err < 0) {
+ 		clear_bit(MT76_STATE_ROC, &phy->mt76->state);
+ 		goto out;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 0e7ea02574de0..1f113a618515e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1245,8 +1245,8 @@ int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
+ 	return mt76_mcu_skb_send_msg(dev, skb, mcu_cmd, true);
  }
  
+-int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+-			   int duration, u8 token_id)
++int mt7925_mcu_set_mlo_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
++			   u16 sel_links, int duration, u8 token_id)
+ {
+ 	struct mt792x_vif *mvif = mconf->vif;
+ 	struct ieee80211_vif *vif = container_of((void *)mvif,
+@@ -1281,6 +1281,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+ 			.roc[1].len = cpu_to_le16(sizeof(struct roc_acquire_tlv))
+ 	};
+ 
++	struct wiphy *wiphy = phy->mt76->hw->wiphy;
++
+ 	if (!mconf || hweight16(vif->valid_links) < 2 ||
+ 	    hweight16(sel_links) != 2)
+ 		return -EPERM;
+@@ -1303,7 +1305,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+ 		is_AG_band |= links[i].chan->band == NL80211_BAND_2GHZ;
+ 	}
+ 
+-	if (vif->cfg.eml_cap & IEEE80211_EML_CAP_EMLSR_SUPP)
++	if (!(wiphy->iftype_ext_capab[0].mld_capa_and_ops &
++	      IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS))
+ 		type = is_AG_band ? MT7925_ROC_REQ_MLSR_AG :
+ 				    MT7925_ROC_REQ_MLSR_AA;
+ 	else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index 27680ad28b600..bc8d38782a81a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -324,8 +324,8 @@ int mt7925_set_tx_sar_pwr(struct ieee80211_hw *hw,
+ int mt7925_mcu_regval(struct mt792x_dev *dev, u32 regidx, u32 *val, bool set);
+ int mt7925_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 		       enum environment_cap env_cap);
+-int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+-			   int duration, u8 token_id);
++int mt7925_mcu_set_mlo_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
++			   u16 sel_links, int duration, u8 token_id);
+ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 		       struct ieee80211_channel *chan, int duration,
+ 		       enum mt7925_roc_req type, u8 token_id);
 -- 
 2.53.0
 
