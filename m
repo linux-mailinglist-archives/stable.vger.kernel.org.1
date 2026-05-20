@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-253126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNahLawNDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:20 +0200
+	id IJfFLa8nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6BC598870
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C859AE8C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 141BE315B2B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73EFD3663F4B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DA64028E0;
-	Wed, 20 May 2026 18:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1CF3F8706;
+	Wed, 20 May 2026 18:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkmVzATy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I89wszfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AE13FB072;
-	Wed, 20 May 2026 18:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C356A3BE64B;
+	Wed, 20 May 2026 18:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302473; cv=none; b=NrDYoYgsoV8oAIJK3Zra40ThTN1xWSn8Mi4beq/Pu2ddv1+t+/wHNqn4rqFwPSrR47F+Te/L5E6PAqOEiaJxO9ESCx3BHAQCklZ0ndJWQNbNnWzRSZOj+ptfxpz6egkMd9E5yCJIBB0uuau11DVTWOcrJT6J+bjO2yD1ehjq0S8=
+	t=1779301273; cv=none; b=jFiR31Q4FmQqpgeHW7BKTFfp2XSUwqY67Urv9LQO0XM6zM50TcwFXgsTOistK5AKRvUqxgkmsCP7o95gOo5O1KBP1QsYfvh+ASIDWy+0MtYLHdTvY5gW7PxuHHziKLrdhs3veui16L5mcNq9Ut5VtxF9VyS0otKneEvGHT4dIMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302473; c=relaxed/simple;
-	bh=/4vuc370thoBnFIe3Q/64LDXRvLeji184SwNrO9INnU=;
+	s=arc-20240116; t=1779301273; c=relaxed/simple;
+	bh=apJrqdEMFGiHLeXSfgZiI4Qq3auqS2UFiKEXpExbv/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U03zkydaMQbUw2rlzAO9jtTbWRI3xfUk6ow0+ct06nJf3Ae7gxmLn478C5xfLxDZBdteJbh0n9mp1rGsS6B+DPGXvsb+F5pI46x+2U2ksycjNvTuoZ4E3thPU3SyGuGQ/8t2bhB8U4nV9fW6D8YLBsV+i6lnH5MBMcsN8eXhfEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkmVzATy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED521F000E9;
-	Wed, 20 May 2026 18:41:11 +0000 (UTC)
+	 MIME-Version; b=tzT2UKfWaL8L8Gxt2MksOn+/V2DZOJZJiHqS+mKAK+YLsn4zLpfX1CO3F8NXl65+i4P/Z1v69lo9doBFvB+wZVnPU2CD8ax3YYgIjCtFY0Kv8uYCslvE2mBM0jbce7yEXgGTKUTbOJG3NMJOn/DFNc+RQXtPIRA0dDpsbnVGluo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I89wszfA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C03B1F00893;
+	Wed, 20 May 2026 18:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302472;
-	bh=q+6qMliBYdvYN1FAZloUe9JJYNqLCUOtn+P/gps3hvE=;
+	s=korg; t=1779301272;
+	bh=3V9GqY/RTJHxdEaoxzeRwgFHiYX0ftuXyxyQHcc+UKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KkmVzATyAKm/O5+Vu15RjDsJ8V8IvPWclFmHbsEwaklJN0c+Y7CuyanY5BTlyVf1R
-	 /II07Qhc2X51j0Fz1s+R+Ty71h8Tve1t8mzuH2zQfdrR5LcW1IQUutBjbeo3+Otz6O
-	 ht4SmJo6PJbLYK8Om3o6xMKTYUcDdyPcpluzeoTA=
+	b=I89wszfAcHKX95TYgeiNCIHqTcfYEk1xxVRhSzu53t2DT68IgXN++NdsbHxo+QX0R
+	 wazdAy36fjrQuyKE89DOWa9bwr/Z+7onXDwjX0xYopMcaNocPiI6zf3t/9mtHD3xTR
+	 vGo4y9PuRa1dd4z6uBPGeb8db3aw29M9wEUwNxLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/508] clk: qcom: gcc-sc8180x: Use retention for USB power domains
-Date: Wed, 20 May 2026 18:21:43 +0200
-Message-ID: <20260520162104.711124133@linuxfoundation.org>
+Subject: [PATCH 6.12 493/666] virtio_net: Fix endian with virtio_net_ctrl_rss
+Date: Wed, 20 May 2026 18:21:44 +0200
+Message-ID: <20260520162121.947625931@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,13 +72,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253126-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252666-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -84,81 +86,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CD6BC598870
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,daynix.com:email]
+X-Rspamd-Queue-Id: 1E3C859AE8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
+[ Upstream commit 97841341e302eac13d54eb5e968570b5626196a7 ]
 
-The USB subsystem does not expect to lose its state on suspend:
+Mark the fields of struct virtio_net_ctrl_rss as little endian as
+they are in struct virtio_net_rss_config, which it follows.
 
-    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
-    usb usb1: root hub lost power or was reset
-
-(The reinitialization usually succeeds, but it does slow down resume.)
-
-To maintain state during suspend, the relevant GDSCs need to stay in
-retention mode, like they do on other similar SoCs. Change the mode to
-PWRSTS_RET_ON to fix.
-
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20250321-virtio-v2-2-33afb8f4640b@daynix.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3bc06da858ef ("virtio_net: sync rss_trailer.max_tx_vq on queue_pairs change via VQ_PAIRS_SET")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/virtio_net.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index 08011db603503..889c1ab6d63f2 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4105,7 +4105,7 @@ static struct gdsc usb30_sec_gdsc = {
- 	.pd = {
- 		.name = "usb30_sec_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 5c83983f0eb3f..05b50a4626b85 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -373,15 +373,15 @@ struct receive_queue {
+  */
+ #define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+ struct virtio_net_ctrl_rss {
+-	u32 hash_types;
+-	u16 indirection_table_mask;
+-	u16 unclassified_queue;
+-	u16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
+-	u16 max_tx_vq;
++	__le32 hash_types;
++	__le16 indirection_table_mask;
++	__le16 unclassified_queue;
++	__le16 hash_cfg_reserved; /* for HASH_CONFIG (see virtio_net_hash_config for details) */
++	__le16 max_tx_vq;
+ 	u8 hash_key_length;
+ 	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+ 
+-	u16 *indirection_table;
++	__le16 *indirection_table;
  };
  
-@@ -4123,7 +4123,7 @@ static struct gdsc usb30_prim_gdsc = {
- 	.pd = {
- 		.name = "usb30_prim_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+ /* Control VQ buffers: protected by the rtnl lock */
+@@ -3477,9 +3477,9 @@ static void virtnet_rss_update_by_qpairs(struct virtnet_info *vi, u16 queue_pair
  
-@@ -4195,7 +4195,7 @@ static struct gdsc usb30_mp_gdsc = {
- 	.pd = {
- 		.name = "usb30_mp_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+ 	for (; i < vi->rss_indir_table_size; ++i) {
+ 		indir_val = ethtool_rxfh_indir_default(i, queue_pairs);
+-		vi->rss.indirection_table[i] = indir_val;
++		vi->rss.indirection_table[i] = cpu_to_le16(indir_val);
+ 	}
+-	vi->rss.max_tx_vq = queue_pairs;
++	vi->rss.max_tx_vq = cpu_to_le16(queue_pairs);
+ }
  
+ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+@@ -3998,10 +3998,10 @@ static bool virtnet_commit_rss_command(struct virtnet_info *vi)
+ 
+ static void virtnet_init_default_rss(struct virtnet_info *vi)
+ {
+-	vi->rss.hash_types = vi->rss_hash_types_supported;
++	vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_supported);
+ 	vi->rss_hash_types_saved = vi->rss_hash_types_supported;
+ 	vi->rss.indirection_table_mask = vi->rss_indir_table_size
+-						? vi->rss_indir_table_size - 1 : 0;
++						? cpu_to_le16(vi->rss_indir_table_size - 1) : 0;
+ 	vi->rss.unclassified_queue = 0;
+ 
+ 	virtnet_rss_update_by_qpairs(vi, vi->curr_queue_pairs);
+@@ -4119,7 +4119,7 @@ static bool virtnet_set_hashflow(struct virtnet_info *vi, struct ethtool_rxnfc *
+ 
+ 	if (new_hashtypes != vi->rss_hash_types_saved) {
+ 		vi->rss_hash_types_saved = new_hashtypes;
+-		vi->rss.hash_types = vi->rss_hash_types_saved;
++		vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		if (vi->dev->features & NETIF_F_RXHASH)
+ 			return virtnet_commit_rss_command(vi);
+ 	}
+@@ -5291,7 +5291,7 @@ static int virtnet_get_rxfh(struct net_device *dev,
+ 
+ 	if (rxfh->indir) {
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			rxfh->indir[i] = vi->rss.indirection_table[i];
++			rxfh->indir[i] = le16_to_cpu(vi->rss.indirection_table[i]);
+ 	}
+ 
+ 	if (rxfh->key)
+@@ -5319,7 +5319,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
+ 			return -EOPNOTSUPP;
+ 
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+-			vi->rss.indirection_table[i] = rxfh->indir[i];
++			vi->rss.indirection_table[i] = cpu_to_le16(rxfh->indir[i]);
+ 		update = true;
+ 	}
+ 
+@@ -5945,9 +5945,9 @@ static int virtnet_set_features(struct net_device *dev,
+ 
+ 	if ((dev->features ^ features) & NETIF_F_RXHASH) {
+ 		if (features & NETIF_F_RXHASH)
+-			vi->rss.hash_types = vi->rss_hash_types_saved;
++			vi->rss.hash_types = cpu_to_le32(vi->rss_hash_types_saved);
+ 		else
+-			vi->rss.hash_types = VIRTIO_NET_HASH_REPORT_NONE;
++			vi->rss.hash_types = cpu_to_le32(VIRTIO_NET_HASH_REPORT_NONE);
+ 
+ 		if (!virtnet_commit_rss_command(vi))
+ 			return -EINVAL;
 -- 
 2.53.0
 
