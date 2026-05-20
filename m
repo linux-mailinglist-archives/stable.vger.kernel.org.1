@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-250282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YB6AGsnlDWpz4gUAu9opvQ
-	(envelope-from <stable+bounces-250282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:09 +0200
+	id sI/OMj4YDmp96AUAu9opvQ
+	(envelope-from <stable+bounces-251218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEB5592773
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5647359985C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6462A30C910F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 423C530E0650
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6BA375ACB;
-	Wed, 20 May 2026 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEB63DC4DA;
+	Wed, 20 May 2026 17:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6bWeJe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKFzaFJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAA02BE02A;
-	Wed, 20 May 2026 16:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB13332EBD;
+	Wed, 20 May 2026 17:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295004; cv=none; b=kPBcUT7qU69/TUMRH46vlqHUppKR3gQMBhj9fWgc8OtOE5xBgRFVbpuEm8udoeonmo+aWxIHC2dzNkeK176ln59h+C6ALPVhligr1ugsGBPw1LZoCE4jtC3WCnEZEglFewgZzU9rU1TmDgEWdVkdfwZodUVdMesZp2EdO/V1Y0s=
+	t=1779297408; cv=none; b=KDmpkb3qOp5ZPKT7uhqE7FBC1x4MN5oa+Vq36xucpL7JsLI7atzk3yBtlm+JzbMWWFybNQKFwbxMYTHkbajBjJloV+/nyMzE2HXZooeZ/jvFnZPyM/eS+039Jk+j7nJABDuRuepiQl4OQVsqLWmK5h55yGDL+3M7Bb841PfOGHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295004; c=relaxed/simple;
-	bh=33Ue2V5mzN1HE11nIZ98i1Ax9aEfJDB2970OHyZ38Qs=;
+	s=arc-20240116; t=1779297408; c=relaxed/simple;
+	bh=NgM3iB9rZtIZhO7aN4N8vQS/8kjPJqwfIi3oSEpI8J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZx5ZIYgumYjs7Dwt/36K2u6/rOI1G3Hi6b+Gks1QqVQEohKoWBcKXQCdM3lid0CU2RmTVufdrrzzzWbLTAvi4rU0/d4lphbLYDpZ9OJUJK8vgkl74z49ZqhLutXDB2brBhj3++cpQ8jFvi30liU99CEaKXlfN+QTO56EduofJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6bWeJe8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBBD1F000E9;
-	Wed, 20 May 2026 16:36:42 +0000 (UTC)
+	 MIME-Version; b=Jpq/PVJUh6ah4D+spdi3BrE/Cm5w5/7wocW4/UXaqKnhCiROOh/W3EgChvfZ449lBEhboUev47N6KKQPSh1kRWrnWsWog29auiIgWjncMr31G46uatVesC2AtLpXfQd373egb+a0MEeVdNK3ef0X+9UudKywX0zK9MZS4UvNxYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKFzaFJM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25791F000E9;
+	Wed, 20 May 2026 17:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295003;
-	bh=n+NRfc11Esc1bXe4htvh1rQuTpf/FRlcD5p1HbdzX3k=;
+	s=korg; t=1779297407;
+	bh=0e53QNlgg73VVJ3bx/yqum8PqM6piNUmKf3+zCwh3Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d6bWeJe8Ej7w+xFZgBCeROzQcD0pt705EGTajlFS3q31KIS/Yz/KugDzE5j/U5s7D
-	 kYIMvAMh39EHgBMLjr4CEwu+jhh0V+Zre5qSPnYgDiaz8FA/L8JmCOQ/IZd6MXCVR6
-	 tzYw3Q6poE7hxvif6sAIe2tcCkY7OeqSAnkJWoCw=
+	b=tKFzaFJMoX3T/PXjo+wabY/5vTSyv6vZURXCIxVO6fkq/M0wsK1Bm7uWjVAE9AS9R
+	 FkC1T/H4U2y/SaBlH1B9U6iLq656rz0IBcpgL9kxyU+XMOX1aE8xjy/rhFfiBuxsxp
+	 SBuaxoTG0k+788QtSF573uWM1CGCYnEcgugAwM0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0252/1146] dm cache: fix write hang in passthrough mode
-Date: Wed, 20 May 2026 18:08:22 +0200
-Message-ID: <20260520162153.937683558@linuxfoundation.org>
+Subject: [PATCH 6.18 020/957] ACPI: x86: cmos_rtc: Clean up address space handler driver
+Date: Wed, 20 May 2026 18:08:23 +0200
+Message-ID: <20260520162134.998563159@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,119 +65,177 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251218-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250282-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1FEB5592773
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 5647359985C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 4ca8b8bd952df7c3ccdc68af9bd3419d0839a04b ]
+[ Upstream commit ba0b236736dde4059bdcb8e99beaa50d6e5b6e7e ]
 
-The invalidate_remove() function has incomplete logic for handling write
-hit bios after cache invalidation. It sets up the remapping for the
-overwrite_bio but then drops it immediately without submission, causing
-write operations to hang.
+Make multiple changes that do not alter functionality to the CMOS RTC
+ACPI address space handler driver, including the following:
 
-Fix by adding a new invalidate_committed() continuation that submits
-the remapped writes to the cache origin after metadata commit completes,
-while using the overwrite_endio hook to ensure proper completion
-sequencing. This maintains existing coherency. Also improve error
-handling in invalidate_complete() to preserve the original error status
-instead of using bio_io_error() unconditionally.
+ - Drop the unused .detach() callback from cmos_rtc_handler.
 
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+ - Rename acpi_cmos_rtc_attach_handler() to acpi_cmos_rtc_attach().
+
+ - Rearrange acpi_cmos_rtc_space_handler() to reduce the number of
+   redundant checks and make white space follow the coding style.
+
+ - Adjust an error message in acpi_install_cmos_rtc_space_handler()
+   and make the white space follow the coding style.
+
+ - Rearrange acpi_remove_cmos_rtc_space_handler() and adjust an error
+   message in it.
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5094429.31r3eYUQgx@rafael.j.wysocki
+Stable-dep-of: 6cee29ad9d7e ("ACPI: x86: cmos_rtc: Improve coordination with ACPI TAD driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/acpi/x86/cmos_rtc.c | 61 +++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index b608e88acd511..d3ef88b859ab3 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1467,8 +1467,14 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 			free_prison_cell(cache, mg->cell);
- 	}
+diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
+index 51643ff6fe5fc..977234da9fc11 100644
+--- a/drivers/acpi/x86/cmos_rtc.c
++++ b/drivers/acpi/x86/cmos_rtc.c
+@@ -24,31 +24,35 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
+ 	{}
+ };
  
--	if (!success && mg->overwrite_bio)
--		bio_io_error(mg->overwrite_bio);
-+	if (mg->overwrite_bio) {
-+		// Set generic error if the bio hasn't been issued yet,
-+		// e.g., invalidation or metadata commit failed before bio
-+		// submission. Otherwise preserve the bio's own error status.
-+		if (!success && !mg->overwrite_bio->bi_status)
-+			mg->overwrite_bio->bi_status = BLK_STS_IOERR;
-+		bio_endio(mg->overwrite_bio);
+-static acpi_status
+-acpi_cmos_rtc_space_handler(u32 function, acpi_physical_address address,
+-		      u32 bits, u64 *value64,
+-		      void *handler_context, void *region_context)
++static acpi_status acpi_cmos_rtc_space_handler(u32 function,
++					       acpi_physical_address address,
++					       u32 bits, u64 *value64,
++					       void *handler_context,
++					       void *region_context)
+ {
+-	int i;
++	unsigned int i, bytes = DIV_ROUND_UP(bits, 8);
+ 	u8 *value = (u8 *)value64;
+ 
+ 	if (address > 0xff || !value64)
+ 		return AE_BAD_PARAMETER;
+ 
+-	if (function != ACPI_WRITE && function != ACPI_READ)
+-		return AE_BAD_PARAMETER;
++	guard(spinlock_irq)(&rtc_lock);
++
++	if (function == ACPI_WRITE) {
++		for (i = 0; i < bytes; i++, address++, value++)
++			CMOS_WRITE(*value, address);
+ 
+-	spin_lock_irq(&rtc_lock);
++		return AE_OK;
 +	}
  
- 	free_migration(mg);
- 	defer_bios(cache, &bios);
-@@ -1508,6 +1514,22 @@ static int invalidate_cblock(struct cache *cache, dm_cblock_t cblock)
- 	return r;
+-	for (i = 0; i < DIV_ROUND_UP(bits, 8); ++i, ++address, ++value)
+-		if (function == ACPI_READ)
++	if (function == ACPI_READ) {
++		for (i = 0; i < bytes; i++, address++, value++)
+ 			*value = CMOS_READ(address);
+-		else
+-			CMOS_WRITE(*value, address);
+ 
+-	spin_unlock_irq(&rtc_lock);
++		return AE_OK;
++	}
+ 
+-	return AE_OK;
++	return AE_BAD_PARAMETER;
  }
  
-+static void invalidate_committed(struct work_struct *ws)
-+{
-+	struct dm_cache_migration *mg = ws_to_mg(ws);
-+	struct cache *cache = mg->cache;
-+	struct bio *bio = mg->overwrite_bio;
-+	struct per_bio_data *pb = get_per_bio_data(bio);
-+
-+	if (mg->k.input)
-+		invalidate_complete(mg, false);
-+
-+	init_continuation(&mg->k, invalidate_completed);
-+	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
-+	dm_hook_bio(&pb->hook_info, bio, overwrite_endio, mg);
-+	dm_submit_bio_remap(bio, NULL);
-+}
-+
- static void invalidate_remove(struct work_struct *ws)
- {
- 	int r;
-@@ -1520,10 +1542,8 @@ static void invalidate_remove(struct work_struct *ws)
- 		return;
+ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+@@ -56,11 +60,11 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
+ 	acpi_status status;
+ 
+ 	status = acpi_install_address_space_handler(handle,
+-			ACPI_ADR_SPACE_CMOS,
+-			&acpi_cmos_rtc_space_handler,
+-			NULL, NULL);
++						    ACPI_ADR_SPACE_CMOS,
++						    acpi_cmos_rtc_space_handler,
++						    NULL, NULL);
+ 	if (ACPI_FAILURE(status)) {
+-		pr_err("Error installing CMOS-RTC region handler\n");
++		pr_err("Failed to install CMOS-RTC address space handler\n");
+ 		return -ENODEV;
  	}
  
--	init_continuation(&mg->k, invalidate_completed);
-+	init_continuation(&mg->k, invalidate_committed);
- 	continue_after_commit(&cache->committer, &mg->k);
--	remap_to_origin_clear_discard(cache, mg->overwrite_bio, mg->invalidate_oblock);
--	mg->overwrite_bio = NULL;
- 	schedule_commit(&cache->committer);
+@@ -70,26 +74,25 @@ EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
+ 
+ void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
+ {
+-	if (ACPI_FAILURE(acpi_remove_address_space_handler(handle,
+-			ACPI_ADR_SPACE_CMOS, &acpi_cmos_rtc_space_handler)))
+-		pr_err("Error removing CMOS-RTC region handler\n");
++	acpi_status status;
++
++	status = acpi_remove_address_space_handler(handle,
++						   ACPI_ADR_SPACE_CMOS,
++						   acpi_cmos_rtc_space_handler);
++	if (ACPI_FAILURE(status))
++		pr_err("Failed to remove CMOS-RTC address space handler\n");
+ }
+ EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
+ 
+-static int acpi_cmos_rtc_attach_handler(struct acpi_device *adev, const struct acpi_device_id *id)
++static int acpi_cmos_rtc_attach(struct acpi_device *adev,
++				const struct acpi_device_id *id)
+ {
+ 	return acpi_install_cmos_rtc_space_handler(adev->handle);
  }
  
+-static void acpi_cmos_rtc_detach_handler(struct acpi_device *adev)
+-{
+-	acpi_remove_cmos_rtc_space_handler(adev->handle);
+-}
+-
+ static struct acpi_scan_handler cmos_rtc_handler = {
+ 	.ids = acpi_cmos_rtc_ids,
+-	.attach = acpi_cmos_rtc_attach_handler,
+-	.detach = acpi_cmos_rtc_detach_handler,
++	.attach = acpi_cmos_rtc_attach,
+ };
+ 
+ void __init acpi_cmos_rtc_init(void)
 -- 
 2.53.0
 
