@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOhaNOP9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:59 +0200
+	id OK7nMaEFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655F9596698
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E236C597A9F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9992A36290AD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3520B394A647
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ACA3F23CC;
-	Wed, 20 May 2026 17:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0AC3FE674;
+	Wed, 20 May 2026 18:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfONHmQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEqrip48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E703F23A4;
-	Wed, 20 May 2026 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102F23FE668;
+	Wed, 20 May 2026 18:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299462; cv=none; b=OFPOOmMSKcVSk9ZBD3pcpKH+yYRlTuGzZAKg7GR99L6/tuZchai3A52hKIWoFJO8L9MuYeQaRzKkECBShp8ldZ6lss/Ts2xERRQ/Jmf2dv0Bm+sMe2GM2X0Ayd8ifSdavF7v8ij5q5UBl3K63PkGnvBJkpKOvUR966A6aiKsQkE=
+	t=1779302371; cv=none; b=IFnMMC2HwB7PuyzrxszOcs9RZczUl/Y75xTeggc5P/8qC+iQuITMsc4heexG48To1NQanvNydy7sEJYrAtmp7WGYSi5WjD0B0lcXST9XW20v5XYeVlWR/Bxw+fTmuIPK/heI4a+/+oHhskmyTbNqac+AtixJe7lpq4ZUFI+njyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299462; c=relaxed/simple;
-	bh=sZtTUeGnzrH0BPLLI0ucZvnZESmi2JxuF9mSS7wzdRs=;
+	s=arc-20240116; t=1779302371; c=relaxed/simple;
+	bh=uZ+97EuX3xdgptpnIDHxSH5r1O3JCqXuBiob+UOa500=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/HDf8xihCdHkpRuCaS1aK1+dDmuDQttcxpFnwH6V7M/1QYNrivWicoSCkf9SlPweq8xVxv0WqU3D5Svqe4ucWXRtEdpcE6iHJ96UmC31pn4PmA2oeiPYoOldq4NLgWJdTfR/R1EnxCV3i/WIFZY3TasL/lJedWr1PVc3h2lL/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfONHmQl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABEC1F000E9;
-	Wed, 20 May 2026 17:51:00 +0000 (UTC)
+	 MIME-Version; b=TT5jPQVzxhGPMLAzNRpqvvDjRoBzK40hVetksHOjSk/+TiHxzOEDDYHDGn6t2M1QvjagzDQofV+eDxFQDNEg9ge0RUTv9tJmswkTKkdG6aZ6wen4nVp61DYIHRG6s9AoVX0ye478T4ldLZLVumhzLM20SFn1qjWdGUrjzG6Obpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEqrip48; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759621F000E9;
+	Wed, 20 May 2026 18:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299460;
-	bh=TbIsWLaXJHdzQ2u0oKQEeo208n4qv/qbWIImjfrz+I0=;
+	s=korg; t=1779302370;
+	bh=Y7sv2zq5CEgC73DW1l1YSvfIuIZ0bMBOoURoL80wMpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BfONHmQlkNui+MWuLlAOJOlM+K8bra4WHthfUYAIIfiQ93P2W+JAp9RhZoUyUHow4
-	 cK6ovZP1oeYbPRgkRqB11PBqhoTPAmdNh6gJ1M5KQHzZ6Enjo32QuMwmi84ZaqMJcJ
-	 ydcKGHREhAnWKOvVNdaCgr/UCail0h5HzQku1YTo=
+	b=zEqrip48sJbVy4tp1NpKe61HPHP8CWeH4m8amxXLpORD4PGFVCSQDKfmpObGG/lls
+	 cit+M7bhsn4u61IOVYGOG7F/w6f1vbko/EXq03XdmDZlbO+iNEOrcmAVjVyOyM+xvS
+	 PEjSuOWU0PQktsHlN0bkaGsLIIDHmVidZ1CVqK+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 780/957] spi: amlogic-spisg: initialize completion before requesting IRQ
+Subject: [PATCH 6.6 240/508] bpf: Fix precedence bug in convert_bpf_ld_abs alignment check
 Date: Wed, 20 May 2026 18:21:03 +0200
-Message-ID: <20260520162151.475382325@linuxfoundation.org>
+Message-ID: <20260520162103.849773416@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,8 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -74,71 +73,71 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251992-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-253087-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 655F9596698
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E236C597A9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 8d0189c1ea98b56481eb809e3d1bdbf85557e819 ]
+[ Upstream commit e5f635edd393aeaa7cad9e42831d397e6e2e1eed ]
 
-Move init_completion(&spisg->completion) to before devm_request_irq()
-to avoid a potential race condition where an interrupt could fire
-before the completion structure is initialized.
+Fix an operator precedence issue in convert_bpf_ld_abs() where the
+expression offset + ip_align % size evaluates as offset + (ip_align % size)
+due to % having higher precedence than +. That latter evaluation does
+not make any sense. The intended check is (offset + ip_align) % size == 0
+to verify that the packet load offset is properly aligned for direct
+access.
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+With NET_IP_ALIGN == 2, the bug causes the inline fast-path for direct
+packet loads to almost never be taken on !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+platforms. This forces nearly all cBPF BPF_LD_ABS packet loads through
+the bpf_skb_load_helper slow path on the affected archs.
+
+Fixes: e0cea7ce988c ("bpf: implement ld_abs/ld_ind in native bpf")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260416122719.661033-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amlogic-spisg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/core/filter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index 56a6cf8471b9f..970fddbb25857 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -795,6 +795,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
+diff --git a/net/core/filter.c b/net/core/filter.c
+index c24510037334c..371f4e789998d 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -492,7 +492,7 @@ static bool convert_bpf_ld_abs(struct sock_filter *fp, struct bpf_insn **insnp)
+ 	    ((unaligned_ok && offset >= 0) ||
+ 	     (!unaligned_ok && offset >= 0 &&
+ 	      offset + ip_align >= 0 &&
+-	      offset + ip_align % size == 0))) {
++	      (offset + ip_align) % size == 0))) {
+ 		bool ldx_off_ok = offset <= S16_MAX;
  
- 	dma_set_max_seg_size(&pdev->dev, SPISG_BLOCK_MAX);
- 
-+	init_completion(&spisg->completion);
- 	ret = devm_request_irq(&pdev->dev, irq, aml_spisg_irq, 0, NULL, spisg);
- 	if (ret) {
- 		dev_err(&pdev->dev, "irq request failed\n");
-@@ -807,8 +808,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 		goto out_clk;
- 	}
- 
--	init_completion(&spisg->completion);
--
- 	pm_runtime_put(&spisg->pdev->dev);
- 
- 	return 0;
+ 		*insn++ = BPF_MOV64_REG(BPF_REG_TMP, BPF_REG_H);
 -- 
 2.53.0
 
