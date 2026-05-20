@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIu7MxP8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:15 +0200
+	id uGvABwoBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D25D595F80
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E91C597237
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9078335AEF6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD650391FD88
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B135200A;
-	Wed, 20 May 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9003A3F9287;
+	Wed, 20 May 2026 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoWH7ron"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzLp1twH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D472B34E75C;
-	Wed, 20 May 2026 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4540B3D75C7;
+	Wed, 20 May 2026 18:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298306; cv=none; b=fhliSb9WJqNot2Kff9jzPN1LVPo0V9OPEceLcrqkp6CnpZV6dtsVW45ayYw8tE55RUJebzAHPlv9s4JdHzZod/Rfa7gfKfElzUQiO91w7h9n2PHfORrFgSYjQsSDmtzkYLuTcymJrobloNsPiiDTvJr0Q6Iuh4b5eCvaQkG6e1k=
+	t=1779300162; cv=none; b=gcXWhh2dDrGdsEjMvKFdvwfqo0hiag/3AIjgubSe7teXP6/5PAckDa/aiBT4Z4wTiAp/aWtj57oRFBc9/BDyGtGHqU4P7wgLoWUIOXZPkmv23OPAvTYHKEqYN9akMMCSemWZYvqXhr0sw4divjLAC0YZ07gJ+sSMmP4mUxnzqd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298306; c=relaxed/simple;
-	bh=CqOb5UGsSKaV++kUAnGBfqtGXp4knLUna/jUsKQ70mg=;
+	s=arc-20240116; t=1779300162; c=relaxed/simple;
+	bh=YisQn0RfaRR2UNmGQ31JPvt0GMHk+dZX6i9Us5YiKNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BMzbmANtrikCmj5pBGp/eV1q+aKWUJMo3flDhpgzQepcY4LtSbbl52ehFnkjXOaQhfJiJv4QQEJwggT7UA1MSCLztROHRGkBLj4YuCE8eQ7Iu92/hx6J+2ue88PxjRGyyIG9VQKHY+PQBgvU0Ec6Np9HwRQ9Rvw4a5gsHssxIc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoWH7ron; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC41F000E9;
-	Wed, 20 May 2026 17:31:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nik1vc3nmeJ+l0OQUGA5M7SekH4YaV6JYiszEFihahT9tohnPZO058kJND2IXXcxA3Zj+JY4T0j26Ap1KytpnPKb7STIofj7zmx7tV+ae88UCt7My4aCs93pe7uciHdAAZNWNFkH/vJAklRxaRcYNhuBV0Z1CGR6xnU7IyMj4No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzLp1twH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0971F000E9;
+	Wed, 20 May 2026 18:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298304;
-	bh=w+2Kw+PJ14FFUgdxy9v/h58kN0PhKw47d6HtTqugoA4=;
+	s=korg; t=1779300161;
+	bh=6hv9AYGztws1ao6ChNoIy+PZbL8ZDhTxZDONjGzG0/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xoWH7ronSl/+x+QmeRFT7iaVJt3muGXVs6rsHVKASdLpwmOWk3Klx4WCBTDLaWsKG
-	 JGZ0pgh8F4CRVEAYUPSXKooDbM2eQcivKrALVpxVH3QYMt2SI7XDK8miKR766hmEZH
-	 vb+BRGDh1vwikqb/JepaeVxcgtDtAleZcFTorhrc=
+	b=KzLp1twH/OmR0697uhxxaf/UHpohbbmraL2OxtBqirmurZxrdLX0RzifngAqsLVmF
+	 5sBRFKx/pvzR2mbtxMbOFcGTkTMYH5SH6cLxH9jsX0OfOVQQ1DiESXsgjT+WhvUceY
+	 WI5AhGVoytH1gDE2hh/26b9JezBUXWTPAdsYxKBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	David Lechner <dlechner@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Jean Delvare <jdelvare@suse.de>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 361/957] arm64: dts: mediatek: mt8365: Describe infracfg-nao as a pure syscon
+Subject: [PATCH 6.12 033/666] firmware: dmi: Correct an indexing error in dmi.h
 Date: Wed, 20 May 2026 18:14:04 +0200
-Message-ID: <20260520162142.358490514@linuxfoundation.org>
+Message-ID: <20260520162111.951809788@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,80 +75,85 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-251563-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252241-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[0.155.183.72:email];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,baylibre.com:email,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,1020f000:email]
-X-Rspamd-Queue-Id: 2D25D595F80
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,amd.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E91C597237
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 0651c24658360706c30588cec0a12c05edb03e9a ]
+[ Upstream commit c064abc68e009d2cc18416e7132d9c25e03125b6 ]
 
-The infracfg-nao register space at 0x1020e000 has different registers
-than the infracfg space at 0x10001000, and most importantly, doesn't
-contain any clock controls. Therefore it shouldn't use the same
-compatible used for the mt8365 infracfg clocks driver:
-mediatek,mt8365-infracfg. Since it currently does, probe errors are
-reported in the kernel logs:
+The entries later in enum dmi_entry_type don't match the SMBIOS
+specification¹.
 
-  [    0.245959] Failed to register clk ifr_pmic_tmr: -EEXIST
-  [    0.245998] clk-mt8365 1020e000.infracfg: probe with driver clk-mt8365 failed with error -17
+The entry for type 33: `64-Bit Memory Error Information` is not present and
+thus the index for all later entries is incorrect.
 
-This register space is used only as a syscon for bus control by the
-power domain controller, so in order to properly describe it and fix the
-errors, set its compatible to a distinct compatible used exclusively as
-a syscon, drop the clock-cells, and while at it rename the node to
-'syscon' following the naming convention.
+Add it.
 
-Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Also, add missing entry types 43-46, while at it.
+
+  ¹ Search for "System Management BIOS (SMBIOS) Reference Specification"
+
+  [ bp: Drop the flaky SMBIOS spec URL. ]
+
+Fixes: 93c890dbe5287 ("firmware: Add DMI entry types to the headers")
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Link: https://patch.msgid.link/20260307141024.819807-2-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8365.dtsi | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/dmi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index e6d2b3221a3b7..49ad4dee9c4cf 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -495,10 +495,9 @@ iommu: iommu@10205000 {
- 			#iommu-cells = <1>;
- 		};
- 
--		infracfg_nao: infracfg@1020e000 {
--			compatible = "mediatek,mt8365-infracfg", "syscon";
-+		infracfg_nao: syscon@1020e000 {
-+			compatible = "mediatek,mt8365-infracfg-nao", "syscon";
- 			reg = <0 0x1020e000 0 0x1000>;
--			#clock-cells = <1>;
- 		};
- 
- 		rng: rng@1020f000 {
+diff --git a/include/linux/dmi.h b/include/linux/dmi.h
+index 927f8a8b7a1dd..2eedf44e68012 100644
+--- a/include/linux/dmi.h
++++ b/include/linux/dmi.h
+@@ -60,6 +60,7 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_OOB_REMOTE_ACCESS,
+ 	DMI_ENTRY_BIS_ENTRY,
+ 	DMI_ENTRY_SYSTEM_BOOT,
++	DMI_ENTRY_64_MEM_ERROR,
+ 	DMI_ENTRY_MGMT_DEV,
+ 	DMI_ENTRY_MGMT_DEV_COMPONENT,
+ 	DMI_ENTRY_MGMT_DEV_THRES,
+@@ -69,6 +70,10 @@ enum dmi_entry_type {
+ 	DMI_ENTRY_ADDITIONAL,
+ 	DMI_ENTRY_ONBOARD_DEV_EXT,
+ 	DMI_ENTRY_MGMT_CONTROLLER_HOST,
++	DMI_ENTRY_TPM_DEVICE,
++	DMI_ENTRY_PROCESSOR_ADDITIONAL,
++	DMI_ENTRY_FIRMWARE_INVENTORY,
++	DMI_ENTRY_STRING_PROPERTY,
+ 	DMI_ENTRY_INACTIVE = 126,
+ 	DMI_ENTRY_END_OF_TABLE = 127,
+ };
 -- 
 2.53.0
 
