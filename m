@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGsnOgj0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:56 +0200
+	id cGQfEez8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D77594A58
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCBA5962A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB5C232BCD2B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9128315402E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8C636F421;
-	Wed, 20 May 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6883DC4DA;
+	Wed, 20 May 2026 18:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq+4kFUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs0uLxvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87DD331220;
-	Wed, 20 May 2026 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E732F363F;
+	Wed, 20 May 2026 18:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296546; cv=none; b=HLKW4pksdqt9bU7vNTIky6vv9QAIf+U9e2DN5l6p5Op8mYjyfalR5ufVLTCHxQz1lnHJpbZF/JpzvPVFs0wQPo/Qc67HoHvDVVJeEpMyLosK6/IuY4C9p0MZDaJApvv7d7J+PvCLrWu8eZRNtA++Nuso2fovahUle9DejfF3mNY=
+	t=1779300668; cv=none; b=ejAkAFIW2Vlrfw1Zj5oD1nLK/LzzFzbjWqS4M8b0oyP6N8fRPKxwSXibCn/reMSg1e5FB51Sft6PGV/t60Ro4eukU8S4/yk+jHtqbn7sZAM37fG34a/wuiG9ztwe1rJx0CzMxwok0MYc/k3eWA67p5MSAx9UHuwo9473ktCYd58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296546; c=relaxed/simple;
-	bh=vTBLswtlxnbRvwsCzJwxRKOEKeQuQuTx86xUJOcTRPw=;
+	s=arc-20240116; t=1779300668; c=relaxed/simple;
+	bh=nKNyjCVD9rLXKcm3g0dxHsBywQItBG+ZFdTTHmto8no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZClE1HBPjABSfK3eBZaL4N6F5Chld/dvRiVJ9zp/tTbGLLq3eZZEUJj7BSW6AlKrbojl1t5Kjv/Kn4FopyKt+o3cx7DBfpPgLui+VhjOEY77TKxanVUpeBZQSWWL7hWAZeU1CAp1XCrt4vc8/oMfjGF/oDUffcbv/KHIcSav7Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq+4kFUb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2EB1F000E9;
-	Wed, 20 May 2026 17:02:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e6E6c6EKzcXT3heeCsy0pBHodiuoJ3oxgSPB+6RYLE33/NtWeIekalMkRanYucntn5w6cBt2wtqXi1r/HxNnA0/9rFXqzfFASzObuoyxAYqhoP35ucjyuPSeDmhzfIri+lO/9RIzRiihT6Nm7aUFCiwr3Wnx+WjDlLoi5ClLtEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs0uLxvu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14AE1F000E9;
+	Wed, 20 May 2026 18:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296545;
-	bh=CfLeZuIuTf96TSpp1+2gzzEHwZONHlF/f7wl6rI5C14=;
+	s=korg; t=1779300667;
+	bh=eVH7nbcDbBw2HRd5Q3D+UN1fhvviK/PBW9P73TUH6Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lq+4kFUbOXKanafzuKSKpNd1A5ti7abSW/noXnBJhKhX9wUtGJT3kOLRKJhpe2qne
-	 y/p4qAn70QdV9KVN3yG1POR2Wx+7b02jtNmlSrYCx0kfHQL7dYdJGIrlrwlF56r6kZ
-	 bJtZ/BJu2DMRE4IXS0FgjJ2+3B8tgsYTHKORshkA=
+	b=Bs0uLxvuHLeAAdDeXGc8p49dgN9w4PQPRIfik3HqWoJdWXgP5inrqP9ZB+7ygeukR
+	 unwFR4qcYst66ub/Rptiml8X5BHDBYpxW4jubLXNujp3yW7Vkw3DZjhZ6Adf/fvVhF
+	 dB1BDVUb6CFHA4FYu44bZh8KRM7qcBFDPDSNnEZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Yan <jerrysteve1101@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	David Lechner <dlechner@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0823/1146] arm64: dts: meson-gxl-p230: fix ethernet PHY interrupt number
-Date: Wed, 20 May 2026 18:17:53 +0200
-Message-ID: <20260520162206.857657998@linuxfoundation.org>
+Subject: [PATCH 6.12 263/666] arm64: dts: mediatek: mt8365: Describe infracfg-nao as a pure syscon
+Date: Wed, 20 May 2026 18:17:54 +0200
+Message-ID: <20260520162116.917619011@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250880-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252436-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,googlemail.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.0:email]
-X-Rspamd-Queue-Id: 28D77594A58
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,collabora.com:email,0.155.183.72:email,1020f000:email,1020e000:email,baylibre.com:email]
+X-Rspamd-Queue-Id: DCCBA5962A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jun Yan <jerrysteve1101@gmail.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 174a0ef3b33434f475c87e66f37980e39b73805a ]
+[ Upstream commit 0651c24658360706c30588cec0a12c05edb03e9a ]
 
-Correct the interrupt number assigned to the Realtek PHY in the p230
+The infracfg-nao register space at 0x1020e000 has different registers
+than the infracfg space at 0x10001000, and most importantly, doesn't
+contain any clock controls. Therefore it shouldn't use the same
+compatible used for the mt8365 infracfg clocks driver:
+mediatek,mt8365-infracfg. Since it currently does, probe errors are
+reported in the kernel logs:
 
-following the same logic as commit 3106507e1004 ("ARM64: dts: meson-gxm:
-fix q200 interrupt number"),as reported in [PATCH 0/2] Ethernet PHY
-interrupt improvements [1].
+  [    0.245959] Failed to register clk ifr_pmic_tmr: -EEXIST
+  [    0.245998] clk-mt8365 1020e000.infracfg: probe with driver clk-mt8365 failed with error -17
 
-[1] https://lore.kernel.org/all/20171202214037.17017-1-martin.blumenstingl@googlemail.com/
+This register space is used only as a syscon for bus control by the
+power domain controller, so in order to properly describe it and fix the
+errors, set its compatible to a distinct compatible used exclusively as
+a syscon, drop the clock-cells, and while at it rename the node to
+'syscon' following the naming convention.
 
-Fixes: b94d22d94ad2 ("ARM64: dts: meson-gx: add external PHY interrupt on some platforms")
-Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20260330145111.115318-1-jerrysteve1101@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8365.dtsi | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-index 7dffeb5931c9b..701de57ff0f37 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl-s905d-p230.dts
-@@ -84,7 +84,8 @@ external_phy: ethernet-phy@0 {
- 		reset-gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+index 2bf8c9d02b6ee..e9ec44ee72e23 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+@@ -481,10 +481,9 @@ iommu: iommu@10205000 {
+ 			#iommu-cells = <1>;
+ 		};
  
- 		interrupt-parent = <&gpio_intc>;
--		interrupts = <29 IRQ_TYPE_LEVEL_LOW>;
-+		/* MAC_INTR on GPIOZ_15 */
-+		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
- 		eee-broken-1000t;
- 	};
- };
+-		infracfg_nao: infracfg@1020e000 {
+-			compatible = "mediatek,mt8365-infracfg", "syscon";
++		infracfg_nao: syscon@1020e000 {
++			compatible = "mediatek,mt8365-infracfg-nao", "syscon";
+ 			reg = <0 0x1020e000 0 0x1000>;
+-			#clock-cells = <1>;
+ 		};
+ 
+ 		rng: rng@1020f000 {
 -- 
 2.53.0
 
