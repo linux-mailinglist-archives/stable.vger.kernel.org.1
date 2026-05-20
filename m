@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAHrFnIcDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:22 +0200
+	id EIFCMSX3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-250735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DC5599EE3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C151595274
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BB4D369513F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FC3032918DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB1370D54;
-	Wed, 20 May 2026 17:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BF83F2116;
+	Wed, 20 May 2026 16:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCKxlgEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgEske0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD483C870E;
-	Wed, 20 May 2026 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCFE36A352;
+	Wed, 20 May 2026 16:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298594; cv=none; b=LLxQbXB6p7TH0c3HMrbgY3apdu9ArxTG+lbIsC7CR/73LpqVMh5lf6jeXlW28Gd4gmtFsGxhNKOG5uid7kHXVdodSY77lsxA91MjWSVKsGV6s+mbHRal1hS8zCybvEz0zyrZqEisFVOlhDHBcrH8rR17WcJDn3E0cvKvh+tPr2A=
+	t=1779296180; cv=none; b=RGFzMO5t2zYwesCbdRFnMMZ7BOAplLJOFkyJ6kgGiTruU6FJB9uXD6LtcsudYslvedzSr3RLTHsehc/4QJCU+nBuAjGWnfFP4ZOAKpOCRD+FFvIHAuxeNOsphuCMcMDr3YzBDWTH7zJze2oGvE17ellRYxpxyFZUkMMPGw2GolE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298594; c=relaxed/simple;
-	bh=hQ4eXy84f6jI1hoyr9viyu6ufQ5j9dGmSpw7u7M0BKk=;
+	s=arc-20240116; t=1779296180; c=relaxed/simple;
+	bh=mhJ+mMEAnhKYI1xp5g4dUBlG2wBjsUX1oNml5eC6LvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcFlJph7dNsFj41GsBI679z/3iJXuZLsQ/sVA2Kx025yvgrZuSyspTHi3h+ANmOajCKMe8+2X4FAx2HOORo1eYM4IGlH87z6MuAmUa+3dBhfU8HgYeM0N49OVl5hjN5nB7WVQu/88O7RbidwNhO3nU62/pr6vVkRE+JMY9lXLXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCKxlgEE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E38F1F000E9;
-	Wed, 20 May 2026 17:36:33 +0000 (UTC)
+	 MIME-Version; b=TsMt+SCKGacx4gb9PPqDkJ1JthCN0eqyx20CiRLDxE3rWA5B35hfx9tI7pIyR+0gIYH7evzyqzxkRF5aBbwd3SdfQw3v9zUiIzWG55dvQPtxSTeR4ExHe9nERJt065KTNLNXLjyAyYPi3oifvV3+Ofyy8rTQ8ISbTqMT7L5wwlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgEske0D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EC71F00893;
+	Wed, 20 May 2026 16:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298593;
-	bh=rfWhgWToEHhnvJ9AU9GiGKN4nKHfXIthBGlcBZ/g+1Q=;
+	s=korg; t=1779296178;
+	bh=rN8ZqO+cICMhxNrltruQrRYAZj1bfKxSpqHr2h+0Zeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WCKxlgEEOEUPgicVzAFccw3qm2gb0fR5S1o4zCMi8vCM1tSBaZGnw9zCR2m0Jj1jm
-	 mVk6TSH80SNhA/qS6suwTBcKQPXZAooPWYM19ttFSDbcu/igfUYCt/RUQ5QMZWaGMh
-	 r9nQR5+90cxDJfKU2zzVzpdhB0n+0vc0dLDzX6gc=
+	b=FgEske0DMS7dd2Lg7ca46O0rDBqud5g24E3q+MYQbm/8OsmIablpHJHKEJk2F3Yps
+	 FqBDejykwjxHNBwdEtq33kdQN6BN6TSsn7cxy+dYN0O3iczu+ZtTJA+6l1bJ5xJGuz
+	 S8cHVQw5HHPCyqbED4C1KffBiHxHi58W5B6G8RUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 469/957] mtd: spi-nor: swp: check SR_TB flag when getting tb_mask
+Subject: [PATCH 7.0 0702/1146] scsi: sg: Fix sysctl sg-big-buff register during sg_init()
 Date: Wed, 20 May 2026 18:15:52 +0200
-Message-ID: <20260520162144.696096719@linuxfoundation.org>
+Message-ID: <20260520162204.078096359@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,67 +74,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251673-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,bootlin.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250735-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B3DC5599EE3
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email,acm.org:email]
+X-Rspamd-Queue-Id: 3C151595274
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 94645aa41bf9ecb87c2ce78b1c3405bfb6074a37 ]
+[ Upstream commit 3033c471aaf675254efaa0da431e95d91a104b41 ]
 
-When the chip does not support top/bottom block protect, the tb_mask
-must be set to 0, otherwise SR1 bit5 will be unexpectedly modified.
+Commit 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c") made
+a mistake. sysctl sg-big-buff was not created because the call to
+register_sg_sysctls() was placed on the wrong code path.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Fixes: 3dd8012a8eeb ("mtd: spi-nor: add TB (Top/Bottom) protect support")
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Fixes: 26d1c80fd61e ("scsi/sg: move sg-big-buff sysctl to scsi/sg.c")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260127062044.3034148-2-yangerkun@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/swp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/sg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/swp.c b/drivers/mtd/spi-nor/swp.c
-index 9b07f83aeac76..e67a81dbb6bf6 100644
---- a/drivers/mtd/spi-nor/swp.c
-+++ b/drivers/mtd/spi-nor/swp.c
-@@ -28,8 +28,10 @@ static u8 spi_nor_get_sr_tb_mask(struct spi_nor *nor)
- {
- 	if (nor->flags & SNOR_F_HAS_SR_TB_BIT6)
- 		return SR_TB_BIT6;
--	else
-+	else if (nor->flags & SNOR_F_HAS_SR_TB)
- 		return SR_TB_BIT5;
-+	else
-+		return 0;
- }
- 
- static u64 spi_nor_get_min_prot_length_sr(struct spi_nor *nor)
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 37bac49f30f0d..71d34186dec93 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1691,13 +1691,13 @@ init_sg(void)
+ 	sg_sysfs_valid = 1;
+ 	rc = scsi_register_interface(&sg_interface);
+ 	if (0 == rc) {
++		register_sg_sysctls();
+ #ifdef CONFIG_SCSI_PROC_FS
+ 		sg_proc_init();
+ #endif				/* CONFIG_SCSI_PROC_FS */
+ 		return 0;
+ 	}
+ 	class_unregister(&sg_sysfs_class);
+-	register_sg_sysctls();
+ err_out:
+ 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
+ 	return rc;
 -- 
 2.53.0
 
