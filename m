@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NVJIaXzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251724-lists+stable=lfdr.de@vger.kernel.org>)
+	id 0Fi4KKXzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-250787-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B993594904
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF37594903
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 06437304BF05
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 39A45323A74F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398ED3F44CB;
-	Wed, 20 May 2026 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148083D9DD1;
+	Wed, 20 May 2026 16:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrx6j3mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp9gTIGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E833F23A4;
-	Wed, 20 May 2026 17:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2712369D6E;
+	Wed, 20 May 2026 16:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298726; cv=none; b=dH0iKABs+VS5tbnIffZbqPr1vG1L3R1S1yfMiL3RCgeIMPs7UJqyoMT6yLcO44TcbM9TyZOxUMc8mwvJDJs4m7+8MNLtYG1c3ec/OlUF5TkHc1tsHSfdSOaPWjWEIREaRfkPXyA2ukNBEnvUMS/zGubY4wSKCKZ9Rb3Tphr9rwo=
+	t=1779296311; cv=none; b=GV0SuljRaufclofoH5Vi8PsCT50turCfN73LYZuZo6zxYX9lsBjInxQSRTOkhUBo0Vw5ZdCmhBJphiemIVdWzBqs8GwHzKI6QkBUG+ndfHTXsiFdzvs77D6uLTvG/yKsWk0+Jy8xRbwfplhz+EtvhsI4bOH+eso3PagtQkC3w8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298726; c=relaxed/simple;
-	bh=jXj4+LNYzmWxW5VWkn2ixtQts3sKcAznAtH3xUkyUqs=;
+	s=arc-20240116; t=1779296311; c=relaxed/simple;
+	bh=bv18WOzk2fRABz03uZNjZ/U4qs/Z3MgOBU5SLO1mrq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5zJJeQmShIWNdnFhn8RYgTmpz1MRBSUy5nzD4vi4zEW0ykk7uy7tEMIvQVWbkK4Y0hOHYPVtwjxiqRRqqxO4ODQxK1o6mwxD/o9vPnW+vpBA4qon2YEJaTRKL+qcuP3b4RauD69LkQeIXJ9wGFQJBGhK5EbZ2F9FtDWHecHQOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrx6j3mC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D321F000E9;
-	Wed, 20 May 2026 17:38:44 +0000 (UTC)
+	 MIME-Version; b=a+EjR0I53T29AM0ZEUUo94dDXx//kFbbHJ/kVAf32p67cMDhjkwJCmLRFRZTEcIyN2IAi4cAONi1dZsG0ht/kLX5Z02qzRvefDq5Cp6cDFk8iLZtzJHix8WcdWzQsjQWM/Cqu5Fm1SnAGbEH5Wl7WHi6rg3yYXrVafO9mtBJuF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp9gTIGC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4312C1F000E9;
+	Wed, 20 May 2026 16:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298724;
-	bh=5KrjDvVcGnjSMd0El2h0bNmUJeuLPVXuVe1qbMKf2Z0=;
+	s=korg; t=1779296310;
+	bh=FA/IVUY9f2a3Ug3Es47rMaa7reHCBLJiY1emuLtyzz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lrx6j3mCXbY4a+Vks9p2Pi05KHY632yKdi2gcacfhdSHDwWQ1axUNVQakMszZN80k
-	 8BEk2ONqylLspsZfRh2WqlXWiiMnNyHI67TjHW6xVta0ZQUZ4MvRYn670D+dWxIeMz
-	 n2LAQT2yjq+XyjPGhPz3yxHLn+HrqKkP6YJ+A5tM=
+	b=Qp9gTIGCkl6fuvEWAhj+/NaS+/IGgQNxogWgyTWHPwTqfoJL7P3dOINRABY2AI+Wv
+	 2AMe4BJ7eBN6VnHCpzAwvBOEbEAqET8mTV7qY+GvPBGVa1k/T/GKadDeA+ocBwtU8b
+	 IjYwt2e5OKkK2lu5xHiVxjBsUMyWptxuNUjzr5s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 519/957] pinctrl: sophgo: pinctrl-sg2044: Fix wrong module description
+Subject: [PATCH 7.0 0752/1146] arm64: dts: imx8mp-navqp: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:16:42 +0200
-Message-ID: <20260520162145.788731066@linuxfoundation.org>
+Message-ID: <20260520162205.230172633@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,65 +68,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251724-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-250787-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email]
-X-Rspamd-Queue-Id: 1B993594904
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: DFF37594903
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 7648112358a4207916d3e38bfee49f85552fe95f ]
+[ Upstream commit 741d6ac1a2a2e0f3e2cae5eef3516cdd75119e83 ]
 
-Fix the SoC model in module description string, it should be
-sg2044 instead of sg2002.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there will be interrupt storm for i.MX8MP NAVQP. Per schematic, there
+is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
+PUE and PU together to make pull up work properly.
 
-Fixes: 614a54cb5ac3 ("pinctrl: sophgo: add support for SG2044 SoC")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: 682729a9d506d ("arm64: dts: freescale: Add device tree for Emcraft Systems NavQ+ Kit")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/sophgo/pinctrl-sg2044.c | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mp-navqp.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/sophgo/pinctrl-sg2044.c b/drivers/pinctrl/sophgo/pinctrl-sg2044.c
-index b0c46d8954ca1..cf0b674c038f0 100644
---- a/drivers/pinctrl/sophgo/pinctrl-sg2044.c
-+++ b/drivers/pinctrl/sophgo/pinctrl-sg2044.c
-@@ -714,5 +714,5 @@ static struct platform_driver sg2044_pinctrl_driver = {
- };
- module_platform_driver(sg2044_pinctrl_driver);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
+index 4a4f7c1adc23f..9dedb9f11145e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
+@@ -356,7 +356,7 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c3
  
--MODULE_DESCRIPTION("Pinctrl driver for the SG2002 series SoC");
-+MODULE_DESCRIPTION("Pinctrl driver for the SG2044 series SoC");
- MODULE_LICENSE("GPL");
+ 	pinctrl_pmic: pmicgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x1c0
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
