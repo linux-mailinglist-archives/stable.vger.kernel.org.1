@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-253160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IIZKo0uDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:37 +0200
+	id gLrvL/EVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FE459B8BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CF35994CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C404396D87E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 867B5324A5B1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DDA404895;
-	Wed, 20 May 2026 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF093D75C7;
+	Wed, 20 May 2026 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIT/0/xo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDuiuiri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEE73FC5B4;
-	Wed, 20 May 2026 18:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E94356748;
+	Wed, 20 May 2026 17:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302563; cv=none; b=Z9c+oC8ZYvUpbiCpF6+ZxUCN2K1jHCIn18uNbVZWBbwRp03Ga9zLgjBzexUkx9HhNii77q3UIt13syG4ibYvC4Ko6f8q1Oo+uVZtxAkd6uLqKo8YvNtoz+PGubtrNpB2l1itDz7n3Xlzfo4TWyb4XBW7HzCQoNeQRKiOJYYS02A=
+	t=1779297334; cv=none; b=tLFnPL+6JXMg1NkNZvY9WVyvUsKBBxkZcMnAp+Q8134sYMCsA1MQ/eTEAqvL5XmGlKdefcr69A6+Y7AXoge9JFOspNZ296r7imw+ahSXgEXpdLJY0uk/VJOEJ70UmhA48zrTb0TXzihrJJE4RnQnlW1iMcuBwy+Pu0+v4UPsuVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302563; c=relaxed/simple;
-	bh=pIIlioJPnDBaVPz4xGQ/zSMHZY40lZqpy7l2oRznDU8=;
+	s=arc-20240116; t=1779297334; c=relaxed/simple;
+	bh=kJW4sIe7+VU7AzbTv4zSSUJbnBHP6xruPswCAFLGu3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGYfLOpF4A6i0EEhLWhdozgqmp1Zqh73TstGpvgKJfFD1CoO70xk89EeUvzbMv6mCv97CyxV+AGngMMysR7UAew4xIW711lrK4LFhudcy8RuJ1r7UC6SIQAAuFrQ1S3+/TSjecC3iDbqA6jKlYrNPpKYahcQQ+CMF8XFhRatqfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIT/0/xo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC2A1F000E9;
-	Wed, 20 May 2026 18:42:41 +0000 (UTC)
+	 MIME-Version; b=OtoPIjgMv4KSteN8XzP6yDnh1jb9gELZNBjC8zkqGasCNzF5YwJJykyZ9n42IQuXh2dD/BIJ344alb9sqBnSf/mJXlgZJPQC/rdke24iuefpk4y9nOf10WV+dtC0BbhlKoEK33zd4tXX7iT9S+ddlurgayHz5VBIqY9Yzg+WucQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDuiuiri; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C721F000E9;
+	Wed, 20 May 2026 17:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302562;
-	bh=A70F5nL9h/2n0xAWkLzTanETsU56/LVUdswEyZc//Ds=;
+	s=korg; t=1779297333;
+	bh=OiVE337kF7WYb7LweRadhXasAMLeQRBL+RZ9Vw4GhiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZIT/0/xoKd5lWNlGCSXS+6YoVERw8wCi83oGhl6VOY8bALd9+LLNF5ejYxnjgWlAI
-	 +PuBjiVEB7L2//a5PqTnzFml9mnLWGuPAQMopoA2bpOY2YLhqISK82BCHxWVPgZXmO
-	 rI7LKNr0qXGqhKBvyWXEZDFHNkIIAfC3L9rL8qA4=
+	b=rDuiuirikUVdwEL9C0imdpm/FcSEcdn4b/k+NKMXz/sUES9/0G1h5yoEqzyCvzV/j
+	 Qp9KkAW4WRb52HJrmNRqToO985u8XEPUBZUT4PHxAWcN8/e+VXPwGPTGVeWe3w0TjQ
+	 A0qqkkym7p7mMIrTnQpAAuRXmS6PLUPUmouKQEWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/508] tcp: add data-race annotations around tp->data_segs_out and tp->total_retrans
+	Adrien Burnett <an.arctic.pigeon@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 1088/1146] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion Laptop 16-ag0xxx
 Date: Wed, 20 May 2026 18:22:18 +0200
-Message-ID: <20260520162105.462812822@linuxfoundation.org>
+Message-ID: <20260520162212.859052906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +63,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -73,102 +73,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253160-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251190-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 38FE459B8BC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 37CF35994CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Adrien Burnett <an.arctic.pigeon@gmail.com>
 
-[ Upstream commit 21e92a38cfd891538598ba8f805e0165a820d532 ]
+commit 7d1051ad68df3d584b5f24bfa1fb19f3a24db278 upstream.
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+Add a SND_PCI_QUIRK entry for the HP Pavilion Laptop 16-ag0xxx
+(subsystem 0x103c:0x8cbc, Realtek ALC245). The
+ALC245_FIXUP_HP_X360_MUTE_LEDS fixup is already used by the
+neighbouring HP Pavilion Aero Laptop 13-bg0xxx (0x103c:0x8cbd);
+it chains the master-mute COEF handler with the GPIO mic-mute
+LED handler, which is what this machine needs.
 
-Fixes: 7e98102f4897 ("tcp: record pkts sent and retransmistted")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested on the affected hardware: both the mute and mic-mute key
+LEDs respond correctly to the keyboard hotkeys after this change.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Adrien Burnett <an.arctic.pigeon@gmail.com>
+Link: https://patch.msgid.link/20260514165905.21175-1-an.arctic.pigeon@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_output.c | 8 +++++---
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 33b724dcde6ed..8187fefa52206 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3962,9 +3962,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u64_64bit(stats, TCP_NLA_SNDBUF_LIMITED,
- 			  info.tcpi_sndbuf_limited, TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_DATA_SEGS_OUT,
--			  tp->data_segs_out, TCP_NLA_PAD);
-+			  READ_ONCE(tp->data_segs_out), TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_TOTAL_RETRANS,
--			  tp->total_retrans, TCP_NLA_PAD);
-+			  READ_ONCE(tp->total_retrans), TCP_NLA_PAD);
- 
- 	rate = READ_ONCE(sk->sk_pacing_rate);
- 	rate64 = (rate != ~0UL) ? rate : ~0ULL;
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index db8f2830c67bf..5e2e14df787d4 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1400,7 +1400,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 
- 	if (skb->len != tcp_header_size) {
- 		tcp_event_data_sent(tp, sk);
--		tp->data_segs_out += tcp_skb_pcount(skb);
-+		WRITE_ONCE(tp->data_segs_out,
-+			   tp->data_segs_out + tcp_skb_pcount(skb));
- 		tp->bytes_sent += skb->len - tcp_header_size;
- 	}
- 
-@@ -3347,7 +3348,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	TCP_ADD_STATS(sock_net(sk), TCP_MIB_RETRANSSEGS, segs);
- 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
--	tp->total_retrans += segs;
-+	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
- 	tp->bytes_retrans += skb->len;
- 
- 	/* make sure skb->data is aligned on arches that require it
-@@ -4285,7 +4286,8 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
- 			 * However in this case, we are dealing with a passive fastopen
- 			 * socket thus we can change total_retrans value.
- 			 */
--			tcp_sk_rw(sk)->total_retrans++;
-+			WRITE_ONCE(tcp_sk_rw(sk)->total_retrans,
-+				   tcp_sk_rw(sk)->total_retrans + 1);
- 		}
- 		trace_tcp_retransmit_synack(sk, req);
- 	}
--- 
-2.53.0
-
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7146,6 +7146,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8caf, "HP Elite mt645 G8 Mobile Thin Client", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8cbc, "HP Pavilion Laptop 16-ag0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x8cde, "HP OmniBook Ultra Flip Laptop 14t", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
 
 
 
