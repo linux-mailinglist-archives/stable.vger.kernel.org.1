@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-252870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aK4/MU//DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:03 +0200
+	id oJlwKBgBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677B2596C74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:03 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2533597281
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 956CB3096C08
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF33D3205A54
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED613FC5A6;
-	Wed, 20 May 2026 18:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78443D7D66;
+	Wed, 20 May 2026 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukPlL+D2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzT4iKTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A0C3FB060;
-	Wed, 20 May 2026 18:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6923317160;
+	Wed, 20 May 2026 17:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301804; cv=none; b=Dq0C79wWzTLE3Oc1dm+fXYUK8hAN1FywRyXGXKRlP99eLQ1iouo6pxQrkzHybvgQW9kKTXUq4rulZPRJzp9C/VSw1YSC2VmQkoBLttILupjp1UQcA7s8EpWRkHMV4icpUqAdzBWGtIIXe4fJ/DgcrwsE8dC68tVH8HYBY9lsCqM=
+	t=1779298849; cv=none; b=VrOCp0sre/tQYPVpz+p/dCyyeZvh2CDYMZzn4V3yMSyYD9CTU19SPTVfAH/M3nLS14sw6V7Q5mHV9Rd522qCUHOBGcVpozHeVLPxHCOfH4JmFeO0q3OpOG595VGKE4bZFQ+L9xljxQ+T5WKrH0lvkzmKHUPeNUDW3artLY9P0rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301804; c=relaxed/simple;
-	bh=287GdHgmI9a9fUgwJ9ZWQZXZLMm7fZGx+Aja3EOl9CI=;
+	s=arc-20240116; t=1779298849; c=relaxed/simple;
+	bh=rqY+kYYX1ocUedKzNVH62RJKEXeTApx7npN2EJPNGHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ow5c8kATgV9TPiQBOm642hV3qXIQs79lIf7nJHiZfo7RwQbb9/t2e2w0ZJ4Ae+IrQF46sydz34n+MX0KRz7KFHok7usehRN8GVFdZb7EIiDpxdHNJ1DJbq2DzihwQdKz1q1+WSdIf20X7iZr7IY1eKTcs1YIV+ecActJGGrknuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukPlL+D2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3D51F000E9;
-	Wed, 20 May 2026 18:30:02 +0000 (UTC)
+	 MIME-Version; b=QLhe8tVyZA+r1lqEwjkiZ7yrCI3gh/77ki5K9Jq4NEfOYiJwI8bJplo9HexUpczCnvHRhaghPWba0uFXlpuzhuKk+WwZ7gkDJ5xGzXpb1efGlbLqkjdmcAhmc8gU8/pMbGzY6VZEH4DB9Fl+/1JuzHb+6I1LwsHNzull+VBC1OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzT4iKTp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180A91F000E9;
+	Wed, 20 May 2026 17:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301803;
-	bh=1y6wjqyFY3gaPM1H4Fr29UoUo00wkvnXz5T21/qnvXs=;
+	s=korg; t=1779298848;
+	bh=54j9FdK77TZkcC2W/Fj9WSnBTuBZkYppLCr8T6/rVxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ukPlL+D2+uWXyd6G2P4ZJ/3r6xIFK0LXrmg3Ua70vTtbAWbOWJUQQobUw3zjsL8kc
-	 O+WJbdm6UsE+C4/1ToUR8s3Thzfq5hmBPZDWugu5XEEmvSLT5AuHq11Cb8gAtAlfQ/
-	 d11nUs9zy2Y7Zkh4tEYDIHxvAPpQ5eu43mgOiuY4=
+	b=nzT4iKTp7v3BHo8yWyRzQPHOPJuIHnlGLGOsUCSAhQOT66c1yDj8WVWBHLLbsQ7nX
+	 PwPlgUDXOGBO3FKmEzR37daf72f3Fry4kfqaGZvcJ/hwOLvIyZFqDpD8YtNJW32DJF
+	 KjGBa860xVC0gqnlnt/FTcBciJM8oYSPpMdIOxqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yun Lu <luyun@kylinos.cn>,
-	Feng Yang <yangfeng@kylinos.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	syzbot@syzkaller.appspotmail.com,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/508] bpf: test_run: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
+Subject: [PATCH 6.18 566/957] clk: qcom: gcc-sc8180x: Add missing GDSCs
 Date: Wed, 20 May 2026 18:17:29 +0200
-Message-ID: <20260520162059.156185888@linuxfoundation.org>
+Message-ID: <20260520162146.804543853@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,128 +70,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252870-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251771-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email,hust.edu.cn:email]
-X-Rspamd-Queue-Id: 677B2596C74
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,packett.cool:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E2533597281
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Yang <yangfeng@kylinos.cn>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 972787479ee73006fddb5e59ab5c8e733810ff42 ]
+[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
 
-The bpf_lwt_xmit_push_encap helper needs to access skb_dst(skb)->dev to
-calculate the needed headroom:
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-	err = skb_cow_head(skb,
-			   len + LL_RESERVED_SPACE(skb_dst(skb)->dev));
-
-But skb->_skb_refdst may not be initialized when the skb is set up by
-bpf_prog_test_run_skb function. Executing bpf_lwt_push_ip_encap function
-in this scenario will trigger null pointer dereference, causing a kernel
-crash as Yinhao reported:
-
-[  105.186365] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  105.186382] #PF: supervisor read access in kernel mode
-[  105.186388] #PF: error_code(0x0000) - not-present page
-[  105.186393] PGD 121d3d067 P4D 121d3d067 PUD 106c83067 PMD 0
-[  105.186404] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[  105.186412] CPU: 3 PID: 3250 Comm: poc Kdump: loaded Not tainted 6.19.0-rc5 #1
-[  105.186423] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  105.186427] RIP: 0010:bpf_lwt_push_ip_encap+0x1eb/0x520
-[  105.186443] Code: 0f 84 de 01 00 00 0f b7 4a 04 66 85 c9 0f 85 47 01 00 00 31 c0 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 48 8b 73 58 48 83 e6 fe <48> 8b 36 0f b7 be ec 00 00 00 0f b7 b6 e6 00 00 00 01 fe 83 e6 f0
-[  105.186449] RSP: 0018:ffffbb0e0387bc50 EFLAGS: 00010246
-[  105.186455] RAX: 000000000000004e RBX: ffff94c74e036500 RCX: ffff94c74874da00
-[  105.186460] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff94c74e036500
-[  105.186463] RBP: 0000000000000001 R08: 0000000000000002 R09: 0000000000000000
-[  105.186467] R10: ffffbb0e0387bd50 R11: 0000000000000000 R12: ffffbb0e0387bc98
-[  105.186471] R13: 0000000000000014 R14: 0000000000000000 R15: 0000000000000002
-[  105.186484] FS:  00007f166aa4d680(0000) GS:ffff94c8b7780000(0000) knlGS:0000000000000000
-[  105.186490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  105.186494] CR2: 0000000000000000 CR3: 000000015eade001 CR4: 0000000000770ee0
-[  105.186499] PKRU: 55555554
-[  105.186502] Call Trace:
-[  105.186507]  <TASK>
-[  105.186513]  bpf_lwt_xmit_push_encap+0x2b/0x40
-[  105.186522]  bpf_prog_a75eaad51e517912+0x41/0x49
-[  105.186536]  ? kvm_clock_get_cycles+0x18/0x30
-[  105.186547]  ? ktime_get+0x3c/0xa0
-[  105.186554]  bpf_test_run+0x195/0x320
-[  105.186563]  ? bpf_test_run+0x10f/0x320
-[  105.186579]  bpf_prog_test_run_skb+0x2f5/0x4f0
-[  105.186590]  __sys_bpf+0x69c/0xa40
-[  105.186603]  __x64_sys_bpf+0x1e/0x30
-[  105.186611]  do_syscall_64+0x59/0x110
-[  105.186620]  entry_SYSCALL_64_after_hwframe+0x76/0xe0
-[  105.186649] RIP: 0033:0x7f166a97455d
-
-Temporarily add the setting of skb->_skb_refdst before bpf_test_run to resolve the issue.
-
-Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Closes: https://groups.google.com/g/hust-os-kernel-patches/c/8-a0kPpBW2s
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20260304094429.168521-2-yangfeng59949@163.com
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 774287ac17955..c9c6f675d8e21 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1067,6 +1067,21 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
- 		skb->ip_summed = CHECKSUM_COMPLETE;
- 	}
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 31e788e22ab4a..55dabf6259b29 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4266,6 +4266,51 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
-+	if (prog->type == BPF_PROG_TYPE_LWT_XMIT) {
-+		if (!ipv6_bpf_stub) {
-+			pr_warn_once("Please test this program with the IPv6 module loaded\n");
-+			ret = -EOPNOTSUPP;
-+			goto out;
-+		}
-+#if IS_ENABLED(CONFIG_IPV6)
-+		/* For CONFIG_IPV6=n, ipv6_bpf_stub is NULL which is
-+		 * handled by the above if statement.
-+		 */
-+		dst_hold(&net->ipv6.ip6_null_entry->dst);
-+		skb_dst_set(skb, &net->ipv6.ip6_null_entry->dst);
-+#endif
-+	}
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
- 	ret = bpf_test_run(prog, skb, repeat, &retval, &duration, false);
- 	if (ret)
- 		goto out;
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
+ 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
+@@ -4595,6 +4640,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
+ 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
+ };
+ 
+ static const struct regmap_config gcc_sc8180x_regmap_config = {
 -- 
 2.53.0
 
