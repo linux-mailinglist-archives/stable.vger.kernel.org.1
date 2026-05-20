@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-250577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEWLJO7nDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:18 +0200
+	id CPgALAz2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D983592B34
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B34594FB9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49BE53091E7E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 41E023059D6F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45333BE64B;
-	Wed, 20 May 2026 16:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFE22367DF;
+	Wed, 20 May 2026 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1dWXcFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEOZRhLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204BB1BD9D0;
-	Wed, 20 May 2026 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B75C2046BA;
+	Wed, 20 May 2026 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295776; cv=none; b=QkaTSq3CEXdV+LOg4S5ileTD/HbIrDH43T1n7e2H7SH7g39qi/OEWYQsVJZrR3ecOdzN/qeTayUHO3KUos2qRfnvys6uux7HvRY/6ALaRchk7HHevZx8h2uiRkMXtroKTuOG8C/KsgGlYbnNuC0q9mzYi+HbmWbTg9CfQx7hbFw=
+	t=1779298290; cv=none; b=CiCU7rMvhfvAM/3kjWcfMhw8MSvLmRWTjTX17mSloqg1Lfwxw5LRGlQKyzWaZe/wlMPUhq6whybHVVwZc5s6qHKx5Q1nc3g8UZ9BtuBvwKsxQEArxLFh4iVAfP4Ze1lTQeFkoEttSRde3M5KXDh98sH2aDBvP5AVZSy795wfcgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295776; c=relaxed/simple;
-	bh=a+Ztmp4uY/q0hwGb+kIPqI/HlbE48O4HUrlupCUQ1hs=;
+	s=arc-20240116; t=1779298290; c=relaxed/simple;
+	bh=ysWUiR4BqAamotrWbwioq3oLjG7LLMi2pvRqTcD7BEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiRp3eLXAIomVJYuxECxrl6Bi3W2K6+kilVqd4O2LnrovJCx8l49oTfSsu2GcpUx3bTd/5NaFZPtl5Xpzsb3w2Q1l3XsEwWIE2j3lBTiTH7I+TeZ/RJ85tYsda27gap9J6n7bSj8hMaFCThKOUXXcdB6emjMwERwnmaP4UB1zNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1dWXcFh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032E81F00893;
-	Wed, 20 May 2026 16:49:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TRDYTa3W25wSE86oupnGQTLx90uK3SrU2RYbb/SQZ+FxAmF+eWIn0aSK/BQS3QX2A2NXlDl8iPGRVvY0n8/dLGFxX8BeREite1FRNvptlMHQXmoOut9QuOFU9m96nx9oov/fa31q0g72tHh1/oJRF2aC60LAd39CWtnx9yVTfO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEOZRhLC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858D91F000E9;
+	Wed, 20 May 2026 17:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295774;
-	bh=5bLD9f3si4NBTQZGelKkrFZZS/5AD1VZGc0cMV55UMI=;
+	s=korg; t=1779298289;
+	bh=3ZpEhqlhbuvDGfqv4IrhXXY07ViwjDA7uK1RIBzGpoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f1dWXcFhljBr+pvG2WJO5Z4PhS3EGxaNRCXLOYntQTxJ8vx2GG801uHVCeiLRsMcD
-	 tEvc2hy47XtC1FI5DieXXPThhMOAbjF7+uR9nN8Y18ULDECAky47CU0zAwlqOYzzyS
-	 m7PPM4j6fbHiCHtB1LCMwo0oYoygFboClP5nIqVw=
+	b=DEOZRhLCrDxtBcpm0E2Lr5zop7k/lR8q+dsC9pKk4K7kN6jHDr68R5G/mh6Aco4av
+	 YqyAa++gehDiGtrcHrvQtFyfc2cvfW42UnJtq88NI40UO61tPrNVeZPmaU/axKk30L
+	 t8dfz0PiH/c/k+kntLK3G+8cyQFOhgEMdFkorOvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Waiman Long <longman@redhat.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0546/1146] arm64: dts: lx2160a: complete pinmux for rcwsr12 configuration word
+Subject: [PATCH 6.18 313/957] selftest: memcg: skip memcg_sock test if address family not supported
 Date: Wed, 20 May 2026 18:13:16 +0200
-Message-ID: <20260520162200.537255792@linuxfoundation.org>
+Message-ID: <20260520162141.320279328@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,224 +72,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250577-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251557-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,solid-run.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,70010012c:email]
-X-Rspamd-Queue-Id: 2D983592B34
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 71B34594FB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 284ad7064aaa1badde022785cd925af29c696b21 ]
+[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
 
-Commit 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to
-support bus recovery") introduced pinmux nodes for lx2160 i2c
-interfaces, allowing runtime change between i2c and gpio functions
-implementing bus recovery.
+The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
+data over it to consume memory and verify that memory.stat.sock and
+memory.current values are close.
 
-However, the dynamic configuration area (overwrite MUX) used by the
-pinctrl-single driver initially reads as zero and does not reflect the
-actual hardware state set by the Reset Configuration Word (RCW) at
-power-on.
+On systems where IPv6 isn't enabled or not configured to support
+SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
+call fails, there is no way we can test the memory consumption and verify
+the above claim.  I believe it is better to just skip the test in this
+case instead of reporting a test failure hinting that there may be
+something wrong with the memcg code.
 
-Because multiple groups of pins are configured from a single 32-bit
-register, the first write from the pinctrl driver unintentionally clears
-all other bits to zero.
-
-Add description for all bits of RCWSR12 register, allowing boards to
-explicitly define and restore their intended hardware state.
-
-This includes i2c, gpio, flextimer, spi, can and sdhc functions.
-
-Other configuration words, i.e. RCWSR13 & RCWSR14 may be added in the
-future for boards setting non-zero values there.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
+Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 75 +++++++++++++++++++
- 1 file changed, 75 insertions(+)
+ tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index d266bf96e2c6a..479982948ee53 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1721,6 +1721,7 @@ pinmux_i2crv: pinmux@70010012c {
- 			pinctrl-single,register-width = <32>;
- 			pinctrl-single,function-mask = <0x7>;
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index a680f773f2d54..1f64db1afa212 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -1278,8 +1278,11 @@ static int tcp_server(const char *cgroup, void *arg)
+ 	saddr.sin6_port = htons(srv_args->port);
  
-+			/* RCWSR12 */
- 			i2c1_pins: iic2-i2c-pins {
- 				pinctrl-single,bits = <0x0 0x0 0x7>;
- 			};
-@@ -1729,6 +1730,10 @@ gpio0_31_30_pins: iic2-gpio-pins {
- 				pinctrl-single,bits = <0x0 0x1 0x7>;
- 			};
+ 	sk = socket(AF_INET6, SOCK_STREAM, 0);
+-	if (sk < 0)
++	if (sk < 0) {
++		/* Pass back errno to the ctl_fd */
++		write(ctl_fd, &errno, sizeof(errno));
+ 		return ret;
++	}
  
-+			ftm0_ch10_pins: iic2-ftm-pins {
-+				pinctrl-single,bits = <0x0 0x2 0x7>;
-+			};
-+
- 			esdhc0_cd_wp_pins: iic2-sdhc-pins {
- 				pinctrl-single,bits = <0x0 0x6 0x7>;
- 			};
-@@ -1741,6 +1746,14 @@ gpio0_29_28_pins: iic3-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 3) (0x7 << 3)>;
- 			};
+ 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
+ 		goto cleanup;
+@@ -1409,6 +1412,12 @@ static int test_memcg_sock(const char *root)
+ 			goto cleanup;
+ 		close(args.ctl[0]);
  
-+			can0_pins: iic3-can-pins {
-+				pinctrl-single,bits = <0x0 (0x2 << 3) (0x7 << 3)>;
-+			};
++		/* Skip if address family not supported by protocol */
++		if (err == EAFNOSUPPORT) {
++			ret = KSFT_SKIP;
++			goto cleanup;
++		}
 +
-+			event65_pins: iic3-event-pins {
-+				pinctrl-single,bits = <0x0 (0x6 << 3) (0x7 << 3)>;
-+			};
-+
- 			i2c3_pins: iic4-i2c-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 6)>;
- 			};
-@@ -1749,6 +1762,14 @@ gpio0_27_26_pins: iic4-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 6) (0x7 << 6)>;
- 			};
- 
-+			can1_pins: iic4-can-pins {
-+				pinctrl-single,bits = <0x0 (0x2 << 6) (0x7 << 6)>;
-+			};
-+
-+			event87_pins: iic4-event-pins {
-+				pinctrl-single,bits = <0x0 (0x6 << 6) (0x7 << 6)>;
-+			};
-+
- 			i2c4_pins: iic5-i2c-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 9)>;
- 			};
-@@ -1757,6 +1778,14 @@ gpio0_25_24_pins: iic5-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 9) (0x7 << 9)>;
- 			};
- 
-+			esdhc0_clksync_pins: iic5-sdhc-clk-pins {
-+				pinctrl-single,bits = <0x0 (0x2 << 9) (0x7 << 9)>;
-+			};
-+
-+			dspi2_miso_mosi_pins: iic5-spi3-pins {
-+				pinctrl-single,bits = <0x3 (0x2 << 9) (0x7 << 9)>;
-+			};
-+
- 			i2c5_pins: iic6-i2c-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 12)>;
- 			};
-@@ -1765,26 +1794,71 @@ gpio0_23_22_pins: iic6-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 12) (0x7 << 12)>;
- 			};
- 
-+			esdhc1_clksync_pins: iic6-sdhc-clk-pins {
-+				pinctrl-single,bits = <0x0 (0x2 << 12) (0x7 << 12)>;
-+			};
-+
- 			fspi_data74_pins: xspi1-data74-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 15)>;
- 			};
- 
-+			gpio1_31_28_pins: xspi1-data74-gpio-pins {
-+				pinctrl-single,bits = <0x0 0x1 (0x7 << 15)>;
-+			};
-+
- 			fspi_data30_pins: xspi1-data30-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 18)>;
- 			};
- 
-+			gpio1_27_24_pins: xspi1-data30-gpio-pins {
-+				pinctrl-single,bits = <0x0 0x1 (0x7 << 18)>;
-+			};
-+
- 			fspi_dqs_sck_cs10_pins: xspi1-base-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 21)>;
- 			};
- 
-+			gpio1_23_20_pins: xspi1-base-gpio-pins {
-+				pinctrl-single,bits = <0x0 0x1 (0x7 << 21)>;
-+			};
-+
- 			esdhc0_cmd_data30_clk_vsel_pins: sdhc1-base-sdhc-vsel-pins {
- 				pinctrl-single,bits = <0x0 0x0 (0x7 << 24)>;
- 			};
- 
-+			gpio0_21_15_pins: sdhc1-base-gpio-pins {
-+				pinctrl-single,bits = <0x0 (0x1 << 24) (0x7 << 24)>;
-+			};
-+
-+			dspi0_pins: sdhc1-base-spi1-pins {
-+				pinctrl-single,bits = <0x0 (0x2 << 24) (0x7 << 24)>;
-+			};
-+
-+			esdhc0_cmd_data30_clk_dspi2_cs0_pins: sdhc1-base-sdhc-spi3-pins {
-+				pinctrl-single,bits = <0x0 (0x3 << 24) (0x7 << 24)>;
-+			};
-+
-+			esdhc0_cmd_data30_clk_data4_pins: sdhc1-base-sdhc-data4-pins {
-+				pinctrl-single,bits = <0x0 (0x4 << 24) (0x7 << 24)>;
-+			};
-+
-+			esdhc0_dir_pins: sdhc1-dir-pins {
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 27)>;
-+			};
-+
- 			gpio0_14_12_pins: sdhc1-dir-gpio-pins {
- 				pinctrl-single,bits = <0x0 (0x1 << 27) (0x7 << 27)>;
- 			};
- 
-+			dspi2_cs31_pins: sdhc1-dir-spi3-pins {
-+				pinctrl-single,bits = <0x0 (0x3 << 27) (0x7 << 27)>;
-+			};
-+
-+			esdhc0_data75_pins: sdhc1-dir-sdhc-pins {
-+				pinctrl-single,bits = <0x0 (0x4 << 27) (0x7 << 27)>;
-+			};
-+
-+			/* RCWSR13 */
- 			gpio1_18_15_pins: iic8-iic7-gpio-pins {
- 				pinctrl-single,bits = <0x4 0x1 0x7>;
- 			};
-@@ -1793,6 +1867,7 @@ i2c6_i2c7_pins: iic8-iic7-i2c-pins {
- 				pinctrl-single,bits = <0x4 0x2 0x7>;
- 			};
- 
-+			/* RCWSR14 */
- 			i2c0_pins: iic1-i2c-pins {
- 				pinctrl-single,bits = <0x8 0x0 (0x1 << 10)>;
- 			};
+ 		if (!err)
+ 			break;
+ 		if (err != EADDRINUSE)
 -- 
 2.53.0
 
