@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-252062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AewNpwhDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:03:24 +0200
+	id gNn/KK4DDmoD5gUAu9opvQ
+	(envelope-from <stable+bounces-252741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A00C59A67B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:03:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 077D7597679
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC65937BCE4C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14EA039D19C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B195D3F20FA;
-	Wed, 20 May 2026 17:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBE33FBEDA;
+	Wed, 20 May 2026 18:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaBe66us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uINlJNue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642973F0A83;
-	Wed, 20 May 2026 17:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06BC3EFFB8;
+	Wed, 20 May 2026 18:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299646; cv=none; b=enXKu77hNVQDtRb4h3i4dF/YyDjlU5nh+3aX0/+bTtKh6H8Nzi9W0h3lwMcNX/KS9EC6un6WcVSqyYhdsjRYW3/IHAjKcGpH8LGEBg6+eYeifdTruyMFdJ1Wg9Qo8AV/Y1XEoBvq7hGu5ZB702Un16bDRHHxdyiLh6Hx6dwNiQg=
+	t=1779301469; cv=none; b=Zltmwo7kuORtYfg7xTdft+/AgRJcFozkyyCD1DXOnl0EIDlXapUTLjsMKWy98MhfUlfyc8nEbJjuS/Gv0/hSnamQHfgvbU/dwBfxIQ6VQ2muTCLHlhnV7nBgJasEyjHWC32ew5w9L2aFV0plEJBKOY+Qzvk+/5yxcgPM084hdqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299646; c=relaxed/simple;
-	bh=r3N7liI9tYr7B/dQOQCe5HDiM5oQ05NJej+7nCpAF6s=;
+	s=arc-20240116; t=1779301469; c=relaxed/simple;
+	bh=P5ZxbvNzVPG0KZj0i2u7HhlnSRX42NnJfhsp8FaXzoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUI40upBHaRYShJkj/6/LxvEw+nmerGOVrDLNWLNQ90YAtb7Zku/8FkdQm7dMbHahiu72WFAr1RR2zCiSuv/NiaKwosyO8CnW77rzugBN/oFCkuJkzWTt390MvqTL46MZnIowrWLiwRAhXv0G/Unoy0IfTmNU9DysRD8FpWZSXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaBe66us; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13451F000E9;
-	Wed, 20 May 2026 17:54:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bCuX0J0fjo1aTpDkyl/F45HlOdsHgAkqSxwwEoZqJS9O3nJbKji0A9zJU9m6m0osjPfIPoMwd//EeYXyJmpUIJzO456KA1uKavX3qXvlWjM6GefpTyn8DlV8zsSohmixaSv71RLPsOxKOhdipa0sUqS5VGPn58w6qwn2KQZBxq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uINlJNue; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7C91F000E9;
+	Wed, 20 May 2026 18:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299645;
-	bh=cr36dTYBYEW/rsUBhWICZyKt8p4dlDCYTzcXbZ91kXY=;
+	s=korg; t=1779301467;
+	bh=31/lfeoA0YlCK4VSbmFBuKAA9WgJWsx+3KlTCxyQWDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OaBe66uss32ZW4D22b/pRzzKZUhR0cK9G5vnNc8cSH5S5n5dhvj7ANFMItS8F2rVI
-	 oCtQyv5z+5BQZsUqM255Vz/NV2EgUVgUnJV1DydSRmY6d8cyA5nIF+eGRyOrGgsIhb
-	 MI75LYQDmy/RDMwMfL6MipmmUPABS61VK2gabXgA=
+	b=uINlJNued+KJg2+6D61/5c8tClUnUgfMvpXtMHxTYILXDyg4Sca7wUBEAYZ3b4B6C
+	 6NzEHjdsLjHbsn/uaj01MNiDZqRduaQU9kjGC4CBl0XNh73YsZyuu+lZTJB9bNoqAc
+	 QgggsIVUU2yIZQZhkgUBVq7tOXKemLgppUkLuYII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 852/957] dpll: export __dpll_pin_change_ntf() for use under dpll_lock
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jenny Guanni Qu <qguanni@gmail.com>
+Subject: [PATCH 6.12 524/666] netfilter: nf_conntrack_sip: dont use simple_strtoul
 Date: Wed, 20 May 2026 18:22:15 +0200
-Message-ID: <20260520162153.043870973@linuxfoundation.org>
+Message-ID: <20260520162122.622686941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +66,385 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252062-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252741-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,strlen.de,netfilter.org,kernel.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2A00C59A67B
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email]
+X-Rspamd-Queue-Id: 077D7597679
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 620055cb1036a6125fd912e7a14b47a6572b809b ]
+[ Upstream commit 8cf6809cddcbe301aedfc6b51bcd4944d45795f6 ]
 
-Export __dpll_pin_change_ntf() so that drivers can send pin change
-notifications from within pin callbacks, which are already called
-under dpll_lock. Using dpll_pin_change_ntf() in that context would
-deadlock.
+Replace unsafe port parsing in epaddr_len(), ct_sip_parse_header_uri(),
+and ct_sip_parse_request() with a new sip_parse_port() helper that
+validates each digit against the buffer limit, eliminating the use of
+simple_strtoul() which assumes NUL-terminated strings.
 
-Add lockdep_assert_held() to catch misuse without the lock held.
+The previous code dereferenced pointers without bounds checks after
+sip_parse_addr() and relied on simple_strtoul() on non-NUL-terminated
+skb data. A port that reaches the buffer limit without a trailing
+character is also rejected as malformed.
 
-Acked-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-9-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
+Also get rid of all simple_strtoul() usage in conntrack, prefer a
+stricter version instead.  There are intentional changes:
+
+- Bail out if number is > UINT_MAX and indicate a failure, same for
+  too long sequences.
+  While we do accept 05535 as port 5535, we will not accept e.g.
+  'sip:10.0.0.1:005060'.  While its syntactically valid under RFC 3261,
+  we should restrict this to not waste cycles when presented with
+  malformed packets with 64k '0' characters.
+
+- Force base 10 in ct_sip_parse_numerical_param(). This is used to fetch
+  'expire=' and 'rports='; both are expected to use base-10.
+
+- In nf_nat_sip.c, only accept the parsed value if its within the 1k-64k
+  range.
+
+- epaddr_len now returns 0 if the port is invalid, as it already does
+  for invalid ip addresses.  This is intentional. nf_conntrack_sip
+  performs lots of guesswork to find the right parts of the message
+  to parse.  Being stricter could break existing setups.
+  Connection tracking helpers are designed to allow traffic to
+  pass, not to block it.
+
+Based on an earlier patch from Jenny Guanni Qu <qguanni@gmail.com>.
+
+Fixes: 05e3ced297fe ("[NETFILTER]: nf_conntrack_sip: introduce SIP-URI parsing helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Reported-by: Jenny Guanni Qu <qguanni@gmail.com>.
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_netlink.c | 10 ++++++++++
- drivers/dpll/dpll_netlink.h |  2 --
- include/linux/dpll.h        |  1 +
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_sip.c | 152 ++++++++++++++++++++++++-------
+ net/netfilter/nf_nat_sip.c       |   1 +
+ 2 files changed, 119 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index fe9c3d9073f0f..de8b065280d15 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -823,11 +823,21 @@ int dpll_pin_delete_ntf(struct dpll_pin *pin)
- 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index fda6fc1fc4c58..4b32ee408ea15 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -181,6 +181,57 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
+ 	return 1;
  }
  
-+/**
-+ * __dpll_pin_change_ntf - notify that the pin has been changed
-+ * @pin: registered pin pointer
-+ *
-+ * Context: caller must hold dpll_lock. Suitable for use inside pin
-+ *          callbacks which are already invoked under dpll_lock.
-+ * Return: 0 if succeeds, error code otherwise.
++/* Parse optional port number after IP address.
++ * Returns false on malformed input, true otherwise.
++ * If port is non-NULL, stores parsed port in network byte order.
++ * If no port is present, sets *port to default SIP port.
 + */
- int __dpll_pin_change_ntf(struct dpll_pin *pin)
- {
-+	lockdep_assert_held(&dpll_lock);
- 	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
- 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
++static bool sip_parse_port(const char *dptr, const char **endp,
++			   const char *limit, __be16 *port)
++{
++	unsigned int p = 0;
++	int len = 0;
++
++	if (dptr >= limit)
++		return false;
++
++	if (*dptr != ':') {
++		if (port)
++			*port = htons(SIP_PORT);
++		if (endp)
++			*endp = dptr;
++		return true;
++	}
++
++	dptr++; /* skip ':' */
++
++	while (dptr < limit && isdigit(*dptr)) {
++		p = p * 10 + (*dptr - '0');
++		dptr++;
++		len++;
++		if (len > 5) /* max "65535" */
++			return false;
++	}
++
++	if (len == 0)
++		return false;
++
++	/* reached limit while parsing port */
++	if (dptr >= limit)
++		return false;
++
++	if (p < 1024 || p > 65535)
++		return false;
++
++	if (port)
++		*port = htons(p);
++
++	if (endp)
++		*endp = dptr;
++
++	return true;
++}
++
+ /* skip ip address. returns its length. */
+ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 		      const char *limit, int *shift)
+@@ -193,11 +244,8 @@ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 		return 0;
+ 	}
+ 
+-	/* Port number */
+-	if (*dptr == ':') {
+-		dptr++;
+-		dptr += digits_len(ct, dptr, limit, shift);
+-	}
++	if (!sip_parse_port(dptr, &dptr, limit, NULL))
++		return 0;
+ 	return dptr - aux;
  }
-+EXPORT_SYMBOL_GPL(__dpll_pin_change_ntf);
  
- /**
-  * dpll_pin_change_ntf - notify that the pin has been changed
-diff --git a/drivers/dpll/dpll_netlink.h b/drivers/dpll/dpll_netlink.h
-index dd28b56d27c56..a9cfd55f57fc4 100644
---- a/drivers/dpll/dpll_netlink.h
-+++ b/drivers/dpll/dpll_netlink.h
-@@ -11,5 +11,3 @@ int dpll_device_delete_ntf(struct dpll_device *dpll);
- int dpll_pin_create_ntf(struct dpll_pin *pin);
+@@ -228,6 +276,51 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 	return epaddr_len(ct, dptr, limit, shift);
+ }
  
- int dpll_pin_delete_ntf(struct dpll_pin *pin);
--
--int __dpll_pin_change_ntf(struct dpll_pin *pin);
-diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-index 34b005bb4df6f..480ea3cbe709b 100644
---- a/include/linux/dpll.h
-+++ b/include/linux/dpll.h
-@@ -260,6 +260,7 @@ int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
++/* simple_strtoul stops after first non-number character.
++ * But as we're not dealing with c-strings, we can't rely on
++ * hitting \r,\n,\0 etc. before moving past end of buffer.
++ *
++ * This is a variant of simple_strtoul, but doesn't require
++ * a c-string.
++ *
++ * If value exceeds UINT_MAX, 0 is returned.
++ */
++static unsigned int sip_strtouint(const char *cp, unsigned int len, char **endp)
++{
++	const unsigned int max = sizeof("4294967295");
++	unsigned int olen = len;
++	const char *s = cp;
++	u64 result = 0;
++
++	if (len > max)
++		len = max;
++
++	while (olen > 0 && isdigit(*s)) {
++		unsigned int value;
++
++		if (len == 0)
++			goto err;
++
++		value = *s - '0';
++		result = result * 10 + value;
++
++		if (result > UINT_MAX)
++			goto err;
++		s++;
++		len--;
++		olen--;
++	}
++
++	if (endp)
++		*endp = (char *)s;
++
++	return result;
++err:
++	if (endp)
++		*endp = (char *)cp;
++	return 0;
++}
++
+ /* Parse a SIP request line of the form:
+  *
+  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
+@@ -241,7 +334,6 @@ int ct_sip_parse_request(const struct nf_conn *ct,
+ {
+ 	const char *start = dptr, *limit = dptr + datalen, *end;
+ 	unsigned int mlen;
+-	unsigned int p;
+ 	int shift = 0;
  
- int dpll_device_change_ntf(struct dpll_device *dpll);
+ 	/* Skip method and following whitespace */
+@@ -267,14 +359,8 @@ int ct_sip_parse_request(const struct nf_conn *ct,
  
-+int __dpll_pin_change_ntf(struct dpll_pin *pin);
- int dpll_pin_change_ntf(struct dpll_pin *pin);
+ 	if (!sip_parse_addr(ct, dptr, &end, addr, limit, true))
+ 		return -1;
+-	if (end < limit && *end == ':') {
+-		end++;
+-		p = simple_strtoul(end, (char **)&end, 10);
+-		if (p < 1024 || p > 65535)
+-			return -1;
+-		*port = htons(p);
+-	} else
+-		*port = htons(SIP_PORT);
++	if (!sip_parse_port(end, &end, limit, port))
++		return -1;
  
- int register_dpll_notifier(struct notifier_block *nb);
+ 	if (end == dptr)
+ 		return 0;
+@@ -509,7 +595,6 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 			    union nf_inet_addr *addr, __be16 *port)
+ {
+ 	const char *c, *limit = dptr + datalen;
+-	unsigned int p;
+ 	int ret;
+ 
+ 	ret = ct_sip_walk_headers(ct, dptr, dataoff ? *dataoff : 0, datalen,
+@@ -520,14 +605,8 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 
+ 	if (!sip_parse_addr(ct, dptr + *matchoff, &c, addr, limit, true))
+ 		return -1;
+-	if (*c == ':') {
+-		c++;
+-		p = simple_strtoul(c, (char **)&c, 10);
+-		if (p < 1024 || p > 65535)
+-			return -1;
+-		*port = htons(p);
+-	} else
+-		*port = htons(SIP_PORT);
++	if (!sip_parse_port(c, &c, limit, port))
++		return -1;
+ 
+ 	if (dataoff)
+ 		*dataoff = c - dptr;
+@@ -609,7 +688,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
+ 		return 0;
+ 
+ 	start += strlen(name);
+-	*val = simple_strtoul(start, &end, 0);
++	*val = sip_strtouint(start, limit - start, (char **)&end);
+ 	if (start == end)
+ 		return -1;
+ 	if (matchoff && matchlen) {
+@@ -1065,6 +1144,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
++		char *end;
++
+ 		if (ct_sip_get_sdp_header(ct, *dptr, mediaoff, *datalen,
+ 					  SDP_HDR_MEDIA, SDP_HDR_UNSPEC,
+ 					  &mediaoff, &medialen) <= 0)
+@@ -1080,8 +1161,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 		mediaoff += t->len;
+ 		medialen -= t->len;
+ 
+-		port = simple_strtoul(*dptr + mediaoff, NULL, 10);
+-		if (port == 0)
++		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
++		if (port == 0 || *dptr + mediaoff == end)
+ 			continue;
+ 		if (port < 1024 || port > 65535) {
+ 			nf_ct_helper_log(skb, ct, "wrong port %u", port);
+@@ -1255,7 +1336,7 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
+ 	 */
+ 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
+ 			      &matchoff, &matchlen) > 0)
+-		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
++		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
+ 
+ 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
+ 				      SIP_HDR_CONTACT, NULL,
+@@ -1359,7 +1440,7 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
+ 			      &matchoff, &matchlen) > 0)
+-		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
++		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
+ 
+ 	while (1) {
+ 		unsigned int c_expires = expires;
+@@ -1419,10 +1500,12 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
+ 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
+ 	unsigned int matchoff, matchlen, matchend;
+ 	unsigned int code, cseq, i;
++	char *end;
+ 
+ 	if (*datalen < strlen("SIP/2.0 200"))
+ 		return NF_ACCEPT;
+-	code = simple_strtoul(*dptr + strlen("SIP/2.0 "), NULL, 10);
++	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
++			     *datalen - strlen("SIP/2.0 "), NULL);
+ 	if (!code) {
+ 		nf_ct_helper_log(skb, ct, "cannot get code");
+ 		return NF_DROP;
+@@ -1433,8 +1516,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
+ 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
+ 		return NF_DROP;
+ 	}
+-	cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+-	if (!cseq && *(*dptr + matchoff) != '0') {
++	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
++	if (*dptr + matchoff == end) {
+ 		nf_ct_helper_log(skb, ct, "cannot get cseq");
+ 		return NF_DROP;
+ 	}
+@@ -1483,6 +1566,7 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	for (i = 0; i < ARRAY_SIZE(sip_handlers); i++) {
+ 		const struct sip_handler *handler;
++		char *end;
+ 
+ 		handler = &sip_handlers[i];
+ 		if (handler->request == NULL)
+@@ -1499,8 +1583,8 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
+ 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
+ 			return NF_DROP;
+ 		}
+-		cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+-		if (!cseq && *(*dptr + matchoff) != '0') {
++		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
++		if (*dptr + matchoff == end) {
+ 			nf_ct_helper_log(skb, ct, "cannot get cseq");
+ 			return NF_DROP;
+ 		}
+@@ -1576,7 +1660,7 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
+ 				      &matchoff, &matchlen) <= 0)
+ 			break;
+ 
+-		clen = simple_strtoul(dptr + matchoff, (char **)&end, 10);
++		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
+ 		if (dptr + matchoff == end)
+ 			break;
+ 
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index c845b6d1a2bdf..9fbfc6bff0c22 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -246,6 +246,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 		if (ct_sip_parse_numerical_param(ct, *dptr, matchend, *datalen,
+ 						 "rport=", &poff, &plen,
+ 						 &n) > 0 &&
++		    n >= 1024 && n <= 65535 &&
+ 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
+ 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
+ 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
 -- 
 2.53.0
 
