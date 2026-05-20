@@ -1,322 +1,273 @@
-Return-Path: <stable+bounces-249920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDrHNSK1DWrC2QUAu9opvQ
-	(envelope-from <stable+bounces-249920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:20:34 +0200
+	id SL6sOASzDWo62AUAu9opvQ
+	(envelope-from <stable+bounces-249914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:11:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7547B58EAE8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:20:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424F258E8CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 700EF301917E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:12:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7D7C30075DD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E723DD52B;
-	Wed, 20 May 2026 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0A43128B2;
+	Wed, 20 May 2026 13:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="inyTVbbN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dpsNIiMJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A4F3E2759
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCA52D978A;
+	Wed, 20 May 2026 13:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779282728; cv=pass; b=k4DvNA6nChCqPjB1smY7rMaoWDIX81ptHu+Vc9GV4q+HnILhHSWs9rQfIxQuHwGjMrwWQB3DB8zu92iFT0THdqRF4x2iMJ9WIFgYytUHuxh1RJJT3qrJK79UlLjVHttnjjpNZQtzmlqgdShPYl97PEuyZdct+1NhebegGO88h0A=
+	t=1779282253; cv=fail; b=SzFCvFTkrirdon7bxQvNuPNuJ4DTUpOTm7OcceJEDV0VgelPC8OuQSck33SVTkNBTPlqCLGFTsp6KKukLjgwllQhbbKSNkFPMalId8P6eYMavy1Xq3PT344Y5r/tLWgSTeOoP7mNnihLkgfodGaEt2nT9dsd/poSIOMngWWOoyE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779282728; c=relaxed/simple;
-	bh=cKw5YCzuiQEJpUmrAp3fl4H1ttFJuOreCSz37WERLgI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rHgTf9oBHnoY/033REHs5F2LlUZnUVZvC9nSV+sc1Ceq+/WH6pgxV3Wy+gzJA/TAcf5fQZ42OPnyIbb6ZJxpH+ZTAJXZ4QFtVBoDZY4NNGMbqH9eAaRj3nN05in5XbVIXL0q60fKFU8pjV24wliZbzsdgP5bdwIxYyof1dQ7KGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=inyTVbbN; arc=pass smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-65c24be9e4bso5076806d50.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:11:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779282715; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fJ/WXQrLpwmDuWn/Fd6XtKD7izJYvKyApax+wNIBVc5s4FtDH3irh92ttqJ3opw4Lt
-         7jm83EhL48J65kHjAyewxqRnDjP59LJrBw8srJ/3jDq32n+rBUjS2IEtHHtgqfC2j4Eq
-         amas1Fj3qM2IXjLnhNlIKr2dWFJW8TRDX/z+ahHHU/1jViUvvAmdsT3vJR6zH9eb6OHd
-         Q9tQMT3kpSjkb+asg5VWIJdT51jUqdqRf7V8q4x9nnx3UF9D5G5r06W/v5pBIAgK1Kgr
-         glaWxkpjv+x3fekNHgX2NkXo9H/+YZxs/IEMsTeM1+xZ1zxYBXugzfjZDEMECsvpszzB
-         7iWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fM3pFjSA7u9dK0K2/dG7XeV5S24ISSrkdo3lpIb1ByE=;
-        fh=ANfsQxz2llALEUgnitoy09mosrRYtiLujrYLS6xlioc=;
-        b=fAsdPh5qb/CUn0P+Q/E4gihjdw1yrzzgS8H2MtDzJBKhv31mn4g96vq20aT0Fl1A5V
-         kVREa2XNCzD8i8nO0iss8G0sb4V/cp4jK0ZKPnS7ExR8aae7/kgzVgowGJwdKk/S8rdb
-         ZqUiWS4xeX4TKQnQN7yWFsHFUt9TmFhxARSoKZP+FFwfLvAEaaZuMfzym9rmR62dPj7M
-         RPRHyN1We7gpvYUyb0hzeTtLkUzfwoSqTVlHrd9XF2Kt11jp0j6p8BsaQBZWRnBojZdU
-         +Jn/SW6FaNlr+o7tCZ2SZwMQM/X8sJ35omyUGJLjMWmSTq1MFwHlayADIdY7/TSoehGx
-         yetw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779282715; x=1779887515; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fM3pFjSA7u9dK0K2/dG7XeV5S24ISSrkdo3lpIb1ByE=;
-        b=inyTVbbNzTuiposmSrNgPgMIalkPP+hJVHHhzuFz2FnpJN+87C62ww4hNucqitd41n
-         4GXdGjO42oKfyUoKPDB3S1I6zU2smCjfVAPuMQBrM+6W1PSqlh8pysJH5NTdJXXlzbAg
-         fs8GUIcls83VE184Zp9uY3V+3m75eZxx/u10Wd9JKPVNFvg49Eu6RGMBkWpYZ2GjKJwV
-         cE/QQN5iOlKLlezblU09l8wC/z3uFqXxkRrEvProEeQqjR1LN6S3pRDpgmq0rYDlXMK3
-         +g3Waq/rfSxJ/WZTvTMLy2XeBCoecpoXLg0YsifC50brRAL3r90zA7WOZe14eNBh7zfL
-         dtlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779282715; x=1779887515;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fM3pFjSA7u9dK0K2/dG7XeV5S24ISSrkdo3lpIb1ByE=;
-        b=AtgPmi3LuCUGifkxyV5ATuh0n006MKRWmaeMp2a4fstXA5Nwa39BbrZLD/MnZ2l8nx
-         hTDqU0cCfFJXosy0tDWo+9BSqhhnWEfLjoQh6UaP3tu71vWQW2iyxcIpAPFYQDgetsUD
-         LtC7ibzgYCHKn1QT+7iQVKfuzZPz31Kkx6MQ5ehYRdOuua7JBR+yvU5T+BXHVV014KKg
-         B7QFK0v9dvT9gmnuljsqniu+cnR5ObK/0Bq9FlEbH2JSlCbP+W9uqrTivv21f6ogIUei
-         E5fNwGB+NuLIB9DZtlNAgY6sIzYp9TDYFo5CMt3gG3XLCchZH4APZkuw4P3wpZ5Y4xvD
-         DpAw==
-X-Forwarded-Encrypted: i=1; AFNElJ+a+OKlMzvW2nvVI0MhORB5X57Nmq5O/mWtQSyvHSw8qmCT7uKueGhiABfCkzWcgLEnzBtuboQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr01m3B9Zh6LvBb3W1ySyJzTxpA4nxErDlSA1b7M/2rwZsiJof
-	mNBStxAjH4vKkgFvZqy2QgZAYilnEj8kpQ9ZfasiaYe7detIBxIo+3GkJickkfuLoCH0iH5NoIu
-	JhjyfFmd3lN9MO3riZhnxjdUDfGYUELw=
-X-Gm-Gg: Acq92OEgaJiezQVChW8Faago8iYaUfDjP+5j8Wt7S5nX/ydG49ugN4q+c5Xw4e/eqoi
-	n9Nz27qFBnkCHsYJ8fGhTJQPIT/K33Dwy4BspHeILxVESEDKu6hmzUFG4HZcJ5PTUX++TthDc/u
-	Xx5ko/0IipFfbWnq9irEoTwPtjmLPxuIqfz2sUjkORhF/ruz38/bi3eT6MFhhKgict3MgEp1Sim
-	I87aoNw26fC/JnnwL+lt1SYrRYfsPABz8alRQM9O+ZSKYCtLFpfNIBEk8Gk+aUAzuBwOEneuY9S
-	y+vRNQIxa9+xmi+ru/lZqIDt6rMl5CO14ELzk4OX6Pz3TW07UJb5oispmVfdaHPAbhv4b9bvyIb
-	K8fxL
-X-Received: by 2002:a53:c056:0:20b0:65c:4066:d177 with SMTP id
- 956f58d0204a3-65e2264ffd7mr18238658d50.9.1779282715259; Wed, 20 May 2026
- 06:11:55 -0700 (PDT)
+	s=arc-20240116; t=1779282253; c=relaxed/simple;
+	bh=Y8Lnf1x7dSrC5VGNobecn7t3LGF2SnXTsTjFsXiX+CU=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Gh8CdUABmvPpcLCcyHYLcAtzU5S7v81ocoNudLk4dpNkhiapWb5vKWX1QPSitTXQVWb+XzVSrE+RYzqaybZnvIEIzEA/MHho/RAjXvJ3GN5ZgMm3nSDHztK3LZkGNc9IRQV6pyKxVIVEv4Thz98p14YG8Q7ebALK/RChF9OK9nk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dpsNIiMJ; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779282250; x=1810818250;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Y8Lnf1x7dSrC5VGNobecn7t3LGF2SnXTsTjFsXiX+CU=;
+  b=dpsNIiMJTifcUAJDIbFIauYErqtGwhYFj2YMLVCW5fKbTCeD0z6S59ih
+   8XQ48uswrMlTpEu0iez3jZq1ChbQ05UUljGXg64u6y7olROsNsJvgfchO
+   5q9fyj+eKe9SO5uVKffvk22m4r2JP7kklpPOsRwC1sJuOepSFxzmXmuFd
+   F274qcBve+VAOjVH5gOXDqGGgWRbj0oFZnY/jnGwMlTwFTOvZV/pKPukg
+   MkqdcWLYXUbrR1J0PdF/6tAlpKCDcXPKE/xVLcf2PrH31tEMnXqkHxIVb
+   p7V0XjFZi5IZF3g7BlGfVtW8Z86ynAe0ivz1NN4ULF8YcNvs4ihFaOSlW
+   w==;
+X-CSE-ConnectionGUID: fgBZR5LTS1iSRtoZZB0y6Q==
+X-CSE-MsgGUID: HwePzgx4R7WTjMj8p6pWRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="82755669"
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="82755669"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:04:09 -0700
+X-CSE-ConnectionGUID: lVfwq//TTRWICxgW52s6zg==
+X-CSE-MsgGUID: 0gXFlpgRSFmVV/D8+0mouA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
+   d="scan'208";a="263967753"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:04:09 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 20 May 2026 06:04:08 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 20 May 2026 06:04:08 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.56) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 20 May 2026 06:04:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cIYxJxdtyJo59akgdoosk5aRUgyENbpAT9GxKEd7L6NTt8xk1K+uzOwutU90BmlFTzY+r/+JpcNzvGRxZQ9dt45/OpTAom9amaNWj63NZ2lzkg2BfsDjUzyAaa2FAIJoKYPRTZ2L3/DRkNXFxT9RILDwMl+yO+qJcE78BaX8u4tf0LicvAcUcDZETt72HhU+Ds21NB4H25nHAgnRYOSV7jkcWjrIQwfS0VeNJYx0kAgrBXCk/RUvwCJH82aY4GGzHpZuyCmZ58ov7asPUVusWl5TFumfrFAdZ4G8xTff7Iuyq3Bfk0tpIUxHYsGUnQxljpEM7/aDgD2f7ysacTKhfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WOhEZnNoaqSn3bdv3O1FPlBpho4cQgBcBbd1wlOTMYU=;
+ b=GR2K4hV8z0LizWtydl2zDN/vLfnZa+9So6qJtCva/33G8lLXUHRJTbba2if5p3ZhiIat94QDSJ1aiVu1nUjVceGsCKIo5mElNOyNcV9n6ZlJS2fMQ0k3Q8I2hagNjmJSlaX7qFWAYGVQnzmp9Fx9zBYqRhIL8xUer4NJhdmRd7V34devHcl1tv1nEn8ZmY8LOXp3QoHoWWwXtv/iF4VpFh3MTu+4gmQExGuBDoMMPwddQFawpevLE/H6ex8zGECEcGES7kE5E5uPx57o/o1ri7G4h/Ri0T//9RVhTiIZVqb3ZVFPt/zJR9aNTX5XbK96PTqiiGy0EBdWz77pX6ftcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV8PR11MB8509.namprd11.prod.outlook.com (2603:10b6:408:1e6::15)
+ by MN0PR11MB6134.namprd11.prod.outlook.com (2603:10b6:208:3ca::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.21; Wed, 20 May
+ 2026 13:04:04 +0000
+Received: from LV8PR11MB8509.namprd11.prod.outlook.com
+ ([fe80::f5bd:4dde:4f2f:20b7]) by LV8PR11MB8509.namprd11.prod.outlook.com
+ ([fe80::f5bd:4dde:4f2f:20b7%5]) with mapi id 15.21.0025.022; Wed, 20 May 2026
+ 13:04:04 +0000
+Message-ID: <c556e432-0e80-463f-a924-83f8f1ab333b@intel.com>
+Date: Wed, 20 May 2026 21:12:13 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/vt-d: Avoid WARNING in sva unbind path
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, "Will
+ Deacon" <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Kevin Tian
+	<kevin.tian@intel.com>
+CC: <iommu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
+References: <20260519052917.3729796-1-baolu.lu@linux.intel.com>
+Content-Language: en-US
+From: Yi Liu <yi.l.liu@intel.com>
+In-Reply-To: <20260519052917.3729796-1-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TP0P295CA0027.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:5::14) To LV8PR11MB8509.namprd11.prod.outlook.com
+ (2603:10b6:408:1e6::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
- <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info> <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh> <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh> <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
- <2026051942-uproar-drainpipe-6370@gregkh> <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
- <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se> <2026052026-barber-espresso-1d9a@gregkh>
-In-Reply-To: <2026052026-barber-espresso-1d9a@gregkh>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Wed, 20 May 2026 09:11:42 -0400
-X-Gm-Features: AVHnY4LMSkZgfnRrbpGkQ3oSEmfCsbIHkLmvULkOOnK2PiOJuvWBImpmmtpycYc
-Message-ID: <CABBYNZJ4woc+unpYN6_dzMLtxhFVUd5+ccv2+EQbDMkYuXQ12A@mail.gmail.com>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: August Wikerfors <git@augustwikerfors.se>, Thorsten Leemhuis <regressions@leemhuis.info>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, Linux kernel regressions list <regressions@lists.linux.dev>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR11MB8509:EE_|MN0PR11MB6134:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1ff6f15-3403-4415-e324-08deb67044ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|42112799006|1800799024|376014|366016|11063799006|5023799004|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: yvnG68ZrA4R6dT4UHSD0Tuk9TSA7Dia4Huy0GA5qSwFe07Bas8zfbanMQLpBRAWwc1NFIpJ2ik5tcanzWuCmJfp+n24IGCo8PSVJVbhWVXj8/ZXcZ0QeitxBAq8MgtDAndENhX1O46jgUoXjRrXZTXats1BNLfofuR0BHOoUIVNPCjj1soaaMxQ1bFdbizX9whcgebJUUrzM5WpoZCemxp3LtAArKEcdwTvcRzPTEFuKgwCLG9oIoVWOosG4OCpSE5neJj1eg3fv+7R3fKhj5118NmJi/tNdccGD/X+PEK+0NjaJHPRVmUIlpe5KjQ7ceWga/9qn9cBc+AYFkCplp818h5DBIl0+DfaJvQR+dv0Mm5GnuA1Ic2V1JLcAA4JD81Vdt1avHb2RjnlQ0+nrP+hITjTMo2V+qcZV2lg+f9PGPN4GOyrsuqUEuKoSIxbULKtrFTdeVEC//m0BU0ei/EvzQfb9btoon26kZPvzH2EWZCfT8gcbbtSbxpJ42Rq7s4jPJ6GuHhmt/d60zYO8r9s+jqr6LkyZPdDiWPm61L7WflCV+HOvBOlqgTo4w1TYpOKrts8TTdQe/6y96D2xXGcs/uMX9tMKrYgf/y8I9DOxneSeolzlBtHKFRicAyFWy9ZKOsiqF6piBCnXLzcoyWwuoDPW6Ft8FT+fTpL2KAXZDZ3n0cPWm1TKz2AmcB7G
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR11MB8509.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(42112799006)(1800799024)(376014)(366016)(11063799006)(5023799004)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjF3TTFlQnVlcUlSZlQyNHRub1JrY1hhL0xmMUtNWXdvazlod25IL2VVUzIr?=
+ =?utf-8?B?T0xrT3BRWEdrUXQzd2xHc1JDUkZHRUE4bHVBMTJGNGJxTjZBZFMxdlZzQ1Q0?=
+ =?utf-8?B?bEtLRFlLaW9oUENTWDJDTDZpelNEWTVRLzQzdk1HeTQxVGpJWllnT2xKTmhq?=
+ =?utf-8?B?Y0VoQ0lRRlhCME9SYnZ4KzdIeUJhd2ZhNDNINzVCSVFQRG9kWUVIU0NnSWh4?=
+ =?utf-8?B?WnBmMWlvMWY0UiswMVhmTjdCUGh0NW1SVFhEQ2s5bU5LOFVacDEyb2xWSHpr?=
+ =?utf-8?B?MXl5Rzd2a0FKaEVpWGVObFB0THJtRkxBQkxTRm1DMEN6ZERWNXZmK25sWnpY?=
+ =?utf-8?B?Z2JrcjVEWm9Kem1qd216T2FHWmtHaGh5RjI0UkEzSmduVDNmVjFtdVpVdkFB?=
+ =?utf-8?B?TlM2Q0ljUVQ4WFJUMXBQNGwrREV1NFdZQi9DcmxJekFvMjBFdHROZUVscTND?=
+ =?utf-8?B?NHNkdnFSb3RLV3pkQnJjV3dsMDd2TlBEWFhLTTM5blMyUjhFcjd5Z3FPZGM2?=
+ =?utf-8?B?NnoySm5xcVliL1dYM1pUNllTTjExWVRBemUwUjNPWHhaTlBuMnF0dXFpVWZ1?=
+ =?utf-8?B?QThOOSt6TXBjY1FacGl6T043cjVYbUpCVlF1SnE4WEFIMWlDN0xXVXgxam1i?=
+ =?utf-8?B?cmhjZTFWNnlWZVdqb1JJUSs3Q0NzanJkVytWTG1qMnVWSUcxSjNsRng4eW90?=
+ =?utf-8?B?UEVGaXZIQXpxUUlYYUhaSndCWjNhenowTFdpcklsZk8xcktzTkd0UlRPcm5Y?=
+ =?utf-8?B?eFYvODAxcmtYTE9UaXlYYjlkQnIreVcza2FicHJ4TXl1eUV0YlU0eFpkUVVw?=
+ =?utf-8?B?WUNxSkhKR0VTWHlIZmwzSmdzMFljNmQyajVEQUNJbHMyY2wvakZEZkFuQS8x?=
+ =?utf-8?B?ajA5T1I0WUo5clZQT3VIRGNTSVNCYWZHd0k3T0toSUw1RU92MmJjMk11ZGdt?=
+ =?utf-8?B?UUh0SjhEckRBb2VtWER0MmNyanhhb1lPL1Y1RlFWaXJJZjVac2Q4b3JOU0lG?=
+ =?utf-8?B?dXlFaTFIZ0gxZUJVM1lvZzdoUTZjS1dKbFRob0FuTnRjc2tpV0pwcVFYY3pI?=
+ =?utf-8?B?Wm5zb240Y1FqdWd4T1pVS2VVY1E2TzViUlBYTlJzUWRHSXd3QTMzSFZkR0Vu?=
+ =?utf-8?B?bko0clhxczZOUDdXcWpmZm5tUFRobTVnMXduWHE2cUhoR29HdGVRaEVDMlpR?=
+ =?utf-8?B?QWtaZUhXSElvQmM5d0JlcnYyaEhpOEtJRHZNOXFPMkJPejhDSlkzeEwwOHBx?=
+ =?utf-8?B?YmRLMXU5S3prbVRCamdVWjRDTlFLWWFDTVRLMEQ4b29tbDd4WW9sZjBmdC9r?=
+ =?utf-8?B?bUVhUkZJc2NsamNFVkM4UE5tZkFHeVB3WjVTSGEwZ0F2bjNKUWlMMHpwWEtJ?=
+ =?utf-8?B?OGZjcVBadkFlK05Famk4MFZDczhLY0JqWmpRSGRwL2c2b1R2MnlWZGdyS1ht?=
+ =?utf-8?B?NGdIU1NhUlhZSisrTDA1RnJIMkJOeVUrYk12c1VpYmFuMkNkUm1wdFFaa3E3?=
+ =?utf-8?B?VkRJZ0NGWFRHM2Rvd2FSMk5XWWFveEkxUklHR2tobzF3Y256RUt1dFJ2RDVV?=
+ =?utf-8?B?VXhZeHdoblZWdFM2MTRjRzF1U0ZyRGxWa2l4bzJ2b1BKMHNGMDBhb2d4SURW?=
+ =?utf-8?B?N0RZZmxGelJsODVHQmpNbUFFYmw2M29xMisydzFuT2FtRm8vSFl6Qnc4WW5S?=
+ =?utf-8?B?U0h1b3pxcUxkZXZuWmlkb3NmcWtoSGdFQ3h1KzZrTHpiTDdJQkJ0cDNjWHVF?=
+ =?utf-8?B?bmxpS2VSQVliNlFGZDFUUmdaY3N3QjVVRjltbXo4NU1kUEJZK2lPdUNFWkxU?=
+ =?utf-8?B?dVo3OWZDOUNoUEh2TlJYVERYbkdIS2doRlpVOUFld1pEdlVHUS94RUplR3Y4?=
+ =?utf-8?B?TTVFSGVxeTVmTmM3M0xRLzlIOG5INjl0V3o0VWYwLyswdis5L1JBK3JPaWVi?=
+ =?utf-8?B?RkRRZVdyUTk1Z1RZaHFsaHhBTjYrS0owTW5tOXNtT2U0bHZuNHJtNVlCOS9X?=
+ =?utf-8?B?L29jVGJmYWZiQ1JvZXUrcnF1MU5FbEdkeDVHUXI5a3lvTGpTZWp1M090QlR5?=
+ =?utf-8?B?a3ZGK0gwOW40aGEzQktGTW9nVmxZSVFXbDFFRFBiaUgrS2ZOL1laUUhYS3Bo?=
+ =?utf-8?B?eWlmQ25zRHRNdU9OVHBVVmN5MlAxQ1oxUmhJbDlVUUxxZk9KTi9lMlNiZ1RI?=
+ =?utf-8?B?YWlXaDZLbC9PK0YwemUrbWpGZGxkRWttQ2dCdWs1azlicEl6bW11SEdMSlhM?=
+ =?utf-8?B?VXBDSmpMVHRvMnVNSkt4d0Y5ejBhdGlpNGM3cUI0K1F0ZmxTcVFiOVB2bmtn?=
+ =?utf-8?B?Z2Z1TkZlV0RZbzV6Z2QyMDUvUzFmRm01WEZHZUI3VExFSWNOWFIrdz09?=
+X-Exchange-RoutingPolicyChecked: Xrel+y/u+6CdhhUtwyrWWcZRCud3KaGRO8kjbALL7jyJJdAun1zTk3iyhbIPSlZaASSbL4XP89msQh5xYp4B1HRpmr26FJM9LIgfPtl62WLxyKdVCqnso1zYul76mYlfPz5cf83V9Zy8qwtO9QS0LceMAUXezCyHo1V7ohMoItJ3VoGGYCMYKMsp0BrVSj31Ik+ajdPjvbeAKygB+KmtJLs1Ob6tY+P8cT4HcHyKHCajyxZzpgDphmX7FvACGFDhtOCu5eoOyuJPiETLEppkiAlkYRPND8Zcq5kCdk/UoJg8AACbFCabEzfSW/zNzOFy2Emoad3TpOaywW5xV1nLfQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1ff6f15-3403-4415-e324-08deb67044ab
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8509.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 13:04:04.3437
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SJaBnqkSLkIRiVoPmy8Z1HlpxgTJY/7/+Hviq0r5yPeyOTCUIc6NwS/fxakHmN2m3RwdR4OtXiJZ2uHfmuRvVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6134
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249920-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249914-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yi.l.liu@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 7547B58EAE8
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 424F258E8CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
+On 5/19/26 13:29, Lu Baolu wrote:
+> The Intel IOMMU driver allows SVA on devices even if they do not support
+> PCI/PRI. Commit 39c20c4e83b9 ("iommu/vt-d: Only handle IOPF for SVA when
+> PRI is supported") modified the SVA bind path to allow this configuration
+> by skipping IOPF enablement when PRI is missing. However, it failed to
+> update the unbind path.
+> 
+> This creates an imbalance: the unbind path attempts to disable IOPF for
+> a device that never had it enabled, triggering a WARNING in
+> intel_iommu_disable_iopf():
+> 
+>   WARNING: drivers/iommu/intel/iommu.c:3475 at intel_iommu_disable_iopf+0x4f/0x90d
+>   Call Trace:
+>    <TASK>
+>    blocking_domain_set_dev_pasid+0x50/0x70
+>    iommu_detach_device_pasid+0x89/0xc0
+>    iommu_sva_unbind_device+0x73/0x150
+>    xe_vm_close_and_put+0x4d2/0x1200 [xe]
+> 
+> Fix this by bypassing IOPF operations for SVA domains on non-PRI hardware
+> in both the bind and unbind paths.
+> 
+> Fixes: 39c20c4e83b9 ("iommu/vt-d: Only handle IOPF for SVA when PRI is supported")
+> Cc: stable@vger.kernel.org
+> Reported-by: Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> ---
+>   drivers/iommu/intel/iommu.h | 11 +++++++++++
+>   drivers/iommu/intel/svm.c   | 12 ++++--------
+>   2 files changed, 15 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index ef145560aa98..775f1c4ae346 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -1254,18 +1254,29 @@ void intel_iommu_disable_iopf(struct device *dev);
+>   static inline int iopf_for_domain_set(struct iommu_domain *domain,
+>   				      struct device *dev)
+>   {
+> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
+> +
+>   	if (!domain || !domain->iopf_handler)
+>   		return 0;
+>   
+> +	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
+> +	if (domain->type == IOMMU_DOMAIN_SVA && !info->pri_supported)
+> +		return 0;
+> +
 
-On Wed, May 20, 2026 at 8:47=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
-> > On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
-> > > Hi Greg,
-> > >
-> > > On Tue, May 19, 2026 at 11:19=E2=80=AFAM Greg KH <gregkh@linuxfoundat=
-ion.org> wrote:
-> > > >
-> > > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wr=
-ote:
-> > > > > Hi Greg,
-> > > > >
-> > > > > On Tue, May 19, 2026 at 8:07=E2=80=AFAM Greg KH <gregkh@linuxfoun=
-dation.org> wrote:
-> > > > > >
-> > > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wro=
-te:
-> > > > > > > On 5/19/26 12:30, Greg KH wrote:
-> > > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis=
- wrote:
-> > > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > > > > > > > >
-> > > > > > > > > > > The following changes since commit c78bdba7b9666020c0=
-832150a4fc4c0aebc7c6ac:
-> > > > > > > > > > >    net: phy: DP83TC811: add reading of abilities (202=
-6-05-14 15:17:12 +0200)
-> > > > > > > > > > >
-> > > > > > > > > > > are available in the Git repository at:
-> > > > > > > > > > >
-> > > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/blue=
-tooth/bluetooth.git tags/for-net-2026-05-14
-> > > > > > > > > > >
-> > > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a8c75=
-47d088fb6275c00282:
-> > > > > > > > > > >
-> > > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffies t=
-o ms (2026-05-14 09:58:08 -0400)
-> > > > > > > > > >
-> > > > > > > > > > It seems this PR sadly came too late for this week's ne=
-t PR to mainline
-> > > > > > > > > > that was merged yesterday.
-> > > > > > > > > >
-> > > > > > > > > > TWIMC, from my point of view, it would be great if we s=
-omehow could
-> > > > > > > > > > still get the changes from this PR or at least the btmt=
-k fix it
-> > > > > > > > > > contains[1] to mainline this week before -rc4, as it is=
- fixing a
-> > > > > > > > > > regression known since 2026-04-24 that at least five pe=
-ople encountered
-> > > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Blueto=
-oth: btmtk:
-> > > > > > > > > > validate WMT event SKB length before struct access") [0=
-06b9943b982 in
-> > > > > > > > > > -next].
-> > > > > > > > >
-> > > > > > > > > Greg, Sasha, that [1] fix I was talking about now reached=
- -next as
-> > > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT F=
-UNC_CTRL
-> > > > > > > > > events") and will likely hit mainline on Thursday or so w=
-ith the weekly
-> > > > > > > > > -net PR to -mainline. If that's good enough for you, I'd =
-say it would be
-> > > > > > > > > good to pick this up for the next round of stable kernels=
-.
-> > > > > > > >
-> > > > > > > > That "Fixes:" tag is referring to something that is also no=
-t in any
-> > > > > > > > tree, but that commit does have a cc: stable in it.  So do =
-we need both
-> > > > > > > > of these:
-> > > > > > >
-> > > > > > > Valid question, as yes, there is a slight mixup here:
-> > > > > > >
-> > > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB len=
-gth before struct access")
-> > > > > > >
-> > > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c0=
-8 is the
-> > > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluet=
-ooth:
-> > > > > > > btmtk: validate WMT event SKB length before struct access") -=
-- the one
-> > > > > > > that is causing the regression that I want to get fixed. So w=
-e now only
-> > > > > > > need:
-> > > > > > >
-> > > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_=
-CTRL events")
-> > > > > >
-> > > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is goin=
-g to be a
-> > > > > > nightmare to track over time, ugh.
-> > > > >
-> > > > > Hmm, did we get the wrong hash or something? Usually, that would =
-show
-> > > > > up in the verify-fixes.sh, but perhaps it didn't capture it this =
-time
-> > > > > for some reason, perhaps I'm running an outdated version or somet=
-hing
-> > > > > similar.
-> > > >
-> > > > Something went wrong if we ended up with a patch in the stable tree=
-s,
-> > > > yet this fix is referring to it as a different git sha.  Don't know
-> > > > where the disconnect happend :(
-> > >
-> > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
-> > > struct access")
-> > >
-> > > I don't have that in any of our tree either, this is actually
-> > > 634a4408c061 on all trees in the chain:
-> > >
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.g=
-it/commit/?id=3D634a4408c061
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit=
-/?id=3D634a4408c061
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
-mmit/?id=3D634a4408c061
-> > >
-> > > Or actually that was the hash before it got rebased on bluetooth-next=
- tree:
-> > >
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-n=
-ext.git/commit/?id=3D041e88fb0c08
-> > >
-> > > But I didn't send the PR from that three so perhaps somebody else sen=
-t
-> > > it to stable with the wrong fixes tag?
-> > I believe the confusion comes from "Bluetooth: btmtk: accept too short =
-WMT
-> > FUNC_CTRL events" itself currently having different commit hashes in
-> > bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former
-> > correctly refers to "Bluetooth: btmtk: validate WMT event SKB length be=
-fore
-> > struct access" as 634a4408c061 in the Fixes tag and was merged into net
-> > yesterday heading for 7.1-rc5. The latter still refers to it as
-> > 041e88fb0c08. Both are now in next-20260519 but only the latter was in
-> > next-20260518 which was the latest at the time of Thorsten's message.
-> >
-> > Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should re=
-sult
-> > in a valid Fixes tag.
->
-> Ok, now done.  Be careful of duplicate commits in different branches
-> that are marked for backporting with different ids.  It can cause
-> massive confusion (i.e. don't be like the drm tree...)
+Looked into the history a bit, and this story begins with commit
+a86fb7717320 ("iommu/vt-d: Allow SVA with device-specific IOPF"). This
+commit enabled devices that support their own IOPF mechanism to use SVA
+even when the platform IOMMU doesn't support IOPF.
 
-Noted. I guess I need to dig into how other trees do to avoid that.
-The problem seem related to using 2 trees: bluetooth->net (fixes only,
-rebased on each RC) versus bluetooth-next->net-next (development,
-rebased once per release).
+However, SVA isn't the only fault-capable domain type. Other fault-capable
+domain types (e.g., paging domains) should also be able to leverage
+device-specific IOPF capabilities.
 
-> thanks,
->
-> greg k-h
+My question is: can we drop the domain type check to support other types
+of fault-capable domains that rely on device-specific IOPF?
 
-
-
---=20
-Luiz Augusto von Dentz
+Regards,
+Yi Liu
 
