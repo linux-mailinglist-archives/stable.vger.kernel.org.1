@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-252175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKMRJUL4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:58 +0200
+	id cEyfJn3+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EAE595528
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8B85968F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAE06311E896
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F0ED73100A89
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7DD30675C;
-	Wed, 20 May 2026 17:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653E93F8896;
+	Wed, 20 May 2026 18:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvUWCRFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQj4LG+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FF43F20E9;
-	Wed, 20 May 2026 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15559371048;
+	Wed, 20 May 2026 18:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299989; cv=none; b=ghyl7ldl168jtspy5XqWBDxNyMkgp5nDwBnTd1QmUsvQrJzHdEDxxXeHHGVkqfPZMCjpVKmi0yLx6gOxtbzGOAGKf0DQLGWHdJ6fsB/r+eamDJcA1PbxfMyAC7+WtsuGJSoIaL6Ti+7MEKY50jHkuNcWjkvL8C6P7Mah3SCxGes=
+	t=1779301582; cv=none; b=EvaioPJ84Q7iOVYooEYbEBt7YkvOYyaSoMsWqGfQdHtSlL1r+aZMw4E/neLW7x632fdwxLj4jyo6I/TlrAs7CRI6xQ07KEcu4e2fATnH7E8A6hpwDrr2DG35gAOH6QmkmCYWi/WGH41hBQbaWFyGVQ2LGNPlD6tj8+JvjqVslsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299989; c=relaxed/simple;
-	bh=6yYJ/3kF6Saff8SRp8XuTRNTHyH7D+wIRpaQZ8oZSyM=;
+	s=arc-20240116; t=1779301582; c=relaxed/simple;
+	bh=XPv4AmUbp4V6m4JUO8swVpUwv73Y965yICTo8ubQkZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBZwF+TONW/5lyNaHkE4yjyJVw6tsxVfhdMuB3ELsW4sE2Rm3UwCc+9/AjoIjN9w4XV+//kaXaKQheCCFZtpzMY99ejZNEZdHSxWUYHQburT8idmWRJq+aUbhbldo4eTtUIb6F4rRT9flKSZOpJTEeL1kkMH6Yx14bG9alvDGg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvUWCRFz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509D41F000E9;
-	Wed, 20 May 2026 17:59:46 +0000 (UTC)
+	 MIME-Version; b=o1UFdKGdpf6y077u5Gu+Nt2WxpQX0mOHiwSUB7TdZ2qSDkGyEAaSefpIXtMtB6+eqa4Vb/X0hojmsyulh4tZN+e7/Ge1Rehqz4BnoBsX+sJKGyOXmtBT6YYwXBppptXOtfPuQwcNe3vEx0q8MywWS0FxGGFvVnS5XkVxWMp/9Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQj4LG+2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790481F00894;
+	Wed, 20 May 2026 18:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299986;
-	bh=XzeNZvnuIk1Etoyq8KSJSVT8ewvZbjKql1AJvFV83dU=;
+	s=korg; t=1779301581;
+	bh=tOTA3E3CvzzvCVfO7CIRr7RFytFZBBTer4HEmotKIOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TvUWCRFz2x5/mpvzJCAWYrj5BxWQGK7jeYLUoBtA/1ftD2RKtNjF4bv6t9pxR3jk+
-	 o5BEeceF1EdsteasU4zHgAHaRJFFexsGdnB+HhEAeEBB98ATU5+N8ru0EpnTldC/+T
-	 LrWef1ibRf84cwQRuGsRwx3YLk2G4NOMxlYV3NwQ=
+	b=yQj4LG+2KHSlJlu+lmfPYcl0fmrdKs0nClGeJb4iQUqiZhD7ZVy0ioaCm30+rwGQs
+	 VxcElIcClYEWngJacSgSq4j4LEwlgBm4RPwVo6XU6YGlHFJ7eXNlPz3r1vyWwB4mLX
+	 kha9Y57tt7GhnLQAdEbPqZiqngLdgbjIUhlrgP3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 935/957] libceph: Fix potential out-of-bounds access in crush_decode()
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 607/666] netpoll: Extract IPv6 address retrieval function
 Date: Wed, 20 May 2026 18:23:38 +0200
-Message-ID: <20260520162154.868666120@linuxfoundation.org>
+Message-ID: <20260520162124.425612704@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +67,163 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252175-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252784-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,tu-ilmenau.de:email]
-X-Rspamd-Queue-Id: 33EAE595528
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 4F8B85968F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4c79fc2d598694bda845b46229c9d48b65042970 upstream.
+[ Upstream commit 6ad7969a361cbec5822285fb39203678ff462b64 ]
 
-A message of type CEPH_MSG_OSD_MAP containing a crush map with at least
-one bucket has two fields holding the bucket algorithm. If the values
-in these two fields differ, an out-of-bounds access can occur. This is
-the case because the first algorithm field (alg) is used to allocate
-the correct amount of memory for a bucket of this type, while the second
-algorithm field inside the bucket (b->alg) is used in the subsequent
-processing.
+Extract the IPv6 address retrieval logic from netpoll_setup() into
+a dedicated helper function netpoll_take_ipv6() to improve code
+organization and readability.
 
-This patch fixes the issue by adding a check that compares alg and
-b->alg and aborts the processing in case they differ. Furthermore,
-b->alg is set to 0 in this case, because the destruction of the crush
-map also uses this field to determine the bucket type, which can again
-result in an out-of-bounds access when trying to free the memory pointed
-to by the fields of the bucket. To correctly free the memory allocated
-for the bucket in such a case, the corresponding call to kfree is moved
-from the algorithm-specific crush_destroy_bucket functions to the
-generic crush_destroy_bucket().
+The function handles obtaining the local IPv6 address from the
+network device, including proper address type matching between
+local and remote addresses (link-local vs global), and includes
+appropriate error handling when IPv6 is not supported or no
+suitable address is available.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250618-netpoll_ip_ref-v1-3-c2ac00fe558f@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 76b93a810757 ("netpoll: pass buffer size to egress_dev() to avoid MAC truncation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/crush/crush.c |    6 +-----
- net/ceph/osdmap.c      |    4 ++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/core/netpoll.c | 76 +++++++++++++++++++++++++++-------------------
+ 1 file changed, 44 insertions(+), 32 deletions(-)
 
---- a/net/ceph/crush/crush.c
-+++ b/net/ceph/crush/crush.c
-@@ -47,7 +47,6 @@ int crush_get_bucket_item_weight(const s
- void crush_destroy_bucket_uniform(struct crush_bucket_uniform *b)
- {
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_list(struct crush_bucket_list *b)
-@@ -55,14 +54,12 @@ void crush_destroy_bucket_list(struct cr
- 	kfree(b->item_weights);
- 	kfree(b->sum_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_tree(struct crush_bucket_tree *b)
- {
- 	kfree(b->h.items);
- 	kfree(b->node_weights);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw(struct crush_bucket_straw *b)
-@@ -70,14 +67,12 @@ void crush_destroy_bucket_straw(struct c
- 	kfree(b->straws);
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket_straw2(struct crush_bucket_straw2 *b)
- {
- 	kfree(b->item_weights);
- 	kfree(b->h.items);
--	kfree(b);
- }
- 
- void crush_destroy_bucket(struct crush_bucket *b)
-@@ -99,6 +94,7 @@ void crush_destroy_bucket(struct crush_b
- 		crush_destroy_bucket_straw2((struct crush_bucket_straw2 *)b);
- 		break;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index b754341db50fe..59cb4d4d28e10 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -721,6 +721,47 @@ static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev,
  	}
-+	kfree(b);
  }
  
- /**
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -518,6 +518,10 @@ static struct crush_map *crush_decode(vo
- 		b->id = ceph_decode_32(p);
- 		b->type = ceph_decode_16(p);
- 		b->alg = ceph_decode_8(p);
-+		if (b->alg != alg) {
-+			b->alg = 0;
-+			goto bad;
++/*
++ * Take the IPv6 from ndev and populate local_ip structure in netpoll
++ */
++static int netpoll_take_ipv6(struct netpoll *np, struct net_device *ndev)
++{
++	char buf[MAC_ADDR_STR_LEN + 1];
++	int err = -EDESTADDRREQ;
++	struct inet6_dev *idev;
++
++	if (!IS_ENABLED(CONFIG_IPV6)) {
++		np_err(np, "IPv6 is not supported %s, aborting\n",
++		       egress_dev(np, buf));
++		return -EINVAL;
++	}
++
++	idev = __in6_dev_get(ndev);
++	if (idev) {
++		struct inet6_ifaddr *ifp;
++
++		read_lock_bh(&idev->lock);
++		list_for_each_entry(ifp, &idev->addr_list, if_list) {
++			if (!!(ipv6_addr_type(&ifp->addr) & IPV6_ADDR_LINKLOCAL) !=
++				!!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
++				continue;
++			/* Got the IP, let's return */
++			np->local_ip.in6 = ifp->addr;
++			err = 0;
++			break;
 +		}
- 		b->hash = ceph_decode_8(p);
- 		b->weight = ceph_decode_32(p);
- 		b->size = ceph_decode_32(p);
++		read_unlock_bh(&idev->lock);
++	}
++	if (err) {
++		np_err(np, "no IPv6 address for %s, aborting\n",
++		       egress_dev(np, buf));
++		return err;
++	}
++
++	np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
++	return 0;
++}
++
+ /*
+  * Take the IPv4 from ndev and populate local_ip structure in netpoll
+  */
+@@ -815,41 +856,12 @@ int netpoll_setup(struct netpoll *np)
+ 			err = netpoll_take_ipv4(np, ndev);
+ 			if (err)
+ 				goto put;
+-			ip_overwritten = true;
+ 		} else {
+-#if IS_ENABLED(CONFIG_IPV6)
+-			struct inet6_dev *idev;
+-
+-			err = -EDESTADDRREQ;
+-			idev = __in6_dev_get(ndev);
+-			if (idev) {
+-				struct inet6_ifaddr *ifp;
+-
+-				read_lock_bh(&idev->lock);
+-				list_for_each_entry(ifp, &idev->addr_list, if_list) {
+-					if (!!(ipv6_addr_type(&ifp->addr) & IPV6_ADDR_LINKLOCAL) !=
+-					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
+-						continue;
+-					np->local_ip.in6 = ifp->addr;
+-					ip_overwritten = true;
+-					err = 0;
+-					break;
+-				}
+-				read_unlock_bh(&idev->lock);
+-			}
+-			if (err) {
+-				np_err(np, "no IPv6 address for %s, aborting\n",
+-				       egress_dev(np, buf));
++			err = netpoll_take_ipv6(np, ndev);
++			if (err)
+ 				goto put;
+-			} else
+-				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
+-#else
+-			np_err(np, "IPv6 is not supported %s, aborting\n",
+-			       egress_dev(np, buf));
+-			err = -EINVAL;
+-			goto put;
+-#endif
+ 		}
++		ip_overwritten = true;
+ 	}
+ 
+ 	err = __netpoll_setup(np, ndev);
+-- 
+2.53.0
+
 
 
 
