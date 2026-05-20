@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-251937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cvgOOxkDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-251937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:13 +0200
+	id SEIoDFXuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED265597595
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:53:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16B359392F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D731305C9EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 164C930BE8AE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E1B36405A;
-	Wed, 20 May 2026 17:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1CA3F39C8;
+	Wed, 20 May 2026 17:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppaCnfjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ug3B97wm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29697369D67;
-	Wed, 20 May 2026 17:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251A43A3833;
+	Wed, 20 May 2026 17:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299320; cv=none; b=acTXjdFfdw8XFtMOrLLxoNxhbkJl27McR7g6ZWMB/V9a2rCmrGTzUj08ZN78s4U5aqizl30J95apXS/FmD+zwuR2Rlp194a9bVchTZ7gZ5uiRKDwUHUUsUNxytIZORKUeflhHJBWts5esrvLcJ6j28YLcN25dmup48MfSCjk7m0=
+	t=1779296974; cv=none; b=uGXYT29YPPGafNI6wPH+BO+pJDQglrk4G4yyHkq5aOsiyDgL1EvdSnVcLG7zmIBngqt3LyJZAz2+/NF5ibmSp7o8cZPhzoYzJz7/Zc4tjmgcrQTx/2XBjaiWxwfSHYzGqLRZ8ai97RdIcPu7ikLYCR2CezmtI0NU02owugmEOaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299320; c=relaxed/simple;
-	bh=IKp8v5qo7kq+/7aBGwzY/7eShQ0CQoeNyG6uFMDf09M=;
+	s=arc-20240116; t=1779296974; c=relaxed/simple;
+	bh=SKE3dtqfzUkA0iVIUpMokE8/QOw+b1/1Ln8S2xxXzBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKgLjLQTTAQtDkVWoOfH1upKp6J18U30dLAk8XawukScmQ3/KhT7/u32meQsijC4aSFCKA+G8Yar1SXfcu2SInvjMStEWKVdexoWAQH/N+UPd7VDbtU2Rjx01QL0gdhySnHq16L8ZHdi/9qwZehysnpWm2NTb4u/QTgbQVLgWTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppaCnfjx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAF11F000E9;
-	Wed, 20 May 2026 17:48:38 +0000 (UTC)
+	 MIME-Version; b=SwqdYU2xpgxfMWMp6ZyIN5Zb9DUEYiilEguMhget1dbW/+EHn4JEsbpVXRi+xIv/u2HfqZVBBc1iRtcs2hnjQbo/Hm96OWrZIy7TzEUnmJLoEaA45EvFGDezFbL/llFw4Xu/R6RgdVSJKBNg/IUoZKxlJKuB8KtsdiYQxWVEzFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug3B97wm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430F81F000E9;
+	Wed, 20 May 2026 17:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299319;
-	bh=QfZxFZdNah3vIKxMIzQVlN6tyZYQ7WbkPdkimMP2YGs=;
+	s=korg; t=1779296972;
+	bh=f4MoHmyDxrKshezubLJWCC/Nd0ywBAuMYIqEZYR5BOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ppaCnfjxDWSC7HlRpZDHW2IaQ5f1TU1f5HTY6XLFAhHKVtTyEz/DmBjeHxf1huQhk
-	 +c0IYeoEqMNVwBOQraxz3QnIPrYXvXdrWli6NxPjWO76SDYoPqhITQiYdYuCvOvhwp
-	 BYPntr/m/o0Lgm19jTiGhw4nzoWkGB0fybRMaELs=
+	b=Ug3B97wmVnmu/fptcaKJyubKfM05hx2Z8qrO0bPnBED4CBdY57ODkkT3cnHf+ArNT
+	 F19Yj77ZWjo1vJ0lYhw4bFUmmyWgs8k0nDZizRNfm5FvRhlfjYHoPN9Rn4m+7vc/CX
+	 VPgWEUVyFSo8QxbPrOmowDrB/73XkQojIn/qJtPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 727/957] tools/power turbostat.8: Document the "--force" option
+Subject: [PATCH 7.0 0960/1146] s390/mm: Fix phys_to_folio() usage in do_secure_storage_access()
 Date: Wed, 20 May 2026 18:20:10 +0200
-Message-ID: <20260520162150.320212247@linuxfoundation.org>
+Message-ID: <20260520162209.958201922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +68,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251937-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251051-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ED265597595
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A16B359392F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 785953cf6e63aa5a9fcdfa9577b1411e0281c4bc ]
+[ Upstream commit b95e0e792822bad8fc9eb33ea3a90005e29e75e9 ]
 
-Starting in turbostat v2025.01.14, turbostat refused to run
-on unsupported hardware, pointing to "RUN THE LATEST VERSION"
-on turbostat(8).
+In case of a Secure-Storage-Access exception the effective aka virtual
+address which caused the exception is contained within the TEID.
 
-At that time, turbostat supported and advertised the "--force"
-parameter to run anyway (with unsupported results).
+do_secure_storage_access() incorrectly uses phys_to_folio() instead of
+virt_to_folio() to translate the virtual address to the corresponding
+folio.
 
-Also document "--force" on turbostat.8.
+Fix this by using virt_to_folio() instead of phys_to_folio().
 
-Signed-off-by: Len Brown <len.brown@intel.com>
-Stable-dep-of: ce012c966b51 ("tools/power turbostat: Fix unrecognized option '-P'")
+Fixes: 084ea4d611a3 ("s390/mm: add (non)secure page access exceptions handlers")
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.8 | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/s390/mm/fault.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.8 b/tools/power/x86/turbostat/turbostat.8
-index 3340def58d015..6c9428f98cd2b 100644
---- a/tools/power/x86/turbostat/turbostat.8
-+++ b/tools/power/x86/turbostat/turbostat.8
-@@ -111,6 +111,8 @@ The column name "all" can be used to enable all disabled-by-default built-in cou
- .PP
- \fB--no-perf\fP Disable all the uses of the perf API.
- .PP
-+\fB--force\fPForce turbostat to run on an unsupported platform (minimal defaults).
-+.PP
- \fB--interval seconds\fP overrides the default 5.0 second measurement interval.
- .PP
- \fB--num_iterations num\fP number of the measurement iterations.
-@@ -161,9 +163,9 @@ The system configuration dump (if --quiet is not used) is followed by statistics
- .PP
- \fBC1, C2, C3...\fP The number times Linux requested the C1, C2, C3 idle state during the measurement interval.  The system summary line shows the sum for all CPUs.  These are C-state names as exported in /sys/devices/system/cpu/cpu*/cpuidle/state*/name.  While their names are generic, their attributes are processor specific. They the system description section of output shows what MWAIT sub-states they are mapped to on each system.  These counters are in the "cpuidle" group, which is disabled, by default.
- .PP
--\fBC1+, C2+, C3+...\fP The idle governor idle state misprediction statistics. Inidcates the number times Linux requested the C1, C2, C3 idle state during the measurement interval, but should have requested a deeper idle state (if it exists and enabled). These statistics come from the /sys/devices/system/cpu/cpu*/cpuidle/state*/below file.  These counters are in the "cpuidle" group, which is disabled, by default.
-+\fBC1+, C2+, C3+...\fP The idle governor idle state misprediction statistics. Indicates the number times Linux requested the C1, C2, C3 idle state during the measurement interval, but should have requested a deeper idle state (if it exists and enabled). These statistics come from the /sys/devices/system/cpu/cpu*/cpuidle/state*/below file.  These counters are in the "cpuidle" group, which is disabled, by default.
- .PP
--\fBC1-, C2-, C3-...\fP The idle governor idle state misprediction statistics. Inidcates the number times Linux requested the C1, C2, C3 idle state during the measurement interval, but should have requested a shallower idle state (if it exists and enabled). These statistics come from the /sys/devices/system/cpu/cpu*/cpuidle/state*/above file.  These counters are in the "cpuidle" group, which is disabled, by default.
-+\fBC1-, C2-, C3-...\fP The idle governor idle state misprediction statistics. Indicates the number times Linux requested the C1, C2, C3 idle state during the measurement interval, but should have requested a shallower idle state (if it exists and enabled). These statistics come from the /sys/devices/system/cpu/cpu*/cpuidle/state*/above file.  These counters are in the "cpuidle" group, which is disabled, by default.
- .PP
- \fBC1%, C2%, C3%\fP The residency percentage that Linux requested C1, C2, C3....  The system summary is the average of all CPUs in the system.  Note that these are software, reflecting what was requested.  The hardware counters reflect what was actually achieved.  These counters are in the "pct_idle" group, which is enabled by default.
- .PP
-@@ -193,7 +195,7 @@ The system configuration dump (if --quiet is not used) is followed by statistics
- .PP
- \fBGFX%C0\fP Percentage of time that at least one GFX compute engine is busy.
- .PP
--\fBCPUGFX%\fP Percentage of time that at least one CPU is busy at the same time as at least one Graphics compute enginer is busy.
-+\fBCPUGFX%\fP Percentage of time that at least one CPU is busy at the same time as at least one Graphics compute engine is busy.
- .PP
- \fBPkg%pc2, Pkg%pc3, Pkg%pc6, Pkg%pc7\fP percentage residency in hardware package idle states.  These numbers are from hardware residency counters.
- .PP
-@@ -556,6 +558,8 @@ If the upstream version isn't new enough, the development tree can be found here
- If the development tree doesn't work, please contact the author via chat,
- or via email with the word "turbostat" on the Subject line.
- 
-+An old turbostat binary may run on unknown hardware by using "--force",
-+but results are unsupported.
- .SH FILES
- .ta
- .nf
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index 191cc53caead3..028aeb9c48d6f 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -438,7 +438,7 @@ void do_secure_storage_access(struct pt_regs *regs)
+ 		panic("Unexpected PGM 0x3d with TEID bit 61=0");
+ 	}
+ 	if (is_kernel_fault(regs)) {
+-		folio = phys_to_folio(addr);
++		folio = virt_to_folio((void *)addr);
+ 		if (unlikely(!folio_try_get(folio)))
+ 			return;
+ 		rc = uv_convert_from_secure(folio_to_phys(folio));
 -- 
 2.53.0
 
