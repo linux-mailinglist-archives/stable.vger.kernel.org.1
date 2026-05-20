@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEXPFGj5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:52 +0200
+	id EHxrEizyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A94F59585B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E46594452
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4159B3174978
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF35332263BB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA823F39EE;
-	Wed, 20 May 2026 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876F83F44C9;
+	Wed, 20 May 2026 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmswOhAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9iyCPkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410423F23C5;
-	Wed, 20 May 2026 17:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45937364EB0;
+	Wed, 20 May 2026 17:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299612; cv=none; b=ODF/zBOdYsJxIfYRLTej1S8KCa14u95BGstdrRC2aax00R/+xbHuOq4y8LHhCmkMDSf8V6nMw0SA4iU9oF22waW4M7p2ni8nycJKUunUACUNo+k8ydpmkP4x+eDbYHG3zGNOixWbq3tdPf/f4ZtEGugk8MnQXAaM6FaRxM1wsE8=
+	t=1779297150; cv=none; b=VceYewdLawHyOXhuRDE8KDkWUTHX0iLwsLExXpVX/YNXZFPzd7YhOfdZWF8Iai0MEhK9oy3X7jQGA/NaV2yZaHyquaVE/vb7fpQwKXuvuoB7Vqx4NTKuvF86TrUy5lOWCcpuv5ZGCPbeAUfJwYyiuUXffcGSGdg/Xic1BfNKqLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299612; c=relaxed/simple;
-	bh=fwOwH2urZ0ThzA2oA8YdF117Yr7bH2vAAobv2j7nq94=;
+	s=arc-20240116; t=1779297150; c=relaxed/simple;
+	bh=mZsZSEurYH8iX/bXSIaNpPeucQJQ08XoH3KE6fwz+VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDmKAsBrmb8SFWn8HXQSq6unTjdWHPmPBTxCWQJTGIPwV7kelfs+jWDz1b4Ll+CWnBMHQ+kNIYeO3en0ywxw+R6f8AHyBJGd17pzlA9R60acUBznTSZWrjg/8Lc0y8BbGNgHf24Y8X5GumkyAksFVbOZKXkuLwJ4pz3FUenvFOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmswOhAq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36F91F000E9;
-	Wed, 20 May 2026 17:53:30 +0000 (UTC)
+	 MIME-Version; b=pn2Z958JXvAxNK33a/NyvmaR6wIbb/FWUgZMWeNZpNskK5CEXaif1IYablUBnpTzfo69rRufE/mbVL60ucOjVsPlRf50+XLKobNYsy396MqvAzil34cwmTZPRZhlaSff4dTp7tWAt/OERCBfKpL7UTsBYlHB9tVztHAt0VgRR7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9iyCPkP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC14D1F000E9;
+	Wed, 20 May 2026 17:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299611;
-	bh=6lfbn2cySl0zjZHGFQTFloBXldOiHlCG0y1Xa5x1GzE=;
+	s=korg; t=1779297149;
+	bh=zpCLM3epaJIWSrKfATFimcymIDbQu20CxeHjYeHpfIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hmswOhAqCgrOA4iwmgaAT+NXN8LqT4AXt23duVn/SheZynyGyP4J2zkuSiZdiBvMY
-	 Wd/xf6Yz2M9Yd9Hu7fCVKpW9jfqm8fz9YqEXEOE9jFOa9yXWHRcNfWT5pXeQO1Qt0q
-	 hi8SJoqYnEQYhreinw2RFxvdAJxQOgAWx63H82PQ=
+	b=P9iyCPkPge3u/YSiFnZ06OSQUh1EVFDF3PtxipbImpl5xKCKt8wnn3WTsSJ7h0ulg
+	 nC7gTEJy+FrzJ3D7yIKG4TQqNuQVHjwGR2u7h1ebFaVmft6pTeEyE21VNUWbKD0hm0
+	 mMc5pTnRay4BbkkbBWoihhPI12z8LdzYYp6ghqfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 836/957] net: airoha: fix BQL imbalance in TX path
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH 7.0 1069/1146] Bluetooth: btmtk: accept too short WMT FUNC_CTRL events
 Date: Wed, 20 May 2026 18:21:59 +0200
-Message-ID: <20260520162152.693483049@linuxfoundation.org>
+Message-ID: <20260520162212.424949650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252049-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251120-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iki.fi,intel.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 0A94F59585B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,iki.fi:email]
+X-Rspamd-Queue-Id: E7E46594452
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 2d9f5a118205da2683ffcec78b9347f1f01a820e ]
+commit e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b upstream.
 
-Fix a possible BQL imbalance in airoha_dev_xmit(), where inflight
-packets are accounted only for the AIROHA_NUM_TX_RING netdev TX
-queues. The queue index is computed as:
+MT7925 (USB ID 0e8d:e025) on fw version 20260106153314 sends WMT
+FUNC_CTRL events that are missing the status field.
 
-    qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx)
-    txq = netdev_get_tx_queue(dev, qid);
+Prior to commit 006b9943b982 ("Bluetooth: btmtk: validate WMT event SKB
+length before struct access") the status was read from out-of-bounds of
+SKB data, which usually would result to success with
+BTMTK_WMT_ON_UNDONE, although I don't know the intent here.  The bounds
+check added in that commit returns with error instead, producing
+"Bluetooth: hci0: Failed to send wmt func ctrl (-22)" and makes the
+device unusable.
 
-However, airoha_qdma_tx_napi_poll() accounts completions across all
-netdev TX queues (num_tx_queues), leading to inconsistent BQL
-accounting.
+Fix the regression by interpreting too short packet as status
+BTMTK_WMT_ON_UNDONE, which makes the device work normally again.
 
-Also reset all netdev TX queues in the ndo_stop callback.
-
-Fixes: 1d304174106c ("net: airoha: Implement BQL support")
-Fixes: c9f947769b77 ("net: airoha: Reset BQL stopping the netdevice")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260421-airoha-fix-bql-v1-1-f135afe4275b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4ca01292ea2f ("net: airoha: Do not return err in ndo_stop() callback")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> # MT7922 (0489:e0e2)
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btmtk.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index a69544e785a2a..6742d0d9068df 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -971,10 +971,9 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
- 		q->queued--;
- 
- 		if (skb) {
--			u16 queue = skb_get_queue_mapping(skb);
- 			struct netdev_queue *txq;
- 
--			txq = netdev_get_tx_queue(skb->dev, queue);
-+			txq = skb_get_tx_queue(skb->dev, skb);
- 			netdev_tx_completed_queue(txq, 1, skb->len);
- 			dev_kfree_skb_any(skb);
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -678,8 +678,8 @@ static int btmtk_usb_hci_wmt_sync(struct
+ 	case BTMTK_WMT_FUNC_CTRL:
+ 		if (!skb_pull_data(data->evt_skb,
+ 				   sizeof(wmt_evt_funcc->status))) {
+-			err = -EINVAL;
+-			goto err_free_skb;
++			status = BTMTK_WMT_ON_UNDONE;
++			break;
  		}
-@@ -1777,7 +1776,7 @@ static int airoha_dev_stop(struct net_device *dev)
- 	if (err)
- 		return err;
  
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++)
-+	for (i = 0; i < dev->num_tx_queues; i++)
- 		netdev_tx_reset_subqueue(dev, i);
- 
- 	if (atomic_dec_and_test(&qdma->users)) {
-@@ -2066,7 +2065,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 
- 	spin_lock_bh(&q->lock);
- 
--	txq = netdev_get_tx_queue(dev, qid);
-+	txq = skb_get_tx_queue(dev, skb);
- 	nr_frags = 1 + skb_shinfo(skb)->nr_frags;
- 
- 	if (q->queued + nr_frags >= q->ndesc) {
--- 
-2.53.0
-
+ 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
 
 
 
