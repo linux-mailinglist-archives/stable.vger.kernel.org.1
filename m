@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OD8JJUT1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:12 +0200
+	id kD2TNSgRDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3660A594E20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304AE598D87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B45B63052AB1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99C0031D99FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEE033D4E9;
-	Wed, 20 May 2026 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D8F33AD9D;
+	Wed, 20 May 2026 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTdSqPIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aawXArf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFA72701C4;
-	Wed, 20 May 2026 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FE33403FA;
+	Wed, 20 May 2026 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298074; cv=none; b=CA3chMtHDzhPikXynYZdzwams9ygGKFQP6V1DSqK6of9DWahStr2q6fBlZiu8xGKWDy4sjQq+CiBsHiI1g4d24oQy/qDlUkZt5hUdrQcUayqb/cGWaHoDrbv1d/bjHH0mhaQc0hvPC/LWBJ9/MyKeBDadtM3QkPS8RCGM2yDhiE=
+	t=1779295669; cv=none; b=C4Tq6cPiF0/MWolplR880Ws511KmD/c9jL/x2bOQ1meaeUnkuRJasEPDBCAXitIOuxlDm/ayHiflVfyvXc/DZ7IjYmpT4d6pzLut9sidYzE85gFSKIMackT40vPRHFSX2FHqA9dqS1VeJA5ioVwZXW9GbAXgZOAE2VOctGotnZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298074; c=relaxed/simple;
-	bh=SClD+vf7EKZwe3afFgp5ihuDmJz/NgCWzOMgZncBMzM=;
+	s=arc-20240116; t=1779295669; c=relaxed/simple;
+	bh=3YoDBBssKO4QMhZL96YgBdUGYyujdharwYD/sVM3bfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUmffUC+T5SWnP+RsEdKfCNvy8/AADu5C5A687Xs8RqvGLKNtOZTJp7qtObOHiQlq3G1JjDZklijYYiSRnHeYbZXVSbTRldk3t/zzhbsfa9i8GjFB1A7lah8wvxfxlyMf7JvvUvuOh+rH/uwBuTIDlncTka97Mm9NddlwwPliW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTdSqPIR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FA21F000E9;
-	Wed, 20 May 2026 17:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C1y4sAxjjXZS15IvTLDsx2HR8gDEXF1wVG69vmmf1dYjcSOhikqcbsxag+Kb6vWetFfmSFzLUMdiYI/oHAyqQld86d4NFPdxUIrIwjNU6xpY7RCgVAYgcKjgzOwluG/4Wvf8DsRC3Odr+Tji1+NH1Ps3VvBKYkyC335Tf784j/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aawXArf2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5390C1F000E9;
+	Wed, 20 May 2026 16:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298073;
-	bh=nMA5n2yQYgxFLIKEta3GBkm357KjwGnkH4Kl7VIO/dY=;
+	s=korg; t=1779295668;
+	bh=YMzsRknZgFYcezn6/Vh8bYPupR1KTOE3I/0d3NbHhOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zTdSqPIRfpI3dhGm6A/wtKDgo2GwBkXznzAwRAUyRJYnl37FfDVMUa+3qXmdOE+eB
-	 /HPsx8yx46pQfHmYa8UTuYgagRx59Iw68QgMn5ZdBAPBdOfPaekJ5hWcsvEI40L7NN
-	 MJhIIElcNp+tlNNBZKhQPw2FjD91cKEW/VfB/mTg=
+	b=aawXArf2W0YHtB6ooEUMEGupa+lvf7RfFU2ZxoOwoyYzwWdD6iEC1MDk923tO0gZt
+	 ScJ0B8xq1TGdxR7TLE3/L3dZYiS9zIwR7jmI0ERUnSLrNmPHxXdYaviJPl/Vrd1eLa
+	 Em+txpGxXev6caHbj+YqarJApyaQYXEUg8PJpsMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	=?UTF-8?q?=E8=B0=A2=E8=87=B4=E9=82=A6=20 ?= <Yeking@Red54.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 273/957] drm/msm: Reject fb creation from _NO_SHARE objs
+Subject: [PATCH 7.0 0506/1146] arm64: dts: rockchip: Fix RK3562 EVB2 model name
 Date: Wed, 20 May 2026 18:12:36 +0200
-Message-ID: <20260520162140.463246214@linuxfoundation.org>
+Message-ID: <20260520162159.640008169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251473-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250537-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3660A594E20
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sntech.de:email,msgid.link:url,red54.com:email]
+X-Rspamd-Queue-Id: 304AE598D87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
 
-[ Upstream commit cf50ccdb765b3a6f1cd8e75642b0439fea0263a5 ]
+[ Upstream commit ede6a05606892bab4f6d785ffcfc124150c2eb32 ]
 
-It would be an error to map these into kms->vm.  So reject this as early
-as possible, when creating an fb.
+The model name should be "Rockchip RK3562 EVB2 V10 Board".
 
-Fixes: b58e12a66e47 ("drm/msm: Add _NO_SHARE flag")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714264/
-Message-ID: <20260325185926.1265661-1-robin.clark@oss.qualcomm.com>
+Fixes: ceb6ef1ea900 ("arm64: dts: rockchip: Add RK3562 evb2 devicetree")
+Signed-off-by: 谢致邦 (XIE Zhibang) <Yeking@Red54.com>
+Link: https://patch.msgid.link/tencent_78E7E3F6991FB4403D5ADC9E6A6BC3BF8307@qq.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_fb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_fb.c b/drivers/gpu/drm/msm/msm_fb.c
-index 1eff615ff9bff..ce1725990a48d 100644
---- a/drivers/gpu/drm/msm/msm_fb.c
-+++ b/drivers/gpu/drm/msm/msm_fb.c
-@@ -219,7 +219,12 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
- 			 + mode_cmd->offsets[i];
+diff --git a/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts b/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+index 6a84db154a7d5..387062eea5208 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3562-evb2-v10.dts
+@@ -13,7 +13,7 @@
+ #include "rk3562.dtsi"
  
- 		if (bos[i]->size < min_size) {
--			ret = -EINVAL;
-+			ret = UERR(EINVAL, dev, "plane %d too small", i);
-+			goto fail;
-+		}
-+
-+		if (to_msm_bo(bos[i])->flags & MSM_BO_NO_SHARE) {
-+			ret = UERR(EINVAL, dev, "Cannot map _NO_SHARE to kms vm");
- 			goto fail;
- 		}
+ / {
+-	model = "Rockchip RK3562 EVB V20 Board";
++	model = "Rockchip RK3562 EVB2 V10 Board";
+ 	compatible = "rockchip,rk3562-evb2-v10", "rockchip,rk3562";
  
+ 	chosen: chosen {
 -- 
 2.53.0
 
