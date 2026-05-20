@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK1MJBYHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:14 +0200
+	id GOl2BS3/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01105597DC8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7D9596C00
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDD9A35CDBD3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D17437DA4B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5EB41C314;
-	Wed, 20 May 2026 18:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753B23F39C9;
+	Wed, 20 May 2026 17:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnJuwHal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF2wCST5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B863FE343;
-	Wed, 20 May 2026 18:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393353EF0C1;
+	Wed, 20 May 2026 17:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302708; cv=none; b=SMVOr3lOlU9WQUaHnWIed8Irjhw7iCN+VZzQRsdFqDQwdWznvGgCW3aGOKXVF59M9qZo9TyEDz5xZpNl6Z7OVcOZlOTv8i10Yp278WfchvoACqxHCFOZCVCfojcW797NZqsd6R8pdhHgGDCQdrZvxMplCQLkzmWK1c879Z5ZkD8=
+	t=1779299848; cv=none; b=oSjEuMHKn2xupNvbRchAskFQt4ESTjLWVBl5KtVBBsw+hTmYpIKn8gEzh4P9xMan4QqhriIJ7Y/5ZxnX7A+KUrgIPV4783X0rsMaAFBdIGdIVSkMJFaNulgCFA/vYTrqIPXyFwQ5+i/3xx15MLNZz8u+7ETuWb3+UNcQDbJ4cW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302708; c=relaxed/simple;
-	bh=W6trpqwm6n1bT4MvgPFRR8Tww7hUkvQGDuUb2sMX6Jo=;
+	s=arc-20240116; t=1779299848; c=relaxed/simple;
+	bh=r75JDSRshUqcDCKyjsQ/ndPGG1S+LcBItbD6mhpIqZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3notRa1RBn7dULSwkx7fgcSjnjXTUw3Yd3bo7X/GP/MPH2NCzyygQVbgwOfUGL8lC0it9D0LKOH3AXif+EypT2J87MQCItO2xytRoTJJ37UCH0F8jm+NDNvy+Q0VowJ9etSFSDm2jOPPCS0qITpaLFgZCl2crQZBhzqt4NFvs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnJuwHal; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5271F000E9;
-	Wed, 20 May 2026 18:45:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PO5Rv0A+yvdIWbI0PuErA92oRvDHZ9j2xBxMpAEBRzk9sOb4X+HYkcLuCcnL67P+lXL2c9+5OnWpgtfsDAOKtb81uMJAfvQTQOmQFy7qeXbZg9BZRMTrwD3PI8QgHaJRH2ikP2CF8LR79+XIvMrAvO9//PJ2oiY/506c5L+EZ/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF2wCST5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE221F000E9;
+	Wed, 20 May 2026 17:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302706;
-	bh=3+lom519z0+6ZHhG7vP4TlqmRuDT8jleZpFxn2mFtxo=;
+	s=korg; t=1779299847;
+	bh=QbUwQgQWHQCNR5zuT/ITQD1eOaO9M/LXTvDokeK9KuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lnJuwHal/++n8jDSkNF6ZNzUVH9VbVDvTUhDQXPJfIFqqX5wY1qDOmwiD/IMdzeUI
-	 Bn32j4R9biTa3N8Eo5jBUrojbQ0PVjYI3FD2epl1MMyHmXRqShPnRw8Ll67IT5kY8J
-	 /YtnWVbqPjCBG35RWVZUdwkMqeC1BGwrMaNx3kBs=
+	b=SF2wCST5IHWL+i+d3k9CSl9wwHR94f7eOnaUx3ZjGZ9FryOVadv93BfSbz860fLuA
+	 eLg1h6rI1OnzKaSYjTcUbvvQCO52RkxfrwdBYQscLQNhKRsRPGJGcoKWsBq7zNvaJr
+	 MzSlEgFXmEGLrSeV8rubwVyTwOS2PpcNf/8NWOn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 369/508] nvme-pci: fix missed admin queue sq doorbell write
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Rong Zhang <i@rong.moe>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 909/957] platform/x86: lenovo-wmi-other: Fix tunable_attr_01 struct members
 Date: Wed, 20 May 2026 18:23:12 +0200
-Message-ID: <20260520162106.622521445@linuxfoundation.org>
+Message-ID: <20260520162154.288513967@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253218-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-252122-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,samsung.com:email]
-X-Rspamd-Queue-Id: 01105597DC8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6D7D9596C00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Derek J. Clark <derekjohn.clark@gmail.com>
 
-[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
+commit 71f3843e0f81e3c097a088c1121154bb9a44da0a upstream.
 
-We can batch admin commands submitted through io_uring_cmd passthrough,
-which means bd->last may be false and skips the doorbell write to
-aggregate multiple commands per write. If a subsequent command can't be
-dispatched for whatever reason, we have to provide the blk-mq ops'
-commit_rqs callback in order to ensure we properly update the doorbell.
+In struct tunable_attr_01 the capdata pointer is unused and the size of
+the id members is u32 when it should be u8. Fix these prior to adding
+additional members.
 
-Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional change intended.
+
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Cc: stable@vger.kernel.org
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Link: https://patch.msgid.link/20260510042546.436874-6-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/lenovo/wmi-other.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 40d9be6468b5e..87d30aaa35f10 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1715,6 +1715,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
- static const struct blk_mq_ops nvme_mq_admin_ops = {
- 	.queue_rq	= nvme_queue_rq,
- 	.complete	= nvme_pci_complete_rq,
-+	.commit_rqs	= nvme_commit_rqs,
- 	.init_hctx	= nvme_admin_init_hctx,
- 	.init_request	= nvme_pci_init_request,
- 	.timeout	= nvme_timeout,
--- 
-2.53.0
-
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -82,11 +82,10 @@ struct lwmi_om_priv {
+ };
+ 
+ struct tunable_attr_01 {
+-	struct capdata01 *capdata;
+ 	struct device *dev;
+-	u32 feature_id;
+-	u32 device_id;
+-	u32 type_id;
++	u8 feature_id;
++	u8 device_id;
++	u8 type_id;
+ };
+ 
+ static struct tunable_attr_01 ppt_pl1_spl = {
 
 
 
