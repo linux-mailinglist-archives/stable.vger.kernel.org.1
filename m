@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMTQD0vyDWro4wUAu9opvQ
-	(envelope-from <stable+bounces-250846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:31 +0200
+	id 6BGdHXokDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0695944F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BFC59A9C0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6BE9832734B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3888E383CFFF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177653BED1E;
-	Wed, 20 May 2026 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB513ED3B8;
+	Wed, 20 May 2026 18:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg/uS72V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O31MgcP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF23F3CB2F8;
-	Wed, 20 May 2026 17:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56363D75AB;
+	Wed, 20 May 2026 18:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296459; cv=none; b=iBMdU4nQ3/uJg5bH4601LjOlzcuhzRFSMZL608znE9GSjkBhQydGluAZDH2njMDiBWSKW9C85AmCndyJuufonH3VPbDqkh9UP8h6D+BwwYjPnySU8RkSGdsoT+SY8l4+OLuzmgfCWulyd8XP5bFy8T+O4oGX00kKPxpRUYpTOHM=
+	t=1779300552; cv=none; b=QRd9Iql3lsQeRXlFsMin6mkvLSbgjVr2HWQRF/9vYYT9tXjtLsaN7Eq7O+hscZE4rChsrXe8vpdxLP2GRMzlbydxrY8Bd9a378vEtgfDKrH34XRFnvLD67T58cyJfy5/5PmNOjn2j2briO/B28A8wYCOqrCNYGl4HetAN4pwdQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296459; c=relaxed/simple;
-	bh=XgeaSrg4cv2gkkm7Say5k8cO9EFO4zZx0HoVsvVuvbQ=;
+	s=arc-20240116; t=1779300552; c=relaxed/simple;
+	bh=3pZLRIOXmf+Dx43tZ+M+7PPMsfAKnoaAhcOlW/g2kKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGULR+NjOnyFVKGDqysoFJKfAa++iztgYGcy4VA2LJ1H8paVhX0cTyZ3PZkM6GGonelGgL2n7mBHDoyjAtFn5m3wTy9msYk08bhV0EW9peXY731hphOL0yK26SaGAC5TaPzrgoN+Sw9ihc9aOupzUr4n1gMVXRBb+5CbzxfyCXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg/uS72V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A911F000E9;
-	Wed, 20 May 2026 17:00:57 +0000 (UTC)
+	 MIME-Version; b=QoT5YMAh+vwW3djXOovvF7AlmyjX8NHFruWciLFXB5HTYPFYvGy15vYwcbDcwBkXqMDzMqubza1nCdtDiLySSbxhh1iZHUHriP2nKBBvmJO2SD0M/liLj5u7BnX9mDWI5iRncIBt6nxdg+ax5yZcIx6XkAsEE4p5BdI58QITEIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O31MgcP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479981F000E9;
+	Wed, 20 May 2026 18:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296458;
-	bh=90gA57PbM3LqR6CehmUTjWTVbyI1EDCIchsUDGz6lK4=;
+	s=korg; t=1779300551;
+	bh=y+3Sns7J4K8CbAQk1s/gGq94+L2kafQF80SHK8KcfGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jg/uS72VzOnoClHybHY1emvgQKgCoZCXVG9p28JfMwJVUppQfc/suyOfgZRJ6wrWY
-	 1ct6Ou2sE5iHlknRTaTmOnAqOC/KMGQ1Rm5US98FrFGt3UZuwckIinJpUABeXnUeuH
-	 +YBGwgOIs4ZpFjcp9lrZChcFmM1+c6l+32oodT70=
+	b=1O31MgcPVXXr05/C9NTsGKZXwe7VF88tJ6tpPMXEzfcoQy+aMm/6631wxufqIvWva
+	 oRdTTVy1X5ZPwwHXzBcIHc+bzdX9oFeVw8hDc01Nult4jZjaZgvi9dbuTckddA321q
+	 QtMrcwTGiwnpyn0O7uXrq8CzTSgtY66o3FOP1cxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0780/1146] tcp: annotate data-races in tcp_get_info_chrono_stats()
+Subject: [PATCH 6.12 219/666] crypto: qat - disable 4xxx AE cluster when lead engine is fused off
 Date: Wed, 20 May 2026 18:17:10 +0200
-Message-ID: <20260520162205.867373830@linuxfoundation.org>
+Message-ID: <20260520162115.955339870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,110 +69,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252391-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250846-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3A0695944F8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 06BFC59A9C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ahsan Atta <ahsan.atta@intel.com>
 
-[ Upstream commit 267bf3cf9a6f0ffb98b8afd983c1950e835f07c9 ]
+[ Upstream commit b260d53561dd69b29505222ec44cf386ac2c2ca6 ]
 
-tcp_get_timestamping_opt_stats() does not own the socket lock,
-this is intentional.
+The get_ae_mask() function only disables individual engines based on
+the fuse register, but engines are organized in clusters of 4. If the
+lead engine of a cluster is fused off, the entire cluster must be
+disabled.
 
-It calls tcp_get_info_chrono_stats() while other threads could
-change chrono fields in tcp_chrono_set().
+Replace the single bitmask inversion with explicit test_bit() checks
+on the lead engine of each group, disabling the full ADF_AE_GROUP
+when the lead bit is set.
 
-I do not think we need coherent TCP socket state snapshot
-in tcp_get_timestamping_opt_stats(), I chose to only
-add annotations to keep KCSAN happy.
-
-Fixes: 1c885808e456 ("tcp: SOF_TIMESTAMPING_OPT_STATS option for SO_TIMESTAMPING")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Fixes: 8c8268166e834 ("crypto: qat - add qat_4xxx driver")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h | 10 +++++++---
- net/ipv4/tcp.c    | 14 ++++++++++----
- 2 files changed, 17 insertions(+), 7 deletions(-)
+ .../crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c   | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 905587114d444..1946935388be6 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2161,10 +2161,14 @@ static inline void tcp_chrono_set(struct tcp_sock *tp, const enum tcp_chrono new
- 	const u32 now = tcp_jiffies32;
- 	enum tcp_chrono old = tp->chrono_type;
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+index a6d253ff20888..579f92e466f6d 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+@@ -101,9 +101,19 @@ static struct adf_hw_device_class adf_4xxx_class = {
  
-+	/* Following WRITE_ONCE()s pair with READ_ONCE()s in
-+	 * tcp_get_info_chrono_stats().
-+	 */
- 	if (old > TCP_CHRONO_UNSPEC)
--		tp->chrono_stat[old - 1] += now - tp->chrono_start;
--	tp->chrono_start = now;
--	tp->chrono_type = new;
-+		WRITE_ONCE(tp->chrono_stat[old - 1],
-+			   tp->chrono_stat[old - 1] + now - tp->chrono_start);
-+	WRITE_ONCE(tp->chrono_start, now);
-+	WRITE_ONCE(tp->chrono_type, new);
+ static u32 get_ae_mask(struct adf_hw_device_data *self)
+ {
+-	u32 me_disable = self->fuses[ADF_FUSECTL4];
++	unsigned long fuses = self->fuses[ADF_FUSECTL4];
++	u32 mask = ADF_4XXX_ACCELENGINES_MASK;
+ 
+-	return ~me_disable & ADF_4XXX_ACCELENGINES_MASK;
++	if (test_bit(0, &fuses))
++		mask &= ~ADF_AE_GROUP_0;
++
++	if (test_bit(4, &fuses))
++		mask &= ~ADF_AE_GROUP_1;
++
++	if (test_bit(8, &fuses))
++		mask &= ~ADF_AE_GROUP_2;
++
++	return mask;
  }
  
- static inline void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type)
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 202a4e57a2188..a8ff76c40f79b 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4225,12 +4225,18 @@ static void tcp_get_info_chrono_stats(const struct tcp_sock *tp,
- 				      struct tcp_info *info)
- {
- 	u64 stats[__TCP_CHRONO_MAX], total = 0;
--	enum tcp_chrono i;
-+	enum tcp_chrono i, cur;
- 
-+	/* Following READ_ONCE()s pair with WRITE_ONCE()s in tcp_chrono_set().
-+	 * This is because socket lock might not be owned by us at this point.
-+	 * This is best effort, tcp_get_timestamping_opt_stats() can
-+	 * see wrong values. A real fix would be too costly for TCP fast path.
-+	 */
-+	cur = READ_ONCE(tp->chrono_type);
- 	for (i = TCP_CHRONO_BUSY; i < __TCP_CHRONO_MAX; ++i) {
--		stats[i] = tp->chrono_stat[i - 1];
--		if (i == tp->chrono_type)
--			stats[i] += tcp_jiffies32 - tp->chrono_start;
-+		stats[i] = READ_ONCE(tp->chrono_stat[i - 1]);
-+		if (i == cur)
-+			stats[i] += tcp_jiffies32 - READ_ONCE(tp->chrono_start);
- 		stats[i] *= USEC_PER_SEC / HZ;
- 		total += stats[i];
- 	}
+ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
 -- 
 2.53.0
 
