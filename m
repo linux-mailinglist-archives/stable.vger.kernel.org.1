@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCFsKFL+DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:50 +0200
+	id UFqvBePuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCEA596837
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC91593B07
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F1F230E2EBF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EDF3B306E14C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B0A3FC5C1;
-	Wed, 20 May 2026 18:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7433EC2DB;
+	Wed, 20 May 2026 17:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH8x8L3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWwP5IPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB7B340A57;
-	Wed, 20 May 2026 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A093EF0D7;
+	Wed, 20 May 2026 17:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301513; cv=none; b=EAHimfKINBtuIfBFxPAmr+w4zhe/GJGX1+npTsnLBbEALU50IBsk1tAohKugBgRC/7U4puKFby0ZIoGtPS7fgy8HNz1unDqMTJsSrol3mGpU6YPxTbu/Syi5tfhZoExd79G+2mTIrIv8h65Nkkuq2A7LiUDvg4t8PFL4VLGifmo=
+	t=1779297305; cv=none; b=Y/6Gej652CoiV7wILlKMN+WnO8/sJFhozZsB6oIqzlzMlv/Qhd6tfsdATgYlU8kF/N6HqMA8BD84rsvpFv9VExNMT1G9uyltYR0Vp9XZnnNOqHNIXZ45IVJmKu82vbIXubrUEdrUyUU69lW9mTkTZS1NrabYlAGiLHdxeep3NMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301513; c=relaxed/simple;
-	bh=/76vE1tb8HBudI7w0U3kiQAn7UoYy/zb0kEBXJmotk4=;
+	s=arc-20240116; t=1779297305; c=relaxed/simple;
+	bh=4O30pmPPLYn84alshYSnU7Ad9CPgEHZC391sffbukhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f5X2N7/S5i/+UsL616dZb3k2HC0/zka3ZSzsp4Rla2vH7/+XljKcCO4BiaXoJmNvt+mcf+7+D18cNwpmMCDIZT4KkW/biO+V++gqnIR5eQe137G7RddPnXTuaZhskiQ4qgcPkEQakwagHWANPPC38/J6OO4ET02nGPyWiSU3MHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH8x8L3t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F301F1F000E9;
-	Wed, 20 May 2026 18:25:11 +0000 (UTC)
+	 MIME-Version; b=lvrzSqax4qbLe4xDqXPZBYXxHUmkjkeDEVHOUFkbm376R5qMfvt2f3ENJUnMV0QnWAD2Y7bPh4swuHTXGdvJzA3J+AnVxdhF3Tzpb0JbdXaZrSudGmzhB2/sZA4iVF+wMuNZoZb/Of78PJPRWoMy5ISOnesaA7H3DQjfnXZo5kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWwP5IPo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC451F00893;
+	Wed, 20 May 2026 17:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301512;
-	bh=WyJ604DM/04ABbYIMi0XqWjdTqXJdh6LHFXTP3q3cU0=;
+	s=korg; t=1779297304;
+	bh=7hwb/SeGtPZ7z8xBRQYYTHiV6THWJvlxFp+IuWrHDDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JH8x8L3tbqjV/G5yYv/j64dgQV3HUcPVTBMZ3d1zeIVyt5Kx/iV70K2xn13fYC78b
-	 cdVEDRJtlGoUSHq2py3JZsUOSNk28QzSYvjoz1U/AOyJzne5OTcIZgOgbq0EO2k2BQ
-	 QrNgjVq88W/2cAbH4Q4WH42a5SPsems6JXxhhJ1Q=
+	b=TWwP5IPoaCBKfjffIbDRAj1yTs5WuJrG0G9Uk6t1fl/lQTFRazhZYPiTAPfTI7bH4
+	 K2Bi0RIDOqiqyvLVJKsgk+snosvVXmZEnV5e2gzITtbgWkgLYnXrZ+pwqOk5Ex3Cth
+	 hY7hlDKzNc+kh6GcxFbpe7n8dCVWIeHOmu0cwxrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 566/666] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0.5 ring
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 7.0 1127/1146] iommu: Fix ATS invalidation timeouts during __iommu_remove_group_pasid()
 Date: Wed, 20 May 2026 18:22:57 +0200
-Message-ID: <20260520162123.535631681@linuxfoundation.org>
+Message-ID: <20260520162213.750845117@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252758-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251179-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5BCEA596837
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: CAC91593B07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit b65b7f3f3c18f797f81a2af7c97e2079900ad6db ]
+commit fc3523b16d2b4b88e61e69504b0ae0b18b869c8f upstream.
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+If a device is blocked, its PASID domains are already detached. Repeating
+iommu_remove_dev_pasid() is unnecessary and might trigger ATS invalidation
+timeouts.
 
-Fixes: 8f98a715da8e ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_5")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f05d0a4f21fc720116d6e238f23308b199891058)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Skip the iommu_remove_dev_pasid() call upon gdev->blocked.
+
+Fixes: c279e83953d9 ("iommu: Introduce pci_dev_reset_iommu_prepare/done()")
+Cc: stable@vger.kernel.org
+Closes: https://sashiko.dev/#/patchset/20260407194644.171304-1-nicolinc%40nvidia.com
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/iommu.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-index 48ab3e0a62d25..78a9fb26bce2e 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_5.c
-@@ -765,6 +765,7 @@ static const struct amd_ip_funcs jpeg_v4_0_5_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v4_0_5_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v4_0_5_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v4_0_5_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v4_0_5_dec_ring_set_wptr,
--- 
-2.53.0
-
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -3572,7 +3572,12 @@ static void __iommu_remove_group_pasid(s
+ 	struct group_device *device;
+ 
+ 	for_each_group_device(group, device) {
+-		if (device->dev->iommu->max_pasids > 0)
++		/*
++		 * A group-level detach cannot fail, even if there is a blocked
++		 * device. In fact, blocked devices must be already detached for
++		 * a pending device recovery.
++		 */
++		if (!device->blocked && device->dev->iommu->max_pasids > 0)
+ 			iommu_remove_dev_pasid(device->dev, pasid, domain);
+ 	}
+ }
 
 
 
