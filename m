@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-252137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOLlMEz/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:00 +0200
+	id iOqzM7sVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7638C596C66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1F9599463
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF54033BA304
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FE6431D4DA2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D623F8707;
-	Wed, 20 May 2026 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE3F3D6CB5;
+	Wed, 20 May 2026 17:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmovZeC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txn3u5EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6013C3EA953;
-	Wed, 20 May 2026 17:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762C93A3E9C;
+	Wed, 20 May 2026 17:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299889; cv=none; b=RPu96C3KpAcS2KL+IeKCoWuAcJQQ+N9pHm5oHjImmy22EJjZDfXWEkl7obS7Q4FRWgibO6Z++ga3M7YvuBg0gwMjvv8/DFhKSAX1yvaOvUQ8pBb+Qwu/rKD82nojQ+gdcSj1PsBhmIyZZhchbM3vrtp5aMHt7umPFFkLVu096pY=
+	t=1779297287; cv=none; b=o4cY+sxaV3pgCyab9NBjwpBnA1Ls8HHYOgbOXO3e3+SEwLgz2Xj3qb05j8RWqeRufx4A9deGADfZtbp8JDQdLxA2lxUatWgYXfeyCowxp7AQdeHuaEclVe4HqEqdQ5yFNB0zFW0QzMyWuv+Rn3oiDSnqXhnA7FQZpDPO1DGKoRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299889; c=relaxed/simple;
-	bh=QPLM0Tmt9o8B2VePd7PFQWQtZ9UpDAnV/XKj9cFTJfI=;
+	s=arc-20240116; t=1779297287; c=relaxed/simple;
+	bh=FCnMNgOOVHyvfly9DEXjQ5eqUcXD4itXjFg6HymaIRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVot3uXNajixRCVXXm2mIEBYSt6fUQOtWQvHNWEQ2b0CPKingjyK8x2UJNS/1Q84USjLKn8msy4gWYbcVX86zSIYhaBBIcZuXD7mi7xiVXx86xzrdnXyfafspRhxVyENs8Wm1zFIHVCCsnpAxH2gKvarNB6/R2WtpgHaxIZ684o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmovZeC/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DDD1F00893;
-	Wed, 20 May 2026 17:58:05 +0000 (UTC)
+	 MIME-Version; b=uEhVz4pl2hnvaBaKyimZcKbP3UErp4YM2Fu8uNB3LGuSIfMIRaaD/MHfZk9XuyE1RP+hTWkgjQ8mrt/XPoiHHgwdZheAooTSSAexb55Or5/XwSkeFU4LoraEipkrEW5aE04xfDE3SfI6Q+METpuVGqdnmhlZVLAq+jeBGA0v8bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txn3u5EQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960FB1F000E9;
+	Wed, 20 May 2026 17:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299886;
-	bh=HCp+HEcAFpLr8Go6UAD3AlvtjImqkaHxDbfcd1HguLw=;
+	s=korg; t=1779297286;
+	bh=bxjmefAXM5ntTrhhN9G15NGpOV5fPuxPxEfWU9tkTlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bmovZeC/RzeNH8C3NnLXkO7pI7WrcZH6P56QRt5M8f0B3CR8g2hxC7NM1uNQGA6od
-	 MPoLBNmoMr16p1g50Dj/rlL5dwJAOSBLzw30JXpyJTJAHgCHRXy3AGpcFLBGyTlCqp
-	 XFV/RQHe99w+S0D7f8d7km5Kw9/M5RBoDDvdWHws=
+	b=txn3u5EQaCe6dTfTNlcUBpYuBMBty8tQhGeSFpmmueSJvT470SU6+PpFPnQICoCV/
+	 X0h9EudSVba9q1iuHSGlNg8Jm8JUrfVVNpEK1RvX7M0XelgYxuborQfxVdPg3ihT7b
+	 lY0r5WbVLyAuAWeJL7vHZnvt3g+ruvBHjtP8cgPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	stable@kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 887/957] idpf: fix double free and use-after-free in aux device error paths
+	Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 7.0 1120/1146] iommu/vt-d: Fix oops due to out of scope access
 Date: Wed, 20 May 2026 18:22:50 +0200
-Message-ID: <20260520162153.804940417@linuxfoundation.org>
+Message-ID: <20260520162213.589093252@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,107 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252137-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251172-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,lunn.ch:email]
-X-Rspamd-Queue-Id: 7638C596C66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 2F1F9599463
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-commit 6c77b9510829a424d1b74409b7db9456e3522871 upstream.
+commit a6dea58d8625c06b9654c0555f101742481335c3 upstream.
 
-When auxiliary_device_add() fails in idpf_plug_vport_aux_dev() or
-idpf_plug_core_aux_dev(), the err_aux_dev_add label calls
-auxiliary_device_uninit() and falls through to err_aux_dev_init.  The
-uninit call will trigger put_device(), which invokes the release
-callback (idpf_vport_adev_release / idpf_core_adev_release) that frees
-iadev.  The fall-through then reads adev->id from the freed iadev for
-ida_free() and double-frees iadev with kfree().
+Below oops triggers when kill QEMU process:
 
-Free the IDA slot and clear the back-pointer before uninit, while adev
-is still valid, then return immediately.
+  Oops: general protection fault, probably for non-canonical address 0x7fffffff844eaaa7: 0000 [#1] SMP NOPTI
+  Call Trace:
+   <TASK>
+   do_raw_spin_lock+0xaa/0xc0
+   _raw_spin_lock_irqsave+0x21/0x40
+   domain_remove_dev_pasid+0x52/0x160
+   intel_nested_set_dev_pasid+0x1b9/0x1e0
+   __iommu_set_group_pasid+0x56/0x120
+   pci_dev_reset_iommu_done+0xe3/0x180
+   pcie_flr+0x65/0x160
+   __pci_reset_function_locked+0x5b/0x120
+   vfio_pci_core_close_device+0x63/0xe0 [vfio_pci_core]
+   vfio_df_close+0x4f/0xa0
+   vfio_df_unbind_iommufd+0x2d/0x60
+   vfio_device_fops_release+0x3e/0x40
+   __fput+0xe5/0x2c0
+   task_work_run+0x58/0xa0
+   do_exit+0x2c8/0x600
+   do_group_exit+0x2f/0xa0
+   get_signal+0x863/0x8c0
+   arch_do_signal_or_restart+0x24/0x100
+   exit_to_user_mode_loop+0x87/0x380
+   do_syscall_64+0x2ff/0x11e0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Commit 65637c3a1811 ("idpf: fix UAF in RDMA core aux dev deinitialization")
-fixed the same use-after-free in the matching unplug path in this file but
-missed both probe error paths.
+The global static blocked domain is a dummy domain without corresponding
+dmar_domain structure, accessing beyond iommu_domain structure triggers
+oops easily. Fix it by return early in domain_remove_dev_pasid() like
+identity domain.
 
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: stable@kernel.org
-Fixes: be91128c579c ("idpf: implement RDMA vport auxiliary dev create, init, and destroy")
-Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260506-jk-iwl-net-2026-05-04-v2-4-a5ea4dc837a9@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7d0c9da6c150 ("iommu/vt-d: Add set_dev_pasid callback for dma domain")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260421031347.1408890-1-zhenzhong.duan@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_idc.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/intel/iommu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-index 7e4f4ac92653..b7d6b08fc89e 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-@@ -90,7 +90,10 @@ static int idpf_plug_vport_aux_dev(struct iidc_rdma_core_dev_info *cdev_info,
- 	return 0;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -3529,8 +3529,8 @@ void domain_remove_dev_pasid(struct iomm
+ 	if (!domain)
+ 		return;
  
- err_aux_dev_add:
-+	ida_free(&idpf_idc_ida, adev->id);
-+	vdev_info->adev = NULL;
- 	auxiliary_device_uninit(adev);
-+	return ret;
- err_aux_dev_init:
- 	ida_free(&idpf_idc_ida, adev->id);
- err_ida_alloc:
-@@ -228,7 +231,10 @@ static int idpf_plug_core_aux_dev(struct iidc_rdma_core_dev_info *cdev_info)
- 	return 0;
+-	/* Identity domain has no meta data for pasid. */
+-	if (domain->type == IOMMU_DOMAIN_IDENTITY)
++	/* Identity domain and blocked domain have no meta data for pasid. */
++	if (domain->type == IOMMU_DOMAIN_IDENTITY || domain->type == IOMMU_DOMAIN_BLOCKED)
+ 		return;
  
- err_aux_dev_add:
-+	ida_free(&idpf_idc_ida, adev->id);
-+	cdev_info->adev = NULL;
- 	auxiliary_device_uninit(adev);
-+	return ret;
- err_aux_dev_init:
- 	ida_free(&idpf_idc_ida, adev->id);
- err_ida_alloc:
--- 
-2.54.0
-
+ 	dmar_domain = to_dmar_domain(domain);
 
 
 
