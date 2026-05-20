@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UN7fI/DzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:32 +0200
+	id AN1VBO4PDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A01E5949E8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A25D598C01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D249230EDC76
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7DD23217F05
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2497B3A4526;
-	Wed, 20 May 2026 17:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD003B27D8;
+	Wed, 20 May 2026 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuDKfK3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzkZUJHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1D12DC76C;
-	Wed, 20 May 2026 17:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A693A3E90;
+	Wed, 20 May 2026 16:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297712; cv=none; b=cCWS7k6mHivdupD4Q/S2hGw4Y26swlVlo8/HgbaUaQhxXlDxRS2foyCwp5CbNAmVUCPRdKG011Rk+nTGl/uIQC8JyilnBmStiCSC875gxGpmWZBN03/y3qg7IjLKK+Qri0yFtXteeo/aPQ8nnuFbfSmEQKBE9DdFt0/76paaIdU=
+	t=1779295286; cv=none; b=bSRWkpxwa3WSKJcXbGfPdZz7aJMQE/1skfwf7KXTy7AZAUejFhaDA/sxNXU6TKON/m+Qe3L2TK9m3ZbT+l6dee6x+x0RvQJLGqEuQnVYv3HQ3mWKlzjNHbsHK63yazyJhI74cTpRp/0alSI9E70G0DY539wJaG9SAkSWwFYJkec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297712; c=relaxed/simple;
-	bh=e2VzfnZX6viPxKKXuabAYq5x/sMBvN1BMVlWUPHvNFs=;
+	s=arc-20240116; t=1779295286; c=relaxed/simple;
+	bh=JHjo2OvuxdcO4gpQSWgri+e4Bt15IDecadMizOLqQ3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWAJ4QH7xUP/Rb8ulnPijrhveM4VtOOxXHnFz/uEregdAfXMcPXoGKvJujHYlVVur+pyPzJlKzC7rUNlIcYnWRLbhkkByG2qiXkpDiTuYtKJC2WHyPyQLE+k6vQnLqMrUz93lbJvaKCeM3bl2uoWFXbFA7i4ParWTnjpklbIQ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuDKfK3E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428AD1F000E9;
-	Wed, 20 May 2026 17:21:51 +0000 (UTC)
+	 MIME-Version; b=MfHxPG8j8NW2V4x8GKK6vo2UPWW79KhSqeFdaFex6qLcXrmOuPnXGc/1kaimBmOTtU2N1Rnkozo6uVYlZ7QUTx/XMTaV35YctX5lWz97UTz9CTRQS7z/OMpn/vVI002sz/SwNY+llR3lJ0FULegRTr/dXQWV7XlyM0c/l0ys79E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzkZUJHh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7DD1F000E9;
+	Wed, 20 May 2026 16:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297711;
-	bh=RnduVIsa8MVcxRsf0HZ04KZH1z3cdPIFyaQGd0e5wQM=;
+	s=korg; t=1779295285;
+	bh=W969MT7GZyWVsa8JocxVcxrS/HLxMFq/DekBNroSCYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JuDKfK3EFPqIWLpf7TKW3JyckUGgcR9h4uQYI1i/TjCJ6XJX1n6zWN99T5OEQZiXd
-	 0RFyvWGOKdpZ1AQyYJzuCeg4XeLjc4lbFchcOWr9/Kce6OwvckGVh/GzFkrjtNyAPu
-	 0PaMy6SNlVxyhHcCCAXLCiW535jrzNBgA7F25Swc=
+	b=uzkZUJHh4eDyzWw81O5YeFE5xU1MgaAUNZ8Ytks4Q33J1bngdbi1gRejOzxglMcmW
+	 Fx8iJg97G+KNUf76QHH/RuNhUU0h2zti4KdqGVaKcGUfdKUDii9vWbnQFNKVUJZYF3
+	 pxTv54EHU4BekKt42+moIRF76b1EIjQf+icuAi+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 128/957] bpf: reject negative CO-RE accessor indices in bpf_core_parse_spec()
+Subject: [PATCH 7.0 0361/1146] drm/msm/a6xx: Correct OOB usage
 Date: Wed, 20 May 2026 18:10:11 +0200
-Message-ID: <20260520162137.331906003@linuxfoundation.org>
+Message-ID: <20260520162156.371029477@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +64,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251334-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,etsalapatis.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-250389-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email]
-X-Rspamd-Queue-Id: 2A01E5949E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 7A25D598C01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 1c22483a2c4bbf747787f328392ca3e68619c4dc ]
+[ Upstream commit d34b6919798c1a8c93e1d7cca297d0e068146bd5 ]
 
-CO-RE accessor strings are colon-separated indices that describe a path
-from a root BTF type to a target field, e.g. "0:1:2" walks through
-nested struct members. bpf_core_parse_spec() parses each component with
-sscanf("%d"), so negative values like -1 are silently accepted.  The
-subsequent bounds checks (access_idx >= btf_vlen(t)) only guard the
-upper bound and always pass for negative values because C integer
-promotion converts the __u16 btf_vlen result to int, making the
-comparison (int)(-1) >= (int)(N) false for any positive N.
+During the GMU resume sequence, using another OOB other than OOB_GPU may
+confuse the internal state of GMU firmware. To align more strictly with
+the downstream sequence, move the sysprof related OOB setup after the
+OOB_GPU is cleared.
 
-When -1 reaches btf_member_bit_offset() it gets cast to u32 0xffffffff,
-producing an out-of-bounds read far past the members array.  A crafted
-BPF program with a negative CO-RE accessor on any struct that exists in
-vmlinux BTF (e.g. task_struct) crashes the kernel deterministically
-during BPF_PROG_LOAD on any system with CONFIG_DEBUG_INFO_BTF=y
-(default on major distributions).  The bug is reachable with CAP_BPF:
-
- BUG: unable to handle page fault for address: ffffed11818b6626
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- Oops: Oops: 0000 [#1] SMP KASAN NOPTI
- CPU: 0 UID: 0 PID: 85 Comm: poc Not tainted 7.0.0-rc6 #18 PREEMPT(full)
- RIP: 0010:bpf_core_parse_spec (tools/lib/bpf/relo_core.c:354)
- RAX: 00000000ffffffff
- Call Trace:
-  <TASK>
-  bpf_core_calc_relo_insn (tools/lib/bpf/relo_core.c:1321)
-  bpf_core_apply (kernel/bpf/btf.c:9507)
-  check_core_relo (kernel/bpf/verifier.c:19475)
-  bpf_check (kernel/bpf/verifier.c:26031)
-  bpf_prog_load (kernel/bpf/syscall.c:3089)
-  __sys_bpf (kernel/bpf/syscall.c:6228)
-  </TASK>
-
-CO-RE accessor indices are inherently non-negative (struct member index,
-array element index, or enumerator index), so reject them immediately
-after parsing.
-
-Fixes: ddc7c3042614 ("libbpf: implement BPF CO-RE offset relocation algorithm")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/20260404161221.961828-2-bestswngs@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 62cd0fa6990b ("drm/msm/adreno: Disable IFPC when sysprof is active")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714659/
+Message-ID: <20260327-a8xx-gpu-batch2-v2-4-2b53c38d2101@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/relo_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 -----
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 6 ++++++
+ drivers/gpu/drm/msm/adreno/a8xx_gpu.c | 6 ++++++
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
-index 6eea5edba58a5..0ccc8f548cbaa 100644
---- a/tools/lib/bpf/relo_core.c
-+++ b/tools/lib/bpf/relo_core.c
-@@ -292,6 +292,8 @@ int bpf_core_parse_spec(const char *prog_name, const struct btf *btf,
- 			++spec_str;
- 		if (sscanf(spec_str, "%d%n", &access_idx, &parsed_len) != 1)
- 			return -EINVAL;
-+		if (access_idx < 0)
-+			return -EINVAL;
- 		if (spec->raw_len == BPF_CORE_SPEC_MAX_LEN)
- 			return -E2BIG;
- 		spec_str += parsed_len;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 9662201cd2e9d..690d3e53e2738 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1236,11 +1236,6 @@ int a6xx_gmu_resume(struct a6xx_gpu *a6xx_gpu)
+ 	/* Set the GPU to the current freq */
+ 	a6xx_gmu_set_initial_freq(gpu, gmu);
+ 
+-	if (refcount_read(&gpu->sysprof_active) > 1) {
+-		ret = a6xx_gmu_set_oob(gmu, GMU_OOB_PERFCOUNTER_SET);
+-		if (!ret)
+-			set_bit(GMU_STATUS_OOB_PERF_SET, &gmu->status);
+-	}
+ out:
+ 	/* On failure, shut down the GMU to leave it in a good state */
+ 	if (ret) {
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index eeecde88e549f..4e0d67e3acb7e 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1605,6 +1605,12 @@ static int hw_init(struct msm_gpu *gpu)
+ 		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_BOOT_SLUMBER);
+ 	}
+ 
++	if (!ret && (refcount_read(&gpu->sysprof_active) > 1)) {
++		ret = a6xx_gmu_set_oob(gmu, GMU_OOB_PERFCOUNTER_SET);
++		if (!ret)
++			set_bit(GMU_STATUS_OOB_PERF_SET, &gmu->status);
++	}
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
+index 840af9c4d718c..fafeac62aebf5 100644
+--- a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
+@@ -711,6 +711,12 @@ static int hw_init(struct msm_gpu *gpu)
+ 	 */
+ 	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
+ 
++	if (!ret && (refcount_read(&gpu->sysprof_active) > 1)) {
++		ret = a6xx_gmu_set_oob(gmu, GMU_OOB_PERFCOUNTER_SET);
++		if (!ret)
++			set_bit(GMU_STATUS_OOB_PERF_SET, &gmu->status);
++	}
++
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
