@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPNHKCbyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:54 +0200
+	id gF/fDhMQDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91A7594443
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF0C598C20
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DD41431CD270
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 080AF328EF7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130AC3D88FC;
-	Wed, 20 May 2026 16:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3D3D7D66;
+	Wed, 20 May 2026 16:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wNtOblT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnTuJbMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBED3D8918;
-	Wed, 20 May 2026 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE5367B8D;
+	Wed, 20 May 2026 16:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295339; cv=none; b=HoSOtaIVjgZrWPYjrzXgD/alD/7wY2dle+nmiX2QieAImaZSDGP4OtvV6WyxpgF/YEPKbkDtlZ9FohtHS9c1lAmAtLtNftkJcG273fQ7SpNqvEOM5vDtOaD/FFxApD0TqwI/k61zaa6jJbv++ydK1s1phr9qjMvWtGAVE1GKgzg=
+	t=1779295352; cv=none; b=Zdbsn9AINnlg6kPtFqbXWe9ubvVZnZnRfzbvHnNFf1FBuGwXFKvf9lLwWNJeqHECMeEdITnx4fx05S/BDDd5Y7CEYI+prb46Pb/lhAcJTVuPbZ4HdbText54OrZcdR1x1vnYhrWdZPJljfYiK8pc6K25BVobq3IEPrLTGoOs/q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295339; c=relaxed/simple;
-	bh=l5dCDV4r6owS+INVM44bAKIa1F1sH1ub6oAKNRbQ7Eg=;
+	s=arc-20240116; t=1779295352; c=relaxed/simple;
+	bh=WsdjYOPaECQDkSS9U+QCdvtdsCivPo08ZwxDn/h0YQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uDEA+4RYq3bmXb1kJO/05MRN6iIinR1p3Dl5QIKbXdm8T4FDtm+vOeUe704FIq6vK4WGtVSEsm6uEvvLeW+UwH0OFXSLsPohDuR/hp4chaNw+oNeE/azdyfaVjZEtuRV6EBNXQiyc88G2ky33NmHx79VqTr031LnQe84ODE9DDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wNtOblT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596951F00893;
-	Wed, 20 May 2026 16:42:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V7eJKi6oDZBVI42DUOPYANL+YVnRntAl5UnV9R1o1Yv4UV7vVLKC25bF2iYpHvu8+GjPwtCM1/FAxhjK+NJHSWq+BpX+URkyELZp/xDr5NS4XZGsI4zWfgd3CLbOI7MO6lhBzY1RVdwuzB3ff3zAIcO2ticLP+rDLHVRykyX+RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnTuJbMP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D55D1F000E9;
+	Wed, 20 May 2026 16:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295337;
-	bh=NjaEwTqPFsBTwgAv1gdNqsapLEcpuqudSpLivyOPITY=;
+	s=korg; t=1779295350;
+	bh=eL887zRX4baw/UiaLNG0vCHFmkqhHdbQ6l0ovVjgQHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0wNtOblTuOfTxrr2LeiL1umbQtlIxAuUUZtnpzZ+v0F9jxSZflYEpB7KW6d7nOWAY
-	 6p2DFWGwgOqzeuRzcRdR9ANvLCmK1wSWAbU/CKpU7o/dhPLyA/vszmj9cbYAa3o4TQ
-	 +fDNFhUGnCU4H+RgdBvdD6vpEHo+zGpyAh4ZhoqU=
+	b=cnTuJbMPDU3CdY7rz1/avoeRpZ6yv9YNiF9HTM65KTQcnrem/XpHK+edsmfFgMeNm
+	 p1S74lSpQqRr/sWS869mwuKJe0YaGoXmRJ1HZ6N3GWQsB26uaZMpmHD3VOzd88vyDL
+	 B7IPunXs4M6fja0yj3wUZ8Y9cgo2pW1wmy7NDJ1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0344/1146] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
-Date: Wed, 20 May 2026 18:09:54 +0200
-Message-ID: <20260520162155.985941554@linuxfoundation.org>
+Subject: [PATCH 7.0 0345/1146] drm/amdgpu/uvd4.2: Dont initialize UVD 4.2 when DPM is disabled
+Date: Wed, 20 May 2026 18:09:55 +0200
+Message-ID: <20260520162156.008921826@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,18 +70,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250414-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,9 +92,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: D91A7594443
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 9DF0C598C20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,122 +104,42 @@ X-Rspamd-Server: lfdr
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
+[ Upstream commit 8b3e8fa6d7bdab292447a43f70532db437d5d4f5 ]
 
-On a specific Radeon R9 390X board, the GPU can "randomly" hang
-while gaming. Initially I thought this was a RADV bug and tried
-to work around this in Mesa:
-commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
+UVD 4.2 doesn't work at all when DPM is disabled because
+the SMU is responsible for ungating it. So, Linux fails
+to boot with CIK GPUs when using the amdgpu.dpm=0 parameter.
 
-However, I got some feedback from other users who are reporting
-that the above mitigation causes a significant performance
-regression for them, and they didn't experience the hang on their
-GPU in the first place.
+Fix this by returning -ENOENT from uvd_v4_2_early_init()
+when amdgpu_dpm isn't enabled.
 
-After some further investigation, it turns out that the problem
-is that the highest SCLK DPM level on this board isn't stable.
-Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
-and has a negligible impact on performance compared to the Mesa
-patch. (Note that increasing the voltage can also work around it,
-but we felt that lowering the SCLK is the safer option.)
+Note: amdgpu.dpm=0 is often suggested as a workaround
+for issues and is useful for debugging.
 
-To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
-and set this field for the affected board. The capped SCLK value
-correctly appears on the sysfs interface and shows up in GUI
-tools such as LACT.
-
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 563482f5d35fd..bc6acdb52c269 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -787,7 +787,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 		hwmgr->dyn_state.vddc_dependency_on_mclk;
- 	struct phm_cac_leakage_table *std_voltage_table =
- 		hwmgr->dyn_state.cac_leakage_table;
--	uint32_t i;
-+	uint32_t i, clk;
- 
- 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
- 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
-@@ -804,10 +804,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 	data->dpm_table.sclk_table.count = 0;
- 
- 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
-+		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
-+
- 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
--				allowed_vdd_sclk_table->entries[i].clk) {
-+				clk) {
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
--				allowed_vdd_sclk_table->entries[i].clk;
-+				clk;
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
- 			data->dpm_table.sclk_table.count++;
- 		}
-@@ -3006,6 +3008,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
- 	return 0;
- }
- 
-+static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
-+{
-+	struct amdgpu_device *adev = hwmgr->adev;
-+	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+
-+	data->sclk_cap = 0xffffffff;
-+
-+	if (hwmgr->od_enabled)
-+		return;
-+
-+	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
-+	if (adev->pdev->device == 0x67B0 &&
-+	    adev->pdev->subsystem_vendor == 0x1043)
-+		data->sclk_cap = 104000; /* 1040 MHz */
-+
-+	if (data->sclk_cap != 0xffffffff)
-+		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
-+}
-+
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+index 73ce3d211ed64..8a9ba2276275c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+@@ -93,6 +93,11 @@ static void uvd_v4_2_ring_set_wptr(struct amdgpu_ring *ring)
+ static int uvd_v4_2_early_init(struct amdgpu_ip_block *ip_block)
  {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -3017,6 +3038,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		return -ENOMEM;
+ 	struct amdgpu_device *adev = ip_block->adev;
++
++	/* UVD doesn't work without DPM, it needs DPM to ungate it. */
++	if (!amdgpu_dpm)
++		return -ENOENT;
++
+ 	adev->uvd.num_uvd_inst = 1;
  
- 	hwmgr->backend = data;
-+	smu7_set_sclk_cap(hwmgr);
- 	smu7_patch_voltage_workaround(hwmgr);
- 	smu7_init_dpm_defaults(hwmgr);
- 
-@@ -3903,7 +3925,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
- 
- 	/* Performance levels are arranged from low to high. */
- 	performance_level->memory_clock = memory_clock;
--	performance_level->engine_clock = engine_clock;
-+	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
- 
- 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-index d9e8b386bd4d3..66adabeab6a3a 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-@@ -234,6 +234,7 @@ struct smu7_hwmgr {
- 	uint32_t                       pcie_gen_cap;
- 	uint32_t                       pcie_lane_cap;
- 	uint32_t                       pcie_spc_cap;
-+	uint32_t                       sclk_cap;
- 	struct smu7_leakage_voltage          vddc_leakage;
- 	struct smu7_leakage_voltage          vddci_leakage;
- 	struct smu7_leakage_voltage          vddcgfx_leakage;
+ 	uvd_v4_2_set_ring_funcs(adev);
 -- 
 2.53.0
 
