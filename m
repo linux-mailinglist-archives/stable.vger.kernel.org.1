@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-252000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHkHCuv4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:47 +0200
+	id APjUN4fuDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EC75956E3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2C35939C8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 609CB31310DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C0C8E316F431
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C803F4DC0;
-	Wed, 20 May 2026 17:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4853BBA0E;
+	Wed, 20 May 2026 17:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9zV5YF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivjzcJOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4479D3F54D4;
-	Wed, 20 May 2026 17:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE793D6CB7;
+	Wed, 20 May 2026 17:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299483; cv=none; b=iA8jJzc2l1m6J7yiGnMnsMkDoXfOyKZSgpY2TJ+JLI3dsI18Nt1MS4DjUDMdo6ApcbSVAKeTNdJCpfcR1CEG5aftQRagf51symbh6vet6cEfReVlE25rF2yCH+SWcPzwtiJP4FKK0DNBaX4he6cK/HnqNiISSZP3f42D+yELh3Y=
+	t=1779297026; cv=none; b=IaDhjHJWHQbnzWnKbroCK+GeUg0d8ihqC8zI+dY/h5UjL/QdewjDIWMcpyH524+lj0w9o4/96Xu2KaiOnDGpZKS23guYrvueV/Qh013FGW+CRGi5WP+CdoWXjGUSAvs/cSdTcFogFkeVhzzEYs4/lOl3YWSf89+0T2H9AKvNY1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299483; c=relaxed/simple;
-	bh=CuthVG4D14aMvqUA6PXSecAFhEaTCnmE8DyhEyLvel8=;
+	s=arc-20240116; t=1779297026; c=relaxed/simple;
+	bh=50kqr9tF2mTDQsrC+NWFEvd8t3rThjYDCrEMVYRQpro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XywmpmcfWqb/mj50oLv0mFDtX5FZO9PapDaMKi+kOSKv9ij+ju5h9LYdY3qHSAgQTpCfJ/D0ETST2LjTQ2msITaVvwyp57YqJEscFGgnd+pxAo2+b2QLP70hSMaefzW7BaSVYG88t2hmJyjhdsd+a7SO9FLVwmFK0lkt9+eewXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9zV5YF9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB651F00896;
-	Wed, 20 May 2026 17:51:21 +0000 (UTC)
+	 MIME-Version; b=lyB8Wl7GniwYr4WSdXpOiRqpDjbcOinub50E5IJpyVKWujoxjD8OASuhtjEGiXIm0Ni2D96R1NCv/6DlKgO6JtbpKGu3FBTbufLkOhfBqB8lDoJM/1s8GfWT+b7fP/ZGIqmta5sjBSqSRbA+U1YDwg8Yx+jS2gb5WhbVffNVBPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivjzcJOi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D949F1F000E9;
+	Wed, 20 May 2026 17:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299482;
-	bh=7xCWUXU+UgrmiQBW1MXx68nnHAqM23hd9Nzj8UC0MMA=;
+	s=korg; t=1779297025;
+	bh=yjkhSe6mgMTyO1D6WckjYhV5PCqXQSyzMpFv2rWuxvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X9zV5YF9KPmf8qETdUflkAq86cDNPkvBWemrF77jTkeqL1Wc/V60UH/R96x9c/Y6g
-	 oYrlO2WVyfVjdikSU4fWWqU83zBMUmBwQnhZNdBgCCCmQgsLrwzn5XpweZqCJj0hc7
-	 uk+VYX341U1gZMDptI2SlU/1qNZ7s4w0XosxdfW8=
+	b=ivjzcJOigWkimQADwfYDyvU9VvUG7IvPD1A6XpfhpbNmb4aAndnisINDlUYFcpNSq
+	 PmH0+XMQu64Io3isln2We9z0A+z3Bd8lvztOyQEbr0o7bCELh7VNnZbDMpGKgUF8CQ
+	 8BNhz+wFWyTjsKG+rEuhAv+KN62B67xeg0BpS2Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 788/957] sched/fair: Fix wakeup_preempt_fair() vs delayed dequeue
-Date: Wed, 20 May 2026 18:21:11 +0200
-Message-ID: <20260520162151.651614361@linuxfoundation.org>
+Subject: [PATCH 7.0 1022/1146] iavf: wait for PF confirmation before removing VLAN filters
+Date: Wed, 20 May 2026 18:21:12 +0200
+Message-ID: <20260520162211.359176803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,147 +72,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251072-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252000-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: C2EC75956E3
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3C2C35939C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit ac8e69e693631689d74d8f1ebee6f84f737f797f ]
+[ Upstream commit bbcbe4ed70dea948849549af7edf44bd42bbd695 ]
 
-Similar to how pick_next_entity() must dequeue delayed entities, so too must
-wakeup_preempt_fair(). Any delayed task being found means it is eligible and
-hence past the 0-lag point, ready for removal.
+The VLAN filter DELETE path was asymmetric with the ADD path: ADD
+waits for PF confirmation (ADD -> ADDING -> ACTIVE), but DELETE
+immediately frees the filter struct after sending the DEL message
+without waiting for the PF response.
 
-Worse, by not removing delayed entities from consideration, it can skew the
-preemption decision, with the end result that a short slice wakeup will not
-result in a preemption.
+This is problematic because:
+ - If the PF rejects the DEL, the filter remains in HW but the driver
+   has already freed the tracking structure, losing sync.
+ - Race conditions between DEL pending and other operations
+   (add, reset) cannot be properly resolved if the filter struct
+   is already gone.
 
-                     tip/sched/core  tip/sched/core    +this patch
-cyclictest slice  (ms) (default)2.8             8               8
-hackbench slice   (ms) (default)2.8            20              20
-Total Samples          |    22559           22595           22683
-Average           (us) |      157              64( 59%)        59(  8%)
-Median (P50)      (us) |       57              57(  0%)        58(- 2%)
-90th Percentile   (us) |       64              60(  6%)        60(  0%)
-99th Percentile   (us) |     2407              67( 97%)        67(  0%)
-99.9th Percentile (us) |     3400            2288( 33%)       727( 68%)
-Maximum           (us) |     5037            9252(-84%)      7461( 19%)
+Add IAVF_VLAN_REMOVING state to make the DELETE path symmetric:
 
-Fixes: f12e148892ed ("sched/fair: Prepare pick_next_task() for delayed dequeue")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260422093400.319251-1-vincent.guittot@linaro.org
+  REMOVE -> REMOVING (send DEL) -> PF confirms -> kfree
+                                -> PF rejects  -> ACTIVE
+
+In iavf_del_vlans(), transition filters from REMOVE to REMOVING
+instead of immediately freeing them. The new DEL completion handler
+in iavf_virtchnl_completion() frees filters on success or reverts
+them to ACTIVE on error.
+
+Update iavf_add_vlan() to handle the REMOVING state: if a DEL is
+pending and the user re-adds the same VLAN, queue it for ADD so
+it gets re-programmed after the PF processes the DEL.
+
+The !VLAN_FILTERING_ALLOWED early-exit path still frees filters
+directly since no PF message is sent in that case.
+
+Also update iavf_del_vlan() to skip filters already in REMOVING
+state: DEL has been sent to PF and the completion handler will
+free the filter when PF confirms. Without this guard, the sequence
+DEL(pending) -> user-del -> second DEL could cause the PF to return
+an error for the second DEL (filter already gone), causing the
+completion handler to incorrectly revert a deleted filter back to
+ACTIVE.
+
+Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-3-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h        |  1 +
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 13 ++++---
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 37 +++++++++++++------
+ 3 files changed, 34 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 293a8804428b0..565a96d6811e7 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1007,7 +1007,7 @@ static inline void cancel_protect_slice(struct sched_entity *se)
-  *
-  * Which allows tree pruning through eligibility.
-  */
--static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
-+static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
- {
- 	struct rb_node *node = cfs_rq->tasks_timeline.rb_root.rb_node;
- 	struct sched_entity *se = __pick_first_entity(cfs_rq);
-@@ -1078,11 +1078,6 @@ static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
- 	return best;
- }
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 5765715914d6b..050f8241ef5e6 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -161,6 +161,7 @@ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+ 	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
+ 	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
++	IAVF_VLAN_REMOVING,	/* DEL sent to PF, waiting for response */
+ };
  
--static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
--{
--	return __pick_eevdf(cfs_rq, true);
--}
--
- struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq)
- {
- 	struct rb_node *last = rb_last(&cfs_rq->tasks_timeline.rb_root);
-@@ -5584,11 +5579,11 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags);
-  * 4) do not run the "skip" process, if something else is available
-  */
- static struct sched_entity *
--pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq)
-+pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq, bool protect)
- {
- 	struct sched_entity *se;
- 
--	se = pick_eevdf(cfs_rq);
-+	se = pick_eevdf(cfs_rq, protect);
- 	if (se->sched_delayed) {
- 		dequeue_entities(rq, se, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
- 		/*
-@@ -8868,7 +8863,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
- {
- 	enum preempt_wakeup_action preempt_action = PREEMPT_WAKEUP_PICK;
- 	struct task_struct *donor = rq->donor;
--	struct sched_entity *se = &donor->se, *pse = &p->se;
-+	struct sched_entity *nse, *se = &donor->se, *pse = &p->se;
- 	struct cfs_rq *cfs_rq = task_cfs_rq(donor);
- 	int cse_is_idle, pse_is_idle;
- 
-@@ -8983,11 +8978,17 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+ struct iavf_vlan_filter {
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 12e102506011a..d373feee4c7e9 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -757,10 +757,10 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
+ 		adapter->num_vlan_filters++;
+ 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
+ 	} else if (f->state == IAVF_VLAN_REMOVE) {
+-		/* Re-add the filter since we cannot tell whether the
+-		 * pending delete has already been processed by the PF.
+-		 * A duplicate add is harmless.
+-		 */
++		/* DEL not yet sent to PF, cancel it */
++		f->state = IAVF_VLAN_ACTIVE;
++	} else if (f->state == IAVF_VLAN_REMOVING) {
++		/* DEL already sent to PF, re-add after completion */
+ 		f->state = IAVF_VLAN_ADD;
+ 		iavf_schedule_aq_request(adapter,
+ 					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
+@@ -791,11 +791,14 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+-		} else {
++		} else if (f->state != IAVF_VLAN_REMOVING) {
+ 			f->state = IAVF_VLAN_REMOVE;
+ 			iavf_schedule_aq_request(adapter,
+ 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
+ 		}
++		/* If REMOVING, DEL is already sent to PF; completion
++		 * handler will free the filter when PF confirms.
++		 */
  	}
  
- pick:
-+	nse = pick_next_entity(rq, cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT);
-+	/* If @p has become the most eligible task, force preemption */
-+	if (nse == pse)
-+		goto preempt;
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 4f197d908124e..93ca79c3e3b53 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -948,12 +948,10 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 
+ 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
+ 		vvfl->num_elements = count;
+-		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
++		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_REMOVE) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+-				list_del(&f->list);
+-				kfree(f);
+-				adapter->num_vlan_filters--;
++				f->state = IAVF_VLAN_REMOVING;
+ 				i++;
+ 				if (i == count)
+ 					break;
+@@ -990,7 +988,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 
+ 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
+ 		vvfl_v2->num_elements = count;
+-		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
++		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_REMOVE) {
+ 				struct virtchnl_vlan_supported_caps *filtering_support =
+ 					&adapter->vlan_v2_caps.filtering.filtering_support;
+@@ -1005,9 +1003,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 				vlan->tci = f->vlan.vid;
+ 				vlan->tpid = f->vlan.tpid;
+ 
+-				list_del(&f->list);
+-				kfree(f);
+-				adapter->num_vlan_filters--;
++				f->state = IAVF_VLAN_REMOVING;
+ 				i++;
+ 				if (i == count)
+ 					break;
+@@ -2370,10 +2366,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
+ 			wake_up(&adapter->vc_waitqueue);
+ 			break;
+-		case VIRTCHNL_OP_DEL_VLAN:
+-			dev_err(&adapter->pdev->dev, "Failed to delete VLAN filter, error %s\n",
+-				iavf_stat_str(&adapter->hw, v_retval));
+-			break;
+ 		case VIRTCHNL_OP_DEL_ETH_ADDR:
+ 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
+ 				iavf_stat_str(&adapter->hw, v_retval));
+@@ -2895,6 +2887,27 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ 		}
+ 		break;
++	case VIRTCHNL_OP_DEL_VLAN:
++	case VIRTCHNL_OP_DEL_VLAN_V2: {
++		struct iavf_vlan_filter *f, *ftmp;
 +
- 	/*
--	 * If @p has become the most eligible task, force preemption.
-+	 * Because p is enqueued, nse being null can only mean that we
-+	 * dequeued a delayed task.
- 	 */
--	if (__pick_eevdf(cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT) == pse)
--		goto preempt;
-+	if (!nse)
-+		goto pick;
- 
- 	if (sched_feat(RUN_TO_PARITY))
- 		update_protect_slice(cfs_rq, se);
-@@ -9022,7 +9023,7 @@ static struct task_struct *pick_task_fair(struct rq *rq)
- 
- 		throttled |= check_cfs_rq_runtime(cfs_rq);
- 
--		se = pick_next_entity(rq, cfs_rq);
-+		se = pick_next_entity(rq, cfs_rq, true);
- 		if (!se)
- 			goto again;
- 		cfs_rq = group_cfs_rq(se);
++		spin_lock_bh(&adapter->mac_vlan_list_lock);
++		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list,
++					 list) {
++			if (f->state == IAVF_VLAN_REMOVING) {
++				if (v_retval) {
++					/* PF rejected DEL, keep filter */
++					f->state = IAVF_VLAN_ACTIVE;
++				} else {
++					list_del(&f->list);
++					kfree(f);
++					adapter->num_vlan_filters--;
++				}
++			}
++		}
++		spin_unlock_bh(&adapter->mac_vlan_list_lock);
++		}
++		break;
+ 	case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
+ 		/* PF enabled vlan strip on this VF.
+ 		 * Update netdev->features if needed to be in sync with ethtool.
 -- 
 2.53.0
 
