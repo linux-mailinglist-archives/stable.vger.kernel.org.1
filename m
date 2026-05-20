@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ONIKsD1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:16 +0200
+	id YAw8EcbpDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:05:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D916594F06
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171E7592E61
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E9842306CBA0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 12EB7306009E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C8B35DA78;
-	Wed, 20 May 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D9D369D78;
+	Wed, 20 May 2026 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t76cqjV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4pP9d06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D602DC76C;
-	Wed, 20 May 2026 17:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDBD366542;
+	Wed, 20 May 2026 16:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298198; cv=none; b=rpsUx9VG4V8Gap6mcKun+rZ+0z434OaLSVFaGrMNpzmhLb8GpNC46/ONQhJHkGua7JwXy8cGIluezYo46mCe9Gyxb266Ha3r1ZKDEiLSeIO8m5zGMbh4fK/NTFKp4NOtwOeraowa3nh3CzhX8ei5Bl03M/34cxquJ64YkI9eP1s=
+	t=1779295795; cv=none; b=Hz2JEo1woUxOOAX6/InYwEZ68YDeRcxratqXhwN1G/9E0k/8fU0F8ZnaXOXn3BstTrIw+gBjJpAP8ErcXlzZNL7eWT1JqOi+KFcbsyct5RPInBbqe5u6ZTdAYjqlfl517PqzvmDXI5i8EO6xKfcVqsGAvfvehIJ9AJ6JHosR/vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298198; c=relaxed/simple;
-	bh=dHexL81BEQZ+KDgLgoleCnLmylgF9WWaCMJnr7RktnA=;
+	s=arc-20240116; t=1779295795; c=relaxed/simple;
+	bh=TfJJvGyhRsqN/rPf36Cm7wFX1Sy8PqGkQNNsQSidCuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRYbCoQfRnBJMv1gW3Up9QsXrsZJYhxIRicWJjC3WVbpRDVQsOkBdIm6Uev0X4AyoRR2UJ55F1ZW3kozYrGS+dWplq4PothpPFthnjDZKFSfkUhb2FGMaytwN8CO9WUVr9xFfRcxy1MVC7zwNfGP8pWnCnLCr7NvgOYT+4gE7G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t76cqjV1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8001F000E9;
-	Wed, 20 May 2026 17:29:56 +0000 (UTC)
+	 MIME-Version; b=kvbP2RArUBetidhsRXk8+A4fulqRjiOGM5k4Qun4rVsVK9hwLkeWypYs0Kc8eQ8hTEDACSK2FHyXpz06sjWbXS8JL1sS/oI4pD0KDfPauleNICzEYgJ9qu/jKrWNO7ufBI/5AB5P9UspV4MQKNnp4cgFAZqGVgSrfemxknenqMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4pP9d06; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9BC1F000E9;
+	Wed, 20 May 2026 16:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298196;
-	bh=l15Ds5irTEuax838cnYeg9txh12X63a8W+8wYKJr5zw=;
+	s=korg; t=1779295792;
+	bh=2VJfe0Ec41lboINjqccO0QqN8EUq14RiSiZliX4Y6b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t76cqjV1yHQ8rfedEyF7aEGyD3LW7l1XrITtnIew3+otu2sY2FYQrFzLWTzmEk9l2
-	 JO2MYPBnWFoOWdm6CPwz2fc3rXEXqi2L9Vb5ec1VKOpqFMS5XxIQXB3FxxQjRWPB3o
-	 pgnENcQT2juXaD5tRhkvt3mrA/cNnavTlt0+YX6k=
+	b=d4pP9d06GhrBD/oz1WxLNxWATyjnvplt5HCwKCq6K25uRlL/v5Re4eb8c5NQD80ZT
+	 NEiglA/UvUdEhoNF53EXqq58XXkXCuMA9ORoVx4Bm1CQ3VK5qc30ax8pqwoBVk7WDD
+	 yYuGY6jfsbfj3x0EiMIAkSoHVW8GkYYBVmOUdOm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 320/957] PCI: tegra194: Disable LTSSM after transition to Detect on surprise link down
+Subject: [PATCH 7.0 0553/1146] soc/tegra: pmc: Add kerneldoc for reboot notifier
 Date: Wed, 20 May 2026 18:13:23 +0200
-Message-ID: <20260520162141.470880121@linuxfoundation.org>
+Message-ID: <20260520162200.694822814@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +68,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251521-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250584-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8D916594F06
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 171E7592E61
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 9fa0c242f8d7acf1b124d4462d18f4023573ac1c ]
+[ Upstream commit 21669619e4c17a5f097e0415bc64b1d400c54fcb ]
 
-After the link reaches a Detect-related LTSSM state, disable LTSSM so it
-does not keep toggling between Polling and Detect. Do this by polling for
-the Detect state first, then clearing APPL_CTRL_LTSSM_EN in both
-tegra_pcie_dw_pme_turnoff() and pex_ep_event_pex_rst_assert().
+Commit 48b7f802fb78 ("soc/tegra: pmc: Embed reboot notifier in PMC
+context") added the reboot_notifier structure to the PMC SoC structure
+but did not update the kerneldoc accordingly. Add this missing kerneldoc
+description to fix this.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-4-mmaddireddy@nvidia.com
+Fixes: 48b7f802fb78 ("soc/tegra: pmc: Embed reboot notifier in PMC context")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 29 ++++++++++++----------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/soc/tegra/pmc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index d2fefd5c8b08f..b3a1161f49daf 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1623,14 +1623,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 		data &= ~APPL_PINMUX_PEX_RST;
- 		appl_writel(pcie, data, APPL_PINMUX);
- 
--		/*
--		 * Some cards do not go to detect state even after de-asserting
--		 * PERST#. So, de-assert LTSSM to bring link to detect state.
--		 */
--		data = readl(pcie->appl_base + APPL_CTRL);
--		data &= ~APPL_CTRL_LTSSM_EN;
--		writel(data, pcie->appl_base + APPL_CTRL);
--
- 		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
- 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
- 			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-@@ -1639,6 +1631,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
- 			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
- 		if (err)
- 			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
-+
-+		/*
-+		 * Deassert LTSSM state to stop the state toggling between
-+		 * Polling and Detect.
-+		 */
-+		data = readl(pcie->appl_base + APPL_CTRL);
-+		data &= ~APPL_CTRL_LTSSM_EN;
-+		writel(data, pcie->appl_base + APPL_CTRL);
- 	}
- 	/*
- 	 * DBI registers may not be accessible after this as PLL-E would be
-@@ -1712,11 +1712,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	if (pcie->ep_state == EP_STATE_DISABLED)
- 		return;
- 
--	/* Disable LTSSM */
--	val = appl_readl(pcie, APPL_CTRL);
--	val &= ~APPL_CTRL_LTSSM_EN;
--	appl_writel(pcie, val, APPL_CTRL);
--
- 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
- 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
- 		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
-@@ -1727,6 +1722,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
- 	if (ret)
- 		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
- 
-+	/*
-+	 * Deassert LTSSM state to stop the state toggling between
-+	 * Polling and Detect.
-+	 */
-+	val = appl_readl(pcie, APPL_CTRL);
-+	val &= ~APPL_CTRL_LTSSM_EN;
-+	appl_writel(pcie, val, APPL_CTRL);
-+
- 	reset_control_assert(pcie->core_rst);
- 
- 	tegra_pcie_disable_phy(pcie);
+diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
+index a1a2966512d1a..8268a41c471a9 100644
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -437,6 +437,7 @@ struct tegra_pmc_soc {
+  * @wake_sw_status_map: Bitmap to hold raw status of wakes without mask
+  * @wake_cntrl_level_map: Bitmap to hold wake levels to be programmed in
+  *     cntrl register associated with each wake during system suspend.
++ * @reboot_notifier: PMC reboot notifier handler
+  * @syscore: syscore suspend/resume callbacks
+  */
+ struct tegra_pmc {
 -- 
 2.53.0
 
