@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-251725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB5AG/r3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:46 +0200
+	id iCmiFajzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C90595453
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00ADD594919
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81EE43067651
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B366C3136CE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B253F1AD9;
-	Wed, 20 May 2026 17:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A9A3A4526;
+	Wed, 20 May 2026 17:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vF+F5FCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8YUwahY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E604C3E6385;
-	Wed, 20 May 2026 17:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EA83EBF35;
+	Wed, 20 May 2026 17:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298728; cv=none; b=p19DcOFB97BAIVBXM6LFAPfj1V7fG0ncR5ltxPRSk7HqhS7+qp9GPHNO793kyCkxJWyaDLe6Nby6olBx6IYHtsF6/VT9grwJRsozWISZROk/Bp22MdoW69zTq4bcaEZUOV4yXNH+/LOXTQ3q1l6uC1+0RF0XEJkvkRtzByUBEMc=
+	t=1779298731; cv=none; b=gOT5Ub1xfZGl31C1ooNpvRKowAtgQ+jK0vmG+m7M6j9NPUN5OTbE7OWuB5vOudJPW1WDX56729bhZX3LsKRavJyf6KpoMKrKMoPVX83kAHB4ScCeiRFrfpuutiS/v1wLthlSMOYItIW+ZdUjtlTn6wKB1iEcJ084q5lSaYLTu3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298728; c=relaxed/simple;
-	bh=LrxR+M/kLJdyVoDkGq8VLJ9xQLiLiLXg8D+H+g7br/s=;
+	s=arc-20240116; t=1779298731; c=relaxed/simple;
+	bh=eW3SoQEUI8aeoe0JWlZKr829VX8CK7D0AyljsGejEaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MobBO6k1eoEO1d4GJ9y8hB3+lqya/VkhOL+ZiMRNMjvRzT6LuGwAkHUFR4jzZaxz+bl33vP6ohMRhB3GpCS4NDIOjAI9ttkAs17GH8IGx9hxF/ZTm7fRziAJGG/oMt2v6nSAgBPPTCvMNj7VecA5Nly2e6H2CapmX35FeZCAkCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vF+F5FCN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC1D1F000E9;
-	Wed, 20 May 2026 17:38:46 +0000 (UTC)
+	 MIME-Version; b=rKku7H7ITEqaWm2Y5Iypqu0JlSFTvdHa0pgg2xyZXeCXU5YVZeCTfmLVVkRaHkEbCxwmxLbnPOdcljqUXBN0WIINeRAzHaIJsNXcH3x6ujdWZbC85o9PW5G4T89zMzKW2VQyLt9fj1odzGRxiMiZcJ0EymT8hi3RUzx9BZPgIiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8YUwahY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71F61F000E9;
+	Wed, 20 May 2026 17:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298727;
-	bh=fdFcFRpmYZjRnJYHjfNZCzz79pNKIPQe2NcbJiqPR6Y=;
+	s=korg; t=1779298730;
+	bh=CH+oIATs090m6gNBh5Oq53e/KXL18ng3VWdf+gadahM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vF+F5FCNrqCkfsmMuffjRbhHcmTQIgIreJNStGeGVUD6bVT1TQGZe5g9igaxRij1J
-	 KLc9bEUqjoNdq61FVc7vvchU8YL0mmlfbV7qk7ZpFVa8n5gJ8B6yhq/lWwTVIXb/WV
-	 WtHGsK4aYChz0xRkY12hZMPxtPT1whN63SEw2WP0=
+	b=F8YUwahYxtdosAkpNNdO4b363TxHAF/Rm6iK+XpUEivPheI+pzeSo4dLziEUDnEdw
+	 lnZwSO30P+/zOZCRYY+VfwzWksUXxL5hrcIiLmNjyVyP+wCjNNZThG+6QAbpTMtts6
+	 zSU2icTlHxcE2Sy6cT7QaX1hMD2u2+ghjTmZGpCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Rogers <irogers@google.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 520/957] perf maps: Fix fixup_overlap_and_insert that can break sorted by name order
-Date: Wed, 20 May 2026 18:16:43 +0200
-Message-ID: <20260520162145.810731919@linuxfoundation.org>
+Subject: [PATCH 6.18 521/957] perf maps: Fix copy_from that can break sorted by name order
+Date: Wed, 20 May 2026 18:16:44 +0200
+Message-ID: <20260520162145.832798900@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251725-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251726-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 59C90595453
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 00ADD594919
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,40 +101,43 @@ X-Rspamd-Server: lfdr
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c4f3ff3289380437d26177e8f2fe4b7507816ee3 ]
+[ Upstream commit f552b132e4d5248715828e7e5c2bf7889bf05b2e ]
 
-When an entry in the address array is replaced, the corresponding name
-entry is replaced. The entries names may sort differently and so it is
-important that the sorted by name property be cleared on the maps.
+When an parent is copied into a child the name array is populated in
+address not name order. Make sure the name array isn't flagged as sorted.
 
-Fixes: 0d11fab32714 ("perf maps: Fixup maps_by_name when modifying maps_by_address")
+Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
 Signed-off-by: Ian Rogers <irogers@google.com>
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/maps.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index c51ec159ac769..ff82d1d937b2f 100644
+index ff82d1d937b2f..23aa8a95d0454 100644
 --- a/tools/perf/util/maps.c
 +++ b/tools/perf/util/maps.c
-@@ -924,6 +924,7 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- 			if (maps_by_name) {
- 				map__put(maps_by_name[ni]);
- 				maps_by_name[ni] = map__get(new);
-+				maps__set_maps_by_name_sorted(maps, false);
- 			}
- 
- 			err = __maps__insert_sorted(maps, i + 1, after, NULL);
-@@ -949,6 +950,7 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- 				if (maps_by_name) {
- 					map__put(maps_by_name[ni]);
- 					maps_by_name[ni] = map__get(new);
-+					maps__set_maps_by_name_sorted(maps, false);
- 				}
- 
- 				check_invariants(maps);
+@@ -1032,16 +1032,9 @@ int maps__copy_from(struct maps *dest, struct maps *parent)
+ 				map__put(new);
+ 		}
+ 		maps__set_maps_by_address_sorted(dest, maps__maps_by_address_sorted(parent));
+-		if (!err) {
+-			RC_CHK_ACCESS(dest)->last_search_by_name_idx =
+-				RC_CHK_ACCESS(parent)->last_search_by_name_idx;
+-			maps__set_maps_by_name_sorted(dest,
+-						dest_maps_by_name &&
+-						maps__maps_by_name_sorted(parent));
+-		} else {
+-			RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
+-			maps__set_maps_by_name_sorted(dest, false);
+-		}
++		RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
++		/* Values were copied into the name array in address order. */
++		maps__set_maps_by_name_sorted(dest, false);
+ 	} else {
+ 		/* Unexpected copying to a maps containing entries. */
+ 		for (unsigned int i = 0; !err && i < n; i++) {
 -- 
 2.53.0
 
