@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-251205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QP42F2zwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:32 +0200
+	id yESWJaRDDmrV9QUAu9opvQ
+	(envelope-from <stable+bounces-253206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:28:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA70593F1C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9571559CBF5
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 890CB31FE2D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6936031F81D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585F83F39E2;
-	Wed, 20 May 2026 17:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8B40963B;
+	Wed, 20 May 2026 18:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVVMpajV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWjnbvyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090D53F1ACA;
-	Wed, 20 May 2026 17:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B742A409615;
+	Wed, 20 May 2026 18:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297374; cv=none; b=Cjt5Klm04RZAjj24YdKXyQcsqkkN3H/OXukt7CDdmShEGlCpW1cQZNFbCdFgOKAzudlHjAKOUBVzswLAq4ieIP4fBFRbGopAG8oAnX3e2X/64cVTboKggNXCc9s9azrdyZGxX0mUzj3K3eXBOeMZZSqW+roBbhtoW7eVj7w+rU0=
+	t=1779302679; cv=none; b=N+Z4X2Q/9qWltJw6cufb4UaQ9BBdAmg3nl+tbpoy6TjWmrTHe4AC+DL4ip7OfbSY4vgT6fKy/p9LL/Ddy6tfUB97rZD5wWX+jzzcs6BUP9ZFNV9iEBsQ8Bz5WMaZH9NFabzqBZd00P2vLKcx7ak4QCcehK+WaMRnHXbM6d5GEdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297374; c=relaxed/simple;
-	bh=hs7GMuFr4b9GPYLMeoFE1MVcGyqxknMyfLaSWez8Smo=;
+	s=arc-20240116; t=1779302679; c=relaxed/simple;
+	bh=QrK8NMpsbMYYNywISmnMwcXIxo99sRQiJYT/xnAXumg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sig3dtIrjeD5HeoF8kzW3rJDTS7ghqT+UeIxWHXrui0zjZs+H2DC7Iilms10uV+YltVcGsxVs/jq08TD0AflMDlpuoW3PYPoAIS5p5KN1AYhFYlPQG3gSSxh2qP36LG+xQ6OeB15j2vWiYuc1ooCGamedIETZhmH7PJ6ve1m2MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVVMpajV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A71F000E9;
-	Wed, 20 May 2026 17:16:12 +0000 (UTC)
+	 MIME-Version; b=KFKfkttjGZleZ7vIT5CYu7s4Y7E8XkCvQV7Pmsu0qjXkrZhkkl0zJ/OUC0liePvB1bqXuoV5WtHCxNgNrXDgJjGcIFPUS4cfmA63B0l//uDW6pybfVPSoZwWEH2gJDAaDBPliFFXcp7WwGb/qwvpQ7R/ecjamNdE3stxxUih+bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWjnbvyE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2749E1F000E9;
+	Wed, 20 May 2026 18:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297372;
-	bh=bgGVpeLlJ+jliefKfgZQg2Oex7JOn0MccuDksjXuGm0=;
+	s=korg; t=1779302677;
+	bh=TfGGZq8T3BLe+CUMXcECGNVaSWTLV1+LK55OZQJL6WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XVVMpajVBFGyYjAkdVtQUB56kloCFhyAuHwAnxsWDTRVy32SqTdcQ0w4I+arHnSpJ
-	 YDnlPvvnLOZRhhfYndfUAX0DLdCeZ09KeMxpYC7mFeNR6efCpd5hSpN0D1UN3Cy4NR
-	 O5hXoxnljpoKq2Ds82kWJevkK9W8NT0zFKBOsE6g=
+	b=cWjnbvyERs9LtE0Z83esJIypztZE9OOTz7e/1gyaJ/b8wnHZ9jRUp/PB/Pb+CPBR/
+	 5AgmGNvJ1eigZv6XDKJyRh64IAGuG7Ag+2bT3uRcfxst+a2vuVPgPGnCgBKz+DpKrl
+	 BCbzibgio8ORYrTQLbV7bL+llkW81xfZN4tW6eYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 7.0 1132/1146] drm/ttm: Fix ttm_bo_shrink() infinite LRU walk on backup failure
+	syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Chen Ridong <chenridong@huaweicloud.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 359/508] sched/psi: fix race between file release and pressure write
 Date: Wed, 20 May 2026 18:23:02 +0200
-Message-ID: <20260520162213.869468449@linuxfoundation.org>
+Message-ID: <20260520162106.410950922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +65,226 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251205-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253206-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,huaweicloud.com,kernel.org];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,body];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_SPAM(0.00)[0.999];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,33e571025d88efd1312c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,lists.freedesktop.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,intel.com:email]
-X-Rspamd-Queue-Id: DEA70593F1C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 9571559CBF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 1d59f36e95f7f7134db0e313c9d787cb0adb2153 upstream.
+[ Upstream commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa ]
 
-Apply the same fix as b2ed01e7ad ("drm/ttm: Fix ttm_bo_swapout()
-infinite LRU walk on swapout failure") to the ttm_bo_shrink() path.
+A potential race condition exists between pressure write and cgroup file
+release regarding the priv member of struct kernfs_open_file, which
+triggers the uaf reported in [1].
 
-Move del_bulk_move from before the backup to after success only,
-using ttm_resource_del_bulk_move_unevictable() since the resource
-is now unevictable once fully backed up.
+Consider the following scenario involving execution on two separate CPUs:
 
-Fixes: 70d645deac98 ("drm/ttm: Add helpers for shrinking")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org # v6.15+
-Assisted-by: GitHub_Copilot:claude-opus-4.6
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patch.msgid.link/20260511162443.24352-1-thomas.hellstrom@linux.intel.com
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   CPU0					CPU1
+   ====					====
+					vfs_rmdir()
+					kernfs_iop_rmdir()
+					cgroup_rmdir()
+					cgroup_kn_lock_live()
+					cgroup_destroy_locked()
+					cgroup_addrm_files()
+					cgroup_rm_file()
+					kernfs_remove_by_name()
+					kernfs_remove_by_name_ns()
+ vfs_write()				__kernfs_remove()
+ new_sync_write()			kernfs_drain()
+ kernfs_fop_write_iter()		kernfs_drain_open_files()
+ cgroup_file_write()			kernfs_release_file()
+ pressure_write()			cgroup_file_release()
+ ctx = of->priv;
+					kfree(ctx);
+ 					of->priv = NULL;
+					cgroup_kn_unlock()
+ cgroup_kn_lock_live()
+ cgroup_get(cgrp)
+ cgroup_kn_unlock()
+ if (ctx->psi.trigger)  // here, trigger uaf for ctx, that is of->priv
+
+The cgroup_rmdir() is protected by the cgroup_mutex, it also safeguards
+the memory deallocation of of->priv performed within cgroup_file_release().
+However, the operations involving of->priv executed within pressure_write()
+are not entirely covered by the protection of cgroup_mutex. Consequently,
+if the code in pressure_write(), specifically the section handling the
+ctx variable executes after cgroup_file_release() has completed, a uaf
+vulnerability involving of->priv is triggered.
+
+Therefore, the issue can be resolved by extending the scope of the
+cgroup_mutex lock within pressure_write() to encompass all code paths
+involving of->priv, thereby properly synchronizing the race condition
+occurring between cgroup_file_release() and pressure_write().
+
+And, if an live kn lock can be successfully acquired while executing
+the pressure write operation, it indicates that the cgroup deletion
+process has not yet reached its final stage; consequently, the priv
+pointer within open_file cannot be NULL. Therefore, the operation to
+retrieve the ctx value must be moved to a point *after* the live kn
+lock has been successfully acquired.
+
+In another situation, specifically after entering cgroup_kn_lock_live()
+but before acquiring cgroup_mutex, there exists a different class of
+race condition:
+
+CPU0: write memory.pressure               CPU1: write cgroup.pressure=0
+===========================		  =============================
+
+kernfs_fop_write_iter()
+ kernfs_get_active_of(of)
+ pressure_write()
+   cgroup_kn_lock_live(memory.pressure)
+     cgroup_tryget(cgrp)
+     kernfs_break_active_protection(kn)
+     ... blocks on cgroup_mutex
+
+                                     	  cgroup_pressure_write()
+                                     	  cgroup_kn_lock_live(cgroup.pressure)
+                                     	  cgroup_file_show(memory.pressure, false)
+                                     	    kernfs_show(false)
+                                     	      kernfs_drain_open_files()
+                                     	        cgroup_file_release(of)
+                                     	          kfree(ctx)
+                                     	            of->priv = NULL
+                                     	  cgroup_kn_unlock()
+
+   ... acquires cgroup_mutex
+   ctx = of->priv;        // may now be NULL
+   if (ctx->psi.trigger)  // NULL dereference
+
+Consequently, there is a possibility that of->priv is NULL, the pressure
+write needs to check for this.
+
+Now that the scope of the cgroup_mutex has been expanded, the original
+explicit cgroup_get/put operations are no longer necessary, this is
+because acquiring/releasing the live kn lock inherently executes a
+cgroup get/put operation.
+
+[1]
+BUG: KASAN: slab-use-after-free in pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+Call Trace:
+ pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+ cgroup_file_write+0x36f/0x790 kernel/cgroup/cgroup.c:4311
+ kernfs_fop_write_iter+0x3b0/0x540 fs/kernfs/file.c:352
+
+Allocated by task 9352:
+ cgroup_file_open+0x90/0x3a0 kernel/cgroup/cgroup.c:4256
+ kernfs_fop_open+0x9eb/0xcb0 fs/kernfs/file.c:724
+ do_dentry_open+0x83d/0x13e0 fs/open.c:949
+
+Freed by task 9353:
+ cgroup_file_release+0xd6/0x100 kernel/cgroup/cgroup.c:4283
+ kernfs_release_file fs/kernfs/file.c:764 [inline]
+ kernfs_drain_open_files+0x392/0x720 fs/kernfs/file.c:834
+ kernfs_drain+0x470/0x600 fs/kernfs/dir.c:525
+
+Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+Reported-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=33e571025d88efd1312c
+Tested-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_util.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ kernel/cgroup/cgroup.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-@@ -1112,19 +1112,14 @@ long ttm_bo_shrink(struct ttm_operation_
- 	if (lret < 0)
- 		return lret;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index e787dc0eacd7d..97812c0b04dd6 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3775,33 +3775,41 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
+ static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
+ 			      size_t nbytes, enum psi_res res)
+ {
+-	struct cgroup_file_ctx *ctx = of->priv;
++	struct cgroup_file_ctx *ctx;
+ 	struct psi_trigger *new;
+ 	struct cgroup *cgrp;
+ 	struct psi_group *psi;
++	ssize_t ret = 0;
  
--	if (bo->bulk_move) {
--		spin_lock(&bdev->lru_lock);
--		ttm_resource_del_bulk_move(bo->resource, bo);
--		spin_unlock(&bdev->lru_lock);
--	}
--
- 	lret = ttm_tt_backup(bdev, bo->ttm, (struct ttm_backup_flags)
- 			     {.purge = flags.purge,
- 			      .writeback = flags.writeback});
+ 	cgrp = cgroup_kn_lock_live(of->kn, false);
+ 	if (!cgrp)
+ 		return -ENODEV;
  
--	if (lret <= 0 && bo->bulk_move) {
-+	if (lret > 0) {
- 		spin_lock(&bdev->lru_lock);
--		ttm_resource_add_bulk_move(bo->resource, bo);
-+		ttm_resource_del_bulk_move_unevictable(bo->resource, bo);
-+		ttm_resource_move_to_lru_tail(bo->resource);
- 		spin_unlock(&bdev->lru_lock);
+-	cgroup_get(cgrp);
+-	cgroup_kn_unlock(of->kn);
++	ctx = of->priv;
++	if (!ctx) {
++		ret = -ENODEV;
++		goto out_unlock;
++	}
+ 
+ 	/* Allow only one trigger per file descriptor */
+ 	if (ctx->psi.trigger) {
+-		cgroup_put(cgrp);
+-		return -EBUSY;
++		ret = -EBUSY;
++		goto out_unlock;
  	}
  
+ 	psi = cgroup_psi(cgrp);
+ 	new = psi_trigger_create(psi, buf, res, of->file, of);
+ 	if (IS_ERR(new)) {
+-		cgroup_put(cgrp);
+-		return PTR_ERR(new);
++		ret = PTR_ERR(new);
++		goto out_unlock;
+ 	}
+ 
+ 	smp_store_release(&ctx->psi.trigger, new);
+-	cgroup_put(cgrp);
++
++out_unlock:
++	cgroup_kn_unlock(of->kn);
++	if (ret)
++		return ret;
+ 
+ 	return nbytes;
+ }
+-- 
+2.53.0
+
 
 
 
