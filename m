@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-250160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMY4HZbkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:02 +0200
+	id uJpJHZHkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29ADB5924E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA095924D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D8E2B307D783
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 154E430FEE44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895AC374178;
-	Wed, 20 May 2026 16:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA15D371071;
+	Wed, 20 May 2026 16:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTgv0OlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILW5ttPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463AB2BE02A;
-	Wed, 20 May 2026 16:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54A36A37D;
+	Wed, 20 May 2026 16:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294704; cv=none; b=lRvxiMPQPonexmACBhUA1ACSZFChKY9LExLF7ZkuXeJMVEN0bgWutaqhwIZXiUPIHx6UVXzuhvlOD/ukNehKPDyy6Q3K9/xCBblwLOpQRnriJMXrFnRzSbha57BAqqCKpTzaKRraVppgNU3Ynv1ajwBUhOF2gvLtwpddv+JUa1g=
+	t=1779294709; cv=none; b=dlGOzNMNxmkEiBz1wNSTlH7BXboTPuIv3NO2P8bC8QDr6pES+QdnzeO80WrnmZcNBM+g07/Dr9P9M3GKJfVDGCC7Mw2JPt7LbE2n0oUq+NAd9z0g92Y+R6rF10zSi8rQjMInegC2hIpmL2e+914THrKxjS/LxNeUiyo+nCnZH9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294704; c=relaxed/simple;
-	bh=BO6veDwrDQhQKxRo6h8LYRJVXJScWrLcZSvyw6tTqOw=;
+	s=arc-20240116; t=1779294709; c=relaxed/simple;
+	bh=95fIhVYv/BPUiqWBZk4cQVv1/HnVWZsIyfy3z9Y43pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lmw5+9e8gVSLCvC6wzxGgIkPCZ25DG29FXlepVMq4PgBc9+0r4L/t+p3jykFnhvqqi2mRdlQzdHSplpZDA41DSt4Kzx3L5Pq0NWxbhzL8j3+E9kPp84v4NTO+CFRnUP4DRukxp8H2r9iykJCyA2glv5jOaVhOWsMThRBoRWK0us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTgv0OlT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5171F00894;
-	Wed, 20 May 2026 16:31:42 +0000 (UTC)
+	 MIME-Version; b=gWjyIcjsrBDyk13upc/MJvn9nD/khEFPkUFDcsM/Mhni6K/hJIeVxF0KOI+dQQtVv+1n6HsrJlwQc7K+DDaNFHnls3RBf1rmazKMtW2XBpB0alemPtNC0fAsOMb4OBTR53kBVt23TLdK9tfEQ8o5lVDcAg2pSn07tdm22E8QYrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILW5ttPg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA201F000E9;
+	Wed, 20 May 2026 16:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294703;
-	bh=giBLbnEekUR2hmNCWyprFXQ0qtihOKAQ43QjHurAK7I=;
+	s=korg; t=1779294708;
+	bh=x67jiimvOY6xJ+YOXSH0mG0N8umZbSX5yqxSaIdidCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kTgv0OlTvXBLadBTZg3J1+uAAWUtF63Sp+Mt8fn2nrA2PjYvmAjw149uZ77fVEbSw
-	 YD8kC7a+5zKq5vkW6PYsQrdfuc0jpDK+8SMp49LQbER23hKl3tiiqw5/t2qvcbL1Tu
-	 Ax7dFjg8tMv7YdjJYjYAELDpvyFj0gXmZGrEqvko=
+	b=ILW5ttPg5I6htSHonypUzAJAA9bwr1rFHYF4K/OarikvLSKqTadvn9GIykWTsDihT
+	 GburHiyeiNOmyescoQMrQsXnMQQ8bEDpisjIRA/c4hBM/fQJPVJk/1pZYBCo0uWZ0D
+	 8O+6976OLAD4BewrpO1YR3Fg0mwPz5pIk5OaHI+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Gabriele Monaco <gmonaco@redhat.com>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0141/1146] selftests/tracing: Fix to make --logdir option work again
-Date: Wed, 20 May 2026 18:06:31 +0200
-Message-ID: <20260520162151.504339201@linuxfoundation.org>
+Subject: [PATCH 7.0 0142/1146] selftests/tracing: Fix to check awk supports non POSIX strtonum()
+Date: Wed, 20 May 2026 18:06:32 +0200
+Message-ID: <20260520162151.525079932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -74,25 +73,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250160-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250163-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 29ADB5924E0
+X-Rspamd-Queue-Id: 5DA095924D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,69 +101,49 @@ X-Rspamd-Server: lfdr
 
 From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit e011853dd78f97898ae8e0b0b949603987e24c4b ]
+[ Upstream commit 3d0b8e45075d398369eb07e11f529c17a63cf5e1 ]
 
-Since commit a0aa283c53a7 ("selftest/ftrace: Generalise ftracetest to
-use with RV") moved the default LOG_DIR setting after --logdir option
-parser, it overwrites the user given LOG_DIR.
-This fixes it to check the --logdir option parameter when setting new
-default LOG_DIR with a new TOP_DIR.
+Check the awk command supports non POSIX strtonum() function in
+the trace_marker_raw test case.
 
-Fixes: a0aa283c53a7 ("selftest/ftrace: Generalise ftracetest to use with RV")
+Fixes: 37f46601383a ("selftests/tracing: Add basic test for trace_marker_raw file")
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Tested-by: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/r/177071725191.2369897.14781037901532893911.stgit@mhiramat.tok.corp.google.com
+Link: https://lore.kernel.org/r/177071726229.2369897.11506524546451139051.stgit@mhiramat.tok.corp.google.com
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/ftracetest | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ .../selftests/ftrace/test.d/00basic/trace_marker_raw.tc       | 2 ++
+ tools/testing/selftests/ftrace/test.d/functions               | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/ftracetest b/tools/testing/selftests/ftrace/ftracetest
-index 3230bd54dba84..0a56bf209f6c0 100755
---- a/tools/testing/selftests/ftrace/ftracetest
-+++ b/tools/testing/selftests/ftrace/ftracetest
-@@ -130,8 +130,7 @@ parse_opts() { # opts
-       shift 1
-     ;;
-     --logdir|-l)
--      LOG_DIR=$2
--      LINK_PTR=
-+      USER_LOG_DIR=$2
-       shift 2
-     ;;
-     --rv)
-@@ -199,6 +198,7 @@ fi
- TOP_DIR=`absdir $0`
- TEST_DIR=$TOP_DIR/test.d
- TEST_CASES=`find_testcases $TEST_DIR`
-+USER_LOG_DIR=
- KEEP_LOG=0
- KTAP=0
- DEBUG=0
-@@ -210,12 +210,18 @@ RV_TEST=0
- # Parse command-line options
- parse_opts $*
+diff --git a/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc b/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
+index a2c42e13f614b..8e905d4fe6dd2 100644
+--- a/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
++++ b/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
+@@ -4,6 +4,8 @@
+ # requires: trace_marker_raw
+ # flags: instance
  
-+[ $DEBUG -ne 0 ] && set -x
++check_awk_strtonum || exit_unresolved
 +
-+# TOP_DIR can be changed for rv. Setting log directory.
- LOG_TOP_DIR=$TOP_DIR/logs
- LOG_DATE=`date +%Y%m%d-%H%M%S`
--LOG_DIR=$LOG_TOP_DIR/$LOG_DATE/
--LINK_PTR=$LOG_TOP_DIR/latest
--
--[ $DEBUG -ne 0 ] && set -x
-+if [ -n "$USER_LOG_DIR" ]; then
-+  LOG_DIR=$USER_LOG_DIR
-+  LINK_PTR=
-+else
-+  LOG_DIR=$LOG_TOP_DIR/$LOG_DATE/
-+  LINK_PTR=$LOG_TOP_DIR/latest
-+fi
+ is_little_endian() {
+ 	if lscpu | grep -q 'Little Endian'; then
+ 		echo 1;
+diff --git a/tools/testing/selftests/ftrace/test.d/functions b/tools/testing/selftests/ftrace/test.d/functions
+index e8e718139294d..41325f387ee7a 100644
+--- a/tools/testing/selftests/ftrace/test.d/functions
++++ b/tools/testing/selftests/ftrace/test.d/functions
+@@ -173,6 +173,10 @@ check_requires() { # Check required files and tracers
+     done
+ }
  
- if [ $RV_TEST -ne 0 ]; then
- 	TRACING_DIR=$TRACING_DIR/rv
++check_awk_strtonum() { # strtonum is GNU awk extension
++    awk 'BEGIN{strtonum("0x1")}'
++}
++
+ LOCALHOST=127.0.0.1
+ 
+ yield() {
 -- 
 2.53.0
 
