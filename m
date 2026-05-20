@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-252676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EYtLQAoDmp56gUAu9opvQ
-	(envelope-from <stable+bounces-252676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:40 +0200
+	id aFTxAXAuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BD559AF1D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6916859B890
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C05D33960C8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2C4639622AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F692D7386;
-	Wed, 20 May 2026 18:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D90D402BA4;
+	Wed, 20 May 2026 18:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGKcV/9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5hXBXLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE73372B31;
-	Wed, 20 May 2026 18:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99AF3FC5A1;
+	Wed, 20 May 2026 18:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301297; cv=none; b=BqdHT5YIIe35UVMYmdyWX8BJZCiKLe3uPLgjylcCzhhvCFnTzWFtjLwPl4/QqvX3JRKa3kL1erna39b7gXvzK9ZXQUviJiPcEeimaULt8lj+Tn8VgvLCZZkiSh1PjftVUMFrRsKB0V5I6OR6WONYky90whEX4KKbeSI9SeGtrhE=
+	t=1779302499; cv=none; b=o/IHYcs0adVtmTerUgxjoS/900NxzrDvYKin5S7B7uPrJGTxqnEgkb3ESrmFS50vb/IoxRnXIeTfd7czliBhLy4R7fjK1aFbCNYtJbI5WWjUYqH1wVheOfOKgOy7aIDtXv+fjKDpBK+G4Dal5mv5AuB2VMsu4nSm4+GYAJabxog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301297; c=relaxed/simple;
-	bh=jJXzHpoeEOYO0l4L4U1WOpTscOCUNOAwdcYei7lFFp8=;
+	s=arc-20240116; t=1779302499; c=relaxed/simple;
+	bh=buML967NwLWEpt2aHs2RDhL6NSv5tjrfr4tjTsUgIgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rn3lkK4C9S154YYLC0Jbr6UgHtPcD4jA2LM3lL/4s6FUeK64wnvdX20XT/ffikHx1kFoyM5964Eze3BKpHvPp+3R2ci3TPIgABDuDCKUuO4YXj6pqi9LnhOmzAAtopJt4XrAvoVeELgGtDLGEc/8hryyXAnPJr79Nq5iZSiU5sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGKcV/9Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DB71F000E9;
-	Wed, 20 May 2026 18:21:35 +0000 (UTC)
+	 MIME-Version; b=FQkY5BNrdSQg40ZrqS7L8tLr5zChuIssegsl1v4pKyXSJ8mEBjS4PKNGdjJk1O9tewgP249WkYmvzgVzoPwHVF+oK2NGdglmOBTU39b6yzrxy+o/fmmR6mUlTunG6iiDAfYQKpJ/e8GZxqatZpz1260eS3rU/Eeo+DZ0c4G5Kt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5hXBXLP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321451F000E9;
+	Wed, 20 May 2026 18:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301296;
-	bh=fWk6OXGuOlzrV3nxotl/e5AW3Zt2hBM1rQKQTJyKyxI=;
+	s=korg; t=1779302498;
+	bh=CwV+BGt7ObdXF+vJVmnjbpO3bAIRH5yxtpjl2ZkeLLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VGKcV/9ZuQL6r9O2aE8FbImD4GC3kQVYPotb6QOzOmwqeOsLKEP7abF0mGg6JbSt4
-	 IRCvkfJN4AXVs0MhYGFPoqglC5FymoQLGAp51odmCN15IGZLb9Sb/0TP/gGlQCSkzb
-	 Fpgiu88drCs5yDUhn10B/ZY+kztwhqMCNWbQHXEw=
+	b=N5hXBXLPgDzQjSPXaZyBBLWzsM7V+Fvjt8DdgaYY6YKv9kQM4QuTJPOOEKArQXnLz
+	 OCOTpe+urWMowlvVLYAaUmRLe/uOViO5RXQsWxAMgYmG5pDbcy2EIJ+tUKKxJKI64F
+	 GEWlW3KK5Ysuqv/BvdaGQkh3aZtmisCXdBEm38f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Krause <minipli@grsecurity.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 501/666] kbuild: builddeb - avoid recompiles for non-cross-compiles
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Val Packett <val@packett.cool>
+Subject: [PATCH 6.6 289/508] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
 Date: Wed, 20 May 2026 18:21:52 +0200
-Message-ID: <20260520162122.119607946@linuxfoundation.org>
+Message-ID: <20260520162104.905416674@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252676-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253136-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -89,68 +90,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 17BD559AF1D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,packett.cool:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6916859B890
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 2452dcf4d740effff5aa71b7f6529ee8c04fd8f6 ]
+[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
 
-Commit e2c318225ac1 ("kbuild: deb-pkg: add
-pkg.linux-upstream.nokernelheaders build profile") changed how
-install-extmod-build gets called, making it always rebuild the host
-programs below scripts/ if HOSTCC wasn't specified with its full triplet
-on the make command line. That is, apparently, needed to fix up commit
-f1d87664b82a ("kbuild: cross-compile linux-headers package when
-possible") for cross-compiles. However, in the much more common case of
-non-cross-compile builds this will lead to unnecessary rebuilding of
-host tools including gcc plugins. This, in turn, will lead to a full
-kernel rebuild on the next 'make bindeb-pkg' which is unfortunate.
+The MDSS resets have so far been left undescribed. Fix that.
 
-Avoid that by only triggering the rebuild of host tools for actual
-cross-compile builds.
-
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Fixes: e2c318225ac1 ("kbuild: deb-pkg: add pkg.linux-upstream.nokernelheaders build profile")
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20260402145116.1010901-1-minipli@grsecurity.net
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
+Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/builddeb | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index fb686fd3266f0..1d7d4838eebd4 100755
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -125,7 +125,13 @@ install_kernel_headers () {
- 	pdir=debian/$1
- 	version=${1#linux-headers-}
+diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+index b9b51617a335d..0705103060748 100644
+--- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
++++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
+@@ -6,6 +6,7 @@
+ #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+ #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
  
--	CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	# Override $CC only for cross-compiles, to not unnecessarily rebuild
-+	# scripts/ including plugins, which may lead to a full kernel rebuild.
-+	if [ -n "${CROSS_COMPILE}" ]; then
-+		CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	else
-+		"${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	fi
++/* Clocks */
+ #define DISP_CC_PLL0				0
+ #define DISP_CC_PLL0_OUT_EVEN			1
+ #define DISP_CC_MDSS_AHB_CLK			2
+@@ -40,7 +41,11 @@
+ #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
+ #define DISP_CC_XO_CLK				32
  
- 	mkdir -p $pdir/lib/modules/$version/
- 	ln -s /usr/src/linux-headers-$version $pdir/lib/modules/$version/build
+-/* DISP_CC GDSCR */
++/* Resets */
++#define DISP_CC_MDSS_CORE_BCR			0
++#define DISP_CC_MDSS_RSCC_BCR			1
++
++/* GDSCs */
+ #define MDSS_GDSC				0
+ 
+ #endif
 -- 
 2.53.0
 
