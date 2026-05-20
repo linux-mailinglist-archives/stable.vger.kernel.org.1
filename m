@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DwpAkMXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:15 +0200
+	id 0JdRLdD+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075A65996E9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F14596A96
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95C0A329F4EE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7852F333F498
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668B43FC5AB;
-	Wed, 20 May 2026 18:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFF33A3E9C;
+	Wed, 20 May 2026 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzedYavV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dxLz14l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CC53FC5AD;
-	Wed, 20 May 2026 18:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D193CB2F8;
+	Wed, 20 May 2026 17:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301419; cv=none; b=jrFgNM5Mjf0rjcztA2taMDJ/q3SXVPsDVNLAy929sOlXWSSePTYM4Fgj/3IioaqL9CI1UGDiccm/o7l7POBUhoX0t0HBBeq2d4PM2RkpkekR2hYLuIT098qB6cdKIvM2N+MSJ3kqX0CB2f68Vu/Ry6CDIalIjVAUZopHaAuNsHw=
+	t=1779299715; cv=none; b=WmM8/OUMZH2uIAZ6bA+XG+qFAwooxHOVF3p8Nv63dNQ0/tvuvpgGpT//Eurj+bbiP+5SqDO+/GEr3ibnpSBy2VBOOOTY0t4lrAZUlr6HFGU+p8hX+7FJHhMDUUZ3FZiHZ0BNU6raI/m3ejHC+hD2cyaMiGoJa0+8OWJFP1UbAyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301419; c=relaxed/simple;
-	bh=C3ZMR+EasfuYDe7JvNb/boxrNO6CUOII8qeTm7yRM60=;
+	s=arc-20240116; t=1779299715; c=relaxed/simple;
+	bh=5+Vm0cAsRGdFQLbr+gNxYrBVpv5xwBDuPaQvVurityk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1/OUs+nJLVIPRvcCHNIJf9/CQ0Yb2EZNTKKjuLEpv3A02PHMOsNGldPCALts3kxDXyN3nGE7LPD95GPoi62utbdR5/7zzUfJlfKWAYgi8ZauxIoBAbVtbPTaD5VlHlX4aPkPk7aLtYtVrNEEwWR/tx34AfCyceSumt90Zpptug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzedYavV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218341F000E9;
-	Wed, 20 May 2026 18:23:36 +0000 (UTC)
+	 MIME-Version; b=ZPFxkKUl93kZz27HSXgiCz3N6JSi+/4uBoAtAL78EadCK5gE3zKIlf7N4wviNu+IcBYmxqUu2MS17dERLF3bqSTVyZD2evgqh3Q0CNTO2VqfWMsADhSL7m4j8/kH9Zecn2GxUGcqf/U/dVQr+q5zLOZxTV01MgRraL85mA1flNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dxLz14l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADCD1F000E9;
+	Wed, 20 May 2026 17:55:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301417;
-	bh=V7EKHY8dNMJQlpaO6aL/kRRhjcGEb2lY6gw1RHiU/jo=;
+	s=korg; t=1779299713;
+	bh=dxQrXZF4FydedpEIAUba1bTOS/ZXrCNkQC0CoetXf50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tzedYavVOq4eYH1QWvp/vhd7DhLNoeomXEKo2DlttzkVpmLZzRB5poq8tABm2dNdE
-	 r8bTyLw7/lKcDuBQdISVyJ5/Lh9csEVfK/n+AlO7bHx2RhARN8ZmH7l2mvtMCyyo6D
-	 pa8L7xM5ZoJp5PkJZEAQSBQdGdr0s5glZ9RbvXw8=
+	b=2dxLz14lSVG7ga26MKpEAEMfTRwJPaMr0rxaG5ZBmhSq9s5TU/BMcX5hkxb/UITie
+	 d3xfcvIf8oq7gGVcP8N+HkPyfCbpr9Zn6Uhmld0VVJKytQ9TSiQ4qXAlxEE6yZKDjO
+	 oS0g5uiwETveb2Eopg/S8rIJHeKfONtuwT0qaQ7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Breno Leitao <leitao@debian.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
 	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 547/666] netconsole: allow selection of egress interface via MAC address
-Date: Wed, 20 May 2026 18:22:38 +0200
-Message-ID: <20260520162123.126715973@linuxfoundation.org>
+Subject: [PATCH 6.18 876/957] net: mana: Init gf_stats_work before potential error paths in probe
+Date: Wed, 20 May 2026 18:22:39 +0200
+Message-ID: <20260520162153.563313537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,244 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252722-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252088-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 075A65996E9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B2F14596A96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit f8a10bed32f5fbede13a5f22fdc4ab8740ea213a ]
+[ Upstream commit 6e8bc03349fe4f09567fa76235abf52bdaf83082 ]
 
-Currently, netconsole has two methods of configuration - module
-parameter and configfs. The former interface allows for netconsole
-activation earlier during boot (by specifying the module parameter on
-the kernel command line), so it is preferred for debugging issues which
-arise before userspace is up/the configfs interface can be used. The
-module parameter syntax requires specifying the egress interface name.
-This requirement makes it hard to use for a couple reasons:
-- The egress interface name can be hard or impossible to predict. For
-  example, installing a new network card in a system can change the
-  interface names assigned by the kernel.
-- When constructing the module parameter, one may have trouble
-  determining the original (kernel-assigned) name of the interface
-  (which is the name that should be given to netconsole) if some stable
-  interface naming scheme is in effect. A human can usually look at
-  kernel logs to determine the original name, but this is very painful
-  if automation is constructing the parameter.
+Move INIT_DELAYED_WORK(gf_stats_work) to before mana_create_eq(),
+while keeping schedule_delayed_work() at its original location.
 
-For these reasons, allow selection of the egress interface via MAC
-address when configuring netconsole using the module parameter. Update
-the netconsole documentation with an example of the new syntax.
-Selection of egress interface by MAC address via configfs is far less
-interesting (since when this interface can be used, one should be able
-to easily convert between MAC address and interface name), so it is left
-unimplemented.
+Previously, if any function between mana_create_eq() and the
+INIT_DELAYED_WORK call failed, mana_probe() would call mana_remove()
+which unconditionally calls cancel_delayed_work_sync(gf_stats_work)
+in __flush_work() or debug object warnings with
+CONFIG_DEBUG_OBJECTS_WORK enabled.
 
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Tested-by: Breno Leitao <leitao@debian.org>
+Fixes: be4f1d67ec56 ("net: mana: Add standard counter rx_missed_errors")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260420124741.1056179-3-ernis@linux.microsoft.com
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250312-netconsole-v6-2-3437933e79b8@purestorage.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3bc179bc7146 ("netpoll: fix IPv6 local-address corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/netconsole.rst |  6 ++-
- include/linux/netpoll.h                 |  6 +++
- net/core/netpoll.c                      | 51 +++++++++++++++++++------
- 3 files changed, 50 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
-index d55c2a22ec7af..56578486ff7e8 100644
---- a/Documentation/networking/netconsole.rst
-+++ b/Documentation/networking/netconsole.rst
-@@ -45,7 +45,7 @@ following format::
- 	r             if present, prepend kernel version (release) to the message
- 	src-port      source for UDP packets (defaults to 6665)
- 	src-ip        source IP to use (interface address)
--	dev           network interface (eth0)
-+	dev           network interface name (eth0) or MAC address
- 	tgt-port      port for logging agent (6666)
- 	tgt-ip        IP address for logging agent
- 	tgt-macaddr   ethernet MAC address for logging agent (broadcast)
-@@ -62,6 +62,10 @@ or using IPv6::
- 
-  insmod netconsole netconsole=@/,@fd00:1:2:3::1/
- 
-+or using a MAC address to select the egress interface::
-+
-+   linux netconsole=4444@10.0.0.1/22:33:44:55:66:77,9353@10.0.0.2/12:34:56:78:9a:bc
-+
- It also supports logging to multiple remote agents by specifying
- parameters for the multiple agents separated by semicolons and the
- complete string enclosed in "quotes", thusly::
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index b34301650c479..ca88b1b87059f 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -25,7 +25,13 @@ union inet_addr {
- struct netpoll {
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
-+	/*
-+	 * Either dev_name or dev_mac can be used to specify the local
-+	 * interface - dev_name is used if it is a nonempty string, else
-+	 * dev_mac is used.
-+	 */
- 	char dev_name[IFNAMSIZ];
-+	u8 dev_mac[ETH_ALEN];
- 	const char *name;
- 
- 	union inet_addr local_ip, remote_ip;
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 11b2a841b7488..a38b239cd7db6 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -506,7 +506,8 @@ void netpoll_print_options(struct netpoll *np)
- 		np_info(np, "local IPv6 address %pI6c\n", &np->local_ip.in6);
- 	else
- 		np_info(np, "local IPv4 address %pI4\n", &np->local_ip.ip);
--	np_info(np, "interface '%s'\n", np->dev_name);
-+	np_info(np, "interface name '%s'\n", np->dev_name);
-+	np_info(np, "local ethernet address '%pM'\n", np->dev_mac);
- 	np_info(np, "remote port %d\n", np->remote_port);
- 	if (np->ipv6)
- 		np_info(np, "remote IPv6 address %pI6c\n", &np->remote_ip.in6);
-@@ -575,11 +576,18 @@ int netpoll_parse_options(struct netpoll *np, char *opt)
- 	cur++;
- 
- 	if (*cur != ',') {
--		/* parse out dev name */
-+		/* parse out dev_name or dev_mac */
- 		if ((delim = strchr(cur, ',')) == NULL)
- 			goto parse_failed;
- 		*delim = 0;
--		strscpy(np->dev_name, cur, sizeof(np->dev_name));
-+
-+		np->dev_name[0] = '\0';
-+		eth_broadcast_addr(np->dev_mac);
-+		if (!strchr(cur, ':'))
-+			strscpy(np->dev_name, cur, sizeof(np->dev_name));
-+		else if (!mac_pton(cur, np->dev_mac))
-+			goto parse_failed;
-+
- 		cur = delim;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 4b7e5acba7f76..d1eb77d540427 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3607,6 +3607,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
  	}
- 	cur++;
-@@ -684,27 +692,45 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- }
- EXPORT_SYMBOL_GPL(__netpoll_setup);
  
-+/*
-+ * Returns a pointer to a string representation of the identifier used
-+ * to select the egress interface for the given netpoll instance. buf
-+ * must be a buffer of length at least MAC_ADDR_STR_LEN + 1.
-+ */
-+static char *egress_dev(struct netpoll *np, char *buf)
-+{
-+	if (np->dev_name[0])
-+		return np->dev_name;
++	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
 +
-+	snprintf(buf, MAC_ADDR_STR_LEN, "%pM", np->dev_mac);
-+	return buf;
-+}
-+
- int netpoll_setup(struct netpoll *np)
- {
-+	struct net *net = current->nsproxy->net_ns;
-+	char buf[MAC_ADDR_STR_LEN + 1];
- 	struct net_device *ndev = NULL;
- 	bool ip_overwritten = false;
- 	struct in_device *in_dev;
- 	int err;
+ 	err = mana_create_eq(ac);
+ 	if (err) {
+ 		dev_err(dev, "Failed to create EQs: %d\n", err);
+@@ -3680,7 +3682,6 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 	if (!err)
+ 		err = add_adev(gd, "eth");
  
- 	rtnl_lock();
--	if (np->dev_name[0]) {
--		struct net *net = current->nsproxy->net_ns;
-+	if (np->dev_name[0])
- 		ndev = __dev_get_by_name(net, np->dev_name);
--	}
-+	else if (is_valid_ether_addr(np->dev_mac))
-+		ndev = dev_getbyhwaddr(net, ARPHRD_ETHER, np->dev_mac);
-+
- 	if (!ndev) {
--		np_err(np, "%s doesn't exist, aborting\n", np->dev_name);
-+		np_err(np, "%s doesn't exist, aborting\n", egress_dev(np, buf));
- 		err = -ENODEV;
- 		goto unlock;
- 	}
- 	netdev_hold(ndev, &np->dev_tracker, GFP_KERNEL);
+-	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
+ 	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
  
- 	if (netdev_master_upper_dev_get(ndev)) {
--		np_err(np, "%s is a slave device, aborting\n", np->dev_name);
-+		np_err(np, "%s is a slave device, aborting\n",
-+		       egress_dev(np, buf));
- 		err = -EBUSY;
- 		goto put;
- 	}
-@@ -712,7 +738,8 @@ int netpoll_setup(struct netpoll *np)
- 	if (!netif_running(ndev)) {
- 		unsigned long atmost;
- 
--		np_info(np, "device %s not up yet, forcing it\n", np->dev_name);
-+		np_info(np, "device %s not up yet, forcing it\n",
-+			egress_dev(np, buf));
- 
- 		err = dev_open(ndev, NULL);
- 
-@@ -746,7 +773,7 @@ int netpoll_setup(struct netpoll *np)
- 			if (!ifa) {
- put_noaddr:
- 				np_err(np, "no IP address for %s, aborting\n",
--				       np->dev_name);
-+				       egress_dev(np, buf));
- 				err = -EDESTADDRREQ;
- 				goto put;
- 			}
-@@ -777,13 +804,13 @@ int netpoll_setup(struct netpoll *np)
- 			}
- 			if (err) {
- 				np_err(np, "no IPv6 address for %s, aborting\n",
--				       np->dev_name);
-+				       egress_dev(np, buf));
- 				goto put;
- 			} else
- 				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
- #else
- 			np_err(np, "IPv6 is not supported %s, aborting\n",
--			       np->dev_name);
-+			       egress_dev(np, buf));
- 			err = -EINVAL;
- 			goto put;
- #endif
+ out:
 -- 
 2.53.0
 
