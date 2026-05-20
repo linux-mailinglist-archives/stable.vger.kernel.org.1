@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-251508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMEQEp71DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-251508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:42 +0200
+	id eOTbIRL2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FE9594EE1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F82594FC0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B1ECC3108465
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10BE03032553
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A383E0C70;
-	Wed, 20 May 2026 17:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE65A34F462;
+	Wed, 20 May 2026 17:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eClBj7T5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku4SHrqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2BA3DC4DA;
-	Wed, 20 May 2026 17:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5715D28DC4;
+	Wed, 20 May 2026 17:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298163; cv=none; b=FJOMxKlgtBh3Efhm5oa8mYqGwric5zvg6ukfeu9bHtn8OmHUOf8XFe+kFSpAKBlhFmo2u3hHs0+hbr8avqCzWWD2ea8bY9amGR3lnXRDhvXKXp8ZmzHTkM4BHVwqIdN43FQXwQqesuvioaR5Djiz5lw2EpzbyDWPTnnCcDQLwnY=
+	t=1779298295; cv=none; b=rur8F+dKIPUK5h7uxWY0FZnMSnv0d8+usdeFIHbPTEpMnFt0LTbZnxFMIsTN8oh7KlAb+9klmp9L+aQKs7ZR4W9uRCUNzEfwMpoyE/k9JqHEFOJN1D+AxmBeZb3aloK/GQrLMwob6RCwWCO3HKZDxKnNuY+XjfCMZmdbblDop+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298163; c=relaxed/simple;
-	bh=GeoO/TStQeKJhMlbAgoMrkwuWgHuNvmn9ZkWx2YLDpM=;
+	s=arc-20240116; t=1779298295; c=relaxed/simple;
+	bh=KB9EfXtjr5MXy0ieWesGoi4fIz9jVB1CEMBMSdZi0bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADlgA4wL7Ux06t1lFH1RFtSjU5Poh6plFPZxaDoSHo6zEEA4HfNWNV6hwt3KSd2fVMAeOQdIxM07Z2zSSwTGiqx933DMLLtwMpDgKt4SQ8Soh0ivEr5ETaIHYt/WRYnjryWptJ2QlZAgEQ8P/rSIZ4tzVZWJBXjx7DlSEFVmXv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eClBj7T5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4491F000E9;
-	Wed, 20 May 2026 17:29:21 +0000 (UTC)
+	 MIME-Version; b=Pm3+Q/5UFovRuHSWw/rxorJjsizC1SgntAXSAm8I1fwI4mo9F1EyoSnH/FBx3C1XRJyA4wNYIB0HaOXWYt6Z56Zp4c7zhtzVkrxdkDYl8vgtKAUFveLCp240utHB65iog1BsiZ6kUJVZZAZlsKpuKX/fmCmf7cVC8AfIqEb//b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku4SHrqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0E51F000E9;
+	Wed, 20 May 2026 17:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298162;
-	bh=UwvTyC5N8CPtrYdqc2BV+VjmO1jBWXkZ351g59bqG4U=;
+	s=korg; t=1779298294;
+	bh=hkZUrUFiXpM6nmuaiDi+YOREslJGOEUiU9mzf8xCRDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eClBj7T5YEXDqkNxFdFKWIx95MJKgAYqiAqRnIDTioiquFj2ZcWvhByYRkRstKnCo
-	 3qORbei3MigM1tWFD3uerOWHmj4n90Yd4JPLlsd0I1WooXTnMHzV2L2qJ1aGZ4Kuwl
-	 cU8XRPN2vtpd8X0qWturUH63e0Y0dTW1PF3aG5mI=
+	b=Ku4SHrqzWhlCdsMfzpuMAivrZDTIciWlU8e13EJkRcKBv5RCD9m77CnHW49qmAai0
+	 BV5U1/Fcc5p1Bc2FUfdtpKOEheFbqfhqzSgcVJIKyyfRi6R1GmzGHixgWc6ozrobBx
+	 LnZWPHjO/LpUbfeXxV0lSiU0ytx86np70RsiIvnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Rastyogin <gerben@altlinux.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexander Schmidt <alexs@linux.ibm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 304/957] ASoC: rsnd: Fix potential out-of-bounds access of component_dais[]
-Date: Wed, 20 May 2026 18:13:07 +0200
-Message-ID: <20260520162141.124480745@linuxfoundation.org>
+Subject: [PATCH 6.18 305/957] PCI: Enable AtomicOps only if Root Port supports them
+Date: Wed, 20 May 2026 18:13:08 +0200
+Message-ID: <20260520162141.145646985@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251508-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251559-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,renesas.com:email]
-X-Rspamd-Queue-Id: E9FE9594EE1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 35F82594FC0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,43 +100,108 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Denis Rastyogin <gerben@altlinux.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit f9e437cddf6cf9e603bdaefe148c1f4792aaf39c ]
+[ Upstream commit 1ae8c4ce157037e266184064a182af9ef9af278b ]
 
-component_dais[RSND_MAX_COMPONENT] is initially zero-initialized
-and later populated in rsnd_dai_of_node(). However, the existing boundary check:
-  if (i >= RSND_MAX_COMPONENT)
+When inspecting the config space of a Connect-X physical function in an
+s390 system after it was initialized by the mlx5_core device driver, we
+found the function to be enabled to request AtomicOps despite the Root Port
+lacking support for completing them:
 
-does not guarantee that the last valid element remains zero. As a result,
-the loop can rely on component_dais[RSND_MAX_COMPONENT] being zero,
-which may lead to an out-of-bounds access.
+  00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
+          Subsystem: Mellanox Technologies Device 0002
+          DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
+                   AtomicOpsCtl: ReqEn+
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+On s390 and many virtualized guests, the Endpoint is visible but the Root
+Port is not.  In this case, pci_enable_atomic_ops_to_root() previously
+enabled AtomicOps in the Endpoint even though it can't tell whether the
+Root Port supports them as a completer.
 
-Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/20260327103311.459239-1-gerben@altlinux.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Change pci_enable_atomic_ops_to_root() to fail if there's no Root Port or
+the Root Port doesn't support AtomicOps.
+
+Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
+Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+[bhelgaas: commit log, check RP first to simplify flow]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20260330-fix_pciatops-v7-2-f601818417e8@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/rcar/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/sound/soc/renesas/rcar/core.c b/sound/soc/renesas/rcar/core.c
-index 69fb19964a71d..2dc078358612d 100644
---- a/sound/soc/renesas/rcar/core.c
-+++ b/sound/soc/renesas/rcar/core.c
-@@ -1974,7 +1974,7 @@ static int rsnd_probe(struct platform_device *pdev)
- 	 *	asoc register
- 	 */
- 	ci = 0;
--	for (i = 0; priv->component_dais[i] > 0; i++) {
-+	for (i = 0; i < RSND_MAX_COMPONENT && priv->component_dais[i] > 0; i++) {
- 		int nr = priv->component_dais[i];
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index a62ed5560c68f..0b6a23405f167 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3818,8 +3818,7 @@ int pci_rebar_set_size(struct pci_dev *pdev, int bar, int size)
+  */
+ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ {
+-	struct pci_bus *bus = dev->bus;
+-	struct pci_dev *bridge;
++	struct pci_dev *root, *bridge;
+ 	u32 cap, ctl2;
  
- 		ret = devm_snd_soc_register_component(dev, &rsnd_soc_component,
+ 	/*
+@@ -3849,35 +3848,35 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ 		return -EINVAL;
+ 	}
+ 
+-	while (bus->parent) {
+-		bridge = bus->self;
++	root = pcie_find_root_port(dev);
++	if (!root)
++		return -EINVAL;
+ 
+-		pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2, &cap);
++	pcie_capability_read_dword(root, PCI_EXP_DEVCAP2, &cap);
++	if ((cap & cap_mask) != cap_mask)
++		return -EINVAL;
+ 
++	bridge = pci_upstream_bridge(dev);
++	while (bridge != root) {
+ 		switch (pci_pcie_type(bridge)) {
+-		/* Ensure switch ports support AtomicOp routing */
+ 		case PCI_EXP_TYPE_UPSTREAM:
+-		case PCI_EXP_TYPE_DOWNSTREAM:
+-			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
+-				return -EINVAL;
+-			break;
+-
+-		/* Ensure root port supports all the sizes we care about */
+-		case PCI_EXP_TYPE_ROOT_PORT:
+-			if ((cap & cap_mask) != cap_mask)
+-				return -EINVAL;
+-			break;
+-		}
+-
+-		/* Ensure upstream ports don't block AtomicOps on egress */
+-		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
++			/* Upstream ports must not block AtomicOps on egress */
+ 			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
+ 						   &ctl2);
+ 			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
+ 				return -EINVAL;
++			fallthrough;
++
++		/* All switch ports need to route AtomicOps */
++		case PCI_EXP_TYPE_DOWNSTREAM:
++			pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2,
++						   &cap);
++			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
++				return -EINVAL;
++			break;
+ 		}
+ 
+-		bus = bus->parent;
++		bridge = pci_upstream_bridge(bridge);
+ 	}
+ 
+ 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
 -- 
 2.53.0
 
