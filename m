@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-251544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKyuA5zzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:08 +0200
+	id 0Fg2FPT/DWp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DE05948DD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C27596EE9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42E6F31947F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8F3938DBB16
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AF2369D7E;
-	Wed, 20 May 2026 17:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42A732861F;
+	Wed, 20 May 2026 18:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWk7Epjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/t6dfN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16EF2367DF;
-	Wed, 20 May 2026 17:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E82E3F9F25;
+	Wed, 20 May 2026 18:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298255; cv=none; b=RZfngdnIx4nW/PGsaKbDhx1S2BhI4zQKTJJyk1CcRazaWtN0QkpS11/PIMok4z2SYF9Kg+XaP/CcCmhNeXynI8mpM7DFL2BNhxefOABAWTtuKeFWiz9reIReYZvE+OcoHm0PbnbbEOLlda9fORVEyXBwN4P3hn57BxEvzXw6UAw=
+	t=1779300006; cv=none; b=QA+vigZmcvl6ikobjsuSlyYj9t6QTy/6B2yLm/jygTYCci9EMcGqyPld4UAQk2zo4RNVK2aZ1vwJB1wcQmzokzDhWrA0n/aXecfQm7eWHLfyHIU835lOMAZTCSPTpQ/OEHapmuiCTkMctdwCDaZw2XpZj+SAkLZUMjHUwWDge5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298255; c=relaxed/simple;
-	bh=/i7tCkZuTNvalD6/8WAKWeWb+CO6ql6ws3mNUzyBEA8=;
+	s=arc-20240116; t=1779300006; c=relaxed/simple;
+	bh=LQlhjatZQvZ+QipyFZc9wptTRpSGrzHodWBo1CRGvLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW/e8YjWCH3VCI1fw2drYEKxZGF7go3rGPqhW0bI2OPTab8YXg0IBKbC3qyR/f39ddZjPcv+pIhbiMjQGJqhoKZ2T7JYAW2vA2b5Llu9oyKUGrny2ZZZJ61ooZs8ekUoywMp7AGHrTcXpswCOfwe4d0UbadNMU/GeAjmRerhjL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWk7Epjq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FE91F000E9;
-	Wed, 20 May 2026 17:30:54 +0000 (UTC)
+	 MIME-Version; b=ktI8WpGOPjZ45W70deAbTcMn1QHLI6U6reGdb6SQArLd+RXu5B/YQrNU+ITrLwppnlGDbs3dxD9G6YUpjIpgmHRKlizRRxcKPci86VThwITU/RSLJEY+NUu/daTBgpL4kJBVUZsEdsr4a1CNK6K7WRhNnjiMePbT21j+6peT9E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/t6dfN/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55921F000E9;
+	Wed, 20 May 2026 18:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298254;
-	bh=rszOGLVNYiHQ5Eso2zxt77IHvq/vrPEhFe031407i3c=;
+	s=korg; t=1779300005;
+	bh=Xu20gpCwVxvLUGQwkSxPboau0Cf8jBxmxpgHSMmgLgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yWk7Epjqmku75ptbTVXg6JOjfsuMxYtL7EltpJREtmSdbxhKMQ0JURQBiqV8NZfP9
-	 YE2o59hDfV5wd9Bt1q5LjvScsF5xuJlVjfNCJMvw9qLJR1Xl+wdTUvmn5h2YQ/+864
-	 114ADeEwGwOIKud+klKsDY+fp5MHfC3TFkkrrkHc=
+	b=x/t6dfN/zELwM375RgfvKEzQ91Fj3y7SXP4NcKdKBrSekeQENnxSDor0yWqF58k6E
+	 vZI8S6wUiOAK26O1A8h4Kxlzjk1mv+uji1cJVwRPqN/CQXUGMtZO2/bF3JJaKx7e/Y
+	 Ce09Qqwn27k9yGJy1ovtmcBvKKprSDpfbquWUM2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Subject: [PATCH 6.18 340/957] ALSA: hda/realtek - fixed speaker no sound update
+	Yu Kuai <yukuai@fnnas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 012/666] md: wake raid456 reshape waiters before suspend
 Date: Wed, 20 May 2026 18:13:43 +0200
-Message-ID: <20260520162141.906270509@linuxfoundation.org>
+Message-ID: <20260520162111.497957151@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251544-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,realtek.com,suse.de,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-252182-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: B9DE05948DD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email]
+X-Rspamd-Queue-Id: E5C27596EE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 46c862f5419e0a86b60b9f9558d247f6084c99f9 ]
+[ Upstream commit cf86bb53b9c92354904a328e947a05ffbfdd1840 ]
 
-Fixed speaker has pop noise on Lenovo Thinkpad X11 Carbon Gen 12.
+During raid456 reshape, direct IO across the reshape position can sleep
+in raid5_make_request() waiting for reshape progress while still
+holding an active_io reference. If userspace then freezes reshape and
+writes md/suspend_lo or md/suspend_hi, mddev_suspend() kills active_io
+and waits for all in-flight IO to drain.
 
-Fixes: 630fbc6e870e ("ALSA: hda/realtek - fixed speaker no sound")
-Reported-and-tested-by: Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Closes: https://lore.kernel.org/CAC88DfsHrhyhy0Pn1O-z9egBvMYu=6NYgcvcC6KCgwh_-Ldkxg@mail.gmail.com
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This can deadlock: the IO needs reshape progress to continue, but the
+reshape thread is already frozen, so the active_io reference is never
+dropped and suspend never completes.
+
+raid5_prepare_suspend() already wakes wait_for_reshape for dm-raid. Do
+the same for normal md suspend when reshape is already interrupted, so
+waiting raid456 IO can abort, drop its reference, and let suspend
+finish.
+
+The mdadm test tests/25raid456-reshape-deadlock reproduces the hang.
+
+Fixes: 714d20150ed8 ("md: add new helpers to suspend/resume array")
+Link: https://lore.kernel.org/linux-raid/20260327140729.2030564-1-yukuai@fnnas.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/md/md.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index a2ecbe1412632..e14caa040fc92 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -3615,22 +3615,11 @@ static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo,
- 				   struct snd_pcm_substream *substream,
- 				   int action)
- {
--	static const struct coef_fw dis_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
--	}; /* Disable AMP silence detection */
--	static const struct coef_fw en_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0084), WRITE_COEF(0x29, 0xb023),
--	}; /* Enable AMP silence detection */
--
- 	switch (action) {
- 	case HDA_GEN_PCM_ACT_OPEN:
--		alc_process_coef_fw(codec, dis_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
- 		break;
- 	case HDA_GEN_PCM_ACT_CLOSE:
--		alc_process_coef_fw(codec, en_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
- 		break;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 526390acd39e0..1aff3e541ceb5 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -470,6 +470,17 @@ int mddev_suspend(struct mddev *mddev, bool interruptible)
  	}
-@@ -3653,10 +3642,15 @@ static void alc287_fixup_lenovo_thinkpad_with_alc1318(struct hda_codec *codec,
- 		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC301),
- 		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
- 	};
-+	static const struct coef_fw dis_coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
-+		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
-+	}; /* Disable AMP silence detection */
  
- 	if (action != HDA_FIXUP_ACT_PRE_PROBE)
- 		return;
- 	alc_update_coef_idx(codec, 0x10, 1<<11, 1<<11);
-+	alc_process_coef_fw(codec, dis_coefs);
- 	alc_process_coef_fw(codec, coefs);
- 	spec->power_hook = alc287_s4_power_gpio3_default;
- 	spec->gen.pcm_playback_hook = alc287_alc1318_playback_pcm_hook;
+ 	percpu_ref_kill(&mddev->active_io);
++
++	/*
++	 * RAID456 IO can sleep in wait_for_reshape while still holding an
++	 * active_io reference. If reshape is already interrupted or frozen,
++	 * wake those waiters so they can abort and drop the reference instead
++	 * of deadlocking suspend.
++	 */
++	if (mddev->pers && mddev->pers->prepare_suspend &&
++	    reshape_interrupted(mddev))
++		mddev->pers->prepare_suspend(mddev);
++
+ 	if (interruptible)
+ 		err = wait_event_interruptible(mddev->sb_wait,
+ 				percpu_ref_is_zero(&mddev->active_io));
 -- 
 2.53.0
 
