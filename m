@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHmWAnn6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
+	id kIhmMB3zDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:01 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4AD595B09
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F0F594778
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9D5B308F694
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 417F53101AE1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469233F4DC0;
-	Wed, 20 May 2026 18:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3430A3E6385;
+	Wed, 20 May 2026 17:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKNcxAC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmO08cxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047E53F7AA9;
-	Wed, 20 May 2026 18:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD662370D54;
+	Wed, 20 May 2026 17:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300487; cv=none; b=CUgn6e8qYET3iOdtBK5QQx9U1u61vhrd/mBmaqh6ryfsE34Hi4P1g6s+TBq93HsEuBqStzcSmJ1OxwWTsngslUAgAes5NvM6ckK66KsRckpOkb36DWu9Tu3jCymxGEENWvBB5qZ+sFydJJxLChWgzq8+a35eDRXshX+PcwHXc0k=
+	t=1779298655; cv=none; b=a8yv7bsgDnOkzXw0IMpg//6wA9XYj4IPgaOhY3zOWJrIH0Gwaz2q3OXqY2OvjTZV9BltHvxIU9SXBubqlmxz5t1vouIVLO8FThY+2JaXJqfaxeCaoVhVICHOQbCMZMx+SbSAFJVHr2qIy6ifqDtpe7/fmdhEsDtlKp81syWfIwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300487; c=relaxed/simple;
-	bh=3kDfXUS5jSEjp6ynX6U2HeqXVnwvmEMYYeRJgyYd1+Q=;
+	s=arc-20240116; t=1779298655; c=relaxed/simple;
+	bh=E4POEbSfzp6UrpTIbLfkfF3fVqZRqkk/uF9EzNpv12A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUN0v/RQpxoPcQbU7miIfjeN6eV4fLKuxu7uxcbyFGcZjwIIuHdr6Z4volP6eLpfUHEVH6DD4QuCAVG0gi+RtJQYug859Hx1PJVRZgzyMpmvqUTU+UIe4VntyGdV1N+xnwZBnFdxmRbGg1FGCbZd1L/Gi2M0Wt3HKu+EiqXns8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKNcxAC3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6039B1F000E9;
-	Wed, 20 May 2026 18:08:05 +0000 (UTC)
+	 MIME-Version; b=ejf/PT/8s7zWwl+GPGmW/uqhvVuhZ9P00N0G++Dcyki/augBWlsKAYeLhFn7PJPkC74GUDUrEa7jKq6gUrijBqwTnSHVPBDW5M6lmF8kCLURLsXofzhGGgZwf1qbfzmGJ1cb3Nfz3f6lDVNa/cr6Qt7dg+VnrxOAKr5xu8cI9po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmO08cxs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCD11F000E9;
+	Wed, 20 May 2026 17:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300485;
-	bh=08YXNBNTkF9aVIMy/g2SPVKCtXDrJDPgvHtr3RSX4Vk=;
+	s=korg; t=1779298653;
+	bh=HtHHQuxZjEmAqiv5KCx4MLlIaC75vHeN9gi5kYZ2mCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IKNcxAC3T2DZrPurS6Iea+NGQ8X5rTYvDZKGdNJM/mWaUCFKYRcjcniIEsTwJUHD4
-	 t2z7hMRDDxlv6cEM/W+NyagW1lE8quPPQGkNlnwtj0qjUUqfxit/g+cQodOj3IQlIR
-	 SRJ+MNfNcGE+ckDK0LRF9x3FIknPQe9C2q5T2OAk=
+	b=xmO08cxsQ2kQFOm1lSE8HA44/13Zyhvdw4aAskIHn9DV/ynlWL3PLk04o0eU0Dyj/
+	 0dHys27hRxMJ/Rcme5rnEWfBBDDYmxv4mg/uLMiRNks2VqIs0eJZvxxIqVfnIqek8V
+	 3/qQzo/YKN+Y4Vu4kyp0mOj+KhIep2fxeZjQYX9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eric.auger@redhat.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/666] iommu/tegra241-cmdqv: Set supports_cmd op in tegra241_vcmdq_hw_init()
+Subject: [PATCH 6.18 494/957] libbpf: Prevent double close and leak of btf objects
 Date: Wed, 20 May 2026 18:16:17 +0200
-Message-ID: <20260520162114.803891869@linuxfoundation.org>
+Message-ID: <20260520162145.239359467@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,89 +73,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252366-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251696-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 7A4AD595B09
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url]
+X-Rspamd-Queue-Id: 37F0F594778
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 803e41f36d227022ab9bbe780c82283fd4713b2e ]
+[ Upstream commit 380044c40b1636a72fd8f188b5806be6ae564279 ]
 
-vintf->hyp_own is finalized in tegra241_vintf_hw_init(). On the other hand,
-tegra241_vcmdq_alloc_smmu_cmdq() is called via an init_structures callback,
-which is earlier than tegra241_vintf_hw_init().
+Sashiko found possible double close of btf object fd [1],
+which happens when strdup in load_module_btfs fails at which
+point the obj->btf_module_cnt is already incremented.
 
-This results in the supports_cmd op always being set to the guest function,
-although this doesn't break any functionality nor have some noticeable perf
-impact since non-invalidation commands are not issued in the perf sensitive
-context.
+The error path close btf fd and so does later cleanup code in
+bpf_object_post_load_cleanup function.
 
-Fix this by moving supports_cmd to tegra241_vcmdq_hw_init().
+Also libbpf_ensure_mem failure leaves btf object not assigned
+and it's leaked.
 
-After this change,
- - For a guest kernel, this will be a status quo
- - For a host kernel, non-invalidation commands will be issued to VCMDQ(s)
+Replacing the err_out label with break to make the error path
+less confusing as suggested by Alan.
 
-Fixes: a9d40285bdef ("iommu/tegra241-cmdqv: Limit CMDs for VCMDQs of a guest owned VINTF")
-Reported-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Closes: https://lore.kernel.org/qemu-devel/CH3PR12MB754836BEE54E39B30C7210C0AB44A@CH3PR12MB7548.namprd12.prod.outlook.com/
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Tested-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Incrementing obj->btf_module_cnt only if there's no failure
+and releasing btf object in error path.
+
+Fixes: 91abb4a6d79d ("libbpf: Support attachment of BPF tracing programs to kernel modules")
+[1] https://sashiko.dev/#/patchset/20260324081846.2334094-1-jolsa%40kernel.org
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20260416100034.1610852-1-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/lib/bpf/libbpf.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-index dd7d030d2e890..a76839cf571d2 100644
---- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-@@ -387,6 +387,10 @@ static int tegra241_vcmdq_hw_init(struct tegra241_vcmdq *vcmdq)
- 	/* Reset VCMDQ */
- 	tegra241_vcmdq_hw_deinit(vcmdq);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 9c98c6adb6d05..84b6fb47a2f79 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -5746,11 +5746,12 @@ static int load_module_btfs(struct bpf_object *obj)
+ 		info.name = ptr_to_u64(name);
+ 		info.name_len = sizeof(name);
  
-+	/* vintf->hyp_own is a HW state finalized in tegra241_vintf_hw_init() */
-+	if (!vcmdq->vintf->hyp_own)
-+		vcmdq->cmdq.supports_cmd = tegra241_guest_vcmdq_supports_cmd;
-+
- 	/* Configure and enable VCMDQ */
- 	writeq_relaxed(vcmdq->cmdq.q.q_base, REG_VCMDQ_PAGE1(vcmdq, BASE));
++		btf = NULL;
+ 		err = bpf_btf_get_info_by_fd(fd, &info, &len);
+ 		if (err) {
+ 			err = -errno;
+ 			pr_warn("failed to get BTF object #%d info: %s\n", id, errstr(err));
+-			goto err_out;
++			break;
+ 		}
  
-@@ -514,9 +518,6 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
- 	q->q_base = q->base_dma & VCMDQ_ADDR;
- 	q->q_base |= FIELD_PREP(VCMDQ_LOG2SIZE, q->llq.max_n_shift);
+ 		/* ignore non-module BTFs */
+@@ -5764,15 +5765,15 @@ static int load_module_btfs(struct bpf_object *obj)
+ 		if (err) {
+ 			pr_warn("failed to load module [%s]'s BTF object #%d: %s\n",
+ 				name, id, errstr(err));
+-			goto err_out;
++			break;
+ 		}
  
--	if (!vcmdq->vintf->hyp_own)
--		cmdq->supports_cmd = tegra241_guest_vcmdq_supports_cmd;
+ 		err = libbpf_ensure_mem((void **)&obj->btf_modules, &obj->btf_module_cap,
+ 					sizeof(*obj->btf_modules), obj->btf_module_cnt + 1);
+ 		if (err)
+-			goto err_out;
++			break;
+ 
+-		mod_btf = &obj->btf_modules[obj->btf_module_cnt++];
++		mod_btf = &obj->btf_modules[obj->btf_module_cnt];
+ 
+ 		mod_btf->btf = btf;
+ 		mod_btf->id = id;
+@@ -5780,16 +5781,16 @@ static int load_module_btfs(struct bpf_object *obj)
+ 		mod_btf->name = strdup(name);
+ 		if (!mod_btf->name) {
+ 			err = -ENOMEM;
+-			goto err_out;
++			break;
+ 		}
+-		continue;
++		obj->btf_module_cnt++;
++	}
+ 
+-err_out:
++	if (err) {
++		btf__free(btf);
+ 		close(fd);
+-		return err;
+ 	}
 -
- 	return arm_smmu_cmdq_init(smmu, cmdq);
+-	return 0;
++	return err;
  }
  
+ static struct bpf_core_cand_list *
 -- 
 2.53.0
 
