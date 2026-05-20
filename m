@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GH0zKA79DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:26 +0200
+	id 8KMOOu//DWp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43298596339
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED1B596ED3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2972F3175DF0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C15830D53F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8213F88B8;
-	Wed, 20 May 2026 18:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B8833CEA2;
+	Wed, 20 May 2026 18:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shWk1/cA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UM22Q8Tc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EB12F363F;
-	Wed, 20 May 2026 18:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44732333441;
+	Wed, 20 May 2026 18:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300736; cv=none; b=M/IPjvcGzx4w1L7e3H72ELlvSSzr7h/XmMEo8zZJkRL+wrq0LdKgAdAPr+6pIpnNWQv3PplT3Lp1gSPVKUMEyWfsuEfSQaIVjQaeKngj7D9L4OQkmJcDokTKmr3Stv5knVtfxLo7fLVWD8/xmMw8KPT6ebOETw0zyM73TU7R2ug=
+	t=1779301939; cv=none; b=QWUElxGOBhqrC8DpQGp+I/k8xYikdqXnJ1o7ZqFG/wDdlxpjX8HY70Tjubn46Jp27VkIxkibn9qiqKMIrLA/8Iz+RjdAdlXT/gmVms8ZlIYPDU0egJFS/Oj1K75BuE3pvy/QdIIDuGiktLB37cFgf4xDIE5Nw+gu8dNhXADTjLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300736; c=relaxed/simple;
-	bh=1EoOIwCPAPp9papE0WXkNIrE6BkCzfqwtByPFRnts2I=;
+	s=arc-20240116; t=1779301939; c=relaxed/simple;
+	bh=2SkxW0X0Xm+p9hJk88Z0kWQg7S0pKyzOMOgDgMuZcqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+Q0hT3OfM4timEwVFDcgVKZVGbgN3Q/G3ASSoKOb1pGfxUUPsHmATFpn+coE7fJEON9Y0ylqL+J28XYGDRfIuFAwe3HRs695ImdKKLDoIZwbxSynC3HMsCBvR1RRBRwFCm+Ou6HnINQtRdHO6Z/OJX34gKVoxA95RR3Fpi/rqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shWk1/cA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FCC1F000E9;
-	Wed, 20 May 2026 18:12:15 +0000 (UTC)
+	 MIME-Version; b=bFWTEbdWQSmbgmPeqdlLYzZdz+0PIQV8Wfgjj7ntAkJiIYdyn11B0ESPNcT7lUQykWnP/KomzueIzkwT2p0l181pU275lCAudVfW623+iI6hTtBCF+Tr2QyD9OV/lUcheqOnmOZ4TMwyM3MB7Dc25F9yKMVjP/GtTgtxher7tv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UM22Q8Tc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BAD1F000E9;
+	Wed, 20 May 2026 18:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300735;
-	bh=Sim9d2YL2xQxqlsEUfbaKMcFrEAz7/KMNm3tTT4k/Dw=;
+	s=korg; t=1779301937;
+	bh=z+/ZB1eFABty94ATjNNfoaww+I5HnEYVAUMBn2e0ziw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=shWk1/cAjZsaJtV6htdB6uspAZYGrX3ZNFa4O/NYoR/SnpulBTrqOrh+2pzHoc6na
-	 529+TrbZKagskExdvPa3gP1jGRe0Ul24zFjQuVSt8x5uKKof6IYq4RPonVBKQDvlxQ
-	 kgu8cj5oFc06zLNtCzzoEJ5LuqOlnH2Shn44nwbo=
+	b=UM22Q8TcXFMHLmVezLG5A+82sF7nqAsz4tbbKk6spcFTYwi34sJPQp9gEROIBv0r3
+	 lTZOx/Jv3Xygof8gyqzsooqB+3b+CHLt9QrRX8riFyoUnzm4GcxXyq3ky4tsbHQHzI
+	 Zc36YOwHa9AnU25Vhex35+FxD2HKLjDVAEXavKQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 287/666] arm64: dts: qcom: sm8650: Fix xo clock supply of SD host controller
+Subject: [PATCH 6.6 075/508] net/mlx5e: IPsec, fix ASO poll timeout with read_poll_timeout_atomic()
 Date: Wed, 20 May 2026 18:18:18 +0200
-Message-ID: <20260520162117.437284399@linuxfoundation.org>
+Message-ID: <20260520162100.233057849@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,69 +75,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252462-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252921-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,0.134.86.160:email]
-X-Rspamd-Queue-Id: 43298596339
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: AED1B596ED3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 390903efaa057c44fd80e7d9839419c50092018e ]
+[ Upstream commit edccdd1eb94712da97a6ce71123ec27890add754 ]
 
-The expected frequency of SD host controller core supply clock is 19.2MHz,
-while RPMH_CXO_CLK clock frequency on SM8650 platform is 38.4MHz.
+The do-while poll loop uses jiffies for its timeout:
+  expires = jiffies + msecs_to_jiffies(10);
 
-Apparently the overclocked supply clock could be good enough on some
-boards and even with the most of SD cards, however some low-end UHS-I
-SD cards in SDR104 mode of the host controller produce I/O errors in
-runtime, fortunately this problem is gone, if the "xo" clock frequency
-matches the expected 19.2MHz clock rate.
+jiffies is sampled at an arbitrary point within the current tick, so the
+first partial tick contributes anywhere from a full tick down to nearly
+zero real time. For small msecs_to_jiffies() results this is
+significant, the effective poll window can be much shorter than the
+requested 10ms, and in the worst case the loop exits after a single
+iteration (e.g., when HZ=100), well before the device has delivered the
+CQE.
 
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-3-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Replace the loop with read_poll_timeout_atomic(), which counts elapsed
+time via udelay() accounting rather than jiffies, guaranteeing the full
+poll window regardless of HZ.
+
+Additionally, read_poll_timeout_atomic() executes the poll operation one
+more time after the timeout has expired, giving the CQE a final chance
+to be detected. The old do-while loop could exit without a final poll if
+the timeout expired during the udelay() between iterations.
+
+Fixes: 76e463f6508b ("net/mlx5e: Overcome slow response for first IPsec ASO WQE")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260409202852.158059-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_offload.c      | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index d38d44438477f..72a75dec13c73 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -3423,7 +3423,7 @@ sdhc_2: mmc@8804000 {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index fd03aa4f47b5a..004cf295eb249 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
+ /* Copyright (c) 2017, Mellanox Technologies inc. All rights reserved. */
  
- 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
- 				 <&gcc GCC_SDCC2_APPS_CLK>,
--				 <&rpmhcc RPMH_CXO_CLK>;
-+				 <&bi_tcxo_div2>;
- 			clock-names = "iface",
- 				      "core",
- 				      "xo";
++#include <linux/iopoll.h>
++
+ #include "mlx5_core.h"
+ #include "en.h"
+ #include "ipsec.h"
+@@ -591,7 +593,6 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	struct mlx5_wqe_aso_ctrl_seg *ctrl;
+ 	struct mlx5e_hw_objs *res;
+ 	struct mlx5_aso_wqe *wqe;
+-	unsigned long expires;
+ 	u8 ds_cnt;
+ 	int ret;
+ 
+@@ -613,13 +614,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	mlx5e_ipsec_aso_copy(ctrl, data);
+ 
+ 	mlx5_aso_post_wqe(aso->aso, false, &wqe->ctrl);
+-	expires = jiffies + msecs_to_jiffies(10);
+-	do {
+-		ret = mlx5_aso_poll_cq(aso->aso, false);
+-		if (ret)
+-			/* We are in atomic context */
+-			udelay(10);
+-	} while (ret && time_is_after_jiffies(expires));
++	read_poll_timeout_atomic(mlx5_aso_poll_cq, ret, !ret, 10,
++				 10 * USEC_PER_MSEC, false, aso->aso, false);
+ 	if (!ret)
+ 		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
+ 	spin_unlock_bh(&aso->lock);
 -- 
 2.53.0
 
