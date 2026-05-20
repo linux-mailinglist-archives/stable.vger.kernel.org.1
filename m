@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDAdFwoADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:10 +0200
+	id 2A9AKL0mDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88E2596F52
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D1C59AD12
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90BCB30173A6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BE313131E6F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5C369D7A;
-	Wed, 20 May 2026 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0743F9F25;
+	Wed, 20 May 2026 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ne5xU0zH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIEyhyDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966F130DEAC;
-	Wed, 20 May 2026 18:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A287234DCE4;
+	Wed, 20 May 2026 18:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302086; cv=none; b=DEYA0s++RCTjmHKllg7V8D0QxVsT8SxEmvy5Gwtmh9TXPJC73q1KFaFYuLGZ6agN21IS/80dlXkUFxsPPWyXvTketY/FmwR8x4VCJ1fxGE4dsE3QPm9lNjvxAdXGAOA9yovtekAjO1oXvzxDqBfcqomXr7wnzT+t0vz24xgnelY=
+	t=1779300998; cv=none; b=fgEch0wmbq8ExIwZ/AntL/g8GTujN7wFXeKwOHi70BvCUVLj13RL8IjvLCIxzH+NNO8yFHRiMkAnmeSQNQlF7QAwUFiD/3KjT76y9iE8v542hhVq3quyPhETbpcHisDDvB+Mt2aKQ8VjPti9NSG5D5FfljopH3eOBCULzcwg5Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302086; c=relaxed/simple;
-	bh=Zn+80+r0P9W9fUrark2bSeBjiUMI8Im3uXEJAtGZyX4=;
+	s=arc-20240116; t=1779300998; c=relaxed/simple;
+	bh=lyzaI1tJWj1GXHBkaemyZ7snBcJhnAQsyeONHTbkdVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jvk93aBmiUxJ7xeFCot+GXTWq0uOflsAqejgcMeAH0YpTprSGzc26t94hENUVhzkKR84WMOXgOZfZqnpEo8oSFtiT3AGAOLcqnNEsDn6PJLjMzP2EBCM17Q4YsOcaIDPHrvoBFhP37mS3KNmBnO+K67R4/H/plmj02nX+JwGgBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ne5xU0zH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020511F0089B;
-	Wed, 20 May 2026 18:34:44 +0000 (UTC)
+	 MIME-Version; b=NMNZpSw64IlkvGxDnkY7uZ+IXXFCwi0MzZqhmppjx7nw2C4lKg28P5E/JHo2n+Wcx1y0rmWBYUNDDeBUQkpiKtj2u/ByMWNvb9rjJlZyv1mzXjIjiygnIiRwyT9y+6w8HkkM17411FdGRW4t01GBXfCHNmVhTbc7o9ydkEsca4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIEyhyDV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E835C1F000E9;
+	Wed, 20 May 2026 18:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302085;
-	bh=KmN7Mp3G6NQr77U+IIw/WDZwg/4yxFdFe2B/0vIjZoo=;
+	s=korg; t=1779300996;
+	bh=BTAEIqpltBVxZD8hxIi//MFSv2QvyR+oqWw7rpZ0+Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ne5xU0zHRr9iTOTiAfdNRzWi4af7li31X2fvR3Q8ohzU8uDQFWgzJPB56+vK21Neo
-	 I8EH5ow2A1GLxEddukYWYagnuuDyQ4mnDStGxo69H/A0KFrUXDVyh+h/2SgrvHBn/8
-	 fEv7nKIa/wUYKmz0CUUaab3SEY5VPAmih00Sr6lg=
+	b=LIEyhyDVBshLxtNbBzSrfaESsBxkrpA7au7euLk9WD+eUyt5XB/Ptsu0MBtSGtfOU
+	 sGp45CdZx1ha1eB/5pYCI0bSAKtWwB8z1FZjU8kreBpdrpYj7xm95HS+yzss4hPM/E
+	 pGxFwmdT47JihJ3q+7i5PJHySttXD7xlVTBPPZNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <gu_0233@qq.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Song Liu <song@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/508] pmdomain: ti: omap_prm: Fix a reference leak on device node
+Subject: [PATCH 6.12 346/666] bpf, riscv: Remove redundant bpf_flush_icache() after pack allocator finalize
 Date: Wed, 20 May 2026 18:19:17 +0200
-Message-ID: <20260520162101.533514883@linuxfoundation.org>
+Message-ID: <20260520162118.730164877@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +67,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252978-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,huawei.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252561-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qq.com:email]
-X-Rspamd-Queue-Id: C88E2596F52
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: 95D1C59AD12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <gu_0233@qq.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 44c28e1c52764fef6dd1c1ada3a248728812e67f ]
+[ Upstream commit 46ee1342b887c9387a933397d846ff6c9584322c ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In omap_prm_domain_attach_dev, it does not release the reference.
+bpf_flush_icache() calls flush_icache_range() to clean the data cache
+and invalidate the instruction cache for the JITed code region. However,
+since commit 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the
+BPF JIT"), this flush is redundant.
 
-Fixes: 58cbff023bfa ("soc: ti: omap-prm: Add basic power domain support")
-Signed-off-by: Felix Gu <gu_0233@qq.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+bpf_jit_binary_pack_finalize() copies the JITed instructions to the ROX
+region via bpf_arch_text_copy() -> patch_text_nosync(), and
+patch_text_nosync() already calls flush_icache_range() on the written
+range. The subsequent bpf_flush_icache() repeats the same cache
+maintenance on an overlapping range.
+
+Remove the redundant bpf_flush_icache() call and its now-unused
+definition.
+
+Fixes: 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the BPF JIT")
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Tested-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260413191111.3426023-3-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/ti/omap_prm.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/net/bpf_jit.h      | 6 ------
+ arch/riscv/net/bpf_jit_core.c | 7 -------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/pmdomain/ti/omap_prm.c b/drivers/pmdomain/ti/omap_prm.c
-index b8ceb3c2b81c2..f4e52e92dcbf6 100644
---- a/drivers/pmdomain/ti/omap_prm.c
-+++ b/drivers/pmdomain/ti/omap_prm.c
-@@ -651,6 +651,7 @@ static int omap_prm_domain_attach_dev(struct generic_pm_domain *domain,
- 	if (pd_args.args_count != 0)
- 		dev_warn(dev, "%s: unusupported #power-domain-cells: %i\n",
- 			 prmd->pd.name, pd_args.args_count);
-+	of_node_put(pd_args.np);
+diff --git a/arch/riscv/net/bpf_jit.h b/arch/riscv/net/bpf_jit.h
+index 1d1c78d4cff1e..f87bad9a0578c 100644
+--- a/arch/riscv/net/bpf_jit.h
++++ b/arch/riscv/net/bpf_jit.h
+@@ -11,7 +11,6 @@
  
- 	genpd_data = dev_gpd_data(dev);
- 	genpd_data->data = NULL;
+ #include <linux/bpf.h>
+ #include <linux/filter.h>
+-#include <asm/cacheflush.h>
+ 
+ static inline bool rvc_enabled(void)
+ {
+@@ -109,11 +108,6 @@ static inline void bpf_fill_ill_insns(void *area, unsigned int size)
+ 	memset(area, 0, size);
+ }
+ 
+-static inline void bpf_flush_icache(void *start, void *end)
+-{
+-	flush_icache_range((unsigned long)start, (unsigned long)end);
+-}
+-
+ /* Emit a 4-byte riscv instruction. */
+ static inline void emit(const u32 insn, struct rv_jit_context *ctx)
+ {
+diff --git a/arch/riscv/net/bpf_jit_core.c b/arch/riscv/net/bpf_jit_core.c
+index 6de753c667f42..fe362030ed2a9 100644
+--- a/arch/riscv/net/bpf_jit_core.c
++++ b/arch/riscv/net/bpf_jit_core.c
+@@ -184,13 +184,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 			prog = orig_prog;
+ 			goto out_offset;
+ 		}
+-		/*
+-		 * The instructions have now been copied to the ROX region from
+-		 * where they will execute.
+-		 * Write any modified data cache blocks out to memory and
+-		 * invalidate the corresponding blocks in the instruction cache.
+-		 */
+-		bpf_flush_icache(jit_data->ro_header, ctx->ro_insns + ctx->ninsns);
+ 		for (i = 0; i < prog->len; i++)
+ 			ctx->offset[i] = ninsns_rvoff(ctx->offset[i]);
+ 		bpf_prog_fill_jited_linfo(prog, ctx->offset);
 -- 
 2.53.0
 
