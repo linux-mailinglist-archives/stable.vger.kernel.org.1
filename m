@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NoeBPnuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:21 +0200
+	id wKbdKUMXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEF5593B44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2420D5996EF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 164063136A2C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E718935969A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB61373BEB;
-	Wed, 20 May 2026 16:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9671136A357;
+	Wed, 20 May 2026 17:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAthVhFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbTwJpId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C13136A357;
-	Wed, 20 May 2026 16:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6006C2DC76C;
+	Wed, 20 May 2026 17:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295278; cv=none; b=rAoZeGlNXyKYN+Gn0Jydsshw8Lhype0QEimAwxZdruiws8a8BhqZtL8SFpNcowaqK+eA7Uacqj1RBMzmGQERK/iA9SSJyayM4DnowM8mGgH9R/Ik0MsaindP3OBXnOR4/6rIttCTZqZF8O8XO3C025b1MTFxq74HCP9B/U7D0ps=
+	t=1779297694; cv=none; b=pjwDjXvzwbh9HEKQbt7pn6N7v7XbK/cCIzhYa0h25Rkw7qvM4NCV/EfomQs3/sfsf/C7j9cmYOAdKJECTzgsPFZeT4uFYqK215Wjg1/wj2fpkJXhhBtl1djFpCMDk5ZWUe/I6niX4sO4iQ5RIJcacPd/I05qoiQfEdwVE0+3A8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295278; c=relaxed/simple;
-	bh=ZGzbpRCKwBhc3l722EDHTfIvV1b7CaJZi2Lwk0ogACk=;
+	s=arc-20240116; t=1779297694; c=relaxed/simple;
+	bh=gQF7gphaSbn6tgpWH7HkSTkGDYuN+x3AYbN1R0s+DOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmESTmNBS27HtlXtnlBp/4TSGgq5nuQDEknk8qVWeVZR9vI9Agmrab7j8oPFH8YZozowL9gB0Oc8G1RVOylNVlKbBfOKBq83lqz/BQGSAyYw5SaKOumzKq5+XHSYJI5R8sDYQexxQDnbCG+ceYY0yQ3hJ+3SEEIQkUqeE4EMCTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAthVhFY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C136E1F000E9;
-	Wed, 20 May 2026 16:41:16 +0000 (UTC)
+	 MIME-Version; b=BNONZ7WU67YoxmmjmxzPWEroRcS5miQICleD3BM5jNNLjspQAXL7DZFsYtZWLEMg12eexSExHQI+edBNlV1Xj2jwFLir6OmhSJkaIrcDdE1kt9cZNHnhGZoaTDHdQe2OiPsoIeIBFukEAxFJZOdmgf+QKYuufagIgK8ZRtvtgzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbTwJpId; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C6B1F000E9;
+	Wed, 20 May 2026 17:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295277;
-	bh=pJ6F+ZyNqTtQkAiSmcs3kUZiC+EDTBIXaorgS7K96Mg=;
+	s=korg; t=1779297693;
+	bh=2Wmlsi/NgVWwDenejyi00vYwMLCxKMXg1yphFHdH/YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lAthVhFYte0tHhHCANGD6pQG4JwjJnI24KQ5hXh4vh2j5Wi8iJNQgxpv0+Ozo5XD8
-	 AXiq1epTDmKrXTw8dCXKZTpAlfWVC5ecIA+YjlUl1ZKD7lzRXwAgZj+9qqanfz+1rE
-	 2J+mDy8S9i8L+68GdGwbCOGLoE8ztP6kxqDsPZao=
+	b=nbTwJpIdeWvTX5HEO5vnZEo+dS2fc2+I0f+VlCyfGdENa7b/Aj4h0axpXxOgva/lV
+	 JMrHJ/esRRZwEy++u6aruRwU/Lxt6EgF2XB+Jv3FZbk9IrEMQAmR71LXE/y4Pkyhw/
+	 NkOF14G8tCcQanBS1oUU8tc8Z/Jo61H6O+YfxU6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0359/1146] drm/msm/a8xx: Fix the ticks used in submit traces
+Subject: [PATCH 6.18 126/957] wifi: mac80211: handle VHT EXT NSS in ieee80211_determine_our_sta_mode()
 Date: Wed, 20 May 2026 18:10:09 +0200
-Message-ID: <20260520162156.325561511@linuxfoundation.org>
+Message-ID: <20260520162137.288826433@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,262 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250386-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-251327-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 0CEF5593B44
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 2420D5996EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit cfc8b48649e159ff394fb4b7b08e5006c5c1c234 ]
+[ Upstream commit b5b8e295973083abf823fb66647a7c702a8db8a7 ]
 
-GMU_ALWAYS_ON_COUNTER_* registers got moved in A8x, but currently, A6x
-register offsets are used in the submit traces instead of A8x offsets.
-To fix this, refactor a bit and use adreno_gpu->funcs->get_timestamp()
-everywhere.
+A station which has a NSS ratio on the number of streams it is capable of
+in 160MHz VHT operation is supposed to use the 'Extended NSS BW Support'
+as defined by section '9.4.2.156.2 VHT Capabilities Information field'.
 
-While we are at it, update a8xx_gmu_get_timestamp() to use the GMU AO
-counter.
+This was missing in ieee80211_determine_our_sta_mode() and so we would
+wrongfully downgrade our bandwidth when connecting to an AP that supported
+160MHz with messages such as:
 
-Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714655/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-2-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+	[   37.638346] wlan1: AP XX:XX:XX:XX:XX:XX changed bandwidth in assoc response, new used config is 5280.000 MHz, width 3 (5290.000/0 MHz)
+
+Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://patch.msgid.link/20260327100256.3101348-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a4xx_gpu.c         |  6 ++---
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |  6 ++---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c         | 23 ++++++-------------
- drivers/gpu/drm/msm/adreno/a6xx_gpu.h         |  2 +-
- drivers/gpu/drm/msm/adreno/a8xx_gpu.c         | 20 +++++++---------
- drivers/gpu/drm/msm/adreno/adreno_gpu.c       |  6 ++---
- drivers/gpu/drm/msm/adreno/adreno_gpu.h       |  2 +-
- .../gpu/drm/msm/registers/adreno/a6xx_gmu.xml |  6 +++--
- 8 files changed, 27 insertions(+), 44 deletions(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a4xx_gpu.c b/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-index 8464d89e37f31..e6ab731f8e9a3 100644
---- a/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a4xx_gpu.c
-@@ -604,11 +604,9 @@ static int a4xx_pm_suspend(struct msm_gpu *gpu) {
- 	return 0;
- }
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index deef15c074c83..bcc4090ddc1a5 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5897,7 +5897,8 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
  
--static int a4xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
-+static u64 a4xx_get_timestamp(struct msm_gpu *gpu)
- {
--	*value = gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO);
--
--	return 0;
-+	return gpu_read64(gpu, REG_A4XX_RBBM_PERFCTR_CP_0_LO);
- }
- 
- static u64 a4xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-index ef9fd6171af71..e44302251de56 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
-@@ -1435,11 +1435,9 @@ static int a5xx_pm_suspend(struct msm_gpu *gpu)
- 	return 0;
- }
- 
--static int a5xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
-+static u64 a5xx_get_timestamp(struct msm_gpu *gpu)
- {
--	*value = gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO);
--
--	return 0;
-+	return gpu_read64(gpu, REG_A5XX_RBBM_ALWAYSON_COUNTER_LO);
- }
- 
- struct a5xx_crashdumper {
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index f17bb5e78e0b9..4fe2b86e7a839 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -16,8 +16,10 @@
- 
- #define GPU_PAS_ID 13
- 
--static u64 read_gmu_ao_counter(struct a6xx_gpu *a6xx_gpu)
-+static u64 a6xx_gmu_get_timestamp(struct msm_gpu *gpu)
- {
-+	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
-+	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
- 	u64 count_hi, count_lo, temp;
- 
- 	do {
-@@ -404,7 +406,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
- 	OUT_RING(ring, submit->seqno);
- 
--	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
-+	trace_msm_gpu_submit_flush(submit, adreno_gpu->funcs->get_timestamp(gpu));
- 
- 	a6xx_flush(gpu, ring);
- }
-@@ -614,7 +616,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	}
- 
- 
--	trace_msm_gpu_submit_flush(submit, read_gmu_ao_counter(a6xx_gpu));
-+	trace_msm_gpu_submit_flush(submit, adreno_gpu->funcs->get_timestamp(gpu));
- 
- 	a6xx_flush(gpu, ring);
- 
-@@ -2414,20 +2416,9 @@ static int a6xx_pm_suspend(struct msm_gpu *gpu)
- 	return 0;
- }
- 
--static int a6xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
-+static u64 a6xx_get_timestamp(struct msm_gpu *gpu)
- {
--	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
--	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
--
--	*value = read_gmu_ao_counter(a6xx_gpu);
--
--	return 0;
--}
--
--static int a6xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
--{
--	*value = gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER);
--	return 0;
-+	return gpu_read64(gpu, REG_A6XX_CP_ALWAYS_ON_COUNTER);
- }
- 
- static struct msm_ringbuffer *a6xx_active_ring(struct msm_gpu *gpu)
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-index 4eaa047112460..a4434a6a56dd8 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.h
-@@ -320,7 +320,7 @@ int a6xx_zap_shader_init(struct msm_gpu *gpu);
- void a8xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu, bool gx_off);
- int a8xx_fault_handler(void *arg, unsigned long iova, int flags, void *data);
- void a8xx_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring);
--int a8xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value);
-+u64 a8xx_gmu_get_timestamp(struct msm_gpu *gpu);
- u64 a8xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate);
- int a8xx_gpu_feature_probe(struct msm_gpu *gpu);
- void a8xx_gpu_get_slice_info(struct msm_gpu *gpu);
-diff --git a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-index b1887e0cf6983..840af9c4d718c 100644
---- a/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a8xx_gpu.c
-@@ -1174,23 +1174,19 @@ void a8xx_bus_clear_pending_transactions(struct adreno_gpu *adreno_gpu, bool gx_
- 	gpu_write(gpu, REG_A6XX_GBIF_HALT, 0x0);
- }
- 
--int a8xx_gmu_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
-+u64 a8xx_gmu_get_timestamp(struct msm_gpu *gpu)
- {
- 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
- 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
-+	u64 count_hi, count_lo, temp;
- 
--	mutex_lock(&a6xx_gpu->gmu.lock);
--
--	/* Force the GPU power on so we can read this register */
--	a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
--
--	*value = gpu_read64(gpu, REG_A8XX_CP_ALWAYS_ON_COUNTER);
--
--	a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_PERFCOUNTER_SET);
--
--	mutex_unlock(&a6xx_gpu->gmu.lock);
-+	do {
-+		count_hi = gmu_read(&a6xx_gpu->gmu, REG_A8XX_GMU_ALWAYS_ON_COUNTER_H);
-+		count_lo = gmu_read(&a6xx_gpu->gmu, REG_A8XX_GMU_ALWAYS_ON_COUNTER_L);
-+		temp = gmu_read(&a6xx_gpu->gmu, REG_A8XX_GMU_ALWAYS_ON_COUNTER_H);
-+	} while (unlikely(count_hi != temp));
- 
--	return 0;
-+	return (count_hi << 32) | count_lo;
- }
- 
- u64 a8xx_gpu_busy(struct msm_gpu *gpu, unsigned long *out_sample_rate)
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index d5fe6f6f0decc..785e99fb5bd5d 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -391,13 +391,11 @@ int adreno_get_param(struct msm_gpu *gpu, struct msm_context *ctx,
- 		return 0;
- 	case MSM_PARAM_TIMESTAMP:
- 		if (adreno_gpu->funcs->get_timestamp) {
--			int ret;
--
- 			pm_runtime_get_sync(&gpu->pdev->dev);
--			ret = adreno_gpu->funcs->get_timestamp(gpu, value);
-+			*value = adreno_gpu->funcs->get_timestamp(gpu);
- 			pm_runtime_put_autosuspend(&gpu->pdev->dev);
- 
--			return ret;
-+			return 0;
- 		}
- 		return -EINVAL;
- 	case MSM_PARAM_PRIORITIES:
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-index 1d0145f8b3ecb..c08725ed54c4f 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-@@ -79,7 +79,7 @@ struct adreno_gpu;
- struct adreno_gpu_funcs {
- 	struct msm_gpu_funcs base;
- 	struct msm_gpu *(*init)(struct drm_device *dev);
--	int (*get_timestamp)(struct msm_gpu *gpu, uint64_t *value);
-+	u64 (*get_timestamp)(struct msm_gpu *gpu);
- 	void (*bus_halt)(struct adreno_gpu *adreno_gpu, bool gx_off);
- 	int (*mmu_fault_handler)(void *arg, unsigned long iova, int flags, void *data);
- };
-diff --git a/drivers/gpu/drm/msm/registers/adreno/a6xx_gmu.xml b/drivers/gpu/drm/msm/registers/adreno/a6xx_gmu.xml
-index c4e00b1263cda..33404eb18fd02 100644
---- a/drivers/gpu/drm/msm/registers/adreno/a6xx_gmu.xml
-+++ b/drivers/gpu/drm/msm/registers/adreno/a6xx_gmu.xml
-@@ -141,8 +141,10 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
- 	<reg32 offset="0x1f9f0" name="GMU_BOOT_KMD_LM_HANDSHAKE"/>
- 	<reg32 offset="0x1f957" name="GMU_LLM_GLM_SLEEP_CTRL"/>
- 	<reg32 offset="0x1f958" name="GMU_LLM_GLM_SLEEP_STATUS"/>
--	<reg32 offset="0x1f888" name="GMU_ALWAYS_ON_COUNTER_L"/>
--	<reg32 offset="0x1f889" name="GMU_ALWAYS_ON_COUNTER_H"/>
-+	<reg32 offset="0x1f888" name="GMU_ALWAYS_ON_COUNTER_L" variants="A6XX-A7XX"/>
-+	<reg32 offset="0x1f840" name="GMU_ALWAYS_ON_COUNTER_L" variants="A8XX-"/>
-+	<reg32 offset="0x1f889" name="GMU_ALWAYS_ON_COUNTER_H" variants="A6XX-A7XX"/>
-+	<reg32 offset="0x1f841" name="GMU_ALWAYS_ON_COUNTER_H" variants="A8XX-"/>
- 	<reg32 offset="0x1f8c3" name="GMU_GMU_PWR_COL_KEEPALIVE" variants="A6XX-A7XX"/>
- 	<reg32 offset="0x1f7e4" name="GMU_GMU_PWR_COL_KEEPALIVE" variants="A8XX-"/>
- 	<reg32 offset="0x1f8c4" name="GMU_PWR_COL_PREEMPT_KEEPALIVE" variants="A6XX-A7XX"/>
+ 	if (is_5ghz &&
+ 	    !(vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+-			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ))) {
++			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ |
++			     IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))) {
+ 		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_80;
+ 		mlme_link_id_dbg(sdata, link_id,
+ 				 "no VHT 160 MHz capability on 5 GHz, limiting to 80 MHz");
 -- 
 2.53.0
 
