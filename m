@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCF0BlQEDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:28 +0200
+	id YEI9OT4EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9F45977E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8AC5977BA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBFE239EAC54
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E322D32C8C39
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30105340A57;
-	Wed, 20 May 2026 18:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CC8400DFE;
+	Wed, 20 May 2026 18:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxctQuhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZUXk1jQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB722332EBD;
-	Wed, 20 May 2026 18:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17223FB7FC;
+	Wed, 20 May 2026 18:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301614; cv=none; b=TY2MFv3Gis+GTiJcBZQI4wiZFTZYMgDhIhN+gxMLezdDkkQAeq5PCM3+xOneNvkShgf87t4DHWB6Itdd/tF88X+mVjVjTqvz35CjVcqbm9fei9wNepWB/1eXQ7x9KJVQ8m3ZuUQMwR5GqpggofOAlb268XnCyAxLRHK95Fy/bxs=
+	t=1779302815; cv=none; b=ZBRafdOW1w3GU7KYPsNKlt7ZWQ46lYzFt4kywahnlf6bpW2Gf56lCxx55BXExBrDTQI4rSROMzR3RTmzudw/geWQ7DI5FD60hrjRs+Jgqncb0TEhd+x3dI2QDHgYtydWV5j/yjSujP03SyeY9WTZ0nyuYogFyh5FtWXlhWg4ru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301614; c=relaxed/simple;
-	bh=nqBk7KMo66Aj6NIB4IBv6bzfFARsLvu3pdmifhU9ths=;
+	s=arc-20240116; t=1779302815; c=relaxed/simple;
+	bh=KUN9nyJlHQr9oB/kfki+km1v98tL0VDgRWTnsu9DFEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bjl5fG58IN1gGlbzvGE+uVfoCMAZ2KYQUGx6TgjyJL6p8G4t7NZeQzrhF9ULUwj1sELPXcrqHoAanKCZdLzw+16TbS+xdpqrO3cntXVb0O68v8YugrZPgggXj/W/UKAew73/k38Z5i4np5bDQRH4+9q4zixMugYkByGQm5r/YLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxctQuhe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204BB1F00896;
-	Wed, 20 May 2026 18:26:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VRZtEKs1/ad8/Aq8cUFq2qtTbLwtac2UWBRWod5l3S6qtPN5kTuhfG6DPLZDorUG4ws52xMy55BTUNtG6koK+j1EJL9IeDUmOtOyQ7RyMfgKjxgnEGjJln7o37y5gUrUwImPfLFksrMBsvb0Bbt2nZIiaFuTJjVDYMhSXu82bjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZUXk1jQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227D81F000E9;
+	Wed, 20 May 2026 18:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301612;
-	bh=f8o7QBO1fhB8oBAplIbUyN2E68apeRsyqjo2WR3Bqlw=;
+	s=korg; t=1779302814;
+	bh=XRNGB84C1SHZLyrlTIhVd8Wnl2OXIPSJin9BaloMmXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZxctQuheoyFB8zxrvT0C47ZP/jUCwrB1z5dr3dTU5lV6cRqLYOGc2ZDQTMtYN59M0
-	 yj7cpEU4jeXu2bydQovRFXZFYcARV5qi2PJon2on+jLu1tXGCFNt7hop+ZQd1Ufakk
-	 CgNWjmF8Jt76VCYZZK91y7Kwr6EESCVyeO7VwCSk=
+	b=YZUXk1jQh4+B6FTx2TOt2tYv0GIMVk9awAy4/v8Ri6rKH1Q/4idPcS6W7x4BC7UHJ
+	 qIBH6M9SK+lr2hEwLSllmMhTopTUUosPTCPTerjrUfssD1pn94T25ETPaUFmdb0NhW
+	 QL10q6NWPnOz48D1f9vDYxPTgXSp2WewQGg8Zh6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inseo An <y0un9sa@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Li hongliang <1468888505@139.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 622/666] netfilter: nf_tables: unconditionally bump set->nelems before insertion
+Subject: [PATCH 6.6 410/508] sctp: discard stale INIT after handshake completion
 Date: Wed, 20 May 2026 18:23:53 +0200
-Message-ID: <20260520162124.753709190@linuxfoundation.org>
+Message-ID: <20260520162107.492996742@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-253261-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252797-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,139.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,netfilter.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,139.com:email]
-X-Rspamd-Queue-Id: 6A9F45977E6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8E8AC5977BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
+[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
 
-In case that the set is full, a new element gets published then removed
-without waiting for the RCU grace period, while RCU reader can be
-walking over it already.
+After an association reaches ESTABLISHED, the peer’s init_tag is already
+known from the handshake. Any subsequent INIT with the same init_tag is
+not a valid restart, but a delayed or duplicate INIT.
 
-To address this issue, add the element transaction even if set is full,
-but toggle the set_full flag to report -ENFILE so the abort path safely
-unwinds the set to its previous state.
+Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
+processing them as new association attempts.
 
-As for element updates, decrement set->nelems to restore it.
-
-A simpler fix is to call synchronize_rcu() in the error path.
-However, with a large batch adding elements to already maxed-out set,
-this could cause noticeable slowdown of such batches.
-
-Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
-Reported-by: Inseo An <y0un9sa@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ net/sctp/sm_statefuns.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e373afdf0f072..838c9f49e4e01 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6981,6 +6981,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	enum nft_registers dreg;
- 	struct nft_trans *trans;
- 	u8 update_flags;
-+	bool set_full = false;
- 	u64 expiration;
- 	u64 timeout;
- 	int err, i;
-@@ -7267,10 +7268,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 	if (err < 0)
- 		goto err_elem_free;
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index e0e626dc79535..5e9449b0c7907 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -1555,6 +1555,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
+ 	/* Tag the variable length parameters.  */
+ 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
  
-+	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
-+		unsigned int max = nft_set_maxsize(set), nelems;
-+
-+		nelems = atomic_inc_return(&set->nelems);
-+		if (nelems > max)
-+			set_full = true;
++	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
++		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
++		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
++			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
 +	}
 +
- 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
- 	if (trans == NULL) {
- 		err = -ENOMEM;
--		goto err_elem_free;
-+		goto err_set_size;
- 	}
- 
- 	ext->genmask = nft_genmask_cur(ctx->net);
-@@ -7312,7 +7321,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 						nft_trans_elem_priv(trans) = elem_priv;
- 						nft_trans_elem_update_flags(trans) = update_flags;
- 						nft_trans_commit_list_add_tail(ctx->net, trans);
--						goto err_elem_free;
-+						goto err_set_size;
- 					}
- 				}
- 			}
-@@ -7330,23 +7339,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_element_clash;
- 	}
- 
--	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
--		unsigned int max = nft_set_maxsize(set);
--
--		if (!atomic_add_unless(&set->nelems, 1, max)) {
--			err = -ENFILE;
--			goto err_set_full;
--		}
--	}
--
- 	nft_trans_elem_priv(trans) = elem.priv;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
--	return 0;
- 
--err_set_full:
--	nft_setelem_remove(ctx->net, set, elem.priv);
-+	return set_full ? -ENFILE : 0;
-+
- err_element_clash:
- 	kfree(trans);
-+err_set_size:
-+	if (!(flags & NFT_SET_ELEM_CATCHALL))
-+		atomic_dec(&set->nelems);
- err_elem_free:
- 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
- err_parse_data:
+ 	/* Verify the INIT chunk before processing it. */
+ 	err_chunk = NULL;
+ 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
 -- 
 2.53.0
 
