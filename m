@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKIXLzEJDmrY5gUAu9opvQ
-	(envelope-from <stable+bounces-252899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:19:13 +0200
+	id KByYFHPqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDDE5981D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:19:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE82592F64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0468D32DF143
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4834630755BF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB57342CB3;
-	Wed, 20 May 2026 18:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C723D75CB;
+	Wed, 20 May 2026 17:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5Redpdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+X9fhS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF322343880;
-	Wed, 20 May 2026 18:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CE628DC4;
+	Wed, 20 May 2026 17:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301880; cv=none; b=Ow3KS0uXmP7FPBIpOzRiDJSs03mR1VtyNy7ZxGnFGASTpkqNrLxr6RCrZxy6ZahEBl7zMAHD+w3GfXP+5RrEUCNEE9QUvqSNStpBmXi1pgP2IwBBTS4OU5qtHcJpj0QdouYz1hwaZYxkP/KKAIMZ9yajzPNOQ5x4Fr4wuaUF9cA=
+	t=1779296629; cv=none; b=NHnc6C2ev6XqQZfRpREw/xJo2x/8CSRpMCJ0pmV+fKWnjQ7WsADhYOGhl8lbQCkiGOSKrQ2wN8PjWsXLfYnaiNk9/ia4axfJKIoC+tNOhZ7UwmqB76dtp1WBt4/AS2+xOdnhiawx2Yyc0C42NMbkQkjryxtlev97nkbV++FrC1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301880; c=relaxed/simple;
-	bh=XKTws6MsbJQyToNPtl1D64MpJ/iaV3WdCShtHPaoEFg=;
+	s=arc-20240116; t=1779296629; c=relaxed/simple;
+	bh=4PKDjyapdREEWsZU2muQtZsyd1vr3GlIaCNVBwAuUog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeRH0WQ2rn+anDiisvdGodOlmihSIc6lSlAWCJWnO3kmoDKm/EsXY7dQVwrhVrkeL1hh72se5dDc9VAyx/vsAHfFeIp9YgsquyLCPz//457oaRz8M665STtkzQNVtzLAMsVESSOVa+NWtlEFWWVv0MpSy4ZOWMBdTuTd6Kq6CDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5Redpdu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB4C1F000E9;
-	Wed, 20 May 2026 18:31:19 +0000 (UTC)
+	 MIME-Version; b=oT5HfOXzWdJKz+DcAEANsbZBlGc2gQVFZoVfPeULDb9mWl4UbGhlp5nbOO7FjmOzEf3O03RHWA3l1/nncX59CI135pBV1cZJf+RTi8fsmoOXsB6wrf7wKVsUoCiXnsSwPnHmBfGRQzOJbrCbzu607v2dTp3LnHq58DNcC64Z4M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+X9fhS7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EF91F000E9;
+	Wed, 20 May 2026 17:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301879;
-	bh=Fk+K3+Jbm4yCd1aY/vNv0cf51/dMeg5BzG5MmAwdLn0=;
+	s=korg; t=1779296627;
+	bh=qrmSFCQ/fRyPgTCw8un8yfV1hxAjkMzWcPB8yOewbpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b5RedpduNFnbeojlE6cpFITu7343Q5E43h3RkthAIlYkoGSXJTgy1DzQzSrAXRhty
-	 OE3P+OknsXYYIqyDUTxV/2OvCs/xX/0aA4qVnf3GwfZQUMq/YSGNMjuH0ybpRNJpwc
-	 BVUBcBviAFiFBrStALxx0hfiJSOTfS9vnRTXJzO4=
+	b=E+X9fhS7FQNwV6ZyrFbLVJuSYDV4xy+Mluh6AB2GO+tESZI2xuO6JHc5uwAsM5XA6
+	 EDdOa0bwi8OWOyqmypOWbbw/l0KjaQFkAXHy50qkvfv8P/wARmJZHWe70NLjHRF8cj
+	 eAfR+K/mnlNSTKh7VFVQSzd3e5Y0BTiKHuLmiR1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/508] net: bcmgenet: Remove custom ndo_poll_controller()
-Date: Wed, 20 May 2026 18:17:58 +0200
-Message-ID: <20260520162059.792345231@linuxfoundation.org>
+Subject: [PATCH 7.0 0829/1146] ksmbd: scope conn->binding slowpath to bound sessions only
+Date: Wed, 20 May 2026 18:17:59 +0200
+Message-ID: <20260520162206.991742434@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252899-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-250911-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BDDDE5981D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BDE82592F64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 19537e125cc7cf2da43a606f5bcebbe0c9aea4cc ]
+[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
 
-The driver gained a .ndo_poll_controller() at a time where the TX
-cleaning process was always done from NAPI which makes this unnecessary.
-See commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
-for more background.
+When the binding SESSION_SETUP sets conn->binding = true, the flag stays
+set after the call so that the global session lookup in
+ksmbd_session_lookup_all() can find the session, which was not added to
+conn->sessions. Because the flag is connection-wide, the global lookup
+path will also resolve any other session by id if asked.
 
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5393b2b5bee2 ("net: bcmgenet: fix racing timeout handler")
+Tighten the global lookup so that the returned session must have this
+connection registered in its channel xarray (sess->ksmbd_chann_list).
+The channel entry is installed by the existing binding_session path in
+ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
+successfully, so this condition is a strict equivalent of "this
+connection has been accepted as a channel of this session". Connections
+that have not bound to a given session cannot reach it via the global
+table.
+
+The existing conn->binding gate for entering the slowpath is preserved
+so that non-binding connections keep the fast-path-only behavior, and
+the session->state check is unchanged.
+
+Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 20 -------------------
- 1 file changed, 20 deletions(-)
+ fs/smb/server/mgmt/user_session.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index cdbe47c7ba280..6ba26feed4588 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3255,23 +3255,6 @@ static irqreturn_t bcmgenet_wol_isr(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index 0dd9e6c976ac0..de58aed76cb42 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -548,8 +548,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
+ 	struct ksmbd_session *sess;
  
--#ifdef CONFIG_NET_POLL_CONTROLLER
--static void bcmgenet_poll_controller(struct net_device *dev)
--{
--	struct bcmgenet_priv *priv = netdev_priv(dev);
--
--	/* Invoke the main RX/TX interrupt handler */
--	disable_irq(priv->irq0);
--	bcmgenet_isr0(priv->irq0, priv);
--	enable_irq(priv->irq0);
--
--	/* And the interrupt handler for RX/TX priority queues */
--	disable_irq(priv->irq1);
--	bcmgenet_isr1(priv->irq1, priv);
--	enable_irq(priv->irq1);
--}
--#endif
--
- static void bcmgenet_umac_reset(struct bcmgenet_priv *priv)
- {
- 	u32 reg;
-@@ -3741,9 +3724,6 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_set_mac_address	= bcmgenet_set_mac_addr,
- 	.ndo_eth_ioctl		= phy_do_ioctl_running,
- 	.ndo_set_features	= bcmgenet_set_features,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller	= bcmgenet_poll_controller,
--#endif
- 	.ndo_get_stats		= bcmgenet_get_stats,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
- };
+ 	sess = ksmbd_session_lookup(conn, id);
+-	if (!sess && conn->binding)
++	if (!sess && conn->binding) {
+ 		sess = ksmbd_session_lookup_slowpath(id);
++		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
++			ksmbd_user_session_put(sess);
++			sess = NULL;
++		}
++	}
+ 	if (sess && sess->state != SMB2_SESSION_VALID) {
+ 		ksmbd_user_session_put(sess);
+ 		sess = NULL;
 -- 
 2.53.0
 
