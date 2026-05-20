@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO9CC+APDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:44 +0200
+	id aI4+Ocf8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF861598BE2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA64B59622D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2A10375378D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FA453062C58
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1732636C5BF;
-	Wed, 20 May 2026 16:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDED36A376;
+	Wed, 20 May 2026 17:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMD2tZSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvPMkwIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD66E36A357;
-	Wed, 20 May 2026 16:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379C637754D;
+	Wed, 20 May 2026 17:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295259; cv=none; b=aV/LmPG4jzMkpNdY9Gh7bzNHD6P5ddUyphej0F3N6tZVhWdQcz1qM52vXRP0LjcxubLRS6VqeKaiDtqxzq5qamcHbioziTdrJSvenwruq/wuFVJ0e0fv1FvmurQ3JbifUCKioCffMDnowqkatoiVX6toSv9r8AMbyAsn2gxOtVs=
+	t=1779297673; cv=none; b=KUX/wngPfca633gBvOCGIxpSEG/bqqnp9CWGNpvP12V+yupESf8Mb9H43JeFgR51EhxCzJ7fN1mxETOIxWgcGrkXu5YPZZaI8jEPJo5AF9kHK7gm7AzeXxptOLS50HKvZEVEIfxksVC0l2zZwkJGAfDipHMgqOw6+WYZLFP3bnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295259; c=relaxed/simple;
-	bh=6jSuLTqGHPqolENk5vrPKjP3h2+lXAmmoDplTz3R6KY=;
+	s=arc-20240116; t=1779297673; c=relaxed/simple;
+	bh=dCx4iCdgy8VMgP0F7+3yPNjzI83kf/QmVZYDeGp4vtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zn8wcHEXbGm7AHg8KvUbB/krt0uLW7hFWIDQj/JkmD+Dq/Sex3UCbCpmTmClunN7IvbaooS7N43/p+KePg1523A0ItETskyFh/OBqmO/cYqt9joUFkiI9nyqT7Jt2v7lbAalEZuZkLPpcCmmpdyk7KfDkGsV9wx3rEuvNlA874E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMD2tZSE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9C01F000E9;
-	Wed, 20 May 2026 16:40:58 +0000 (UTC)
+	 MIME-Version; b=PE3TXPfI7ccZKz5oLZQ5HqC3YOrKlgkT8tF0EBjr7EdpckPoDNP969qDJurYgsdVgvEWuGJ9X1ODGYEfm9vO891iPxFAAyOEVhi2lqelInnPJJ0y95YH/0GDmRPfVgLKPJCUyFyiD/DYvE3tOGxlnT7/UjWpsuPzSTzD+QLknUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvPMkwIR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B651F000E9;
+	Wed, 20 May 2026 17:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295258;
-	bh=/ZQj9dt09rYI+KG8x8OGPUgknpSaELrIRNWQa3O1+Yw=;
+	s=korg; t=1779297672;
+	bh=12BalTkcldi3pefJUN2YDQwNktKxI/LSeJvK9aEjuvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KMD2tZSEnarKVqixku7ZZDfXlFeCx0jRx554taT00Faj7DrGfziFF6bR+31liMZvN
-	 4KtTtV7brWY/NASfbEll+25BitaXkfGt8QO2NLqW+nGm2zhfqnWPziji7nO5FrLQOX
-	 o8VuT4xfHPlxtfysD9ZrvAa4rfhmdJgtCXLCRGek=
+	b=TvPMkwIRrnphPIcD1Ks3pRfQAegzLf9FN8iwz31OMjRLN3kkQYvgJnYdG+X+Em0vM
+	 oA5rP6UIi04JNuNN9QPsg5teDu8FscjWTsBud8a+b0gSn3ro5F//do+6505CUE7LLx
+	 UGooCe60sLA6s0iJiunBvJymqk3c1X9cz8UYZG8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0352/1146] drm/msm/a6xx: Add missing aperture_lock init
+Subject: [PATCH 6.18 119/957] bpf: Fix abuse of kprobe_write_ctx via freplace
 Date: Wed, 20 May 2026 18:10:02 +0200
-Message-ID: <20260520162156.166085793@linuxfoundation.org>
+Message-ID: <20260520162137.140608167@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,68 +70,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250379-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251319-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: AF861598BE2
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EA64B59622D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit d4ef6d77bb1ef92bdbfb70c7a5d08072848357d8 ]
+[ Upstream commit 611fe4b79af72d00d80f2223354284447daafae9 ]
 
-Looks like this was somehow missed when introducing gen8 support.
+uprobe programs are allowed to modify struct pt_regs.
 
-Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/713545/
-Message-ID: <20260323161603.1165108-1-robin.clark@oss.qualcomm.com>
+Since the actual program type of uprobe is KPROBE, it can be abused to
+modify struct pt_regs via kprobe+freplace when the kprobe attaches to
+kernel functions.
+
+For example,
+
+SEC("?kprobe")
+int kprobe(struct pt_regs *regs)
+{
+	return 0;
+}
+
+SEC("?freplace")
+int freplace_kprobe(struct pt_regs *regs)
+{
+	regs->di = 0;
+	return 0;
+}
+
+freplace_kprobe prog will attach to kprobe prog.
+kprobe prog will attach to a kernel function.
+
+Without this patch, when the kernel function runs, its first arg will
+always be set as 0 via the freplace_kprobe prog.
+
+To fix the abuse of kprobe_write_ctx=true via kprobe+freplace, disallow
+attaching freplace programs on kprobe programs with different
+kprobe_write_ctx values.
+
+Fixes: 7384893d970e ("bpf: Allow uprobe program to change context registers")
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20260331145353.87606-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/syscall.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index d6dfe6337bc34..f17bb5e78e0b9 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -2656,6 +2656,7 @@ static struct msm_gpu *a6xx_gpu_init(struct drm_device *dev)
- 	gpu = &adreno_gpu->base;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 586ece78f783a..ff268fd2ff8b5 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3708,6 +3708,23 @@ static int bpf_tracing_prog_attach(struct bpf_prog *prog,
+ 		tr = prog->aux->dst_trampoline;
+ 		tgt_prog = prog->aux->dst_prog;
+ 	}
++	/*
++	 * It is to prevent modifying struct pt_regs via kprobe_write_ctx=true
++	 * freplace prog. Without this check, kprobe_write_ctx=true freplace
++	 * prog is allowed to attach to kprobe_write_ctx=false kprobe prog, and
++	 * then modify the registers of the kprobe prog's target kernel
++	 * function.
++	 *
++	 * This also blocks the combination of uprobe+freplace, because it is
++	 * unable to recognize the use of the tgt_prog as an uprobe or a kprobe
++	 * by tgt_prog itself. At attach time, uprobe/kprobe is recognized by
++	 * the target perf event flags in __perf_event_set_bpf_prog().
++	 */
++	if (prog->type == BPF_PROG_TYPE_EXT &&
++	    prog->aux->kprobe_write_ctx != tgt_prog->aux->kprobe_write_ctx) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
  
- 	mutex_init(&a6xx_gpu->gmu.lock);
-+	spin_lock_init(&a6xx_gpu->aperture_lock);
- 
- 	adreno_gpu->registers = NULL;
- 
+ 	err = bpf_link_prime(&link->link.link, &link_primer);
+ 	if (err)
 -- 
 2.53.0
 
