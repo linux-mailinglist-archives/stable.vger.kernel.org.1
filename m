@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aN5PLaYVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:22 +0200
+	id gDzuCbH5DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF8A599420
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE818595942
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93016319CD4C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3121B30F68EF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6763277C88;
-	Wed, 20 May 2026 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF73F44F7;
+	Wed, 20 May 2026 17:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLQzrrHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5YIhK3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9756B3F23D5;
-	Wed, 20 May 2026 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C343F44D9;
+	Wed, 20 May 2026 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297255; cv=none; b=WEgoKSitgFuLa645zEKhTGQwWuLaAmw0xTwGSklUjfeCdGko1xVT7b3tOMpJa2pwONTRN/1s/RDuWnKV/6FyNkxIl7mcs4gHGgxZuQKOIBaWJLnmZMtFphFom//jf51A9fhfxBfLzLr+72wmUWm/Qwv80nLb0rB137+E96clxYI=
+	t=1779299717; cv=none; b=qIReOuVMAQJMegyRzLx7CQm1hiN7nZVGfV3OXf7OdTZ5EVUjGgpugXY8nMpDaYonZjvJqEpcODHEZ0/pk/22iqM0gQs/f7skgogvUUkB1sADkI7ImroxVJMkpboYHWSiAsTyxCioApfGGJPTQmmjotgdkySvuE28MZN2zwhY2LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297255; c=relaxed/simple;
-	bh=wyvc/ssxtaNeeHsg0mrT1OpINQB6xK0gNjFg+faLeiU=;
+	s=arc-20240116; t=1779299717; c=relaxed/simple;
+	bh=b41cx7Lncqe4XBmcfHnB2/YRxvGHQ6KjwK236pU92T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=StRzWbFu9V9urAQ6VT6w4IePfMjUkWs5pNfLMfe5uVy6cwCkmULsUq3f4MfB1gduZt8tVNJyZeW105t67JoUNJaANjMMIWlwV4MwS8W7Er32pEDtcMtGU/J/qj0mkEnm7DCgXTZv+bbKJPOe2pFdC4PALlvtRnANxNL98Nxweto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLQzrrHL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EB1F000E9;
-	Wed, 20 May 2026 17:14:13 +0000 (UTC)
+	 MIME-Version; b=S2Fyu0bL9Nl5vG8Wf4ackEamZH8aJD20ycYkIKpvuwGeubMEfYAVe52fJJVZ+ERBq7Z2TY7DUrzpVq5olHdpVQQHF7rvxNE7ka+c8mgmTY637QhHkZ6qCiR2RwyxMXwGJJKaWvWup9K1bvb7BscCtIcZ4FOoDv/uWfn9/isPNMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5YIhK3Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA901F000E9;
+	Wed, 20 May 2026 17:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297254;
-	bh=meYMvZsQYilu7mkM0bpgjG6W1QwzUXeBgZuCemwwhNY=;
+	s=korg; t=1779299716;
+	bh=JXTye/Eyc5HqnGKcKPYmuof1BUjtxDh7uREfZJY4DO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jLQzrrHLS0knnPwqW97hzUGur85hqk+cdx7NrpAKxtTcnBhJmbwFOsZboE6Uf15jp
-	 S97v8h9qxHEDYe4q1b47TPhA9VsAM3HVjZj0wZzlPfpzNM2nzEV72M27fNXkr37ZKY
-	 qhezwhfHMFPqoJN35pDawfm/lUpFWTbMiouCztOw=
+	b=M5YIhK3Ya1ywTV57kXcad7S6Bui6Owmw2MmpiA/6zgsFnKb2xnRG4ApH7UdPwrv1J
+	 Z8wbZUtSMksva/iG32iSA9O+jkRNZAYvNlgBTPAcAGu36WzCDr+o3YUhPS1iD/OnKg
+	 C/usYyEoxhK7Y3/P8k1P9aLsgvi4mXdzDLE+9P5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 7.0 1109/1146] irqchip/riscv-imsic: Clear interrupt move state during CPU offlining
-Date: Wed, 20 May 2026 18:22:39 +0200
-Message-ID: <20260520162213.343065074@linuxfoundation.org>
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 877/957] sched/fair: Fix wakeup_preempt_fair() for not waking up task
+Date: Wed, 20 May 2026 18:22:40 +0200
+Message-ID: <20260520162153.585074499@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251160-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252089-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1AF8A599420
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: DE818595942
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-commit cefafbd561402b0fe6447449364a30315b9b1570 upstream.
+[ Upstream commit 9f6d929ee2c6f0266edb564bcd2bd47fd6e884a8 ]
 
-Affinity changes of IMSIC interrupts have to be careful to not lose an
-interrupt in the process. Each vector keeps track of an affinity change in
-progress with two pointers in struct imsic_vector.
+Make sure to only call pick_next_entity() on an non-empty cfs_rq.
 
-imsic_vector::move_prev points to the previous CPU target data and
-imsic_vector::move_next to the designated new CPU target data.
+The assumption that p is always enqueued and not delayed, is only true for
+wakeup. If p was moved while delayed, pick_next_entity() will dequeue it and
+the cfs might become empty. Test if there are still queued tasks before trying
+again to determine if p could be the next one to be picked.
 
-imsic_vector::move_prev on the new CPU can only be cleared after the
-previous CPU has cleared imsic_vector::move_next, which ususally happens in
-__imsic_remote_sync().
+There are at least 2 cases:
 
-In case of CPU hot-unplug __imsic_remote_sync() is not invoked because the
-CPU is already marked offline. That means imsic_vector::move_prev becomes
-stale until the CPU is onlined again.
+When cfs becomes idle, it tries to pull tasks but if those pulled tasks are
+delayed, they will be dequeued when attached to cfs. attach_tasks() ->
+attach_task() -> wakeup_preempt(rq, p, 0);
 
-The stale pointer prevents further affinity changes for the affected
-interrupts.
+A misfit task running on cfs A triggers a load balance to be pulled on a better
+cpu, the load balance on cfs B starts an active load balance to pulled the
+running misfit task. If there is a delayed dequeue task on cfs A, it can be
+pulled instead of the previously running misfit task. attach_one_task() ->
+attach_task() -> wakeup_preempt(rq, p, 0);
 
-Solve this by clearing the imsic_vector::move_prev pointers in the CPU
-hotplug offline path.
-
-[ tglx: Replace word salad in change log ]
-
-Fixes: 0f67911e821c ("irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260508-imsic-v2-1-e9f08dd46cf5@sifive.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ac8e69e69363 ("sched/fair: Fix wakeup_preempt_fair() vs delayed dequeue")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260503104503.1732682-1-vincent.guittot@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-imsic-early.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/fair.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-riscv-imsic-early.c
-+++ b/drivers/irqchip/irq-riscv-imsic-early.c
-@@ -158,6 +158,8 @@ static int imsic_dying_cpu(unsigned int
- 	/* Cleanup IPIs */
- 	imsic_ipi_dying_cpu();
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 565a96d6811e7..58f535cc64215 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8985,9 +8985,10 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
  
-+	imsic_local_sync_all(false);
-+
- 	/* Mark per-CPU IMSIC state as offline */
- 	imsic_state_offline();
+ 	/*
+ 	 * Because p is enqueued, nse being null can only mean that we
+-	 * dequeued a delayed task.
++	 * dequeued a delayed task. If there are still entities queued in
++	 * cfs, check if the next one will be p.
+ 	 */
+-	if (!nse)
++	if (!nse && cfs_rq->nr_queued)
+ 		goto pick;
  
+ 	if (sched_feat(RUN_TO_PARITY))
+-- 
+2.53.0
+
 
 
 
