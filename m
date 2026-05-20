@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-253073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPLcF9oEDmpO5gUAu9opvQ
-	(envelope-from <stable+bounces-253073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:42 +0200
+	id OOK3AFv8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F6259791D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564B6596093
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF03F38FB1F9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02CB13030F72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD17423158;
-	Wed, 20 May 2026 18:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9310F37DE8A;
+	Wed, 20 May 2026 18:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2cbzOu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ftvq105p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39AF41C2FC;
-	Wed, 20 May 2026 18:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6137836D9EA;
+	Wed, 20 May 2026 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302334; cv=none; b=ec8AiafJV7hbxOxkddxr4vXpogoutO+P/KznYqk212OBUbQa3NP8n6yTUk4GIRKcCpZLW0p3T4l1/lOmtNfaALCcX8tbK29UF1mUPK0kkqNBqAbshD3KlNKrDYm5vw4tqZiH5w4H9oYCt+3NjcBvK/g0Q/Rr0d7KXA9xYBNTLAU=
+	t=1779301134; cv=none; b=NA9iTNtd/tYQO6mLjaM8M6LFYqNkJVXGDEAWS0r3Yqi9Iy91ByaIhElfQWm2kt/n7FW3LNzcH+r+brHrmK/W/T6F1t7PPwkOiiIhCA7Ihwgqb1xrSt3qXkS+pUXFpzbjcdvTR4qGz57XlmHLJFMcuVyZ7+S0CTl/63CrNF1XlZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302334; c=relaxed/simple;
-	bh=l1ENN/0XhNYh7o79/4wDcZbRRVDaY91ZWEd3InGhj1k=;
+	s=arc-20240116; t=1779301134; c=relaxed/simple;
+	bh=0Zs+eh8QQQLzXQSsoqrSG1tLtzLpZLKtgYUDc7R55bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVcVwEFBX/Dzfq0J6BRafaHuXvkojI4975vBJzyE8T7KrW1MkdOnxfXdML2BXUpQQpBjk02k5/navGDKZ0IHYFTTxYZfaPciFMIj3OihqmPpqonqUU8Fb7JZ9m5HCGIIe+xdxrjXBII2NV6XwTWtY7LjMfPnT2WJ/yWnh7Kcnhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2cbzOu0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262351F00893;
-	Wed, 20 May 2026 18:38:51 +0000 (UTC)
+	 MIME-Version; b=W7Kz1rxusDSg+wrihra2agoOBI1EP72hLcFQwOZi+jqsGSjjddv0QjNioaVc/+sS98Q4QXXLQQRl+bsTRvk5xhIU6KPlGNCxgrFDwwR6CBHg8LRx3dKxHquuAgoZsIc3xjsKqeNXZqm35mRskzM4LdAJY8dWPka3l3KqUI6iKIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ftvq105p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CC61F000E9;
+	Wed, 20 May 2026 18:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302332;
-	bh=R7x7YD7GNMkhFzO9L2vaXQYbW/zdP/7ouuildr10O58=;
+	s=korg; t=1779301133;
+	bh=VADHKVukZEmq8RZx3f0jSgdT+z2RH/SDHNiuEkH6mWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M2cbzOu077ERobewN7K108rJOhDQUVJx8Obp5m90pYTQKAmXNGx4/byu+1QjoSBGp
-	 9tCiy/+zpgWvZgUyYSqgAA5BaSlRpleW0lXUU2CH3D9CkIuH1Zm1dLIQyTGdw7SpHE
-	 quUKlU4JDhwG7hfDXiU4zBpfrC97AkRhSHZDdkEE=
+	b=Ftvq105pskAz+zr1JUtaypFDLgg4Nn0JFlTuBUYxNlM8gXgc/e8u6iExd6gZS8HM+
+	 EAo3FaXW8MyGiMpcKwJgIIDoGbOZxzz7uMMwAZgr4kKDe2waFDCdpLpZ4eY69Bl6rb
+	 neV4Qsh4L59eCkX0J6xwBMCWz9+1xlmF1cJXS0bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/508] mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
+Subject: [PATCH 6.12 440/666] arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:20:51 +0200
-Message-ID: <20260520162103.590105119@linuxfoundation.org>
+Message-ID: <20260520162120.809468145@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253073-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252613-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,infineon.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mailbox.org:email,linaro.org:email]
-X-Rspamd-Queue-Id: A4F6259791D
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.25:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 564B6596093
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit f74de390557bf2bcc5dca4a357b41c0701d3f76e ]
+[ Upstream commit 721dec3ee9ff5231d13a412ff87df63b966d137b ]
 
-Certain chips have inconsistent Sector Map Parameter Table (SMPT) data,
-which leads to the wrong map ID being identified, causing failures to
-detect the correct sector map.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-To fix this, introduce smpt_map_id() into the struct spi_nor_fixups.
-This function will be called after the initial SMPT-based detection,
-allowing chip-specific logic to correct the map ID.
+While at here, also correct interrupt type as IRQ_TYPE_LEVEL_LOW.
 
-Infineon S25FS512S needs this fixup as it has inconsistency between map
-ID definition and configuration register value actually obtained.
-
-Co-developed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+Fixes: cbd3ef64eb9d1 ("arm64: dts: Add support for Emtop SoM & Baseboard")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index a68cf82498ed8..6c478331e494e 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -418,6 +418,8 @@ struct spi_nor_flash_parameter {
-  * @post_bfpt: called after the BFPT table has been parsed
-  * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-  *                   number of dummy cycles in read register ops.
-+ * @smpt_map_id: called after map ID in SMPT table has been determined for the
-+ *               case the map ID is wrong and needs to be fixed.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -436,6 +438,7 @@ struct spi_nor_fixups {
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
- 	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
-+	void (*smpt_map_id)(const struct spi_nor *nor, u8 *map_id);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	int (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index f1ec785628bfb..dcf88ad2a00b2 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -705,6 +705,16 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- 	return read_dummy;
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+index 67d22d3768aa8..507d1824d99d9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+@@ -60,7 +60,7 @@ pmic@25 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
  
-+static void spi_nor_smpt_map_id_fixups(const struct spi_nor *nor, u8 *map_id)
-+{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_map_id)
-+		nor->manufacturer->fixups->smpt_map_id(nor, map_id);
-+
-+	if (nor->info->fixups && nor->info->fixups->smpt_map_id)
-+		nor->info->fixups->smpt_map_id(nor, map_id);
-+}
-+
- /**
-  * spi_nor_get_map_in_use() - get the configuration map in use
-  * @nor:	pointer to a 'struct spi_nor'
-@@ -758,6 +768,8 @@ static const u32 *spi_nor_get_map_in_use(struct spi_nor *nor, const u32 *smpt,
- 		map_id = map_id << 1 | !!(*buf & read_data_mask);
- 	}
+ 		regulators {
+ 			buck1: BUCK1 {
+@@ -194,7 +194,7 @@ MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA				0x400001c3
  
-+	spi_nor_smpt_map_id_fixups(nor, &map_id);
-+
- 	/*
- 	 * If command descriptors are provided, they always precede map
- 	 * descriptors in the table. There is no need to start the iteration
+ 	pinctrl_pmic: emtop-pmic-grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
++			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
