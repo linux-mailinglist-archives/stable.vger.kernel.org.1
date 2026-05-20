@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKv2JmjvDWqZ4wUAu9opvQ
-	(envelope-from <stable+bounces-251142-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:12 +0200
+	id UNamCjf5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23806593CD7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD85C5957BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFFFC31CB1AC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2892230FA530
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7290E3D7D67;
-	Wed, 20 May 2026 17:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F0C3F54C7;
+	Wed, 20 May 2026 17:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDYtHc0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2RD5Ud5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393DA3A6EE0;
-	Wed, 20 May 2026 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389353F39C9;
+	Wed, 20 May 2026 17:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297208; cv=none; b=n2hMA8ciA+L86uqG4tlSWodDOd7nciuIdFEGSWrtXLJrsUf/tXsJYFcEAvZYPO3W20SFG31UrFVMMaIBBbDwRAIDj1G9+dTyt2c/H/M4eQ6VcWHlCDplzGS1K4foW5SV450l9WzhFGgrNbElMT138pdAIAvpd+HQVI4WkmH5kr0=
+	t=1779299554; cv=none; b=V2aLLjSHE5F7oxcI8Xs5BveKHofNyZMUbMkBrgvdBG8oXkL/+KsD2w3DG5LWcD9oi/zYYqRPygsli6zfll2ZJuR7PCtO+J1tUmgW5C2QcydVUbgBmbs5fYLr1Km/21trC7StHucdstNLbOKEz+/6ua+c/SeIwxL2ttIGhrl8U40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297208; c=relaxed/simple;
-	bh=LkEb18pyy6PxmCTBf0SZrPrU3L849RojUnMziHSWxOQ=;
+	s=arc-20240116; t=1779299554; c=relaxed/simple;
+	bh=ufuPxD45EdDE6mgFWVNUPkgEdVt3Iz+mZ/tRnjrcCcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usWZBLHIO2aGq0Spa62L+TrQQOAJUgwLB/j9TedRJnsK1eX8S86nRrek9C62xGmLdfd2NRcyvjXusH+n2RWUxVzXp5z4Wm9NiU3MwxUQaLYmRVLdeP9GbaZGyxXi4Rknis61Y268Jc5Br/9T8rhToFcEQlUVP+xPM5v1ds/SRag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDYtHc0k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8021F000E9;
-	Wed, 20 May 2026 17:13:26 +0000 (UTC)
+	 MIME-Version; b=mcD7Y7lAm96+ObEqH3sgWGGEDYhIpSDy0s61VBcVExoAHpLSTqVuyDaL388oT9nn6Twru91nL3hr+URt3vbC+dvPXdFl4AkyOFubub1i35FPYwnVjpXhdIGJUPxXXufXeXK7dwx9VDAqeAMcfLAFEpdN8czS8hc7Yo2Dj0s/1SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2RD5Ud5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E65E1F000E9;
+	Wed, 20 May 2026 17:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297207;
-	bh=sQJR7K0lki6rPNzuHcjARwuOrU/klUPOrXiIVyWJLUM=;
+	s=korg; t=1779299553;
+	bh=KTzYUXeFrXBDVOHej8qkvImqf5etbBib4oJlxVCss7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bDYtHc0kCQqKT9tptCXYVEHwpywjq2UeTtc7cji7YKXJanzf9omb7OFsRpuTJ1AT8
-	 6VJVUmTbbmMcBEMUaezL39Ye88H+ZX2SbaThuHEseDgR2u/joqSP0SZdXqbdkPxHOj
-	 4RJWAeskQ8Mv+F+jYtJOzkqFQrevZ7Wf2TE8oQ7U=
+	b=f2RD5Ud5KN3ei7eoBjw5zsG3TUPjLfTnFrnTeBP5zR6KGrvfBIkUNWUdBSDp8XQ/t
+	 Wv21kXj8Dac1VQG0aSA/4ImZ6+1eVKqAIlaE9O6hjFLqSoSnAxuspbS/GfrJ8t5CCo
+	 J41O/oZLsww9NC2iXuNeCV6jUrxfLr4ymWTeazno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guopeng Zhang <zhangguopeng@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 7.0 1049/1146] cgroup/dmem: Return -ENOMEM on failed pool preallocation
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 816/957] net: psp: require admin permission for dev-set and key-rotate
 Date: Wed, 20 May 2026 18:21:39 +0200
-Message-ID: <20260520162211.972853671@linuxfoundation.org>
+Message-ID: <20260520162152.262979518@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251142-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252027-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 23806593CD7
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: CD85C5957BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 796ad622040f7f955ccc3973085e953415920496 upstream.
+[ Upstream commit b718342a7fbaa2dff5fefc31988c07af8c6cbc21 ]
 
-get_cg_pool_unlocked() handles allocation failures under dmemcg_lock by
-dropping the lock, preallocating a pool with GFP_KERNEL, and retrying the
-locked lookup and creation path.
+The dev-set and key-rotate netlink operations modify shared device
+state (PSP version configuration and cryptographic key material,
+respectively) but do not require CAP_NET_ADMIN. The only access
+control is psp_dev_check_access() which merely verifies netns
+membership.
 
-If the fallback allocation fails too, pool remains NULL. Since the loop
-condition is while (!pool), the function can keep retrying instead of
-propagating the allocation failure to the caller.
-
-Set pool to ERR_PTR(-ENOMEM) when the fallback allocation fails so the
-loop exits through the existing common return path. The callers already
-handle ERR_PTR() from get_cg_pool_unlocked(), so this restores the
-expected error path.
-
-Fixes: b168ed458dde ("kernel/cgroup: Add "dmem" memory accounting cgroup")
-Cc: stable@vger.kernel.org # v6.14+
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 00c94ca2b99e ("psp: base PSP device support")
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260427195856.401223-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/dmem.c |    1 +
- 1 file changed, 1 insertion(+)
+ Documentation/netlink/specs/psp.yaml | 2 ++
+ net/psp/psp-nl-gen.c                 | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -602,6 +602,7 @@ get_cg_pool_unlocked(struct dmemcg_state
- 				pool = NULL;
- 				continue;
- 			}
-+			pool = ERR_PTR(-ENOMEM);
- 		}
- 	}
- 
+diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
+index 944429e5c9a84..d41ea6155e52e 100644
+--- a/Documentation/netlink/specs/psp.yaml
++++ b/Documentation/netlink/specs/psp.yaml
+@@ -111,6 +111,7 @@ operations:
+       name: dev-set
+       doc: Set the configuration of a PSP device.
+       attribute-set: dev
++      flags: [admin-perm]
+       do:
+         request:
+           attributes:
+@@ -130,6 +131,7 @@ operations:
+       name: key-rotate
+       doc: Rotate the device key.
+       attribute-set: dev
++      flags: [admin-perm]
+       do:
+         request:
+           attributes:
+diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
+index 9fdd6f831803e..85cf90999c9f1 100644
+--- a/net/psp/psp-nl-gen.c
++++ b/net/psp/psp-nl-gen.c
+@@ -70,7 +70,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 		.post_doit	= psp_device_unlock,
+ 		.policy		= psp_dev_set_nl_policy,
+ 		.maxattr	= PSP_A_DEV_PSP_VERSIONS_ENA,
+-		.flags		= GENL_CMD_CAP_DO,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+ 		.cmd		= PSP_CMD_KEY_ROTATE,
+@@ -79,7 +79,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 		.post_doit	= psp_device_unlock,
+ 		.policy		= psp_key_rotate_nl_policy,
+ 		.maxattr	= PSP_A_DEV_ID,
+-		.flags		= GENL_CMD_CAP_DO,
++		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+ 		.cmd		= PSP_CMD_RX_ASSOC,
+-- 
+2.53.0
+
 
 
 
