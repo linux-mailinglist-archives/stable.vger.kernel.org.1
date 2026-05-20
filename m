@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDzmGAgcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:36 +0200
+	id eKeCNVr7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF3B599E57
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA5A595D5E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68A9D367D594
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A4C133043A78
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0BD28DC4;
-	Wed, 20 May 2026 17:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4093A3E79;
+	Wed, 20 May 2026 18:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id5dSI9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLesDluB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3860436405A;
-	Wed, 20 May 2026 17:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEEC340A57;
+	Wed, 20 May 2026 18:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298303; cv=none; b=hndPVYh5L6Ey8O0BIvrBSsX7UUxER9hFJ4RtBuK+o1XIxtUovgpC8x41ExJA6C821wm3EVlIJ2TeGAoJahCttqjyEFaiU6gDneBl3yCd3BTjheHUp4dO3Kr9luKO3YqmsWBQYr7HAQsAbvTwRcDh+8vzOkmE654p22IsOZP5UvE=
+	t=1779300133; cv=none; b=T/wR66/fGmB1bTKPMsZRYKYQfU3NJoif3vMVya1/nT2H/tFyEXAEk0E10PTSEvnEv1I9+tIgHPJOIO0n+k4e/blfnTo5FzOumwe3iEviPKcp+TVfdY1WwmwcxtVqicn/Wceidf6rRV7BVFLNiM5ngDCMca1Lg5Vx0NKCYK9vo8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298303; c=relaxed/simple;
-	bh=isEWgJkVgHKqimD0rzGqD61VWzMbbwEYMaHqUyJ+3Fs=;
+	s=arc-20240116; t=1779300133; c=relaxed/simple;
+	bh=iu3jBR5gpuarm5VDPybVfUsehpc7wgWcpVj2cHnPqiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qW/DwJvxFuuHP78usZGPvNzdinDgbyXHT5yMDANJ4/utE0VhgDj+eb3Rn4L8jRoyucq2xT2jYTBA1gn7ef+iy3vOxsNCWiglUarOt8DoLfkrxJhEZdO7rxVyFtetwb/VNPQp20M8sOgLrSc7VOFg/3E95aC8tJdprhfueE096NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id5dSI9g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F11C1F000E9;
-	Wed, 20 May 2026 17:31:41 +0000 (UTC)
+	 MIME-Version; b=nQoOBhcIX31K00QH69ZKC9i/Aex/q2/mbpoZaTe3evu9c8XxL9PhZVrrB8y8IHhqWHCKW2jKZFlQ4oYISW9uwQFzS8QpMtHrdEFbIXpvskiMnHJmII2cYULh0Lf7f6OlVxna+c4/HASpI92AJ4BtnpEBch85o4s9VnDa69pgp1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLesDluB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01BB1F000E9;
+	Wed, 20 May 2026 18:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298302;
-	bh=8el9BAs0fnt+vUIMhGmdB/rHXiCSf+ZcbdsvbUIhDfA=;
+	s=korg; t=1779300132;
+	bh=3MRalDC0MgJ7pXsdrBwaQZ9M6anFYxFLhj2blt5P2kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Id5dSI9g/SQgWrzXt0KZ9a7kMDfSOLdV6SWXf6M7MTEizwprz80A4fXtRBaArQ+QP
-	 UOfTCyC7PsfdAugEIfuDyNQLY0VhTN6D7JpbN+HddvVMQd2/yEQLG2vwXOoWwsXDdG
-	 gC8cEr7sTKeJdnpKcSljN/QvrNOEwNftrVWvm4K4=
+	b=oLesDluBxU+t+IEo+WuHMhoMWwCNT5WNXjP3b4I5YlKVhgDGgagm227NNMZA8VL1f
+	 riYbpOono3gN0rApydA+D2MnKosGIBAP8BrEtkP7aIsW61yWXmslYYiRBZXfekhSqL
+	 R7y0q6r81FZrDhDNLxdYroB+3tozRUbxbmx/kkvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 360/957] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
+Subject: [PATCH 6.12 032/666] locking: Fix rwlock support in <linux/spinlock_up.h>
 Date: Wed, 20 May 2026 18:14:03 +0200
-Message-ID: <20260520162142.337388212@linuxfoundation.org>
+Message-ID: <20260520162111.930433043@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +68,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251562-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252230-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BDF3B599E57
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email]
+X-Rspamd-Queue-Id: 7EA5A595D5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
+[ Upstream commit 756a0e011cfca0b45a48464aa25b05d9a9c2fb0b ]
 
-ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
-and does not handle the -EINPROGRESS return code from async hardware
-crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
--EINPROGRESS, ksmbd treats it as an error and immediately frees the
-request while the hardware DMA operation is still in flight. The DMA
-completion callback then dereferences freed memory, causing a NULL
-pointer crash:
+Architecture support for rwlocks must be available whether or not
+CONFIG_DEBUG_SPINLOCK has been defined. Move the definitions of the
+arch_{read,write}_{lock,trylock,unlock}() macros such that these become
+visbile if CONFIG_DEBUG_SPINLOCK=n.
 
-  pc : qce_skcipher_done+0x24/0x174
-  lr : vchan_complete+0x230/0x27c
-  ...
-  el1h_64_irq+0x68/0x6c
-  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
-  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
+This patch prepares for converting do_raw_{read,write}_trylock() into
+inline functions. Without this patch that conversion triggers a build
+failure for UP architectures, e.g. arm-ep93xx. I used the following
+kernel configuration to build the kernel for that architecture:
 
-Use the standard crypto_wait_req() pattern with crypto_req_done() as
-the completion callback, matching the approach used by the SMB client
-in fs/smb/client/smb2ops.c. This properly handles both synchronous
-engines (immediate return) and async engines (-EINPROGRESS followed
-by callback notification).
+	CONFIG_ARCH_MULTIPLATFORM=y
+	CONFIG_ARCH_MULTI_V7=n
+	CONFIG_ATAGS=y
+	CONFIG_MMU=y
+	CONFIG_ARCH_MULTI_V4T=y
+	CONFIG_CPU_LITTLE_ENDIAN=y
+	CONFIG_ARCH_EP93XX=y
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Link: https://github.com/openwrt/openwrt/issues/21822
-Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fb1c8f93d869 ("[PATCH] spinlock consolidation")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260313171510.230998-2-bvanassche@acm.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/linux/spinlock_up.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index c37b86a83cac8..b63f32c692bab 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -1076,6 +1076,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
- 	struct smb2_transform_hdr *tr_hdr = smb2_get_msg(iov[0].iov_base);
- 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
- 	int rc;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist *sg;
- 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
-@@ -1162,12 +1163,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
+index c87204247592f..a132fc562297a 100644
+--- a/include/linux/spinlock_up.h
++++ b/include/linux/spinlock_up.h
+@@ -48,16 +48,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
+ 	lock->slock = 1;
+ }
  
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
-+	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-+				  CRYPTO_TFM_REQ_MAY_SLEEP,
-+				  crypto_req_done, &wait);
+-/*
+- * Read-write spinlocks. No debug version.
+- */
+-#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
+-#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
+-#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
+-#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
+-
+ #else /* DEBUG_SPINLOCK */
+ #define arch_spin_is_locked(lock)	((void)(lock), 0)
+ /* for sched/core.c and kernel_lock.c: */
+@@ -68,4 +58,14 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
  
--	if (enc)
--		rc = crypto_aead_encrypt(req);
--	else
--		rc = crypto_aead_decrypt(req);
-+	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
-+			     crypto_aead_decrypt(req), &wait);
- 	if (rc)
- 		goto free_iv;
+ #define arch_spin_is_contended(lock)	(((void)(lock), 0))
  
++/*
++ * Read-write spinlocks. No debug version.
++ */
++#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
++#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
++#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
++#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
++
+ #endif /* __LINUX_SPINLOCK_UP_H */
 -- 
 2.53.0
 
