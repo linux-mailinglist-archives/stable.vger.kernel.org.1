@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLSPCnwYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:28 +0200
+	id +HnSAYIBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDD45998A5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7C859733E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F27131AFF66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC429394E8BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EB93F39EE;
-	Wed, 20 May 2026 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E191A3EAC82;
+	Wed, 20 May 2026 18:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTrmE17H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUKj3QZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FC53563E1;
-	Wed, 20 May 2026 18:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB803A6B6D;
+	Wed, 20 May 2026 18:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301796; cv=none; b=n6sI6O7kXlIbdNi++GdYKmYHdp/cTOQXharJYvDO1RTZRyrLPnzKLKnHqEmhecWyWQosmf8ROjWkT/ZpDaM0YC+NwrOsqTVlA7YybEqS1x72ZtRP8TKDnYJFazA4BXG1TnSAtAWyX5zngPXXeN22lyAX/qdXboH1UxJaWsApwzc=
+	t=1779300597; cv=none; b=LL6eY9vn1Gjzv6KtHzm1Zjd9lu/1sm+TOk46932tCVk3r7Yd4wixfhSe2x6debfVHjhKIBQBvHEnhplWShP/ej09mDmkL+zee6AwcFmQmGr/NaQLjgTwS6yt2+3qLxvI3og23c6oj6zY6moFQMZgAWO7/x1sg1236KNwt/+qMgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301796; c=relaxed/simple;
-	bh=V3awu4NbF9Mbz0fNesogh4Q6zRqKLC1UacLtE/D/m4g=;
+	s=arc-20240116; t=1779300597; c=relaxed/simple;
+	bh=6pjxRGnw/bbSM5cYN4N6S2M+tPBeuEvSIe/Kd1Hzlyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhh0HtUuN0GuFYjXp66r72cWPqv5edaIaAdTxr3GtJmI6uOWr+P0hdJcDvgJ10ojkgxkv94zxlUh58D4F6bXyBH91WjFgNfyvipfWsmvzKPVjSmt8/5l0XWUWZM9fQ8m0n3SnSQELhCEMNZEwG5PmdGPEdoajN8+ovmvuxVncPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTrmE17H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9A81F000E9;
-	Wed, 20 May 2026 18:29:54 +0000 (UTC)
+	 MIME-Version; b=rAq3H2hM7kZvvm1yoJgGSRB5vHUmQuDXnG5yn8TgEOKk+PeNGE8MtIwtlWmO8SScS80+Ml9KCDZ8dSKU7cgq4dhn/iwuJ1T3wYy2JdZY3SCqzTUUaiF8sGADH4kpdP/nN4lfVyWS8QDloQMTaHXEmwoMrPb+5bXlj8Oid6X9TWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUKj3QZS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3251F000E9;
+	Wed, 20 May 2026 18:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301795;
-	bh=VRA7HqknC73juWiN51bGo/oz1ME8CVm1GsmjulZCLlg=;
+	s=korg; t=1779300596;
+	bh=gymHPTyDulZdGKxOVRqK3HxxfbiGa7c9MGbldnkHnsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NTrmE17HhmYGpObmHxbxxLzaNZXXT7qCN9hq5vkdKFpgBenezy6JtLcmH9Vppp1rm
-	 hgi6laklNBBraTereCJMoFYte3r70FnUSJq9z/mf4kcGdjyYbS7pPi+6qxvYdZAZfy
-	 Cm0VlrGP+voA0va3XC368eKSr2bbz+5SwoNHF9aw=
+	b=hUKj3QZSfAp2QJwZM9JodL6swngg+OdwakE9IpbJRsLk5K9iC0panTbKljkP+Vksd
+	 WCsQugqPNQ7JG4FLfuzTXJksjgwxGHUesfCchcpIggC0vlFirA6kUgnfhwR+oHMvL4
+	 NCvCG6W/QhaAMsVCHc0u4cjVGwJeAhasoDpMyAhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/508] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
+Subject: [PATCH 6.12 235/666] PCI: tegra194: Rename root_bus to root_port_bus in tegra_pcie_downstream_dev_to_D0()
 Date: Wed, 20 May 2026 18:17:26 +0200
-Message-ID: <20260520162059.091900620@linuxfoundation.org>
+Message-ID: <20260520162116.309608641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252867-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252408-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,56 +92,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 2BDD45998A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5F7C859733E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
+[ Upstream commit e1bd928479fb1fa60e9034b0fdb1ab9f3fa92f33 ]
 
-In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
-mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
-the function currently returns -1 immediately without freeing the
-previously allocated skb_aggr, causing a memory leak.
+In tegra_pcie_downstream_dev_to_D0(), PCI devices are transitioned to D0
+state. For iterating over the devices, first the downstream bus of the Root
+Port is searched from the root bus. But the name of the variable that holds
+the Root Port downstream bus is named as 'root_bus', which is wrong.
 
-Since skb_aggr has not yet been queued via skb_queue_tail(), no other
-references to this memory exist. Therefore, it has to be freed locally
-before returning the error.
+Rename the variable to 'root_port_bus'. Also, move the comment on 'bringing
+the devices to D0' to where the state is set exactly.
 
-Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
-returning the error status.
-
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
-
-Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
-Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250922081057.15209-1-mani@kernel.org
+Stable-dep-of: 71d9f67701e1 ("PCI: tegra194: Don't force the device into the D0 state before L2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-index 34b4b34276d6d..042b1fe5f0d67 100644
---- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
-@@ -203,6 +203,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index c83457adf5782..f35a5e107f3fd 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1278,7 +1278,7 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+ static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+ {
+ 	struct dw_pcie_rp *pp = &pcie->pci.pp;
+-	struct pci_bus *child, *root_bus = NULL;
++	struct pci_bus *child, *root_port_bus = NULL;
+ 	struct pci_dev *pdev;
  
- 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
- 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
-+			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
- 			return -1;
+ 	/*
+@@ -1291,19 +1291,19 @@ static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+ 	 */
+ 
+ 	list_for_each_entry(child, &pp->bridge->bus->children, node) {
+-		/* Bring downstream devices to D0 if they are not already in */
+ 		if (child->parent == pp->bridge->bus) {
+-			root_bus = child;
++			root_port_bus = child;
+ 			break;
  		}
+ 	}
  
+-	if (!root_bus) {
+-		dev_err(pcie->dev, "Failed to find downstream devices\n");
++	if (!root_port_bus) {
++		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
+ 		return;
+ 	}
+ 
+-	list_for_each_entry(pdev, &root_bus->devices, bus_list) {
++	/* Bring downstream devices to D0 if they are not already in */
++	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
+ 		if (PCI_SLOT(pdev->devfn) == 0) {
+ 			if (pci_set_power_state(pdev, PCI_D0))
+ 				dev_err(pcie->dev,
 -- 
 2.53.0
 
