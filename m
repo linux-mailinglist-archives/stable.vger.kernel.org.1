@@ -1,104 +1,294 @@
-Return-Path: <stable+bounces-249820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAgbFHqYDWrKzwUAu9opvQ
-	(envelope-from <stable+bounces-249820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:18:18 +0200
+	id 2PnZCNiYDWoMzwUAu9opvQ
+	(envelope-from <stable+bounces-249822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:19:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A42B58C38D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:18:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8A158C3D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 813D4302F555
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:18:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 194A83030894
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38234383C9D;
-	Wed, 20 May 2026 11:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4933A381C;
+	Wed, 20 May 2026 11:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEqNSwhG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEPi/6dY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D833783A1;
-	Wed, 20 May 2026 11:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DED371063;
+	Wed, 20 May 2026 11:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779275896; cv=none; b=Xh1HKtzjxBtQcBQx72J+AfkvTk2xrM2bk/vygaecFSDaWbd+YWBUhHA3wRVPQ9sgERBoj5kIy93nGG2lVkHR+S5NoD/jbpHmj0Wi+/7JkU52Mc80JmEXbVWDrwR+ryAr9Ous0UcO5LxWVNIuRXMjC8algX6HTTvOgennwygkjPk=
+	t=1779275988; cv=none; b=SCFr5ysT6gYv8Y5jeMlde7ExmmP/d4r6mZYZS9HR52RUOLCKk3vJiwcYzCs1aSAoPG8DC5zJxMbiDFNlZa2grlHr0LQAb2qFmQ7Z6YB/hhzGkoGoVcieHKRnJzPx+cTTs0F6kfDJ7/Z4FlnwxLSTSyDvHqdW/3Gs558rAyFjxAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779275896; c=relaxed/simple;
-	bh=Co1FS16V3QEhSbr63bhbPUjxGIVqpfEoeNW/RbM9X+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hl1MwpEYAJn18URTdLQ3mnkpju4TFkPXQv7Buh1froAIh9Rsj/BbFaK+JYaqK2Oe8u05NP3AAMGAvSVb+VeBFnOy6BsutaDOhyfXYKNiq6wxatEvYKrH0fjUd89bihAxYJSgBptY7FUVkg/i/wpA0m0cPpSkDP4nDmu1rHFnQt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEqNSwhG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A33D1F000E9;
-	Wed, 20 May 2026 11:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779275894;
-	bh=jPBtCABmTTv6ha/cYJxmS7t2tz3m8VUFTWQofk+6ER8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lEqNSwhG62rtR8kQpdULEMCZZhT253PmvpFDrCAH/iPl+16vv8GE3yKFQGLL/jhSm
-	 UKUZTIx1n6ILuENHB1kq+79GEjf6bS3ZxIcm7USjRdH6C3ZP1wbpzXOjEJTA9bAKt7
-	 qWEydEh9dvIHxlGWaXlioBfdH2UVrSg5ZFaRXslo=
-Date: Wed, 20 May 2026 13:18:17 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1779275988; c=relaxed/simple;
+	bh=6wbf9BF3q/xIesg8TeBxP9DqAnvxK+OoEyV0GT1IuAE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RNKTdgBhQJFNvDT6/3Ltf9nNJIWRnsLxYkwOtezQRU4AX0hmA5wuJfEYXPu+/T1WxfYS0FHB0tOvtHjujhaPFoWZrnbQCFZ22KxDOzlQi1G+hgjt4ys6jT/yDRu34aSAnZ0FFkVMStIuEPx9cCyfv/jahaeBhKuZmjomA1AbKrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEPi/6dY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5987B1F000E9;
+	Wed, 20 May 2026 11:19:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779275986;
+	bh=1WFl4Cx4mIXHKcZn7CPnQGIKVMWkC9ofmYZI9SNyt6k=;
+	h=From:To:Cc:Subject:Date;
+	b=nEPi/6dY5F4aDTDMwymmYw4R9WNJnIH5NiKwhCzxJUx3njeU1S+x7Yf8Eh+pJm9z+
+	 ahpe4VNs5Mj1JvhDj/R23x1z1Gqo5OuFA+oKMz6qVl1vD/4xUyJpaB5vSH/zptp3ZD
+	 jlS2pTgsfWGorJjZSZ5mfNAqNlSwyPVCG6ssfhqhUiWA+DjJCAU2LUcL9f5qmCbxHp
+	 IZ9Ge7ZpfDVGRV/gXPIXMXE1t6Z68u7SMK/LBrGhEDP1C5l8f/E/7YP4U9a0/ZnfDX
+	 jXeUrRGPC0Lhn5t3wM5uOkP3RB8YzYEmveSvmGQ8y5ex3znO2PdhmXd6ZtfwaKOyrK
+	 OHHcyv/1sHDGw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: digi_acceleport: fix memory corruption with
- small endpoints
-Message-ID: <2026052012-jeep-parameter-c328@gregkh>
-References: <20260520074653.639831-1-johan@kernel.org>
+Cc: Alain Michaud <alainmichaud@google.com>,
+	Olivier Gay <ogay@logitech.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-6.12] HID: logitech-hidpp: Add support for newer Bluetooth keyboards
+Date: Wed, 20 May 2026 07:18:33 -0400
+Message-ID: <20260520111944.3424570-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520074653.639831-1-johan@kernel.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0.9
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249820-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249822-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A42B58C38D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:email,logitech.com:email]
+X-Rspamd-Queue-Id: BA8A158C3D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 09:46:53AM +0200, Johan Hovold wrote:
-> Add the missing bulk-out buffer size sanity checks to avoid
-> out-of-bounds memory accesses or slab corruption should a malicious
-> device report smaller buffers than expected.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+From: Alain Michaud <alainmichaud@google.com>
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Upstream commit 64ffa2e5e02ff54b23221d0282155f37283fabea ]
+
+Add product IDs (PIDs) for several newer Logitech Bluetooth keyboards
+to the hidpp_devices matching table, enabling full HID++ support for
+them.
+
+The added keyboards are:
+- Logitech Signature K650 & B2B
+- Logitech Pebble Keys 2 K380S
+- Logitech Casa Pop-Up Desk & B2B
+- Logitech Wave Keys & B2B
+- Logitech Signature Slim K950 & B2B
+- Logitech MX Keys S & B2B
+- Logitech Keys-To-Go 2
+- Logitech Pop Icon Keys
+- Logitech MX Keys Mini & B2B
+- Logitech Signature Slim Solar+ K980 B2B
+- Logitech Bluetooth Keyboard K250/K251
+- Logitech Signature Comfort K880 & B2B
+
+Signed-off-by: Alain Michaud <alainmichaud@google.com>
+Reviewed-by: Olivier Gay <ogay@logitech.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Phase Walkthrough
+**Phase 1 Record:** Subsystem `HID: logitech-hidpp`; action `Add`;
+intent is to add Bluetooth PIDs so newer Logitech keyboards bind to
+`hid-logitech-hidpp`. Tags: `Signed-off-by: Alain Michaud`, `Reviewed-
+by: Olivier Gay <ogay@logitech.com>`, `Signed-off-by: Jiri Kosina`; no
+`Fixes`, `Reported-by`, `Tested-by`, `Link`, or stable Cc. Body
+describes hardware enablement, not crash/security. Hidden bug fix: no,
+this is explicit device-ID enablement.
+
+**Phase 2 Record:** One file changed: `drivers/hid/hid-logitech-
+hidpp.c`, 38 insertions, all in `hidpp_devices[]`. Before: listed
+Logitech Bluetooth devices stopped at existing IDs such as
+`0xb391`/`0xb042`. After: adds 19
+`HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, pid)` entries. Bug
+category: hardware enablement/device IDs. Fix quality: mechanically
+simple, no code flow, locking, allocation, ABI, or API changes.
+
+**Phase 3 Record:** Upstream commit is
+`64ffa2e5e02ff54b23221d0282155f37283fabea`, contained by
+`v7.1-rc4~28^2`. Blame shows the new entries are from this commit;
+surrounding table entries are established prior HID++ Bluetooth IDs. No
+`Fixes:` tag to follow. Related history shows repeated prior Logitech
+HID++ Bluetooth ID additions, plus a prior broad “match all Logitech
+Bluetooth” approach that was reverted because it could bind unsupported
+mice and leave them dead. This supports the narrow-ID approach. Author
+has only this HID/HIDPP commit locally; reviewer/maintainer path is
+through HID maintainers.
+
+**Phase 4 Record:** `b4 dig -c 64ffa2e5e02f` found the original
+submission at `https://patch.msgid.link/20260512132244.2194556-1-
+alainmichaud@google.com`. `b4 dig -a` showed only v1. `b4 dig -w` showed
+Jiri Kosina, Benjamin Tissoires, HID++/Logitech reviewers, `linux-
+input`, and `linux-kernel` were included. Saved mbox shows Jiri replied
+“Applied, thanks.” No objections or stable nomination found in that
+mbox. WebFetch to lore/stable was blocked by Anubis, so stable-list
+search could not be verified externally.
+
+**Phase 5 Record:** Key changed object is `hidpp_devices[]`. It is
+assigned to `hidpp_driver.id_table`, exported via `MODULE_DEVICE_TABLE`,
+and registered by `module_hid_driver(hidpp_driver)`. HID core uses
+`hid_match_device()` -> `hid_match_id()` against `hdrv->id_table`,
+matching bus/vendor/product. `HID_BLUETOOTH_DEVICE` expands to
+`BUS_BLUETOOTH` plus vendor/product. Reachability: Bluetooth HID device
+enumeration/driver matching. Similar pattern: many existing Logitech
+Bluetooth HID++ IDs in the same table.
+
+**Phase 6 Record:** Checked tags `v5.10`, `v5.15`, `v6.1`, `v6.6`,
+`v6.12`, `v6.18`, `v6.19`, and `v7.0`: all have `hidpp_devices[]`,
+`MODULE_DEVICE_TABLE(hid, hidpp_devices)`, and `HID_BLUETOOTH_DEVICE`;
+all lack the candidate PIDs. Patch applies cleanly to current
+`stable/linux-7.0.y`; older trees likely need trivial context placement
+because some newer adjacent IDs are absent.
+
+**Phase 7 Record:** Subsystem is HID Logitech HID++ driver, under
+maintained HID/Input. Criticality: driver-specific, but for affected
+Logitech keyboard users it controls full HID++ support. Subsystem is
+active; recent history includes HIDPP fixes and other device-ID
+additions.
+
+**Phase 8 Record:** Affected users are owners of the listed Logitech
+Bluetooth keyboards on stable kernels. Trigger is pairing/using those
+devices over Bluetooth. Failure mode is missing enhanced HID++ driver
+support, not a crash; severity medium for affected hardware
+functionality. Benefit is high for those users and low system-wide risk.
+Risk is very low: data-only ID table entries, no behavioral change for
+non-matching devices.
+
+**Phase 9 Record:** Evidence for backporting: classic stable exception
+for adding device IDs to an existing driver; small and contained;
+reviewed by Logitech contact; applied by HID maintainer; code exists in
+active stable trees; prior history favors explicit IDs over broad
+matching. Evidence against: not a crash/security/data-corruption fix;
+product ID correctness is verified only by commit review, not an
+external public spec. Stable checklist: obviously correct yes; real
+user-visible hardware support issue yes; important under device-ID
+exception yes; small/contained yes; no new API yes; applies cleanly to
+7.0 and should be trivial elsewhere.
+
+## Verification
+- [Phase 1] Parsed commit metadata with `git show --format=fuller`:
+  confirmed tags and no `Fixes`/`Reported-by`.
+- [Phase 2] Inspected full diff: 38 insertions only in
+  `hidpp_devices[]`.
+- [Phase 3] Used `git blame` around the table and `git log` on the file:
+  confirmed surrounding HID++ Bluetooth ID history and related revert of
+  broad Bluetooth matching.
+- [Phase 4] Used `b4 dig -c/-a/-w` and saved/read mbox: confirmed v1
+  thread, recipients, and maintainer “Applied, thanks.”
+- [Phase 5] Used code search/read of `hid-core.c`,
+  `include/linux/hid.h`, and `hid-logitech-hidpp.c`: confirmed driver
+  table matching path.
+- [Phase 6] Checked stable tags for table/macro/PID presence and ran
+  `git apply --check` on current 7.0 tree.
+- [Phase 7] Checked `MAINTAINERS` and recent HID/HIDPP logs.
+- [Phase 8] Impact/risk derived from verified diff and HID matching
+  path.
+- UNVERIFIED: lore stable-search results, because WebFetch was blocked
+  by Anubis.
+- UNVERIFIED: independent public confirmation of every Logitech PID
+  beyond the patch author/reviewer/maintainer record.
+
+This should be backported under the stable device-ID exception. It
+enables existing HID++ driver support for specific hardware with minimal
+regression risk.
+
+**YES**
+
+ drivers/hid/hid-logitech-hidpp.c | 38 ++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index d1dea7297712d..68f055ef1f444 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4672,6 +4672,44 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb391) },
+ 	{ /* MX Master 4 mouse over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb042) },
++	{ /* Logitech Signature K650 over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb36f) },
++	{ /* Logitech Signature K650 B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb370) },
++	{ /* Logitech Pebble Keys 2 K380S over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb377) },
++	{ /* Logitech Casa Pop-Up Desk over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb371) },
++	{ /* Logitech Casa Pop-Up Desk B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb374) },
++	{ /* Logitech Wave Keys over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb383) },
++	{ /* Logitech Wave Keys B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb384) },
++	{ /* Logitech Signature Slim K950 over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb386) },
++	{ /* Logitech Signature Slim K950 B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb388) },
++	{ /* Logitech MX Keys S over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb378) },
++	{ /* Logitech MX Keys S B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb380) },
++	{ /* Logitech Keys-To-Go 2 over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb38c) },
++	{ /* Logitech Pop Icon Keys over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb38f) },
++	{ /* Logitech MX Keys Mini over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb369) },
++	{ /* Logitech MX Keys Mini B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb36e) },
++	{ /* Logitech Signature Slim Solar+ K980 B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb394) },
++	{ /* Logitech Bluetooth Keyboard K250/K251 over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb397) },
++	{ /* Logitech Signature Comfort K880 over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb39c) },
++	{ /* Logitech Signature Comfort K880 B2B over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb39d) },
+ 	{}
+ };
+ 
+-- 
+2.53.0
+
 
