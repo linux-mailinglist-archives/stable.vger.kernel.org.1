@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKs6Kk0rDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:45 +0200
+	id EEBYAs7tDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498CB59B448
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D19B59373B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79FBB37B4587
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D4E5316E13C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452BC370AEE;
-	Wed, 20 May 2026 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098B63F58F5;
+	Wed, 20 May 2026 17:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGRQy/7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iduPcOA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0933530DEAC;
-	Wed, 20 May 2026 18:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97563F54C9;
+	Wed, 20 May 2026 17:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302076; cv=none; b=EvmCY9VVwDf0/UaDdgheBHM8LDPpLgucSacrhUBMwZTmRi35b8NweDVSYpHXhOGufx0eiBazL2o4L5KyLpbvG8hKaMnctUm2BUaikslWH3PgGs7ITen0HsTC9uyMP63cFLP2cEVylYb8Z25Z5cSqPPlB+qNvqwG0/TZLwDiSJwU=
+	t=1779296715; cv=none; b=kFJWc28RHC1JS1pDgT8NdRkeNj8Melqf5uQdZplDPBJVn8BdNhu3OSdvgwjzWjBYEL6umqmtaGc282xyRc6RY53JVuxHVhazxAg9BK/qRrOuIhFEatw2S9hykxpY7zoWMlg35ms5Oj1wfHEupuejYcm4F/54pQdzho5NWP+JTew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302076; c=relaxed/simple;
-	bh=zSD6nD9YbuMdO4pG/T9dRmVUiG7TrNzYBi3vLgqWV54=;
+	s=arc-20240116; t=1779296715; c=relaxed/simple;
+	bh=n9rUwghuiVQbL7/BInnZ3lRqrmyOshzdF/YWf3ddepA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1M3eT8ljxFOuEmWHdjutkXCDb3s0cUsv5KtEpcRMyeg447B5uS09anWxdzjcVvR/7C5Ytz2Y1Y6qjinIJAJgn/x64r5t6ih9UmXH/Cmo3N+IQyYOEMaXsdvg2q5/kIe6Nd3wtM0q2G1d6KgeHjgEzgMYyffTeNHc8/IMSHsq74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGRQy/7X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFC71F000E9;
-	Wed, 20 May 2026 18:34:34 +0000 (UTC)
+	 MIME-Version; b=HkMiNA/szfcQqh88rOsHXokCHiqPH7DKLqn8WGHUVvvrwXMAsFGR+3hxEKSP9b4Tbm6AyYAOVi//4XoJ7uhGuleXPy5dSTN5KH9iPZmTYYM0DCqCcATQ8pStup3YIQI/6PBH/mikxrrjOqkWLYOq7RleAg5k/G/RyNQ7IIVorHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iduPcOA1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054AE1F000E9;
+	Wed, 20 May 2026 17:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302074;
-	bh=Hg4Y0ID4/oLC/+Hu7StvV5SPMBaEK3mqj4LkAmMbp0s=;
+	s=korg; t=1779296714;
+	bh=Sbc1H3MQJVO0HWRah+wkI6Yq6J5SrKBdH3ruvYUZd7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KGRQy/7XBXEI5vwkKuFNUyGsoMX051ImlyHzpVCwT742VOHOtu/i+2DJEqHpz+dSX
-	 WlSWxkzi62O5txQ3YBIfYVQbf3AV9Dx2xjRew8cV/lKZHkZqbrl41kez2hpFoidP5X
-	 wAx5CKqkSgFL9iDp0S6h6cmKKUeKMxH6s01Kk+wE=
+	b=iduPcOA1sbCwOB2jq/nUjT2eHHJQHp78ul+UoOj0GopMDuTuE1INjWdSQ30yekxVB
+	 VsGLKDl1CWi5pcqm9N+Se9IlAuNHYKhn485O9BW+86OTfIwoIGvHEA5E+Rq+q2Ez49
+	 rEjkSzeeg8bCSmpH5oYGAA/enePFxbdg1CKBWKfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/508] ASoC: SOF: Intel: hda: Place check before dereference
+Subject: [PATCH 7.0 0903/1146] drm/amd/pm: fix missing fine-grained dpm table flag on aldebaran
 Date: Wed, 20 May 2026 18:19:13 +0200
-Message-ID: <20260520162101.445152855@linuxfoundation.org>
+Message-ID: <20260520162208.672373011@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +67,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250951-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252974-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 498CB59B448
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 9D19B59373B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 6cbc8360f51a3df2ea16a786b262b9fe44d4c68c ]
+[ Upstream commit ccf8932ed8cf4fbfdcd4df2c6b524913691ee700 ]
 
-The struct hext_stream is dereferenced before it is checked for NULL.
-Although it can never be NULL due to a check prior to
-hda_dsp_iccmax_stream_hw_params() being called, this change clears any
-confusion regarding hext_stream possibly being NULL.
+Add the missing SMU_DPM_TABLE_FINE_GRAINED flag to aldebaran DPM table.
+This fixes the pp_dpm_sclk node issue caused by missing flag configuration.
 
-Check hext_stream for NULL and then assign its members.
-
-Detected by Smatch:
-sound/soc/sof/intel/hda-stream.c:488 hda_dsp_iccmax_stream_hw_params() warn:
-variable dereferenced before check 'hext_stream' (see line 486)
-
-Fixes: aca961f196e5d ("ASoC: SOF: Intel: hda: Add helper function to program ICCMAX stream")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Link: https://patch.msgid.link/20260324173830.17563-1-ethantidmore06@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ea1c722fe1d ("drm/amd/pm: Use common helper for aldebaran dpm table")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3427dea3a48ebddb491a26093f3627384b3cb2c2)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-stream.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
-index 3bb743cb167a5..924cef8d96c60 100644
---- a/sound/soc/sof/intel/hda-stream.c
-+++ b/sound/soc/sof/intel/hda-stream.c
-@@ -415,16 +415,20 @@ int hda_dsp_iccmax_stream_hw_params(struct snd_sof_dev *sdev, struct hdac_ext_st
- 				    struct snd_dma_buffer *dmab,
- 				    struct snd_pcm_hw_params *params)
- {
--	struct hdac_stream *hstream = &hext_stream->hstream;
--	int sd_offset = SOF_STREAM_SD_OFFSET(hstream);
-+	struct hdac_stream *hstream;
-+	int sd_offset;
- 	int ret;
--	u32 mask = 0x1 << hstream->index;
-+	u32 mask;
- 
- 	if (!hext_stream) {
- 		dev_err(sdev->dev, "error: no stream available\n");
- 		return -ENODEV;
- 	}
- 
-+	hstream = &hext_stream->hstream;
-+	sd_offset = SOF_STREAM_SD_OFFSET(hstream);
-+	mask = 0x1 << hstream->index;
-+
- 	if (!dmab) {
- 		dev_err(sdev->dev, "error: no dma buffer allocated!\n");
- 		return -ENODEV;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+index 2b4faab376930..23c9f14bb2086 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+@@ -425,6 +425,7 @@ static int aldebaran_set_default_dpm_table(struct smu_context *smu)
+ 		dpm_table->dpm_levels[0].enabled = true;
+ 		dpm_table->dpm_levels[1].value = pptable->GfxclkFmax;
+ 		dpm_table->dpm_levels[1].enabled = true;
++		dpm_table->flags |= SMU_DPM_TABLE_FINE_GRAINED;
+ 	} else {
+ 		dpm_table->count = 1;
+ 		dpm_table->dpm_levels[0].value = smu->smu_table.boot_values.gfxclk / 100;
 -- 
 2.53.0
 
