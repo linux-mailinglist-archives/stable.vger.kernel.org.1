@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-253009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OiuIYAADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-253009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:08 +0200
+	id gK/pGGMHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22055597074
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F781597E87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BBB731778F1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB42C3277051
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60343F8704;
-	Wed, 20 May 2026 18:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC123C140F;
+	Wed, 20 May 2026 18:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iShSl8g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAd8LjoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8241ADF59;
-	Wed, 20 May 2026 18:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC6037DE8A;
+	Wed, 20 May 2026 18:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302165; cv=none; b=gJAAAGLAc1t9LW1DXhnLU2Auwgko6ZWoXU3g+3EdIHhAtSU5FDEVwxx2k29nhoM6PJ9ocRIhbxhZszvNdl3WfFvgfh1YC6AKq6+7LnEYiEmT39M8AlpfzYxt9RythgZia1ynfc+Sb9TsOrZKE0E7eZbL7F/klsffkCYCgj0M5EI=
+	t=1779300963; cv=none; b=Jj3o5GtdAiehb0Aij5FVlbFblRfr+X3sI/R5ot7PbNbecSoj4LFq0ZcaH9YZ5txMtKN+jWizZ8Uh0i6gGk3i0g095MCWmEFxx4OddewzUCYAEN9ypmY6YZLvzJr9d9V4xCcFqU0l2SDvrJuXxWLm5pJaMnWau82NLyXB/amWsb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302165; c=relaxed/simple;
-	bh=n6mnLbzpUF73stQzdRcpTqTlJWDIsnW3jkgQlWnSnqA=;
+	s=arc-20240116; t=1779300963; c=relaxed/simple;
+	bh=Q+it4GRThT+b+Lz+ahmtDVrm+t3RweSwXgXuCmockNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxlqFGbMUrX3kltZhJWWgrNduDRRYisTzE0Fv48xR5I14LGWpvHMGCGn9rFhZpB1idHEpbh2XTEpyFkAxzr+wpakjUTKWitAji8GIS66xbtxkEVLiOI3tdyhTnMcQIUzeDmH0p/tY/HCSE32GPZtkHycXv6fQCnfToyuB3v19yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iShSl8g3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4971F000E9;
-	Wed, 20 May 2026 18:36:03 +0000 (UTC)
+	 MIME-Version; b=WYNI9N0IjlAcWbZMe15olaGoG1ajVCJfTqxptoFO2sSUvEpwA5XzHLGHfKC+L0K+dYGjB5oMXXbgL77n9gW9aj7/Xs9aoGeEaikQ398rmV1unJqlw0al1qWC0jIGTdX8Vh7fDDB88gzLt8chONRwJifMHvnpatVtZpG5ZCgCiQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAd8LjoE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE251F000E9;
+	Wed, 20 May 2026 18:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302164;
-	bh=HcLTReUfxXLYHZ6vguH1/EbnHEwLRP4ke9Jc8gBxly0=;
+	s=korg; t=1779300961;
+	bh=N3Rt2qGThyQXN5tT4qP1zDTsEjM0FSw7ttqX0tnPZlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iShSl8g3TI1NERi6rFkufczwJSXlDE3wS9BR9xDobvWy8YH1KW6vNrf9osz3QL7wU
-	 hCDnrdLwhuqL3CB/HjddG902Gqp7lOD5MWoJwAKrMyEssnrImngZZA7r/yz459FZxM
-	 yRO51vB72TmRHbYQznEY1EsdooV7JUx/jbe+6Q+4=
+	b=BAd8LjoErmXlIlnEIDrma/RM5iqLZ8ey9UaqSvaP+Vq48uM0aK2U6OnU77LIfmY8B
+	 /WCokGqRoWr9jOGdg9Rvzah92+klPCIALn1yG1+YInva1cT04O4NNwXrKgGTNYfYLg
+	 ffADyro62XewMsVnvalE24lQydlOX+DUM3M17+Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/508] PCI: tegra194: Disable PERST# IRQ only in Endpoint mode
+Subject: [PATCH 6.12 373/666] ipmi: ssif_bmc: change log level to dbg in irq callback
 Date: Wed, 20 May 2026 18:19:44 +0200
-Message-ID: <20260520162102.127578463@linuxfoundation.org>
+Message-ID: <20260520162119.328796856@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +66,146 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253009-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252548-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 22055597074
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,minyard.net:email]
+X-Rspamd-Queue-Id: 6F781597E87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-[ Upstream commit 40658a31b6e134169c648041efc84944c4c71dcd ]
+[ Upstream commit c9c99b7b7051eb7121b3224bfce181fb023b0269 ]
 
-The PERST# GPIO interrupt is only registered when the controller is
-operating in Endpoint mode. In Root Port mode, the PERST# GPIO is
-configured as an output to control downstream devices, and no interrupt is
-registered for it.
+Long-running tests indicate that this logging can occasionally disrupt
+timing and lead to request/response corruption.
 
-Currently, tegra_pcie_dw_stop_link() unconditionally calls disable_irq()
-on pex_rst_irq, which causes issues in Root Port mode where this IRQ is
-not registered.
+Irq handler need to be executed as fast as possible,
+most I2C slave IRQ implementations are byte-level, logging here
+can significantly affect transfer behavior and timing. It is recommended
+to use dev_dbg() for these messages.
 
-Fix this by only disabling the PERST# IRQ when operating in Endpoint mode,
-where the interrupt is actually registered and used to detect PERST#
-assertion/deassertion from the host.
-
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-6-mmaddireddy@nvidia.com
+Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Message-ID: <20260403090603.3988423-4-zhangjian.3032@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/ipmi/ssif_bmc.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 23c7c6e691b26..ed0d12ab579d8 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1055,7 +1055,8 @@ static void tegra_pcie_dw_stop_link(struct dw_pcie *pci)
+diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
+index d3a088d758fce..c5492e17ae573 100644
+--- a/drivers/char/ipmi/ssif_bmc.c
++++ b/drivers/char/ipmi/ssif_bmc.c
+@@ -568,7 +568,7 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
+ 		len = ssif_bmc->request.len + part->length;
+ 		/* Do the bound check here, not allow the request len exceed 254 bytes */
+ 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
+-			dev_warn(&ssif_bmc->client->dev,
++			dev_dbg(&ssif_bmc->client->dev,
+ 				 "Warn: Request exceeded 254 bytes, aborting");
+ 			/* Request too long, aborting */
+ 			ssif_bmc->aborting =  true;
+@@ -614,7 +614,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 	    ssif_bmc->state == SSIF_START ||
+ 	    ssif_bmc->state == SSIF_REQ_RECVING ||
+ 	    ssif_bmc->state == SSIF_RES_SENDING) {
+-		dev_warn(&ssif_bmc->client->dev,
++		dev_dbg(&ssif_bmc->client->dev,
+ 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
+ 			 __func__, state_to_string(ssif_bmc->state));
+ 		ssif_bmc->state = SSIF_ABORTING;
+@@ -623,7 +623,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 
+ 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
+ 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
+-			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
++			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
+ 				 ssif_bmc->part_buf.smbus_cmd);
+ 			ssif_bmc->aborting = true;
+ 		}
+@@ -658,7 +658,7 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 	    ssif_bmc->state == SSIF_START ||
+ 	    ssif_bmc->state == SSIF_REQ_RECVING ||
+ 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
+-		dev_warn(&ssif_bmc->client->dev,
++		dev_dbg(&ssif_bmc->client->dev,
+ 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
+ 			 __func__, state_to_string(ssif_bmc->state));
+ 		ssif_bmc->state = SSIF_ABORTING;
+@@ -683,7 +683,7 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 	} else if (ssif_bmc->state == SSIF_START ||
+ 		   ssif_bmc->state == SSIF_REQ_RECVING ||
+ 		   ssif_bmc->state == SSIF_RES_SENDING) {
+-		dev_warn(&ssif_bmc->client->dev,
++		dev_dbg(&ssif_bmc->client->dev,
+ 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
+ 			 __func__, state_to_string(ssif_bmc->state));
+ 		ssif_bmc->state = SSIF_ABORTING;
+@@ -698,7 +698,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
  {
- 	struct tegra_pcie_dw *pcie = to_tegra_pcie(pci);
+ 	if (ssif_bmc->state == SSIF_READY ||
+ 	    ssif_bmc->state == SSIF_RES_SENDING) {
+-		dev_warn(&ssif_bmc->client->dev,
++		dev_dbg(&ssif_bmc->client->dev,
+ 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
+ 			 __func__, state_to_string(ssif_bmc->state));
+ 		ssif_bmc->state = SSIF_ABORTING;
+@@ -708,7 +708,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
  
--	disable_irq(pcie->pex_rst_irq);
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		disable_irq(pcie->pex_rst_irq);
- }
+ 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
+ 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
+-			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
++			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
+ 				 ssif_bmc->part_buf.smbus_cmd);
+ 			ssif_bmc->aborting = true;
+ 		}
+@@ -737,7 +737,7 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 	    ssif_bmc->state == SSIF_START ||
+ 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
+ 	    ssif_bmc->state == SSIF_ABORTING) {
+-		dev_warn(&ssif_bmc->client->dev,
++		dev_dbg(&ssif_bmc->client->dev,
+ 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
+ 			 __func__, state_to_string(ssif_bmc->state));
+ 		ssif_bmc->state = SSIF_READY;
+@@ -804,7 +804,7 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
+ 		break;
  
- static const struct dw_pcie_ops tegra_dw_pcie_ops = {
+ 	default:
+-		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
++		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
+ 		break;
+ 	}
+ 
 -- 
 2.53.0
 
