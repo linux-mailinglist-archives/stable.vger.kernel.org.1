@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-251908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPXBFgn1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-251908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:13 +0200
+	id aL3COsr8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B86594D2A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5906359623C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32972304ADDF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12F77379C8D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FA53F1AB8;
-	Wed, 20 May 2026 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5253F1AB8;
+	Wed, 20 May 2026 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtQ22dEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtkvqmOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8CE3546C8;
-	Wed, 20 May 2026 17:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADCD3F1AD9;
+	Wed, 20 May 2026 17:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299202; cv=none; b=ZkUza6lgKY1pCaeeUvJCqdXXZJDl3DIg3dVoGPyDtfN1r1QeDGr6Yq1U3tr9KiiSi4o9cvbtQik+CzUpkkgFMOdT41HWcJ/LO4JuqxDl18iTj/o/xZhS/ip2sb1aa+iOZAUfe5RAxzhTBbRFei4UvT0BzmYDnEayr+wx3Yu5YZw=
+	t=1779299207; cv=none; b=fsUI+cN9bi47W6dA7okbe/lfGXwCb4cqNrPdSIoufl72Nw33j/vaF/2QgaF4FUTsPM5k7tyg5Dowh888n0/BhIOmNzKCFon9M7pR5hip02oejzfhFlRZooep7MeXVnyZp1xi+FqUfspTwVQYW2it6tXAZ+Vx2gMylMcjIaZ68cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299202; c=relaxed/simple;
-	bh=flcPIiSnxS8FwPxUIYag+btjH8EbjRxbDOvzK70Y8ik=;
+	s=arc-20240116; t=1779299207; c=relaxed/simple;
+	bh=Gggvh/YcZAta1dEVwtWbolzVpwb/NLvOtCpfl+saTJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDsk02/KAwddyFPDyHfltXr2WVFe1l+icaTYwIm2nJ5Wy0Ccs/mddEV6V+AId28AyDAtoqk7JL3ZMy24ph8ZvCwqfj7KNNuylwGdJyIeNrwbkylbgU9zLBBCI6+NL5UPiLqGrcLupmyurEgc5x10AuxyNAfpbNgpiYajInPkrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtQ22dEU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FE21F000E9;
-	Wed, 20 May 2026 17:46:40 +0000 (UTC)
+	 MIME-Version; b=Kww7hJc0vSnYm6AYdSnJ2n+pvf/gkVHqjlJflI3cKLVC0D+e3HVWvndd09fauz6xTlvUjugAZaAzi7p2qgoZCZHXu+JdqB/WvLUnlW9FZExDuHBO3hhh3GNPgLg+66E/yyinXvwxCJttjipf2EPOdAqsCW3tg+gXQTaKRM0jOE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtkvqmOd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20E31F00893;
+	Wed, 20 May 2026 17:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299201;
-	bh=JKh6IS9gciuGLhwyrQKCwzbW77XOsi0izEJx7aTb5M8=;
+	s=korg; t=1779299206;
+	bh=Xo5lzZgn1bfAKQCRYyK0vG9KFqemiqVVXOZ1OgiB5fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JtQ22dEULx7bwiOGglKHz74ghAH+AYrrc8Ndfv79azfSzlz8xWqNfDZZe+ZkZzDf5
-	 GsezXACJNtoYF84UaaeYeom2IswzKUSjUHKKugbipA4WHu4bav7i33UIJp5VW3xgeB
-	 vgNnJOqwbhC38uqKk9QHBwyPc+F1j/gpTynQfLvw=
+	b=HtkvqmOdoEOR7Wnvt+xICpvEP80J4HiOH7YftqRGqTr69A4NgKHjZjb7a61TLzH33
+	 ZowUm7jnMGaydykOpCTlHkYXso82cLkYWR6hzlcUwlUPRk4xsYXv/OJKyvvk+OkJIJ
+	 JwD5b6DDIBT+1wUKgibX5BK0l2nCcW3KYe6VueTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 700/957] net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()
-Date: Wed, 20 May 2026 18:19:43 +0200
-Message-ID: <20260520162149.720462630@linuxfoundation.org>
+Subject: [PATCH 6.18 701/957] net: mana: Init link_change_work before potential error paths in probe
+Date: Wed, 20 May 2026 18:19:44 +0200
+Message-ID: <20260520162149.741558273@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -68,30 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251910-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251908-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 12B86594D2A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5906359623C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,64 +100,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 4b91cb65789b794bfc8d50554b8994f8e0f16309 ]
+[ Upstream commit cb4a90744bcd1adf12f0d0c7c4f0dd2647444ec5 ]
 
-If airoha_qdma_init routine fails before airoha_qdma_tx_irq_init() runs
-successfully for all TX NAPIs, airoha_qdma_cleanup() will
-unconditionally runs netif_napi_del() on TX NAPIs, triggering a NULL
-pointer dereference. Fix the issue relying on q_tx_irq size value to
-check if the TX NAPIs is properly initialized in airoha_qdma_cleanup().
-Moreover, run netif_napi_add_tx() just if irq_q queue is properly
-allocated.
+Move INIT_WORK(link_change_work) to right after the mana_context
+allocation, before any error path that could reach mana_remove().
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260420-airoha_qdma_init_rx_queue-fix-v2-2-d99347e5c18d@kernel.org
+Previously, if mana_create_eq() or mana_query_device_cfg() failed,
+mana_probe() would jump to the error path which calls mana_remove().
+mana_remove() unconditionally calls disable_work_sync(link_change_work),
+but the work struct had not been initialized yet. This can trigger
+CONFIG_DEBUG_OBJECTS_WORK enabled.
+
+Fixes: 54133f9b4b53 ("net: mana: Support HW link state events")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260420124741.1056179-2-ernis@linux.microsoft.com
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 8416451f4786a..865b854bd4afc 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1051,8 +1051,6 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
- 	struct airoha_eth *eth = qdma->eth;
- 	dma_addr_t dma_addr;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index c770fb86fd2d3..cd3a435485a19 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3483,6 +3483,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
  
--	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
--			  airoha_qdma_tx_napi_poll);
- 	irq_q->q = dmam_alloc_coherent(eth->dev, size * sizeof(u32),
- 				       &dma_addr, GFP_KERNEL);
- 	if (!irq_q->q)
-@@ -1062,6 +1060,9 @@ static int airoha_qdma_tx_irq_init(struct airoha_tx_irq_queue *irq_q,
- 	irq_q->size = size;
- 	irq_q->qdma = qdma;
- 
-+	netif_napi_add_tx(eth->napi_dev, &irq_q->napi,
-+			  airoha_qdma_tx_napi_poll);
+ 		ac->gdma_dev = gd;
+ 		gd->driver_data = ac;
 +
- 	airoha_qdma_wr(qdma, REG_TX_IRQ_BASE(id), dma_addr);
- 	airoha_qdma_rmw(qdma, REG_TX_IRQ_CFG(id), TX_IRQ_DEPTH_MASK,
- 			FIELD_PREP(TX_IRQ_DEPTH_MASK, size));
-@@ -1481,8 +1482,12 @@ static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
- 		}
++		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
  	}
  
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++) {
-+		if (!qdma->q_tx_irq[i].size)
-+			continue;
-+
- 		netif_napi_del(&qdma->q_tx_irq[i].napi);
-+	}
+ 	err = mana_create_eq(ac);
+@@ -3500,8 +3502,6 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
  
- 	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
- 		if (!qdma->q_tx[i].ndesc)
+ 	if (!resuming) {
+ 		ac->num_ports = num_ports;
+-
+-		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
+ 	} else {
+ 		if (ac->num_ports != num_ports) {
+ 			dev_err(dev, "The number of vPorts changed: %d->%d\n",
 -- 
 2.53.0
 
