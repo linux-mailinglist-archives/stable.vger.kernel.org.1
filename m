@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHmxBQsYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:35 +0200
+	id kMegLzYEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722BD599813
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF375977A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 561A6322C284
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7574439E71BA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1293F6619;
-	Wed, 20 May 2026 17:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC4371048;
+	Wed, 20 May 2026 18:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFr3naOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUhUyIp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB63F4124;
-	Wed, 20 May 2026 17:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6903D7D67;
+	Wed, 20 May 2026 18:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297318; cv=none; b=Rww74pJmqj1hMwiWvhfeTYBB8Nv35T7gwo3jUAvcVFTXDnE5EAVqWWvcodpSgW8eTHYvo1UE795hPkh5jDXZJP839+d1wCxsxaZ3KWLhiq/Smbu6cNAo0r3MIO60ao+yTvG9yK+iJqI8yFuf0XOyalZ48nd8PO8etNI3zrC2l1U=
+	t=1779301590; cv=none; b=uc91dv7Rr2jX0wcu7+sN0Jq/dKnc0ywn3fEnf22SYVG0z2TAwoHLJmwt7TPi15ojrxkS9bBxGHnpS0hTzYSPlF5rExoNIqIGcaViRNuYy/av6+JpCkpF8pANvGq3ZmImt3uzV4CojhhjkFKN5sxcHQdUosIMAP8N7kacSj8S0vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297318; c=relaxed/simple;
-	bh=JbuXwgGM7CEtYNX51LrVaWIh2KOkoDFbuJOVQS1AMp8=;
+	s=arc-20240116; t=1779301590; c=relaxed/simple;
+	bh=utJVPP4lNKPgiQPW9N0GgwD/R8egImgv9GVa7DQd87A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=daHhKhBiljmuQ4RXGymWkcnIb8BoKOgPyytrr4wc4V9BC5f5CVztTyHipTIXLSDn3juo/nkJhh07Y2JqEcLUjLOQYNJPFRgiA7aKnqDLC92AQW9LwKbr/HpxIjllEs8ruJaxY4KS7eNVPBrwGxHzlgXCr4iE4cLwa/s9KKXPEv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFr3naOt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3BC1F000E9;
-	Wed, 20 May 2026 17:15:16 +0000 (UTC)
+	 MIME-Version; b=iRTqScSNg/E2m6FBZzk3j0W8+YiMeP87rTESSUMddMOIP3PB3cVF8e+D6Mm/BZQ98HBkXJh9Ne6PUNILXgFXbfBwGjKfnz4cyXdMHnu60k/nGYJXQD2EzyTiijEpNEJnfZfJveSId6u4W5h7j71WsDbHoY7OJ/RFk4zWSoQ5+6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUhUyIp8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664201F000E9;
+	Wed, 20 May 2026 18:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297317;
-	bh=WwAqJumgLCwRlY6ufzNlvF+J2iCCUT3JTE61L5XV7lI=;
+	s=korg; t=1779301588;
+	bh=1fqSg8Gvs826Fp0Jrj9oJ6O+5AjLu1wcN4BofoyWPkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xFr3naOtwSoO/DM6ucBEyC+NVoykYxLXZZEV4oqjt0Z8hAKJTGYjhpXC7HxnJ/d3+
-	 HL1rpCQAmeb1EYGz64uKaiqx7tF+pf1hQRo2AChIhUjzn9AlQCzoy2ikvi3mM6mT96
-	 X+iyu/LeM9HXn1CcuRhZ2l3Putx/y9eUMb0LAnt8=
+	b=bUhUyIp81De6aGe0ulVCvwHrWr4wcgMci5Fr/m4pB3HsnJCmAVSWL6kKLB9VySa3i
+	 y8r5WpTz+c6h46WxRNmYEuWrD38K+Jy2IybhAK2N2G57RCObtT9ZagIURaPPEg4qfq
+	 nMWylh7C0y3oQzkrtc9indFec0hiptZTeaQw/SuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 7.0 1131/1146] drm/xe/dma-buf: fix UAF with retry loop
-Date: Wed, 20 May 2026 18:23:01 +0200
-Message-ID: <20260520162213.845393082@linuxfoundation.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 571/666] bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()
+Date: Wed, 20 May 2026 18:23:02 +0200
+Message-ID: <20260520162123.644918825@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +66,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251184-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252787-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,google.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 722BD599813
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,asu.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0DF375977A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 155a372a1cc50fa93387c5d3cdfd614a61e1afd1 upstream.
+[ Upstream commit aa6c6d9ee064aabfede4402fd1283424e649ca19 ]
 
-Retry doesn't work here, since bo will be freed on error, leading to
-UAF. However, now that we do the alloc & init before the attach, we can
-now combine this as one unit and have the init do the alloc for us. This
-should make the retry safe.
+bareudp_fill_metadata_dst() passes bareudp->sock to
+udp_tunnel6_dst_lookup() in the IPv6 path without a NULL check.
+The socket is only created in bareudp_open() and NULLed in
+bareudp_stop(), so calling this function while the device is down
+triggers a NULL dereference via sock->sk.
 
-Reported by Sashiko.
+ BUG: kernel NULL pointer dereference, address: 0000000000000018
+ RIP: 0010:udp_tunnel6_dst_lookup (net/ipv6/ip6_udp_tunnel.c:160)
+ Call Trace:
+  <TASK>
+  bareudp_fill_metadata_dst (drivers/net/bareudp.c:532)
+  do_execute_actions (net/openvswitch/actions.c:901)
+  ovs_execute_actions (net/openvswitch/actions.c:1589)
+  ovs_packet_cmd_execute (net/openvswitch/datapath.c:700)
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1114)
+  genl_rcv_msg (net/netlink/genetlink.c:1209)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  </TASK>
 
-v2: Fix up the error unwind (CI)
+Add a NULL check returning -ESHUTDOWN, consistent with the xmit paths
+in the same driver.
 
-Closes: https://sashiko.dev/#/patchset/20260506184332.86743-2-matthew.auld%40intel.com
-Fixes: eb289a5f6cc6 ("drm/xe: Convert xe_dma_buf.c for exhaustive eviction")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.18+
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20260508102635.149172-4-matthew.auld@intel.com
-(cherry picked from commit 479669418253e0f27f8cf5db01a731352ea592e7)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426165350.1663137-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c |   49 +++++++++-------------------------------
- 1 file changed, 12 insertions(+), 37 deletions(-)
+ drivers/net/bareudp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -238,16 +238,8 @@ struct dma_buf *xe_gem_prime_export(stru
- 	return buf;
- }
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index fa2dd76ba3d9e..8d6b632371f89 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -528,6 +528,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct in6_addr saddr;
+ 		struct socket *sock = rcu_dereference(bareudp->sock);
  
--/*
-- * Takes ownership of @storage: on success it is transferred to the returned
-- * drm_gem_object; on failure it is freed before returning the error.
-- * This matches the contract of xe_bo_init_locked() which frees @storage on
-- * its error paths, so callers need not (and must not) free @storage after
-- * this call.
-- */
- static struct drm_gem_object *
--xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
--		    struct dma_buf *dma_buf)
-+xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf *dma_buf)
- {
- 	struct dma_resv *resv = dma_buf->resv;
- 	struct xe_device *xe = to_xe_device(dev);
-@@ -258,10 +250,8 @@ xe_dma_buf_init_obj(struct drm_device *d
- 	int ret = 0;
- 
- 	dummy_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
--	if (!dummy_obj) {
--		xe_bo_free(storage);
-+	if (!dummy_obj)
- 		return ERR_PTR(-ENOMEM);
--	}
- 
- 	dummy_obj->resv = resv;
- 	xe_validation_guard(&ctx, &xe->val, &exec, (struct xe_val_flags) {}, ret) {
-@@ -270,8 +260,7 @@ xe_dma_buf_init_obj(struct drm_device *d
- 		if (ret)
- 			break;
- 
--		/* xe_bo_init_locked() frees storage on error */
--		bo = xe_bo_init_locked(xe, storage, NULL, resv, NULL, dma_buf->size,
-+		bo = xe_bo_init_locked(xe, NULL, NULL, resv, NULL, dma_buf->size,
- 				       0, /* Will require 1way or 2way for vm_bind */
- 				       ttm_bo_type_sg, XE_BO_FLAG_SYSTEM, &exec);
- 		drm_exec_retry_on_contention(&exec);
-@@ -322,7 +311,6 @@ struct drm_gem_object *xe_gem_prime_impo
- 	const struct dma_buf_attach_ops *attach_ops;
- 	struct dma_buf_attachment *attach;
- 	struct drm_gem_object *obj;
--	struct xe_bo *bo;
- 
- 	if (dma_buf->ops == &xe_dmabuf_ops) {
- 		obj = dma_buf->priv;
-@@ -337,22 +325,14 @@ struct drm_gem_object *xe_gem_prime_impo
- 		}
- 	}
- 
--	bo = xe_bo_alloc();
--	if (IS_ERR(bo))
--		return ERR_CAST(bo);
--
- 	/*
--	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so do not touch
--	 * on fail, since it will already take care of cleanup. On success we
--	 * still need to drop the ref, if something later fails.
--	 *
--	 * In addition this needs to happen before the attach, since
--	 * it will create a new attachment for this, and add it to the list of
--	 * attachments, at which point it is globally visible, and at any point
--	 * the export side can call into on invalidate_mappings callback, which
--	 * require a working object.
-+	 * This needs to happen before the attach, since it will create a new
-+	 * attachment for this, and add it to the list of attachments, at which
-+	 * point it is globally visible, and at any point the export side can
-+	 * call into on invalidate_mappings callback, which require a working
-+	 * object.
- 	 */
--	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
-+	obj = xe_dma_buf_create_obj(dev, dma_buf);
- 	if (IS_ERR(obj))
- 		return obj;
- 
-@@ -362,20 +342,15 @@ struct drm_gem_object *xe_gem_prime_impo
- 		attach_ops = test->attach_ops;
- #endif
- 
--	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, &bo->ttm.base);
-+	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, obj);
- 	if (IS_ERR(attach)) {
--		obj = ERR_CAST(attach);
--		goto out_err;
-+		xe_bo_put(gem_to_xe_bo(obj));
-+		return ERR_CAST(attach);
- 	}
- 
- 	get_dma_buf(dma_buf);
- 	obj->import_attach = attach;
- 	return obj;
--
--out_err:
--	xe_bo_put(bo);
--
--	return obj;
- }
- 
- #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
++		if (!sock)
++			return -ESHUTDOWN;
++
+ 		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
+ 					     0, &saddr, &info->key,
+ 					     sport, bareudp->port, info->key.tos,
+-- 
+2.53.0
+
 
 
 
