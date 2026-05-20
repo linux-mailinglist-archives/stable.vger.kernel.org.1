@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOIKH/noDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:45 +0200
+	id SNm4Fgn+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590D6592D58
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:01:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA059671A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C92CF308BDAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7CF0D3120FB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CE4352C52;
-	Wed, 20 May 2026 16:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C1372B58;
+	Wed, 20 May 2026 17:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlMPgErl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdUcctSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836FE285061;
-	Wed, 20 May 2026 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AF62046BA;
+	Wed, 20 May 2026 17:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295551; cv=none; b=HFQklKOGq60k1BYpPScQ2C5eF6qbO1bCmy4+N136PYiLa/YJ7PrFkXowFH/MNwB5vJGQtMOluCML/NB8T9gIYjZM++4uuugXJsUyQ2icP+gbrAyMhF0eWAO1I6XfvrhzVs+1TrBcVuxQ/apYzGb7YhpcZj8UHbsOUt+FilJmbM8=
+	t=1779297955; cv=none; b=ivd2IhTVPyaHht1JAS6TGtmE3r0YhSD7f6d0ra4dH3zhVcJ+CFyX1+Nfez1jW/afqO6Glna3KE7Tn+GbEWKdGgI+FZ3CXBXOKN+Zemw1II5fDTaPeGIPppX3bZScrWbzN+LOih3ZEgzhXRqcR7OXm7LZMINjpOg7SHOy7LKLYIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295551; c=relaxed/simple;
-	bh=y3b2iVbDttGZ8kNW+IbHPGASZf3lYArUBOQu2lBgfqA=;
+	s=arc-20240116; t=1779297955; c=relaxed/simple;
+	bh=fi539zqtCL2Pgk2+T+PVC6MUjYq861h0MbWuOJQjhbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpLypKiZAXhdb4hct34p99mFgDPwlbN5xcdcRLNL7SqI/W0fFcI4CN+k2Iz2nKqmFMy7Dndn5ocp2cETwvWtFVVjV93rOFU1RglE7v/K7/7c9v8DSeMLapROO8CGphRYOOJN+HoA1T+Xjy6fY8445HPY0dKANWoQKMXWXaDxka4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlMPgErl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B201F000E9;
-	Wed, 20 May 2026 16:45:49 +0000 (UTC)
+	 MIME-Version; b=jD7GUYA1vB8ZSiN1zGtFQsTh26LSEOju5OW4eNFt9KMUmstZcqcnY/6N3sBYSItIZe2s77Gb0TEyK8sigQ1LFSSvQwTL49EkV+bqPOEQaQE4DhAc47J6Obd2bA+eg8qGEABLhcE3WDIUZ1F/wB7U4BMQ0wZWFRKUGTYarc8/xxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdUcctSS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E291F000E9;
+	Wed, 20 May 2026 17:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295550;
-	bh=BAz2siFvpJoLq9LwMLXKmbVBydjIP4f9FtrrxR+U/GY=;
+	s=korg; t=1779297954;
+	bh=uL4BVWKKKq8uiDrXpXzkgeTUZNqPnJuNM/Ftajj2xC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mlMPgErlGus2w93ba/U7Z6seYwqC76qk/XHpU7JntRecUYg9wS8f3hZFR0P8mzvM7
-	 FKzAS/pq8pKR0Ra5FnoNvYLG7Iei+xTlObAobN881VWdxgkPPtwmVPHbOdO3h5KAz1
-	 xtNSzDT6DO5A26TBF2h5q8NapMUKYUcl7UoDZbuk=
+	b=CdUcctSSnSM+AsiYb912JozPFyugyvncMgSCKckBFlAqRt0z/oQPNRwmKpocvW0Iu
+	 uVJXQ5pn4hImvhMsSSn6VUA2uj6PQ8szQ+EBneyhRzXBTIXOD1VDRul5oZIUrPUZ20
+	 S7UMgl8mqQ3TjaWimE//+Cb5GaiNBeaqr+q2raJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Alex Williamson <alex@shazbot.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0461/1146] vfio: unhide vdev->debug_root
+Subject: [PATCH 6.18 228/957] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
 Date: Wed, 20 May 2026 18:11:51 +0200
-Message-ID: <20260520162158.630603524@linuxfoundation.org>
+Message-ID: <20260520162139.483706448@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +67,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250492-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[arndb.de:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251428-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,arndb.de:email]
-X-Rspamd-Queue-Id: 590D6592D58
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 5BBA059671A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 555aa178f8d22261d71da74df6267e6e6e97f95a ]
+[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
 
-When debugfs is disabled, the hisilicon driver now fails to build:
+Clang is not happy about set but unused variable:
 
-drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c: In function 'hisi_acc_vfio_debug_init':
-drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c:1671:62: error: 'struct vfio_device' has no member named 'debug_root'
- 1671 |         vfio_dev_migration = debugfs_lookup("migration", vdev->debug_root);
-      |                                                              ^~
+drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
+   412 |         unsigned int mnp;
+       |                      ^
+1 error generated.
 
-The driver otherwise relies on dead-code elimination, but this reference
-fails. The single struct member is not going to make much of a difference
-for memory consumption, so just keep this visible unconditionally.
+Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
+and set but not used variable") the 'mnp' became unused, but eliminating
+that code might have side-effects. The question here is what should we do
+with 'mnp'? The easiest way out is just mark it with __maybe_unused which
+will shut the compiler up and won't change any possible IO flow. So does
+this change.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: b398f91779b8 ("hisi_acc_vfio_pci: register debugfs for hisilicon migration driver")
-Link: https://lore.kernel.org/r/20260327165521.3779707-1-arnd@kernel.org
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+A dive into the history of the driver:
+
+The problem was revealed when the #if 0 guarded code along with unused
+pixel_vco variable was removed. That code was introduced in the original
+commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
+in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
+G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
+from older DAC1064 handling. Modify PLL setting when both CRTCs use same
+pixel clocks.").
+
+NOTE: The two commits mentioned above pre-date Git era and available in
+history.git repository for archaeological purposes.
+
+Even without that guard the modern compilers may see that the pixel_vco
+wasn't ever used and seems a leftover after some debug or review made
+25 years ago.
+
+The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
+to have any side effects either than some unneeded CPU processing during
+runtime. I agree that's unlikely that timeout (or heating up the CPU) has
+any effect on the HW (GPU/display) functionality.
+
+Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vfio.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/video/fbdev/matrox/g450_pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index e90859956514a..ef02a4996d451 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -72,13 +72,11 @@ struct vfio_device {
- 	u8 iommufd_attached:1;
- #endif
- 	u8 cdev_opened:1;
--#ifdef CONFIG_DEBUG_FS
- 	/*
- 	 * debug_root is a static property of the vfio_device
- 	 * which must be set prior to registering the vfio_device.
- 	 */
- 	struct dentry *debug_root;
--#endif
- };
+diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
+index e2c1478aa47f9..6a08f78cd1acb 100644
+--- a/drivers/video/fbdev/matrox/g450_pll.c
++++ b/drivers/video/fbdev/matrox/g450_pll.c
+@@ -409,7 +409,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
+ 		case M_VIDEO_PLL:
+ 			{
+ 				u_int8_t tmp;
+-				unsigned int mnp;
++				unsigned int mnp __maybe_unused;
+ 				unsigned long flags;
  
- /**
+ 				matroxfb_DAC_lock_irqsave(flags);
 -- 
 2.53.0
 
