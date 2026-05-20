@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252752-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDUQDSH/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:17 +0200
+	id sEitNkf+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252752-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D89596BAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D46596805
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBFF737D96F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C13530CC5DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE883F4DC0;
-	Wed, 20 May 2026 17:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA473FC5CE;
+	Wed, 20 May 2026 18:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmpMujzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8i4nVU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59F23EF0C1;
-	Wed, 20 May 2026 17:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0873FC5A5;
+	Wed, 20 May 2026 18:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299837; cv=none; b=QssMFRi9a3MZ7PwBZ2oZaijrcvBuf0Ur74GhN+wfkOeYAR88MEhORGkM2ef3gYXjaGNZozYKJTEoPyD3Fi+P3SR/b1pKa20ustrLuSLwiFrspAH1xYys4V89twxD4bqJi3zgu9OtL+GEOvoNXyR48MwumtHHMfyj/uphfBVBO/M=
+	t=1779301497; cv=none; b=n9478c59FhJGzVQRDnjAZOIn463/EXyHkjWNlq8heyRterbJJkZHcoBfCg0+rYqQZylz1kN47SWt9h0Hp8Yf42VxlCog8dm5L/mNJPG3XihKdwKi5f5sXddC84s81mMijI9cFH8IQ1YCpQa76SzNKkQ/0MWkOMgx+q3QJ4PNcsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299837; c=relaxed/simple;
-	bh=lagxnSNGFnIFFU5pFqLFjW4fRrKWJnH7a60x8wf9uQA=;
+	s=arc-20240116; t=1779301497; c=relaxed/simple;
+	bh=n9gbNt0EsN4C4M2m/Z9LNPSB/8Hl6/ziojJCw17wxtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZUB/FcG1t1ILqdhSftQBjVKflR8pR5wp1YVVGY+h+i+tGTAoniNmC5SUmO2GgA1Yy4We/O72w2snyr6cLGin1ZdpO8WXPUJDuqisOBwv9fy2HVcuRskoaUDBurqWd5kaOENzN92jPO5JKwGLe+X46fuu1CiMJ5QA7kGmKDJrZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmpMujzK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164671F000E9;
-	Wed, 20 May 2026 17:57:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l3cGavnMkwGOQMWvbv+pwWnL6Z5MAJlzT8f3/MD6tD0DmqR6nPh6DlaIulKqKFhHoyZ4vBwoQaOyAkhRfh0BXh+/j9HwArehw13jhOGEMMAsi+yK9qUswjlTKlDij0lohuXFhbhlNzSu2uKEx2MYqijr1L5/+QgGzyVMuxjLjy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8i4nVU+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5FE1F000E9;
+	Wed, 20 May 2026 18:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299836;
-	bh=6vM+1YQwKFNaAHoOYMFvUyIKGrpibKYKeE1zHgOjTZY=;
+	s=korg; t=1779301496;
+	bh=yltOL+U6VagPRNnMfJm9w04luI6jZPDmJQ/cG8zj7yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jmpMujzKKmlZH3+AoKR8MfG+k5HuwWgbSysYMoTnhoSA5NH7WJKlXhmYgiup+rHe6
-	 tccorv1b/LsXd3Tyt0NBCynDGTaFgr57sW/7oIS3qwYShO7YYLA73zUuZRNVqKfnu7
-	 zoYOhW2+nOI9ti04bUHI+N7YVZsDeP4HUSB0vAzA=
+	b=x8i4nVU+6VhG/OUYQs5vyjoCutI01sVj5wcVjT4IkFq61dUzrCxF+QFQ/Gzx+H6Mz
+	 dU6FlqQV/dfHjrbfOAZydkC+XuJGiFXJHtxWFaegdQkT8msTZUZdYgmyFNrGuXD45N
+	 +FFrQx23iUcwj2+1ekX4OVpj+fRHFaQt8ghZxMCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.18 905/957] drm: Replace old pointer to new idr
-Date: Wed, 20 May 2026 18:23:08 +0200
-Message-ID: <20260520162154.201574976@linuxfoundation.org>
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 578/666] drm/amd/display: Allow DCE link encoder without AUX registers
+Date: Wed, 20 May 2026 18:23:09 +0200
+Message-ID: <20260520162123.795521411@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252118-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252752-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,d7c9eed171647e421013];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qq.com:email,appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A6D89596BAF
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 91D46596805
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit dc366607c41c45fd0ae6f3db090f31dd611b644a upstream.
+[ Upstream commit ac27e3f99035f132f23bc0409d0e57f11f054c70 ]
 
-Commit 5e28b7b94408 introduced a logical error by failing to replace the
-newly generated IDR pointer to old id's pointer at the correct location
-within the "change handle" logic; this resulted in the issue reported by
-syzbot [1].
+Allow constructing the DCE link encoder without DDC,
+which means the AUX registers array will be NULL.
 
-Specifically, the new IDR object pointer is intended to replace the original
-id's pointer during the normal execution flow.
+This is necessary to support embedded connectors without DDC.
 
-Additionally, an unnecessary conditional check for the ret exit path has
-been removed.
-
-[1]
-!RB_EMPTY_ROOT(&prime_fpriv->dmabufs)
-WARNING: drivers/gpu/drm/drm_prime.c:224 at drm_prime_destroy_file_private+0x48/0x60 drivers/gpu/drm/drm_prime.c:224, CPU#0: syz.0.17/5833
-Call Trace:
- drm_file_free.part.0+0x7e6/0xcc0 drivers/gpu/drm/drm_file.c:269
- drm_file_free drivers/gpu/drm/drm_file.c:237 [inline]
- drm_close_helper.isra.0+0x186/0x200 drivers/gpu/drm/drm_file.c:290
- drm_release+0x1ab/0x360 drivers/gpu/drm/drm_file.c:438
-
-Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
-Reported-by: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7c9eed171647e421013
-Cc: stable@vger.kernel.org
-Tested-by: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/tencent_C267296443AAA4567771176886DFF364A305@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 87f30b101af62590faf6020d106da07efdda199b)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -1017,17 +1017,12 @@ int drm_gem_change_handle_ioctl(struct d
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 0c50fe266c8a1..4103213a572ad 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -989,7 +989,9 @@ void dce110_link_encoder_hw_init(
+ 		ASSERT(result == BP_RESULT_OK);
  
- 	spin_unlock(&file_priv->table_lock);
+ 	}
+-	aux_initialize(enc110);
++
++	if (enc110->aux_regs)
++		aux_initialize(enc110);
  
--	if (ret < 0)
--		goto out_unlock;
--
- 	if (obj->dma_buf) {
- 		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
- 					       handle);
- 		if (ret < 0) {
- 			spin_lock(&file_priv->table_lock);
- 			idr_remove(&file_priv->object_idr, handle);
--			idrobj = idr_replace(&file_priv->object_idr, obj, handle);
--			WARN_ON(idrobj != NULL);
- 			spin_unlock(&file_priv->table_lock);
- 			goto out_unlock;
- 		}
-@@ -1039,7 +1034,9 @@ int drm_gem_change_handle_ioctl(struct d
- 
- 	spin_lock(&file_priv->table_lock);
- 	idr_remove(&file_priv->object_idr, args->handle);
-+	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
- 	spin_unlock(&file_priv->table_lock);
-+	WARN_ON(idrobj != NULL);
- 
- out_unlock:
- 	mutex_unlock(&file_priv->prime.lock);
+ 	/* reinitialize HPD.
+ 	 * hpd_initialize() will pass DIG_FE id to HW context.
+-- 
+2.53.0
+
 
 
 
