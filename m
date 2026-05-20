@@ -1,67 +1,59 @@
-Return-Path: <stable+bounces-252481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sI3tH/cGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:43 +0200
+	id uIuhLs3rDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8105B597DA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:09:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC255931DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72ED1324CA15
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B989431091F1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADB73F789B;
-	Wed, 20 May 2026 18:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC913D88FC;
+	Wed, 20 May 2026 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMoFmoPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y59XmVa4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860DE3DC4DA;
-	Wed, 20 May 2026 18:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B1F2609FD;
+	Wed, 20 May 2026 17:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300786; cv=none; b=ll8W9r+p9PWX3t4KOrmQTT3PcTB7gbfuE62AAtUq704fkvyRD7cT7GGd3TRNYN8Po6Oj1xeiwN4brSNGIKyBCYQ3//MoYo/uUoeytWuv9++2FdSNd7MdcJBizn8sRJXHltAwpBpBT1VUEaklSNqD6Aw/r1GgyHAKknCKR66Ymew=
+	t=1779296695; cv=none; b=XU5plfsF7x73u1herGQOeoXYiNeNFNDz6j6yz6sL1wz2TTKyKorFTh1K8uxcGcr0GxbFGXHSawTqfXJ4HZ4bLK++kFGS3r4BMYpiftYyVdOqI345WGkR87XPAAY8jYQsysxgk+zCix6Oa1XFzD9d1TzvrzubdXSRKrC52bXBMaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300786; c=relaxed/simple;
-	bh=J0xdx+KEcy70H8RteGYBCxJZgN7g2sexLg4sT/BPJQg=;
+	s=arc-20240116; t=1779296695; c=relaxed/simple;
+	bh=LaYyPsYR7Jwvw6OpN6pyDOfPJKTph74jcB2Qh0J1ju0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TMFTOnfROdOaLJ8afwWRYP6ilYwe72thOd3N0i+HlWPtcXHIsLWgpilkERuGLINXqPSShFH0ZkxIr/vD5/CBv/e7QREoBo/W6+OICZr0U8AviHbZJAholh0fZn7NzJSlxFk5GjuyuqkUZUh4AalF0vYSwJgTRdDLf46y0pNrWr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMoFmoPn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EA31F000E9;
-	Wed, 20 May 2026 18:13:04 +0000 (UTC)
+	 MIME-Version; b=XmoiBjbj0jzjfhdeuscBUK85SgFI5Fgyvtnvtz2AhD6d0M9U7ZbAot4Y01sN+ptj9MGpLRj7WUp8Fs8v2CU9TQifFrHGT5kPRkwLAVXm89c2sOue9iXWyvlvO3emwkic/dpccmahf0DRV5ITXPvp+74xdcildtZeUhHE8dyvakc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y59XmVa4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69E71F000E9;
+	Wed, 20 May 2026 17:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300785;
-	bh=bbXJ8VpIiDeu/Sd9/k3x2SQEC1/EwfwANv+taQmVgcE=;
+	s=korg; t=1779296693;
+	bh=ZDalqIcT3ZFUuL2d1i+D+9f/Ks4dXp/zNoG/2kuo3NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lMoFmoPnQKXqVxbpIGt0sYmJ29cQE6nrsd6GZ8HpKtURrjqTAcuZshvHnHJNT7TS3
-	 dPcxC3AWe1E8wrMk9+REap+ZXuOOvQqE7Jf9iCfZdrKdkbQWbFa2ESQ8P/S4BzcB0R
-	 OQ6aUSV8WK8roBUq9dvsGzqjbHAiT0zjLqv6OSPQ=
+	b=Y59XmVa41mkERbOOTr/pMv8BC861ICV3AWjmJNiluZE7A/yiluEf0AjX6PFdc83WY
+	 uwlS0hE3pJ6tyBnmzjwGB2ofUFUx8P/WoQnib4hiJc2g0EdsmA48Dq+/oFog9adhBk
+	 hjzVdVncT1bWFjyHusMV7YS9S6KAyo1Z5n02cctw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 308/666] ocfs2/dlm: fix off-by-one in dlm_match_regions() region comparison
+Subject: [PATCH 7.0 0869/1146] rtc: abx80x: Disable alarm feature if no interrupt attached
 Date: Wed, 20 May 2026 18:18:39 +0200
-Message-ID: <20260520162117.897146940@linuxfoundation.org>
+Message-ID: <20260520162207.904722356@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,81 +66,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-252481-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250943-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8105B597DA4
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,nokia.com:email]
+X-Rspamd-Queue-Id: 3EC255931DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
 
-[ Upstream commit 01b61e8dda9b0fdb0d4cda43de25f4e390554d7b ]
+[ Upstream commit 0fedce7244e4b85c049ce579c87e298a1b0b811d ]
 
-The local-vs-remote region comparison loop uses '<=' instead of '<',
-causing it to read one entry past the valid range of qr_regions.  The
-other loops in the same function correctly use '<'.
+Commit 795cda8338ea ("rtc: interface: Fix long-standing race when setting
+alarm") exposed an issue where the rtc-abx80x driver does not clear the
+alarm feature bit, but instead relies on the set_alarm operation to return
+invalid.
 
-Fix the loop condition to use '<' for consistency and correctness.
+For example, when a RTC_UIE_ON ioctl is handled, it should abort at the
+feature validation. Instead, it proceeds to the rtc_timer_enqueue(),
+which used to return an error from the set_alarm call. However,
+following the race condition handling, which likely should not be
+discarding predecing errors, a success condition is returned to the
+ioctl() caller. This results in (for example):
+    hwclock: select() to /dev/rtc0 to wait for clock tick timed out
 
-Link: https://lkml.kernel.org/r/SYBPR01MB78813DA26B50EC5E01F00566AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Notwithstanding the validity of the race condition handling, if an interrupt
+wasn't specified, or could not be attached, the driver should clear the
+alarm feature bit.
+
+Fixes: 718a820a303c ("rtc: abx80x: add alarm support")
+Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
+Link: https://patch.msgid.link/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-abx80x.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index ad335fa6c188d..fe17f1e548c1c 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -1002,7 +1002,7 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 	for (i = 0; i < localnr; ++i) {
- 		foundit = 0;
- 		r = remote;
--		for (j = 0; j <= qr->qr_numregions; ++j) {
-+		for (j = 0; j < qr->qr_numregions; ++j) {
- 			if (!memcmp(l, r, O2HB_MAX_REGION_NAME_LEN)) {
- 				foundit = 1;
- 				break;
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 3fee27914ba80..5f3a3e60a19d0 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -933,6 +933,8 @@ static int abx80x_probe(struct i2c_client *client)
+ 			client->irq = 0;
+ 		}
+ 	}
++	if (client->irq <= 0)
++		clear_bit(RTC_FEATURE_ALARM, priv->rtc->features);
+ 
+ 	err = rtc_add_group(priv->rtc, &rtc_calib_attr_group);
+ 	if (err) {
 -- 
 2.53.0
 
