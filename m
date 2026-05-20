@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-251687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK66GjYADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-251687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:54 +0200
+	id sCxCGL32DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EF9596FAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB590595165
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB8CE3034645
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 428C43567C6B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A683B15E8B;
-	Wed, 20 May 2026 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9522236CDE9;
+	Wed, 20 May 2026 16:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zmk02SKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpLC/Sd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9108E3E123F;
-	Wed, 20 May 2026 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099663ED5C5;
+	Wed, 20 May 2026 16:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298633; cv=none; b=nmWUHpNrUTRZVxv9s1jFnQr+W53QwYcw2WHJ8t1jB7MqntrkeLoNcPIXccFmOXx8Fd8EPB7GPWgYmmzTdRQzei0HdHxerg7aAYJ7MZndoC461i6KwNd5QgGhrP/4LVyROKNq9N09D8hrsPvrV79H1zR4ZLTFkYeDYtoP3IWspEQ=
+	t=1779296117; cv=none; b=h+2PbtOAT/5G/LXpv0kI/WTn/9dBfUprtdH/UYy1jEWysYZ6zNVhD7VwJHt/gOsho4IoXlmNsKGxsfRRpR/cW1vyG6Xq4wjgjSxrjWMeM4tp290XoZlewyv/5Yp7LF4hOXmsy6tsKa5BKdRiBOYuPUW9l5Zn1HIf7p+lH8xlUQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298633; c=relaxed/simple;
-	bh=dJTklL6QRHP69HFKTQg+OrSp8pHrPl+FNt74uy9JMv0=;
+	s=arc-20240116; t=1779296117; c=relaxed/simple;
+	bh=Pe1IW3C5iA6ZvBAzr6CuRRmlb6/FcS1Y913T7bjW5qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdmSI0iDcVLRzyogb7OJdnPLWeW9Uz/ucEbW9yn+GZn5984dRqoOzkaBgU7FfBB0kHQoHk3vA3hNIoMX73n8Dt5FSY9g+ZdwJzQOvQFAo/Y1MzsFGFokzBEdEwNWzX0HZ8BGRqIVNNTuyIIjJ3fuob/CngJAYDnEdH124BnF4QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zmk02SKw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD651F00893;
-	Wed, 20 May 2026 17:37:10 +0000 (UTC)
+	 MIME-Version; b=q0aVguWjjHJc6axxPdtNmOxeg1x7X56F7UGjt5A1Lp/Tjab44qdxwPiGmhmhHSBJYOJC/AFBt6K/4M3+rXBfeQz9Dr0UfyMPAa1/Idu9x1aRdKOCnKW08HbjHgE4bBq7cVuhD2vyQQqB7KXAAVjw8ZwOANc2anbOtL/LIlohqDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpLC/Sd6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E88C1F000E9;
+	Wed, 20 May 2026 16:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298630;
-	bh=G7mb3aDSbSmbxIzBfcTvhs9WgCymFhI7FH2oWNKKyAo=;
+	s=korg; t=1779296115;
+	bh=omHu8VJuaywtFExiuhqiVkIM1UP9uKIYQocQ403nEG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zmk02SKwlUU7UQs1kPMkFiAUVTXZVOa8CgreLqsUxGfdQnM7RjK6H82xeb1Bk6ZcU
-	 Oyi/eIM/7S/EnYVWo4LWCdvbEf2Bik8G8HY+Q9ymkGIXQH+Vmx0e3gHG4/4Svv14QM
-	 TWWiA+wYNPqPW2dfGkn+IcHmZw98BUnhzGBbsMgc=
+	b=CpLC/Sd6Rzply0ekornlN/t3lLz+t4ieVHoLrHewtfSzHi3Tf63kgj2ShqpHFOMJj
+	 575edRaaPNBy/7gPG2qIvaMo8DxbKsf7XkpVz+Qw8SxoMYbgN3sE8n9vFAFoX34kRO
+	 dfLjjy79hQjwed1oy1wKtrY6XwMuAr6u0l3xAOQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jeff Layton <jlayton@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 443/957] ocfs2: fix listxattr handling when the buffer is full
+Subject: [PATCH 7.0 0676/1146] sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op
 Date: Wed, 20 May 2026 18:15:26 +0200
-Message-ID: <20260520162144.127929189@linuxfoundation.org>
+Message-ID: <20260520162203.486708696@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,124 +66,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-251687-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-250711-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,oracle.com:email,alibaba.com:email,fasheh.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A0EF9596FAF
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: BB590595165
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d12f558e6200b3f47dbef9331ed6d115d2410e59 ]
+[ Upstream commit 6f57293abb8d087de830dd3f02e66d94b3e59973 ]
 
-[BUG]
-If an OCFS2 inode has both inline and block-based xattrs, listxattr()
-can return a size larger than the caller's buffer when the inline names
-consume that buffer exactly.
+Clang compiler is not happy about set but unused variables:
 
-kernel BUG at mm/usercopy.c:102!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:usercopy_abort+0xb7/0xd0 mm/usercopy.c:102
-Call Trace:
- __check_heap_object+0xe3/0x120 mm/slub.c:8243
- check_heap_object mm/usercopy.c:196 [inline]
- __check_object_size mm/usercopy.c:250 [inline]
- __check_object_size+0x5c5/0x780 mm/usercopy.c:215
- check_object_size include/linux/ucopysize.h:22 [inline]
- check_copy_size include/linux/ucopysize.h:59 [inline]
- copy_to_user include/linux/uaccess.h:219 [inline]
- listxattr+0xb0/0x170 fs/xattr.c:926
- filename_listxattr fs/xattr.c:958 [inline]
- path_listxattrat+0x137/0x320 fs/xattr.c:988
- __do_sys_listxattr fs/xattr.c:1001 [inline]
- __se_sys_listxattr fs/xattr.c:998 [inline]
- __x64_sys_listxattr+0x7f/0xd0 fs/xattr.c:998
- ...
+.../flexfilelayout/flexfilelayoutdev.c:56:9: error: variable 'ret' set but not used [-Werror,-Wunused-but-set-variable]
+.../flexfilelayout/flexfilelayout.c:1505:6: error: variable 'err' set but not used [-Werror,-Wunused-but-set-variable]
+.../nfs4proc.c:9244:12: error: variable 'ptr' set but not used [-Werror,-Wunused-but-set-variable]
 
-[CAUSE]
-Commit 936b8834366e ("ocfs2: Refactor xattr list and remove
-ocfs2_xattr_handler().") replaced the old per-handler list accounting
-with ocfs2_xattr_list_entry(), but it kept using size == 0 to detect
-probe mode.
+Fix these by forwarding parameters of dprintk() to no_printk().
+The positive side-effect is a format-string checker enabled even for the cases
+when dprintk() is no-op.
 
-That assumption stops being true once ocfs2_listxattr() finishes the
-inline-xattr pass. If the inline names fill the caller buffer exactly,
-the block-xattr pass runs with a non-NULL buffer and a remaining size of
-zero. ocfs2_xattr_list_entry() then skips the bounds check, keeps
-counting block names, and returns a positive size larger than the
-supplied buffer.
-
-[FIX]
-Detect probe mode by testing whether the destination buffer pointer is
-NULL instead of whether the remaining size is zero.
-
-That restores the pre-refactor behavior and matches the OCFS2 getxattr
-helpers. Once the remaining buffer reaches zero while more names are
-left, the block-xattr pass now returns -ERANGE instead of reporting a
-size larger than the allocated list buffer.
-
-Link: https://lkml.kernel.org/r/20260410040339.3837162-1-gality369@gmail.com
-Fixes: 936b8834366e ("ocfs2: Refactor xattr list and remove ocfs2_xattr_handler().")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Fixes: fc931582c260 ("nfs41: create_session operation")
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/xattr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/lockd/svclock.c           | 5 +++++
+ include/linux/sunrpc/debug.h | 8 ++++++--
+ include/linux/sunrpc/sched.h | 3 ---
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 64ba3946f8408..8f7018bad283b 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -907,8 +907,8 @@ static int ocfs2_xattr_list_entry(struct super_block *sb,
- 	total_len = prefix_len + name_len + 1;
- 	*result += total_len;
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 255a847ca0b6b..abc65dc79f854 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -80,6 +80,11 @@ static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
  
--	/* we are just looking for how big our buffer needs to be */
--	if (!size)
-+	/* No buffer means we are only looking for the required size. */
-+	if (!buffer)
- 		return 0;
+ 	return buf;
+ }
++#else
++static inline const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
++{
++	return "???";
++}
+ #endif
  
- 	if (*result > size)
+ /*
+diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
+index 93d1a11ffbfb3..ab61bed2f7afc 100644
+--- a/include/linux/sunrpc/debug.h
++++ b/include/linux/sunrpc/debug.h
+@@ -38,6 +38,8 @@ extern unsigned int		nlm_debug;
+ do {									\
+ 	ifdebug(fac)							\
+ 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
++	else								\
++		no_printk(fmt, ##__VA_ARGS__);				\
+ } while (0)
+ 
+ # define dfprintk_rcu(fac, fmt, ...)					\
+@@ -46,13 +48,15 @@ do {									\
+ 		rcu_read_lock();					\
+ 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
+ 		rcu_read_unlock();					\
++	} else {							\
++		no_printk(fmt, ##__VA_ARGS__);				\
+ 	}								\
+ } while (0)
+ 
+ #else
+ # define ifdebug(fac)		if (0)
+-# define dfprintk(fac, fmt, ...)	do {} while (0)
+-# define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
++# define dfprintk(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
++# define dfprintk_rcu(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
+ #endif
+ 
+ /*
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index ccba79ebf8932..0dbdf3722537f 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -95,10 +95,7 @@ struct rpc_task {
+ 	int			tk_rpc_status;	/* Result of last RPC operation */
+ 	unsigned short		tk_flags;	/* misc flags */
+ 	unsigned short		tk_timeouts;	/* maj timeouts */
+-
+-#if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	unsigned short		tk_pid;		/* debugging aid */
+-#endif
+ 	unsigned char		tk_priority : 2,/* Task priority */
+ 				tk_garb_retry : 2,
+ 				tk_cred_retry : 2;
 -- 
 2.53.0
 
