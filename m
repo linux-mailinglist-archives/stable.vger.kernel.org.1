@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-250422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBTwLwfuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:19 +0200
+	id kDpjCZnxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0065593828
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6A65942B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60CAF315B954
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E72D31324CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD7B3EE1DA;
-	Wed, 20 May 2026 16:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3443D75DA;
+	Wed, 20 May 2026 17:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPIJyWKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm4139zl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DC83EA979;
-	Wed, 20 May 2026 16:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660C6331220;
+	Wed, 20 May 2026 17:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295373; cv=none; b=q3NTS76gqrQyyCPW14GntOdofrls8jPeGvxQGdWRL1+qsgRr5nzO5iRYrvGnFnWPqxi++7A7WPGQBPNfT7u6wZ9eeJkbmZHlko6ukQI3w7rlGoMDy/O4QKZI9LXKznN4lrru7tadBkfOi6NyJu25Uit8FA60MB9IWSkZQllsDSM=
+	t=1779297789; cv=none; b=ZLKkgy8N9hp3X+aCLPHmfaAkiawDt5kGEXM5ji0mwZsWghV6ab4atAcGQQO0vaaYDYWMPo0W+fmCEcsQIQcnsebxr3l9GJ7QbqNKmbMW5ntEkLxIKJ9Q7OJXU03yI/TV0J9NCYaEyeA5JQOk7fIrqWiQIW7XY4q8HO37qXTIUh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295373; c=relaxed/simple;
-	bh=3JKni8L0VzZOPZBU/jNib6NgUVFwyf2ID4GYD7+/6ns=;
+	s=arc-20240116; t=1779297789; c=relaxed/simple;
+	bh=rZ3iMLM/qQcjmiY4AiZCcyonmE27hCYtrh8awHAr/j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/VVn9ONp7Ne5JzrHf0DEx7LWJVyJr15AmG/PPnb2D073YhkC4j3f+lH/qvOZ+JmwnNeuldq+BTyfRLnmug+QDI05XSalBTjlGhRdH6Jn0HSmA90V95N9flgCabMrhCb6XoYBvnRQ3hVBfLYvpqBaY/4sLY8EUGZhwZVprCEFkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPIJyWKK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEF01F00894;
-	Wed, 20 May 2026 16:42:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dfh1k9jC4D4CrKz41/7wO1mrfSE6J5SFV596DkBmXOuR7AZci+6zyPX+cluA88YApno2nmNxFgrFlIZbOz1xfozZqWnkBqPPV+bLYTFsdBLGijmXrrZIQKMpQFEomHVXXYuNPxAtF+u4rOb83HLwVYUw1KnKT4EPILmO7EcclDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm4139zl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8E01F000E9;
+	Wed, 20 May 2026 17:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295372;
-	bh=1P/oXBvN7gre2lojiCd9RoYDKeQkf6O9il5vJE3P5jw=;
+	s=korg; t=1779297788;
+	bh=48OoCq7UuOFj2xfm3yCYWA/8aFrLSwrSXu+jhiifSzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qPIJyWKKw8HtAK3gyooi/t30pv05ZkOQ5wsfqbeeKGAeEnBk88H3tMq2p3No8PArh
-	 pRnnsK2uXQBRXxua1YzpxMMVGRUDDDTdcv41sCvW+j4pwD/35UiIED9e5kiELdVPAf
-	 ULHz/byHopXH8IY9lFoUq5XUn5IvuuBN/jtVWnQA=
+	b=hm4139zl88WMWlu93NM4h0JZQ3RZCqrhKfpkqdgtOXo0s4DSRFnI9Tc3pQyIHUsKd
+	 CLo8/DSN8H0oRLazgP1ZGvpW6AtH77a6F+xtV6Ek9xCj2Z8HXYwlUDuwrMUMmb9mTU
+	 lVLUwuxaNmEMXgkjRPNkxMCW28RH5DXCbecA1ATc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>,
+	Gerd Rausch <gerd.rausch@oracle.com>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0395/1146] dt-bindings: PCI: imx6q-pcie: Fix maxItems of clocks and clock-names
-Date: Wed, 20 May 2026 18:10:45 +0200
-Message-ID: <20260520162157.138857237@linuxfoundation.org>
+Subject: [PATCH 6.18 163/957] net/rds: Optimize rds_ib_laddr_check
+Date: Wed, 20 May 2026 18:10:46 +0200
+Message-ID: <20260520162138.087040005@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +66,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250422-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251365-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,nxp.com:email]
-X-Rspamd-Queue-Id: E0065593828
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AD6A65942B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Håkon Bugge <haakon.bugge@oracle.com>
 
-[ Upstream commit 401359ef44af43b6b775dc01bb7b31396db67aab ]
+[ Upstream commit 236f718ac885965fa886440b9898dfae185c9733 ]
 
-Commit 1352f58d7c8d ("dt-bindings: PCI: pci-imx6: Add external reference
-clock input") that added reference clock to the binding was incomplete.
+rds_ib_laddr_check() creates a CM_ID and attempts to bind the address
+in question to it. This in order to qualify the allegedly local
+address as a usable IB/RoCE address.
 
-The constraints for "clocks" and "clock-names" still enforce an incorrect
-number of items. Update maxItems for both properties to 6 to match the
-actual hardware configuration.
+In the field, ExaWatcher runs rds-ping to all ports in the fabric from
+all local ports. This using all active ToS'es. In a full rack system,
+we have 14 cell servers and eight db servers. Typically, 6 ToS'es are
+used. This implies 528 rds-ping invocations per ExaWatcher's "RDSinfo"
+interval.
 
-Fixes: 1352f58d7c8d ("dt-bindings: PCI: pci-imx6: Add external reference clock input")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260324023036.784466-2-hongxing.zhu@nxp.com
+Adding to this, each rds-ping invocation creates eight sockets and
+binds the local address to them:
+
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 3
+bind(3, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 4
+bind(4, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 5
+bind(5, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 6
+bind(6, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 7
+bind(7, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 8
+bind(8, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 9
+bind(9, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+socket(AF_RDS, SOCK_SEQPACKET, 0)       = 10
+bind(10, {sa_family=AF_INET, sin_port=htons(0),
+	sin_addr=inet_addr("192.168.36.2")}, 16) = 0
+
+So, at every interval ExaWatcher executes rds-ping's, 4224 CM_IDs are
+allocated, considering this full-rack system. After the a CM_ID has
+been allocated, rdma_bind_addr() is called, with the port number being
+zero. This implies that the CMA will attempt to search for an un-used
+ephemeral port. Simplified, the algorithm is to start at a random
+position in the available port space, and then if needed, iterate
+until an un-used port is found.
+
+The book-keeping of used ports uses the idr system, which again uses
+slab to allocate new struct idr_layer's. The size is 2092 bytes and
+slab tries to reduce the wasted space. Hence, it chooses an order:3
+allocation, for which 15 idr_layer structs will fit and only 1388
+bytes are wasted per the 32KiB order:3 chunk.
+
+Although this order:3 allocation seems like a good space/speed
+trade-off, it does not resonate well with how it used by the CMA. The
+combination of the randomized starting point in the port space (which
+has close to zero spatial locality) and the close proximity in time of
+the 4224 invocations of the rds-ping's, creates a memory hog for
+order:3 allocations.
+
+These costly allocations may need reclaims and/or compaction. At
+worst, they may fail and produce a stack trace such as (from uek4):
+
+[<ffffffff811a72d5>] __inc_zone_page_state+0x35/0x40
+[<ffffffff811c2e97>] page_add_file_rmap+0x57/0x60
+[<ffffffffa37ca1df>] remove_migration_pte+0x3f/0x3c0 [ksplice_6cn872bt_vmlinux_new]
+[<ffffffff811c3de8>] rmap_walk+0xd8/0x340
+[<ffffffff811e8860>] remove_migration_ptes+0x40/0x50
+[<ffffffff811ea83c>] migrate_pages+0x3ec/0x890
+[<ffffffff811afa0d>] compact_zone+0x32d/0x9a0
+[<ffffffff811b00ed>] compact_zone_order+0x6d/0x90
+[<ffffffff811b03b2>] try_to_compact_pages+0x102/0x270
+[<ffffffff81190e56>] __alloc_pages_direct_compact+0x46/0x100
+[<ffffffff8119165b>] __alloc_pages_nodemask+0x74b/0xaa0
+[<ffffffff811d8411>] alloc_pages_current+0x91/0x110
+[<ffffffff811e3b0b>] new_slab+0x38b/0x480
+[<ffffffffa41323c7>] __slab_alloc+0x3b7/0x4a0 [ksplice_s0dk66a8_vmlinux_new]
+[<ffffffff811e42ab>] kmem_cache_alloc+0x1fb/0x250
+[<ffffffff8131fdd6>] idr_layer_alloc+0x36/0x90
+[<ffffffff8132029c>] idr_get_empty_slot+0x28c/0x3d0
+[<ffffffff813204ad>] idr_alloc+0x4d/0xf0
+[<ffffffffa051727d>] cma_alloc_port+0x4d/0xa0 [rdma_cm]
+[<ffffffffa0517cbe>] rdma_bind_addr+0x2ae/0x5b0 [rdma_cm]
+[<ffffffffa09d8083>] rds_ib_laddr_check+0x83/0x2c0 [ksplice_6l2xst5i_rds_rdma_new]
+[<ffffffffa05f892b>] rds_trans_get_preferred+0x5b/0xa0 [rds]
+[<ffffffffa05f09f2>] rds_bind+0x212/0x280 [rds]
+[<ffffffff815b4016>] SYSC_bind+0xe6/0x120
+[<ffffffff815b4d3e>] SyS_bind+0xe/0x10
+[<ffffffff816b031a>] system_call_fastpath+0x18/0xd4
+
+To avoid these excessive calls to rdma_bind_addr(), we optimize
+rds_ib_laddr_check() by simply checking if the address in question has
+been used before. The rds_rdma module keeps track of addresses
+associated with IB devices, and the function rds_ib_get_device() is
+used to determine if the address already has been qualified as a valid
+local address. If not found, we call the legacy rds_ib_laddr_check(),
+now renamed to rds_ib_laddr_check_cm().
+
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Signed-off-by: Somasundaram Krishnasamy <somasundaram.krishnasamy@oracle.com>
+Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260408080420.540032-2-achender@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ebf71dd4aff4 ("net/rds: Restrict use of RDS/IB to the initial network namespace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml        | 4 ++--
- Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml     | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ net/rds/ib.c      | 20 ++++++++++++++++++--
+ net/rds/ib.h      |  1 +
+ net/rds/ib_rdma.c |  2 +-
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-index cddbe21f99f2b..0488c942092d6 100644
---- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-+++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie-common.yaml
-@@ -17,11 +17,11 @@ description:
- properties:
-   clocks:
-     minItems: 3
--    maxItems: 5
-+    maxItems: 6
+diff --git a/net/rds/ib.c b/net/rds/ib.c
+index 9826fe7f9d008..996f007cd516b 100644
+--- a/net/rds/ib.c
++++ b/net/rds/ib.c
+@@ -403,8 +403,8 @@ static void rds6_ib_ic_info(struct socket *sock, unsigned int len,
+  * allowed to influence which paths have priority.  We could call userspace
+  * asserting this policy "routing".
+  */
+-static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+-			      __u32 scope_id)
++static int rds_ib_laddr_check_cm(struct net *net, const struct in6_addr *addr,
++				 __u32 scope_id)
+ {
+ 	int ret;
+ 	struct rdma_cm_id *cm_id;
+@@ -489,6 +489,22 @@ static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
+ 	return ret;
+ }
  
-   clock-names:
-     minItems: 3
--    maxItems: 5
-+    maxItems: 6
++static int rds_ib_laddr_check(struct net *net, const struct in6_addr *addr,
++			      __u32 scope_id)
++{
++	struct rds_ib_device *rds_ibdev = NULL;
++
++	if (ipv6_addr_v4mapped(addr)) {
++		rds_ibdev = rds_ib_get_device(addr->s6_addr32[3]);
++		if (rds_ibdev) {
++			rds_ib_dev_put(rds_ibdev);
++			return 0;
++		}
++	}
++
++	return rds_ib_laddr_check_cm(net, addr, scope_id);
++}
++
+ static void rds_ib_unregister_client(void)
+ {
+ 	ib_unregister_client(&rds_ib_client);
+diff --git a/net/rds/ib.h b/net/rds/ib.h
+index 8ef3178ed4d61..5ff346a1e8baa 100644
+--- a/net/rds/ib.h
++++ b/net/rds/ib.h
+@@ -381,6 +381,7 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn,
+ 	__rds_ib_conn_error(conn, KERN_WARNING "RDS/IB: " fmt)
  
-   num-lanes:
-     const: 1
-diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-index 12a01f7a57443..21dda80660147 100644
---- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
-@@ -40,7 +40,8 @@ properties:
-       - description: PCIe PHY clock.
-       - description: Additional required clock entry for imx6sx-pcie,
-            imx6sx-pcie-ep, imx8mq-pcie, imx8mq-pcie-ep.
--      - description: PCIe reference clock.
-+      - description: PCIe internal reference clock.
-+      - description: PCIe additional external reference clock.
+ /* ib_rdma.c */
++struct rds_ib_device *rds_ib_get_device(__be32 ipaddr);
+ int rds_ib_update_ipaddr(struct rds_ib_device *rds_ibdev,
+ 			 struct in6_addr *ipaddr);
+ void rds_ib_add_conn(struct rds_ib_device *rds_ibdev, struct rds_connection *conn);
+diff --git a/net/rds/ib_rdma.c b/net/rds/ib_rdma.c
+index dd08ccc4246da..751755cd069e0 100644
+--- a/net/rds/ib_rdma.c
++++ b/net/rds/ib_rdma.c
+@@ -43,7 +43,7 @@ struct workqueue_struct *rds_ib_mr_wq;
  
-   clock-names:
-     minItems: 3
+ static void rds_ib_odp_mr_worker(struct work_struct *work);
+ 
+-static struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
++struct rds_ib_device *rds_ib_get_device(__be32 ipaddr)
+ {
+ 	struct rds_ib_device *rds_ibdev;
+ 	struct rds_ib_ipaddr *i_ipaddr;
 -- 
 2.53.0
 
