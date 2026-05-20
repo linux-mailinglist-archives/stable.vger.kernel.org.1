@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GrtMZsZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:15 +0200
+	id COrZJPbtDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C18A599A6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDFA5937EA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97C7E35B6624
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E50583153326
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC0E3BA246;
-	Wed, 20 May 2026 17:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5023D6CB7;
+	Wed, 20 May 2026 16:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e41DUzY3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOrpSnZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1C2369999;
-	Wed, 20 May 2026 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF243D5642;
+	Wed, 20 May 2026 16:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297736; cv=none; b=j77rhnlSsrUMzIdhfintTTiyRULF9Qxzz6034CRidCZbKoY5zXu0Sc6iZ+faPCs9ZZW7DvNMROYCaVlwic8oqYufEXdv+gla/O6q4xF7pp5QC82wqi6G8pgJntHKVnwaA8tvEFj4wOPMnbb/3Aidg6p5tYbjWKJimTkto1voVkk=
+	t=1779295333; cv=none; b=MQuv7f/xBv5j1Tw8So/sQ6dxsGoK/FRxVus57D/tl0L3F2Ht0DI2SvQmnMxm7qxC/yCT8kmeIe8o917GIm7pbEusg3iBErF/WLNPhh9bBUKautm5hBCif0pClGLOaJs2b867rsb43Ip768xdqIH/ekDKDVl6iRCWrypXINbR4ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297736; c=relaxed/simple;
-	bh=qEB2THl6YbfvDBTdliWZUW619WUEzYTJNQC+VJyBQaI=;
+	s=arc-20240116; t=1779295333; c=relaxed/simple;
+	bh=JROfA1W7rjHXmyiKPRcPdB0wIlW3eewMZGc9Hht6m3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJe9plCwM9UiyvqR2wu+tFpdiI3Lq+iap9z34+BYJCEI2OoPGVNWy89dut4MOJrF9KDNESdbuObW/Ou49jiDEIZ9w8Ko+qUnYGmV3L7b3NY/aVk8vC/ssh/4nGdKQP+vXgR68Rb2aQJVU27Y1JpmqZiDYur6mpnYgSTKF6RICvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e41DUzY3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCB81F000E9;
-	Wed, 20 May 2026 17:22:14 +0000 (UTC)
+	 MIME-Version; b=ArSTlg/uGRRQa1HVmeIdwq232trbPme0NB1Z2pMxuZgERAHn20WzxICrk9IV5EuzLDznVwuDV7SFYcpydCkpBryAGskcWf1RIA64npghZt9xf2P0ky2JeLActZeYx+eWDcnkGv4UH/Awpp/b/dqURAoWSyMc64eE6OzHMzHYY9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOrpSnZs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207191F000E9;
+	Wed, 20 May 2026 16:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297735;
-	bh=SsIYKo29v1d+rBSJvQXuig7sab7og1YkNry9os0jDo8=;
+	s=korg; t=1779295332;
+	bh=V7svvq1T2ddm8I37rhOZvyvRQOM0s8oUZ0Qlus/rkcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e41DUzY3oDxlo6QHKtBhhn4RcXoYBLGapAPyQJ/+qUrGNhVcE1GkRERmrI+fQNVw7
-	 My/Y5Z0Y5q0OoKYpHJbRdC0p6YQTixOoeWFvPct8J+58Xi5Wnkn28gfKUIlbNVB3nS
-	 U9PMijsin7hZjurl8L6b3KOUWo7yWUlYaV/YgXd4=
+	b=JOrpSnZsSNYonmhJf0m/g0izVEZVXMHG0KWFUIDHYwmLP5cd8tiQy1HCkcGQBtKjr
+	 GxboFOFwarlhKrJOQ5DTSvy43bvTYNu4PwO0SnPU/VCZ/a9qH6Wbpl3S6gnBJlq1ka
+	 AjK9cWh912M5RqGJTJpiVnOTvgUz7VMZYyN1urh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 145/957] bpf: return VMA snapshot from task_vma iterator
+Subject: [PATCH 7.0 0378/1146] ASoC: fsl_easrc: Fix value type in fsl_easrc_iec958_get_bits()
 Date: Wed, 20 May 2026 18:10:28 +0200
-Message-ID: <20260520162137.698996725@linuxfoundation.org>
+Message-ID: <20260520162156.755396297@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,163 +68,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251344-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250407-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1C18A599A6B
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9BDFA5937EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 4cbee026db54cad39c39db4d356100cb133412b3 ]
+[ Upstream commit aa21fe4a81458cf469c2615b08cbde5997dde25a ]
 
-Holding the per-VMA lock across the BPF program body creates a lock
-ordering problem when helpers acquire locks that depend on mmap_lock:
+The value type of controls "Context 0 IEC958 Bits Per Sample" should be
+integer, not enumerated, the issue is found by the mixer-test.
 
-  vm_lock -> i_rwsem -> mmap_lock -> vm_lock
-
-Snapshot the VMA under the per-VMA lock in _next() via memcpy(), then
-drop the lock before returning. The BPF program accesses only the
-snapshot.
-
-The verifier only trusts vm_mm and vm_file pointers (see
-BTF_TYPE_SAFE_TRUSTED_OR_NULL in verifier.c). vm_file is reference-
-counted with get_file() under the lock and released via fput() on the
-next iteration or in _destroy(). vm_mm is already correct because
-lock_vma_under_rcu() verifies vma->vm_mm == mm. All other pointers
-are left as-is by memcpy() since the verifier treats them as untrusted.
-
-Fixes: 4ac454682158 ("bpf: Introduce task_vma open-coded iterator kfuncs")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Mykyta Yatsenko <yatsenko@meta.com>
-Link: https://lore.kernel.org/r/20260408154539.3832150-4-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20260401094226.2900532-11-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/task_iter.c | 42 ++++++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 12 deletions(-)
+ sound/soc/fsl/fsl_easrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
-index 87e87f18913d9..e791ae065c39b 100644
---- a/kernel/bpf/task_iter.c
-+++ b/kernel/bpf/task_iter.c
-@@ -808,7 +808,7 @@ static inline void bpf_iter_mmput_async(struct mm_struct *mm)
- struct bpf_iter_task_vma_kern_data {
- 	struct task_struct *task;
- 	struct mm_struct *mm;
--	struct vm_area_struct *locked_vma;
-+	struct vm_area_struct snapshot;
- 	u64 next_addr;
- };
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index f48e43a0edcfc..3086cb758beb6 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -73,7 +73,7 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
+ 	struct soc_mreg_control *mc =
+ 		(struct soc_mreg_control *)kcontrol->private_value;
  
-@@ -842,7 +842,7 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
+-	ucontrol->value.enumerated.item[0] = easrc_priv->bps_iec958[mc->regbase];
++	ucontrol->value.integer.value[0] = easrc_priv->bps_iec958[mc->regbase];
  
- 	/*
- 	 * Reject irqs-disabled contexts including NMI. Operations used
--	 * by _next() and _destroy() (vma_end_read, bpf_iter_mmput_async)
-+	 * by _next() and _destroy() (vma_end_read, fput, bpf_iter_mmput_async)
- 	 * can take spinlocks with IRQs disabled (pi_lock, pool->lock).
- 	 * Running from NMI or from a tracepoint that fires with those
- 	 * locks held could deadlock.
-@@ -885,7 +885,7 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
- 		goto err_cleanup_iter;
- 	}
- 
--	kit->data->locked_vma = NULL;
-+	kit->data->snapshot.vm_file = NULL;
- 	kit->data->next_addr = addr;
  	return 0;
- 
-@@ -947,26 +947,45 @@ bpf_iter_task_vma_find_next(struct bpf_iter_task_vma_kern_data *data)
- 	return vma;
  }
- 
-+static void bpf_iter_task_vma_snapshot_reset(struct vm_area_struct *snap)
-+{
-+	if (snap->vm_file) {
-+		fput(snap->vm_file);
-+		snap->vm_file = NULL;
-+	}
-+}
-+
- __bpf_kfunc struct vm_area_struct *bpf_iter_task_vma_next(struct bpf_iter_task_vma *it)
- {
- 	struct bpf_iter_task_vma_kern *kit = (void *)it;
--	struct vm_area_struct *vma;
-+	struct vm_area_struct *snap, *vma;
- 
- 	if (!kit->data) /* bpf_iter_task_vma_new failed */
- 		return NULL;
- 
--	if (kit->data->locked_vma) {
--		vma_end_read(kit->data->locked_vma);
--		kit->data->locked_vma = NULL;
--	}
-+	snap = &kit->data->snapshot;
-+
-+	bpf_iter_task_vma_snapshot_reset(snap);
- 
- 	vma = bpf_iter_task_vma_find_next(kit->data);
- 	if (!vma)
- 		return NULL;
- 
--	kit->data->locked_vma = vma;
-+	memcpy(snap, vma, sizeof(*snap));
-+
-+	/*
-+	 * The verifier only trusts vm_mm and vm_file (see
-+	 * BTF_TYPE_SAFE_TRUSTED_OR_NULL in verifier.c). Take a reference
-+	 * on vm_file; vm_mm is already correct because lock_vma_under_rcu()
-+	 * verifies vma->vm_mm == mm. All other pointers are untrusted by
-+	 * the verifier and left as-is.
-+	 */
-+	if (snap->vm_file)
-+		get_file(snap->vm_file);
-+
- 	kit->data->next_addr = vma->vm_end;
--	return vma;
-+	vma_end_read(vma);
-+	return snap;
- }
- 
- __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
-@@ -974,8 +993,7 @@ __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
- 	struct bpf_iter_task_vma_kern *kit = (void *)it;
- 
- 	if (kit->data) {
--		if (kit->data->locked_vma)
--			vma_end_read(kit->data->locked_vma);
-+		bpf_iter_task_vma_snapshot_reset(&kit->data->snapshot);
- 		put_task_struct(kit->data->task);
- 		bpf_iter_mmput_async(kit->data->mm);
- 		bpf_mem_free(&bpf_global_ma, kit->data);
 -- 
 2.53.0
 
