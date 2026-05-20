@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-249738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEGVIngqDWo2uAUAu9opvQ
-	(envelope-from <stable+bounces-249738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:28:56 +0200
+	id +BA4KJkqDWo2uAUAu9opvQ
+	(envelope-from <stable+bounces-249739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:29:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030EF587398
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 476DB5873AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB2683040D9B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:22:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56A213050F54
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EF4352027;
-	Wed, 20 May 2026 03:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50663502B8;
+	Wed, 20 May 2026 03:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KV6qtBh2"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="ayDQS8Ud"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5483491C9
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 03:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED03E3264EF;
+	Wed, 20 May 2026 03:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779247368; cv=none; b=ez2wiRIGoWDU3O6z/Bf6TbhzDC3J24VbCE1cTq0UUfSza6ZRr2JETA6HaVPevlmpySn5REkrSpsMQeC++pfaVlKc5ZIGGn2csK5dqp97AGbnjwLuV/GO60GZtMwKr0NI1gKTtpA3SsDIJ0mUKXWfhEMQGO540Ypbh00+YQlHOVM=
+	t=1779247503; cv=none; b=AWPimjaXcxS+9wB3FsOTiLSV37Qdazm7yhv6axhEA5S2dJksalV3Gl7jxs95immEKFUXGRpIOWhvD8pxvbEDUE0q2k4pD2YTtxSoe7XPI1I3ny2xSdm7hwcZxKr57dkukM9knjgLGu3Lt1nNG8z6Wm5h3ctbcV6hiBTD08xl6v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779247368; c=relaxed/simple;
-	bh=Cpu72zIKlP/5shzkvgl5+ibZqDu3fBT7lzprYTL58rM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lYkNyZw9wZZGb3bekL3AdJ2rCZ3seLfFZNggQA2jxaE/8SVpKIuOOQhCp2BWOHBs8TsKbMA0AEWO7ebTU5jmBT8AYJbm8yMEZBekI5oRArsxsuobZn2h0qXdDftAYNUpBQnQJocewI/vFH5s3Nlu8yfBSX54C73QMWefOO2kOpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KV6qtBh2; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779247363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZqZmu0OqZXtv/PtHiYRsiCkX8ld0/Ake0qTSoL86xa8=;
-	b=KV6qtBh2zR13CBHHP4AaZRqqlnwcpLwTrs/mQpoSeDlAyDV9dX3SRyl8G8gp/HKwy/1v3/
-	B+09PLGFyRDmMdQNDUUUyj+fOiHTRAxhzviDuVinT1Hgc18kpKbxqyrUfyh+Hz+cAGUpP1
-	ExS8+ykyX70hxwuRZdMqISANBtnbk44=
-From: Fushuai Wang <fushuai.wang@linux.dev>
-To: srinivas.pandruvada@linux.intel.com,
-	lenb@kernel.org,
-	rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	currojerez@riseup.net
-Cc: linux-pm@vger.kernel.org,
+	s=arc-20240116; t=1779247503; c=relaxed/simple;
+	bh=yIlGbEWgTQQCHcLeUsvi6UTnrr3qjqitrxenDUtS60w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=B2J5QLu6ID4mJCGcq0/5xRyQWSJVYHVBJrWzJeT3P63x96QWjEM0SOWUn1FspSuBdvuE+Qywc2+ku9fLiEhSdGqndZkC/q3PB48SfC4eQ8TTUVr3TkYH0QDBSwnul02BrqOupoJr3FNSpjG5ySCDrIdSFDBZm9sqLSmt3aeALQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=ayDQS8Ud; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fb
+	nt9BLA6TnBGRQs0Uul0F8gUmr2OghryrkcVMdfDZ8=; b=ayDQS8UdIiEkWOWOih
+	X6f8aksawT9FoInVp8afmueASudyzv8ce2r2i4tlPEnUpTM22rdWV+wLn1B1ioOU
+	bn1KKT7JOdWTaxiwQVEXGLqwKToT1hk8xh44qtrIwKLMiNS8y/yZppUsjgq9AZ1T
+	9fy8aTjtwOzwPOe7vKnaSPWi0=
+Received: from DESKTOP-EQVOVNC.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgD3_7aAKQ1qxS2MFw--.40165S2;
+	Wed, 20 May 2026 11:24:48 +0800 (CST)
+From: Li Xinyu <xinyuili@126.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	wangfushuai@baidu.com,
+	Linus Walleij <linusw@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] cpufreq: intel_pstate: Sync policy->cur when setting min pstate during CPU offline
-Date: Wed, 20 May 2026 11:21:19 +0800
-Message-Id: <20260520032119.30615-1-fushuai.wang@linux.dev>
+Subject: [PATCH v2] iio: gyro: mpu3050: use devm_iio_trigger_register
+Date: Wed, 20 May 2026 11:24:47 +0800
+Message-Id: <20260520032447.1683688-1-xinyuili@126.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260520024153.1647951-1-xinyuili@126.com>
+References: <20260520024153.1647951-1-xinyuili@126.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,81 +62,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:PikvCgD3_7aAKQ1qxS2MFw--.40165S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uw18tw4fWryfJry7ZF45trb_yoW8XryDp3
+	ySgF98AFWkXr47AF4kZ3WkKFy7Ga45JrWF9rWUCryYq3y3Cr1xKr1YqFW2vr18ZFWUWF4U
+	JrWrWrZ0kFZ7ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j6RR_UUUUU=
+X-CM-SenderInfo: 50lq53xlolqiyswou0bp/xtbBrwBIkGoNKYBeoQAA3G
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[126.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[126.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249738-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[fushuai.wang@linux.dev,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 030EF587398
+	TAGGED_FROM(0.00)[bounces-249739-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[126.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[xinyuili@126.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[126.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 476DB5873AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+mpu3050_trigger_probe() allocates the DRDY trigger with
+devm_iio_trigger_alloc() but registers it with plain
+iio_trigger_register(). The remove callback calls free_irq()
+on the trigger but never calls iio_trigger_unregister(), so on
+module unload the trigger remains in the global trigger list
+while its memory is freed by devm, leaving a dangling entry.
 
-When a CPU goes offline with HWP disabled, intel_pstate_set_min_pstate()
-sets the MSR_IA32_PERF_CTL to minimum frequency to prevent SMT siblings
-from being restricted. However, the policy->cur value was not updated,
-leaving it at the previous value.
+Switch to devm_iio_trigger_register() so the registration is
+undone automatically in the same devm scope as the allocation.
 
-When the CPU comes back online, governor->limits() checks if target_freq
-equals policy->cur and skips the frequency adjustment if they match. Since
-policy->cur still holds the previous value, the governor does not call
-cpufreq_driver->target to update MSR_IA32_PERF_CTL.
-
-Fix this by synchronizing policy->cur with the hardware state when setting
-minimum pstate during CPU offline.
-
-Fixes: bb18008f8086 ("intel_pstate: Set core to min P state during core offline")
-Cc: stable@vger.kernel.org # 3.15+
-Suggested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xinyu <xinyuili@126.com>
 ---
- drivers/cpufreq/intel_pstate.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Changes in v2:
+- Corrected the name format in Signed-off-by from "lixinyu" to proper
+  "Li Xinyu". Sorry for the mistake in v1. Thank you Maxime.
+---
+ drivers/iio/gyro/mpu3050-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 1292da53e5fc..11db1c887c80 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2984,10 +2984,12 @@ static int intel_cpufreq_cpu_offline(struct cpufreq_policy *policy)
- 	 * from getting to lower performance levels, so force the minimum
- 	 * performance on CPU offline to prevent that from happening.
- 	 */
--	if (hwp_active)
-+	if (hwp_active) {
- 		intel_pstate_hwp_offline(cpu);
--	else
-+	} else {
- 		intel_pstate_set_min_pstate(cpu);
-+		policy->cur = cpu->pstate.min_freq;
-+	}
+diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
+index d84e04e4b431..bcfa83a46737 100644
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -1127,7 +1127,7 @@ static int mpu3050_trigger_probe(struct iio_dev *indio_dev, int irq)
+ 	mpu3050->trig->ops = &mpu3050_trigger_ops;
+ 	iio_trigger_set_drvdata(mpu3050->trig, indio_dev);
  
- 	intel_pstate_exit_perf_limits(policy);
+-	ret = iio_trigger_register(mpu3050->trig);
++	ret = devm_iio_trigger_register(mpu3050->dev, mpu3050->trig);
+ 	if (ret)
+ 		goto err_iio_trigger;
  
 -- 
-2.36.1
+2.34.1
 
 
