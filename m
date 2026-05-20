@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gBb6DxL7DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:58 +0200
+	id +ICYBz/uDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D57595C8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCFA5938F4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72248333DD7B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9229C31A13D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D6D3F7ABC;
-	Wed, 20 May 2026 17:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7919736605E;
+	Wed, 20 May 2026 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrjKH/6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkdHdLh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDF43F6C4C;
-	Wed, 20 May 2026 17:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434E6362143;
+	Wed, 20 May 2026 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297897; cv=none; b=caC14sk3AJmwrWR+7yWXe63kAd1IxAwCvHsSlocwVJrgDlFexoZDcn4dqy5UCjEoMGEVlfIYwVWzMtA+vd4ANh/bsdRiml75hra7e+l2uHJkEMTnCzVpRfhmSRoLuL4kWpuMWI2o+WvJib/9IB4kZZTeJAL+AosBrEzROmMzygk=
+	t=1779295483; cv=none; b=a6K06/s3mxe8KlBPZlVBxHnaS02+z1AEgv/xMMiLXIem8G/fSChzKEiyHpDG6QruFcktkMIgfGU5VS6hKTSDrLD7eE+x/jGIaXKXcFUc1B3/FtfnUa68poS7Rh3BR3NwdyI6pHdHPpBFX/mQV+0tsn70xvHRVWLrTzns3J3taTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297897; c=relaxed/simple;
-	bh=mJc6uT6BaPJZ/nefZuCwiMuv1BX/DAZ6t+rYoOrdYA0=;
+	s=arc-20240116; t=1779295483; c=relaxed/simple;
+	bh=SaWvM3XQQr5gH6hzhRAv99vX8kHAU96FF6vqTw0q6jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDpngFku1bnYNV5OHLFyBuuAAl2ctDapTA474finhds6f1N41oSWJEPICvoiDabsMq3A1/UCl8AJ3eKG68QhcOlCilLTvN4o3h6eRtJLSKN5rOjMJxJGfG6RM/NpwqCdoK+9MMBx9Ul7Szh0/pySE7tZqt2hU4agBec7Gg4d0VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrjKH/6r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EF71F000E9;
-	Wed, 20 May 2026 17:24:55 +0000 (UTC)
+	 MIME-Version; b=KJEEYJyAKn3MhZ8cPEc8nnN/p1itWwXh4LIfuzfehIeytrGmtHcthzK31fvTRQLuTAaAHTqFbpSuRjyWLi62Aumuu+CpK7RqC7+DTF3GgaobEX5eQ/ee6s09Eg0lOetAYmytoJt8kFBCRGaWJ049BxbzQlTeQ7Wjp7tG8A2PVsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkdHdLh7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4451F000E9;
+	Wed, 20 May 2026 16:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297896;
-	bh=aikQOXxOD2V69NnsdJAvnx02S3hhz9DBY8kPK66jZCc=;
+	s=korg; t=1779295482;
+	bh=Lg98v+l/R1Y+D08Tc3Ffx/HoPb9rqvP+1IyNlkftqa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nrjKH/6rGzuGFtgRIAtSZbKkwcJq9DaZtOAjySoQ7BtpYr2gxO136giq2L0Lv9yw6
-	 KOMb/WWj1SL+3myNptgp9T3ncH+M7jm5yBViCN+HHOSCaVCZpxNcCgJFKECnljgh5m
-	 Lnyi56YDkb5Mpp4YM6dJW7gdgSmcbNQsr3nGr5Ns=
+	b=dkdHdLh7OxjKTo7bbjL1UF/XpaQggdBJDGupw4YGr9wkHHohW9nBV++CxGOio1x3W
+	 mH77SeLOcg0nIgk9m1GEU9Zu3kmcW1XwmUrM+wJF+ednGsRHAUvFmLx5OfJkOLGj6M
+	 j0T3d/APwA2vAfEMwhA4XG1q921F6ZU+CfIq9LCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Martin Wilck <mwilck@suse.com>,
-	Hanna Czenczek <hreitz@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 204/957] dm-mpath: dont stop probing paths at presuspend
+Subject: [PATCH 7.0 0437/1146] sched_ext: Track @ps rq lock across set_cpus_allowed_scx -> ops.set_cpumask
 Date: Wed, 20 May 2026 18:11:27 +0200
-Message-ID: <20260520162138.967995407@linuxfoundation.org>
+Message-ID: <20260520162158.088234378@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,131 +68,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251406-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250465-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B6D57595C8E
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1FCFA5938F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 51d81e14fe6788dc6463064c7517480f2acd2724 ]
+[ Upstream commit 9fb457074f6d118b30458624223abef985725a88 ]
 
-Commit 5c977f102315 ("dm-mpath: Don't grab work_mutex while probing
-paths"), added code to make multipath quit probing paths early, if it
-was trying to suspend. This isn't necessary. It was just an optimization
-to try to keep path probing from delaying a suspend. However it causes
-problems with the intended user of this code, qemu. The path probing
-code was added because failed ioctls to multipath devices don't cause
-paths to fail in cases where a regular IO failure would.
+The SCX_CALL_OP_TASK call site passes rq=NULL incorrectly, leaving
+scx_locked_rq() unset. Pass task_rq(p) instead so update_locked_rq()
+reflects reality.
 
-If an ioctl to a path failed because the path was down, and the
-multipath device had passed presuspend, the M_MPATH_PROBE_PATHS ioctl
-would exit early, without probing the path. The caller would then retry
-the original ioctl, hoping to use a different path. But if there was
-only one path in the pathgroup, it would pick the same non-working path
-again, even if there were working paths in other pathgroups.
+v2: Add Fixes: tag (Andrea Righi).
 
-ioctls to a suspended dm device will return -EAGAIN, notifying the
-caller that the device is suspended, but ioctls to a device that is just
-preparing to suspend won't (and in general, shouldn't). This means that
-the caller (qemu in this case) would get into a tight loop where it
-would issue an ioctl that failed, skip probing the paths because the
-device had already passed presuspend, and start over issuing the ioctl
-again. This would continue until the multipath device finally fully
-suspended, or the caller gave up and failed the ioctl.
-
-multipath's path probing code could return -EAGAIN in this case, and the
-caller could delay a bit before retrying, but the whole purpose of
-skipping the probe after presuspend was to speed things up, and that
-would just slow them down. Instead, remove the is_suspending flag, and
-check dm_suspended() instead to decide whether to exit the probing code
-early. This means that when the probing code exits early, future ioctls
-will also be delayed, because the device is fully suspended.
-
-Fixes: 5c977f102315 ("dm-mpath: Don't grab work_mutex while probing paths")
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 18853ba782be ("sched_ext: Track currently locked rq")
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-mpath.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-mpath.c b/drivers/md/dm-mpath.c
-index 00df5be165759..3a25ec2993dc2 100644
---- a/drivers/md/dm-mpath.c
-+++ b/drivers/md/dm-mpath.c
-@@ -102,7 +102,6 @@ struct multipath {
- 	struct bio_list queued_bios;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 9c7ff5179e4f1..29ee463ec9bc4 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2742,7 +2742,7 @@ static void set_cpus_allowed_scx(struct task_struct *p,
+ 	 * designation pointless. Cast it away when calling the operation.
+ 	 */
+ 	if (SCX_HAS_OP(sch, set_cpumask))
+-		SCX_CALL_OP_TASK(sch, SCX_KF_REST, set_cpumask, NULL,
++		SCX_CALL_OP_TASK(sch, SCX_KF_REST, set_cpumask, task_rq(p),
+ 				 p, (struct cpumask *)p->cpus_ptr);
+ }
  
- 	struct timer_list nopath_timer;	/* Timeout for queue_if_no_path */
--	bool is_suspending;
- };
- 
- /*
-@@ -1748,9 +1747,6 @@ static void multipath_presuspend(struct dm_target *ti)
- {
- 	struct multipath *m = ti->private;
- 
--	spin_lock_irq(&m->lock);
--	m->is_suspending = true;
--	spin_unlock_irq(&m->lock);
- 	/* FIXME: bio-based shouldn't need to always disable queue_if_no_path */
- 	if (m->queue_mode == DM_TYPE_BIO_BASED || !dm_noflush_suspending(m->ti))
- 		queue_if_no_path(m, false, true, __func__);
-@@ -1773,7 +1769,6 @@ static void multipath_resume(struct dm_target *ti)
- 	struct multipath *m = ti->private;
- 
- 	spin_lock_irq(&m->lock);
--	m->is_suspending = false;
- 	if (test_bit(MPATHF_SAVED_QUEUE_IF_NO_PATH, &m->flags)) {
- 		set_bit(MPATHF_QUEUE_IF_NO_PATH, &m->flags);
- 		clear_bit(MPATHF_SAVED_QUEUE_IF_NO_PATH, &m->flags);
-@@ -2100,7 +2095,7 @@ static int probe_active_paths(struct multipath *m)
- 		if (m->current_pg == m->last_probed_pg)
- 			goto skip_probe;
- 	}
--	if (!m->current_pg || m->is_suspending ||
-+	if (!m->current_pg || dm_suspended(m->ti) ||
- 	    test_bit(MPATHF_QUEUE_IO, &m->flags))
- 		goto skip_probe;
- 	set_bit(MPATHF_DELAY_PG_SWITCH, &m->flags);
-@@ -2109,7 +2104,7 @@ static int probe_active_paths(struct multipath *m)
- 
- 	list_for_each_entry(pgpath, &pg->pgpaths, list) {
- 		if (pg != READ_ONCE(m->current_pg) ||
--		    READ_ONCE(m->is_suspending))
-+		    dm_suspended(m->ti))
- 			goto out;
- 		if (!pgpath->is_active)
- 			continue;
 -- 
 2.53.0
 
