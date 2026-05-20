@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOTXD6P8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:39 +0200
+	id 4NByJx3xDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E64596183
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C7459417E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12F6136F5D0A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 176F231A018A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E7B369D67;
-	Wed, 20 May 2026 17:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351333F54D0;
+	Wed, 20 May 2026 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wediqTDI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ4D08cu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987A43546C8;
-	Wed, 20 May 2026 17:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8D3F39D1;
+	Wed, 20 May 2026 17:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299136; cv=none; b=Ny0/7dxPOXZ/vigL9Cm3VxDEa6je5twN2W7dwQpTY2UG7huWYjryY4GU7+llastpbf/kNbkMSafizLOL3Vjsrc0qIqO3ukmLva+4YxGdzOHn5ghs5IhluJABwUM8oGZKn7Vqsx3uFhmPzES4k9IoxIBnA5WjbLtwPdkgiO8sQTo=
+	t=1779296866; cv=none; b=jsRhTCUc5OpCqVKEsZq8FTxYJsJQvUMPCj/hC5XLhP5mLh4MKMATXiWI7SB/2yp+J24cS8YdYcvtJZJK2EwTRp0fdDxepmj+Evy0CmxBBqRf79yotLy2a5d7K/5Hyw1jLc0qU5zjBCoFwRUxyh+6MS306tYDdGSViikC9sCIrzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299136; c=relaxed/simple;
-	bh=HIoGCQlvS//7PO06AyEVE2704aYoBEzceZwsj+kOvKA=;
+	s=arc-20240116; t=1779296866; c=relaxed/simple;
+	bh=V2HYv1y9Mm6Mvt3onBCsqOv+yZsdcvp5/CokPWrbMR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHkdsjGPvMRelBtqYZdoWDRiFfPgP+NinQzMVZRy6WdZVscYSs3nXccQLADeJihDdE3uUvUrHiEEDqRorolju53AvyuVn6fG6/h6HmeNQJBABgOV6/UVvXBrxkbSCHDHN1mCGH4qMcNjIOAwFusr0ULojSY3KRYDjYlyCMR+D5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wediqTDI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0124F1F000E9;
-	Wed, 20 May 2026 17:45:34 +0000 (UTC)
+	 MIME-Version; b=gdyN7NSbzuvTC2oNt+hr7X74wGKIPXWUKPIVU+3svZq5xFKKDMlK8gUSXuwBCIGUCsIlzBXcTa8u3aK46WZeESj3fnjcQdwoxZdMXfAAFMtj+OiFUHpnF9GtiwtYfzdfttOHcu62Ef6raYSF4ed+HFPNAsjk5GkeIrkJ+LUal4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ4D08cu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026A11F000E9;
+	Wed, 20 May 2026 17:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299135;
-	bh=nXdsbzjajRq4yaxo/Ug9MVo1KpFncGL+DzxmG+sQn5M=;
+	s=korg; t=1779296864;
+	bh=z1ftE5X7/K1no3GTL1okX1D+twUN7j5Y1IWu4uxV8XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wediqTDIXkM6Jq1+CGeVIXknXFnL1gpJ+kwu3+/UxG2PNitr4I+etFzocwh+gGb/E
-	 uY9PJowlTWw+Oa1L+r7BtxTn3P7jvEMFJ6CL5BvdNRpbFfnVVeUplbhBxxF7I19L90
-	 UnQ8aNqxJZtQakYvJBRvvS6FM8iueHp35cdNZhG0=
+	b=lJ4D08cut6PrLeDdxX010Cu9w0aRyAvjfD7EMc8dQBzD38lqo+59Pfw4TIBPCRUuI
+	 1MvoM5woszya+xWVfxv8PmWWdY30ZByP4R6vfsVnbLers+q6+pKSj3g+gGMAV8IQKd
+	 phYzWjYOZe8Xvrhjxjobed9XQ29o3Kq4tkFEKB4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	John Madieu <john.madieu.xa@bp.renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 677/957] ksmbd: scope conn->binding slowpath to bound sessions only
+Subject: [PATCH 7.0 0910/1146] spi: rzv2h-rspi: Fix silent failure in clock setup error path
 Date: Wed, 20 May 2026 18:19:20 +0200
-Message-ID: <20260520162149.220298721@linuxfoundation.org>
+Message-ID: <20260520162208.834735543@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-251883-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251009-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D1E64596183
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 57C7459417E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: John Madieu <john.madieu.xa@bp.renesas.com>
 
-[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
+[ Upstream commit 54900126ae0a2671f8790a7f95706b9ea95fac4e ]
 
-When the binding SESSION_SETUP sets conn->binding = true, the flag stays
-set after the call so that the global session lookup in
-ksmbd_session_lookup_all() can find the session, which was not added to
-conn->sessions. Because the flag is connection-wide, the global lookup
-path will also resolve any other session by id if asked.
+rzv2h_rspi_setup_clock() is declared to return u32 but returns -EINVAL
+when no valid clock parameters are found. Cast to u32, -EINVAL becomes
+0xffffffea, which is a non-zero value. The caller in
+rzv2h_rspi_prepare_message() guards against failure with:
 
-Tighten the global lookup so that the returned session must have this
-connection registered in its channel xarray (sess->ksmbd_chann_list).
-The channel entry is installed by the existing binding_session path in
-ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
-successfully, so this condition is a strict equivalent of "this
-connection has been accepted as a channel of this session". Connections
-that have not bound to a given session cannot reach it via the global
-table.
+	rspi->freq = rzv2h_rspi_setup_clock(rspi, speed_hz);
+	if (!rspi->freq)
+		return -EINVAL;
 
-The existing conn->binding gate for entering the slowpath is preserved
-so that non-binding connections keep the fast-path-only behavior, and
-the session->state check is unchanged.
+Because 0xffffffea is non-zero, the check is bypassed and the controller
+proceeds to program SPBR/SPCMD with stale values, leading to an unknown
+bit rate.
 
-Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Return 0 on the failed-search path, consistent with the existing
+clk_set_rate() failure path which already returns 0.
+
+Fixes: 77d931584dd3 ("spi: rzv2h-rspi: make transfer clock rate finding chip-specific")
+Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Link: https://patch.msgid.link/20260425024725.2393632-1-john.madieu.xa@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rzv2h-rspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index afa0daa3f5d88..5bc2f18d68bbc 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -327,8 +327,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 	struct ksmbd_session *sess;
+diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
+index d6b9b558932dd..53c44799fab71 100644
+--- a/drivers/spi/spi-rzv2h-rspi.c
++++ b/drivers/spi/spi-rzv2h-rspi.c
+@@ -581,7 +581,7 @@ static u32 rzv2h_rspi_setup_clock(struct rzv2h_rspi_priv *rspi, u32 hz)
+ 					   RSPI_SPBR_SPR_MAX, &best_clock);
  
- 	sess = ksmbd_session_lookup(conn, id);
--	if (!sess && conn->binding)
-+	if (!sess && conn->binding) {
- 		sess = ksmbd_session_lookup_slowpath(id);
-+		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
-+			ksmbd_user_session_put(sess);
-+			sess = NULL;
-+		}
-+	}
- 	if (sess && sess->state != SMB2_SESSION_VALID) {
- 		ksmbd_user_session_put(sess);
- 		sess = NULL;
+ 	if (!best_clock.clk_rate)
+-		return -EINVAL;
++		return 0;
+ 
+ 	ret = clk_set_rate(best_clock.clk, best_clock.clk_rate);
+ 	if (ret)
 -- 
 2.53.0
 
