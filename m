@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-252401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBInEEL8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200
+	id EPpaO/XsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD7C596044
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B61575934D3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CE7A3111B12
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 496FF31725C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810913DC4DA;
-	Wed, 20 May 2026 18:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B473ED3A4;
+	Wed, 20 May 2026 17:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjOAF+og"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrRfDVUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB8F4F5E0;
-	Wed, 20 May 2026 18:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E59A34E779;
+	Wed, 20 May 2026 17:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300579; cv=none; b=Kd5mRhb6m/esZkhTyfcoKg8xDMIe2mSspFj3UT3M2YeLCw30ZTlLLqwWcxokpfdvF2gRHUwpGr2sGz6RyPDMwyge+s5DV4lYcUPJs8PGaGpmb0TvrcR3JJj6gXqwrV7ADo6tYRUZnMT5desmlaGXu7ZdRdU/JlV7sa6KAyiwJP8=
+	t=1779296410; cv=none; b=uLG0QJJrynnAsXpL+KCc1/PlBXiyQT65pN0+0YgxPjp9Nd6IUwWdB6rVftotRoH1Z6lc4hMnyfyrgNeCNlqRK/ks0oSZ3VuxD4s3CDIphDVoW6ftee6FTGMHDqrKtoojIWSlz89Eb5ythLkwRL2Ni0XgDUawo/KNflT9Ih5fnFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300579; c=relaxed/simple;
-	bh=nJlLQsHnczZUK7EK3um/T9/Ow6yr7efVyzxb75z3T7Q=;
+	s=arc-20240116; t=1779296410; c=relaxed/simple;
+	bh=3rVhBCemI8iAOH3acHn2gv1fL+upfuvLnd6ee0m/wYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AXXTu3MKprmWMYHO/56MSMO/hkFNcnPk61tJtfIoe4K/QFnuFjvfN37vaP41GUqdnrTw1QktFCR0PbmPiMPVOKEiU3h1rs1t9WbHkNu1+EGy7A4AXXg12DT2V7BSL02GyXBcmJ/ZNxDclvcfGZKpn1plc1aAOyaEdFg94UmFAzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjOAF+og; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659F31F000E9;
-	Wed, 20 May 2026 18:09:37 +0000 (UTC)
+	 MIME-Version; b=Apj3M3VMRGj1SqAMw2QMXuglrhHs8dV04s+CCpLgkLck260nF3Q0NgeJl5qdrqoPhyAwx/ZvxYJRO5ZWOQ4VzEbEDILFRXdz2t7ajzPjM0RcOL/zTxJeOjWyF+BjsP8v/nIyDeyg72WXRMt88YZMb8GbR2j96LdbqwpJWW8eIX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrRfDVUm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E991F000E9;
+	Wed, 20 May 2026 17:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300577;
-	bh=DlLrBk6IiP4BdbpSe3o2GYl36nrmnJJfQc2GPGAV3Jo=;
+	s=korg; t=1779296408;
+	bh=Cr8RJDKLCyHOkGd1pos/UMEECrKh0gTubdyNEYD/I/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kjOAF+ogWFFE9lu9fUXuT5fpzr1yVkGttDYc0KQsEnZhWKGIW1eT1ByBpPn11BDqK
-	 x0XobFR2iztceuffIDL46i7ncKcWH+PnDpzwko22shZalUMyQF+ZYz7BMYR7S23oVP
-	 sdgcFy3gHz1WTTkj7UUXsMXnVS1cr3lt6bedzc8U=
+	b=OrRfDVUmWfC2PkH0YQ1gawGaGDBStMczLEXNTjp6nRmCtWtVqHpeU8TU9jLWuiRyy
+	 OsMWmY2pyLsPXgsIzbzaveFuUOEcudAOFDOgjafj0rp0uA51qtMyr0DhY+rALv8TxT
+	 S5o4WqQ0w3hzCyGGDIBMKGI/LGnZQieuIr2vLawY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/666] selftest: memcg: skip memcg_sock test if address family not supported
+Subject: [PATCH 7.0 0789/1146] tcp: annotate data-races around tp->reord_seen
 Date: Wed, 20 May 2026 18:17:19 +0200
-Message-ID: <20260520162116.155009886@linuxfoundation.org>
+Message-ID: <20260520162206.079963604@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,106 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252401-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250827-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DBD7C596044
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B61575934D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
+[ Upstream commit 62585690e6b2a112c408fe25f142b246ac833c42 ]
 
-The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
-data over it to consume memory and verify that memory.stat.sock and
-memory.current values are close.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-On systems where IPv6 isn't enabled or not configured to support
-SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
-call fails, there is no way we can test the memory consumption and verify
-the above claim.  I believe it is better to just skip the test in this
-case instead of reporting a test failure hinting that there may be
-something wrong with the memcg code.
-
-Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
-Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7ec65372ca53 ("tcp: add stat of data packet reordering events")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/ipv4/tcp.c       | 2 +-
+ net/ipv4/tcp_input.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 16f5d74ae762e..7a44d221b8c4b 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1190,8 +1190,11 @@ static int tcp_server(const char *cgroup, void *arg)
- 	saddr.sin6_port = htons(srv_args->port);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index a5231c685f90b..80274554eaa12 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4500,7 +4500,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
+ 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+-	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
++	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 285baeb060a06..eee460d19e254 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1300,7 +1300,7 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
+ 	}
  
- 	sk = socket(AF_INET6, SOCK_STREAM, 0);
--	if (sk < 0)
-+	if (sk < 0) {
-+		/* Pass back errno to the ctl_fd */
-+		write(ctl_fd, &errno, sizeof(errno));
- 		return ret;
-+	}
+ 	/* This exciting event is worth to be remembered. 8) */
+-	tp->reord_seen++;
++	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+ 	NET_INC_STATS(sock_net(sk),
+ 		      ts ? LINUX_MIB_TCPTSREORDER : LINUX_MIB_TCPSACKREORDER);
+ }
+@@ -2444,7 +2444,7 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
+ 	WRITE_ONCE(tp->reordering,
+ 		   min_t(u32, tp->packets_out + addend,
+ 			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
+-	tp->reord_seen++;
++	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+ 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
+ }
  
- 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
- 		goto cleanup;
-@@ -1321,6 +1324,12 @@ static int test_memcg_sock(const char *root)
- 			goto cleanup;
- 		close(args.ctl[0]);
- 
-+		/* Skip if address family not supported by protocol */
-+		if (err == EAFNOSUPPORT) {
-+			ret = KSFT_SKIP;
-+			goto cleanup;
-+		}
-+
- 		if (!err)
- 			break;
- 		if (err != EADDRINUSE)
 -- 
 2.53.0
 
