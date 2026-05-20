@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIrbL0oZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:54 +0200
+	id 8DBmMjzyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5AD5999CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4853C5944B2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E56C535889B2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C6C033D61E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5357366075;
-	Wed, 20 May 2026 17:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802B43E120E;
+	Wed, 20 May 2026 16:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F07ic0IP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjOT+KTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5760037754D;
-	Wed, 20 May 2026 17:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487F83D8138;
+	Wed, 20 May 2026 16:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297657; cv=none; b=bKTNdVPza4cN66Z35ZV+wGutbYQcnYfU5CJIRPFhSRzchpfhckQii1iXafjDP7Eds+bIA0tMmFSF5qP1yK5LfDMorKipPporqig8ddL3UTqvDGE/JndTRLUubg9dY1Iau/OwrQQi4it4JW93Z0DOA7DiqOmRtyqRQn3iX9sIjfw=
+	t=1779295357; cv=none; b=J3v0alWMPnGrcefAy83xNs3FMnZSfH+M9EnHNu2pGT9GnUy0GPxKBgxb0fdoTdNnSd0fwBdD+38NSgDMKs4FUEquI6py0+AbMvzy4m0KuDz5oQtH35ct9r5CaGzp5NFD83mV/xjzAMQCK35B2L0/TwklyOb8tb810Z/QDeKEmmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297657; c=relaxed/simple;
-	bh=5d8638nMvUF95dp2n5yT++ux9uq5CYlkeTTgJ12CFHk=;
+	s=arc-20240116; t=1779295357; c=relaxed/simple;
+	bh=HUu1BniarOmVnoquqi0k0tvuq0weD/KdKtKZcFD4Ung=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5362WFUxt8Vkw4xvBztGj1iE0dtnZdRAz1BlNRQPr0DcS0H/umsqvdKFV2TrchkucDMyGVEPXR3SEvxjbH5RTg01B8xTzcQLvD4t0P+U73XrUVb2foaJc2J9hrwGyVdoVcoFEvFTbEwu7w7ZmiYPo0rHyxRgtkKWSI/5yC8TqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F07ic0IP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A411F000E9;
-	Wed, 20 May 2026 17:20:55 +0000 (UTC)
+	 MIME-Version; b=Xxv3BbQjXB6yTzJe49mTP25RlRHDi0/te+DipgTfMf+VtJpoosP/KolTA/obs/Dn/1G66wSVdvjn9YsqWJuGgGdkVbGvm9O7GYicIWXwbdQaywBZHH5xPlpMNCHpdIjtXteTnJ5cRHA/1QQTlL1pvQY68fCV0crrd+Sk693OB1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjOT+KTN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD5F1F000E9;
+	Wed, 20 May 2026 16:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297656;
-	bh=QxnFxp8/TjcrnKk+U8Q0maZDECDjQCQll+HvalJyEeI=;
+	s=korg; t=1779295356;
+	bh=SvBoTLinesxSRd3b2z6ONPalBwM55IAjQaUdykyABTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F07ic0IPAT89+WKpVcUxI7xNZ7zsWlt47CKGKRyxt2ksqJ5JKSamBK78135RX9MtM
-	 8ppRbUh+pgu9RDOHIZDL1VpJXyqRAXL/ke61pb3R4otVYa+wZzUC8PtzmJXG7y4Flm
-	 36CFVqkwnhAVHb9YK1HrsuZZCc5RY6CMHf+YVWik=
+	b=sjOT+KTNlf+tUrnQ22VFy0Jpn0dgehotiJO6qUfR6pfYRBboTn4M/PmK0pXdgdL3a
+	 6TXJxPwqDqT/+M3j9bGom0dEXmTvZvOndU4Kg+DgFu2YYyVelrCliFiTUb4AGyXqlA
+	 18Fkqs3OxxLYETpBiPP1eW4e5+DRa+25HlIKUGUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Ankit Agrawal <ankita@nvidia.com>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 113/957] vfio: refactor vfio_pci_mmap_huge_fault function
-Date: Wed, 20 May 2026 18:09:56 +0200
-Message-ID: <20260520162137.010082355@linuxfoundation.org>
+Subject: [PATCH 7.0 0347/1146] hwmon: (aspeed-g6-pwm-tach): remove redundant driver remove callback
+Date: Wed, 20 May 2026 18:09:57 +0200
+Message-ID: <20260520162156.053625675@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,171 +73,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251313-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250416-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,ziepe.ca:email]
-X-Rspamd-Queue-Id: 1B5AD5999CA
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,aspeedtech.com:email]
+X-Rspamd-Queue-Id: 4853C5944B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Agrawal <ankita@nvidia.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 9b92bc7554b543dc00a0a0b62904a9ef2ad5c4b0 ]
+[ Upstream commit 46fef8583daa1bf78fda7eaa523c64d4440322ac ]
 
-Refactor vfio_pci_mmap_huge_fault to take out the implementation
-to map the VMA to the PTE/PMD/PUD as a separate function.
+Drops the remove callback as it only asserts reset and the probe already
+registers a devres action (devm_add_action_or_reset()) to call
+aspeed_pwm_tach_reset_assert().
 
-Export the new function to be used by nvgrace-gpu module.
-
-Move the alignment check code to verify that pfn and VMA VA is
-aligned to the page order to the header file and make it inline.
-
-No functional change is intended.
-
-Cc: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Reviewed-by: Shameer Kolothum <skolothumtho@nvidia.com>
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-Link: https://lore.kernel.org/r/20251127170632.3477-2-ankita@nvidia.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
-Stable-dep-of: 948b71aa81cd ("drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block")
+Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20260309-pwm_fixes-v2-1-ca9768e70470@aspeedtech.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 54 ++++++++++++++++----------------
- include/linux/vfio_pci_core.h    | 13 ++++++++
- 2 files changed, 40 insertions(+), 27 deletions(-)
+ drivers/hwmon/aspeed-g6-pwm-tach.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 69476fc67ca08..d07f0ede5d731 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1677,49 +1677,49 @@ static unsigned long vma_to_pfn(struct vm_area_struct *vma)
- 	return (pci_resource_start(vdev->pdev, index) >> PAGE_SHIFT) + pgoff;
+diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
+index 44e1ecba205d7..4f6e6d440dd40 100644
+--- a/drivers/hwmon/aspeed-g6-pwm-tach.c
++++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
+@@ -517,13 +517,6 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
+ 	return 0;
  }
  
--static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
--					   unsigned int order)
-+vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
-+				   struct vm_fault *vmf,
-+				   unsigned long pfn,
-+				   unsigned int order)
- {
--	struct vm_area_struct *vma = vmf->vma;
--	struct vfio_pci_core_device *vdev = vma->vm_private_data;
--	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
--	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
--	unsigned long pfn = vma_to_pfn(vma) + pgoff;
--	vm_fault_t ret = VM_FAULT_SIGBUS;
+-static void aspeed_pwm_tach_remove(struct platform_device *pdev)
+-{
+-	struct aspeed_pwm_tach_data *priv = platform_get_drvdata(pdev);
 -
--	if (order && (addr < vma->vm_start ||
--		      addr + (PAGE_SIZE << order) > vma->vm_end ||
--		      pfn & ((1 << order) - 1))) {
--		ret = VM_FAULT_FALLBACK;
--		goto out;
--	}
+-	reset_control_assert(priv->reset);
+-}
 -
--	down_read(&vdev->memory_lock);
-+	lockdep_assert_held_read(&vdev->memory_lock);
+ static const struct of_device_id aspeed_pwm_tach_match[] = {
+ 	{
+ 		.compatible = "aspeed,ast2600-pwm-tach",
+@@ -537,7 +530,6 @@ MODULE_DEVICE_TABLE(of, aspeed_pwm_tach_match);
  
- 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
--		goto out_unlock;
-+		return VM_FAULT_SIGBUS;
- 
- 	switch (order) {
- 	case 0:
--		ret = vmf_insert_pfn(vma, vmf->address, pfn);
--		break;
-+		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
- #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
- 	case PMD_ORDER:
--		ret = vmf_insert_pfn_pmd(vmf, pfn, false);
--		break;
-+		return vmf_insert_pfn_pmd(vmf, pfn, false);
- #endif
- #ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
- 	case PUD_ORDER:
--		ret = vmf_insert_pfn_pud(vmf, pfn, false);
-+		return vmf_insert_pfn_pud(vmf, pfn, false);
- 		break;
- #endif
- 	default:
--		ret = VM_FAULT_FALLBACK;
-+		return VM_FAULT_FALLBACK;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
-+
-+static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
-+					   unsigned int order)
-+{
-+	struct vm_area_struct *vma = vmf->vma;
-+	struct vfio_pci_core_device *vdev = vma->vm_private_data;
-+	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
-+	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-+	unsigned long pfn = vma_to_pfn(vma) + pgoff;
-+	vm_fault_t ret = VM_FAULT_FALLBACK;
-+
-+	if (is_aligned_for_order(vma, addr, pfn, order)) {
-+		scoped_guard(rwsem_read, &vdev->memory_lock)
-+			ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
- 	}
- 
--out_unlock:
--	up_read(&vdev->memory_lock);
--out:
- 	dev_dbg_ratelimited(&vdev->pdev->dev,
- 			   "%s(,order = %d) BAR %ld page offset 0x%lx: 0x%x\n",
- 			    __func__, order,
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 7aa29428982aa..0ddc42732647e 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -132,6 +132,9 @@ ssize_t vfio_pci_core_read(struct vfio_device *core_vdev, char __user *buf,
- 		size_t count, loff_t *ppos);
- ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *buf,
- 		size_t count, loff_t *ppos);
-+vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
-+				   struct vm_fault *vmf, unsigned long pfn,
-+				   unsigned int order);
- int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma);
- void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count);
- int vfio_pci_core_match(struct vfio_device *core_vdev, char *buf);
-@@ -175,4 +178,14 @@ VFIO_IOREAD_DECLARATION(32)
- VFIO_IOREAD_DECLARATION(64)
- #endif
- 
-+static inline bool is_aligned_for_order(struct vm_area_struct *vma,
-+					unsigned long addr,
-+					unsigned long pfn,
-+					unsigned int order)
-+{
-+	return !(order && (addr < vma->vm_start ||
-+			   addr + (PAGE_SIZE << order) > vma->vm_end ||
-+			   !IS_ALIGNED(pfn, 1 << order)));
-+}
-+
- #endif /* VFIO_PCI_CORE_H */
+ static struct platform_driver aspeed_pwm_tach_driver = {
+ 	.probe = aspeed_pwm_tach_probe,
+-	.remove = aspeed_pwm_tach_remove,
+ 	.driver	= {
+ 		.name = "aspeed-g6-pwm-tach",
+ 		.of_match_table = aspeed_pwm_tach_match,
 -- 
 2.53.0
 
