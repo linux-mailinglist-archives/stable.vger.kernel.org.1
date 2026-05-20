@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MC9eFcwFDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:44 +0200
+	id WMLmFx4dDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98475597B15
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BF659A05D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1C2CC31C0814
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2481D34FA8A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254303F86FB;
-	Wed, 20 May 2026 18:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6613D7D66;
+	Wed, 20 May 2026 17:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hing7m5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bmx8/nWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F4E3F660B;
-	Wed, 20 May 2026 18:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF353C870E;
+	Wed, 20 May 2026 17:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300420; cv=none; b=agn4g6dmGkxo7tOSABVvtsrr/LVF5Jn3o8Bpejz37s+DzhyIoZ9Tywy2PtTHP5rMFbmMDKjLgywC0/cEWjx9IksVTsKPCNoIosctst1sb1hoZ+YBvaXR5dJcmd2DZ2aTm3Od+zwV9tuxX0xifmXgNvMpeUmDzNabDXmSX4TttFg=
+	t=1779298556; cv=none; b=tHmdmucUPUt2b/Z0onN92t0q2cVZI9DO1vVcawp7EkFGqBx9xs+tyEVUpsQlogU4V2HkZ+E/EtVdDFXKXSdnAgDF9lPYwL1br3ANFiQ1ltgH2Wqnr4RKAPnyHUt/MQ8PyidgT0vI0QIfKuFHDk/M9KX8ge/H6/+6VyHw4hz0fOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300420; c=relaxed/simple;
-	bh=hiVA9+ACFpege8Nv+JFLJFIXUMvbH72eD4xHqBKjG/E=;
+	s=arc-20240116; t=1779298556; c=relaxed/simple;
+	bh=Q0etmJpfj3iKhfJXh77TxHiAmrG8QHL3Ob+k/koD0+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aw9NN1arys2BwPMltW2ovojCUQHkbart7yMfd0WdJfJXBmCHx1QGrkuzzYy5I+btdjEHN3VpPePmFIMcniYZAZ81QJheTMOpdfvTzjud0PExVHFsFWfLon9jH7k9Tbpt31dnb9iRVzvxvkYWjIXLM/AhPclykAgsR3E3q7T22CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hing7m5y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430741F000E9;
-	Wed, 20 May 2026 18:06:59 +0000 (UTC)
+	 MIME-Version; b=eQ5khol+Pctt7C43e1kRFGj89+B2i3UmAIaF9GpIUfxAOgn3fEaN2T3xd4OWz0hLzOrjA7C2grunG6yYJNOyoE5j4QyGdw7Sv+gNA80HJkPTOobGwoF4WlnAtqUh6DQJpocRFPFuve0whZV4Qn8OIo1ZO54Qi0nGtmtVh/lK2Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bmx8/nWl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CDF1F00893;
+	Wed, 20 May 2026 17:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300419;
-	bh=oznq/M1B9KM8ubItvhEhXj9IkCZO56rgo3cB4uz9DBQ=;
+	s=korg; t=1779298551;
+	bh=j+U8A/kyOQ9op2/1JRc3OCpFKnN7s/0GS4kMVYr5Xek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hing7m5yAdhw5PnA6ImwTdaAG/tarLcv6X1ts0Usg25EYp7kra8xd3twM/Azl9M/7
-	 3YEhASrK08Ewl15a6/gUgqC07/1MHeHtIfkEz+k6iPv38CNP+2bi6SGWJmuFpmj1Nm
-	 9AuN7HLOsQzd+GsGAtKpppveReSnqsmj4CDccxVU=
+	b=Bmx8/nWl0ZfslObb2bcCsxgpZEb79kO2OnT2+HXtdW3kFR/FkndH0rPj0rbEHsj0m
+	 AClaRbRLBtUeXVMvVE8970cJvmqNLPpG4btzQRwECiBFH1Ryg7vV8kNT221O/Oo3dU
+	 JsDZ9jO/WAI/LiUHcNYhJXnyHAQ71z3kMGQQtA4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Dipen Patel <dipenp@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/666] dm cache: fix write hang in passthrough mode
+Subject: [PATCH 6.18 455/957] hte: tegra194: remove Kconfig dependency on Tegra194 SoC
 Date: Wed, 20 May 2026 18:15:38 +0200
-Message-ID: <20260520162113.967495289@linuxfoundation.org>
+Message-ID: <20260520162144.390685974@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252340-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251657-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,95 +91,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 98475597B15
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: B1BF659A05D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit 4ca8b8bd952df7c3ccdc68af9bd3419d0839a04b ]
+[ Upstream commit 92dfd92f747698352b256cd9ddd7497bb7ebe9c8 ]
 
-The invalidate_remove() function has incomplete logic for handling write
-hit bios after cache invalidation. It sets up the remapping for the
-overwrite_bio but then drops it immediately without submission, causing
-write operations to hang.
+This driver runs also on other Tegra SoCs (e.g. Tegra234).
+Replace Kconfig dependency on Tegra194 with more generic dependency on
+Tegra, and amend the Kconfig help text to reflect the fact that this
+driver works on SoCs other than Tegra194.
 
-Fix by adding a new invalidate_committed() continuation that submits
-the remapped writes to the cache origin after metadata commit completes,
-while using the overwrite_endio hook to ensure proper completion
-sequencing. This maintains existing coherency. Also improve error
-handling in invalidate_complete() to preserve the original error status
-instead of using bio_io_error() unconditionally.
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: b003fb5c9df8 ("hte: Add Tegra234 provider")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Dipen Patel <dipenp@nvidia.com>
+Signed-off-by: Dipen Patel <dipenp@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/hte/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 61f6050479d15..2f882eb77dacf 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1461,8 +1461,14 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
- 			free_prison_cell(cache, mg->cell);
- 	}
+diff --git a/drivers/hte/Kconfig b/drivers/hte/Kconfig
+index 641af722b555d..f57bad67deef0 100644
+--- a/drivers/hte/Kconfig
++++ b/drivers/hte/Kconfig
+@@ -16,13 +16,13 @@ if HTE
  
--	if (!success && mg->overwrite_bio)
--		bio_io_error(mg->overwrite_bio);
-+	if (mg->overwrite_bio) {
-+		// Set generic error if the bio hasn't been issued yet,
-+		// e.g., invalidation or metadata commit failed before bio
-+		// submission. Otherwise preserve the bio's own error status.
-+		if (!success && !mg->overwrite_bio->bi_status)
-+			mg->overwrite_bio->bi_status = BLK_STS_IOERR;
-+		bio_endio(mg->overwrite_bio);
-+	}
+ config HTE_TEGRA194
+ 	tristate "NVIDIA Tegra194 HTE Support"
+-	depends on (ARCH_TEGRA_194_SOC || COMPILE_TEST)
++	depends on (ARCH_TEGRA || COMPILE_TEST)
+ 	depends on GPIOLIB
+ 	help
+ 	  Enable this option for integrated hardware timestamping engine also
+ 	  known as generic timestamping engine (GTE) support on NVIDIA Tegra194
+-	  systems-on-chip. The driver supports 352 LIC IRQs and 39 AON GPIOs
+-	  lines for timestamping in realtime.
++	  and later systems-on-chip. The driver supports 352 LIC IRQs and 39
++	  AON GPIOs lines for timestamping in realtime.
  
- 	free_migration(mg);
- 	defer_bios(cache, &bios);
-@@ -1502,6 +1508,22 @@ static int invalidate_cblock(struct cache *cache, dm_cblock_t cblock)
- 	return r;
- }
- 
-+static void invalidate_committed(struct work_struct *ws)
-+{
-+	struct dm_cache_migration *mg = ws_to_mg(ws);
-+	struct cache *cache = mg->cache;
-+	struct bio *bio = mg->overwrite_bio;
-+	struct per_bio_data *pb = get_per_bio_data(bio);
-+
-+	if (mg->k.input)
-+		invalidate_complete(mg, false);
-+
-+	init_continuation(&mg->k, invalidate_completed);
-+	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
-+	dm_hook_bio(&pb->hook_info, bio, overwrite_endio, mg);
-+	dm_submit_bio_remap(bio, NULL);
-+}
-+
- static void invalidate_remove(struct work_struct *ws)
- {
- 	int r;
-@@ -1514,10 +1536,8 @@ static void invalidate_remove(struct work_struct *ws)
- 		return;
- 	}
- 
--	init_continuation(&mg->k, invalidate_completed);
-+	init_continuation(&mg->k, invalidate_committed);
- 	continue_after_commit(&cache->committer, &mg->k);
--	remap_to_origin_clear_discard(cache, mg->overwrite_bio, mg->invalidate_oblock);
--	mg->overwrite_bio = NULL;
- 	schedule_commit(&cache->committer);
- }
- 
+ config HTE_TEGRA194_TEST
+         tristate "NVIDIA Tegra194 HTE Test"
 -- 
 2.53.0
 
