@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPevIJgnDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:56 +0200
+	id IA6MIlL5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1DF59AE6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2E4595812
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8162F3677957
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 544F8316B2F7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D119C3F4DD6;
-	Wed, 20 May 2026 18:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307773F20FA;
+	Wed, 20 May 2026 17:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUQ8ee80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwMLXcbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BDF3D88FC;
-	Wed, 20 May 2026 18:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55073F1AD9;
+	Wed, 20 May 2026 17:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301289; cv=none; b=nuGz52yNcKhQRiMLY31eHFBn0XUyU56GvMvGyzklyqaqyiyP/FiF3qHc0LxfqaeuE5NAwcmCVHzjFLhiPRumhLoxUlx56lxCVr0JO7Yn4tIRmx7hGGp/3zZhBp600CscfQaTjK6KtEM+8ghT5YTgdNbSQWZkq3EeQHGfwTgHXhw=
+	t=1779299586; cv=none; b=BG7VoezgG+TuA8/oZf+jODQ/jYTzZ3coJUI5Lsk2zK9ChX6Ay6syNRXEViuB1wbLa+3purM4kghpeNPGsRBbDoHImyzdzSIvg81AoMrciIiRQssU2eLenhh6tnHTGqZfw84EAyPy9tt6oXGbSKyRUD47SY8VFSjiaZCRpDKIxuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301289; c=relaxed/simple;
-	bh=YEExgy2NyETneLlhCCyAJFX13OkJ8ycFq2l7Fco7gdk=;
+	s=arc-20240116; t=1779299586; c=relaxed/simple;
+	bh=UytnZt19SqwDgMX7o6TBZJ8BL65ciR9M4fPA/VYIyyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCpv93o2/62e56ezBe8UVo/m34F7Lfhll6JV2+o3gteJguxd8EAuDvwClsoZtzeO8BhNeisIuCZW3sO8dYJMJQIt5xOO3FAOrfeigqeUY7pqchoY9wJQjuVWTmRkhpZAtmLqS6uGXkYLzLCSDkMIlYz9SqjDQet9/lo21C0KQTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUQ8ee80; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087871F000E9;
-	Wed, 20 May 2026 18:21:27 +0000 (UTC)
+	 MIME-Version; b=lIzsW0o8HaAUqps0lgBvwodzJqyliNQnfNI9Y6bXL2jxUCp891wYvtzTISm+Zreeql4GcuI/6UaL7JcjeUZCFgN7ChW2T9IqGl5MaTfLkukrCNUyDV3jfny8tVxA+lOlnOpSqceQnKCa3Px5XBmg19Ae2UitPqW9HHNN1iKNiMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwMLXcbg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477421F000E9;
+	Wed, 20 May 2026 17:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301288;
-	bh=DZfSutgE++7rXgmQAIPoAvVkKDmNpdL+6w3503E2UNA=;
+	s=korg; t=1779299584;
+	bh=KvhaaYxTmxT0gEWhyoaxr05aHRG4tUX5D2dTVj4abnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LUQ8ee80XhwTJ3izHz9r/kGL7xOiK/j5wM6o8xQ1UGK0uKLYRfaiwpawqGalRuOSg
-	 zPzccLYNAivVVEa5/Yw2OUJ2r1y4fnbCUuGYOvefe/rc005/hsTXHiKbm05+La9Nlg
-	 4IzSYWPPvHvpM5KLLl6JCsXMndXEUbWuTs0RVwz0=
+	b=vwMLXcbgQ1VLKls5KJgQr8BAWOKl0Ee+dOvHUIgRdaNSzGhaHzCI+8SLYnCXrw56V
+	 cdPSRRqgLoht6Rh681/QO7Kq005LXepU9cd4SodEUKsRa++FbuQkfjJAhv8m0Jyljp
+	 MMOR76IEc1s/pjpm5RjdDA8PaeOMmEOiSbAaNTiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
-	Kohei Enju <kohei@enjuk.jp>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Moritz Klammler <Moritz.Klammler@ferchau.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 498/666] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
-Date: Wed, 20 May 2026 18:21:49 +0200
-Message-ID: <20260520162122.054391219@linuxfoundation.org>
+Subject: [PATCH 6.18 827/957] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
+Date: Wed, 20 May 2026 18:21:50 +0200
+Message-ID: <20260520162152.502690331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +65,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252673-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252039-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: CE1DF59AE6E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4F2E4595812
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
+[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
 
-syzbot reported "sleeping function called from invalid context" in
-vhost_net_busy_poll().
+During wait-requeue-pi (task A) and requeue-PI (task B) the following
+race can happen:
 
-Commit 030881372460 ("vhost_net: basic polling support") introduced a
-busy-poll loop and preempt_{disable,enable}() around it, where each
-iteration calls a sleepable function inside the loop.
+     Task A                             Task B
+  futex_wait_requeue_pi()
+    futex_setup_timer()
+    futex_do_wait()
+                                   futex_requeue()
+                                        CLASS(hb, hb1)(&key1);
+                                        CLASS(hb, hb2)(&key2);
+        *timeout*
+    futex_requeue_pi_wakeup_sync()
+        requeue_state = Q_REQUEUE_PI_IGNORE
 
-The purpose of disabling preemption was to keep local_clock()-based
-timeout accounting on a single CPU, rather than as a requirement of
-busy-poll itself:
+    *blocks on hb->lock*
 
-https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+                                        futex_proxy_trylock_atomic()
+                                          futex_requeue_pi_prepare()
+                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
+                                        double_unlock_hb(hb1, hb2)
+                                         *retry*
 
->From this perspective, migrate_disable() is sufficient here, so replace
-preempt_disable() with migrate_disable(), avoiding sleepable accesses
-from a preempt-disabled context.
+Task B acquires both hb locks and attempts to acquire the PI-lock of the
+top most waiter (task B). Task A is leaving early due to a signal/
+timeout and started removing itself from the queue. It updates its
+requeue_state but can not remove it from the list because this requires
+the hb lock which is owned by task B.
 
-Fixes: 030881372460 ("vhost_net: basic polling support")
-Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Usually task A is able to swoop the lock after task B unlocked it.
+However if task B is of higher priority then task A may not be able to
+wake up in time and acquire the lock before task B gets it again.
+Especially on a UP system where A is never scheduled.
+
+As a result task A blocks on the lock and task B busy loops, trying to
+make progress but live locks the system instead. Tragic.
+
+This can be fixed by removing the top most waiter from the list in this
+case. This allows task B to grab the next top waiter (if any) in the
+next iteration and make progress.
+
+Remove the top most waiter if futex_requeue_pi_prepare() fails.
+Let the waiter conditionally remove itself from the list in
+handle_early_requeue_pi_wakeup().
+
+Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
+Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
+Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/futex/requeue.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index aff4ec7835628..3ad1a6f4ef965 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -549,7 +549,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
- 				     tvq->busyloop_timeout;
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index d818b4d47f1ba..b597cb3d17fc1 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -319,8 +319,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
+ 		return -EINVAL;
  
--	preempt_disable();
-+	migrate_disable();
- 	endtime = busy_clock() + busyloop_timeout;
+ 	/* Ensure that this does not race against an early wakeup */
+-	if (!futex_requeue_pi_prepare(top_waiter, NULL))
++	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
++		plist_del(&top_waiter->list, &hb1->chain);
++		futex_hb_waiters_dec(hb1);
+ 		return -EAGAIN;
++	}
  
- 	while (vhost_can_busy_poll(endtime)) {
-@@ -566,7 +566,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- 		cpu_relax();
- 	}
+ 	/*
+ 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
+@@ -722,10 +725,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
  
--	preempt_enable();
-+	migrate_enable();
+ 	/*
+ 	 * We were woken prior to requeue by a timeout or a signal.
+-	 * Unqueue the futex_q and determine which it was.
++	 * Conditionally unqueue the futex_q and determine which it was.
+ 	 */
+-	plist_del(&q->list, &hb->chain);
+-	futex_hb_waiters_dec(hb);
++	if (!plist_node_empty(&q->list)) {
++		plist_del(&q->list, &hb->chain);
++		futex_hb_waiters_dec(hb);
++	}
  
- 	if (poll_rx || sock_has_rx_data(sock))
- 		vhost_net_busy_poll_try_queue(net, vq);
+ 	/* Handle spurious wakeups gracefully */
+ 	ret = -EWOULDBLOCK;
 -- 
 2.53.0
 
