@@ -1,236 +1,150 @@
-Return-Path: <stable+bounces-250004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOULOSPVDWrW3wUAu9opvQ
-	(envelope-from <stable+bounces-250004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:07 +0200
+	id WIxnBO/RDWpP3gUAu9opvQ
+	(envelope-from <stable+bounces-250005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D5D59106E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A4C590BB3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 974D530690B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:01:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 029DB32BD097
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF9A3EFD07;
-	Wed, 20 May 2026 15:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD333F210F;
+	Wed, 20 May 2026 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivBchpXI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccwhAOED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B04C3ED5A1
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764983F0A99;
+	Wed, 20 May 2026 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779289225; cv=none; b=uZNhWQuXXR0uM57+/0tNfzCKiUDJdn3HkddMb6Xg2fK/hn1Xytm11NSv3sgQoUGo5md0ahzDbVnYTnDFtwThD+thxNtzzRZTDOsQ8Xk9oKO2IdJRhNcaf7p4cHM6e68sLFHOuZltCVnffmCChfSNwdkQNi1JKGCRzGnYMApg18s=
+	t=1779289404; cv=none; b=jAKcUncISgflP6tggguRU668l5KQMc2A4MbhubSHsEHjJeEJZ5XGZlCDQktfex2QZliuOqvsX95eN3jmlIUQ7X65pOUZp6vGOB1H7XegeQgq3yakpTCNYr0FiU2FumwpLOMxi8sdlJOQD7cgyg9AtFcpkT+lw1qd7gd7dSzWM40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779289225; c=relaxed/simple;
-	bh=L6xZuWqpqDoA2BEl0o0anQxMKFEKncnLfDJwVbLOWt4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IfjUK4JQMXxK8jM3l53HOYuYqQy5c4I3B6UOYxTRKc/4U/jIg/+s9FnONmWz6bJSxDg2jwOjYyBdzlaAbdjw+7KXDwv7DeJAoLCvI1KYZxF/Ii6nhGClzBcVWRERXCMy8ycQaqd6g3JFMHKZFQyymGt3iY4U03qZaa+qmdsl/A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivBchpXI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B287B1F00897;
-	Wed, 20 May 2026 15:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779289223;
-	bh=4pNUawZfpZvSZGc8vQz/vFX1eewHq7Rzp7e+0tJChT0=;
-	h=Subject:To:Cc:From:Date;
-	b=ivBchpXIjd37XJPG1MpQzjlrE+bWl/azQ7bHYIaiVW0YeQ1dMGJIAD0Yg3wtHp8xA
-	 Yw/k4pF5Cm2Hd5RPlc2GVD/RolTaO5Dx0lv8jFIqxet9nx6MSJeTVZfuEmO3TgpcC/
-	 XbZyrMqCSMbaYQEXyNiJSvOFrEvZw9hOvR3Dq4tw=
-Subject: FAILED: patch "[PATCH] ceph: fix BUG_ON in __ceph_build_xattrs_blob() due to stale" failed to apply to 5.10-stable tree
-To: Slava.Dubeyko@ibm.com,amarkuze@redhat.com,idryomov@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 May 2026 17:00:21 +0200
-Message-ID: <2026052021-muscular-eskimo-abee@gregkh>
+	s=arc-20240116; t=1779289404; c=relaxed/simple;
+	bh=VQHyb17cPuxRJcgPBDayEOQwcwW8AT/T/v4GmQ4BmyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XFcO2I5TF59WZvlvL07KyUk1JFjEQ7tZYebMCrjx98vLGRe8/GCHhH60IwVF20uglIbshroRhS38z31rQ3ZZBjdKtzE3n+PZ5HX7GuPg0qd1/eNN/okJLzOJgt0i1FTVqZGFGmtkocM11CW0519CtnSWmJoQxSjrVFf/koigzBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccwhAOED; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AF01F000E9;
+	Wed, 20 May 2026 15:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779289403;
+	bh=cKMYreO0fJ6K2NQBHB0YB/VMVoRVOkqTPgCMvuDnzSM=;
+	h=From:To:Cc:Subject:Date;
+	b=ccwhAOED6qKyLpnVxZpflqp6L40gksi+/8sUEO3OLyFkxb+iOeJTXbu9ukTTsvYT6
+	 2hQuCN99rprN7msTZSIE9UpQNeo7Vsp+UdkFvWZelZFcgCwYltbDnsTybV/5KKe7/q
+	 p8cZh/NYjOS2ZmapWiH9md00CwlyX1n/X9nkZRHcrMT1Djc7gAWZZuHgRVJUutxs3H
+	 ZblNbPNlbij1AQ9GlpF6TCwjFhctmQJn4pl56JY5SmYx7I4lU7wtqd+A1DOdppO2yM
+	 vddqZxhGgG/0Pql6W4RJT7obhP5PT6aK875fCjfVgu1TEeQotKt6Eqe8P/XGMe/dac
+	 yWLduVnLK+k/A==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: trace esz at first setup
+Date: Wed, 20 May 2026 08:03:10 -0700
+Message-ID: <20260520150311.80925-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250004-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[ibm.com,redhat.com,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250005-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:email]
-X-Rspamd-Queue-Id: 61D5D59106E
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A7A4C590BB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+DAMON traces effective size quota from the second update, only if a
+change has been made by the update.  Tracing only changed updates was an
+intentional decision to avoid unnecessary same value tracing.  Always
+skipping the first value is just an unintended mistake.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The mistake makes the tracepoint based investigation incomplete, because
+the first effective size quota is never traced.  It is not a big issue
+when the 'consist' quota tuner is used, because it keeps changing the
+quota in the usual setup.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+However, when the 'temporal' tuner is used, the quota value is not
+changed before the goal achievement status is completely changed.  For
+example, if the DAMOS scheme is started with an under-achieved goal, the
+quota is set to the maximum value, and kept the same value until the
+goal is achieved.  Because DAMON skips the first value, the user cannot
+know what effective quota the current scheme is using.  Only after the
+goal is achieved, the effective quota is changed to zero, and traced.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0c22d9511cbde746622f8e4c11aaa63fe76d45f9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052021-muscular-eskimo-abee@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Unconditionally trace the initial quota value to fix this problem.
 
-Possible dependencies:
+Note that the 'temporal' quota tuner was introduced by commit
+af738a6a00c1 ("mm/damon/core: introduce
+DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was added to 7.1-rc1.  But even
+with the 'consist' quota tuner, the tracing is unintentionally
+incomplete. Hence this commit marks the introduction of the trace event
+as the broken commit.
 
+Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+Changes from RFC
+- RFC: https://lore.kernel.org/20260520005940.92003-1-sj@kernel.org
+- Drop RFC tag.
 
+ mm/damon/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0c22d9511cbde746622f8e4c11aaa63fe76d45f9 Mon Sep 17 00:00:00 2001
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Date: Thu, 9 Apr 2026 12:43:40 -0700
-Subject: [PATCH] ceph: fix BUG_ON in __ceph_build_xattrs_blob() due to stale
- blob size
-
-The generic/642 test-case can reproduce the kernel crash:
-
-[40243.605254] ------------[ cut here ]------------
-[40243.605956] kernel BUG at fs/ceph/xattr.c:918!
-[40243.607142] Oops: invalid opcode: 0000 [#1] SMP PTI
-[40243.608067] CPU: 7 UID: 0 PID: 498762 Comm: kworker/7:1 Not tainted 7.0.0-rc7+ #3 PREEMPT(full)
-[40243.609700] Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[40243.611820] Workqueue: ceph-msgr ceph_con_workfn
-[40243.612715] RIP: 0010:__ceph_build_xattrs_blob+0x1b8/0x1e0
-[40243.613731] Code: 0f 84 82 fe ff ff e9 cf 8e 56 ff 48 8d 65 e8 31 c0 5b 41 5c 41 5d 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 c3 cc cc cc cc <0f> 0b 4c 8b 62 08 41 8b 85 24 07 00 00 49 83 c4 04 41 89 44 24 fc
-[40243.616888] RSP: 0018:ffffcc80c4d4b688 EFLAGS: 00010287
-[40243.617773] RAX: 0000000000010026 RBX: 0000000000000001 RCX: 0000000000000000
-[40243.618928] RDX: ffff8a773798dee0 RSI: 0000000000000000 RDI: 0000000000000000
-[40243.620158] RBP: ffffcc80c4d4b6a0 R08: 0000000000000000 R09: 0000000000000000
-[40243.621573] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8a75f3b58000
-[40243.622907] R13: ffff8a75f3b58000 R14: 0000000000000080 R15: 000000000000bffd
-[40243.624054] FS:  0000000000000000(0000) GS:ffff8a787d1b4000(0000) knlGS:0000000000000000
-[40243.625331] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[40243.626269] CR2: 000072f390b623c0 CR3: 000000011c02a003 CR4: 0000000000372ef0
-[40243.627408] Call Trace:
-[40243.627839]  <TASK>
-[40243.628188]  __prep_cap+0x3fd/0x4a0
-[40243.628789]  ? do_raw_spin_unlock+0x4e/0xe0
-[40243.629474]  ceph_check_caps+0x46a/0xc80
-[40243.630094]  ? __lock_acquire+0x4a2/0x2650
-[40243.630773]  ? find_held_lock+0x31/0x90
-[40243.631347]  ? handle_cap_grant+0x79f/0x1060
-[40243.632068]  ? lock_release+0xd9/0x300
-[40243.632696]  ? __mutex_unlock_slowpath+0x3e/0x340
-[40243.633429]  ? lock_release+0xd9/0x300
-[40243.634052]  handle_cap_grant+0xcf6/0x1060
-[40243.634745]  ceph_handle_caps+0x122b/0x2110
-[40243.635415]  mds_dispatch+0x5bd/0x2160
-[40243.636034]  ? ceph_con_process_message+0x65/0x190
-[40243.636828]  ? lock_release+0xd9/0x300
-[40243.637431]  ceph_con_process_message+0x7a/0x190
-[40243.638184]  ? kfree+0x311/0x4f0
-[40243.638749]  ? kfree+0x311/0x4f0
-[40243.639268]  process_message+0x16/0x1a0
-[40243.639915]  ? sg_free_table+0x39/0x90
-[40243.640572]  ceph_con_v2_try_read+0xf58/0x2120
-[40243.641255]  ? lock_acquire+0xc8/0x300
-[40243.641863]  ceph_con_workfn+0x151/0x820
-[40243.642493]  process_one_work+0x22f/0x630
-[40243.643093]  ? process_one_work+0x254/0x630
-[40243.643770]  worker_thread+0x1e2/0x400
-[40243.644332]  ? __pfx_worker_thread+0x10/0x10
-[40243.645020]  kthread+0x109/0x140
-[40243.645560]  ? __pfx_kthread+0x10/0x10
-[40243.646125]  ret_from_fork+0x3f8/0x480
-[40243.646752]  ? __pfx_kthread+0x10/0x10
-[40243.647316]  ? __pfx_kthread+0x10/0x10
-[40243.647919]  ret_from_fork_asm+0x1a/0x30
-[40243.648556]  </TASK>
-[40243.648902] Modules linked in: overlay hctr2 libpolyval chacha libchacha adiantum libnh libpoly1305 essiv intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit kvm_intel kvm irqbypass joydev ghash_clmulni_intel aesni_intel rapl input_leds mac_hid psmouse vga16fb serio_raw vgastate floppy i2c_piix4 pata_acpi bochs qemu_fw_cfg i2c_smbus sch_fq_codel rbd dm_crypt msr parport_pc ppdev lp parport efi_pstore
-[40243.654766] ---[ end trace 0000000000000000 ]---
-
-Commit d93231a6bc8a ("ceph: prevent a client from exceeding the MDS
-maximum xattr size") moved the required_blob_size computation to before
-the __build_xattrs() call, introducing a race.
-
-__build_xattrs() releases and reacquires i_ceph_lock during execution.
-In that window, handle_cap_grant() may update i_xattrs.blob with a
-newer MDS-provided blob and bump i_xattrs.version.  When
-__build_xattrs() detects that index_version < version, it destroys and
-rebuilds the entire xattr rb-tree from the new blob, potentially
-increasing count, names_size, and vals_size.
-
-The prealloc_blob size check that follows still uses the stale
-required_blob_size computed before the rebuild, so it passes even when
-prealloc_blob is too small for the now-larger tree. After __set_xattr()
-adds one more xattr on top, __ceph_build_xattrs_blob() is called from
-the cap flush path and hits:
-
-    BUG_ON(need > ci->i_xattrs.prealloc_blob->alloc_len);
-
-Fix this by recomputing required_blob_size after __build_xattrs()
-returns, using the current tree state. Also re-validate against
-m_max_xattr_size to fall back to the sync path if the rebuilt tree now
-exceeds the MDS limit.
-
-Cc: stable@vger.kernel.org
-Fixes: d93231a6bc8a ("ceph: prevent a client from exceeding the MDS maximum xattr size")
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-
-diff --git a/fs/ceph/xattr.c b/fs/ceph/xattr.c
-index c6fcbf428317..e773be07f767 100644
---- a/fs/ceph/xattr.c
-+++ b/fs/ceph/xattr.c
-@@ -1254,6 +1254,22 @@ int __ceph_setxattr(struct inode *inode, const char *name,
- 	      ceph_vinop(inode), name, ceph_cap_string(issued));
- 	__build_xattrs(inode);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4e223857a0f99..0db6530825d1d 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2883,6 +2883,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+ 		damos_set_effective_quota(c, s);
++		if (trace_damos_esz_enabled())
++			damos_trace_esz(c, s, quota);
+ 	}
  
-+	/*
-+	 * __build_xattrs() may have released and reacquired i_ceph_lock,
-+	 * during which handle_cap_grant() could have replaced i_xattrs.blob
-+	 * with a newer MDS-provided blob and bumped i_xattrs.version. If that
-+	 * caused __build_xattrs() to rebuild the rb-tree from the new blob,
-+	 * count/names_size/vals_size may now be larger than when
-+	 * required_blob_size was computed above. Recompute it here so the
-+	 * prealloc_blob size check below reflects the current tree state.
-+	 */
-+	required_blob_size = __get_required_blob_size(ci, name_len, val_len);
-+	if (required_blob_size > mdsc->mdsmap->m_max_xattr_size) {
-+		doutc(cl, "sync (size too large): %d > %llu\n",
-+		      required_blob_size, mdsc->mdsmap->m_max_xattr_size);
-+		goto do_sync;
-+	}
-+
- 	if (!ci->i_xattrs.prealloc_blob ||
- 	    required_blob_size > ci->i_xattrs.prealloc_blob->alloc_len) {
- 		struct ceph_buffer *blob;
+ 	/* New charge window starts */
 
+base-commit: 796dd9092b9c9d93dd48213582d45c43e93fa187
+-- 
+2.47.3
 
