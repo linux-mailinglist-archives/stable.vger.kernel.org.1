@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKg+DDvuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:11 +0200
+	id yPHVLrMnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99A25938E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B2C59AE9B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8ECDB31FDA07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BF9532F827D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898193D75A0;
-	Wed, 20 May 2026 17:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA50C3E5ECF;
+	Wed, 20 May 2026 18:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXLAO8hD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKXFoYaa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB933D6CB5;
-	Wed, 20 May 2026 17:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A353D1CC6;
+	Wed, 20 May 2026 18:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296963; cv=none; b=Mrd5Epj4imj/B78GnKFTrmyvQ5ZwmyiOvIFqHQN0S5VrXC3rk+5r8+5rZ/ZnQvNzscAnYSl5q1RDyLZ6gpujs9DIHf+poq6pUfYpfhPpsa1vKFwCtvpyqbEPq+tCfNzWSI0AqFBtYEzfZ7aqORrmO5qC37uCEwFDMAAvK14eSHA=
+	t=1779301234; cv=none; b=KRN8tHduYYlDrhtvpZlKxVNYEDtgeUTKRWEogTmACoSRGqrKRrnvQwMef3ox5XgOUxPG9z9uui4CbSvstLJTiLJ9VzkGKtT93A5RCmT+0w+02xn+4xep/KWHPkpJKSsIrWznRd8cieZVw4YpegEVxmFhMdTz1Dhx9oQ7PWq8RvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296963; c=relaxed/simple;
-	bh=VzDdJT7SeNmU14KcdcOWilQkEH3An2raC/nQEcvCH80=;
+	s=arc-20240116; t=1779301234; c=relaxed/simple;
+	bh=eaxDIPKlEVrxIUL/QwR+3i1PvSu4upxiBs43W1Bdq9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7JN7ZZ0JLWn5RVPm/2ipda78ZzWxlfjzrIWOFpOxmF0PVJXJz/j1ad7jKq7jFgA2Jw2DwQOe29TVIMpUfc+cIJ/wN/omCY0xjxdehVpW4zHkXq7ql8pQ14RZz7/mZi3ZvKd+1L9VWh2N+qY71mQ1j/V57hgSqBLVWHNA5GltuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXLAO8hD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF78E1F000E9;
-	Wed, 20 May 2026 17:09:21 +0000 (UTC)
+	 MIME-Version; b=Ko2cxnR7QVs5rIxe2PtaonKxCiji1KJq/7YuCfUDnS+dSXN2iFnd5zrSFbhDzZ1yZ0AIigDtN+mhvoG+U9QgvOE+4uwL5m+1FvXnsucF9OAajXint8OWV1WKW+HLcBChPgDZS6k83Ovd14ezx7n7NKBIXuN16U4yQWXtdNBNsBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKXFoYaa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38281F000E9;
+	Wed, 20 May 2026 18:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296962;
-	bh=kCJrJ+LhK9+5dSvckuqYMRSGUMEhEjLHpG/Ri6/AZGA=;
+	s=korg; t=1779301233;
+	bh=EV7C53WfWzK3wSiflbdFl2GOHdsPDe6u0aaZiVAyjCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YXLAO8hDSvGBEJIZGebj6YCm4no//k830NyBdSp7pMW9/JTttyRuR64aWrLvylt8Q
-	 VaMUTgZqPMPPEZcqRReDSerTCIKcbZRzNI5AjuzoJmCj5lLRfVxxGdzd4gpPR0oFGV
-	 ctmD/SMNmPDEFgLn93RatzFqrtDmq16ISiFfkXAo=
+	b=XKXFoYaaLvKSOFRRLyMjVntBFXAzANcSNBJ9Jd5PAVi5fgC5cO2XcZd1m9CxUZJ4+
+	 +lFVUd6BZQoBgCG9AEdMjfYPNodTg6hg8+Who+6YUKYZ12oiLx/iVhRZzjXrwdDvvx
+	 r8M0jCQ5u0jWOoEMbgc0Ulxt4S4tpD/h1D6RuoNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0996/1146] netconsole: propagate device name truncation in dev_name_store()
+Subject: [PATCH 6.12 435/666] arm64: dts: imx8mp-navqp: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:20:46 +0200
-Message-ID: <20260520162210.771830148@linuxfoundation.org>
+Message-ID: <20260520162120.700049693@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252651-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251047-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C99A25938E5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 34B2C59AE9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 92ceb7bff62c2606f664c204750eca0b85d44112 ]
+[ Upstream commit 741d6ac1a2a2e0f3e2cae5eef3516cdd75119e83 ]
 
-dev_name_store() calls strscpy(nt->np.dev_name, buf, IFNAMSIZ) without
-checking the return value. If userspace writes an interface name longer
-than IFNAMSIZ - 1, strscpy() silently truncates and returns -E2BIG, but
-the function ignores it and reports a fully successful write back to
-userspace.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there will be interrupt storm for i.MX8MP NAVQP. Per schematic, there
+is no on board PULL-UP resistors for GPIO1_IO03, so need to set PAD
+PUE and PU together to make pull up work properly.
 
-If a real interface happens to match the truncated name, netconsole will
-bind to the wrong device on the next enable, sending kernel logs and
-panic output to an unintended network segment with no indication to
-userspace that anything was rewritten.
-
-Reject writes whose length cannot fit in nt->np.dev_name up front:
-
-	if (count >= IFNAMSIZ)
-		return -ENAMETOOLONG;
-
-This is not a big deal of a problem, but, it is still the correct
-approach.
-
-Fixes: 0bcc1816188e57 ("[NET] netconsole: Support dynamic reconfiguration using configfs")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-3-59965f29d9cc@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 682729a9d506d ("arm64: dts: freescale: Add device tree for Emcraft Systems NavQ+ Kit")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp-navqp.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 595e09bd1ccfc..b3b36e3ddd03d 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -817,6 +817,13 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
- 		size_t count)
- {
- 	struct netconsole_target *nt = to_target(item);
-+	size_t len = count;
-+
-+	/* Account for a trailing newline appended by tools like echo */
-+	if (len && buf[len - 1] == '\n')
-+		len--;
-+	if (len >= IFNAMSIZ)
-+		return -ENAMETOOLONG;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
+index 5fd1614982cd5..128bc1e6dac54 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-navqp.dts
+@@ -309,7 +309,7 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c3
  
- 	dynamic_netconsole_mutex_lock();
- 	if (nt->state == STATE_ENABLED) {
+ 	pinctrl_pmic: pmicgrp {
+ 		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
++			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x1c0
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
