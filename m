@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-251557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPgALAz2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:32 +0200
+	id qBdSJVP0DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-250578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B34594FB9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B990F594B0A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41E023059D6F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C67037A5775
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFE22367DF;
-	Wed, 20 May 2026 17:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886FB352C52;
+	Wed, 20 May 2026 16:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEOZRhLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQS/Q+No"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B75C2046BA;
-	Wed, 20 May 2026 17:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C965352016;
+	Wed, 20 May 2026 16:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298290; cv=none; b=CiCU7rMvhfvAM/3kjWcfMhw8MSvLmRWTjTX17mSloqg1Lfwxw5LRGlQKyzWaZe/wlMPUhq6whybHVVwZc5s6qHKx5Q1nc3g8UZ9BtuBvwKsxQEArxLFh4iVAfP4Ze1lTQeFkoEttSRde3M5KXDh98sH2aDBvP5AVZSy795wfcgU=
+	t=1779295779; cv=none; b=Vt24XRzl3maUoJ4z87XdAUkVM7ohcYL5DZi+9bTYTqU8a+oca/kR2JOetETSF4STXQIAYHKw1VOu1QiWt6fDuEtZ1i9Timvs3m8cCXMRTAc17SvWbT3o5Q21ta/caElAwnTcQFelhozw2lNJIai9/lpok4dKzUSXxOlzzppzjPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298290; c=relaxed/simple;
-	bh=ysWUiR4BqAamotrWbwioq3oLjG7LLMi2pvRqTcD7BEk=;
+	s=arc-20240116; t=1779295779; c=relaxed/simple;
+	bh=LhlAs7V3bPnGfAf5g5zdaLhScjtkbjgmZ+VE86V5dGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TRDYTa3W25wSE86oupnGQTLx90uK3SrU2RYbb/SQZ+FxAmF+eWIn0aSK/BQS3QX2A2NXlDl8iPGRVvY0n8/dLGFxX8BeREite1FRNvptlMHQXmoOut9QuOFU9m96nx9oov/fa31q0g72tHh1/oJRF2aC60LAd39CWtnx9yVTfO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEOZRhLC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858D91F000E9;
-	Wed, 20 May 2026 17:31:28 +0000 (UTC)
+	 MIME-Version; b=TjOahFKwZsAIENZ5DIW1NpwoEXJcR+UOvw4M5ON7yzQ9X1c50WQxkzRG8L6DaEeL486RdhZgcPGV33QIIhDhkum5BN8EzIVMfzhK43isp5Aro3pLZaE099rl8JAQ7Ti2GSZq0nhfqOzcDgM3Ud4NQqCnK6nXGshYhICLLTzztAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQS/Q+No; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5A31F000E9;
+	Wed, 20 May 2026 16:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298289;
-	bh=3ZpEhqlhbuvDGfqv4IrhXXY07ViwjDA7uK1RIBzGpoA=;
+	s=korg; t=1779295777;
+	bh=dmpCaVSlcI4pDG526sJa2lpYGLa9Y99aM7S5WJtpkac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DEOZRhLCrDxtBcpm0E2Lr5zop7k/lR8q+dsC9pKk4K7kN6jHDr68R5G/mh6Aco4av
-	 YqyAa++gehDiGtrcHrvQtFyfc2cvfW42UnJtq88NI40UO61tPrNVeZPmaU/axKk30L
-	 t8dfz0PiH/c/k+kntLK3G+8cyQFOhgEMdFkorOvw=
+	b=VQS/Q+NoGv/cWIUEiXJIVb2tGRJXu9CSrT7bbt9+ad8Y2V1T9Oo6wGuqLlqzvzIAh
+	 +caLGvwphJrfUTOtHbq4PwG1l+kkEaz3svvmaRia5CgHOux++mSfvANSSCs2MwYXxy
+	 6Ii0haaIsgZteZtgbFyGdxISn0QxIJmhMScluA+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 313/957] selftest: memcg: skip memcg_sock test if address family not supported
-Date: Wed, 20 May 2026 18:13:16 +0200
-Message-ID: <20260520162141.320279328@linuxfoundation.org>
+Subject: [PATCH 7.0 0547/1146] arm64: dts: imx8qm-mek: switch Type-C connector power-role to dual
+Date: Wed, 20 May 2026 18:13:17 +0200
+Message-ID: <20260520162200.559464746@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,106 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250578-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251557-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DBL_PROHIBIT(0.00)[0.0.0.51:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 71B34594FB9
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: B990F594B0A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
+[ Upstream commit e3d3d19d1c0050789a4813ce836a641a3387d916 ]
 
-The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
-data over it to consume memory and verify that memory.stat.sock and
-memory.current values are close.
+When attach to PC Type-A port, the USB device controller does not function
+at all. Because it is configured as source-only and a Type-A port doesn't
+support PD capability, a data role swap is impossible.
 
-On systems where IPv6 isn't enabled or not configured to support
-SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
-call fails, there is no way we can test the memory consumption and verify
-the above claim.  I believe it is better to just skip the test in this
-case instead of reporting a test failure hinting that there may be
-something wrong with the memcg code.
+Actually, PTN5110THQ is configured for Source role only at POR, but after
+POR it can operate as a DRP (Dual-Role Power). By switching the power-role
+to dual, the port can operate as a sink and enter device mode when attach
+to Type-A port.
 
-Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
-Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Since the board design uses EN_SRC to control the 5V VBUS path and EN_SNK
+to control the 12V VBUS output, to avoid outputting a higher VBUS when in
+sink role, we set the operation current limit to 0mA so that SW will not
+control EN_SNK at all.
+
+Fixes: b237975b2cd58 ("arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes")
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index a680f773f2d54..1f64db1afa212 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1278,8 +1278,11 @@ static int tcp_server(const char *cgroup, void *arg)
- 	saddr.sin6_port = htons(srv_args->port);
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index dadc136aec6e6..011a89d85961d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -611,9 +611,17 @@ ptn5110: tcpc@51 {
+ 		usb_con1: connector {
+ 			compatible = "usb-c-connector";
+ 			label = "USB-C";
+-			power-role = "source";
++			power-role = "dual";
+ 			data-role = "dual";
++			try-power-role = "sink";
+ 			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++			/*
++			 * Set operational current to 0mA as we don't want EN_SNK
++			 * enable 12V VBUS switch when it work as a sink.
++			 */
++			sink-pdos = <PDO_FIXED(5000, 0, PDO_FIXED_USB_COMM)>;
++			op-sink-microwatt = <0>;
++			self-powered;
  
- 	sk = socket(AF_INET6, SOCK_STREAM, 0);
--	if (sk < 0)
-+	if (sk < 0) {
-+		/* Pass back errno to the ctl_fd */
-+		write(ctl_fd, &errno, sizeof(errno));
- 		return ret;
-+	}
- 
- 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
- 		goto cleanup;
-@@ -1409,6 +1412,12 @@ static int test_memcg_sock(const char *root)
- 			goto cleanup;
- 		close(args.ctl[0]);
- 
-+		/* Skip if address family not supported by protocol */
-+		if (err == EAFNOSUPPORT) {
-+			ret = KSFT_SKIP;
-+			goto cleanup;
-+		}
-+
- 		if (!err)
- 			break;
- 		if (err != EADDRINUSE)
+ 			ports {
+ 				#address-cells = <1>;
 -- 
 2.53.0
 
