@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAYrBk34DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:09 +0200
+	id OLrHNh0FDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-253118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB88595553
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752D3597993
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C40D8315A3A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 582CD32745F9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F158C3F54D4;
-	Wed, 20 May 2026 17:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EB43FE352;
+	Wed, 20 May 2026 18:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2NHdeeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdP1XI5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57FC3F4DDA;
-	Wed, 20 May 2026 17:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870144028C8;
+	Wed, 20 May 2026 18:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299543; cv=none; b=dYYgm5mFR62cxKVmOrOy8jpnoUVg4uaRWhcBKdzsHelGJZaJ5MK7R+Kfetda8HUVnBixe9Ska/UwAiN21hbbL5ZQz5kcl3f3evN/ghaVVDV/9DvYDzgQmsfEHhR5giQQn2aIsERYPbSzNB4nDQ4339uQIY01KiZi22U3xNzvI7g=
+	t=1779302452; cv=none; b=pOf+oB9hnKrMjxCtYJQy/sbkFkBHzFXLp+K5jnUr6LL0CFVxMqQtoxXlZ5MeC0lYPwdvNtKq968J9uxkq+Z6qOpnRvJpI68qA3myrfRVtvql0iXsANOwJ4AUmV88IFeZhHF77oLHk6B3dauPflZdbGi9gX8xrqIuxa2tXKcQMWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299543; c=relaxed/simple;
-	bh=V0sV4hVdgWdQZeAWu8NXHLRcsbrD5zogju2Kv8CkC7E=;
+	s=arc-20240116; t=1779302452; c=relaxed/simple;
+	bh=8Jive/MpmZoJio1Zn9a/4HtVc7hcn+6i6AY/+mAoC7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CGKQSsBEhpDs6eptVXrrDLRE1xLBX8tKnzVGN2VeZ1Y5G83ra5ZQMBOPF7wmQVcQQ22dzmDPq5JzlOLP9p036WVwItT5J4PjnEcntRqoxImITbPmXqiqjcjqlIKPXGrwz4f5wSSKlm4wtuPS8m3oY4ULguBQN0ipsnPGr3568IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2NHdeeu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268C91F000E9;
-	Wed, 20 May 2026 17:52:21 +0000 (UTC)
+	 MIME-Version; b=fV0exQ/j+3HYHAlgKCJAESHECfIJNorh+S/vhli715vTk4Q7DfBPu8Jy/1hcdQEMF/cgqeSagKxi/IiQ/87MsMwjEKlnfojtmx8VsBNIinKUaXyLAh3q7sI/k1E+dxPQfXJfcUClVW84Ty8YpcRnogF1f+tVs1EPHkhlYekouyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdP1XI5U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D931F000E9;
+	Wed, 20 May 2026 18:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299542;
-	bh=ViNrVFAY6VThzSX4lTfuVekRPgpcIqRfuKaLZxNJfcs=;
+	s=korg; t=1779302451;
+	bh=Rtf7VE5AiANDz9UiYEb2gehdNcQ+KqNaMSnNIHAdA+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G2NHdeeuHC7HJ68j9fmJBC18zebPpnZy3aWhDOHgoPNJN5buRYlNyxLsVZKWEWn/S
-	 Yk7PQO1iGbEzJlKqibuKKf8PffePN6fpPjVfSeokIHCr+tj4n/iRFxIuhSLGltCk2U
-	 hK+sfkwok2yjSHTM3/bN+NI6iCng8npgG7u9ufZM=
+	b=DdP1XI5U7N91KbyW7WoT4Ak2lhJQ1joW8q+2ytWQLoiusi0QBwCCkaoWCLsfby2sn
+	 VOJAsgzzetD0NTbGsRKDCB2A9m+egwsXKV1vZAsizdQrsaBwA6SFtQzxZDuoa5AwHj
+	 89NNcydXkgnAlUCa7qPxrySLIQ8yttzQSvv56JNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 813/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v5.0.1 ring
+Subject: [PATCH 6.6 273/508] scsi: sg: Make sg_sysfs_class constant
 Date: Wed, 20 May 2026 18:21:36 +0200
-Message-ID: <20260520162152.197749411@linuxfoundation.org>
+Message-ID: <20260520162104.559629969@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253118-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ACB88595553
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,marliere.net:email]
+X-Rspamd-Queue-Id: 752D3597993
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit 2f8e3da71a1b469b6e157aa3972f1448b3157840 ]
+[ Upstream commit f1fb41765d0bff77514ffeaef37bbb45608f6c62 ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+Since commit 43a7206b0963 ("driver core: class: make class_register() take
+a const *"), the driver core allows for struct class to be in read-only
+memory, so move the sg_sysfs_class structure to be declared at build time
+placing it into read-only memory, instead of having to be dynamically
+allocated at boot time.
 
-Fixes: b8f57b69942b ("drm/amdgpu: Add JPEG5_0_1 support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 742a98e2e81702df8fe1b1eccee5223220a03dc2)
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Link: https://lore.kernel.org/r/20240302-class_cleanup-scsi-v1-1-b9096b990e27@marliere.net
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 3033c471aaf6 ("scsi: sg: Fix sysctl sg-big-buff register during sg_init()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/sg.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-index ab0bf880d3d8a..1fb2386352ccb 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_1.c
-@@ -875,6 +875,7 @@ static const struct amd_ip_funcs jpeg_v5_0_1_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v5_0_1_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v5_0_1_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v5_0_1_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v5_0_1_dec_ring_set_wptr,
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 0dd8b9f8d6717..799773a879188 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -1421,7 +1421,9 @@ static const struct file_operations sg_fops = {
+ 	.llseek = no_llseek,
+ };
+ 
+-static struct class *sg_sysfs_class;
++static const struct class sg_sysfs_class = {
++	.name = "scsi_generic"
++};
+ 
+ static int sg_sysfs_valid = 0;
+ 
+@@ -1523,7 +1525,7 @@ sg_add_device(struct device *cl_dev)
+ 	if (sg_sysfs_valid) {
+ 		struct device *sg_class_member;
+ 
+-		sg_class_member = device_create(sg_sysfs_class, cl_dev->parent,
++		sg_class_member = device_create(&sg_sysfs_class, cl_dev->parent,
+ 						MKDEV(SCSI_GENERIC_MAJOR,
+ 						      sdp->index),
+ 						sdp, "%s", sdp->name);
+@@ -1613,7 +1615,7 @@ sg_remove_device(struct device *cl_dev)
+ 	read_unlock_irqrestore(&sdp->sfd_lock, iflags);
+ 
+ 	sysfs_remove_link(&scsidp->sdev_gendev.kobj, "generic");
+-	device_destroy(sg_sysfs_class, MKDEV(SCSI_GENERIC_MAJOR, sdp->index));
++	device_destroy(&sg_sysfs_class, MKDEV(SCSI_GENERIC_MAJOR, sdp->index));
+ 	cdev_del(sdp->cdev);
+ 	sdp->cdev = NULL;
+ 
+@@ -1685,11 +1687,9 @@ init_sg(void)
+ 				    SG_MAX_DEVS, "sg");
+ 	if (rc)
+ 		return rc;
+-        sg_sysfs_class = class_create("scsi_generic");
+-        if ( IS_ERR(sg_sysfs_class) ) {
+-		rc = PTR_ERR(sg_sysfs_class);
++	rc = class_register(&sg_sysfs_class);
++	if (rc)
+ 		goto err_out;
+-        }
+ 	sg_sysfs_valid = 1;
+ 	rc = scsi_register_interface(&sg_interface);
+ 	if (0 == rc) {
+@@ -1698,7 +1698,7 @@ init_sg(void)
+ #endif				/* CONFIG_SCSI_PROC_FS */
+ 		return 0;
+ 	}
+-	class_destroy(sg_sysfs_class);
++	class_unregister(&sg_sysfs_class);
+ 	register_sg_sysctls();
+ err_out:
+ 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0), SG_MAX_DEVS);
+@@ -1713,7 +1713,7 @@ exit_sg(void)
+ 	remove_proc_subtree("scsi/sg", NULL);
+ #endif				/* CONFIG_SCSI_PROC_FS */
+ 	scsi_unregister_interface(&sg_interface);
+-	class_destroy(sg_sysfs_class);
++	class_unregister(&sg_sysfs_class);
+ 	sg_sysfs_valid = 0;
+ 	unregister_chrdev_region(MKDEV(SCSI_GENERIC_MAJOR, 0),
+ 				 SG_MAX_DEVS);
 -- 
 2.53.0
 
