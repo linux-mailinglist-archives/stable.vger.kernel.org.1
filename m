@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-253299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDuoCD8HDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:55 +0200
+	id OHPQMxf/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF2E597E26
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91506596B86
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BDDA32ED69B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 70988307E125
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3B1285CBA;
-	Wed, 20 May 2026 18:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF5A3F8706;
+	Wed, 20 May 2026 18:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgkKzOXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApujYdBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AC14028CB;
-	Wed, 20 May 2026 18:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2BB371048;
+	Wed, 20 May 2026 18:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302916; cv=none; b=AULa6iaD5SVBd68UwbCQjspEs7BBpVD8ARIvq352mGrbk7BCFbK4dEJWWvy+jyL/geQcjZpR/uYUxJN1ea16VkpfX/RY83GSGTo5Q4nHGaZ9APdfK9Ksq3FmIV3PX4I0Lu1V5XGYSG/B5iAcLgQ9kjtXkkRkXO1GB6HM3NN0MAA=
+	t=1779301748; cv=none; b=Gaz6lObGoTASIkZqFo1BlWil7LKl9rM+yXvGyLUxef5zNBVRikxjKtH7XS228KSpJqOF7uK1tm9HlV2qMPDhAJEgMcyBNP/2QOQTQZg7b/o3EG5sUNgVNm7Aprf96hpC/83ONWflqMedto/N179U9cBHQJamOftwgZ4mfz04hmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302916; c=relaxed/simple;
-	bh=x0/BCerZvb+srI3O6BmnKYIXSz4I2E9rw2Gbpvsl3+o=;
+	s=arc-20240116; t=1779301748; c=relaxed/simple;
+	bh=MZAcWi0r7+kKpnAA7r7nbdivguIBnIJ8WhBxaRTiZPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VddHRrwEn/F1ETkTXOxFT+5ElXqVjuyTvcBlXiL3RggD3PRcZ3vDuGPz0GWbg9K+gjbjdpnAa+LohX40k8Iapu+Vpw0xqsSxbkFblfq4mTjkoRXisbV2Iw9CbFWPs60aydWRmqNtOlO7UHidTVgWCDolfdASxmgJz8895/b4iKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgkKzOXh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4A41F00893;
-	Wed, 20 May 2026 18:48:33 +0000 (UTC)
+	 MIME-Version; b=Snvk7UECZ2BcmzAkXeXjhtSyLSSWPKQIZ82CL4q2rJWTmwwsGtuRcJFfnOrrjNzq9UaJ820lT+cFBC5Zh4INMiTD/HCd6Y7QjPyZQ6E/hxPjTRCnvXRK9onFTVJy4/iqn6GWAhDwF7TtadtazooBySbCK3uAbrw/BXzbMmdcEQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApujYdBC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B871F00893;
+	Wed, 20 May 2026 18:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302914;
-	bh=D8tevLGrTjGvkYpHnnmh0qa73c+CqwU/O79J0blw2FA=;
+	s=korg; t=1779301747;
+	bh=sS9FdlKYetLsnAltaek6nUAzqHxLhLiZXrN94Jz+KPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cgkKzOXhMr082/aLdOXIs05btmZxEGJvIsydPt9jgZmULVI7qA3+b3CMr5v6sHw/y
-	 TRSsNgeVIscFYyFSICjzlX5MsXnys/vLxv+dJk1zgGJWJL3mQzvUR6kyf97AeMzhiT
-	 ILT9VCELc7ATVyFnHpxBezhIgjNDcTKvcw1g8VT4=
+	b=ApujYdBCLcreGrHF8kHr4QUM8X/dyhoLgCMfn6cxxkEvU0lqeRmD/MLLAVfXKp8xv
+	 UHcp47DNGlo0mrVFZBeV6blpUkidMMmcHdN7ay3GAD7znBtwmsRg2dMPt5rj3ha+GD
+	 +CxhgSfoMVCHj/+R54qVaVN0rqnL6mrDfuqEQ3BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Gustavo Luiz Duarte <gustavold@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	stable@kernel.org,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 449/508] netconsole: avoid out-of-bounds access on empty string in trim_newline()
+Subject: [PATCH 6.12 661/666] f2fs: fix false alarm of lockdep on cp_global_sem lock
 Date: Wed, 20 May 2026 18:24:32 +0200
-Message-ID: <20260520162108.325310282@linuxfoundation.org>
+Message-ID: <20260520162125.616553719@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +70,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253299-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,gmail.com,kernel.org,redhat.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252848-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BAF2E597E26
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,wdc.com:email]
+X-Rspamd-Queue-Id: 91506596B86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 7079c8c13f2d33992bc846240517d88f4ab07781 ]
+[ Upstream commit 6a5e3de9c2bb0b691d16789a5d19e9276a09b308 ]
 
-trim_newline() unconditionally dereferences s[len - 1] after computing
-len = strnlen(s, maxlen). When the string is empty, len is 0 and the
-expression underflows to s[(size_t)-1], reading (and potentially
-writing) one byte before the buffer.
+lockdep reported a potential deadlock:
 
-The two callers feed trim_newline() with the result of strscpy() from
-configfs store callbacks (dev_name_store, userdatum_value_store).
-configfs guarantees count >= 1 reaches the callback, but the byte
-itself can be NUL: a userspace write(fd, "\0", 1) leaves the
-destination empty after strscpy() and triggers the underflow. The OOB
-write only fires if the adjacent byte happens to be '\n', so this is
-not a security issue, but the access is undefined behaviour either way.
+a) TCMU device removal context:
+ - call del_gendisk() to get q->q_usage_counter
+ - call start_flush_work() to get work_completion of wb->dwork
+b) f2fs writeback context:
+ - in wb_workfn(), which holds work_completion of wb->dwork
+ - call f2fs_balance_fs() to get sbi->gc_lock
+c) f2fs vfs_write context:
+ - call f2fs_gc() to get sbi->gc_lock
+ - call f2fs_write_checkpoint() to get sbi->cp_global_sem
+d) f2fs mount context:
+ - call recover_fsync_data() to get sbi->cp_global_sem
+ - call f2fs_check_and_fix_write_pointer() to call blkdev_report_zones()
+   that goes down to blk_mq_alloc_request and get q->q_usage_counter
 
-This pattern is commonly flagged by LLM-based code reviewers. While it
-is not a security fix, the underlying access is undefined behaviour and
-the change is small and self-contained, so it is a reasonable candidate
-for the stable trees.
+Original callstack is in Closes tag.
 
-Guard the dereference on a non-zero length.
+However, I think this is a false alarm due to before mount returns
+successfully (context d), we can not access file therein via vfs_write
+(context c).
 
-Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Gustavo Luiz Duarte <gustavold@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Let's introduce per-sb cp_global_sem_key, and assign the key for
+cp_global_sem, so that lockdep can recognize cp_global_sem from
+different super block correctly.
+
+A lot of work are done by Shin'ichiro Kawasaki, thanks a lot for
+the work.
+
+Fixes: c426d99127b1 ("f2fs: Check write pointer consistency of open zones")
+Cc: stable@kernel.org
+Reported-and-tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20260218125237.3340441-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ adapted context to use `init_f2fs_rwsem()` instead of the not-yet-backported `init_f2fs_rwsem_trace()` macro ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netconsole.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/f2fs.h  |    3 +++
+ fs/f2fs/super.c |   11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index f58643bdafc5c..fffffa3658d22 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -278,6 +278,8 @@ static void trim_newline(char *s, size_t maxlen)
- 	size_t len;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1858,6 +1858,9 @@ struct f2fs_sb_info {
+ 	spinlock_t iostat_lat_lock;
+ 	struct iostat_lat_info *iostat_io_lat;
+ #endif
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	struct lock_class_key cp_global_sem_key;
++#endif
+ };
  
- 	len = strnlen(s, maxlen);
-+	if (!len)
-+		return;
- 	if (s[len - 1] == '\n')
- 		s[len - 1] = '\0';
- }
--- 
-2.53.0
-
+ /* Definitions to access f2fs_sb_info */
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4490,6 +4490,11 @@ try_onemore:
+ 	init_f2fs_rwsem(&sbi->gc_lock);
+ 	mutex_init(&sbi->writepages);
+ 	init_f2fs_rwsem(&sbi->cp_global_sem);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_register_key(&sbi->cp_global_sem_key);
++	lockdep_set_class(&sbi->cp_global_sem.internal_rwsem,
++					&sbi->cp_global_sem_key);
++#endif
+ 	init_f2fs_rwsem(&sbi->node_write);
+ 	init_f2fs_rwsem(&sbi->node_change);
+ 	spin_lock_init(&sbi->stat_lock);
+@@ -4963,6 +4968,9 @@ free_sb_buf:
+ free_sbi:
+ 	if (sbi->s_chksum_driver)
+ 		crypto_free_shash(sbi->s_chksum_driver);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 	kfree(sbi);
+ 	sb->s_fs_info = NULL;
+ 
+@@ -5015,6 +5023,9 @@ static void kill_f2fs_super(struct super
+ 	/* Release block devices last, after fscrypt_destroy_keyring(). */
+ 	if (sbi) {
+ 		destroy_device_list(sbi);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++		lockdep_unregister_key(&sbi->cp_global_sem_key);
++#endif
+ 		kfree(sbi);
+ 		sb->s_fs_info = NULL;
+ 	}
 
 
 
