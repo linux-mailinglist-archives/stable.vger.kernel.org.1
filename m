@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNamCjf5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:03 +0200
+	id cAIWMd0nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD85C5957BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2970559AEE1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2892230FA530
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62C7B3489301
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F0C3F54C7;
-	Wed, 20 May 2026 17:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3522F3D88FC;
+	Wed, 20 May 2026 18:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2RD5Ud5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib8ew1jl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389353F39C9;
-	Wed, 20 May 2026 17:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C323D1CC6;
+	Wed, 20 May 2026 18:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299554; cv=none; b=V2aLLjSHE5F7oxcI8Xs5BveKHofNyZMUbMkBrgvdBG8oXkL/+KsD2w3DG5LWcD9oi/zYYqRPygsli6zfll2ZJuR7PCtO+J1tUmgW5C2QcydVUbgBmbs5fYLr1Km/21trC7StHucdstNLbOKEz+/6ua+c/SeIwxL2ttIGhrl8U40=
+	t=1779301261; cv=none; b=nJ5AVbevaV0/ux9F6Sp+L6ePJ/poO69fpypmdzBL6tmKL1d0AFMJVtEemgUl2411yWLqWLxI2Y79SiVmXejFtU31ag1oM0kQg1LG5EjOjb5PRMXWIhNEKpy+QWhlFeJj2yFljbmC0i/8j314OxFWRHcC+tr3Fhq/aiKclVoq/A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299554; c=relaxed/simple;
-	bh=ufuPxD45EdDE6mgFWVNUPkgEdVt3Iz+mZ/tRnjrcCcI=;
+	s=arc-20240116; t=1779301261; c=relaxed/simple;
+	bh=0O3ONwXL85GyxMaaHfjtWkI7gOjSTq/XRcwjYUwcj2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcD7Y7lAm96+ObEqH3sgWGGEDYhIpSDy0s61VBcVExoAHpLSTqVuyDaL388oT9nn6Twru91nL3hr+URt3vbC+dvPXdFl4AkyOFubub1i35FPYwnVjpXhdIGJUPxXXufXeXK7dwx9VDAqeAMcfLAFEpdN8czS8hc7Yo2Dj0s/1SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2RD5Ud5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E65E1F000E9;
-	Wed, 20 May 2026 17:52:32 +0000 (UTC)
+	 MIME-Version; b=qOSqiRxTmdWKG9XL0PhZNh2FEBhcbC6kIjyPf7wdQZhBbIovVl15TCTblhWyS07fkJ8E2MAL9a99vG/H1OC3nLQNmkAcdjLe2dGYzobyWOeocYOFT0ShhUIMjWOKErhPZvfOBaknoL0Ib24QncDcJn2qm1652LFIpHnfeiAbG/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib8ew1jl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413271F000E9;
+	Wed, 20 May 2026 18:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299553;
-	bh=KTzYUXeFrXBDVOHej8qkvImqf5etbBib4oJlxVCss7Q=;
+	s=korg; t=1779301259;
+	bh=kk61hGIQ1wantT+XneC0N5T9R/xHx0F1IzkpWWTf2M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f2RD5Ud5KN3ei7eoBjw5zsG3TUPjLfTnFrnTeBP5zR6KGrvfBIkUNWUdBSDp8XQ/t
-	 Wv21kXj8Dac1VQG0aSA/4ImZ6+1eVKqAIlaE9O6hjFLqSoSnAxuspbS/GfrJ8t5CCo
-	 J41O/oZLsww9NC2iXuNeCV6jUrxfLr4ymWTeazno=
+	b=Ib8ew1jlW7POaJQou1hZk9HewvpH7m2Bhh4bNcHiAO3SWxnkKx7FWnVFztKl4eeE2
+	 yZOaAY29OOyh/OCT4RezYXcozyE8MMnR9tpBeDVdSTIPjZ7TTGN1jwnQNIkKdpKfDn
+	 4eXtkMtP9Uj7fKGNbP8uLjmMDgAkLQL5EZ2vwqhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 816/957] net: psp: require admin permission for dev-set and key-rotate
+Subject: [PATCH 6.12 488/666] net/sched: sch_red: annotate data-races in red_dump_stats()
 Date: Wed, 20 May 2026 18:21:39 +0200
-Message-ID: <20260520162152.262979518@linuxfoundation.org>
+Message-ID: <20260520162121.841631310@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +65,146 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252027-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252661-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CD85C5957BE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 2970559AEE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b718342a7fbaa2dff5fefc31988c07af8c6cbc21 ]
+[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
 
-The dev-set and key-rotate netlink operations modify shared device
-state (PSP version configuration and cryptographic key material,
-respectively) but do not require CAP_NET_ADMIN. The only access
-control is psp_dev_check_access() which merely verifies netns
-membership.
+red_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Fixes: 00c94ca2b99e ("psp: base PSP device support")
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260427195856.401223-1-kuba@kernel.org
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_red_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/psp.yaml | 2 ++
- net/psp/psp-nl-gen.c                 | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ net/sched/sch_red.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
-index 944429e5c9a84..d41ea6155e52e 100644
---- a/Documentation/netlink/specs/psp.yaml
-+++ b/Documentation/netlink/specs/psp.yaml
-@@ -111,6 +111,7 @@ operations:
-       name: dev-set
-       doc: Set the configuration of a PSP device.
-       attribute-set: dev
-+      flags: [admin-perm]
-       do:
-         request:
-           attributes:
-@@ -130,6 +131,7 @@ operations:
-       name: key-rotate
-       doc: Rotate the device key.
-       attribute-set: dev
-+      flags: [admin-perm]
-       do:
-         request:
-           attributes:
-diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
-index 9fdd6f831803e..85cf90999c9f1 100644
---- a/net/psp/psp-nl-gen.c
-+++ b/net/psp/psp-nl-gen.c
-@@ -70,7 +70,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
- 		.post_doit	= psp_device_unlock,
- 		.policy		= psp_dev_set_nl_policy,
- 		.maxattr	= PSP_A_DEV_PSP_VERSIONS_ENA,
--		.flags		= GENL_CMD_CAP_DO,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
- 		.cmd		= PSP_CMD_KEY_ROTATE,
-@@ -79,7 +79,7 @@ static const struct genl_split_ops psp_nl_ops[] = {
- 		.post_doit	= psp_device_unlock,
- 		.policy		= psp_key_rotate_nl_policy,
- 		.maxattr	= PSP_A_DEV_ID,
--		.flags		= GENL_CMD_CAP_DO,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
- 		.cmd		= PSP_CMD_RX_ASSOC,
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index a745d429a8141..6f53a0dbd0572 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -89,17 +89,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	case RED_PROB_MARK:
+ 		qdisc_qstats_overlimit(sch);
+ 		if (!red_use_ecn(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.prob_mark++;
++			WRITE_ONCE(q->stats.prob_mark,
++				   q->stats.prob_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -109,17 +112,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	case RED_HARD_MARK:
+ 		qdisc_qstats_overlimit(sch);
+ 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.forced_mark++;
++			WRITE_ONCE(q->stats.forced_mark,
++				   q->stats.forced_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -133,7 +139,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->qstats.backlog += len;
+ 		sch->q.qlen++;
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.pdrop++;
++		WRITE_ONCE(q->stats.pdrop,
++			   q->stats.pdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -461,9 +468,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
+ 					      &hw_stats_request);
+ 	}
+-	st.early = q->stats.prob_drop + q->stats.forced_drop;
+-	st.pdrop = q->stats.pdrop;
+-	st.marked = q->stats.prob_mark + q->stats.forced_mark;
++	st.early = READ_ONCE(q->stats.prob_drop) +
++		   READ_ONCE(q->stats.forced_drop);
++
++	st.pdrop = READ_ONCE(q->stats.pdrop);
++
++	st.marked = READ_ONCE(q->stats.prob_mark) +
++		    READ_ONCE(q->stats.forced_mark);
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
+ }
 -- 
 2.53.0
 
