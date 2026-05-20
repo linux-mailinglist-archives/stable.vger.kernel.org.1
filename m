@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFnQI9MhDmru6QUAu9opvQ
-	(envelope-from <stable+bounces-252077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:19 +0200
+	id 6AQlIMcCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB50859A6BC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EE1597536
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6072B38A099E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FBFF399ABF6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1633F39C9;
-	Wed, 20 May 2026 17:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B493E3F8706;
+	Wed, 20 May 2026 18:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHbHX1rE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qI3a6cFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF65A29B8D0;
-	Wed, 20 May 2026 17:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624303A453B;
+	Wed, 20 May 2026 18:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299686; cv=none; b=FMFD77xwXvjy4oFVh9Zblm9i9jpt2P0aSY6K+Hcwtzfq1r7+tatyZNEVXeRHH3soTemuzIJzO1y9+s3HryeFlNwN8/d0l2OWtKU/DT37AQpzNd+AHPCA39sWPSCmPgd9idQUJAMkH/c8XD7ow34Ib5UiwiAffDC7GHPla8CqVlA=
+	t=1779301392; cv=none; b=K5CjV5exvF6Ylr4cX4yAqUcSDJQbfBh8mSJKRwQJukMDgRCt4dN4xddAx27nTJQGGpsbY0P+0v9Xd1c35ziUsdQ9J1CDJKnuGmDFNscfM987xUZWwrV8CpNvTN10Y3/z/yHVGMn3ZMSgQcaSB02iihl33dMGGiFwHt4a6xBQltk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299686; c=relaxed/simple;
-	bh=U6nuTh943wv3rPJdYuIbDH6zcre1rCcvNKTe4jMkv4E=;
+	s=arc-20240116; t=1779301392; c=relaxed/simple;
+	bh=qoyXsV4r9j9N9Ntg1QvbX41kjqs8BJLyw1L4+w4nwd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLjHR601tUqyT05ihpNjpM5pA89fx0I79w6vpk6+1Z3Y6CzPzFYpeJsF6ZZfAYAPadjVjvXB7PBqSsjI09fDVr+leZ3rG0GpvKB5xg10qPUJTd3HmHXtAhcMF+6fnCNPZ0kfyD3tIA//wyEvOP5mqu0tFffk7YJG1Vo/wH1Xr44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHbHX1rE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9EF1F000E9;
-	Wed, 20 May 2026 17:54:44 +0000 (UTC)
+	 MIME-Version; b=ZmsgVSM9rI22qOQl3Fk0QwfJHzCuo1VUYgDn7Khm91L2WGzx9mRDvIFt4xMxyBq+nQEVvL6tSkwDrdKxmM9FHFVMI20bxUV448+h9bzJPpHI5vcZdR5Pp7aLBT+AzoZIrijDuy+ThZjtiFOWyayWd+lYFcEDppYtfg/AuZJTXio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qI3a6cFv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD771F00893;
+	Wed, 20 May 2026 18:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299684;
-	bh=mJB/089myfVlYur9I1VA2YfQyi1nZB5bRnCamA5Jmqw=;
+	s=korg; t=1779301391;
+	bh=fiiO/6dGWkv3OMySbCVRDk6/XjkLlClrCnlqD9nZQnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lHbHX1rEZc5jPlZGfoObVd0DBBBXT427KdmDXAkL5n6Y+xxGsBsHJ84nJYEStmGdb
-	 RZh4gQfN5Vufc5iF4Ef9xjvm0z+LZQlMYyVLNE9NR+6Nmc0ozg0M/G6HTCdz4LO/g8
-	 BCMFUAn/5jvwXcp1Wh7e6yJ4bjIsFbxXteYDWhYc=
+	b=qI3a6cFv5bFdUMFQ+vsyJ2uLZiZk5DUeB0PEMbTOXljmI5yyA7WQ2v/cMBl1hI/XA
+	 5jnXB7/sMgiGAHvrXMxCzqSSfMg6QU8S00S43FOs1drF2/kAUoGT3Hbr5XcYFroXNv
+	 TmceolB+wNfYXAF8glRaec6tMgvqS+gtDEZZnGbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 866/957] fuse: fix race when disposing stale dentries
+Subject: [PATCH 6.12 538/666] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
 Date: Wed, 20 May 2026 18:22:29 +0200
-Message-ID: <20260520162153.347426483@linuxfoundation.org>
+Message-ID: <20260520162122.931780906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252077-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252712-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,85 +92,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.org.uk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: EB50859A6BC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email]
+X-Rspamd-Queue-Id: 27EE1597536
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cb8d2bdcb8241b66ca4ac4868f20e12cd6881ebc ]
+[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
 
-In fuse_dentry_tree_work() just before d_dispose_if_unused() the dentry
-could get evicted, resulting in UAF.
+fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
 
-Move unlocking dentry_hash[i].lock to after the dispose.  To do this,
-fuse_dentry_tree_del_node() needs to be moved from fuse_dentry_prune() to
-fuse_dentry_release() to prevent an ABBA deadlock.
+Move this acquisition before we fill tc_fq_pie_xstats with live data.
 
-The lock ordering becomes:
+Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
+but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
 
- -> dentry_bucket.lock
-    -> dentry.d_lock
-
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Closes: https://lore.kernel.org/all/20251206014242.GO1712166@ZenIV/
-Fixes: ab84ad597386 ("fuse: new work queue to periodically invalidate expired dentries")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260114145344.468856-2-mszeredi@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 1e2c1af1beb3 ("fuse: make sure dentry is evicted if stale")
+Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ net/sched/sch_fq_pie.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index 98b174bd802f0..b7a6a5b6bbc8a 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -172,8 +172,8 @@ static void fuse_dentry_tree_work(struct work_struct *work)
- 			if (time_after64(get_jiffies_64(), fd->time)) {
- 				rb_erase(&fd->node, &dentry_hash[i].tree);
- 				RB_CLEAR_NODE(&fd->node);
--				spin_unlock(&dentry_hash[i].lock);
- 				d_dispose_if_unused(fd->dentry, &dispose);
-+				spin_unlock(&dentry_hash[i].lock);
- 				cond_resched();
- 				spin_lock(&dentry_hash[i].lock);
- 			} else
-@@ -464,18 +464,12 @@ static int fuse_dentry_init(struct dentry *dentry)
- 	return 0;
- }
- 
--static void fuse_dentry_prune(struct dentry *dentry)
-+static void fuse_dentry_release(struct dentry *dentry)
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 6ed08b705f8a5..ceba154656624 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -506,18 +506,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
+ static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
  {
- 	struct fuse_dentry *fd = dentry->d_fsdata;
+ 	struct fq_pie_sched_data *q = qdisc_priv(sch);
+-	struct tc_fq_pie_xstats st = {
+-		.packets_in	= q->stats.packets_in,
+-		.overlimit	= q->stats.overlimit,
+-		.overmemory	= q->overmemory,
+-		.dropped	= q->stats.dropped,
+-		.ecn_mark	= q->stats.ecn_mark,
+-		.new_flow_count = q->new_flow_count,
+-		.memory_usage   = q->memory_usage,
+-	};
++	struct tc_fq_pie_xstats st = { 0 };
+ 	struct list_head *pos;
  
- 	if (!RB_EMPTY_NODE(&fd->node))
- 		fuse_dentry_tree_del_node(dentry);
--}
--
--static void fuse_dentry_release(struct dentry *dentry)
--{
--	struct fuse_dentry *fd = dentry->d_fsdata;
--
- 	kfree_rcu(fd, rcu);
- }
+ 	sch_tree_lock(sch);
++
++	st.packets_in	= q->stats.packets_in;
++	st.overlimit	= q->stats.overlimit;
++	st.overmemory	= q->overmemory;
++	st.dropped	= q->stats.dropped;
++	st.ecn_mark	= q->stats.ecn_mark;
++	st.new_flow_count = q->new_flow_count;
++	st.memory_usage   = q->memory_usage;
++
+ 	list_for_each(pos, &q->new_flows)
+ 		st.new_flows_len++;
  
-@@ -512,7 +506,6 @@ const struct dentry_operations fuse_dentry_operations = {
- 	.d_revalidate	= fuse_dentry_revalidate,
- 	.d_delete	= fuse_dentry_delete,
- 	.d_init		= fuse_dentry_init,
--	.d_prune	= fuse_dentry_prune,
- 	.d_release	= fuse_dentry_release,
- 	.d_automount	= fuse_dentry_automount,
- };
 -- 
 2.53.0
 
