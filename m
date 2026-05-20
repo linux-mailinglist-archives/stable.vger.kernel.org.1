@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sM7gDgj6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:32 +0200
+	id CHTaNdnyDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4118595A16
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6048D594693
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D81A3111656
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 10E5630E0F68
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C75F3F9260;
-	Wed, 20 May 2026 18:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAE236F421;
+	Wed, 20 May 2026 17:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMT/MfV9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziHmbtjJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2953F4DD6;
-	Wed, 20 May 2026 18:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50529D26E;
+	Wed, 20 May 2026 17:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300341; cv=none; b=InMMWzQJ/SmbRoHbVkinJnYsngBbgpjP+gzVFbhvRzUvrrCVFnHEplkyHiDLMLS8LJ9zHmo9KgzwD6RbIkpAiAZHigoUDB9Sp156P90Rimg1jeBlzrcwxG+4m9TmU3Fes72qmpIaWlKXuimQcIYrzGhN3OUSbOc1dttNxXw5tAM=
+	t=1779298540; cv=none; b=jV0+zkHJHvDKAC6/akI3twkNFxQ6QSPK6lVtidWLgpseWQmda1Xbps9zO19SKNrLop5VdaWezACW07Ra2e+vCeyaWvIQpzxi87gaKUEkGHkvARqoyrJkbqsXXzp9c50UW62D4yNnbEIqmd188UcMVBogwJBaV+45ZSZ7/mTYH7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300341; c=relaxed/simple;
-	bh=/aOTtiMKYGhIfPRqvziVdNGhDeB+AfOEIay+nkgvC7M=;
+	s=arc-20240116; t=1779298540; c=relaxed/simple;
+	bh=4tYSR2eoC38ihJa83eTT/3mhs3AF3rA58vxUbW4ypzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1ON3sqY657VL6vJcLLXdZU1EV/wVUvKR1pbOTsO7YRJuIA5oiY4EisrOJTbn0s/3tSzdGK2GgpiKoSoPUyi4C3pIXkZb2tNodoUUyycIbMq+kTQR5Alr/+FuoKSALoMopeT91HvJOOlX8SHfKG9N+hLGWN2rx14lQ/NaMDRg6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMT/MfV9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD411F000E9;
-	Wed, 20 May 2026 18:05:39 +0000 (UTC)
+	 MIME-Version; b=E6qV7Vf8gpmm9NSvoFyVFOUp8xUiAJwiaN2eLYReQwgcm8DAg/bj1YKgrgmNDSChorl3M0CfWDwSw0rfAxXeH/PDvTBroDOvqCurQE+ArFzuC7FNKp5HlLFvf1ruKhPJLsFWitZ7FB+qq2dtJtXAZWtuI3TU+UcAp6zTtP1JUeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziHmbtjJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE261F000E9;
+	Wed, 20 May 2026 17:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300340;
-	bh=dqiiHuA2MGYNGQn5Qi7SPIcHu5hYiQkNJO9ITpV+G0c=;
+	s=korg; t=1779298539;
+	bh=bptGYsGDsSZ51k8SnnOVcFjFv2GEkrdv2aDiZ2OQcxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lMT/MfV930dLkFb9FDp/786OV8cC2DkArBYtS3ET6AINVM2O2OGCTOnws91a2dzop
-	 nZFiWsOe+aztSDBbMbTijbqEzaI16W42Z9/cBi/CHRhpipPGnBB4IZXhz8a9YP57mI
-	 JDGFVga0YDT7aCtzIjbVXNu4RKIRmTNdPWowS4sw=
+	b=ziHmbtjJqbSsLl/NFsY4RCpNTi1UswoODOShPR+vQpuwuMoPWYpf8ueI1OgIb3GGQ
+	 INx3yLEqu8GJnYSbDZaxHlmoD0u8+KzNFNpMAEm5l5HHB9nLOSItzMIeFkX6kPyXgQ
+	 8HYpAHH9vRHwNoHTt2lPfxq8Oe/fZ/wvuWs6qrlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <b42378@freescale.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Norman Bintang <normanbt@google.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/666] ASoC: soc-compress: use function to clear symmetric params
-Date: Wed, 20 May 2026 18:15:32 +0200
-Message-ID: <20260520162113.840501380@linuxfoundation.org>
+Subject: [PATCH 6.18 450/957] soundwire: cadence: Clear message complete before signaling waiting thread
+Date: Wed, 20 May 2026 18:15:33 +0200
+Message-ID: <20260520162144.278945606@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251652-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,109 +87,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,renesas.com:email,freescale.com:email]
-X-Rspamd-Queue-Id: C4118595A16
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cirrus.com:email]
+X-Rspamd-Queue-Id: 6048D594693
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 07c774dd64ba0c605dbf844132122e3edbdbea93 ]
+[ Upstream commit cbfea84f820962c3c5394ff06e7e9344c96bf761 ]
 
-Current soc-compress.c clears symmetric_rate, but it clears rate only,
-not clear other symmetric_channels/sample_bits.
+Clear the CDNS_MCP_INT_RX_WL interrupt before signaling completion.
 
-	static int soc_compr_clean(...)
-	{
-		...
-		if (!snd_soc_dai_active(cpu_dai))
-=>			cpu_dai->symmetric_rate = 0;
+This is to prevent the potential race where:
+- The main thread is scheduled immediately the completion is signaled,
+   and starts a new message
+- The RX_WL IRQ for this new message happens before sdw_cdns_irq() has
+  been re-scheduled.
+- When sdw_cdns_irq() is re-scheduled it clears the new RX_WL interrupt.
 
-		if (!snd_soc_dai_active(codec_dai))
-=>			codec_dai->symmetric_rate = 0;
-		...
-	};
+MAIN THREAD                        |  IRQ THREAD
+                                   |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                                   | sdw_cdns_irq()
+                                   | {
+                                   |    signal completion
+                          <== RESCHEDULE <==
+  Handle message completion        |
+  }                                |
+                                   |
+Start new message                  |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                          ==> RESCHEDULE ==>
+                                   |    // New RX_WL IRQ is cleared before
+                                   |    // it has been handled.
+                                   |    clear CDNS_MCP_INTSTAT
 
-This feature was added when v3.7 kernel [1], and there was only
-symmetric_rate, no symmetric_channels/sample_bits in that timing.
+                                   |    return IRQ_HANDLED;
+                                   | }
 
-symmetric_channels/sample_bits were added in v3.14 [2],
-but I guess it didn't notice that soc-compress.c is updating symmetric_xxx.
+Before this change, this error message was sometimes seen on kernels
+that have large amounts of debugging enabled:
 
-We are clearing symmetry_xxx by soc_pcm_set_dai_params(), but is soc-pcm.c
-local function. Makes it global function and clear symmetry_xxx by it.
+   SCP Msg trf timed out
 
-[1] commit 1245b7005de02 ("ASoC: add compress stream support")
-[2] commit 3635bf09a89cf ("ASoC: soc-pcm: add symmetry for channels and
-			   sample bits")
+This error indicates that the completion has not been signalled after
+500ms.
 
-Fixes: 3635bf09a89c ("ASoC: soc-pcm: add symmetry for channels and sample bits")
-Cc: Nicolin Chen <b42378@freescale.com>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87ms15e3kv.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 956baa1992f9 ("soundwire: cdns: Add sdw_master_ops and IO transfer support")
+Reported-by: Norman Bintang <normanbt@google.com>
+Closes: https://issuetracker.google.com/issues/477099834
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20260310113133.1707288-1-rf@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h      | 3 +++
- sound/soc/soc-compress.c | 4 ++--
- sound/soc/soc-pcm.c      | 4 ++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/soundwire/cadence_master.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index db3b464a91c7b..cd467f8babdb6 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1452,6 +1452,9 @@ struct snd_soc_dai *snd_soc_find_dai(
- struct snd_soc_dai *snd_soc_find_dai_with_mutex(
- 	const struct snd_soc_dai_link_component *dlc);
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 21bb491d026b4..d7a0a14ad9626 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -933,6 +933,14 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
  
-+void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
-+			    struct snd_pcm_hw_params *params);
+ 		cdns_read_response(cdns);
+ 
++		/*
++		 * Clear interrupt before signalling the completion to avoid
++		 * a race between this thread and the main thread starting
++		 * another TX.
++		 */
++		cdns_writel(cdns, CDNS_MCP_INTSTAT, CDNS_MCP_INT_RX_WL);
++		int_status &= ~CDNS_MCP_INT_RX_WL;
 +
- #include <sound/soc-dai.h>
- 
- static inline
-diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
-index f787f60a16a11..249cafe54f561 100644
---- a/sound/soc/soc-compress.c
-+++ b/sound/soc/soc-compress.c
-@@ -69,10 +69,10 @@ static int soc_compr_clean(struct snd_compr_stream *cstream, int rollback)
- 	snd_soc_dai_digital_mute(codec_dai, 1, stream);
- 
- 	if (!snd_soc_dai_active(cpu_dai))
--		cpu_dai->symmetric_rate = 0;
-+		soc_pcm_set_dai_params(cpu_dai, NULL);
- 
- 	if (!snd_soc_dai_active(codec_dai))
--		codec_dai->symmetric_rate = 0;
-+		soc_pcm_set_dai_params(codec_dai, NULL);
- 
- 	snd_soc_link_compr_shutdown(cstream, rollback);
- 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 83e6a76da7e63..628322790c878 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -458,8 +458,8 @@ int dpcm_dapm_stream_event(struct snd_soc_pcm_runtime *fe, int dir,
- 	return 0;
- }
- 
--static void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
--				   struct snd_pcm_hw_params *params)
-+void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
-+			    struct snd_pcm_hw_params *params)
- {
- 	if (params) {
- 		dai->symmetric_rate	   = params_rate(params);
+ 		if (defer && defer->msg) {
+ 			cdns_fill_msg_resp(cdns, defer->msg,
+ 					   defer->length, 0);
 -- 
 2.53.0
 
