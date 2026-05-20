@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPbtIBv7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:07 +0200
+	id iMMdGc70DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BFF595CA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB037594C5C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 981283060FF8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2BF437B19CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB663A3E79;
-	Wed, 20 May 2026 18:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED053A3E60;
+	Wed, 20 May 2026 16:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAGOS7Am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz00zZHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BCE4F5E0;
-	Wed, 20 May 2026 18:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A9B372EED;
+	Wed, 20 May 2026 16:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300040; cv=none; b=nEy3mPaRHbub8tRjB8yFnuCSlkpBBf6OiY31VvMWyeyKWdtsRSEObPlqSE/vx6a8EHlJFfaCIkWk67IN4i1o5HjIqBRSFX7haz7+Qb7o3Gd+5lhgpc6YugealCBd/LkkXu68SPMKFl0l8TsKJBnZRRXs3VxjNuG4pzpqCRCv9qs=
+	t=1779295874; cv=none; b=kbLMx97seX32MwXBmI+Ukeb2mYyjXsUOJXdOVHpImnEmS4XwFLSSjuXh12anNVhirA6uBw7r5DQ+gn9QgsnC+QseG5QOmu1xJjyJaICQ/IXLffOPZ5n12+htlA6yveZWI9fbQxd46FJAa2cIV8beaRuC2WCBxXeRn5xvI1tSYQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300040; c=relaxed/simple;
-	bh=p74XBqEvUsSo+S/2/1mo23Ntjx53CvEd/wNlHE5yLUE=;
+	s=arc-20240116; t=1779295874; c=relaxed/simple;
+	bh=k+U0ocEkIl3Gd9X36lT8aN06/LidBBKEroYxrWkutoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bI6HjXBsqAaMW1TVpaFfO+ys0KiZIk5z5YCGef1xJM+ugw6VfsiWAGRyWS/GUTWv0ZSqy+F+2de7W7e62VXo4cRGvRpghh4m33BKvbLUanI29Ua1eRR2TxdcSKlmM8T8iTxO9l6XrCbvl8O5SAWT24bSXk1eyQOzeZFsBv/lp7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAGOS7Am; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3455D1F000E9;
-	Wed, 20 May 2026 18:00:39 +0000 (UTC)
+	 MIME-Version; b=VLPHH+k/4A3zMNAha0gXL2TGD70MUVGJLRYsYZrEsjSDPmw3Z7TPMh369/icME1L4qMa3PEFoIlJvesMar1R8AeeotWZecCibom7CPoD4MWF2DGnwThkBk+/2Ay6PjpwJdDtaPRA26TJC/MIlbz5FEVT4SzzrKQn3ENydF0NbI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz00zZHC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BD21F000E9;
+	Wed, 20 May 2026 16:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300039;
-	bh=VNsLr4bdL7kmYc84GrfmfYxkWqA1liGAjYs6GcUR4JY=;
+	s=korg; t=1779295873;
+	bh=XmASXtY4WmnepyfCWc0PVsrGUL0Oqau4woijphujxY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LAGOS7AmXlKCN9XTIWmGecWzIW1+h1HfuLVUadcbbEJ8bkiDXujQd0FlMOVedzr5d
-	 jAjksyHOcFZ/eRxSI04Nmpgy43WaBCqS/t40MwDFwVwgM9qU2B6pl2bRrUBYgrfiwe
-	 4n+zzZYPBePcv6boypA6/o1j4W/OYMpcY4aCCqL4=
+	b=zz00zZHCcAki1c063Bq7gwDwVCGHTnhDke4cO21ZSMicpl8mCxC5EivQ7Tua//3hV
+	 ukV+HfR4qNKE1SDedQcMs43tZ6eQ+m7c2Th6RZRIawammSv0RFF4EnNLM2mBWB78By
+	 qchrkGcQBu0Xx9SixNasAYynFhS3zVwlXfOui0hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/666] s390/cio: use generic driver_override infrastructure
+Subject: [PATCH 7.0 0585/1146] ima: check return value of crypto_shash_final() in boot aggregate
 Date: Wed, 20 May 2026 18:13:55 +0200
-Message-ID: <20260520162111.758178348@linuxfoundation.org>
+Message-ID: <20260520162201.417761808@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,152 +69,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252195-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250615-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 61BFF595CA3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: AB037594C5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Daniel Hodges <hodgesd@meta.com>
 
-[ Upstream commit ac4d8bb6e2e13e8684a76ea48d13ebaaaf5c24c4 ]
+[ Upstream commit 870819434c8dfcc3158033b66e7851b81bb17e21 ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+The return value of crypto_shash_final() is not checked in
+ima_calc_boot_aggregate_tfm(). If the hash finalization fails, the
+function returns success and a corrupted boot aggregate digest could
+be used for IMA measurements.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+Capture the return value and propagate any error to the caller.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
-
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: ebc3d1791503 ("s390/cio: introduce driver_override on the css bus")
-Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Link: https://patch.msgid.link/20260324005919.2408620-10-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: 76bb28f6126f ("ima: use new crypto_shash API instead of old crypto_hash")
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/cio.h |  5 -----
- drivers/s390/cio/css.c | 34 ++++------------------------------
- 2 files changed, 4 insertions(+), 35 deletions(-)
+ security/integrity/ima/ima_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
-index a9057a5b670a6..23374604c6b01 100644
---- a/drivers/s390/cio/cio.h
-+++ b/drivers/s390/cio/cio.h
-@@ -103,11 +103,6 @@ struct subchannel {
- 	struct work_struct todo_work;
- 	struct schib_config config;
- 	u64 dma_mask;
--	/*
--	 * Driver name to force a match.  Do not set directly, because core
--	 * frees it.  Use driver_set_override() to set or clear it.
--	 */
--	const char *driver_override;
- } __attribute__ ((aligned(8)));
- 
- DECLARE_PER_CPU_ALIGNED(struct irb, cio_irb);
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index 61be7c0550bc4..b0ddbad1ebf37 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -160,7 +160,6 @@ static void css_subchannel_release(struct device *dev)
- 
- 	sch->config.intparm = 0;
- 	cio_commit_config(sch);
--	kfree(sch->driver_override);
- 	kfree(sch);
+diff --git a/security/integrity/ima/ima_crypto.c b/security/integrity/ima/ima_crypto.c
+index aff61643415de..85c433e39c008 100644
+--- a/security/integrity/ima/ima_crypto.c
++++ b/security/integrity/ima/ima_crypto.c
+@@ -832,7 +832,7 @@ static int ima_calc_boot_aggregate_tfm(char *digest, u16 alg_id,
+ 		}
+ 	}
+ 	if (!rc)
+-		crypto_shash_final(shash, digest);
++		rc = crypto_shash_final(shash, digest);
+ 	return rc;
  }
  
-@@ -324,37 +323,9 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- 
- static DEVICE_ATTR_RO(modalias);
- 
--static ssize_t driver_override_store(struct device *dev,
--				     struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct subchannel *sch = to_subchannel(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &sch->driver_override, buf, count);
--	if (ret)
--		return ret;
--
--	return count;
--}
--
--static ssize_t driver_override_show(struct device *dev,
--				    struct device_attribute *attr, char *buf)
--{
--	struct subchannel *sch = to_subchannel(dev);
--	ssize_t len;
--
--	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", sch->driver_override);
--	device_unlock(dev);
--	return len;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *subch_attrs[] = {
- 	&dev_attr_type.attr,
- 	&dev_attr_modalias.attr,
--	&dev_attr_driver_override.attr,
- 	NULL,
- };
- 
-@@ -1358,9 +1329,11 @@ static int css_bus_match(struct device *dev, const struct device_driver *drv)
- 	struct subchannel *sch = to_subchannel(dev);
- 	const struct css_driver *driver = to_cssdriver(drv);
- 	struct css_device_id *id;
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (sch->driver_override && strcmp(sch->driver_override, drv->name))
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret == 0)
- 		return 0;
- 
- 	for (id = driver->subchannel_type; id->match_flags; id++) {
-@@ -1417,6 +1390,7 @@ static int css_uevent(const struct device *dev, struct kobj_uevent_env *env)
- 
- static const struct bus_type css_bus_type = {
- 	.name     = "css",
-+	.driver_override = true,
- 	.match    = css_bus_match,
- 	.probe    = css_probe,
- 	.remove   = css_remove,
 -- 
 2.53.0
 
