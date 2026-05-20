@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBT1EOAcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:12 +0200
+	id QC+LGVb1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5972599FF5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF3D594E64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 207B331B26ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BEA2B31E0096
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6601036F421;
-	Wed, 20 May 2026 17:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A0A36A352;
+	Wed, 20 May 2026 16:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDC57oGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9UE5aeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245A53B0AD6;
-	Wed, 20 May 2026 17:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902E739C00B;
+	Wed, 20 May 2026 16:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298519; cv=none; b=sSZtR20lBo5NmHQTMT8jABF73ActlGlpweWvjQ8yyjiJzwy6MAVHFrXjZxjhLo0u5CRyUCVdxjPNvIVscc5cIXTAK7ShvLk/gsE3Bvp5yXewdOusIxLay27Mx+JxZlCXnDJ/BUT6pJzKdpyRLNyaJYRecewaTxbvi42BlRhfOII=
+	t=1779296005; cv=none; b=cLOHx0JGayFra8tGE5/K1vaTwpRoJs52lUOnXG3MI0F2wTpGznqkCecq1Lxuq1cjSWen4ZgonoFUYRUnMz6iQaV2aUGCtDdzvgg9NzN/ndJB+nLg1Cs7OhxF3LwGG9J9aJhAufIhB4w98HiR2Clx7aug8QrU4ULlxPaYWuHi0fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298519; c=relaxed/simple;
-	bh=YkUf8r+h1G/GJdL40pSgODggFAiVQZT7Nso8cWFbtWk=;
+	s=arc-20240116; t=1779296005; c=relaxed/simple;
+	bh=l5HQfrLVxr/IfZoQlcsyTa093A7gAYg796tYQWQkqvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9Dff5wIP5DvdsJLOQO+8dwnNvZuNnWAPYY9K4F5AeMTRr4jH6sEBKjlSoaA1D09bDCSy1/MXC8v7tjdc7Edj+gIzPkY8uOOcUs6LqakrJHYPBsm3g0X4u+grex95b0OonvGtjbuojcVVkiLenfOK2OGZbZoR/a/i71D87/MHcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDC57oGt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CE61F000E9;
-	Wed, 20 May 2026 17:35:17 +0000 (UTC)
+	 MIME-Version; b=kGha/imEeH7QyhE6R9GUiCfFL5JdANNtPS0GNnBSoFZJECx988k/1G91PrDi72gmVkaUaxJRrzLbLMJOq6z6RfBxg0w4kmPoaMpRyexQnCd/bcctzxN6x9fH4PlGWKUP63y2u88f8jsf6lbgXCwEYUtvmwLYHTyzR/SC7+/eCwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9UE5aeZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007201F00893;
+	Wed, 20 May 2026 16:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298518;
-	bh=IbQeBOAXMrRPFuj3n59g7tJA+4Qh1GBMJ2BxTL0ELIY=;
+	s=korg; t=1779296002;
+	bh=PWeqcZIHR8l0KGf8w37X4PpwaHGOB4/awueto0TrKhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hDC57oGtVEFfyo69kXNv8MADWbDexJfXZOgeK3wIvIuhYyF3VsIoYvXh8t1joXiNY
-	 hhGLtmMQI2ZrKVcBLfod+gNKDMLR2QIb3lu3R+sYHsKSYi2lyIm82A1gdee2ZfTAgU
-	 PPAZBPdr2eE/dEOKawKluUel39m0iP2o8cdTlwbY=
+	b=c9UE5aeZbHEVdz7Ta1x2zrbveM3rqxeATnrPQJ8IO+m5SBYO6fv6p7bzDC5fh74eV
+	 JorZjENLpBlXGqXrBFr2OoDmyrnesnhg5UeCQr0RneIZDY7l/DRFcKKu8GomjD+o6Q
+	 ++7Ac6LzUMFIo3PcplK3JdGRsw63kXUaUzYhhzt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 400/957] arm64: dts: qcom: sm8450: Fix GIC_ITS range length
+Subject: [PATCH 7.0 0633/1146] pinctrl: pinconf-generic: Fully validate pinmux property
 Date: Wed, 20 May 2026 18:14:43 +0200
-Message-ID: <20260520162143.199937758@linuxfoundation.org>
+Message-ID: <20260520162202.510781945@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,63 +73,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251644-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250667-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,1.4.236.224:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,1.5.137.32:email]
-X-Rspamd-Queue-Id: A5972599FF5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DEF3D594E64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 14044fa192c50265bc1f636108371044bbdcf7b7 ]
+[ Upstream commit c98324ea7849b6e5baa1774f71709b375a2c2f9e ]
 
-Currently, the GITS_SGIR register is cut off. Fix it up.
+The pinconf_generic_parse_dt_pinmux() assumes that the 'pinmux' property
+is not empty when present. This might be not true. With that, the allocator
+will give a special value in return and not NULL which lead to the crash
+when trying to access that (invalid) memory. Fix that by fully validating
+'pinmux' value, including its length.
 
-Fixes: fc8b0b9b630d ("arm64: dts: qcom: sm8450 add ITS device tree node")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260317-topic-its_range_fixup-v1-3-49be8076adb1@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7112c05fff83 ("pinctrl: pinconf-generic: Add API for pinmux propertity in DTS file")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinconf-generic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 23420e6924728..68f5e7bca7cde 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -5079,7 +5079,7 @@ intc: interrupt-controller@17100000 {
+diff --git a/drivers/pinctrl/pinconf-generic.c b/drivers/pinctrl/pinconf-generic.c
+index 2b030bd0e6adc..6b4a794a362c0 100644
+--- a/drivers/pinctrl/pinconf-generic.c
++++ b/drivers/pinctrl/pinconf-generic.c
+@@ -287,12 +287,17 @@ int pinconf_generic_parse_dt_pinmux(struct device_node *np, struct device *dev,
+ 		return -ENOENT;
+ 	}
  
- 			gic_its: msi-controller@17140000 {
- 				compatible = "arm,gic-v3-its";
--				reg = <0x0 0x17140000 0x0 0x20000>;
-+				reg = <0x0 0x17140000 0x0 0x40000>;
- 				msi-controller;
- 				#msi-cells = <1>;
- 			};
++	npins_t = prop->length / sizeof(u32);
++	if (npins_t == 0) {
++		dev_info(dev, "pinmux property doesn't have entries\n");
++		return -ENODATA;
++	}
++
+ 	if (!pid || !pmux || !npins) {
+ 		dev_err(dev, "parameters error\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	npins_t = prop->length / sizeof(u32);
+ 	pid_t = devm_kcalloc(dev, npins_t, sizeof(*pid_t), GFP_KERNEL);
+ 	pmux_t = devm_kcalloc(dev, npins_t, sizeof(*pmux_t), GFP_KERNEL);
+ 	if (!pid_t || !pmux_t) {
 -- 
 2.53.0
 
