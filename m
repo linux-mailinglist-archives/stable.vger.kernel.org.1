@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-251560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKxEMPsbDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:23 +0200
+	id CCpHGD4jDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37009599E47
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9C159A833
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6DF033C1B42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD9BF356834D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BEA34F462;
-	Wed, 20 May 2026 17:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15EF34DCE4;
+	Wed, 20 May 2026 18:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPHR55W4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiR8aMhs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E3D2D879E;
-	Wed, 20 May 2026 17:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823E03769E0;
+	Wed, 20 May 2026 18:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298298; cv=none; b=cpj/yT2mzKlXVWbvoPmgNCHg6jpLprt6qV37Po2NaKLD4oWRJIeEA70QO0Gk7zLO+K5wJQTYu0SOMTQMO54DLObjyOPB/07nx/5718LFmEmfH5D74Hya0Jmh56Kb74t0S3kqPjKNqPrc0rGF6AKgE4iddvhw3gTWhONwxc20ST4=
+	t=1779300035; cv=none; b=P+7DQ/AvWilAiZblmc3ggULBKEpyA0CK47VCeFUMKTts/1a9+HYxmKM/WyvaPAkcnuW5jiQJ7HqaMycSMt+OHiIpcyXJZQZup6FyCmRRvqxC5yQ7tn3rN/dTR0V5TztI78ILWr2pSjFio703sBTopOYov/uu1tkkV1HbREFwg2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298298; c=relaxed/simple;
-	bh=AQYf5rR1C7eouNbQtb7SIxkBK5iV0JTpWU2Rml1bvLU=;
+	s=arc-20240116; t=1779300035; c=relaxed/simple;
+	bh=6RoY9bnq9lDUDcyeyXjCWogbXbi3Kxtpmc14yyPbUHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eNRjhFnctN5qXhRHwO0erf437lAAaEAbfx7ZuAR3IPTGo4batuMcuy5MEbRwMv1as0ykFFahzR2YKKB8sNUCVyn3ovPx47RxZ3IohuFcTC0Svz3390ny4V7CxzmGulouyl61Rxvuki/yZcAz3duAiJ/pnsmcjW0VWKJcdI1KPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPHR55W4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682AC1F000E9;
-	Wed, 20 May 2026 17:31:36 +0000 (UTC)
+	 MIME-Version; b=d+vH818pC3mORjQuiPbN286pXilMdSBiEIxU6Wz/eCbNw8Lxk31zssChUIcsYonFRRlQlnBl7tcS19IvbYb2ZDzM61B5YEdsBtJ27LNka+FthSWruN8MIxdD987XXvYspc4AvyN0sZOBMSi24pZTHFr+o0zeLno+3E2VGAznFNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiR8aMhs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71211F000E9;
+	Wed, 20 May 2026 18:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298296;
-	bh=AKvy7eJmxTw4TN4hfWjGzXupkCOfK6x2jjPsozymf38=;
+	s=korg; t=1779300034;
+	bh=3AxnKjImNUKs5P4EjiPB+wBOqJ0UrcyxTsKPrTi99WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tPHR55W4PxmkKrJZuuNW8OKn4ckeellh3qr9KlfmuVNQOrX2RCjw+rFMH6HsDEyoH
-	 yfK+/pIoXgoTQvhSAOltHolHe/ELdqs38K+O1c3v5/2N1uWM4O8HB7sb9cgWJ7DSQW
-	 V2O7zXkXrOpfc3ekC9GOjZkRk/VSSk6iDtv6gkrs=
+	b=YiR8aMhsbDxHnsm4zbT+jwzsX4BkU24JWZ5E/+PIJ5C/YrXMzo1iBU7Nxc0HscKUc
+	 n7lpy9tmfkyuj/S9mnReWRRf7uTXS0yecSx9/BilTIkwCOY/jjwxz0la8P5cxklabk
+	 t9/KH/pTdn2n5K7q0Mv9wXrp0nj3M9UUiD8COyLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 350/957] ktest: Run POST_KTEST hooks on failure and cancellation
+Subject: [PATCH 6.12 022/666] PCI: use generic driver_override infrastructure
 Date: Wed, 20 May 2026 18:13:53 +0200
-Message-ID: <20260520162142.120920025@linuxfoundation.org>
+Message-ID: <20260520162111.712323101@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,137 +65,245 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251560-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-252193-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,shazbot.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[eaglescrag.net:email,goodmis.org:email,suse.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 37009599E47
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BC9C159A833
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
+[ Upstream commit 10a4206a24013be4d558d476010cbf2eb4c9fa64 ]
 
-PRE_KTEST can be useful for setting up the environment and POST_KTEST to
-tear it down, however POST_KTEST only runs on the normal end-of-run path.
-It is skipped when ktest exits through dodie() or cancel_test(). Final
-cleanup hooks are skipped.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Factor the final hook execution into run_post_ktest(), call it from the
-normal exit path and from the early exit paths, and guard it so the hook
-runs at most once.
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
-Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: 782a985d7af2 ("PCI: Introduce new device binding path using pci_dev.driver_override")
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Alex Williamson <alex@shazbot.org>
+Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260324005919.2408620-6-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/pci/pci-driver.c           | 11 +++++++----
+ drivers/pci/pci-sysfs.c            | 28 ----------------------------
+ drivers/pci/probe.c                |  1 -
+ drivers/vfio/pci/vfio_pci_core.c   |  5 ++---
+ drivers/xen/xen-pciback/pci_stub.c |  6 ++++--
+ include/linux/pci.h                |  6 ------
+ 6 files changed, 13 insertions(+), 44 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 924e17df56f74..17bdce9cafac2 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -100,6 +100,7 @@ my $test_type;
- my $build_type;
- my $build_options;
- my $final_post_ktest;
-+my $post_ktest_done = 0;
- my $pre_ktest;
- my $post_ktest;
- my $pre_test;
-@@ -1575,6 +1576,24 @@ sub get_test_name() {
-     return $name;
- }
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index a00a2ce01045f..860d80787d9b1 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -138,9 +138,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ {
+ 	struct pci_dynid *dynid;
+ 	const struct pci_device_id *found_id = NULL, *ids;
++	int ret;
  
-+sub run_post_ktest {
-+    my $cmd;
-+
-+    return if ($post_ktest_done);
-+
-+    if (defined($final_post_ktest)) {
-+	$cmd = $final_post_ktest;
-+    } elsif (defined($post_ktest)) {
-+	$cmd = $post_ktest;
-+    } else {
-+	return;
-+    }
-+
-+    my $cp_post_ktest = eval_kernel_version($cmd);
-+    run_command $cp_post_ktest;
-+    $post_ktest_done = 1;
-+}
-+
- sub dodie {
-     # avoid recursion
-     return if ($in_die);
-@@ -1634,6 +1653,7 @@ sub dodie {
-     if (defined($post_test)) {
- 	run_command $post_test;
-     }
-+    run_post_ktest;
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
++	ret = device_match_driver_override(&dev->dev, &drv->driver);
++	if (ret == 0)
+ 		return NULL;
  
-     die @_, "\n";
- }
-@@ -4300,6 +4320,7 @@ sub cancel_test {
- 	send_email("KTEST: Your [$name] test was cancelled",
- 	    "Your test started at $script_start_time was cancelled: sig int");
-     }
-+    run_post_ktest;
-     die "\nCaught Sig Int, test interrupted: $!\n"
- }
+ 	/* Look at the dynamic ids first, before the static ones */
+@@ -164,7 +166,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 		 * matching.
+ 		 */
+ 		if (found_id->override_only) {
+-			if (dev->driver_override)
++			if (ret > 0)
+ 				return found_id;
+ 		} else {
+ 			return found_id;
+@@ -172,7 +174,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	}
  
-@@ -4661,11 +4682,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
-     success $i;
+ 	/* driver_override will always match, send a dummy id */
+-	if (dev->driver_override)
++	if (ret > 0)
+ 		return &pci_device_id_any;
+ 	return NULL;
  }
+@@ -423,7 +425,7 @@ static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
+ {
+ 	return (!pdev->is_virtfn || pdev->physfn->sriov->drivers_autoprobe ||
+-		pdev->driver_override);
++		device_has_driver_override(&pdev->dev));
+ }
+ #else
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
+@@ -1677,6 +1679,7 @@ static void pci_dma_cleanup(struct device *dev)
  
--if (defined($final_post_ktest)) {
+ const struct bus_type pci_bus_type = {
+ 	.name		= "pci",
++	.driver_override = true,
+ 	.match		= pci_bus_match,
+ 	.uevent		= pci_uevent,
+ 	.probe		= pci_device_probe,
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 96f9cf9f8d643..122c182229b33 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -606,33 +606,6 @@ static ssize_t devspec_show(struct device *dev,
+ static DEVICE_ATTR_RO(devspec);
+ #endif
+ 
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	int ret;
 -
--    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
--    run_command $cp_final_post_ktest;
+-	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
 -}
-+run_post_ktest;
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
+-	device_unlock(dev);
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ static struct attribute *pci_dev_attrs[] = {
+ 	&dev_attr_power_state.attr,
+ 	&dev_attr_resource.attr,
+@@ -660,7 +633,6 @@ static struct attribute *pci_dev_attrs[] = {
+ #ifdef CONFIG_OF
+ 	&dev_attr_devspec.attr,
+ #endif
+-	&dev_attr_driver_override.attr,
+ 	&dev_attr_ari_enabled.attr,
+ 	NULL,
+ };
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 9e71eb4d1010e..d8c5a957b70e5 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2373,7 +2373,6 @@ static void pci_release_dev(struct device *dev)
+ 	pci_release_of_node(pci_dev);
+ 	pcibios_release_device(pci_dev);
+ 	pci_bus_put(pci_dev->bus);
+-	kfree(pci_dev->driver_override);
+ 	bitmap_free(pci_dev->dma_alias_mask);
+ 	dev_dbg(dev, "device released\n");
+ 	kfree(pci_dev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 5f545b45078f8..dd6e73de2e2a0 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2014,9 +2014,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
+ 	    pdev->is_virtfn && physfn == vdev->pdev) {
+ 		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+ 			 pci_name(pdev));
+-		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+-						  vdev->vdev.ops->name);
+-		WARN_ON(!pdev->driver_override);
++		WARN_ON(device_set_driver_override(&pdev->dev,
++						   vdev->vdev.ops->name));
+ 	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
+ 		   pdev->is_virtfn && physfn == vdev->pdev) {
+ 		struct pci_driver *drv = pci_dev_driver(pdev);
+diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
+index b616b7768c3b9..8b3006078d003 100644
+--- a/drivers/xen/xen-pciback/pci_stub.c
++++ b/drivers/xen/xen-pciback/pci_stub.c
+@@ -618,6 +618,8 @@ static int pcistub_seize(struct pci_dev *dev,
+ 	return err;
+ }
  
- if ($opt{"POWEROFF_ON_SUCCESS"}) {
-     halt;
++static struct pci_driver xen_pcibk_pci_driver;
++
+ /* Called when 'bind'. This means we must _NOT_ call pci_reset_function or
+  * other functions that take the sysfs lock. */
+ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
+@@ -629,8 +631,8 @@ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	match = pcistub_match(dev);
+ 
+-	if ((dev->driver_override &&
+-	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
++	if (device_match_driver_override(&dev->dev,
++					 &xen_pcibk_pci_driver.driver) > 0 ||
+ 	    match) {
+ 
+ 		if (dev->hdr_type != PCI_HEADER_TYPE_NORMAL
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 242ee3843e10e..825e6b3056f15 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -540,12 +540,6 @@ struct pci_dev {
+ 	u8		supported_speeds; /* Supported Link Speeds Vector */
+ 	phys_addr_t	rom;		/* Physical address if not from BAR */
+ 	size_t		romlen;		/* Length if not from BAR */
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char	*driver_override;
+-
+ 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
+ 
+ 	/* These methods index pci_reset_fn_methods[] */
 -- 
 2.53.0
 
