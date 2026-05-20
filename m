@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCYoCAvuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:23 +0200
+	id MAMSFTkVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D3F59383D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F77599380
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1FAA30FCE97
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB5D431C559D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED4B3F23D5;
-	Wed, 20 May 2026 17:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C35367B9E;
+	Wed, 20 May 2026 18:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUcXqzqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYBDXgoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5533F4DFC;
-	Wed, 20 May 2026 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93D23F789B;
+	Wed, 20 May 2026 18:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296840; cv=none; b=FbNbXgL874xkc7TkCyOHDtgv/hgpIwAVTKhfRHRoq4vqswUdmlJvIg+//2pIb7kNC0I87IbYY+43DxbLylgQtzYIE8d+vdqmFNRgUFXPk3CqUxuiGP2l3B618RuuxNdCCT+gXlFP0kMUEDsQNVOIX09Bj872+iUAB8acgf4IKS4=
+	t=1779300904; cv=none; b=RcwMzQEwHEz58L/z7LvQvxusEIw+VVf/WhP6WE5L6lubDNIYpAQiMAcL7IML20QSHbOM0MX5gIoFzST/z7Bg6uLp5idDAU5pPFwK9ahDr54LtysNQPx3EOvRB7L9KlP1g693iyyFk+rmEN3mygAtWRJsR7eWibwl0UHpHGlWUjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296840; c=relaxed/simple;
-	bh=JVx8R8RAZH5RsNCfVZEK+fpFxwfto7hNr2UZHu61rs8=;
+	s=arc-20240116; t=1779300904; c=relaxed/simple;
+	bh=aCn2WT4LB8nZ3a4wrPN/OFSNWZBW5suiHVQ6ysem4ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2MXqoT512TqNAUuOrhNthbgkzwUzM2htbwl5Hcv4GYHxM6E4YfBRvdg8bq18fAD4/OP+7Mku7kmQlxcME6SsqdFPXvBzm5e4sNiFuMNb41kXn0M7O3L9C258uOtC7s9krjwNgBJehbepo4QprY8/NUtLXMT7LKN/fXP88haUxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUcXqzqk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7D51F000E9;
-	Wed, 20 May 2026 17:07:17 +0000 (UTC)
+	 MIME-Version; b=sne8SPEKnreISXMxh4EQb3sHAtZAY+vevcehJAx5Aqdq+grzvjO2g5T6e1vbG6+Zi0m5Hwfh+NkjV2avIo35X40Le+ZT0LS1CTLuIIfOrXezmbbUrSE6Qo9ySxhGLzR24mukDS41+gnzmUIPXs3LdzxhaOk0WUD2XByZtmLt/SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYBDXgoL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD231F000E9;
+	Wed, 20 May 2026 18:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296838;
-	bh=J9jS52JmmgYWQX5vrqiCQMerlkRHc5MinYupf5muWRc=;
+	s=korg; t=1779300903;
+	bh=mXAPGvYVf6ewYtw9VdYFufDR0O8z1rUb0GJZrqKeHy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mUcXqzqk6ff6NO+zJJE5XKXEgx0yyjSbEvKeVv3qVv/YmNmKFrrHsJTDvA7qDRVJi
-	 3NnY4eDj9mVWB61XoQh4wWu5J6VFGV6cUDH0+GWFgEIUi5VqIWBv9UjuMuSjvQungh
-	 89BrD9Tu4B4RDRbEymSQH5LtBitrzzLRadWH+0/g=
+	b=PYBDXgoLBl2Z9lK1KJqmqkbsAUZ+v4OxqaY6pKRvpz4QJhpLBGeDz+zSjDOstT3wC
+	 w3FgYH/NS4CJauqG0o7n+53VWZGIFeyzzEY9cfutDoh6k2uG0WUTYtWMh/51ndk5XC
+	 rf3Z2Kp+tkI963wUZ/+4R6rVYTGkoif0m+DwvyFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0914/1146] ASoC: tas2764: Mark die temp register as volatile
+Subject: [PATCH 6.12 353/666] libbpf: Change log level of BTF loading error message
 Date: Wed, 20 May 2026 18:19:24 +0200
-Message-ID: <20260520162208.924552755@linuxfoundation.org>
+Message-ID: <20260520162118.883978604@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +68,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250999-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252526-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: F0D3F59383D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,iogearbox.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,pm.me:email]
+X-Rspamd-Queue-Id: 71F77599380
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Calligeros <jcalligeros99@gmail.com>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-[ Upstream commit 4cfb5971c2fbfac061c23fb4224a3a008199de81 ]
+[ Upstream commit 8b334d91834666dbc4c1c0b0abed3f855ed16cf3 ]
 
-Reading the temperature register always returns the first value
-read from the chip due to regcache.
+Reduce log level of BTF loading error to INFO if BTF is not required.
 
-Mark TAS2764_TEMP as volatile to prevent returning stale, cached
-values when reading the die temp.
+Andrii says:
 
-Fixes: 186dfc85f9a8 ("ASoC: tas2764: expose die temp to hwmon")
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20260425-tas27xx-hwmon-fixes-v1-1-83c13b8e8f54@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  Nowadays the expectation is that the BPF program will have a valid
+  .BTF section, so even though .BTF is "optional", I think it's fine
+  to emit a warning for that case (any reasonably recent Clang will
+  produce valid BTF).
+
+  Ihor's patch is fixing the situation with an outdated host kernel
+  that doesn't understand BTF. libbpf will try to "upload" the
+  program's BTF, but if that fails and the BPF object doesn't use
+  any features that require having BTF uploaded, then it's just an
+  information message to the user, but otherwise can be ignored.
+
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 380044c40b16 ("libbpf: Prevent double close and leak of btf objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/bpf/libbpf.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 36e25e48b3546..9f351565dc82d 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -809,6 +809,7 @@ static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
- 	case TAS2764_SW_RST:
-+	case TAS2764_TEMP:
- 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
- 	case TAS2764_INT_CLK_CFG:
- 		return true;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 7d496f0a9a30d..791488efec27d 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -3582,11 +3582,12 @@ static int bpf_object__sanitize_and_load_btf(struct bpf_object *obj)
+ report:
+ 	if (err) {
+ 		btf_mandatory = kernel_needs_btf(obj);
+-		pr_warn("Error loading .BTF into kernel: %d. %s\n", err,
+-			btf_mandatory ? "BTF is mandatory, can't proceed."
+-				      : "BTF is optional, ignoring.");
+-		if (!btf_mandatory)
++		if (btf_mandatory) {
++			pr_warn("Error loading .BTF into kernel: %d. BTF is mandatory, can't proceed.\n", err);
++		} else {
++			pr_info("Error loading .BTF into kernel: %d. BTF is optional, ignoring.\n", err);
+ 			err = 0;
++		}
+ 	}
+ 	return err;
+ }
 -- 
 2.53.0
 
