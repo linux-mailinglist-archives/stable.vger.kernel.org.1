@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL/mMpz+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-251514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:04 +0200
+	id 8OYsBkbpDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EEF596990
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E63592DB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EA24431ED5DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 23CF03160985
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029193EC2DB;
-	Wed, 20 May 2026 17:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB22673AA;
+	Wed, 20 May 2026 16:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5Sahxfa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jf6TfvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A984E35DA78;
-	Wed, 20 May 2026 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC43431A575;
+	Wed, 20 May 2026 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298179; cv=none; b=D4h7Eb6oahKypj3+apb2Rb4V59UIGfBJ9wbtar9FgfqodRwTxGapBix5bwU96lzByQBdfWQlD6NryqR3C4363V3sGlr29OqaOr+Fd5+mMUibCZMsBGUatjS3DYp3WLvx6wqqQDyXioyDwoThZ4PXJb3W23cO4mnejlOB5/TZ7qA=
+	t=1779295636; cv=none; b=rCPGhpxBEOnlNQ2qGnVh2srcYMy6JoDUK06QN70ItWEzYxZiACdSh2fwvj/rkDEmwJhmJC9xvNboaSZqX9BlFzmZYxRR4jHy0fB1dSCax669hji1aDA9yBLRD0uG3Mdeun1m4EKEpFRVjVWYBYv+d6LkLiIR/aqEETi0Eajb6HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298179; c=relaxed/simple;
-	bh=UMh4O8ErTUR2G9UA1VC8zTEhk1n13tLiGou+0TnIx1g=;
+	s=arc-20240116; t=1779295636; c=relaxed/simple;
+	bh=9FwbspdjzjgfZFbxa/utfbFZ25+bzLWkvi4WOJduzr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U+2aGFOgCeuZozCr2+lEIYbMPZSBTcDkrJuHEdRdx/NdYEVgevnZuknCaK7YXWNTY4i6nV3bVuxwrYfETegfUb6sTr2W1KhyX3FMBurth2017eTWazAQY5ce+uFkIv5010TcvVVBJoJYi2RXqa5RnTqBR5oQ83edPNAevc91Pzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5Sahxfa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92AB1F000E9;
-	Wed, 20 May 2026 17:29:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=khJPoznu3H4pfLlwP/MP5nwo8lfyo2zLGMWw6bZN3JavjXbji9AXUMF849YrxQ0P3pTyecNigvaSSeAVqk+NFFJeL5JW74tfm10A73JF+pwH6kZ4xKp+sUkySL8hSI8vxHm8iy3ROE5g+kk6kmAZpG+g6NNJIaBaPNhQCiX00g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jf6TfvT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1047E1F00893;
+	Wed, 20 May 2026 16:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298178;
-	bh=kxQ4gGsC1qpRu8XnCo2J+eQ5yXn6oFkYV4/zHwx8MMk=;
+	s=korg; t=1779295634;
+	bh=pXfiDyevpChVALPMYQgUL7BrEYOWJGo2KgbOI5PizQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y5SahxfalY2g2ZNAgkTi1GTAnsKJZVOnUziBOODtS7ecZ5ibUUUhBQSOJ9wavxSGY
-	 O5U9YNk6heB8GkPtjSY0KYNT5/iyGPhGPpaVIVL3sjp1bBw1TvAxCHHURYUfTncu+L
-	 pqUHHCbVYC9ujuq8DxMNOFTYtY4/qP7jf3naz36A=
+	b=0jf6TfvThiadagBJ6ujwPNZ4UrYhzbXEzwAGFCwIA2ThsKTgWgFQai7zC53684ARv
+	 xeCU+3+BM3EStTsJ/OHtMqeUSwgl3vRvNC9zFO5bvqAxia3DpVR/RVtq06wipuMikH
+	 z62JpJpX+NIGngMcEJyPA18a7YYBMotAEHNUT6MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 260/957] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
-Date: Wed, 20 May 2026 18:12:23 +0200
-Message-ID: <20260520162140.183593262@linuxfoundation.org>
+Subject: [PATCH 7.0 0494/1146] arm64: dts: qcom: msm8937-xiaomi-land: correct wled ovp value
+Date: Wed, 20 May 2026 18:12:24 +0200
+Message-ID: <20260520162159.371437816@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +66,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251514-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250524-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 03EEF596990
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: B4E63592DB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
+[ Upstream commit 9bc4b18a425e8cf1bca190a136a11c3be516f513 ]
 
-When MCLK DPM is disabled for any reason, populate the MCLK
-table with the highest MCLK DPM level, so that the ASIC can
-use the highest possible memory clock to get good performance
-even when MCLK DPM is disabled.
+PMI8950 doesn't actually support setting an OVP threshold value of
+29.6 V. The closest allowed value is 29.5 V. Set that instead.
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 2144f6d57d8e ("arm64: dts: qcom: Add Xiaomi Redmi 3S")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260116-pmi8950-wled-v3-6-e6c93de84079@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8937-xiaomi-land.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 0cb7eaaba3844..71b1dad34926e 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1322,6 +1322,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
- 			return result;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/msm8937-xiaomi-land.dts b/arch/arm64/boot/dts/qcom/msm8937-xiaomi-land.dts
+index 91837ff940f1b..4f301e7c65171 100644
+--- a/arch/arm64/boot/dts/qcom/msm8937-xiaomi-land.dts
++++ b/arch/arm64/boot/dts/qcom/msm8937-xiaomi-land.dts
+@@ -178,7 +178,7 @@ &pmi8950_wled {
+ 	qcom,num-strings = <2>;
+ 	qcom,external-pfet;
+ 	qcom,current-limit-microamp = <20000>;
+-	qcom,ovp-millivolt = <29600>;
++	qcom,ovp-millivolt = <29500>;
  
-+	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
-+		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
-+		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
-+			levels[i] = levels[dpm_table->mclk_table.count - 1];
-+			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
-+		}
-+	}
-+
- 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
- 
- 	dev_id = adev->pdev->device;
+ 	status = "okay";
+ };
 -- 
 2.53.0
 
