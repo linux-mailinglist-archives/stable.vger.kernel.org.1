@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHxrEizyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:00 +0200
+	id uPuyL4MGDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E46594452
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4FF597CDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF35332263BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BE753962DE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876F83F44C9;
-	Wed, 20 May 2026 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE1D3FC5AB;
+	Wed, 20 May 2026 18:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9iyCPkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbsd4tHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45937364EB0;
-	Wed, 20 May 2026 17:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF3F34EEF7;
+	Wed, 20 May 2026 18:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297150; cv=none; b=VceYewdLawHyOXhuRDE8KDkWUTHX0iLwsLExXpVX/YNXZFPzd7YhOfdZWF8Iai0MEhK9oy3X7jQGA/NaV2yZaHyquaVE/vb7fpQwKXuvuoB7Vqx4NTKuvF86TrUy5lOWCcpuv5ZGCPbeAUfJwYyiuUXffcGSGdg/Xic1BfNKqLg=
+	t=1779302523; cv=none; b=ZtH9KqgKBN8czhb1PO6lg5jfCQMsgJvxvEpvxc/kqNzmkasVbxflE0THXj1I2Et6LNEZ26Gh2y22k4UUPjceI9sVHI6I4+x6oPTZeBiAHuqKBXXUKZ5FbC7vlEw4MMH5t2zeXAJa+zKtK+UJfQKUuEKwKMcE7LWJ2vcnaQy/X4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297150; c=relaxed/simple;
-	bh=mZsZSEurYH8iX/bXSIaNpPeucQJQ08XoH3KE6fwz+VM=;
+	s=arc-20240116; t=1779302523; c=relaxed/simple;
+	bh=KhCe6HmeSf5DjEw8CHqmBPTmrwlwOcfNptZvmlrX2DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn2Z958JXvAxNK33a/NyvmaR6wIbb/FWUgZMWeNZpNskK5CEXaif1IYablUBnpTzfo69rRufE/mbVL60ucOjVsPlRf50+XLKobNYsy396MqvAzil34cwmTZPRZhlaSff4dTp7tWAt/OERCBfKpL7UTsBYlHB9tVztHAt0VgRR7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9iyCPkP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC14D1F000E9;
-	Wed, 20 May 2026 17:12:28 +0000 (UTC)
+	 MIME-Version; b=Rgts9vsgqv6AnauYXAadBvOtoPa9Rp9tAgc2Tl4uvTNHxYEEKMo/QY/yEvFc6gwBXCjWioM372wroDZLPXzo+46bIm+kvXM2Z06kdVG4ISgU0zNJnisRIYC3v3dTs0OwsGXBXW0rkx9L/U4kBRlfTHilgM/NxiH77tdS3iRW6oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbsd4tHK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14311F000E9;
+	Wed, 20 May 2026 18:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297149;
-	bh=zpCLM3epaJIWSrKfATFimcymIDbQu20CxeHjYeHpfIQ=;
+	s=korg; t=1779302522;
+	bh=iIT+SVCdIISPgTp4oEmgmLpArMzLaOCTxJ+pCVww8uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P9iyCPkPge3u/YSiFnZ06OSQUh1EVFDF3PtxipbImpl5xKCKt8wnn3WTsSJ7h0ulg
-	 nC7gTEJy+FrzJ3D7yIKG4TQqNuQVHjwGR2u7h1ebFaVmft6pTeEyE21VNUWbKD0hm0
-	 mMc5pTnRay4BbkkbBWoihhPI12z8LdzYYp6ghqfE=
+	b=lbsd4tHK9zoC1swVGgGdBm23XDZtSvYwSqpOzZqpTy8UYJfCoszeWnfZpU7z9mi9N
+	 RQmR4XeAHHgZU9BRWJpTzXznAhupnr0e+cHsIUdidsHwlv2qCeW7P9laCu2sAqeoMb
+	 SQKyMouue9v9NnV9IZhcEb1gjDBO6G4A1fzKLcxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH 7.0 1069/1146] Bluetooth: btmtk: accept too short WMT FUNC_CTRL events
-Date: Wed, 20 May 2026 18:21:59 +0200
-Message-ID: <20260520162212.424949650@linuxfoundation.org>
+	Matt Roper <matthew.d.roper@intel.com>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 297/508] drm/i915: Extract intel_dbuf_mdclk_cdclk_ratio_update()
+Date: Wed, 20 May 2026 18:22:00 +0200
+Message-ID: <20260520162105.078987906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251120-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iki.fi,intel.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253145-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,iki.fi:email]
-X-Rspamd-Queue-Id: E7E46594452
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 4F4FF597CDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-commit e3ac0d9f1a205f33a43fba3b79ef74d2f604c78b upstream.
+[ Upstream commit 66a0e0681392420b326f00ba732e6bda099eda29 ]
 
-MT7925 (USB ID 0e8d:e025) on fw version 20260106153314 sends WMT
-FUNC_CTRL events that are missing the status field.
+As of Xe2LPD, it is now possible to select the source of the MDCLK
+as either the CD2XCLK or the CDCLK PLL.
 
-Prior to commit 006b9943b982 ("Bluetooth: btmtk: validate WMT event SKB
-length before struct access") the status was read from out-of-bounds of
-SKB data, which usually would result to success with
-BTMTK_WMT_ON_UNDONE, although I don't know the intent here.  The bounds
-check added in that commit returns with error instead, producing
-"Bluetooth: hci0: Failed to send wmt func ctrl (-22)" and makes the
-device unusable.
+Previous display IPs were hardcoded to use the CD2XCLK. For those, the
+ratio between MDCLK and CDCLK remained constant, namely 2. For Xe2LPD,
+when we select the CDCLK PLL as the source, the ratio will vary
+according to the squashing configuration (since the cd2x divisor is
+fixed for all supported configurations).
 
-Fix the regression by interpreting too short packet as status
-BTMTK_WMT_ON_UNDONE, which makes the device work normally again.
+To help the transition to supporting changes in the ratio, extract the
+function intel_dbuf_mdclk_cdclk_ratio_update() from the existing logic
+and call it using 2 as hardcoded ratio. Upcoming changes will use that
+function for updates in the ratio due to CDCLK changes.
 
-Fixes: 634a4408c061 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com> # MT7922 (0489:e0e2)
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bspec: 50057, 69445, 49213, 68868
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240312163639.172321-5-gustavo.sousa@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Stable-dep-of: a97c88a176b6 ("drm/i915/wm: Verify the correct plane DDB entry")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtk.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/skl_watermark.c | 30 +++++++++++++-------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -678,8 +678,8 @@ static int btmtk_usb_hci_wmt_sync(struct
- 	case BTMTK_WMT_FUNC_CTRL:
- 		if (!skb_pull_data(data->evt_skb,
- 				   sizeof(wmt_evt_funcc->status))) {
--			err = -EINVAL;
--			goto err_free_skb;
-+			status = BTMTK_WMT_ON_UNDONE;
-+			break;
- 		}
+diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
+index d77e598deb2d9..6c657ef8b45b4 100644
+--- a/drivers/gpu/drm/i915/display/skl_watermark.c
++++ b/drivers/gpu/drm/i915/display/skl_watermark.c
+@@ -3472,6 +3472,21 @@ int intel_dbuf_init(struct drm_i915_private *i915)
+ 	return 0;
+ }
  
- 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
++static void intel_dbuf_mdclk_cdclk_ratio_update(struct drm_i915_private *i915,
++						u8 ratio,
++						bool joined_mbus)
++{
++	enum dbuf_slice slice;
++
++	if (joined_mbus)
++		ratio *= 2;
++
++	for_each_dbuf_slice(i915, slice)
++		intel_de_rmw(i915, DBUF_CTL_S(slice),
++			     DBUF_MIN_TRACKER_STATE_SERVICE_MASK,
++			     DBUF_MIN_TRACKER_STATE_SERVICE(ratio - 1));
++}
++
+ /*
+  * Configure MBUS_CTL and all DBUF_CTL_S of each slice to join_mbus state before
+  * update the request state of all DBUS slices.
+@@ -3479,8 +3494,7 @@ int intel_dbuf_init(struct drm_i915_private *i915)
+ static void update_mbus_pre_enable(struct intel_atomic_state *state)
+ {
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
+-	u32 mbus_ctl, dbuf_min_tracker_val;
+-	enum dbuf_slice slice;
++	u32 mbus_ctl;
+ 	const struct intel_dbuf_state *dbuf_state =
+ 		intel_atomic_get_new_dbuf_state(state);
+ 
+@@ -3491,24 +3505,18 @@ static void update_mbus_pre_enable(struct intel_atomic_state *state)
+ 	 * TODO: Implement vblank synchronized MBUS joining changes.
+ 	 * Must be properly coordinated with dbuf reprogramming.
+ 	 */
+-	if (dbuf_state->joined_mbus) {
++	if (dbuf_state->joined_mbus)
+ 		mbus_ctl = MBUS_HASHING_MODE_1x4 | MBUS_JOIN |
+ 			MBUS_JOIN_PIPE_SELECT_NONE;
+-		dbuf_min_tracker_val = DBUF_MIN_TRACKER_STATE_SERVICE(3);
+-	} else {
++	else
+ 		mbus_ctl = MBUS_HASHING_MODE_2x2 |
+ 			MBUS_JOIN_PIPE_SELECT_NONE;
+-		dbuf_min_tracker_val = DBUF_MIN_TRACKER_STATE_SERVICE(1);
+-	}
+ 
+ 	intel_de_rmw(i915, MBUS_CTL,
+ 		     MBUS_HASHING_MODE_MASK | MBUS_JOIN |
+ 		     MBUS_JOIN_PIPE_SELECT_MASK, mbus_ctl);
+ 
+-	for_each_dbuf_slice(i915, slice)
+-		intel_de_rmw(i915, DBUF_CTL_S(slice),
+-			     DBUF_MIN_TRACKER_STATE_SERVICE_MASK,
+-			     dbuf_min_tracker_val);
++	intel_dbuf_mdclk_cdclk_ratio_update(i915, 2, dbuf_state->joined_mbus);
+ }
+ 
+ void intel_dbuf_pre_plane_update(struct intel_atomic_state *state)
+-- 
+2.53.0
+
 
 
 
