@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHN8IJkuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:49 +0200
+	id kLf2Ly/9DWoo5QUAu9opvQ
+	(envelope-from <stable+bounces-252704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C3D59B8CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4641A596395
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B57E8396FBFB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB38730309B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CB440586A;
-	Wed, 20 May 2026 18:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754872D7386;
+	Wed, 20 May 2026 18:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMWJ1yLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GixwXoBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE7405C2D;
-	Wed, 20 May 2026 18:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9FF371048;
+	Wed, 20 May 2026 18:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302568; cv=none; b=KIL9TMYueXTLvZThFdb9A28aYC5lp7Yj/r9zzBqHgI78zOoeibAj+SJnmFWhC0cpHUdcRoquWdhMmPR3O9WRE9LlFOH9bvOqXfudynZsGfskV1f6FmXkmSEhzz572bLjbU+O8OSUB43gYbKTdiHWjNnH6Tn95GHYp5WoM/TE0K4=
+	t=1779301371; cv=none; b=B7so2pBFeRTmrSQ0hDRy7pC2wbfscO0e2FxuSt1tmiahZzbhFJHEWTIzCL9NIWYjtig0R77GM3zYBGSkwFsnjQ1OZx4EHbIWkcKHqrBk9RddodAmhHGQBFUYSDsImwUZ9jNA5olngVZSoQJ+JBiViGkmSdWBDijLkt8aSlXyLn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302568; c=relaxed/simple;
-	bh=bIvID8CagBNeoFB2wKkO9hn6qTr+v4q1vzLjOZEHm30=;
+	s=arc-20240116; t=1779301371; c=relaxed/simple;
+	bh=6eJ1d44CI+QjP8zbouJh+Yq6cf7aNN7AL3fwNT98WO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qha+EKF5BhWCh8HUKMqBA02GNlrmiS8V3KecJ1SoZfZuZabwP35q/r6VDslw7DfK8njfjuOW9VHXx/Xcb13+XkGsGJuyn6dG7DSOwvD37GMXhwUj9QCqpq3AoaWbonEKMM9EEs7WjVtvxMmpeXThbqoxe5fEVYnHvncY4pPESyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMWJ1yLl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E8A1F000E9;
-	Wed, 20 May 2026 18:42:46 +0000 (UTC)
+	 MIME-Version; b=V2DJ48UamRJlM+sAiLHeE1/i9JlaXNyVLgMpvZmmnzGHVbaM0+62Z8qyrWknv+jM+EThxR77i6kWiq5QrnxrS2YGBFWg7oL3+rP06sXfvyNZr6Dw26AuTJL3m+V1PTIMP5SwqWjQ2+gyDerB/+Zp23hrh6lXKP0ZcslWl3Jgkc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GixwXoBZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003B1F000E9;
+	Wed, 20 May 2026 18:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302567;
-	bh=QoZ4sZrrtrjLxGITU3xnV+GxTjKT/qWiM5SjZCXB+mk=;
+	s=korg; t=1779301370;
+	bh=c7+UDEdgKFIIyW/K4st0n+Tm6+2Esx1ldMJ2MIdcFE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yMWJ1yLlmV5JKyKOXdpNrVwD10B3e1yi4ugNpJkX9YCJCmHSqXnxHmAqQsvWT3gHn
-	 5mPNakOZ/xKBktLCBvedxaWbbgjfMkqUydqv+rco9R7p5tvLC8TpCoSRGghJVpYstR
-	 VKl8YTBQttxpMTkXzj6KSPOSBSZ71LXE4k3ootno=
+	b=GixwXoBZ2JyzUcsNtC2pkvWl0pORapIIRNJ3qFzDamBVEOrThwQ3GVsJRnaHMAeTt
+	 zyvmO45Hypcd7W51Wx8XMEBjsNGWRqb9XD3bITg3KtxNLfAbA+DjyxzYJsoAjf7CIv
+	 GEztywZITOXW3o1jVqdzaZqdlAvE+x44H+KzCUPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/508] tcp: annotate data-races around tp->bytes_retrans
-Date: Wed, 20 May 2026 18:22:20 +0200
-Message-ID: <20260520162105.506120104@linuxfoundation.org>
+Subject: [PATCH 6.12 530/666] netdevsim: zero initialize struct iphdr in dummy sk_buff
+Date: Wed, 20 May 2026 18:22:21 +0200
+Message-ID: <20260520162122.758847754@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253162-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252704-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: E1C3D59B8CA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4641A596395
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 5efc7b9f7cbd43401f1af81d3d7f2be00f93390d ]
+[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+Syzbot reports a KMSAN uninit-value originating from
+nsim_dev_trap_skb_build, with the allocation also
+being performed in the same function.
 
-Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-9-edumazet@google.com
+Fix this by calling skb_put_zero instead of skb_put to
+guarantee zero initialization of the whole IP header.
+
+Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
+Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_output.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/netdevsim/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index c6b58bbb43c8a..2ab4b8f4d8d10 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3988,8 +3988,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 2614d6509954c..daec92570c2e3 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -758,7 +758,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
+ 	skb->protocol = htons(ETH_P_IP);
  
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
- 			  TCP_NLA_PAD);
--	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
--			  TCP_NLA_PAD);
-+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
-+			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
- 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
- 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 1fd807236c651..ea982c3670d33 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3350,7 +3350,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
- 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
--	tp->bytes_retrans += skb->len;
-+	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
- 
- 	/* make sure skb->data is aligned on arches that require it
- 	 * and check if ack-trimming & collapsing extended the headroom
+ 	skb_set_network_header(skb, skb->len);
+-	iph = skb_put(skb, sizeof(struct iphdr));
++	iph = skb_put_zero(skb, sizeof(struct iphdr));
+ 	iph->protocol = IPPROTO_UDP;
+ 	iph->saddr = in_aton("192.0.2.1");
+ 	iph->daddr = in_aton("198.51.100.1");
 -- 
 2.53.0
 
