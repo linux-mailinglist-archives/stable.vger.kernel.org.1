@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA2uNP7+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:42 +0200
+	id cPpmAYoBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD4E596B45
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A18597347
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FCF9311BFF1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B9D135CE264
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6AB3563E1;
-	Wed, 20 May 2026 18:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2CD2F363F;
+	Wed, 20 May 2026 18:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCqGD5Iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D28ldjmz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6533D1CC6;
-	Wed, 20 May 2026 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DC43A6B6D;
+	Wed, 20 May 2026 18:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301799; cv=none; b=Z56tyJp/Xg6vRYI1ZbyirY20gOxkEOp44EJGLG0kEyf+Q14GPyYuAJ67jEqallY+H1A8yYP47O+xZHGR9xxMhX+0g41luwh8qWrRfECkvhLVdS72Fm3MhewCHR0IozG/msyIJfAnKP0rR+LRCtlM/6CaH4xOIxfHl+VyHaypaOc=
+	t=1779300600; cv=none; b=Iv/zuJOoh53xS8E1gbwHNWTaunjZVAHuFx/UGaegWOEB/uXzX6sJa3l+eT4Dn8ckR1H9iNTyZS/+5YF2LxTzLtDpKUftx7ydWEwAZn2bFSHB4oQGFQowt0MsjYMaOQfgjd5tOwhjBhzNWIuLsCefHf2F+AuL1DDm8zBAbpc9q38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301799; c=relaxed/simple;
-	bh=zf1SpcqoQCX0c4Bl6vPmQb3eIaNogy+P9qaY1Umtvgg=;
+	s=arc-20240116; t=1779300600; c=relaxed/simple;
+	bh=w2g6W3EDpMb4l2kJwpc5274rB8u6V+mZoE7Iy9QEofs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVPtoI4Uii98qNLXeOJWqhpwYG4LgOSTQ50UtgLWae9qAcQv77CnSCvAOvbak2NpATyJ2k/dVCphrhb15Gz7PGIg1jnj76W47dAvmneh3+jfecwUb/n6c0//J15wkEO8nBSza2PNPjtjNzrSiktebLxEf9Fe1C+Du1djt2hY20s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCqGD5Iz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4571F000E9;
-	Wed, 20 May 2026 18:29:57 +0000 (UTC)
+	 MIME-Version; b=dM7qQfsYTFfFe0wIOEx39TvcVvguE2j9VxQlsQv8ZWGlVXAJ4MhSDk+2e8pZwtI7ykhC3bBXnt98C5yT7gh0ioOAea7hYNQfAV1/eGWpFTpRiDaJzpeSqcvrXGjXPkyoCh4BdO2jru1zYmELbOhhZ5g855HR2B3mf+aSteWzS4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D28ldjmz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F091F000E9;
+	Wed, 20 May 2026 18:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301797;
-	bh=UpInOkIM80u3SkqttUuVW8iCPXotPPp6FmwqK55VqcI=;
+	s=korg; t=1779300598;
+	bh=8rfV92sD4FCqOFsQDvusO+oa8h4eWdpC7/ETKdoqw/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wCqGD5IzIyHbP2RZdDXtbQowp2KC4aM3hgWTOMuUOAnD8SwdRqLSiWIoEM8LUNyaX
-	 e9QFPIZQ2c/3eYPpd9eOr3LIW1egUbnFy8YbFqDRmKPli3UlW28tWi2vef8QAT2vWo
-	 T2yHBNSPVL2r9JWednrjE+CRkR1g4s2hMsr30qag=
+	b=D28ldjmz69UpGIHMTSCij42hZy2ldB40mzLWeNIDTkfug077wvGsGw34pwef5DAyL
+	 qfz5cg6SfNKTqkHeogMm8O6nRW5aSCeDXgY834tQPdhd31dqiM8Qr+e6j/4gY0ES0I
+	 VLpnC1E2sWer47n25Cih+kQtSIdCyb82cbxdZc3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/508] wifi: rtlwifi: pci: fix possible use-after-free caused by unfinished irq_prepare_bcn_tasklet
+Subject: [PATCH 6.12 236/666] PCI: tegra194: Dont force the device into the D0 state before L2
 Date: Wed, 20 May 2026 18:17:27 +0200
-Message-ID: <20260520162059.114752990@linuxfoundation.org>
+Message-ID: <20260520162116.330367208@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +71,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252409-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252868-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,realtek.com:email,zju.edu.cn:email]
-X-Rspamd-Queue-Id: 5CD4E596B45
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A1A18597347
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 039cd522dc70151da13329a5e3ae19b1736f468a ]
+[ Upstream commit 71d9f67701e1affc82d18ca88ae798c5361beddf ]
 
-The irq_prepare_bcn_tasklet is initialized in rtl_pci_init() and
-scheduled when RTL_IMR_BCNINT interrupt is triggered by hardware.
-But it is never killed in rtl_pci_deinit(). When the rtlwifi card
-probe fails or is being detached, the ieee80211_hw is deallocated.
-However, irq_prepare_bcn_tasklet may still be running or pending,
-leading to use-after-free when the freed ieee80211_hw is accessed
-in _rtl_pci_prepare_bcn_tasklet().
+As per PCIe CEM r6.0, sec 2.3, the PCIe Endpoint device should be in D3cold
+to assert WAKE# pin. The previous workaround that forced downstream devices
+to D0 before taking the link to L2 cited PCIe r4.0, sec 5.2, "Link State
+Power Management"; however, that spec does not explicitly require putting
+the device into D0 and only indicates that power removal may be initiated
+without transitioning to D3hot.
 
-Similar to irq_tasklet, add tasklet_kill() in rtl_pci_deinit() to
-ensure that irq_prepare_bcn_tasklet is properly terminated before
-the ieee80211_hw is released.
+Remove the D0 workaround so that Endpoint devices can use wake
+functionality (WAKE# from D3). With some Endpoints the link may not enter
+L2 when they remain in D3, but the Root Port continues with the usual flow
+after PME timeout, so there is no functional issue.
 
-The issue was identified through static analysis.
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260223045522.48377-1-duoming@zju.edu.cn
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-5-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 41 ----------------------
+ 1 file changed, 41 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 40112b2c37775..b978d31e47ca9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -1675,6 +1675,7 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
- 
- 	synchronize_irq(rtlpci->pdev->irq);
- 	tasklet_kill(&rtlpriv->works.irq_tasklet);
-+	tasklet_kill(&rtlpriv->works.irq_prepare_bcn_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index f35a5e107f3fd..d2a06a34137d7 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1275,44 +1275,6 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
+ 	return 0;
  }
  
+-static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+-{
+-	struct dw_pcie_rp *pp = &pcie->pci.pp;
+-	struct pci_bus *child, *root_port_bus = NULL;
+-	struct pci_dev *pdev;
+-
+-	/*
+-	 * link doesn't go into L2 state with some of the endpoints with Tegra
+-	 * if they are not in D0 state. So, need to make sure that immediate
+-	 * downstream devices are in D0 state before sending PME_TurnOff to put
+-	 * link into L2 state.
+-	 * This is as per PCI Express Base r4.0 v1.0 September 27-2017,
+-	 * 5.2 Link State Power Management (Page #428).
+-	 */
+-
+-	list_for_each_entry(child, &pp->bridge->bus->children, node) {
+-		if (child->parent == pp->bridge->bus) {
+-			root_port_bus = child;
+-			break;
+-		}
+-	}
+-
+-	if (!root_port_bus) {
+-		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
+-		return;
+-	}
+-
+-	/* Bring downstream devices to D0 if they are not already in */
+-	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
+-		if (PCI_SLOT(pdev->devfn) == 0) {
+-			if (pci_set_power_state(pdev, PCI_D0))
+-				dev_err(pcie->dev,
+-					"Failed to transition %s to D0 state\n",
+-					dev_name(&pdev->dev));
+-		}
+-	}
+-}
+-
+ static int tegra_pcie_get_slot_regulators(struct tegra_pcie_dw *pcie)
+ {
+ 	pcie->slot_ctl_3v3 = devm_regulator_get_optional(pcie->dev, "vpcie3v3");
+@@ -1642,7 +1604,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+ 
+ static void tegra_pcie_deinit_controller(struct tegra_pcie_dw *pcie)
+ {
+-	tegra_pcie_downstream_dev_to_D0(pcie);
+ 	dw_pcie_host_deinit(&pcie->pci.pp);
+ 	tegra_pcie_dw_pme_turnoff(pcie);
+ 	tegra_pcie_unconfig_controller(pcie);
+@@ -2367,7 +2328,6 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
+ 	if (!pcie->link_state)
+ 		return 0;
+ 
+-	tegra_pcie_downstream_dev_to_D0(pcie);
+ 	tegra_pcie_dw_pme_turnoff(pcie);
+ 	tegra_pcie_unconfig_controller(pcie);
+ 
+@@ -2441,7 +2401,6 @@ static void tegra_pcie_dw_shutdown(struct platform_device *pdev)
+ 			return;
+ 
+ 		debugfs_remove_recursive(pcie->debugfs);
+-		tegra_pcie_downstream_dev_to_D0(pcie);
+ 
+ 		disable_irq(pcie->pci.pp.irq);
+ 		if (IS_ENABLED(CONFIG_PCI_MSI))
 -- 
 2.53.0
 
