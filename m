@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NEKEnjyDWro4wUAu9opvQ
-	(envelope-from <stable+bounces-250434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:16 +0200
+	id mMV6DlQaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001D6594594
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92549599BCD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E48A3313207
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C14835FF02A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74E4363C74;
-	Wed, 20 May 2026 16:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4613F39C8;
+	Wed, 20 May 2026 17:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VrySV3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Um0jtsa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714EA370AE5;
-	Wed, 20 May 2026 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D073D6673;
+	Wed, 20 May 2026 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295404; cv=none; b=enitNjS5yKFbZPifGFZ7GbTmfOQe34UpVIg42pYPOE03VVcEXYQdXEdClmGNQbbZOMDHkZBi/37xs6a1SRB1IXbzoazFQyXByUNasryeFdMgPyGf9z2Ic2NmOMI9UCFPublcnK2fbF3cfxMGwGV8/SfoRgrjEAqHglUCXICT+tk=
+	t=1779297858; cv=none; b=Ukl50wRHSFZ+31KC/RrI8aQ/iL5SSv8rM1wmWQcmdCxNS7pktFQltWHEVpyb1NucTkHDE2QJK+SAheVvBIEHZQ6ZKUw6WonKrbWwvbrKhn4j0XE/j2fXFM8wjscNygRHf1HLADGqwaxyCoV5aTDgVVfCcvhUU7iZPOu8OLAgQoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295404; c=relaxed/simple;
-	bh=uIwXe8eha1eYq62U7bbjvvbEvKRK+6ZXJA+0gPofRnc=;
+	s=arc-20240116; t=1779297858; c=relaxed/simple;
+	bh=7XpovQe+dD3ZBJ2oOeSo+Q+jUkyeiGcSnopPU8SKgp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5hq1zY881ZSKfBEUJUTXecxebEELHJOqI3eQrlBjiggQCPf7ZpFY3Nm7lQwz2BzityPh30gkXn4dOqUrUBd00ywpyZ9duqv6lLmB8oUXIdsUv25ATKpcz9SiVDG6rtgpopDSSel+e0KiC4zPaJes82rb22jmRGHPWWuNXAETr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VrySV3H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73621F000E9;
-	Wed, 20 May 2026 16:43:22 +0000 (UTC)
+	 MIME-Version; b=Zk4bo80lxbgjkwwlDAJl+iqzl79wFlrqbNAIY9IXbFGF9+4DsjbKokOi9Cykpz49XZpCK+Pe9DvbQPemTUYModcN4aDyOmeLoHJu2p3nEM3DSG7Du/LE/8TXwVaX9Dfg8X6NUTiTwxQnhI84KAufiHTcOJMmcXFT2HcqW5Soi+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Um0jtsa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695B21F000E9;
+	Wed, 20 May 2026 17:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295403;
-	bh=+l1ilbhMeT+s+uIOs4dZPfNaN/yESa7OHULVPSGCxSA=;
+	s=korg; t=1779297856;
+	bh=Ib4CzhFkPyAkC+0pZkL0v46Ty63HOLBWdPPyuyFsuX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2VrySV3HIvJpc9YnVnqKYb5xHIPT5ylhO0NEOcMRcfBJ2bV/zS5v+fgSrj/oxYqmR
-	 LGBS6Js7e4sxifn7e/pGGQUyZyETJof6yNOzCcRrSk8h8OT7ejf+jdtwY4+NUKAw94
-	 ubebg0gP1Q0yVYQ3F1WRpf3SvB6xRjMD7GMQu5NE=
+	b=1Um0jtsay4ZGO8SPOj5v46ZQ8dgMywsGCkaXFaVvPI/6kt4nszwBquZNSX+lo6aSZ
+	 mx7mpBMuczFFi/1roHPv8OgWLhIHVEulCrn0blE5xT8SzJNmQ6Q4Wwp1nQ8tpPd6jf
+	 btYwjrSqjE00Dl2Z0CqTRlm/T8A/b6I3hKx/xEpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0406/1146] ALSA: scarlett2: Add missing sentinel initializer field
+Subject: [PATCH 6.18 173/957] bpf: reject short IPv4/IPv6 inputs in bpf_prog_test_run_skb
 Date: Wed, 20 May 2026 18:10:56 +0200
-Message-ID: <20260520162157.388193773@linuxfoundation.org>
+Message-ID: <20260520162138.306507736@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +65,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250434-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251391-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 001D6594594
+	TAGGED_RCPT(0.00)[stable,619b9ef527f510a57cfc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 92549599BCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+From: Sun Jian <sun.jian.kdev@gmail.com>
 
-[ Upstream commit 2428cd6e8b6fa80c36db4652702ca0acd2ce3f08 ]
+[ Upstream commit 12bec2bd4b76d81c5d3996bd14ec1b7f4d983747 ]
 
-A "-Wmissing-field-initializers" warning was emitted when compiling the
-module using the W=2 option. There is a sentinel initializer field
-missing in the end of scarlett2_devices[]. Tested using a
-Scarlett Solo 4th gen.
+bpf_prog_test_run_skb() calls eth_type_trans() first and then uses
+skb->protocol to initialize sk family and address fields for the test
+run.
 
-Fixes: d98cc489029d ("ALSA: scarlett2: Move USB IDs out from device_info struct")
-Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-Link: https://patch.msgid.link/20260405222548.8903-1-npetrakopoulos2003@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+For IPv4 and IPv6 packets, it may access ip_hdr(skb) or ipv6_hdr(skb)
+even when the provided test input only contains an Ethernet header.
+
+Reject the input earlier if the Ethernet frame carries IPv4/IPv6
+EtherType but the L3 header is too short.
+
+Fold the IPv4/IPv6 header length checks into the existing protocol
+switch and return -EINVAL before accessing the network headers.
+
+Fixes: fa5cb548ced6 ("bpf: Setup socket family and addresses in bpf_prog_test_run_skb")
+Reported-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=619b9ef527f510a57cfc
+Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+Link: https://lore.kernel.org/r/20260408034623.180320-2-sun.jian.kdev@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bpf/test_run.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index fd1fb668929a2..8eaa962227596 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2262,7 +2262,7 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 65d7f8d51823e..963fee5d01e24 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1057,19 +1057,23 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
  
- 	/* End of list */
--	{ 0, NULL },
-+	{ 0, NULL, NULL },
- };
- 
- /* get the starting port index number for a given port type/direction */
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+-		sk->sk_family = AF_INET;
+-		if (sizeof(struct iphdr) <= skb_headlen(skb)) {
+-			sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
+-			sk->sk_daddr = ip_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct iphdr)) {
++			ret = -EINVAL;
++			goto out;
+ 		}
++		sk->sk_family = AF_INET;
++		sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
++		sk->sk_daddr = ip_hdr(skb)->daddr;
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case htons(ETH_P_IPV6):
+-		sk->sk_family = AF_INET6;
+-		if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
+-			sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
+-			sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct ipv6hdr)) {
++			ret = -EINVAL;
++			goto out;
+ 		}
++		sk->sk_family = AF_INET6;
++		sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
++		sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
+ 		break;
+ #endif
+ 	default:
 -- 
 2.53.0
 
