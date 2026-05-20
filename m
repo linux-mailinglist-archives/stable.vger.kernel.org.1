@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICB4EJkUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:53 +0200
+	id EN2OBj7wDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75DE35992A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C359F593E95
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0ECB32881D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DD44E309B745
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECD0331220;
-	Wed, 20 May 2026 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A006A3ED5C8;
+	Wed, 20 May 2026 17:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jX4+z5Pg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVnjBon3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145D53F8EA7;
-	Wed, 20 May 2026 18:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB5E3F889E;
+	Wed, 20 May 2026 17:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300742; cv=none; b=d8rxG7OLN4V87rOkt07QlOV/cHM7QtgwXxKZFAzGzJ1NBbQPHduo7qh74Uk7vI2HPPAztt6yW8qN8zHxNOrMhmCVjKdio++qW3QDYwOx/jFvQAJrVA6iZe6LxfuLnGgT63QmbKRUUpINaWZ9J4VKkC77J3kn2i30JDEMTpWARlc=
+	t=1779296576; cv=none; b=F7rOn7APGMN/ayellwCYd6szWfXWs6H4vBC9TU7K2BPIP098aFRehbUB8yS6eOQwmTBkDBp+iT+pJsgXLqtBimdJsmxGamdP66wR4Ah4J+JuY4tewZsnY9rfur95R1M+wu8rUj2dOAAKv8KbZRGHTccXoZxzzsZ2f5OwpWOM3Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300742; c=relaxed/simple;
-	bh=/C/9TvXzbd5a5ZvpSjLPE1pPymde6kwxzhyaxdQxT9U=;
+	s=arc-20240116; t=1779296576; c=relaxed/simple;
+	bh=EW4KSIv2c1uNZAL4zJYiuJyQD0njZMAmjme3/T2mhQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV4kJpvGc7xV800JKtmv4LSmDMn4SqYj7LEzsS4LylimkFgX3mMrbIImfe2BNTQCG4KgIzHv3gDDG/ds8USJjnX5mgFk5TTOCTXFOk1bYr+RNrxBSHuX/FDVhfGvorYyUDiuWzEQUlnPpW9gvT6YZdQstDTlnH4VeGCvmAVq/6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jX4+z5Pg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC1D1F000E9;
-	Wed, 20 May 2026 18:12:20 +0000 (UTC)
+	 MIME-Version; b=pDdTZ41Ab0gUGEv4cH2Cgt3tDG3i1YexzrJgHrgOwZ3WFEb2093f0YkmCUrUNAf3wB7ogcJokxKKW069CorEDEGKs0LNvVcdOSVNoacZ7TgR2/3jGS4HimlUA3f1ITox9AMCXN6gqzK0tvDZZN3a4UP+y/Dbmz7zFyZI4351ej8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVnjBon3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D628F1F000E9;
+	Wed, 20 May 2026 17:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300741;
-	bh=yj6dvJZ3tzL/9s6lRhUIw/SLo0PzcliYjx3vdILYag4=;
+	s=korg; t=1779296572;
+	bh=dSJ6mtodUs2v4MveTX5gc6zJ0jfaUNLgKx0zt4mfXrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jX4+z5PgvCQtyseP5PNGhVbZAi4SECCOXIhAwPctkLaL3V6xXf46qp0wX+ewGXXYc
-	 Vww7/Ums++tpTHnDKcOWmcleCQPtw85YKyQNRuUEQTu77tXcOTV8GWhIzr2PdJhByq
-	 KxlZlS2MogAMihZfVd2XaNjsN4OimXnL9o1603iY=
+	b=gVnjBon32DXgHSnsF2hUDwmY+ySp4DNMkS20+h/h/XAK0FToCVNY/QUDvS/4LLTM5
+	 hH+QyXHPDh8AAOBtXEhIjWdJfMKek0JTrkQ6j+JBIdAocrMHman9lU6lssdJ8zlXTK
+	 B3/xJa5Vs8J+l729EtFwDM6X3EbLSgueYZvt6vUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/666] arm64: dts: qcom: sm8550: Enable UHS-I SDR50 and SDR104 SD card modes
+Subject: [PATCH 7.0 0850/1146] net: mana: Init link_change_work before potential error paths in probe
 Date: Wed, 20 May 2026 18:18:20 +0200
-Message-ID: <20260520162117.481130450@linuxfoundation.org>
+Message-ID: <20260520162207.473645585@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +69,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252464-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250890-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.134.86.160:email]
-X-Rspamd-Queue-Id: 75DE35992A4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C359F593E95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit 66b0f024fba0728ddce6916dce173bb1bdd4eab0 ]
+[ Upstream commit cb4a90744bcd1adf12f0d0c7c4f0dd2647444ec5 ]
 
-The restriction on UHS-I speed modes was added to all SM8550 platforms
-by copying it from SM8450 dtsi file, and due to the overclocking of SD
-cards it was an actually reproducible problem. Since the latter issue
-has been fixed, UHS-I speed modes are working fine on SM8550 boards,
-below is the test performed on SM8550-HDK:
+Move INIT_WORK(link_change_work) to right after the mana_context
+allocation, before any error path that could reach mana_remove().
 
-SDR50 speed mode:
+Previously, if mana_create_eq() or mana_query_device_cfg() failed,
+mana_probe() would jump to the error path which calls mana_remove().
+mana_remove() unconditionally calls disable_work_sync(link_change_work),
+but the work struct had not been initialized yet. This can trigger
+CONFIG_DEBUG_OBJECTS_WORK enabled.
 
-    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
-    mmcblk0: mmc0:0001 00000 14.6 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 23.5468 s, 45.6 MB/s
-
-SDR104 speed mode:
-
-    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
-    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 11.9819 s, 89.6 MB/s
-
-Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
-file, there is no indication that the SDHC controller is broken.
-
-Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-6-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 54133f9b4b53 ("net: mana: Support HW link state events")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260420124741.1056179-2-ernis@linux.microsoft.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index efca98c7cc7a3..38b15db0676ce 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2838,9 +2838,6 @@ sdhc_2: mmc@8804000 {
- 			bus-width = <4>;
- 			dma-coherent;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 2ff19e1938f49..2b3dd326a8e15 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3594,6 +3594,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
  
--			/* Forbid SDR104/SDR50 - broken hw! */
--			sdhci-caps-mask = <0x3 0>;
+ 		ac->gdma_dev = gd;
+ 		gd->driver_data = ac;
++
++		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
+ 	}
+ 
+ 	err = mana_create_eq(ac);
+@@ -3611,8 +3613,6 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 
+ 	if (!resuming) {
+ 		ac->num_ports = num_ports;
 -
- 			status = "disabled";
- 
- 			sdhc2_opp_table: opp-table {
+-		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
+ 	} else {
+ 		if (ac->num_ports != num_ports) {
+ 			dev_err(dev, "The number of vPorts changed: %d->%d\n",
 -- 
 2.53.0
 
