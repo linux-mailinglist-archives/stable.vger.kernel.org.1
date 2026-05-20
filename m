@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAO+FBUFDmpO5gUAu9opvQ
-	(envelope-from <stable+bounces-253111-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:41 +0200
+	id yB7HELXuDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D8D597976
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC923593A63
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61B4E3017064
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC90430F039A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671B6402428;
-	Wed, 20 May 2026 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6823D75A0;
+	Wed, 20 May 2026 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpPySArp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGHvHsi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162E4401A29;
-	Wed, 20 May 2026 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F251335F619;
+	Wed, 20 May 2026 17:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302434; cv=none; b=rZ/RJLOcMpU0s+X41PwNndYC7hTK/OaFwaozuacCxDEQanP8rhbIlx7n0rAMZbvkN1KlFKQ2BvHq27rMVfHffONVoMKhyuaKYzLwx1KzTW7NBx7xep9Uyo1RWdom1D80JYyzVZFzgznJtoWIbOxcFEoN91JzWnfXd61yLdpKTuA=
+	t=1779297079; cv=none; b=gBkaMfcIB+nNsXbFFVEHdivPA8pcbBkEbym4vmzkCZk+ttlnM7rT9O02jP16EsfCS/l2HXDbJ2TtxV3FemTbqCKvGN7gHg0v3H/FS3IYMUhVKQT0c9CcElgDLTPGa0u46rs1FxirsExabm4+OzWuvNDZz8aHHY5a3EsVIjFs1Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302434; c=relaxed/simple;
-	bh=7BzQkVt7QD+LUcqKEjahK2Mah/IzUBDs7W0t5jj3CQE=;
+	s=arc-20240116; t=1779297079; c=relaxed/simple;
+	bh=ML1HoFFDutZvZr1pZbwZrio2WGzyLPH8f2uNGUWvXSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqwCmTkw+Klc1tAasMExehuZT4BbqG0vWP/qG8LyGdWff+27l/N9ovbMeJmrm/QnPriLhZKsodBZ4fMjp+1NGEIsYuGAaLFIB7IwQKpcQmaQwl+Oy4YpOyvr412bo2Uc3fNV8h2MWMvFjNZTJ9cgZIxpYfLgpiiXjvJcnTSOQII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpPySArp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBFB1F000E9;
-	Wed, 20 May 2026 18:40:32 +0000 (UTC)
+	 MIME-Version; b=L5WnuVHiWLc8Iub7UcdWugS6/Y/qr3v+4mVVQeqMbBD5BmmjD4tBdin5q4ZTKy24L5apMuLtO9ge9d6GPrugWxOxdqPmx4E8/hUTGQ73H1tLAYXOgydV5ns7rsEAhX5VG65K3/jd67Ud6daZRZO/ud2LVD4BwChXX/AN9uy/vWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGHvHsi2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637691F000E9;
+	Wed, 20 May 2026 17:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302432;
-	bh=yUbRGIwaxeK+iDIDlK4SQ7+Ru6OWAP5Pj8p9tqEbowI=;
+	s=korg; t=1779297077;
+	bh=OqRaGXFs162IdTy+E+Q5X46YZu0j2s/BzJHpCPqz32I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TpPySArp6aeN4OJJ7sNLmVLQ3VhnKuNe2p8Oe/b4pTRiDpnvwT+tCAHlNSy+WAlrb
-	 cbe5U9IM76xoogHXM2c1Nh0wjYadmUK1zfCQz+XTr2DjPAQIK4sTVP+Jger5ejevM5
-	 GXmwRvzdVlv6Br4ohw0dp97rXv4ZONuymWRbVSvg=
+	b=BGHvHsi27AJK6JFZBC9IuiG2AYHY2YUY4o31rqIt/nNSwqegIrQ/dDieQod9hexfs
+	 aUnH6rh+/CdnO0nyp/DIz6UCwCOHISVw9otyUvGAgleAq7RXBp8fGBz1IVyjpD0SnW
+	 fDMYFC9g7tmAPvDQnJWAXRxmvaAx2/VarDNOKUTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Lee Jones <lee@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/508] mfd: mc13xxx-core: Fix memory leak in mc13xxx_add_subdevice_pdata()
-Date: Wed, 20 May 2026 18:21:29 +0200
-Message-ID: <20260520162104.409519342@linuxfoundation.org>
+Subject: [PATCH 7.0 1040/1146] sched/fair: Fix wakeup_preempt_fair() for not waking up task
+Date: Wed, 20 May 2026 18:21:30 +0200
+Message-ID: <20260520162211.767879912@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253111-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251092-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 30D8D597976
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: CC923593A63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit a5a65a7fb2f7796bbe492cd6be59c92cb64377d1 ]
+[ Upstream commit 9f6d929ee2c6f0266edb564bcd2bd47fd6e884a8 ]
 
-The memory allocated for cell.name using kmemdup() is not freed when
-mfd_add_devices() fails. Fix that by using devm_kmemdup().
+Make sure to only call pick_next_entity() on an non-empty cfs_rq.
 
-Fixes: 8e00593557c3 ("mfd: Add mc13892 support to mc13xxx")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20260120102622.66921-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Lee Jones <lee@kernel.org>
+The assumption that p is always enqueued and not delayed, is only true for
+wakeup. If p was moved while delayed, pick_next_entity() will dequeue it and
+the cfs might become empty. Test if there are still queued tasks before trying
+again to determine if p could be the next one to be picked.
+
+There are at least 2 cases:
+
+When cfs becomes idle, it tries to pull tasks but if those pulled tasks are
+delayed, they will be dequeued when attached to cfs. attach_tasks() ->
+attach_task() -> wakeup_preempt(rq, p, 0);
+
+A misfit task running on cfs A triggers a load balance to be pulled on a better
+cpu, the load balance on cfs B starts an active load balance to pulled the
+running misfit task. If there is a delayed dequeue task on cfs A, it can be
+pulled instead of the previously running misfit task. attach_one_task() ->
+attach_task() -> wakeup_preempt(rq, p, 0);
+
+Fixes: ac8e69e69363 ("sched/fair: Fix wakeup_preempt_fair() vs delayed dequeue")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260503104503.1732682-1-vincent.guittot@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mc13xxx-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
-index 1000572761a84..ddc90cbb7be52 100644
---- a/drivers/mfd/mc13xxx-core.c
-+++ b/drivers/mfd/mc13xxx-core.c
-@@ -377,7 +377,7 @@ static int mc13xxx_add_subdevice_pdata(struct mc13xxx *mc13xxx,
- 	if (snprintf(buf, sizeof(buf), format, name) > sizeof(buf))
- 		return -E2BIG;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 87200a22b3169..3bce48ad0bc5a 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8922,9 +8922,10 @@ static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wake_f
  
--	cell.name = kmemdup(buf, strlen(buf) + 1, GFP_KERNEL);
-+	cell.name = devm_kmemdup(mc13xxx->dev, buf, strlen(buf) + 1, GFP_KERNEL);
- 	if (!cell.name)
- 		return -ENOMEM;
+ 	/*
+ 	 * Because p is enqueued, nse being null can only mean that we
+-	 * dequeued a delayed task.
++	 * dequeued a delayed task. If there are still entities queued in
++	 * cfs, check if the next one will be p.
+ 	 */
+-	if (!nse)
++	if (!nse && cfs_rq->nr_queued)
+ 		goto pick;
  
+ 	if (sched_feat(RUN_TO_PARITY))
 -- 
 2.53.0
 
