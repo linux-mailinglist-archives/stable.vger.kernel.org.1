@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KwRGrwVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:44 +0200
+	id 0HDTDoT3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-252143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA637599464
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD24F595318
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8007631DA1DF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85228305AF0B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2828D3D75A0;
-	Wed, 20 May 2026 17:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ADD3FC5AE;
+	Wed, 20 May 2026 17:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCjjafBM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEl8R9No"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE89B36CE19;
-	Wed, 20 May 2026 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAC63FCB1E;
+	Wed, 20 May 2026 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297289; cv=none; b=Yswl4tA/K3WdvlAAWi8f6fqMVUjFLwn9XIPBtf1+ECud9zz7iBji51Mrg9ADocj6hm5NwsTH/31Pa8sw6hervZ6JrE7H3svHQUz5brFEXLVfmcTLF/CYthswDISryQuznFUSDsOUrx/RWWbsNQUKZvJTP5Q+J7GKrUBk6xa3REU=
+	t=1779299905; cv=none; b=iot5tO+SC561tPZ0tR8CyuUpNZSFQIWJVYOUpiNvs9YbRmkRZfVLMbjEHIrqaJC0oNxPMQ1zGr9XPCUcpdWkS+pWHGEFqPpBcjMlLhMEb03ttZXrEri5G7yRfxVE3i73t7+mhj9OWS4ulD1Yah3X4Am/3+yCNoATw4tTzPLV04g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297289; c=relaxed/simple;
-	bh=KRjQMjZmINSveKomyQgi3ddovOYeKCSnTNSlRlw+27E=;
+	s=arc-20240116; t=1779299905; c=relaxed/simple;
+	bh=Kv3HkD4XNO+7eUuVdEjpFoqOfVbdXWx6nO34BV8jUS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXjal9yN5svrAnvzH0LI1EX7VrlamYiMmhdE8G5MFwp3CG5xlt2IJPGMT76QMLDXu10LAqXaKM4zITuDFly0LbQsq8zJwhKuvbevV4uXUONjZOGffFvBoFnWNOBVrb6szY7m3Kb57p9Dda5vh5vF4bS0/cJ8ZeHYS9e1iDuMSyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCjjafBM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6191F000E9;
-	Wed, 20 May 2026 17:14:48 +0000 (UTC)
+	 MIME-Version; b=qMNTrPDdTQeCrCVef8jYev4wZGj1LqwTIBJqRvIqnHz8kevzqmxKx4OKk5CteY4vYZ5dy8SXFs4/tGqm3E0AH0RhEbfmpNni5fd3FlJzbQE2DnUC0UWHWYsr9p/sTsMR3d7K35/+m2QBkC/KAD3u+yhueFqhFBhyvp5BCrB/vOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEl8R9No; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92AE1F00896;
+	Wed, 20 May 2026 17:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297288;
-	bh=gnBwPMl0A9UijkN8aTTouLQ9pSjB3+1bzkBB1bKZfIM=;
+	s=korg; t=1779299902;
+	bh=5sFGp3DZGhwEzMaQPXc4t5V1/Ty5XwehKCe5ircoMtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cCjjafBMwYHIy63u7i5EwiNq03vo31XECNQ0A3ncp1kqKrNzW9kwAtWK6LdbPGTXb
-	 65YHGL9hrwhBelJdBSWAvRrjiryXtSdmBy6iJIM3UlDkdNXBXksEx7BsHGEorUloZT
-	 7RD9ZImDW24K2IDdWtbipDsAUUfUOHUaFkPcSMyA=
+	b=kEl8R9NoTUWZcDmB1sNRmhj82Lp/2l3wfESB7HGQEot2sGz8PQshGJIcZp5gCh76L
+	 gwKR2boTLpPxzRjbcB6j2XuDkcknOVX8g5FI3KLavzdMef+JNMS7Ke1tRe6X6OFBYk
+	 J+ht/s6HZ0+s6NjbGUOzCuy3bD5EkDjOWAYNZD+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 7.0 1121/1146] iommu/vt-d: Avoid NULL pointer dereference or refcount corruption
+	Kim Phillips <kim.phillips@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.18 888/957] Revert "ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn"
 Date: Wed, 20 May 2026 18:22:51 +0200
-Message-ID: <20260520162213.610951630@linuxfoundation.org>
+Message-ID: <20260520162153.827187278@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +68,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251173-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252143-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA637599464
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: AD24F595318
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 79ea2feb917b05366b49d85573c9c5331f043b2c upstream.
+commit db5dadb562cabb6da49959b473ed0d9645b6f2da upstream.
 
-Commit 60f030f7418d ("iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE")
-fixed a NULL pointer dereference in an unlikely situation partly.
+Some older systems don't support CPPC in the firmware and this just makes
+noise for them when booting.  Drop back to debug.
 
-If dev_pasid is not found in the dev_pasids list, it remains NULL.
-However, the teardown operations are executed unconditionally, this lead
-to a NULL pointer dereference or refcount corruption.
+This reverts commit 21fb59ab4b9767085f4fe1edbdbe3177fbb9ec97.
 
-If the domain was never attached to this IOMMU, info will be NULL, which
-would cause an immediate dereference when checking --info->refcnt.
-
-Even if info is not NULL, decrementing the refcount without having removed
-a valid PASID might unbalance the count. This could lead to premature
-dropping of the refcount to 0, potentially causing a use-after-free for the
-remaining active devices sharing the domain.
-
-Fix it by returning early if dev_pasid is NULL, before executing the
-teardown operations.
-
-Issue found by AI review and suggested by Kevin Tian.
-https://sashiko.dev/#/patchset/20260421031347.1408890-1-zhenzhong.duan%40intel.com
-
-Fixes: 60f030f7418d ("iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20260422033538.95000-1-zhenzhong.duan@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 21fb59ab4b976 ("ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn")
+Suggested-by: Kim Phillips <kim.phillips@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Tested-by: Kim Phillips <kim.phillips@amd.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260504230141.484743-2-mario.limonciello@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/acpi/cppc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3544,12 +3544,13 @@ void domain_remove_dev_pasid(struct iomm
+--- a/arch/x86/kernel/acpi/cppc.c
++++ b/arch/x86/kernel/acpi/cppc.c
+@@ -88,19 +88,19 @@ static void amd_set_max_freq_ratio(void)
+ 
+ 	rc = cppc_get_perf_caps(0, &perf_caps);
+ 	if (rc) {
+-		pr_warn("Could not retrieve perf counters (%d)\n", rc);
++		pr_debug("Could not retrieve perf counters (%d)\n", rc);
+ 		return;
  	}
- 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
  
-+	if (WARN_ON_ONCE(!dev_pasid))
-+		return;
-+
- 	cache_tag_unassign_domain(dmar_domain, dev, pasid);
- 	domain_detach_iommu(dmar_domain, iommu);
--	if (!WARN_ON_ONCE(!dev_pasid)) {
--		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
--		kfree(dev_pasid);
--	}
-+	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-+	kfree(dev_pasid);
- }
+ 	rc = amd_get_boost_ratio_numerator(0, &numerator);
+ 	if (rc) {
+-		pr_warn("Could not retrieve highest performance (%d)\n", rc);
++		pr_debug("Could not retrieve highest performance (%d)\n", rc);
+ 		return;
+ 	}
+ 	nominal_perf = perf_caps.nominal_perf;
  
- static int blocking_domain_set_dev_pasid(struct iommu_domain *domain,
+ 	if (!nominal_perf) {
+-		pr_warn("Could not retrieve nominal performance\n");
++		pr_debug("Could not retrieve nominal performance\n");
+ 		return;
+ 	}
+ 
 
 
 
