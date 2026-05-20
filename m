@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PKdNvAqDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:12 +0200
+	id oBMRBFr8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-251840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473B359B3A8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C01B59608C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C817322FA8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B800A3648F7F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9AD3DA5B6;
-	Wed, 20 May 2026 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937443EE1FA;
+	Wed, 20 May 2026 17:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO1W9TDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7/RvW6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AED3D1CA0;
-	Wed, 20 May 2026 18:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACAB1C3BFC;
+	Wed, 20 May 2026 17:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301985; cv=none; b=oHXlS7cjpktm6eV5jOQD69k7sSQqmigIrhn5pazbcSLjmDyolK1Z51KgM/baJAAX+REsiCIcjCs1qVnKqsc5fqVtFG3E0cEoYN8S1DlNl7vhW7jSdLeLVxajR6zj9g60r8L8jYwrbBZ2DLaiZs3m8M/Y6sOMWKvZc39dcO316jY=
+	t=1779299026; cv=none; b=Z467camg5aTa93rmFXBJ9p1Nxa07P5PLqbHatgeT1j5H6/je6SnetH9XB5/A2FQeCps3r8HSioW0Nk4Fii3zJnOPq0hBeg5ydoC8I2l3RDTsWS/9Ls3ILSPLf8rL8Fasj67SvKyHKtlx4X65Xmb0C2JSFSxSG35SFFlG3PkYgeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301985; c=relaxed/simple;
-	bh=Tp4w6JTeGIKqSdM1obEC60f5AxqRXCLBYvm8j+xB63Y=;
+	s=arc-20240116; t=1779299026; c=relaxed/simple;
+	bh=yRmdL0eMjygzeTSTiR3FcgDmBj3N8LzxQ8I8jY4UkSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6Q/+UhI0RsD0ey4JmoZ2i8qNs0rA+j801EON8xYi8TEUe66j0M5AfewExSUznaBWKp46rUN1XMy+HRKoLe/HOfZSGHMPhSLLTTiucx7ikgdJkmG/0Hwf3vbAjDyPBBMYJDXyl4frOMKkpFN8wy/uI/a4DYAO5OzOs0AYqgnJMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO1W9TDT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2A91F00893;
-	Wed, 20 May 2026 18:33:02 +0000 (UTC)
+	 MIME-Version; b=qgnca0DPmsExg1oKjusYl1yrBLz3qrnOr3XtpomnJUU/0RIJe+g9IN581UIZSd9p6eafCfwWQmhvkQGGlIWfa4qG3mBf3Kg7wbQ4VPeiP5aAf2WSlQoWFFWMuojs9K0oAP55SQ8H9VEmdnliq2ynVtuD4rXNvMQyY1YiYpYXBk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7/RvW6x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04731F000E9;
+	Wed, 20 May 2026 17:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301982;
-	bh=z6ALsnKOLfQyO657F/ybn5oQdgzybOHuSByBlp2Z0os=;
+	s=korg; t=1779299025;
+	bh=owp6v7ehO3kLcjrYwyItFTCq/iEDeRptq9pyh4FQj4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uO1W9TDTpbdwmSzDQNC9PZjZIEmNMl5Y7XEb0cM5eilioEi6ZB4vp0TypN/b0GqxJ
-	 xZMm+0picUtz+XI6jRoMhAZuGXzfZi0FTHB0tmg5OuDDDpdpc5Fw+ZRqkFWhT3/ZzJ
-	 uVFOpByQKs75ZfATPl0qoRS5khnU3zUVhFMI6O7U=
+	b=U7/RvW6xePVJJfQtbNVtvYh5xLMdbnk2Qbr/1fa2p37W7qn9FqPS0tXVagonoDybj
+	 pr1uuP5XYZySUyPVkJ4uKvyv0S47Teg0ng88uHuxSY8zLIJbUnAaadRE7fb0myg5id
+	 sNncp+/IbfcqdY9BuJfNTPzINAm+2BJoABnw0X+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/508] dm cache: fix concurrent write failure in passthrough mode
+Subject: [PATCH 6.18 635/957] tcp: annotate data-races around tp->delivered and tp->delivered_ce
 Date: Wed, 20 May 2026 18:18:38 +0200
-Message-ID: <20260520162100.672922024@linuxfoundation.org>
+Message-ID: <20260520162148.300061702@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +66,124 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252939-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251840-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 473B359B3A8
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8C01B59608C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
+[ Upstream commit faa886ad3ce5fc8f5156493491fe189b2b726bc9 ]
 
-When bio prison cell lock acquisition fails due to concurrent writes to
-the same block in passthrough mode, dm-cache incorrectly returns an I/O
-error instead of properly handling the concurrency. This can occur in
-both process and workqueue contexts when invalidate_lock() is called for
-exclusive access to a data block. Fix this by deferring the write bios
-to ensure proper block device behavior.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Reproduce steps:
-
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently. Sometimes one of the
-   processes will receive I/O errors.
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
- <snip>
- fio-3.41
- fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
- fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
- test: (groupid=0, jobs=1): err= 0: pid=105
- test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: feb5f2ec6464 ("tcp: export packets delivery info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/net/tcp_ecn.h | 2 +-
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index a3a8623eff297..65ae94f64c11b 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1557,6 +1557,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
- 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
- 	if (r < 0) {
- 		free_prison_cell(cache, prealloc);
-+
-+		/* Defer the bio for retrying the cell lock */
-+		if (mg->overwrite_bio) {
-+			struct bio *bio = mg->overwrite_bio;
-+
-+			mg->overwrite_bio = NULL;
-+			defer_bio(cache, bio);
-+		}
-+
- 		invalidate_complete(mg, false);
- 		return r;
+diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+index a709fb1756eb7..59d6944f8d103 100644
+--- a/include/net/tcp_ecn.h
++++ b/include/net/tcp_ecn.h
+@@ -189,7 +189,7 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
+ 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
+ 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
+ 			    !tp->delivered_ce)
+-				tp->delivered_ce++;
++				WRITE_ONCE(tp->delivered_ce, 1);
+ 		}
+ 		break;
  	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 3de09b59663d8..515313ef0c642 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4405,8 +4405,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
+ 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
+ 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
+-	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
+-	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
++	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
++	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
+ 
+ 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 16bb525c04f1d..b5a3c7ca2605d 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -476,14 +476,14 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
+ 
+ static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
+ {
+-	tp->delivered_ce += ecn_count;
++	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
+ }
+ 
+ /* Updates the delivered and delivered_ce counts */
+ static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+ 				bool ece_ack)
+ {
+-	tp->delivered += delivered;
++	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
+ 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
+ 		tcp_count_delivered_ce(tp, delivered);
+ }
+@@ -6576,7 +6576,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
+ 		/* SYN-data is counted as two separate packets in tcp_ack() */
+ 		if (tp->delivered > 1)
+-			--tp->delivered;
++			WRITE_ONCE(tp->delivered, tp->delivered - 1);
+ 	}
+ 
+ 	tcp_fastopen_add_skb(sk, synack);
+@@ -7007,7 +7007,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 	SKB_DR_SET(reason, NOT_SPECIFIED);
+ 	switch (sk->sk_state) {
+ 	case TCP_SYN_RECV:
+-		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
++		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
+ 
 -- 
 2.53.0
 
