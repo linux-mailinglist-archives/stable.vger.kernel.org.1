@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-251000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBhTBu7tDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:54 +0200
+	id EKbIK+QADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-253022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3E75937BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BACD597198
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B6B313082088
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DFD51305739D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED703F4DE7;
-	Wed, 20 May 2026 17:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F3937DE8A;
+	Wed, 20 May 2026 18:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFjLp6Zr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcAojpHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E7D3F4114;
-	Wed, 20 May 2026 17:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11EC342CB3;
+	Wed, 20 May 2026 18:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296842; cv=none; b=m+NQ7chDhEHJ8ZWffrBy2t+ErwJy8BCF6z+/hMFclI8JPxs4BZEl1Oit9G8b0ga/R8bco0sZHBdRKJbhHELQyuQ71l1LNHw0XfYS7pzMdfTTYE8M26xhiOkXM+ADqWwKfqFjWh8ea9pgmvpMDm9ajn7rQtdm3OeDDJP/mfBnCIw=
+	t=1779302199; cv=none; b=CsCxYQqNLL0CDqPoLEcFaH7YHotFZjnQ2ne5W+rw4hkPirm8z6m5j/5Oe7xppTq7k7KH3zo1n+Zcdr97mPAqWecKJyTPKZ6hoSFi74qgSjK9U99n6cDZHaL6H2LnK7HZ8OmTYxXIIfCpyG1Fa7Z/cKVQb6t7yLA1iv3SQIc73+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296842; c=relaxed/simple;
-	bh=Jq430R61qFgyURWUgzAHvAWB6Xqt7wdkVfOHO3Gkdas=;
+	s=arc-20240116; t=1779302199; c=relaxed/simple;
+	bh=EEa0yGXidf1ElVKSgTQUeJg7tzV2vBuxX2yanT8pxB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EyRysOsmEQwclhEdhOOAfhfcB3OEeYyXUYJBWxP7arYfzF1l9dd/kTDqOI3z9+VDBf75BPIQy3Ij37ZoP/iavOdnUMKIaVLOcOkUa3ipdherKIWKn85ur2Pkg5BdhEnmYqfzpwUcMMDS3tEOa73ZmfMUTGCToiPsua+74xLf1Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFjLp6Zr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506091F00893;
-	Wed, 20 May 2026 17:07:20 +0000 (UTC)
+	 MIME-Version; b=C9CQglZiEB60zhvV7en/CQodeLBaCRQMXYXzeKEc7D0q445reCTZbxRaBlizM2M7rZaGMnnQVc6LEoczyxBV0DEuKbyVC8n2N2v+D9rvaDN+11NoIezw9jZs9xZwC8jwV0sEur8v1WIOMJyKJr3T3InXslWLTGo09+MYqkWTo9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcAojpHx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245AB1F00893;
+	Wed, 20 May 2026 18:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296840;
-	bh=h+ByJEBHpEhz5OwIQr+i6b2U6tD3/VgkGpLNjm4BeHE=;
+	s=korg; t=1779302198;
+	bh=q0+uXjUhi/19hw+h/KMpguCoS9hQMqRQNkc7aPbB6Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jFjLp6ZrpcpxyWssZac9n5zZf+vtxpPD80IrO3iAw0FjnfBNr54RR8bsvUKDHy1ko
-	 TFXHfdBJFe/MDrkUuNc/G+8CT4R7K3eTKeT+jOEE8ea5dan1YADps3sYXFJW516N+y
-	 EFQKE8FTq/A8OlLm6OIv5VhHtJWEloAvqBEASL3Q=
+	b=NcAojpHxQkD21hkNDNL216vRTpOWLZjfE5vi3K4yT6ScJ2JcQaK6HSXfH2unwHekk
+	 L4hVogEW+geA9nFu4bcLkg9xSNLrkXYomZTx88C8kJNNrp2rj/0KIFgCbYha7O8KW4
+	 9YsOxx0c/SCZjOQzUuPilcbml3lkgyOdWUso3Ueg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0950/1146] netpoll: fix IPv6 local-address corruption
+Subject: [PATCH 6.6 177/508] gfs2: add some missing log locking
 Date: Wed, 20 May 2026 18:20:00 +0200
-Message-ID: <20260520162209.733593614@linuxfoundation.org>
+Message-ID: <20260520162102.474144690@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251000-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253022-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8A3E75937BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5BACD597198
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 3bc179bc7146c26c9dff75d2943d10528274e301 ]
+[ Upstream commit fe2c8d051150b90b3ccb85f89e3b1d636cb88ec8 ]
 
-netpoll_setup() decides whether to auto-populate the local source
-address by testing np->local_ip.ip, which only inspects the first 4
-bytes of the union inet_addr storage.
+Function gfs2_logd() calls the log flushing functions gfs2_ail1_start(),
+gfs2_ail1_wait(), and gfs2_ail1_empty() without holding sdp->sd_log_flush_lock,
+but these functions require exclusion against concurrent transactions.
 
-For an IPv6 netpoll whose caller-supplied local address has a zero
-high-32 bits (::1, ::<suffix>, IPv4-mapped ::ffff:a.b.c.d, etc.), this
-misdetects the address as unset (which they are not, but the first
-4 bytes are empty), calls netpoll_take_ipv6() and overwrites it with
-whatever matching link-local/global address the device happens to expose
-first.
+To fix that, add a non-locking __gfs2_log_flush() function.  Then, in
+gfs2_logd(), take sdp->sd_log_flush_lock before calling the above mentioned log
+flushing functions and __gfs2_log_flush().
 
-Introduce a helper netpoll_local_ip_unset() that picks the correct
-family-aware test (ipv6_addr_any() for IPv6, !.ip for IPv4) and use it
-from netpoll_setup().
-
-Reproducer is something like:
-
-  echo "::2" > local_ip
-  echo 1     > enabled
-  cat local_ip
-  # before this fix: 2001:db8::1   (caller-supplied ::2 was clobbered)
-  # after  this fix: ::2
-
-Fixes: b7394d2429c1 ("netpoll: prepare for ipv6")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260424-netpoll_fix-v1-1-3a55348c625f@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5e4c7632aae1c ("gfs2: Issue revokes more intelligently")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ fs/gfs2/log.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 5ae90c14ba493..84faace50ac28 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -706,6 +706,23 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
- 	return 0;
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 2be5551241b3a..01fa92ac9ab20 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -1024,14 +1024,15 @@ static void trans_drain(struct gfs2_trans *tr)
  }
  
-+/*
-+ * Test whether the caller left np->local_ip unset, so that
-+ * netpoll_setup() should auto-populate it from the egress device.
-+ *
-+ * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
-+ * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
-+ * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
-+ * doing so would misclassify a caller-supplied address as unset and
-+ * silently overwrite it with whatever address the device exposes.
-+ */
-+static bool netpoll_local_ip_unset(const struct netpoll *np)
+ /**
+- * gfs2_log_flush - flush incore transaction(s)
++ * __gfs2_log_flush - flush incore transaction(s)
+  * @sdp: The filesystem
+  * @gl: The glock structure to flush.  If NULL, flush the whole incore log
+  * @flags: The log header flags: GFS2_LOG_HEAD_FLUSH_* and debug flags
+  *
+  */
+ 
+-void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
++static void __gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl,
++			     u32 flags)
+ {
+ 	struct gfs2_trans *tr = NULL;
+ 	unsigned int reserved_blocks = 0, used_blocks = 0;
+@@ -1039,7 +1040,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	unsigned int first_log_head;
+ 	unsigned int reserved_revokes = 0;
+ 
+-	down_write(&sdp->sd_log_flush_lock);
+ 	trace_gfs2_log_flush(sdp, 1, flags);
+ 
+ repeat:
+@@ -1151,7 +1151,6 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 		gfs2_assert_withdraw_delayed(sdp, used_blocks < reserved_blocks);
+ 		gfs2_log_release(sdp, reserved_blocks - used_blocks);
+ 	}
+-	up_write(&sdp->sd_log_flush_lock);
+ 	gfs2_trans_free(sdp, tr);
+ 	if (gfs2_withdrawing(sdp))
+ 		gfs2_withdraw(sdp);
+@@ -1174,6 +1173,13 @@ void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
+ 	goto out_end;
+ }
+ 
++void gfs2_log_flush(struct gfs2_sbd *sdp, struct gfs2_glock *gl, u32 flags)
 +{
-+	if (np->ipv6)
-+		return ipv6_addr_any(&np->local_ip.in6);
-+	return !np->local_ip.ip;
++	down_write(&sdp->sd_log_flush_lock);
++	__gfs2_log_flush(sdp, gl, flags);
++	up_write(&sdp->sd_log_flush_lock);
 +}
 +
- int netpoll_setup(struct netpoll *np)
- {
- 	struct net *net = current->nsproxy->net_ns;
-@@ -750,7 +767,7 @@ int netpoll_setup(struct netpoll *np)
- 		rtnl_lock();
- 	}
+ /**
+  * gfs2_merge_trans - Merge a new transaction into a cached transaction
+  * @sdp: the filesystem
+@@ -1315,19 +1321,25 @@ int gfs2_logd(void *data)
+ 		}
  
--	if (!np->local_ip.ip) {
-+	if (netpoll_local_ip_unset(np)) {
- 		if (!np->ipv6) {
- 			err = netpoll_take_ipv4(np, ndev);
- 			if (err)
+ 		if (gfs2_jrnl_flush_reqd(sdp) || t == 0) {
++			down_write(&sdp->sd_log_flush_lock);
+ 			gfs2_ail1_empty(sdp, 0);
+-			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+-						  GFS2_LFC_LOGD_JFLUSH_REQD);
++			__gfs2_log_flush(sdp, NULL,
++					 GFS2_LOG_HEAD_FLUSH_NORMAL |
++					 GFS2_LFC_LOGD_JFLUSH_REQD);
++			up_write(&sdp->sd_log_flush_lock);
+ 		}
+ 
+ 		if (test_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags) ||
+ 		    gfs2_ail_flush_reqd(sdp)) {
+ 			clear_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
++			down_write(&sdp->sd_log_flush_lock);
+ 			gfs2_ail1_start(sdp);
+ 			gfs2_ail1_wait(sdp);
+ 			gfs2_ail1_empty(sdp, 0);
+-			gfs2_log_flush(sdp, NULL, GFS2_LOG_HEAD_FLUSH_NORMAL |
+-						  GFS2_LFC_LOGD_AIL_FLUSH_REQD);
++			__gfs2_log_flush(sdp, NULL,
++					 GFS2_LOG_HEAD_FLUSH_NORMAL |
++					 GFS2_LFC_LOGD_AIL_FLUSH_REQD);
++			up_write(&sdp->sd_log_flush_lock);
+ 		}
+ 
+ 		t = gfs2_tune_get(sdp, gt_logd_secs) * HZ;
 -- 
 2.53.0
 
