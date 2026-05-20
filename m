@@ -1,275 +1,358 @@
-Return-Path: <stable+bounces-253385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIC3F/IuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:18 +0200
+	id OPHDCBw/Dmqr9AUAu9opvQ
+	(envelope-from <stable+bounces-253386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D2059B93E
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B6E59C94E
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD412303CE81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED43C32FF5E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3F8375F97;
-	Wed, 20 May 2026 20:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED883379EC6;
+	Wed, 20 May 2026 21:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eiwyHAtJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/o9VH2T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A289E374E55
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 20:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779310748; cv=none; b=MV+l48K+Ctex6Nnn2DoRnEiaQIG/P9QLhlUOKNRWLfzRgca2OOsPVHTORdh2Clp+VbqVSv8/afSe0qXC57GkTRjBvtY/jca7zgks189VIUkl1SbExBg97anoYk2yV2SLs4xMaor1d2A7+AvWdNBKkoA6/PZo4S4Hca6ZEpLKt9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779310748; c=relaxed/simple;
-	bh=ixoCgyJrbUFbAAbfJ/JQgZKkSDKCSy3cuaMIsNX9m9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n4iydVJ05zOIAYsbvIMJ8gNtMVoJSM8oJR1IiY5ZmLH4Ki94MRdkZeh30ldFhsNsSGuPR+TVKvrkARdhGjJWBQJat4pUlUBq4t1+CxreZtV51ajFD5Em/iS+dMqX8ANHrk0c8aPgY9eitDA4qNtMKvKl0uQitKSqJstxBLmbuO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eiwyHAtJ; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D4737998B
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 21:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779310986; cv=pass; b=bB1HYjk15vYe/xu9Z55lfJK+svPDW3u+gGMAKaoDmxgvkbeoLfi00WEvhREDDMxlJ98Kck9u/JKbeB+l2xaXjT7p1LnXSzkkT9pHqEkHe7I9nR6dsVGKWPVXBLS333IYf6dQ8S61WYCR/YMwjaVqitQeV0oFQblUuB89NAIcKHs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779310986; c=relaxed/simple;
+	bh=stpRi+PiiMy0l41q+2r76uTwBzr3MWreHkAxryAQ1EQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OzKiPiw8li/qELJXn9NUqiMsbF3GR7SBM/Soz+qqmND5Nq8FwTFYHtGOtQBSvIXnWwzRn0AadsckOxWaIvTOGsOM9s9uFtzdx6h5ZlBiuT0P6GOHpsQJh5OYDidKflh6PJkH4kxeLCF9rSDbs3gphcM2DFxN2u8CsTEKycVUU3A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/o9VH2T; arc=pass smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c827313dac0so2906057a12.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 13:59:06 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-479eb8bcacbso3653097b6e.1
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 14:03:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779310984; cv=none;
+        d=google.com; s=arc-20240605;
+        b=URI4H9AEjn9IjOSnmswipUT0ltRUR8bbPv3VAo9n3Q1bn+gdclBMQRxUooTuzMBHoT
+         eb+EUzHzt8DJHm28TjAxoQhUfMhJ8zxMwIL/AQkDz3mtwwAxuGkxCuFP0Qtqq6KoTZI8
+         722b9jiixXOdowd4nIb0fOA0baz1BzMMLSNY/1q5uvBxo7qV6ZdDQxmQBW+61Kj4p9tG
+         5CYfQcBGslpr4rIXXeI7bav2ayIv+6TfJ24Cy+np/ItCX0+p20yV3Hg0ntPExQlhUTbE
+         lt+Xe9EhS4qN4tq0T7spf/7nkhv1mEhMXCHxwcftyxv8JOwWdNsPZMcZQXgTvxCCO9a8
+         YM/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IQTvCYBr9Cz3MOTTexPKRQiIGmQvkY0YRAS3I+gG8tY=;
+        fh=J7zzloLGdxvuBbfD/TokwO157t5KLvJl9fSpM2U1BOg=;
+        b=jy/sb+S/Z8fBWJFHXZB5bYWuJ1co4kJqT9YKQtFU1U/NcN/lxCOoAANRRw10OfrhAb
+         S/6+4Z/kr8X0r56JJ4f812x10QX/XzsgYgiA81/qaOiyIrkm54Gc2tzlzQdv9fulw7Ae
+         P8uLXLIkbkOElJTyLF8Iz6e7HXBOcA/BtrHIGTU9nzJ3ysTiOCYrJqWQedpH44hhWyhD
+         S7rASkdnrLRILhbTXrGvb1k0U/jDvwWB0ynwdCpfbf4TfG9MgnSvQfSK9vGyfYnoGZkC
+         dOGjDl+PHgoZHDLTZq0PoQR2zRKlokwy/eVT8Sej/nHLBZ2bZiB6JIKTV7ZnqHDRvHBZ
+         1y1Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779310746; x=1779915546; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=y7aqJm2QFZkDCNJszE1BVgA4d8GhcjAWMrwClSCja/w=;
-        b=eiwyHAtJgFVPxwK+G+TubxBJ0tfRON4qidn/jm4grquEBRRZNC8uABtqwdjNpBfqMm
-         OdQgscqBTHDA7PLkQEyXdQ/tOBxAooL/s+k5BeSvwE1lmHDPLzXXC+RRrvWmjT4UxqoM
-         Jl5gk0zYHpve72TwSEdvsMSC6f6HBvuqFsc5/8ZdN1tSgK7SIDDOfti51+E8XBJkEWDx
-         0anz5H4w98RxWwaJVoyQdeLQ+eJYixyje4g8FHaNXIJ+G+T+cYLHatiUbwneleeuqN6n
-         7xOiYi9YwplNdQefUsoNV8TvW17YnIk6+S8z9jyznF+Uc7CFzOqmGlAjVB+/B2oDI07T
-         bWBA==
+        d=gmail.com; s=20251104; t=1779310984; x=1779915784; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IQTvCYBr9Cz3MOTTexPKRQiIGmQvkY0YRAS3I+gG8tY=;
+        b=K/o9VH2TA0MvmoLnPyUM3aHNcLeqAPIIdTw2EVF7pSxtOFMg2UmyKi1rY4pEtDSL1Z
+         oGzuosXbdery23p6PqLO8eFAwVGZyjO+ajnTvcvC3dTfHfMnb+bV7STJRBzB7muJpPLy
+         8vKD/V1IXPjBCmTIqP1C5PmfaR8G8zDKeIxECdjrARA2TSpK+nXu9HmFDpliK+ms8uPG
+         p1Vd6hKEn/RXTpYJPHED1Xegk6IN1Kemv8QL5VoJ+yLxdDEV9q4BH41ffQf5ntK1+RwJ
+         bqfQJr4d0IBGc5nC1AJIK6M5lwI7a8apl/ndiNiqjwWS4JmecEEF9TvsQomqd1ck646R
+         QD7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779310746; x=1779915546;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y7aqJm2QFZkDCNJszE1BVgA4d8GhcjAWMrwClSCja/w=;
-        b=SR2NOHDfFYwW5EVD8VGbNGt2dQ/0BktIKo/udmkpiyZboMGLx96glnR83xetYwp/FQ
-         lusiLWetcVdhJfG+uToQt531iIkSTgvFLseAmtOrWHn/Hmo288ss5JhIe8APTy5pAfU/
-         XKR1KW0JtUXfOfWMENFA7Eu3e8YbqEGFLj9ahXVgZANJ80rc+ajjpAxFnc01J1iudvFw
-         3N+8bZpqNTm5xM6pqb5AHGBhyKo3g2yzGUvAfHlh8KBZFUq1oWk5NzwvXbIneZeCzmNZ
-         x1BW3+ow1ZJG/53buD+331N9noUw8i3nZK/bOvoLIkso4DLJWuXMU0+KWmY7vHJDDV+g
-         Tr/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+f97VtQc0FUfz5qcvEb3ze2lxrglzhab9aSSabs19FS4FAWHau7rmoPYVwiSyI2AYLBguqsgA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXTN7FvXZsBwkcwrLHzryoEVDOMtlYmereBB6wxve4G32TtcdX
-	rZeNFTmiRhJFmqoWZFSGgH90FMIcP5nctHYQ2ZeNoKSdcf37+izkqNDO
-X-Gm-Gg: Acq92OH4TNLTpDVUGFXJUW3EOueIgpg/pu8iAS/5wiDdKEFHTxv7KYlVWHehgdozzXF
-	NV0P6Sr0mwr36XbFsTLBzU5nFS/hS3TV37eW5gMcr0jPY+Q2staZ/QupB3RA/x8l8niprObA2Xs
-	D5bJ4y0AJ24B0on0yBWZGeWc35AyfHJF451wW73VDGova1SBDX21gqU6WhfjKovnYuN1jqgJFaL
-	W5oSSugKnwrjrPbMkzVXdlM6Ta2IatUs8Q6FdujEUw5CXuK8lQqoUhnkn+ZzTJ/23NtJy3dIb/2
-	o47O21kOCaNTGOCAxmvk8QptyGFyobJVrB+k/hyBAXzZWlkQMvh2uTvWVEF6DMjz8ed3/DAskgL
-	/udFEgA8doL1ZpdwtnlJPDsy6JLEQ5RLXLY/ql0sy0RK4kVwlexN9EnsJeQyHzFTSK+FhR7/kPU
-	STqlZjvA0UOcLRU+u/jqdIZJD+9e9T4QZPhXfbGBha9nk8TGX96PCIMxXHp8iKtg8THFecRejBQ
-	1NDtbaQJlnncji6HHqBrQ==
-X-Received: by 2002:a17:90a:dfd0:b0:369:9469:aeba with SMTP id 98e67ed59e1d1-36a48dfe7d7mr18963a91.1.1779310745511;
-        Wed, 20 May 2026 13:59:05 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a3cd96253sm505153a91.17.2026.05.20.13.59.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 13:59:05 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1783d74e-6acc-40d2-bdff-9bacbb04032c@roeck-us.net>
-Date: Wed, 20 May 2026 13:59:04 -0700
+        d=1e100.net; s=20251104; t=1779310984; x=1779915784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IQTvCYBr9Cz3MOTTexPKRQiIGmQvkY0YRAS3I+gG8tY=;
+        b=DapKGinDqYGMkIMeVlZtwbApxv7B/e1u3Al1dFaRdjD3YCb94vZQWTekWBiTXhh7xG
+         7orh0rWrAvcvhHHqQl19sDYmfwM2NIrHBWuJL9h198y/S0Tf8vJvuSQ0UehhE90zZFJK
+         J0BzmuFbnl4BiFjf/4aPYdqd9vRmzPEXk5EYEwvJSWncKabhP5kQ7ozyLayoTZsAb10B
+         STZzZfvgvXcSwHvGpwbPQ8QFXhFAPTXMKxWoxG2VpwRqujexR4k58P10fT1TJzaAkIOp
+         stX5cgXCsgjxQVh5bHrU5kZ4RMWGFnoGoRtOjQGIzf1ybPRd+ooiGhV3ZPRZYWtNjyQZ
+         EcuQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Nd/NeU+XTUSH/w2+vZvNarKUggW78jrIBQ07rgnjGdHQ2qYrTecuMfJIsOVWJw0zvxWSBx6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGskh+9Dd5xgblCwSCbsXySf3+S5JPEWtVu7PU5ZOtCGX1WI3O
+	v+KF4KNosVGJlOZof5FKUd9ERf3IpYgl5vB1it62DfCHI60vxeeQVyItdlJ1TIPF6EcN1tDNb6E
+	VGZcFHhDYWqhxEctcFfdqHlIg/cwZ55Q=
+X-Gm-Gg: Acq92OFQa81MxPeGy11ru1Ry8MWzx7zUIt9VGIAxLPMDr6Ae8K+6MzsirszI4lO63SD
+	h05vTUyJxuWpHviQszkSc4jS79HJ8QXV7+URioQS3FP3Hx6i4JL/oEslkYGeFE1VQccMYRDH0r1
+	N6g4/kWay02MbI3u2yA1WMc3XTa/E3/YTX8J359D2/i6O5e/xFzo0bB/A2VN5XDoWfXOJrqRsM2
+	2YLUgNuPjVLSC11sKMFXNa+jJGczSMN8M3ao3ehEOSDJVVzPC/aqfZBO6oG1ISHePvPe+CjqEA1
+	CNfZ4Q5aECsSNOrMbnv94Llr/oABoITT0ImbVw==
+X-Received: by 2002:a05:6808:2382:b0:467:1458:2a8f with SMTP id
+ 5614622812f47-482e592d399mr16600671b6e.37.1779310984145; Wed, 20 May 2026
+ 14:03:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] hwmon: (pmbus/adm1266) add clear_blackbox and
- powerup_counter debugfs entries
-To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
- Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Guenter Roeck <groeck7@gmail.com>
-References: <20260516-adm1266-v4-0-1f8df4797258@nexthop.ai>
- <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
- <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
- <DINRCDZ0SHS3.1X4T3VVLSL36E@nexthop.ai>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <DINRCDZ0SHS3.1X4T3VVLSL36E@nexthop.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <20260519203530.66310-1-devnexen@gmail.com> <CAHS8izOL4yyPH4+ZUXxKB6JAj0EgbFK5UkG+SSb4rk_vG6EfhQ@mail.gmail.com>
+ <CA+XhMqxPNEBVey8xw_yisymwL2H_04hL48GOyPk08U8p0tYM2g@mail.gmail.com> <CAHS8izMTxrywNPEeYsuyeJ9ETfdwt0qYdHFh5=v8pohboT86AQ@mail.gmail.com>
+In-Reply-To: <CAHS8izMTxrywNPEeYsuyeJ9ETfdwt0qYdHFh5=v8pohboT86AQ@mail.gmail.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Wed, 20 May 2026 22:02:53 +0100
+X-Gm-Features: AVHnY4Jpi7LniJLzlTb__HITTRBbXOaJ145PrJMHGg4oFhdjOskSHMzBvOrZi18
+Message-ID: <CA+XhMqx0F5Ujfo2BrgmjzYG030rsu271nppL4DPLEetfMcr-0g@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: devmem: reject dma-buf bind with
+ non-page-aligned size or SG length
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	sdf@fomichev.me, sdf.kernel@gmail.com, kaiyuanz@google.com, 
+	bobbyeshleman@gmail.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253385-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253386-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,fomichev.me,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A1D2059B93E
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 83B6E59C94E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 12:40, Abdurrahman Hussain wrote:
-> On Wed May 20, 2026 at 10:10 AM PDT, Abdurrahman Hussain wrote:
->> On Wed May 20, 2026 at 7:10 AM PDT, Guenter Roeck wrote:
->>> Hi,
->>>
->>> On 5/16/26 18:18, Abdurrahman Hussain wrote:
->>>> This is what remains of the v3 series after Guenter applied patches
->>>> 1/5 (firmware_revision) and 5/5 (GPIO line label) to hwmon-next, and
->>>> asked for patch 4/5 (rtc_class) to be dropped.
->>>>
->>>> Patch 1 adds a write-only clear_blackbox debugfs file. Devices
->>>> configured for single-recording mode (BLACKBOX_CONFIG[0] = 0) need
->>>> an explicit clear once the 32-record buffer fills; the documented
->>>> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
->>>> from userspace. The patch also acquires pmbus_lock at the
->>>> adm1266_nvmem_read() callback boundary so the memset of
->>>> data->dev_mem, the blackbox refill, and the memcpy to userspace run
->>>> as a single critical section -- the nvmem core does not serialize
->>>> concurrent reg_read calls.
->>>>
->>>> Patch 2 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
->>>> The same value is embedded in every blackbox record, so the live
->>>> value lets userspace match a captured record back to the boot it
->>>> came from when correlating logs. The block-read is taken under
->>>> pmbus_lock to serialise against any pmbus_core PAGE+register
->>>> sequence on the device.
->>>>
->>>> Patch 3 takes pmbus_lock in adm1266_state_read() (the pre-existing
->>>> sequencer_state debugfs handler) for the same defensive-locking
->>>> reason that motivates the new debugfs files in patches 1 and 2:
->>>> any direct device access from outside pmbus_core should be ordered
->>>> with respect to pmbus_core's own PAGE+register sequences.
->>>>
->>>> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
->>>
->>> The series no longer applies after applying the bug fix series.
->>> Please rebase it on top of the hwmon-next branch of
->>> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
->>> and resubmit.
->>>
->>> Sorry for the trouble, and thanks a lot for fixing all the problems
->>> with the driver.
->>>
->>> Guenter
->>
->> Will do, thank you for your support!
->>
->> Abdurrahman
-> 
-> Hi Guenter,
-> 
-> Before I send v5 of the adm1266 series, I'd like to revisit the
-> SET_RTC exposure question from your v3 review [1].
-> 
-> The use case I keep landing on is the one the datasheet itself
-> recommends: a userspace agent (chrony hook, systemd-timesyncd
-> script, or a small periodic daemon) keeps the chip's seconds
-> counter aligned with wall-clock so the value embedded in each
-> blackbox record stays correct across long uptimes.  The probe-
-> time ktime_get_real_seconds() seed (now in hwmon-next) only fixes
-> this at boot; the chip's counter drifts after that.
-> 
-> You ruled out rtc_class and called a kernel-side periodic timer
-> "a bit excessive", which I agree, it is.  That leaves a
-> userspace-triggered sync.  Two debugfs shapes I'd consider, both under
-> pmbus/<hwmon>/adm1266/ (alongside the clear_blackbox,
-> powerup_counter, and sequencer_state entries v5 already adds):
-> 
->    A. RW since_epoch -- mirrors /sys/class/rtc/<dev>/since_epoch.
->       Read returns the chip's SET_RTC seconds counter, write sets
->       it.  The read has the useful side benefit of letting
->       userspace measure host-vs-chip drift without writing.
-> 
->    B. Write-only set_rtc -- writing anything to the file makes
->       the driver read ktime_get_real_seconds() itself and push it
->       to SET_RTC.  Simpler interface (kernel owns the time
->       source; userspace just triggers the sync), no payload to
->       parse, no way for userspace to pass in a wrong value.
-> 
+On Wed, 20 May 2026 at 21:42, Mina Almasry <almasrymina@google.com> wrote:
+>
+> On Wed, May 20, 2026 at 12:28=E2=80=AFPM David CARLIER <devnexen@gmail.co=
+m> wrote:
+> >
+> > On Wed, 20 May 2026 at 19:55, Mina Almasry <almasrymina@google.com> wro=
+te:
+> > >
+> > > On Tue, May 19, 2026 at 1:35=E2=80=AFPM David Carlier <devnexen@gmail=
+.com> wrote:
+> > > >
+> > > > net_devmem_bind_dmabuf() trusts dmabuf->size and sg_dma_len() to be
+> > > > PAGE_SIZE multiples without checking:
+> > > >
+> > > >   - tx_vec is sized dmabuf->size / PAGE_SIZE, and
+> > > >     net_devmem_get_niov_at() only bounds-checks virt_addr < dmabuf-=
+>size
+> > > >     before indexing tx_vec[virt_addr / PAGE_SIZE]. With size =3D
+> > > >     N*PAGE_SIZE + r (1 <=3D r < PAGE_SIZE), sendmsg() at iov_base =
+=3D
+> > > >     N*PAGE_SIZE passes the bound check and reads tx_vec[N] -- one p=
+ast.
+> > > >
+> > > >   - owner->area.num_niovs =3D len / PAGE_SIZE while gen_pool_add_ow=
+ner()
+> > > >     covers the full byte len, so a non-page-multiple non-final sg
+> > > >     desyncs num_niovs from the gen_pool region for every later sg, =
+on
+> > > >     both RX and TX.
+> > > >
+> > > > dma-buf does not require page-aligned sizes, so the bind path has t=
+o
+> > > > enforce what its own indexing assumes. Reject both with -EINVAL.
+> > > >
+> > > > The size check is TX-only (only tx_vec is sized off dmabuf->size); =
+the
+> > > > SG-length check covers both directions.
+> > > >
+> > > > Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > > > ---
+> > > > Changes in v2:
+> > > >   - Reframe commit message around the kernel-side OOB instead of
+> > > >     "real exporters already page-align", which read as the OOB bein=
+g
+> > > >     unreachable and undercut Cc: stable (Stanislav Fomichev).
+> > > >   - Hoist the SG-length check out of the if (TX) branch so it cover=
+s
+> > > >     RX too; RX has the same num_niovs / gen_pool desync on a
+> > > >     contract-violating exporter, just without an OOB. Keep the
+> > > >     size-multiple check TX-only (Stanislav Fomichev).
+> > > >   - Drop bool todevice; compare direction =3D=3D DMA_TO_DEVICE inli=
+ne to
+> > > >     match the existing call site at the tx_vec[] assignment
+> > > >     (Bobby Eshleman).
+> > > >
+> > > >  net/core/devmem.c | 11 +++++++++++
+> > > >  1 file changed, 11 insertions(+)
+> > > >
+> > > > diff --git a/net/core/devmem.c b/net/core/devmem.c
+> > > > index 468344739db2..4f71de44c0fb 100644
+> > > > --- a/net/core/devmem.c
+> > > > +++ b/net/core/devmem.c
+> > > > @@ -241,6 +241,11 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> > > >         }
+> > > >
+> > > >         if (direction =3D=3D DMA_TO_DEVICE) {
+> > > > +               if (!IS_ALIGNED(dmabuf->size, PAGE_SIZE)) {
+> > > > +                       err =3D -EINVAL;
+> > > > +                       NL_SET_ERR_MSG(extack, "TX dma-buf size mus=
+t be a multiple of PAGE_SIZE");
+> > > > +                       goto err_unmap;
+> > > > +               }
+> > > >                 binding->tx_vec =3D kvmalloc_objs(struct net_iov *,
+> > > >                                                 dmabuf->size / PAGE=
+_SIZE);
+> > > >                 if (!binding->tx_vec) {
+> > > > @@ -267,6 +272,12 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> > > >                 size_t len =3D sg_dma_len(sg);
+> > > >                 struct net_iov *niov;
+> > > >
+> > > > +               if (!IS_ALIGNED(len, PAGE_SIZE)) {
+> > > > +                       err =3D -EINVAL;
+> > > > +                       NL_SET_ERR_MSG(extack, "dma-buf SG length m=
+ust be PAGE_SIZE aligned");
+> > > > +                       goto err_free_chunks;
+> > > > +               }
+> > > > +
+> > > >                 owner =3D kzalloc_node(sizeof(*owner), GFP_KERNEL,
+> > > >                                      dev_to_node(&dev->dev));
+> > > >                 if (!owner) {
+> > > > --
+> > > > 2.53.0
+> > > >
+> > >
+> > > No hold on, I don't think we actually have a bug here. AFAIR all
+> > > you're describing is intionional . Yes the TX vectors and their niov
+> > > arrays do implicitly 'pad' the dmabuf size to PAGE_SIZE.
+> > >
+> > > But net_devmem_get_niov_at has this check that prevents us from tryin=
+g
+> > > to send past the dma-buf size, even if it's not page_aligned:
+> > >
+> > > ```
+> > > if (virt_addr >=3D binding->dmabuf->size)
+> > > return NULL;
+> > > ```
+> > >
+> > > IIRC the NULL should be bubbled up to the user as some error.
+> > >
+> > > Please double check that we actually have a bug here. If not, please
+> > > don't merge this. This change could break existing users using devmem
+> > > TX correctly with non-PAGE_SIZE aligned dmabufs, which is a valid use
+> > > case.
+> > >
+> > > And if we have a bug, lets fix it in some way that doesn't deprecate
+> > > support for non page-aligned TX dmabufs. You may be breaking users
+> > > here.
+> > >
+> > > --
+> > > Thanks,
+> > > Mina
+> >
+> > Hi, Mina, note that the guard you're quoting doesn't cover the case
+> > I'm describing. It's in bytes against dmabuf->size, while tx_vec is
+> > sized dmabuf->size / PAGE_SIZE
+> >   (truncating) -- there's a sub-page window where the check passes and
+> > the index doesn't.
+> >
+> >   Concretely, PAGE_SIZE =3D 4096 and dmabuf->size =3D 4097:
+> >
+> >   tx_vec allocated for 4097 / 4096 =3D 1 entry (valid index 0).
+> >   sendmsg with iov_base =3D 4096:
+> >     virt_addr >=3D dmabuf->size   ->  4096 >=3D 4097, passes.
+> >     tx_vec[virt_addr / PAGE_SIZE] -> tx_vec[1], OOB by one.
+> >
+> >   And the OOB pointer isn't just returned to the caller -- it flows
+> > through get_netmem() -> __get_netmem(), which dereferences it
+> > (net_is_devmem_iov() reads ->type) and
+> >    on a matching byte refcounts the binding off of it. So this is a
+> > controlled OOB deref, not just a stray read.
+> >
+>
+> Ah, I see. I think that is indeed the bug. In the case PAGE_SIZE=3D4096
+> and dmabuf->size is 4097, the intention in the code was to have tx_vec
+> be an array of 2, where tx_vec[0] is [1->4096] and tx_vec[1] is
+> [4097]. I have an off-by-one error in the tx_vec allocation :(
+>
+> tx_vec[1] would contain an niov and as is stands we assume nvios are
+> PAGE_SIZE, but IIRC net_devmem_get_niov_at() would make sure that the
+> callers trying to use tx_vec[1] would only use it for a range that's
+> valid, so using [4097] and not a range like [4097->8192].
+>
+> However when I dug deeper on proper pruning of page alignment
+> assumptions in net_devmem_bind_dmabuf, the problems are deeper than
+> this patch suggests. We don't properly handle the (probably
+> non-existent?) edge case where the dma-buf itself is page aligned but
+> for_each_sgtable_dma_sg itself gives us un-page_aligned sg entries :(
+>
+> I think probably all of this is very theoretical. In practice probably
+> the dmabuf implementations in the wild seem to be page-aligned.
+> udmabuf doesn't support non-page-aligned dmabufs even so we can't add
+> tests for these things. So I guess fine, lets merge this.
+>
+> >   On breaking users: the partial-page tail was never TX-usable to
+> > begin with. The fill loop only populates num_niovs =3D len / PAGE_SIZE
+> > entries while
+> >   gen_pool_add_owner() covers the full byte len, so any sendmsg into
+> > [num_niovs*PAGE_SIZE, dmabuf->size) was already heading for either
+> > NULL or this OOB. It's not
+> >   deprecating a working configuration -- it's rejecting one that wasn't=
+ working.
+> >
+>
+> Yes, but still, today binding a non-PAGE_SIZE TX dmabuf but only using
+> actually sendmsging up to the last PAGE_SIZE boundary is working,
+> andthat would break entirely. I guess lets merge this and on the
+> offchance someone is hitting this edge case we can revisit.
+>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+>
+> I don't know if you're interested in also fixing the edge case where
+> the sg table entries themselves are not not page-aligned. I think that
+> also doesn't work properly?
+>
+> --
+> Thanks,
+> Mina
 
-How about a combination ? read returns the current value, anything
-written synchronizes with the kernel rtc.
+Thanks Mina, appreciate the review.
 
-> Do either of these look right to you, or would you rather I just
-> leave the driver at "probe-time seed only" and skip a SET_RTC
-> interface entirely?  v5 as it stands has no such interface and
-> is ready to send; a SET_RTC patch can follow separately later if
-> you'd like one.
-> 
-I am fine either way.
+  On the SG side -- the second hunk in this patch already rejects any
+SG with !IS_ALIGNED(sg_dma_len(sg), PAGE_SIZE) at bind time, so the
+num_niovs vs
+  gen_pool_add_owner(len) desync I described in the changelog is
+covered for both RX and TX.
 
-Thanks,
-Guenter
+  What's not checked is the sg_dma_address() alignment itself -- an SG
+with a page-multiple length but a sub-page start offset would still
+slip through and produce
+  niovs whose dma addresses straddle pages. Like you said, it's
+theoretical (in-tree exporters and udmabuf all hand back page-aligned
+addresses), but happy to send a
+  follow-up as a separate fix if you'd like.
 
+Cheers.
 
