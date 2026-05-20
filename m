@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HbpEXMDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-252723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:43 +0200
+	id sJQHGLkuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5D7597615
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05CF59B8ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D47237427EB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB079397891A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1DC401486;
-	Wed, 20 May 2026 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281B0408000;
+	Wed, 20 May 2026 18:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wq1UWy4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xr8aYzym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D387400DF5;
-	Wed, 20 May 2026 18:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2110407CFE;
+	Wed, 20 May 2026 18:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301421; cv=none; b=NstWeGBpS81W4xZbuxhbbaqNx1cgA1bcmQ3KH5bJhEUVcDfGrshPWdZ7niDee7IH98EebnZf6Hj/1IlqGP9wk4XXxZS5DiOfGQwpSk05Bi6IVVz2rOMULbWdT6HmbCqGp/FKncMIlKF7hQfwB+qGACvIlBVZ0Yeyere1B1a+cXY=
+	t=1779302623; cv=none; b=io75uDF9dHv9PPmyeSxmrA7sY6IyRiO2HOcH1oYSxvQEEqenqgmNuToFJXFb93XekzOqxmw/6IbeoQVjpsSjCAlOlahxfnlogsQ9RsUJ2oswptcw6e2zXaGdSuoGAkhOrBdSL8R6f0sf0V617IM3+ae9z8efKxdABSjuljpVPuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301421; c=relaxed/simple;
-	bh=Fw+9TamXA0+M/teiq9q+J4A3TLKPBLdXeD85lMeCZ80=;
+	s=arc-20240116; t=1779302623; c=relaxed/simple;
+	bh=h3rChDVMpNiMGxeRaOvAqiV4k3tuYHzF0MMf5o3a8ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvpldx15Vi6k5Z4ykFAvZrwytuyR50cN24Xd2/bb6AD04D4v9GF1OCglbNuCXtAaJo2DtdqCngE+QLsBcQJoX6leKYsyknZ4PQ6KrNpsiGmXQIynuSpA/6A8NaYY8sftOzdIP6gkY8ygZw6mpLw/7lsdwMq08nuqYX2uR9XsZCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wq1UWy4x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0A61F00893;
-	Wed, 20 May 2026 18:23:39 +0000 (UTC)
+	 MIME-Version; b=OahU6w8JWC4KVmYEskFotS6XLhNreWIHfSGD8u7Vd2wq/XnQb/YALNMRHBS24/SRqZDCTw2SLy7YlDPxaAA7FlxUrbK3aRCwe4ZKR9ulE3vjwjjJOt3XGTjKiVWyN9r1nkuzGVy4kO7Lr/cuC6btmGMyjIPk9w34arhoyfqYQN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xr8aYzym; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E611F000E9;
+	Wed, 20 May 2026 18:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301420;
-	bh=KkEYPxrKReaLzkQewRiFUrRsuEKQLHqkJHXrMblgHn8=;
+	s=korg; t=1779302622;
+	bh=UW6GcCwJpzeB8lBGLALNuYH+S3CUglBiwtLjfTaYkT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wq1UWy4xnQWM3W9UydCwcKe5oN53iJOP/5nCqFoAmeVWaOUWMurqe83a35peGZ1fF
-	 79RVkWL0c4AtfLaHHwT+NHfFd9KozTzjZcoImhV1h/CBxbBXOA6NaUKuEO0pf2t7tj
-	 xpMkNTxkzsayWm9NdRBteuqWeay8FJTOsdeL7W6c=
+	b=xr8aYzymOkMXgkwqJG/jXy3e9udIK/QpOs+8yIkPXGNZjYv7nb1jaCKn1XSjTOSwx
+	 i/qaDb9+4P5IBsAmaPV+SHSUoy+WH8cf1IZz5WIoB+fOU4ZsIRMYsUhWhTCGwdoetV
+	 DO9F7WFrUVu4nI1c836HAExuKK2eXxi2UenI/quM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 548/666] netpoll: Extract carrier wait function
+Subject: [PATCH 6.6 336/508] slip: reject VJ receive packets on instances with no rstate array
 Date: Wed, 20 May 2026 18:22:39 +0200
-Message-ID: <20260520162123.147526879@linuxfoundation.org>
+Message-ID: <20260520162105.913796031@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +70,129 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252723-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253184-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AD5D7597615
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email]
+X-Rspamd-Queue-Id: A05CF59B8ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 76d30b51e818064e02917ce6328fb2c8adce5c87 ]
+[ Upstream commit e76607442d5b73e1ba6768f501ef815bb58c2c0e ]
 
-Extract the carrier waiting logic into a dedicated helper function
-netpoll_wait_carrier() to improve code readability and reduce
-duplication in netpoll_setup().
+slhc_init() accepts rslots == 0 as a valid configuration, with the
+documented meaning of 'no receive compression'. In that case the
+allocation loop in slhc_init() is skipped, so comp->rstate stays
+NULL and comp->rslot_limit stays 0 (from the kzalloc of struct
+slcompress).
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
+The receive helpers do not defend against that configuration.
+slhc_uncompress() dereferences comp->rstate[x] when the VJ header
+carries an explicit connection ID, and slhc_remember() later assigns
+cs = &comp->rstate[...] after only comparing the packet's slot number
+to comp->rslot_limit. Because rslot_limit is 0, slot 0 passes the
+range check, and the code dereferences a NULL rstate.
+
+The configuration is reachable in-tree through PPP. PPPIOCSMAXCID
+stores its argument in a signed int, and (val >> 16) uses arithmetic
+shift. Passing 0xffff0000 therefore sign-extends to -1, so val2 + 1
+is 0 and ppp_generic.c ends up calling slhc_init(0, 1). Because
+/dev/ppp open is gated by ns_capable(CAP_NET_ADMIN), the whole path
+is reachable from an unprivileged user namespace. Once the malformed
+VJ state is installed, any inbound VJ-compressed or VJ-uncompressed
+frame that selects slot 0 crashes the kernel in softirq context:
+
+ Oops: general protection fault, probably for non-canonical
+       address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:slhc_uncompress (drivers/net/slip/slhc.c:519)
+ Call Trace:
+  <TASK>
+  ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2466)
+  ppp_input (drivers/net/ppp/ppp_generic.c:2359)
+  ppp_async_process (drivers/net/ppp/ppp_async.c:492)
+  tasklet_action_common (kernel/softirq.c:926)
+  handle_softirqs (kernel/softirq.c:623)
+  run_ksoftirqd (kernel/softirq.c:1055)
+  smpboot_thread_fn (kernel/smpboot.c:160)
+  kthread (kernel/kthread.c:436)
+  ret_from_fork (arch/x86/kernel/process.c:164)
+  </TASK>
+
+Reject the receive side on such instances instead of touching rstate.
+slhc_uncompress() falls through to its existing 'bad' label, which
+bumps sls_i_error and enters the toss state. slhc_remember() mirrors
+that with an explicit sls_i_error increment followed by slhc_toss();
+the sls_i_runt counter is not used here because a missing rstate is
+an internal configuration state, not a runt packet.
+
+The transmit path is unaffected: the only in-tree caller that picks
+rslots from userspace (ppp_generic.c) still supplies tslots >= 1, and
+slip.c always calls slhc_init(16, 16), so comp->tstate remains valid
+and slhc_compress() continues to work.
+
+Fixes: 4ab42d78e37a ("ppp, slip: Validate VJ compression slot parameters completely")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250618-netpoll_ip_ref-v1-1-c2ac00fe558f@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3bc179bc7146 ("netpoll: fix IPv6 local-address corruption")
+Link: https://patch.msgid.link/20260415204130.258866-2-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/net/slip/slhc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index a38b239cd7db6..a9c38f75b00ec 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -706,6 +706,21 @@ static char *egress_dev(struct netpoll *np, char *buf)
- 	return buf;
- }
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index bf9e801cc61cc..3474792a37a67 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -506,6 +506,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		comp->sls_i_error++;
+ 		return 0;
+ 	}
++	if (!comp->rstate)
++		goto bad;
+ 	changes = *cp++;
+ 	if(changes & NEW_C){
+ 		/* Make sure the state index is in range, then grab the state.
+@@ -649,6 +651,10 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	unsigned int ihl;
  
-+static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev,
-+				 unsigned int timeout)
-+{
-+	unsigned long atmost;
-+
-+	atmost = jiffies + timeout * HZ;
-+	while (!netif_carrier_ok(ndev)) {
-+		if (time_after(jiffies, atmost)) {
-+			np_notice(np, "timeout waiting for carrier\n");
-+			break;
-+		}
-+		msleep(1);
++	if (!comp->rstate) {
++		comp->sls_i_error++;
++		return slhc_toss(comp);
 +	}
-+}
-+
- int netpoll_setup(struct netpoll *np)
- {
- 	struct net *net = current->nsproxy->net_ns;
-@@ -736,28 +751,17 @@ int netpoll_setup(struct netpoll *np)
- 	}
- 
- 	if (!netif_running(ndev)) {
--		unsigned long atmost;
--
- 		np_info(np, "device %s not up yet, forcing it\n",
- 			egress_dev(np, buf));
- 
- 		err = dev_open(ndev, NULL);
--
- 		if (err) {
- 			np_err(np, "failed to open %s\n", ndev->name);
- 			goto put;
- 		}
- 
- 		rtnl_unlock();
--		atmost = jiffies + carrier_timeout * HZ;
--		while (!netif_carrier_ok(ndev)) {
--			if (time_after(jiffies, atmost)) {
--				np_notice(np, "timeout waiting for carrier\n");
--				break;
--			}
--			msleep(1);
--		}
--
-+		netpoll_wait_carrier(np, ndev, carrier_timeout);
- 		rtnl_lock();
- 	}
- 
+ 	/* The packet is shorter than a legal IP header.
+ 	 * Also make sure isize is positive.
+ 	 */
 -- 
 2.53.0
 
