@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-251278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGfdM0rzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:46 +0200
+	id gPUaAaXmDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7161E5947F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4ED5928D0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 46AD93117810
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE4EA31275EB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E373F356748;
-	Wed, 20 May 2026 17:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DAC3328FC;
+	Wed, 20 May 2026 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tV5ephii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/lLPwBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CBE36A352;
-	Wed, 20 May 2026 17:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A9261FFE;
+	Wed, 20 May 2026 16:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297567; cv=none; b=TGUZbcUCN6uBlNZuTPvbApiNFbSMBB8oSyazrkDRbF7IenZ5S1L4dIUdZEqeiUnR43B+KGcSvcY0XBOs/9mHrJeSN74eM1cvtHl1s5PSbHZ9lHkkStgGQdYNOrFSdwIMIXyVw0HJlB510gfXN8t4vZoC6dJ10kaV+4zXuhdHyP4=
+	t=1779295153; cv=none; b=Mt2YpzGB0LhA5c0hSIeNuoh7Zeg9nIp/62S+3q3d1DXeTI3+VqThOcz0C6XOuF2iGe4jJrenjAGANMgmwPPuTbpqxXzZ8B7ntHL1SrkcW2SD+/IuNkWijoWiEWf6y9tI8mKH8O1Vv05YoIS8zk4gUrn/PhPE2A+nfClN0x8cM8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297567; c=relaxed/simple;
-	bh=XCMn7Zg2pLcU9KzZsNPBsK4K9cVBqIr7uCtIqa6G/A0=;
+	s=arc-20240116; t=1779295153; c=relaxed/simple;
+	bh=ThrXr0NshvLHXQaaX6t2W6aO7BkEBu5fgoNYy/xXw0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOrSdDfzWhCSXdQ+haD7KN4SYNybF4ukXxUocZJS0ZpwhnXp/LFPoH30fZFADhKEgC1Cn1u2zRmz5JXgHMfrOpDjq+skTOvzHZTM8IcX0/g8EkkUk/up1hD6tYws9reXG9BDLxqLXHGf0kY6cnFPanJ0zsq/yjmSqsQZjqGcKMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tV5ephii; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5201F00893;
-	Wed, 20 May 2026 17:19:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dsvZBy9OIfvMH4Lb2QFqA70+umeKgq3xA1v0H+c/yBMMJ3gG2cKqUzQtOZxLo+U5ryeDDg1c/LtANl9ks1WTTkoyINnLj8q5d9jmOzYXs2Krt7UKRgo2Szi6ZyHnPNxt6jYn296bHuCxiO7Aion0neTCbP0MhDQE+KdSDV1lxNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/lLPwBq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F2D1F000E9;
+	Wed, 20 May 2026 16:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297566;
-	bh=ijyqarZVSJ53DnxgW2rMWagGDelJPevMewQEYF9VkLc=;
+	s=korg; t=1779295150;
+	bh=xuN7fQRMW4YJzQwaexgcJOkuR755bKxHIuXVsoBwjYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tV5ephiiXgtaB2J+SHVb/BvHPlIDWHkN2EbGXqr9w+t3U6wDghUUhwtQTd/N92rBr
-	 bVqMfPnzXWGcWQ8zwk0r2GhlcF05wH2Dbqn4lXLPDs7mXhz+09wiX8FsilUNGD5NfH
-	 OHJs1XoeQ1GOCGEtDwfOuCtXQVj8TRhmgux3NuRI=
+	b=J/lLPwBq8jtW1ekWHuzYCr0PNlNYau6WpbDob/Sb2c1Mb04c01Nyq7HVGbbILoeZY
+	 l1W5NadzUCISUWmejfAG5XyR3n2bFdjDARZE5vdoi80x8Gh6FoVZ4Gua/c6SfRNs2E
+	 uB5Ks9gav5ZeFtJcdRQKKvYc21PPuUuk9Ye4u9sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/957] wifi: mt76: mt7996: Clear wcid pointer in mt7996_mac_sta_deinit_link()
+Subject: [PATCH 7.0 0311/1146] drm/amdgpu/gfx10: look at the right prop for gfx queue priority
 Date: Wed, 20 May 2026 18:09:21 +0200
-Message-ID: <20260520162136.254607060@linuxfoundation.org>
+Message-ID: <20260520162155.240617440@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251278-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250338-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 7161E5947F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8D4ED5928D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 88973240dc7c976dd320b36a9e6d925c9be083ae ]
+[ Upstream commit 355d96cdec5c61fd83f7eb54f1a28e38809645d6 ]
 
-Clear WCID pointer removing the sta link in mt7996_mac_sta_deinit_link
-routine.
+Look at hqd_queue_priority rather than hqd_pipe_priority.
+In practice, it didn't matter as both were always set for
+kernel queues, but that will change in the future.
 
-Fixes: dd82a9e02c054 ("wifi: mt76: mt7996: Rely on mt7996_sta_link in sta_add/sta_remove callbacks")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251205-mt76-txq-wicd-fix-v2-4-f19ba48af7c1@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: b07d1d73b09e ("drm/amd/amdgpu: Enable high priority gfx queue")
+Reviewed-by：Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 5d4b1d8f3335b..589b228a4eb0c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -1032,6 +1032,7 @@ void mt7996_mac_sta_deinit_link(struct mt7996_dev *dev,
- 		list_del_init(&msta_link->rc_list);
- 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 1893ceeeb26c8..8b60299b73ef7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -6752,7 +6752,7 @@ static void gfx_v10_0_gfx_mqd_set_priority(struct amdgpu_device *adev,
+ 	/* set up default queue priority level
+ 	 * 0x0 = low priority, 0x1 = high priority
+ 	 */
+-	if (prop->hqd_pipe_priority == AMDGPU_GFX_PIPE_PRIO_HIGH)
++	if (prop->hqd_queue_priority == AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM)
+ 		priority = 1;
  
-+	rcu_assign_pointer(dev->mt76.wcid[msta_link->wcid.idx], NULL);
- 	mt76_wcid_cleanup(&dev->mt76, &msta_link->wcid);
- 	mt76_wcid_mask_clear(dev->mt76.wcid_mask, msta_link->wcid.idx);
- }
+ 	tmp = RREG32_SOC15(GC, 0, mmCP_GFX_HQD_QUEUE_PRIORITY);
 -- 
 2.53.0
 
