@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BasLp3xDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:37 +0200
+	id aGN6Cpv+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFB85942CB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAE8596989
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFEBE30ADEED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE03237B61F1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4FF3E314D;
-	Wed, 20 May 2026 17:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651253F4DD7;
+	Wed, 20 May 2026 17:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyt6lNVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBkqq0Kp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC1B36A352;
-	Wed, 20 May 2026 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2453C3F1AD9;
+	Wed, 20 May 2026 17:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297055; cv=none; b=ZdboQxGKNfTOZGk8fJq9qAYKGASeXj4iPVExb/F4wUY0h5qiJwdiFvCexpdRRkZ0y9+W8Q1sGEbZmOPo+jaGDp2763q6psA50MmSLRUmobDXEcEQnhUauVL4prkBVdzqVIC2PCjBuJFEvmSyHLhhGEkfJlez8Y8egj1fxGsCtsc=
+	t=1779299620; cv=none; b=ZwU1oguCeJ9KiuIbXwcmZI+lhcQDD3A/lXqeqF/NZBiXxKrCjl9JC/oimf1+UGHTnr486xAcDw7iimiF8IrZWRptSaBNShQFHJZmF0iIGA9eaqD2be1Otg/IzcTcBEhNluufavyb2uGFYTpVRHkTfbjiS5Ci51zD2wxhcz54e2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297055; c=relaxed/simple;
-	bh=Y2HVjyWQpqPse5EpMG+JNFVlRf3i0xRSaSIEsRMQruw=;
+	s=arc-20240116; t=1779299620; c=relaxed/simple;
+	bh=mYnXeDBYZTUrRHJzH5Fg9wugElq2hGojcfGmrJERdng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILrM/AyLQIjdZaVn/uz8+aV0w40V/QmBhknUvji4Dp+CNIWQApO3AFbaaE709E/jFsTN7rdOGu6/dkT95fEr469rtWTg5UPiPgDnArK/tC6m/eu4MNw6Ia55b7u+dFDButgJnhvoZ6BlL190Gj+gl7T3v7O5lneSuYtwF7cAsmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyt6lNVw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A391F000E9;
-	Wed, 20 May 2026 17:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cZzoEO00B719grG4YFfDBTCp+6n3j35leTtDJ3z60ZgkJpgrIXcbP48Bfbw5UZVGwx4j8i6n5G/LbeuBcQQdpUopVokpNmLrdeRgVmjjUHzyL11bh3tqR1LV11HrczjTrxFvLZvPeYkwnabA8wRY714gDGSBbwYglVANeqXcXvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBkqq0Kp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FD11F000E9;
+	Wed, 20 May 2026 17:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297054;
-	bh=LYLQuIkIjmoIvOOnlsX4nls9+0VZWHowGZ+GDYPjB/Y=;
+	s=korg; t=1779299619;
+	bh=i18dznX3WtdfkY9fgyu393o3NjGl9kbNxGSX8eUnreo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dyt6lNVwsMkjwBKTzXikzy2liVMIWN2zBa56uigsqcxlX/Xegg0SqcfnFe0liLxyS
-	 iGMQsHNJuHdbx0dRemH1MJF+8mN1iXCLl5dqjUIVE6s2Oj3qOaD2QvUrffKpkujc0P
-	 z0xze0U/tC7KUB867MrNF9gKJCH4jVq05L2sMses=
+	b=yBkqq0Kp1ktxgFIdjMD2Y8Jq72yaE+VHssvRj4TToOqOT1o8ezylx9OixemofOnWJ
+	 kC1mK0uKt0x9zRFJzhh6ywWAjVYLEJHNWN9tXF8ODUhX0qnhpwJ0wLroqpHVYz8sZS
+	 umXKPMo6FPJabtyDbsAOno/YHWBqyZLcYJcUZBjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1032/1146] sfc: fix error code in efx_devlink_info_running_versions()
-Date: Wed, 20 May 2026 18:21:22 +0200
-Message-ID: <20260520162211.583488546@linuxfoundation.org>
+Subject: [PATCH 6.18 800/957] drm/amdgpu/vcn: set no_user_fence for VCN v3.0 enc/dec rings
+Date: Wed, 20 May 2026 18:21:23 +0200
+Message-ID: <20260520162151.915157537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251083-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252052-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8CFB85942CB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: CFAE8596989
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 051ffb001b8a232cfa6e72f38bb5f51c4270a60b ]
+[ Upstream commit f1e5a6660d7cbf006079126d9babbf0ccf538c6b ]
 
-Return -EIO if efx_mcdi_rpc() doesn't return enough space.
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/afGpsbLRHL4_H0KS@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cf14826cdfb5 ("drm/amdgpu: add VCN3.0 support for Sienna_Cichlid")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 663bed3c7b8b9a7624b0d95d300ddae034ad0614)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/efx_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
-index d842c60dfc100..e5c6f81af48be 100644
---- a/drivers/net/ethernet/sfc/efx_devlink.c
-+++ b/drivers/net/ethernet/sfc/efx_devlink.c
-@@ -531,7 +531,7 @@ static int efx_devlink_info_running_versions(struct efx_nic *efx,
- 	if (rc || outlength < MC_CMD_GET_VERSION_OUT_LEN) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mcdi MC_CMD_GET_VERSION failed\n");
--		return rc;
-+		return rc ?: -EIO;
- 	}
- 
- 	/* Handle previous output */
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+index 8b226edfbea3e..f773f7ddfd13c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -1856,6 +1856,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_dec_sw_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_DEC_SW_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -2037,6 +2038,7 @@ static int vcn_v3_0_ring_patch_cs_in_place(struct amdgpu_cs_parser *p,
+ static const struct amdgpu_ring_funcs vcn_v3_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v3_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_dec_ring_get_wptr,
+@@ -2139,6 +2141,7 @@ static const struct amdgpu_ring_funcs vcn_v3_0_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v3_0_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v3_0_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v3_0_enc_ring_set_wptr,
 -- 
 2.53.0
 
