@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-253257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APCUNEMvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:39 +0200
+	id WLEzHf/3DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C55D59B9D1
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1168659545A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1A44291844
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46D4C310A867
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88394400DEE;
-	Wed, 20 May 2026 18:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD96D3F7A85;
+	Wed, 20 May 2026 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AW2UelXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOY8tcL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1943FE37B;
-	Wed, 20 May 2026 18:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACB01B7910;
+	Wed, 20 May 2026 17:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302805; cv=none; b=i8U3si1+ePIsWgjDRH/FSFC0HVgsca3MoeCuGRPUgH/nOTtRA+buUPw+6hj++ZjuFRF4lIRTQ6w5pR0QxMco3GCEsvyxZDSwdUrGRcfLUL7frQpgHK6Emek8IQbXAotEBMPHOde9MJ0GdPaoEmLpfVcBE9aHaqP+Xe14jGYMijg=
+	t=1779299948; cv=none; b=F0mLzhxdMMQxJrXrbXzPFpRyublTtQmImo3Oi72ykZfsITNco7HNXZUuHnY45poK4djXdi+twvxTyrX/B17Va1j8meYDGVbZPNc+rDkb5hsv2vJb0dHrLttI0QTuXCci8zx0Dw2EizmjC81u0/f+p8t9tJ1rqDVh0jaivHdcQrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302805; c=relaxed/simple;
-	bh=e4CnuSpunnfVGnJb6Ucdw61F/HgQeYXb00XgzlDEXMk=;
+	s=arc-20240116; t=1779299948; c=relaxed/simple;
+	bh=9IKoo5QfMFT6DeBXM3X/5xlFq4nX+0PgPmOsGaHyX4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbW68q5CckuA+Ce9qDsoD0z4/KShVJMa/Vifot1JQtN3TpNzLhqBxD9txR5dcuncfFyaKTEwa9RKPWowgyEwCby4bk2fTW/JD1iWXtzoyYQQZ7J6Dz7A1/6ZgDiVlinf7nNuE+9cO19w1dWl/2K4gh8wfTszmf6VKWuucm4LRHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AW2UelXy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A0C1F000E9;
-	Wed, 20 May 2026 18:46:43 +0000 (UTC)
+	 MIME-Version; b=kOQpjVvGsvuCnUzG+c2DC4SgaWLg+GzFoBPNUL/hoP+XjRWUpI9+pWyMk8Zsd5wdvnpfP5qizGZN9d86P1VlDFMeEVz/QNfFbSJXHiWecjmwYXJo1TcZH26K9ts3xwooz0dXZKyCYi874Wy4tFzCe5DpauzzFN9T9emrrGRKGxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOY8tcL9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AD51F000E9;
+	Wed, 20 May 2026 17:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302804;
-	bh=WcsX+tSHzZFBVSfcqxDIwXsPZLq0copPxytoE5/JX2g=;
+	s=korg; t=1779299947;
+	bh=pV/33ctO9qSWfncb4+5D5Ne/1ycAd1z0vhY6k5VQqYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AW2UelXyIPvhb+DnuJ0ObQ9XYfCckVdZ257wIyrBBUy4OmX49hsAy0OkSWqJn1FiK
-	 dpz1v+lX3mLCzyVObMu0PQNd83mNcX4/WHDRIhybJQSpsn5r+jumt43zD+9BAj3RTm
-	 3kTUaCwPh9bcWjo7eMgWSEqEC6R602r9qfmrSEdE=
+	b=HOY8tcL9tlCWp3l4rsbIoX4+KMqPQRpReMB4HOE3Zsi8Cw3zVVKQFCL6Iay5o3uYx
+	 cis4mxtkrimE3VGoijMVk5fxvJI0YdNLXNo/O10xJ/rStlJ/gFnkFFnIapLopnR6PC
+	 /bLZbfWIcisdNDTL4kDjWAMc2P8+euc/QmyeSwS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoze Xie <royenheart@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 389/508] vrf: Fix a potential NPD when removing a port from a VRF
-Date: Wed, 20 May 2026 18:23:32 +0200
-Message-ID: <20260520162107.046089973@linuxfoundation.org>
+	Sascha Bischoff <sascha.bischoff@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH 6.18 930/957] irqchip/gic-v5: Move LPI allocation into the LPI domain
+Date: Wed, 20 May 2026 18:23:33 +0200
+Message-ID: <20260520162154.756707425@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,149 +69,241 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253257-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252160-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 3C55D59B9D1
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: 1168659545A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
+commit dec85d2fbd20de3711a71e65397dfdb40c3fa953 upstream.
 
-RCU readers that identified a net device as a VRF port using
-netif_is_l3_slave() assume that a subsequent call to
-netdev_master_upper_dev_get_rcu() will return a VRF device. They then
-continue to dereference its l3mdev operations.
+The IPI and ITS MSI domains currently allocate and release LPIs
+directly, then pass the selected LPI ID to the parent LPI domain. This
+leaks the LPI domain's allocation policy into its child domains and
+forces each child to duplicate part of the parent domain's teardown.
 
-This assumption is not always correct and can result in a NPD [1]. There
-is no RCU synchronization when removing a port from a VRF, so it is
-possible for an RCU reader to see a new master device (e.g., a bridge)
-that does not have l3mdev operations.
+Make the LPI domain allocate LPIs in its .alloc() callback and release
+them in a matching .free() callback. Child domains can then request a
+parent interrupt without passing an implementation-specific LPI ID,
+and the LPI lifetime is tied to the domain that owns the LPI
+namespace.
 
-Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
-flag. Skip this synchronization when a net device is removed from a VRF
-as part of its deletion and when the VRF device itself is deleted. In
-the latter case an RCU grace period will pass by the time RTNL is
-released.
+Remove the gicv5_alloc_lpi() and gicv5_free_lpi() wrappers now that no
+external caller needs to manage LPIs directly.
 
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
-[...]
-Call Trace:
-<TASK>
-l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
-__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
-inet_bind_sk (net/ipv4/af_inet.c:469)
-__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
-__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+This is a preparatory change for an actual leakage problem in the
+allocation code and therefore tagged with the same Fixes tag.
 
-Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
-Reported-by: Haoze Xie <royenheart@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0f0101325876 ("irqchip/gic-v5: Add GICv5 LPI/IPI support")
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260506093634.382062-2-sascha.bischoff@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vrf.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-gic-v5-its.c   |   14 +--------
+ drivers/irqchip/irq-gic-v5.c       |   53 ++++++++++++++++++-------------------
+ include/linux/irqchip/arm-gic-v5.h |    3 --
+ 3 files changed, 28 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 64114e98d75d0..9f7b05a010519 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1126,6 +1126,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
- 
- err:
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	synchronize_net();
- 	return ret;
- }
- 
-@@ -1145,10 +1146,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
- }
- 
- /* inverse of do_vrf_add_slave */
--static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
-+static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
-+			    bool needs_sync)
+--- a/drivers/irqchip/irq-gic-v5-its.c
++++ b/drivers/irqchip/irq-gic-v5-its.c
+@@ -927,8 +927,8 @@ static void gicv5_its_free_eventid(struc
+ static int gicv5_its_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 				      unsigned int nr_irqs, void *arg)
  {
- 	netdev_upper_dev_unlink(port_dev, dev);
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	/* Make sure that concurrent RCU readers that identified the device
-+	 * as a VRF port see a VRF master or no master at all.
-+	 */
-+	if (needs_sync)
-+		synchronize_net();
+-	u32 device_id, event_id_base, lpi;
+ 	struct gicv5_its_dev *its_dev;
++	u32 device_id, event_id_base;
+ 	msi_alloc_info_t *info = arg;
+ 	irq_hw_number_t hwirq;
+ 	struct irq_data *irqd;
+@@ -947,16 +947,8 @@ static int gicv5_its_irq_domain_alloc(st
+ 	device_id = its_dev->device_id;
  
- 	cycle_netdev(port_dev, NULL);
+ 	for (i = 0; i < nr_irqs; i++) {
+-		ret = gicv5_alloc_lpi();
+-		if (ret < 0) {
+-			pr_debug("Failed to find free LPI!\n");
+-			goto out_free_irqs;
+-		}
+-		lpi = ret;
+-
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
++		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
+ 		if (ret) {
+-			gicv5_free_lpi(lpi);
+ 			goto out_free_irqs;
+ 		}
  
-@@ -1157,7 +1164,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- 
- static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- {
--	return do_vrf_del_slave(dev, port_dev);
-+	return do_vrf_del_slave(dev, port_dev, true);
- }
- 
- static void vrf_dev_uninit(struct net_device *dev)
-@@ -1714,7 +1721,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
- 	struct list_head *iter;
- 
- 	netdev_for_each_lower_dev(dev, port_dev, iter)
--		vrf_del_slave(dev, port_dev);
-+		do_vrf_del_slave(dev, port_dev, false);
- 
- 	vrf_map_unregister_dev(dev);
- 
-@@ -1845,7 +1852,7 @@ static int vrf_device_event(struct notifier_block *unused,
- 			goto out;
- 
- 		vrf_dev = netdev_master_upper_dev_get(dev);
--		vrf_del_slave(vrf_dev, dev);
-+		do_vrf_del_slave(vrf_dev, dev, false);
+@@ -981,7 +973,6 @@ static int gicv5_its_irq_domain_alloc(st
+ out_free_irqs:
+ 	while (--i >= 0) {
+ 		irqd = irq_domain_get_irq_data(domain, virq + i);
+-		gicv5_free_lpi(irqd->parent_data->hwirq);
+ 		irq_domain_reset_irq_data(irqd);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
  	}
- out:
- 	return NOTIFY_DONE;
--- 
-2.53.0
-
+@@ -1011,7 +1002,6 @@ static void gicv5_its_irq_domain_free(st
+ 	for (i = 0; i < nr_irqs; i++) {
+ 		d = irq_domain_get_irq_data(domain, virq + i);
+ 
+-		gicv5_free_lpi(d->parent_data->hwirq);
+ 		irq_domain_reset_irq_data(d);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
+ 	}
+--- a/drivers/irqchip/irq-gic-v5.c
++++ b/drivers/irqchip/irq-gic-v5.c
+@@ -58,16 +58,6 @@ static void release_lpi(u32 lpi)
+ 	ida_free(&lpi_ida, lpi);
+ }
+ 
+-int gicv5_alloc_lpi(void)
+-{
+-	return alloc_lpi();
+-}
+-
+-void gicv5_free_lpi(u32 lpi)
+-{
+-	release_lpi(lpi);
+-}
+-
+ static void gicv5_ppi_priority_init(void)
+ {
+ 	write_sysreg_s(REPEAT_BYTE(GICV5_IRQ_PRI_MI), SYS_ICC_PPI_PRIORITYR0_EL1);
+@@ -751,18 +741,36 @@ static void gicv5_lpi_config_reset(struc
+ 	gicv5_lpi_irq_write_pending_state(d, false);
+ }
+ 
++static void gicv5_irq_lpi_domain_free(struct irq_domain *domain, unsigned int virq,
++				      unsigned int nr_irqs)
++{
++	struct irq_data *d;
++
++	if (WARN_ON_ONCE(nr_irqs != 1))
++		return;
++
++	d = irq_domain_get_irq_data(domain, virq);
++
++	release_lpi(d->hwirq);
++
++	irq_set_handler(virq, NULL);
++	irq_domain_reset_irq_data(d);
++}
++
+ static int gicv5_irq_lpi_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 				      unsigned int nr_irqs, void *arg)
+ {
+ 	irq_hw_number_t hwirq;
+ 	struct irq_data *irqd;
+-	u32 *lpi = arg;
+ 	int ret;
+ 
+ 	if (WARN_ON_ONCE(nr_irqs != 1))
+ 		return -EINVAL;
+ 
+-	hwirq = *lpi;
++	ret = alloc_lpi();
++	if (ret < 0)
++		return ret;
++	hwirq = ret;
+ 
+ 	irqd = irq_domain_get_irq_data(domain, virq);
+ 
+@@ -771,8 +779,10 @@ static int gicv5_irq_lpi_domain_alloc(st
+ 	irqd_set_single_target(irqd);
+ 
+ 	ret = gicv5_irs_iste_alloc(hwirq);
+-	if (ret < 0)
++	if (ret < 0) {
++		release_lpi(hwirq);
+ 		return ret;
++	}
+ 
+ 	gicv5_hwirq_init(hwirq, GICV5_IRQ_PRI_MI, GICV5_HWIRQ_TYPE_LPI);
+ 	gicv5_lpi_config_reset(irqd);
+@@ -782,7 +792,7 @@ static int gicv5_irq_lpi_domain_alloc(st
+ 
+ static const struct irq_domain_ops gicv5_irq_lpi_domain_ops = {
+ 	.alloc	= gicv5_irq_lpi_domain_alloc,
+-	.free	= gicv5_irq_domain_free,
++	.free	= gicv5_irq_lpi_domain_free,
+ };
+ 
+ void __init gicv5_init_lpi_domain(void)
+@@ -804,21 +814,12 @@ static int gicv5_irq_ipi_domain_alloc(st
+ {
+ 	struct irq_data *irqd;
+ 	int ret, i;
+-	u32 lpi;
+ 
+ 	for (i = 0; i < nr_irqs; i++) {
+-		ret = gicv5_alloc_lpi();
+-		if (ret < 0)
++		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, NULL);
++		if (ret)
+ 			return ret;
+ 
+-		lpi = ret;
+-
+-		ret = irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
+-		if (ret) {
+-			gicv5_free_lpi(lpi);
+-			return ret;
+-		}
+-
+ 		irqd = irq_domain_get_irq_data(domain, virq + i);
+ 
+ 		irq_domain_set_hwirq_and_chip(domain, virq + i, i,
+@@ -844,8 +845,6 @@ static void gicv5_irq_ipi_domain_free(st
+ 		if (!d)
+ 			return;
+ 
+-		gicv5_free_lpi(d->parent_data->hwirq);
+-
+ 		irq_set_handler(virq + i, NULL);
+ 		irq_domain_reset_irq_data(d);
+ 		irq_domain_free_irqs_parent(domain, virq + i, 1);
+--- a/include/linux/irqchip/arm-gic-v5.h
++++ b/include/linux/irqchip/arm-gic-v5.h
+@@ -387,8 +387,5 @@ struct gicv5_its_itt_cfg {
+ void gicv5_init_lpis(u32 max);
+ void gicv5_deinit_lpis(void);
+ 
+-int gicv5_alloc_lpi(void);
+-void gicv5_free_lpi(u32 lpi);
+-
+ void __init gicv5_its_of_probe(struct device_node *parent);
+ #endif
 
 
 
