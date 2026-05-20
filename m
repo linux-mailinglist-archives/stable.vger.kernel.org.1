@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGvABwoBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:26 +0200
+	id QCiOMTISDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E91C597237
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFB1598EF9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD650391FD88
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B683F353D748
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9003A3F9287;
-	Wed, 20 May 2026 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674EB352C52;
+	Wed, 20 May 2026 16:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzLp1twH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHbGlH4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4540B3D75C7;
-	Wed, 20 May 2026 18:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1B0318EC7;
+	Wed, 20 May 2026 16:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300162; cv=none; b=gcXWhh2dDrGdsEjMvKFdvwfqo0hiag/3AIjgubSe7teXP6/5PAckDa/aiBT4Z4wTiAp/aWtj57oRFBc9/BDyGtGHqU4P7wgLoWUIOXZPkmv23OPAvTYHKEqYN9akMMCSemWZYvqXhr0sw4divjLAC0YZ07gJ+sSMmP4mUxnzqd8=
+	t=1779295901; cv=none; b=h7+CAjXSJ/Lvd1JKssPzBgl/yylnJ1PPckaSeutQ4efz66iXHxslNBE5pHU9dKX+FtUv4D+P01lDWvQ9xyWLzUApnF2cUH8cGFGZvvu5oZHBRJ0VXqF/HWYsngHC0LVV6G1cQHvWocDNcUfaHAa8TkJJmaAjDn7xZLtHfaJZihU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300162; c=relaxed/simple;
-	bh=YisQn0RfaRR2UNmGQ31JPvt0GMHk+dZX6i9Us5YiKNY=;
+	s=arc-20240116; t=1779295901; c=relaxed/simple;
+	bh=qOpCcmN2g7/lGtNXl0JtfWJXgUWwHv3psrhG0GnHzJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nik1vc3nmeJ+l0OQUGA5M7SekH4YaV6JYiszEFihahT9tohnPZO058kJND2IXXcxA3Zj+JY4T0j26Ap1KytpnPKb7STIofj7zmx7tV+ae88UCt7My4aCs93pe7uciHdAAZNWNFkH/vJAklRxaRcYNhuBV0Z1CGR6xnU7IyMj4No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzLp1twH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0971F000E9;
-	Wed, 20 May 2026 18:02:40 +0000 (UTC)
+	 MIME-Version; b=Mzt3iBAvusyhDefVlF+jaHvoDtUtRwbE3pf6Af6hw4KD0t7anh5AgCz1yAg7Ad5Tff9RIfgcF6YhbM/ngRNVzFS5TdbwofxlErD9eQhcR4Mn0HLY1ZnokeRar/nlhrgYqG+0S46kbCMZZRTvEw+tSeJKnu3j3onF2Se4x5VN6BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHbGlH4I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534D71F000E9;
+	Wed, 20 May 2026 16:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300161;
-	bh=6hv9AYGztws1ao6ChNoIy+PZbL8ZDhTxZDONjGzG0/k=;
+	s=korg; t=1779295899;
+	bh=2csKRyEH9EPOGLJTXnkHzx4b1hQdNe2XTT2mCdRMsTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KzLp1twH/OmR0697uhxxaf/UHpohbbmraL2OxtBqirmurZxrdLX0RzifngAqsLVmF
-	 5sBRFKx/pvzR2mbtxMbOFcGTkTMYH5SH6cLxH9jsX0OfOVQQ1DiESXsgjT+WhvUceY
-	 WI5AhGVoytH1gDE2hh/26b9JezBUXWTPAdsYxKBQ=
+	b=rHbGlH4Ij2NGGGor8eWDUGhhcRgfUGGDfgWi7AfN3A5CoK36nL8n3NsyTiWIxnXh9
+	 iJMMiCV4nChJuWRsOzzVpgOxuBuf8g0gPo4s4LXVKGFtnIrkr/FfY5TYo9DoLH4kPP
+	 M1Ui+kvZyjHFeXCV0z5JDl3QIvy2tCWaQjtmFhMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Jean Delvare <jdelvare@suse.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 033/666] firmware: dmi: Correct an indexing error in dmi.h
+Subject: [PATCH 7.0 0594/1146] mtd: spi-nor: core: correct the op.dummy.nbytes when check read operations
 Date: Wed, 20 May 2026 18:14:04 +0200
-Message-ID: <20260520162111.951809788@linuxfoundation.org>
+Message-ID: <20260520162201.619415162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252241-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250625-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,amd.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5E91C597237
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 2BFB1598EF9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit c064abc68e009d2cc18416e7132d9c25e03125b6 ]
+[ Upstream commit 756564a536ecd8c9d33edd89f0647a91a0b03587 ]
 
-The entries later in enum dmi_entry_type don't match the SMBIOS
-specification¹.
+When check read operation, need to setting the op.dummy.nbytes based
+on current read operation rather than the nor->read_proto.
 
-The entry for type 33: `64-Bit Memory Error Information` is not present and
-thus the index for all later entries is incorrect.
-
-Add it.
-
-Also, add missing entry types 43-46, while at it.
-
-  ¹ Search for "System Management BIOS (SMBIOS) Reference Specification"
-
-  [ bp: Drop the flaky SMBIOS spec URL. ]
-
-Fixes: 93c890dbe5287 ("firmware: Add DMI entry types to the headers")
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Link: https://patch.msgid.link/20260307141024.819807-2-superm1@kernel.org
+Fixes: 0e30f47232ab ("mtd: spi-nor: add support for DTR protocol")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dmi.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/spi-nor/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/dmi.h b/include/linux/dmi.h
-index 927f8a8b7a1dd..2eedf44e68012 100644
---- a/include/linux/dmi.h
-+++ b/include/linux/dmi.h
-@@ -60,6 +60,7 @@ enum dmi_entry_type {
- 	DMI_ENTRY_OOB_REMOTE_ACCESS,
- 	DMI_ENTRY_BIS_ENTRY,
- 	DMI_ENTRY_SYSTEM_BOOT,
-+	DMI_ENTRY_64_MEM_ERROR,
- 	DMI_ENTRY_MGMT_DEV,
- 	DMI_ENTRY_MGMT_DEV_COMPONENT,
- 	DMI_ENTRY_MGMT_DEV_THRES,
-@@ -69,6 +70,10 @@ enum dmi_entry_type {
- 	DMI_ENTRY_ADDITIONAL,
- 	DMI_ENTRY_ONBOARD_DEV_EXT,
- 	DMI_ENTRY_MGMT_CONTROLLER_HOST,
-+	DMI_ENTRY_TPM_DEVICE,
-+	DMI_ENTRY_PROCESSOR_ADDITIONAL,
-+	DMI_ENTRY_FIRMWARE_INVENTORY,
-+	DMI_ENTRY_STRING_PROPERTY,
- 	DMI_ENTRY_INACTIVE = 126,
- 	DMI_ENTRY_END_OF_TABLE = 127,
- };
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 1eee519c01e5c..5dd0b3cb52503 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2393,7 +2393,7 @@ static int spi_nor_spimem_check_readop(struct spi_nor *nor,
+ 	/* convert the dummy cycles to the number of bytes */
+ 	op.dummy.nbytes = (read->num_mode_clocks + read->num_wait_states) *
+ 			  op.dummy.buswidth / 8;
+-	if (spi_nor_protocol_is_dtr(nor->read_proto))
++	if (spi_nor_protocol_is_dtr(read->proto))
+ 		op.dummy.nbytes *= 2;
+ 
+ 	return spi_nor_spimem_check_read_pp_op(nor, &op);
 -- 
 2.53.0
 
