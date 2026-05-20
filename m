@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPpaO/XsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:45 +0200
+	id GJoPByUqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61575934D3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8843059B2AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 496FF31725C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 496A039F9DAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B473ED3A4;
-	Wed, 20 May 2026 17:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52019371048;
+	Wed, 20 May 2026 18:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrRfDVUm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNDESKm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E59A34E779;
-	Wed, 20 May 2026 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4003563E1;
+	Wed, 20 May 2026 18:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296410; cv=none; b=uLG0QJJrynnAsXpL+KCc1/PlBXiyQT65pN0+0YgxPjp9Nd6IUwWdB6rVftotRoH1Z6lc4hMnyfyrgNeCNlqRK/ks0oSZ3VuxD4s3CDIphDVoW6ftee6FTGMHDqrKtoojIWSlz89Eb5ythLkwRL2Ni0XgDUawo/KNflT9Ih5fnFQ=
+	t=1779301775; cv=none; b=jD+kdZKzjRIFDyM3zPx5LtxUflQdld7foGNF3svWduNBj7KgbZH2p3MQ8Wq0jFv8YPwryNtZmnMzAaM4MX2+Oxe5S3qq/N8Dr8GlG52RTVorzfC2hnYtKKnWclrzRQQjER0R3xCOzYDf4RkhHXHzdr5RoDveGp2vuimellcZ3GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296410; c=relaxed/simple;
-	bh=3rVhBCemI8iAOH3acHn2gv1fL+upfuvLnd6ee0m/wYc=;
+	s=arc-20240116; t=1779301775; c=relaxed/simple;
+	bh=8gY1jaHf1YLU6q1hnOah+OtOdPbtmP2iQQBPOxXVR2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Apj3M3VMRGj1SqAMw2QMXuglrhHs8dV04s+CCpLgkLck260nF3Q0NgeJl5qdrqoPhyAwx/ZvxYJRO5ZWOQ4VzEbEDILFRXdz2t7ajzPjM0RcOL/zTxJeOjWyF+BjsP8v/nIyDeyg72WXRMt88YZMb8GbR2j96LdbqwpJWW8eIX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrRfDVUm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E991F000E9;
-	Wed, 20 May 2026 17:00:08 +0000 (UTC)
+	 MIME-Version; b=by2oGGDpvMUViYVd36RuCyLzVquTfrzyxonwG9JPDqBxdVYzFT1P6X8I5NXT4we8Pi8xhO3podDifpN+uw1XuvMzfWJ8K+pMn7PhQrC4G5TIt8oAXgFUh95VG3C1Xzjw3w0mefLblIQMzQzETtQBWHrhXJTsLKrFwwLxIL0551Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNDESKm0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9AF1F00893;
+	Wed, 20 May 2026 18:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296408;
-	bh=Cr8RJDKLCyHOkGd1pos/UMEECrKh0gTubdyNEYD/I/8=;
+	s=korg; t=1779301773;
+	bh=TvmBKMtGldcr3p/bEMvVAmfh5EeBSSH5JekKH1Jepu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OrRfDVUmWfC2PkH0YQ1gawGaGDBStMczLEXNTjp6nRmCtWtVqHpeU8TU9jLWuiRyy
-	 OsMWmY2pyLsPXgsIzbzaveFuUOEcudAOFDOgjafj0rp0uA51qtMyr0DhY+rALv8TxT
-	 S5o4WqQ0w3hzCyGGDIBMKGI/LGnZQieuIr2vLawY=
+	b=mNDESKm0vrPnMvG11hybK5eVbt+/7UULAjPg03xR31t0a4RaJycigB4GbmeBL4diw
+	 y0QQwPEfnKY0EJVFsGR4QGM9GDgkKEludS5H9daRMukH77ckUusoX6BAlGd5gqLRLn
+	 jdZXZMe8TB5qNYdgiOsdqoI1rjMNBIXPqiLJW/Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0789/1146] tcp: annotate data-races around tp->reord_seen
+Subject: [PATCH 6.6 016/508] s390/cio: use generic driver_override infrastructure
 Date: Wed, 20 May 2026 18:17:19 +0200
-Message-ID: <20260520162206.079963604@linuxfoundation.org>
+Message-ID: <20260520162058.939084331@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +69,153 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252859-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250827-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B61575934D3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8843059B2AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 62585690e6b2a112c408fe25f142b246ac833c42 ]
+[ Upstream commit ac4d8bb6e2e13e8684a76ea48d13ebaaaf5c24c4 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Fixes: 7ec65372ca53 ("tcp: add stat of data packet reordering events")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-11-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
+
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: ebc3d1791503 ("s390/cio: introduce driver_override on the css bus")
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Link: https://patch.msgid.link/20260324005919.2408620-10-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c       | 2 +-
- net/ipv4/tcp_input.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/s390/cio/cio.h |  5 -----
+ drivers/s390/cio/css.c | 34 ++++------------------------------
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index a5231c685f90b..80274554eaa12 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4500,7 +4500,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
- 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
- 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
--	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
-+	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
- 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
- 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 285baeb060a06..eee460d19e254 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1300,7 +1300,7 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
- 	}
+diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
+index a9057a5b670a6..23374604c6b01 100644
+--- a/drivers/s390/cio/cio.h
++++ b/drivers/s390/cio/cio.h
+@@ -103,11 +103,6 @@ struct subchannel {
+ 	struct work_struct todo_work;
+ 	struct schib_config config;
+ 	u64 dma_mask;
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char *driver_override;
+ } __attribute__ ((aligned(8)));
  
- 	/* This exciting event is worth to be remembered. 8) */
--	tp->reord_seen++;
-+	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
- 	NET_INC_STATS(sock_net(sk),
- 		      ts ? LINUX_MIB_TCPTSREORDER : LINUX_MIB_TCPSACKREORDER);
- }
-@@ -2444,7 +2444,7 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
- 	WRITE_ONCE(tp->reordering,
- 		   min_t(u32, tp->packets_out + addend,
- 			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
--	tp->reord_seen++;
-+	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
+ DECLARE_PER_CPU_ALIGNED(struct irb, cio_irb);
+diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+index 36c46c7f2fb80..97a2c23f4ce0f 100644
+--- a/drivers/s390/cio/css.c
++++ b/drivers/s390/cio/css.c
+@@ -160,7 +160,6 @@ static void css_subchannel_release(struct device *dev)
+ 
+ 	sch->config.intparm = 0;
+ 	cio_commit_config(sch);
+-	kfree(sch->driver_override);
+ 	kfree(sch);
  }
  
+@@ -324,37 +323,9 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ 
+ static DEVICE_ATTR_RO(modalias);
+ 
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct subchannel *sch = to_subchannel(dev);
+-	int ret;
+-
+-	ret = driver_set_override(dev, &sch->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct subchannel *sch = to_subchannel(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", sch->driver_override);
+-	device_unlock(dev);
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ static struct attribute *subch_attrs[] = {
+ 	&dev_attr_type.attr,
+ 	&dev_attr_modalias.attr,
+-	&dev_attr_driver_override.attr,
+ 	NULL,
+ };
+ 
+@@ -1352,9 +1323,11 @@ static int css_bus_match(struct device *dev, struct device_driver *drv)
+ 	struct subchannel *sch = to_subchannel(dev);
+ 	struct css_driver *driver = to_cssdriver(drv);
+ 	struct css_device_id *id;
++	int ret;
+ 
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (sch->driver_override && strcmp(sch->driver_override, drv->name))
++	ret = device_match_driver_override(dev, drv);
++	if (ret == 0)
+ 		return 0;
+ 
+ 	for (id = driver->subchannel_type; id->match_flags; id++) {
+@@ -1411,6 +1384,7 @@ static int css_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ 
+ static struct bus_type css_bus_type = {
+ 	.name     = "css",
++	.driver_override = true,
+ 	.match    = css_bus_match,
+ 	.probe    = css_probe,
+ 	.remove   = css_remove,
 -- 
 2.53.0
 
