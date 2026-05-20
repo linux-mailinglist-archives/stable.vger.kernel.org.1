@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JEOIaXlDWpz4gUAu9opvQ
-	(envelope-from <stable+bounces-250273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:33 +0200
+	id uPdJECQWDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCB8592722
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50A2599516
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 55FF930BB538
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 776E632825E8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F529369224;
-	Wed, 20 May 2026 16:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838CF30BF68;
+	Wed, 20 May 2026 17:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQvu3QXj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kf10fPMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02BD36404E;
-	Wed, 20 May 2026 16:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEC535AC18;
+	Wed, 20 May 2026 17:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294981; cv=none; b=f34ZqXdPyGBGNHmHWXWIs/tEp/SSp424cy5WN5Vp5EAL2hvnQ2v1QNuI0pm9rCE7flmEtELH+r+WlmGFsNUdLEWsF57WJn+KMfcO+59HDnr4ZWlzz+vWzHZXtCiJCVbFeK/xa5zWnzeeMwQ0KXakpdEEAqBuNtriSXDqXREihQ4=
+	t=1779297382; cv=none; b=hKBXvj0+in7b4gKLM6oSL2C916E1hfObWOjQIn7F2E5F/rrcscOQ6g0IQ1vljWNGr4/Ou5uLT6ssTpa/61fLkI5JChg+1XCJ6z4X4OHxCxh1xGS8mbELVZSD8QnKGGYozf9dVVmnMwQPouCrWU9Ly62VEZa826ViWPf0ahQzcTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294981; c=relaxed/simple;
-	bh=EsRz4fXzI2RqIH7jjw097wilUKgxSt7V2D2NYyM0A9I=;
+	s=arc-20240116; t=1779297382; c=relaxed/simple;
+	bh=m2bHRdz1Mlxdv9UKDZ4ew1C86N52hvHE31zhaZ/8TXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HARmGaDSo1ZKEYwWgpVJAUEMjSHQ3njG+8085ZK2GLXkLd5jtygx8uXQgP3xD7bEwjCWVh2c8IGtA2UQcS+ka6j76AJMOdZOevuhwaQIcKsttloJ8m6/KApvVE3XUGO+LwwCNBjrM7PcSQ1MBTVRwl8Td3iw4/m/OrZqKPmOVbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQvu3QXj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0531F1F000E9;
-	Wed, 20 May 2026 16:36:18 +0000 (UTC)
+	 MIME-Version; b=FpqHJfZV1ASCLrgcIk7PCctLXyJ84h1VIiLpCGKxoBoyZidn/bqpUjT5nfpiVu7B5zW2B6WmyqqPzWq8quM6RandVSQfMQ5aLVF52aIy3XMYsVJG1ODad+8yqDLSI5ZWcwI+vpUoyKx77s5BQ/IjU+RFclWyS9u9llN8LHOaaZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kf10fPMY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7CD1F000E9;
+	Wed, 20 May 2026 17:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294979;
-	bh=+vjZl4Q3+uqStPYTf+ng6pRUqrJMs8vDP/JxTUHtg8k=;
+	s=korg; t=1779297380;
+	bh=nkxrS763cj0dxM/8qC2fuxwz46Qpav0VjVX5mMtbFTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iQvu3QXj7HX6G/FC+kvhyQDZmevQND1GaMYji3ssSkRMR99SMDnK1YUyjxB4o/7OW
-	 Poz0rFYj+tliT91Hcy/sarmwy+HTy0bBhDbtMD+vrzTofts7Q/iGH/fqyw0mtb2YSu
-	 s4pqMynsS6IiGL4PpduFZ4znrkraU+tJb9itrRn4=
+	b=Kf10fPMY5A0uDbLOtdcTJhStNAnYtMy0BNUrXbsgL7bi41vV0rJxG5frlGgr6jZqp
+	 Ig1s4eSdYdX+6YNPZOBhK3NKXFt/pR3rdPTmaLmjsUoKcpmDSv+D0T6I2DR1n9r6vh
+	 BZpUbpAjEMKbeQ7mDnqLo/W4gOgceQdn1Uk/GJms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0244/1146] PCI: imx6: Fix device node reference leak in imx_pcie_probe()
+Subject: [PATCH 6.18 011/957] erofs: include the trailing NUL in FS_IOC_GETFSLABEL
 Date: Wed, 20 May 2026 18:08:14 +0200
-Message-ID: <20260520162153.761374557@linuxfoundation.org>
+Message-ID: <20260520162134.806234165@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250273-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251208-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: EBCB8592722
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email]
+X-Rspamd-Queue-Id: C50A2599516
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
 
-[ Upstream commit 3b55079d6387805ede687e234d84669aeb0f7e98 ]
+[ Upstream commit d6250d49da4d8f11afc0d8991c84e0307949f92e ]
 
-In imx_pcie_probe(), of_parse_phandle() returns the device node pointer
-with increased refcount. The pointer reference must be dropped by the
-caller when it's no longer needed. However, imx_pcie_probe() doesn't drop
-the reference, causing reference leak.
+erofs_ioctl_get_volume_label() passes strlen(sbi->volume_name) as
+the length to copy_to_user(), which copies the label string without
+the trailing NUL byte.  Since FS_IOC_GETFSLABEL callers expect a
+NUL-terminated string in the FSLABEL_MAX-sized buffer and may not
+pre-zero the buffer, this can cause userspace to read past the label
+into uninitialised stack memory.
 
-Fix this by using the __free(device_node) cleanup handler to drop the
-reference when the function goes out of scope.
+Fix this by using strlen() + 1 to include the NUL terminator,
+consistent with how ext4 and xfs implement FS_IOC_GETFSLABEL.
 
-Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
-Link: https://patch.msgid.link/20260124-pci_imx6-v2-1-acb8d5187683@gmail.com
+Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
+Fixes: 1cf12c717741 ("erofs: Add support for FS_IOC_GETFSLABEL")
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index e01a225cf3ab6..2aa5467d5400a 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1647,7 +1647,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct dw_pcie *pci;
- 	struct imx_pcie *imx_pcie;
--	struct device_node *np;
- 	struct device_node *node = dev->of_node;
- 	int i, ret, domain;
- 	u16 val;
-@@ -1674,7 +1673,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 		pci->pp.ops = &imx_pcie_host_dw_pme_ops;
- 
- 	/* Find the PHY if one is defined, only imx7d uses it */
--	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
-+	struct device_node *np __free(device_node) =
-+		of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
- 	if (np) {
- 		struct resource res;
+diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+index cb780c095d282..218ab22589228 100644
+--- a/fs/erofs/inode.c
++++ b/fs/erofs/inode.c
+@@ -348,7 +348,7 @@ static int erofs_ioctl_get_volume_label(struct inode *inode, void __user *arg)
+ 		ret = clear_user(arg, 1);
+ 	else
+ 		ret = copy_to_user(arg, sbi->volume_name,
+-				   strlen(sbi->volume_name));
++				   strlen(sbi->volume_name) + 1);
+ 	return ret ? -EFAULT : 0;
+ }
  
 -- 
 2.53.0
