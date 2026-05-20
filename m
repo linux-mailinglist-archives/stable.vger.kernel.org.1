@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 7YeeOYsfDmp26QUAu9opvQ
-	(envelope-from <stable+bounces-251877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:35 +0200
+	id OGAkKk8ADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4744E59A4B3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E98F596FDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7C793792CE4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C05B301A307
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF48B3F20FF;
-	Wed, 20 May 2026 17:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A1C370AEE;
+	Wed, 20 May 2026 18:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJxD/czu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqA6uNl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AFE3546C8;
-	Wed, 20 May 2026 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFFA333441;
+	Wed, 20 May 2026 18:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299120; cv=none; b=c+Ks2itV0IbAfs5YNLrsPfYFoKLcqFmzD8NzEzw7uCaGQRneezDQX/xP0r2Z6pBjzZlnumiM0MGA/mHZNPL9yg3yj4KLjqqNEEB8JKPKICIPDxjbOZFLOlk5xiQ3Nqi+EGiXEv0bcFzP33kWj0Hlxbh4rJz0HaBLMOt3sFjGnc0=
+	t=1779302081; cv=none; b=NLMq0ptZDEnNfRvCGp6GwLxeI5GxJfRYQFjv4qwgT8XOVp0GYcXrGCaFGAxijrkR8NLuee/532E3NBj4bt50O9+7ZNFEOg0ya5Ks6WuBLs3onkQf6mcD92YaYYiWJA941iXnw1Lir+C3iZPHgcRlu2+Mmm4r0fdHzGJeJG1Zc2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299120; c=relaxed/simple;
-	bh=+hNB/xM016X17cYR0quPmDItlwJ9ZCsX/HUNcPa14A0=;
+	s=arc-20240116; t=1779302081; c=relaxed/simple;
+	bh=4QNrLGrNwAi8Fhar7xy+j6bgd6DXgAL1Vh+1aURjZDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyUfNOnxb6JQ+635iCVn9V8frY7eGNbyqWBEk5x210sSnuPo5QzYaoYaDp/ald/YWCHDSf4PIF3nzryL3XHji8r11ReJAcS40Y/iulqTkqUvdf+LAvWrPFNIcMngytxk5VlB7zjV2EfUKTC0XlDMVkW9O7Ta7dv2K0qpEnr1FiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJxD/czu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273261F000E9;
-	Wed, 20 May 2026 17:45:18 +0000 (UTC)
+	 MIME-Version; b=gywWI/N3tVreJDVrVfZlLUtxItv30ZH53pKg2O4Omdqxwwid36yOqPc7wLJQzVmuDgMTeUXzhv5exJTC44p62QaySR9UxAE/9qsDKlwncuCDx0+Y74IZQUepjJmbXA0g3IhYhgLyFjEneVZDypgKtJGQ905AOgEp2Cchw2Ko994=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqA6uNl9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16F01F000E9;
+	Wed, 20 May 2026 18:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299119;
-	bh=jyuvZEKo21vEAgYebhHYvWRF5vEGxj8CuBdXB40zRnA=;
+	s=korg; t=1779302080;
+	bh=gvrKOTVKj40buxbrdO/TIVK0Rk3+moAcd22NC86cPqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zJxD/czuCnrLbdGf2iB0vC5KOXiDaR66+8Ocs8F1cgUI9tBBevb06nNwNYZ9yddPd
-	 EbPLrUTg21S0rRsPAuQBsgW8sl/A/2v8abDeJtBmfS1xkbMNDckF0Q0s/8LvYgV4K3
-	 6o+8Fjog2FWDCn3EJlzL2sq2Bcxc2rB4fpWSoCpI=
+	b=fqA6uNl9rh9StpgVNq7omGK61Mz3EVtP7x7Pbclr3sRbc+eX3lMMGyGxEnL9E5d7F
+	 Wa0w36A1VzaCJgJB9i8La7qz3A5OeuIATgjMHTZwBRv+VqmgKLNuIkgf22U31iWNLV
+	 de0oe2AKbxdRAwgiM3vuuScyuiKLmyO78wtvOKl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Moon <linux.amoon@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 671/957] arm64: dts: amlogic: meson-axg: Add missing cache information to cpu0
-Date: Wed, 20 May 2026 18:19:14 +0200
-Message-ID: <20260520162149.088807439@linuxfoundation.org>
+Subject: [PATCH 6.6 132/508] drm/msm/shrinker: Fix can_block() logic
+Date: Wed, 20 May 2026 18:19:15 +0200
+Message-ID: <20260520162101.488717644@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-251877-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252976-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linaro.org:email,0.0.0.0:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4744E59A4B3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url,gitlab.freedesktop.org:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5E98F596FDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Moon <linux.amoon@gmail.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 918273be0885362a9a00615b46e03f15f8b55667 ]
+[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
 
-Add missing L1 data and instruction cache parameters to the CPU node 0
-for the Cortex-A53 caches on the Meson AXG SoC.
+The intention here was to allow blocking if DIRECT_RECLAIM or if called
+from kswapd and KSWAPD_RECLAIM is set.
 
-Fixes: 3b6ad2a43367 ("arm64: dts: amlogic: Add cache information to the Amlogic AXG SoCS")
-Signed-off-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://patch.msgid.link/20260219103548.18392-1-linux.amoon@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
+
+Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714238/
+Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-axg.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-index bbf94a1f92a10..3058b60338dbf 100644
---- a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-@@ -72,6 +72,12 @@ cpu0: cpu@0 {
- 			compatible = "arm,cortex-a53";
- 			reg = <0x0 0x0>;
- 			enable-method = "psci";
-+			d-cache-line-size = <32>;
-+			d-cache-size = <0x8000>;
-+			d-cache-sets = <32>;
-+			i-cache-line-size = <32>;
-+			i-cache-size = <0x8000>;
-+			i-cache-sets = <32>;
- 			next-level-cache = <&l2>;
- 			clocks = <&scpi_dvfs 0>;
- 			dynamic-power-coefficient = <140>;
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index 0641f5bb8649a..5d5cf51cde65a 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -26,9 +26,8 @@ static bool can_swap(void)
+ 
+ static bool can_block(struct shrink_control *sc)
+ {
+-	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+-		return false;
+-	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
++	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
++	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+ }
+ 
+ static unsigned long
 -- 
 2.53.0
 
