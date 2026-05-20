@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253152-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sv3PGEn5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:21 +0200
+	id 6A0PGdYNDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-253152-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1375957EC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F92D5988CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 161EF3273A93
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECE19311957D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757333F4DDB;
-	Wed, 20 May 2026 17:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3690C403EA0;
+	Wed, 20 May 2026 18:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG5/mG6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysS//uL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3373F23A4;
-	Wed, 20 May 2026 17:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA3C403E9A;
+	Wed, 20 May 2026 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299502; cv=none; b=Oghmq91Nxlb3c9sYbkBKY1K9lyFe4EoBJ3IckOqkDr35bW7Sm0b+/iQc5H3L1NcxI/6gkprNqUhs8O1Hxgm/2Unw6OqSGLcdzS5T0a/ecryJ+QS5tBsPdWBgvQrg3C53bCBe3LBZPg/Ld93+w4KzdtI8T7YFrJ0NBaHGZDnUbGk=
+	t=1779302542; cv=none; b=TX9KLwcKiBJdTSxDZ5NYxJCRsEI+Hs6dAEY7QYtYkIeUGwh1r6z/mo7yo0q00cbjF2+CtuDbLu/UdwPZRAcDDLTy0vXM8gH/GONeADPcUNewTcDTLv39UlBhDmddiZM3VyoPKOBJAM4yOCWYC7fZSQ+g4D6HFM2YTQVCHf2VNAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299502; c=relaxed/simple;
-	bh=dfA/dqqt+elDXVAtWAPLklYKwyhqlEbxjcyokH9tT88=;
+	s=arc-20240116; t=1779302542; c=relaxed/simple;
+	bh=aX5k7NgNtouCarVxlZ421LZySKE9qW3Micln4CfxtKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UADIdOyjBrzvyTDNtQGt389w547Ih7+A5kWBhAU70b1Ij5HfE+OOKj+bRh42GE+KBrEbBBjXVWBIsB9zoFP+Hxkn6hcGU6V9Kz3EOqzVMz2sDJVIhdt0Jm4LLNadJ4M0ppLQRP0t6QrvmeWrTguqcNNYKQ5WHzrDajXzLPJv4+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG5/mG6q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2341F000E9;
-	Wed, 20 May 2026 17:51:39 +0000 (UTC)
+	 MIME-Version; b=Wgqe332sB0CCy3KYcVwcuyuCWCnGtepkBbEKXHrnnV+qzVvCcaTFkBgmB64m13FIFGF5NBZyKnQoXtEM40dimKjGVZYz8eRSnYSQPUtp5DZrbHhGKCzn+QtBXXyn0ENGQAtxy0uf2bLBO0+TegRozWO0EpPHgkiTFwSx+rfDNek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysS//uL/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAEA1F000E9;
+	Wed, 20 May 2026 18:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299500;
-	bh=iEfqpM+s2NwV2Gv04Wvt0JABknFotIfuZDR/APHPKmk=;
+	s=korg; t=1779302540;
+	bh=m/F5AJ0GzktEWKHf9fGtBeOytbylWv6GkWwsLREdGxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gG5/mG6q0B6y6YnKIfBf8jYQVsixPUuVDkxUE54vMDWLVoblz4R+sTo/A1Qss3ycm
-	 yXMIWf4kq4jiKC6yFcRODrBztHzsyfLFqKFrn1iX/W+T6nyFjpmgvVDCi8NYERs8yc
-	 zd6Vm4/rqOIAys4o+6C/0OpMaCM0lIMQOoPhzGlY=
+	b=ysS//uL/0GveeEspxsuyvu4FwUzGuPcEpdH4mOCzZb4h/zqmZoMTG5gcDMOEVWYg5
+	 k1GtE2tMS4TJamI18/te8TlsUoFuONU+NUoY32Vz1uGHB0EhrB/CzOb+n2kDp8fQ2q
+	 NWR3Jl2c7717sVMFXPvf/e8PjZ6/36ECbLczywlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 794/957] md/md-bitmap: split bitmap sysfs groups
+Subject: [PATCH 6.6 254/508] ipmi: ssif_bmc: fix missing check for copy_to_user() partial failure
 Date: Wed, 20 May 2026 18:21:17 +0200
-Message-ID: <20260520162151.783330531@linuxfoundation.org>
+Message-ID: <20260520162104.151952479@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252007-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253152-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,194 +90,49 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fnnas.com:email]
-X-Rspamd-Queue-Id: 6A1375957EC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7F92D5988CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-[ Upstream commit aba3d6d6cb55c6e1116d1215140559dd7ecdf9a9 ]
+[ Upstream commit ea641be7a4faee4351f9c5ed6b188e1bbf5586a6 ]
 
-Split the classic bitmap sysfs files into a common bitmap group with
-the location attribute and a separate internal bitmap group for the
-remaining files.
+copy_to_user() returns the number of bytes that could not be copied,
+with a non-zero value indicating a partial or complete failure. The
+current code only checks for negative return values and treats all
+non-negative results as success.
 
-At the same time, convert bitmap operations from a single sysfs group
-to a sysfs group array so backends can share part of their sysfs
-layout while adding backend-specific attributes separately.
+Treating any positive return value from copy_to_user() as
+an error and returning -EFAULT.
 
-Switch the bitmap sysfs helpers to use sysfs_update_groups() for the
-add and update path, and remove groups in reverse order so shared named
-groups are unmerged before the last group removes the directory.
-
-Also make bitmap operation lookup depend only on the currently selected
-bitmap id matching the installed backend. This prepares the lookup path
-for a later registered none backend.
-
-Reviewed-by: Su Yue <glass.su@suse.com>
-Link: https://lore.kernel.org/r/20260425024615.1696892-3-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
+Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Message-ID: <20260403090603.3988423-2-zhangjian.3032@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c   | 23 +++++++++++++++++++----
- drivers/md/md-bitmap.h   |  2 +-
- drivers/md/md-llbitmap.c |  7 ++++++-
- drivers/md/md.c          | 21 ++++++++++++++-------
- 4 files changed, 40 insertions(+), 13 deletions(-)
+ drivers/char/ipmi/ssif_bmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 7bb56d0491a2f..7a96600949139 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2956,8 +2956,12 @@ static struct md_sysfs_entry max_backlog_used =
- __ATTR(max_backlog_used, S_IRUGO | S_IWUSR,
-        behind_writes_used_show, behind_writes_used_reset);
+diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
+index e8460e966b83e..6928adb5df5ab 100644
+--- a/drivers/char/ipmi/ssif_bmc.c
++++ b/drivers/char/ipmi/ssif_bmc.c
+@@ -163,6 +163,8 @@ static ssize_t ssif_bmc_read(struct file *file, char __user *buf, size_t count,
+ 		spin_unlock_irqrestore(&ssif_bmc->lock, flags);
  
--static struct attribute *md_bitmap_attrs[] = {
-+static struct attribute *md_bitmap_common_attrs[] = {
- 	&bitmap_location.attr,
-+	NULL
-+};
-+
-+static struct attribute *md_bitmap_internal_attrs[] = {
- 	&bitmap_space.attr,
- 	&bitmap_timeout.attr,
- 	&bitmap_backlog.attr,
-@@ -2968,9 +2972,20 @@ static struct attribute *md_bitmap_attrs[] = {
- 	NULL
- };
+ 		ret = copy_to_user(buf, &msg, count);
++		if (ret > 0)
++			ret = -EFAULT;
+ 	}
  
--static struct attribute_group md_bitmap_group = {
-+static struct attribute_group md_bitmap_common_group = {
-+	.name = "bitmap",
-+	.attrs = md_bitmap_common_attrs,
-+};
-+
-+static struct attribute_group md_bitmap_internal_group = {
- 	.name = "bitmap",
--	.attrs = md_bitmap_attrs,
-+	.attrs = md_bitmap_internal_attrs,
-+};
-+
-+static const struct attribute_group *bitmap_groups[] = {
-+	&md_bitmap_common_group,
-+	&md_bitmap_internal_group,
-+	NULL,
- };
- 
- static struct bitmap_operations bitmap_ops = {
-@@ -3014,7 +3029,7 @@ static struct bitmap_operations bitmap_ops = {
- 	.set_pages		= bitmap_set_pages,
- 	.free			= md_bitmap_free,
- 
--	.group			= &md_bitmap_group,
-+	.groups			= bitmap_groups,
- };
- 
- int md_bitmap_init(void)
-diff --git a/drivers/md/md-bitmap.h b/drivers/md/md-bitmap.h
-index b42a28fa83a0f..214f623c7e790 100644
---- a/drivers/md/md-bitmap.h
-+++ b/drivers/md/md-bitmap.h
-@@ -125,7 +125,7 @@ struct bitmap_operations {
- 	void (*set_pages)(void *data, unsigned long pages);
- 	void (*free)(void *data);
- 
--	struct attribute_group *group;
-+	const struct attribute_group **groups;
- };
- 
- /* the bitmap API */
-diff --git a/drivers/md/md-llbitmap.c b/drivers/md/md-llbitmap.c
-index 0526e742062ac..50eeddf7f539b 100644
---- a/drivers/md/md-llbitmap.c
-+++ b/drivers/md/md-llbitmap.c
-@@ -1562,6 +1562,11 @@ static struct attribute_group md_llbitmap_group = {
- 	.attrs = md_llbitmap_attrs,
- };
- 
-+static const struct attribute_group *md_llbitmap_groups[] = {
-+	&md_llbitmap_group,
-+	NULL,
-+};
-+
- static struct bitmap_operations llbitmap_ops = {
- 	.head = {
- 		.type	= MD_BITMAP,
-@@ -1598,7 +1603,7 @@ static struct bitmap_operations llbitmap_ops = {
- 	.dirty_bits		= llbitmap_dirty_bits,
- 	.write_all		= llbitmap_write_all,
- 
--	.group			= &md_llbitmap_group,
-+	.groups			= md_llbitmap_groups,
- };
- 
- int md_llbitmap_init(void)
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 3061370e959b3..213221abc44c3 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -688,7 +688,7 @@ static void no_op(struct percpu_ref *r) {}
- 
- static void md_bitmap_sysfs_add(struct mddev *mddev)
- {
--	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
-+	if (sysfs_update_groups(&mddev->kobj, mddev->bitmap_ops->groups))
- 		pr_warn("md: cannot register extra bitmap attributes for %s\n",
- 			mdname(mddev));
- 	else
-@@ -701,16 +701,23 @@ static void md_bitmap_sysfs_add(struct mddev *mddev)
- 
- static void md_bitmap_sysfs_del(struct mddev *mddev)
- {
--	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
-+	int nr_groups = 0;
-+
-+	for (nr_groups = 0; mddev->bitmap_ops->groups[nr_groups]; nr_groups++)
-+		;
-+
-+	while (--nr_groups >= 1)
-+		sysfs_unmerge_group(&mddev->kobj,
-+				    mddev->bitmap_ops->groups[nr_groups]);
-+	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->groups[0]);
- }
- 
- static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
- {
--	struct bitmap_operations *old = mddev->bitmap_ops;
- 	struct md_submodule_head *head;
- 
--	if (mddev->bitmap_id == ID_BITMAP_NONE ||
--	    (old && old->head.id == mddev->bitmap_id))
-+	if (mddev->bitmap_ops &&
-+	    mddev->bitmap_ops->head.id == mddev->bitmap_id)
- 		return true;
- 
- 	xa_lock(&md_submodule);
-@@ -6454,7 +6461,7 @@ static int md_bitmap_create(struct mddev *mddev)
- 	if (err)
- 		return err;
- 
--	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
-+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
- 		md_bitmap_sysfs_add(mddev);
- 
- 	return 0;
-@@ -6472,7 +6479,7 @@ static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
- static void md_bitmap_destroy(struct mddev *mddev)
- {
- 	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
--	    mddev->bitmap_ops->group)
-+	    mddev->bitmap_ops->groups)
- 		md_bitmap_sysfs_del(mddev);
- 
- 	md_bitmap_destroy_nosysfs(mddev);
+ 	return (ret < 0) ? ret : count;
 -- 
 2.53.0
 
